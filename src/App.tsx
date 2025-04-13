@@ -33,15 +33,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Auth wrapper to provide auth context
-const AuthWrapper = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter>
-    <AuthProvider>
-      {children}
-    </AuthProvider>
-  </BrowserRouter>
-);
-
+// App routes component that uses auth context
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
   
@@ -69,13 +61,22 @@ const AppRoutes = () => {
   );
 };
 
+// Auth wrapper to provide auth context
+const AuthWrapper = ({ children }: { children: React.ReactNode }) => (
+  <BrowserRouter>
+    <AuthProvider>
+      {children}
+    </AuthProvider>
+  </BrowserRouter>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
       <AuthWrapper>
         <AppRoutes />
+        <Toaster />
+        <Sonner />
       </AuthWrapper>
     </TooltipProvider>
   </QueryClientProvider>
