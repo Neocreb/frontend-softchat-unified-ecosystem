@@ -1,5 +1,5 @@
 
-import AuthForm from "@/components/auth/AuthForm";
+import EnhancedAuthForm from "@/components/auth/EnhancedAuthForm";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
 
 const Auth = () => {
@@ -96,8 +96,8 @@ const Auth = () => {
             </ul>
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <AuthForm />
+        <div className="flex items-center justify-center p-6">
+          <EnhancedAuthForm />
         </div>
       </main>
     </div>
