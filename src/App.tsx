@@ -10,6 +10,7 @@ import Feed from "./pages/Feed";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
+import CryptoMarket from "./pages/CryptoMarket";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="profile" element={<Profile />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="marketplace" element={<Marketplace />} />
+            <Route path="crypto" element={<CryptoMarket />} />
           </Route>
           
           <Route path="*" element={<NotFound />} />
