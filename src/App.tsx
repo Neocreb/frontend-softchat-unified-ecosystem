@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
-import Feed from "./pages/Feed";
+import EnhancedFeed from "./pages/EnhancedFeed";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
@@ -48,7 +48,7 @@ const AppRoutes = () => {
           <AppLayout />
         </ProtectedRoute>
       }>
-        <Route index element={<Feed />} />
+        <Route index element={<EnhancedFeed />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="marketplace" element={<Marketplace />} />

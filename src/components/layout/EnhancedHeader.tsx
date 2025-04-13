@@ -1,8 +1,11 @@
 
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { MessageCircle, Menu, X, User, ShoppingCart, Home, TrendingUp, Wallet, Award } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import SoftchatLogo from "@/components/shared/SoftchatLogo";
-import {
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { 
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -10,193 +13,148 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Bell,
-  Home,
-  MessageSquare,
-  ShoppingBag,
-  Search,
-  User,
-  Wallet,
-  Award,
-  LogOut,
-  Settings,
-  Moon,
-  Sun,
-  CoinsIcon,
-  Users,
-} from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import SoftchatLogo from "../shared/SoftchatLogo";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 const EnhancedHeader = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    // In a real app, this would toggle the dark mode class on the body
-  };
-
+  
   return (
-    <header className="border-b sticky top-0 z-50 bg-background">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-2">
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          )}
+          
           <Link to="/" className="flex items-center gap-2">
-            <SoftchatLogo className="h-6 w-6" />
-            <span className="font-bold hidden sm:inline-block">Softchat</span>
+            <SoftchatLogo className="h-8 w-8" />
+            <span className="font-bold text-xl hidden sm:inline-block text-softchat-primary">Softchat</span>
           </Link>
-
-          <nav className="hidden md:flex items-center gap-5">
-            <Link
-              to="/"
-              className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors"
-            >
-              <Home className="h-4 w-4" />
-              Feed
-            </Link>
-            <Link
-              to="/marketplace"
-              className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors"
-            >
-              <ShoppingBag className="h-4 w-4" />
-              Marketplace
-            </Link>
-            <Link
-              to="/crypto"
-              className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors"
-            >
-              <CoinsIcon className="h-4 w-4" />
-              Crypto
-            </Link>
-            <Link
-              to="/rewards"
-              className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors"
-            >
-              <Award className="h-4 w-4" />
-              Rewards
-            </Link>
-          </nav>
         </div>
 
-        <div className="hidden sm:flex flex-1 max-w-md mx-6">
-          <div className="relative w-full">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full pl-9 rounded-full bg-muted border-none"
-            />
-          </div>
-        </div>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6">
+          <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Home className="h-4 w-4" />
+            <span>Feed</span>
+          </Link>
+          <Link to="/marketplace" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <ShoppingCart className="h-4 w-4" />
+            <span>Marketplace</span>
+          </Link>
+          <Link to="/crypto" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <TrendingUp className="h-4 w-4" />
+            <span>Crypto</span>
+          </Link>
+          <Link to="/wallet" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Wallet className="h-4 w-4" />
+            <span>Wallet</span>
+          </Link>
+          <Link to="/rewards" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Award className="h-4 w-4" />
+            <span>Rewards</span>
+          </Link>
+        </nav>
 
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative hover:bg-muted"
-            aria-label="Notifications"
-          >
-            <Bell className="h-5 w-5" />
-            <Badge
-              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-primary"
-              variant="default"
-            >
-              3
-            </Badge>
+        <div className="flex items-center gap-3">
+          <NotificationsDropdown />
+          
+          <Button variant="ghost" size="icon" aria-label="Messages">
+            <MessageCircle className="h-5 w-5" />
           </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="relative hover:bg-muted"
-            aria-label="Messages"
-          >
-            <MessageSquare className="h-5 w-5" />
-            <Badge
-              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-primary"
-              variant="default"
-            >
-              5
-            </Badge>
-          </Button>
-
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="hover:bg-muted">
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
-                  <AvatarFallback>
-                    {user?.name?.charAt(0) || "U"}
-                  </AvatarFallback>
+                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "@user"} />
+                  <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "SC"}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium">{user?.name}</p>
-                  <p className="text-xs text-muted-foreground">@{user?.username}</p>
+                  <p className="text-sm font-medium leading-none">{user?.name || "User"}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user?.email || "user@example.com"}
+                  </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              
-              <DropdownMenuItem onClick={() => navigate("/profile")}>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
-              </DropdownMenuItem>
-              
-              <DropdownMenuItem onClick={() => navigate("/wallet")}>
-                <Wallet className="mr-2 h-4 w-4" />
-                <span>Wallet</span>
-              </DropdownMenuItem>
-              
-              <DropdownMenuItem onClick={() => navigate("/rewards")}>
-                <Award className="mr-2 h-4 w-4" />
-                <span>Rewards</span>
-                <Badge variant="secondary" className="ml-auto">
-                  {user?.points.toLocaleString()}
-                </Badge>
-              </DropdownMenuItem>
-              
               <DropdownMenuItem>
-                <Users className="mr-2 h-4 w-4" />
-                <span>Referrals</span>
+                <Link to="/profile" className="flex items-center w-full">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
               </DropdownMenuItem>
-              
-              <DropdownMenuSeparator />
-              
-              <DropdownMenuItem onClick={toggleDarkMode}>
-                {darkMode ? (
-                  <>
-                    <Sun className="mr-2 h-4 w-4" />
-                    <span>Light mode</span>
-                  </>
-                ) : (
-                  <>
-                    <Moon className="mr-2 h-4 w-4" />
-                    <span>Dark mode</span>
-                  </>
-                )}
-              </DropdownMenuItem>
-              
               <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <Link to="/wallet" className="flex items-center w-full">
+                  <Wallet className="mr-2 h-4 w-4" />
+                  <span>Wallet</span>
+                </Link>
               </DropdownMenuItem>
-              
+              <DropdownMenuItem>
+                <Link to="/rewards" className="flex items-center w-full">
+                  <Award className="mr-2 h-4 w-4" />
+                  <span>Rewards</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              
+              <DropdownMenuItem>
+                <Link to="/settings" className="flex items-center w-full">
+                  Settings
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
+                Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={cn(
+          "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
+          mobileMenuOpen ? "block" : "hidden"
+        )}
+      >
+        <div className="relative z-20 grid gap-6 rounded-md bg-background p-4">
+          <Link to="/" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Home className="h-5 w-5" />
+            <span>Feed</span>
+          </Link>
+          <Link to="/marketplace" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <ShoppingCart className="h-5 w-5" />
+            <span>Marketplace</span>
+          </Link>
+          <Link to="/crypto" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <TrendingUp className="h-5 w-5" />
+            <span>Crypto</span>
+          </Link>
+          <Link to="/wallet" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Wallet className="h-5 w-5" />
+            <span>Wallet</span>
+          </Link>
+          <Link to="/rewards" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Award className="h-5 w-5" />
+            <span>Rewards</span>
+          </Link>
         </div>
       </div>
     </header>
