@@ -61,25 +61,18 @@ const AppRoutes = () => {
   );
 };
 
-// Auth wrapper to provide auth context
-const AuthWrapper = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter>
-    <AuthProvider>
-      {children}
-    </AuthProvider>
-  </BrowserRouter>
-);
-
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthWrapper>
-        <AppRoutes />
-        <Toaster />
-        <Sonner />
-      </AuthWrapper>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <AppRoutes />
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </BrowserRouter>
 );
 
 export default App;
