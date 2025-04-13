@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Feed from "./pages/Feed";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
+import Marketplace from "./pages/Marketplace";
 import NotFound from "./pages/NotFound";
 
 // Create a client
@@ -27,6 +28,7 @@ const App = () => (
             <Route index element={<Feed />} />
             <Route path="profile" element={<Profile />} />
             <Route path="wallet" element={<Wallet />} />
+            <Route path="marketplace" element={<Marketplace />} />
           </Route>
           
           <Route path="*" element={<NotFound />} />
