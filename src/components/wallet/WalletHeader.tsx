@@ -14,26 +14,19 @@ const WalletHeader = ({ activeTab, setActiveTab }: WalletHeaderProps) => {
         <p className="text-muted-foreground">Manage your wallet, rewards, and investments</p>
       </div>
       <div className="mt-4 md:mt-0">
-        <TabsList>
-          <TabsTrigger 
-            value="overview" 
-            onClick={() => setActiveTab("overview")}
-          >
-            Overview
-          </TabsTrigger>
-          <TabsTrigger 
-            value="rewards" 
-            onClick={() => setActiveTab("rewards")}
-          >
-            Rewards
-          </TabsTrigger>
-          <TabsTrigger 
-            value="transactions" 
-            onClick={() => setActiveTab("transactions")}
-          >
-            Transactions
-          </TabsTrigger>
-        </TabsList>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="overview">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="rewards">
+              Rewards
+            </TabsTrigger>
+            <TabsTrigger value="transactions">
+              Transactions
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
     </div>
   );
