@@ -1,103 +1,99 @@
 
-import { useEffect, useState } from "react";
-import { Post, default as PostCard } from "@/components/feed/PostCard";
-import CreatePostCard from "@/components/feed/CreatePostCard";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PostCard from "@/components/feed/PostCard";
 import FeedSidebar from "@/components/feed/FeedSidebar";
+import CreatePostCard from "@/components/feed/CreatePostCard";
 
-const mockPosts: Post[] = [
+// Sample posts data
+const samplePosts = [
   {
     id: "1",
-    author: {
-      name: "John Doe",
-      username: "johndoe",
-      avatar: "/placeholder.svg",
-      verified: true,
-    },
-    content: "Just made my first crypto trade on Softchat! The platform makes it so easy to get started with cryptocurrency trading. #crypto #softchat",
-    createdAt: "10 minutes ago",
+    authorName: "John Doe",
+    authorHandle: "@johndoe",
+    authorAvatar: "/placeholder.svg",
+    content: "Just launched my new website! Check it out and let me know what you think.",
+    timestamp: "2h ago",
     likes: 24,
-    comments: 3,
-    shares: 1,
+    comments: 5,
+    shares: 2,
   },
   {
     id: "2",
-    author: {
-      name: "Sarah Johnson",
-      username: "sarahj",
-      avatar: "/placeholder.svg",
-      verified: true,
-    },
-    content: "Check out this amazing product I just purchased from the Softchat marketplace! Great quality and fast shipping.",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop",
-    createdAt: "2 hours ago",
-    likes: 142,
-    comments: 12,
-    shares: 5,
-  },
-  {
-    id: "3",
-    author: {
-      name: "Alex Rivera",
-      username: "alexr",
-      avatar: "/placeholder.svg",
-    },
-    content: "Just reached Silver level in the rewards program! The points add up quickly when you're active on the platform. Has anyone redeemed their points yet? What did you get?",
-    createdAt: "5 hours ago",
+    authorName: "Jane Smith",
+    authorHandle: "@janesmith",
+    authorAvatar: "/placeholder.svg",
+    content: "Excited to announce that I'll be speaking at the Web Development Conference next month! #WebDev #Conference",
+    timestamp: "5h ago",
     likes: 56,
-    comments: 8,
-    shares: 2,
-    liked: true,
+    comments: 12,
+    shares: 8,
   },
+  // Add more sample posts as needed
 ];
 
 const Feed = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState(samplePosts);
+  const [activeTab, setActiveTab] = useState("all");
 
-  useEffect(() => {
-    // Simulate loading posts
-    const timer = setTimeout(() => {
-      setPosts(mockPosts);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const handleCreatePost = (content: string) => {
+    const newPost = {
+      id: Date.now().toString(),
+      authorName: "Your Name",
+      authorHandle: "@yourhandle",
+      authorAvatar: "/placeholder.svg",
+      content,
+      timestamp: "Just now",
+      likes: 0,
+      comments: 0,
+      shares: 0,
+    };
+    
+    setPosts([newPost, ...posts]);
+  };
 
   return (
     <div className="container py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          <CreatePostCard />
-          
-          {isLoading ? (
-            // Loading skeleton
-            <>
-              {[1, 2, 3].map((index) => (
-                <div key={index} className="space-y-4 bg-card rounded-lg border p-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="h-10 w-10 rounded-full bg-muted animate-pulse"></div>
-                    <div className="space-y-2">
-                      <div className="h-4 w-32 bg-muted rounded animate-pulse"></div>
-                      <div className="h-3 w-24 bg-muted rounded animate-pulse"></div>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="h-4 w-full bg-muted rounded animate-pulse"></div>
-                    <div className="h-4 w-full bg-muted rounded animate-pulse"></div>
-                    <div className="h-4 w-2/3 bg-muted rounded animate-pulse"></div>
-                  </div>
-                  <div className="h-40 bg-muted rounded animate-pulse"></div>
-                </div>
-              ))}
-            </>
-          ) : (
-            <>
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
-            </>
-          )}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3 space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList>
+              <TabsTrigger value="all">All Posts</TabsTrigger>
+              <TabsTrigger value="following">Following</TabsTrigger>
+              <TabsTrigger value="trending">Trending</TabsTrigger>
+            </TabsList>
+            <TabsContent value="all">
+              <div className="space-y-6 mt-6">
+                <CreatePostCard onSubmit={handleCreatePost} />
+                {posts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </div>
+            </TabsContent>
+            <TabsContent value="following">
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle>Following Feed</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Content from people you follow will appear here.</p>
+                  <Button className="mt-4">Find People to Follow</Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="trending">
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle>Trending Content</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>Popular content trending in your region will appear here.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
         
         <div className="hidden lg:block">
