@@ -1,124 +1,101 @@
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/feed/PostCard";
+import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
+import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
 import FeedSidebar from "@/components/feed/FeedSidebar";
-import CreatePostCard from "@/components/feed/CreatePostCard";
 
 // Define the Post type to match what PostCard expects
-type Post = {
+export type Post = {
   id: string;
-  author: {
-    name: string;
-    handle: string;
-    avatar: string;
-  };
   content: string;
-  createdAt: string;
+  timestamp: string;
   likes: number;
   comments: number;
   shares: number;
+  author: {
+    name: string;
+    username: string; // Added username property
+    handle: string;
+    avatar: string;
+    verified?: boolean;
+  };
 };
 
 // Sample posts data
-const samplePosts = [
+const posts: Post[] = [
   {
     id: "1",
-    author: {
-      name: "John Doe",
-      handle: "@johndoe",
-      avatar: "/placeholder.svg",
-    },
-    content: "Just launched my new website! Check it out and let me know what you think.",
-    createdAt: "2h ago",
+    content: "Just launched our new AI-powered feature! Check it out at softchat.ai/new-features",
+    timestamp: "2h ago",
     likes: 24,
     comments: 5,
     shares: 2,
+    author: {
+      name: "Sarah Johnson",
+      username: "sarahj", // Added username
+      handle: "@sarahj",
+      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+      verified: true,
+    },
   },
   {
     id: "2",
+    content: "Excited to announce that we've raised $5M in seed funding to build the future of social communication! 🚀",
+    timestamp: "5h ago",
+    likes: 142,
+    comments: 36,
+    shares: 28,
     author: {
-      name: "Jane Smith",
-      handle: "@janesmith",
-      avatar: "/placeholder.svg",
+      name: "David Chen",
+      username: "davidc", // Added username
+      handle: "@davidc",
+      avatar: "https://randomuser.me/api/portraits/men/22.jpg",
     },
-    content: "Excited to announce that I'll be speaking at the Web Development Conference next month! #WebDev #Conference",
-    createdAt: "5h ago",
-    likes: 56,
-    comments: 12,
-    shares: 8,
   },
-  // Add more sample posts as needed
+  {
+    id: "3",
+    content: "What are your favorite productivity tools for remote work? I'm looking for recommendations!",
+    timestamp: "8h ago",
+    likes: 56,
+    comments: 43,
+    shares: 5,
+    author: {
+      name: "Alex Rivera",
+      username: "alexr", // Added username
+      handle: "@alexr",
+      avatar: "https://randomuser.me/api/portraits/men/33.jpg",
+    },
+  },
 ];
 
 const Feed = () => {
-  const [posts, setPosts] = useState<Post[]>(samplePosts);
-  const [activeTab, setActiveTab] = useState("all");
-
-  const handleCreatePost = (content: string) => {
-    const newPost: Post = {
-      id: Date.now().toString(),
-      author: {
-        name: "Your Name",
-        handle: "@yourhandle",
-        avatar: "/placeholder.svg",
-      },
-      content,
-      createdAt: "Just now",
-      likes: 0,
-      comments: 0,
-      shares: 0,
-    };
-    
-    setPosts([newPost, ...posts]);
-  };
-
   return (
-    <div className="container py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-3 space-y-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList>
-              <TabsTrigger value="all">All Posts</TabsTrigger>
+    <div className="container max-w-6xl py-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="col-span-1 hidden md:block">
+          <FeedSidebar />
+        </div>
+        <div className="col-span-1 md:col-span-3">
+          <Tabs defaultValue="following" className="mb-6">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="following">Following</TabsTrigger>
-              <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsTrigger value="discover">Discover</TabsTrigger>
             </TabsList>
-            <TabsContent value="all">
-              <div className="space-y-6 mt-6">
-                <CreatePostCard onSubmit={handleCreatePost} />
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))}
-              </div>
+            <TabsContent value="following" className="space-y-4 mt-4">
+              <EnhancedCreatePostCard />
+              {posts.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
             </TabsContent>
-            <TabsContent value="following">
-              <Card className="mt-6">
-                <CardHeader>
-                  <CardTitle>Following Feed</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Content from people you follow will appear here.</p>
-                  <Button className="mt-4">Find People to Follow</Button>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            <TabsContent value="trending">
-              <Card className="mt-6">
-                <CardHeader>
-                  <CardTitle>Trending Content</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Popular content trending in your region will appear here.</p>
-                </CardContent>
-              </Card>
+            <TabsContent value="discover" className="space-y-4 mt-4">
+              <EnhancedCreatePostCard />
+              {posts.map((post) => (
+                <EnhancedPostCard key={post.id} post={post} />
+              ))}
             </TabsContent>
           </Tabs>
-        </div>
-        
-        <div className="hidden lg:block">
-          <FeedSidebar />
         </div>
       </div>
     </div>
