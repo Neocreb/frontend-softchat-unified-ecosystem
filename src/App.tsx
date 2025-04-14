@@ -14,6 +14,8 @@ import Marketplace from "./pages/Marketplace";
 import CryptoMarket from "./pages/CryptoMarket";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserManagement from "./pages/admin/UserManagement";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -28,6 +30,25 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
+  }
+  
+  return <>{children}</>;
+};
+
+// Admin route component
+const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading, isAdmin } = useAuth();
+  
+  if (isLoading) {
+    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  }
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" replace />;
+  }
+  
+  if (!isAdmin()) {
+    return <Navigate to="/" replace />;
   }
   
   return <>{children}</>;
@@ -54,6 +75,19 @@ const AppRoutes = () => {
         <Route path="marketplace" element={<Marketplace />} />
         <Route path="crypto" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
+        
+        {/* Admin Routes */}
+        <Route path="admin/dashboard" element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        } />
+        <Route path="admin/users" element={
+          <AdminRoute>
+            <UserManagement />
+          </AdminRoute>
+        } />
+        {/* Add more admin routes as needed */}
       </Route>
       
       <Route path="*" element={<NotFound />} />

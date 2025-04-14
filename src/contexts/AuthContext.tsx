@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
+export type UserRole = "user" | "admin" | "moderator";
+
 export type User = {
   id: string;
   name: string;
@@ -13,6 +15,7 @@ export type User = {
   level: "bronze" | "silver" | "gold" | "platinum";
   points: number;
   joinDate: string;
+  role?: UserRole;
 };
 
 type AuthContextType = {
@@ -22,6 +25,8 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+  isAdmin: () => boolean;
+  isModerator: () => boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,6 +54,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, []);
 
+  const isAdmin = () => {
+    return user?.role === "admin";
+  };
+
+  const isModerator = () => {
+    return user?.role === "moderator" || user?.role === "admin";
+  };
+
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
@@ -56,7 +69,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await new Promise((resolve) => setTimeout(resolve, 1000));
       
       // Mock login - in a real app, this would validate with a backend
-      if (email === "demo@example.com" && password === "password") {
+      if (email === "admin@example.com" && password === "admin") {
+        // Admin user
+        const mockUser: User = {
+          id: "admin123",
+          name: "Admin User",
+          email: "admin@example.com",
+          username: "admin",
+          avatar: "/placeholder.svg",
+          verified: true,
+          level: "platinum",
+          points: 9999,
+          joinDate: "2025-01-01",
+          role: "admin"
+        };
+        
+        setUser(mockUser);
+        localStorage.setItem("softchat_user", JSON.stringify(mockUser));
+        toast({
+          title: "Admin login successful",
+          description: "Welcome to the admin panel!",
+        });
+        navigate("/");
+      } else if (email === "demo@example.com" && password === "password") {
+        // Regular user
         const mockUser: User = {
           id: "user123",
           name: "John Doe",
@@ -67,6 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           level: "bronze",
           points: 2450,
           joinDate: "2025-01-15",
+          role: "user"
         };
         
         setUser(mockUser);
@@ -111,6 +148,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         level: "bronze",
         points: 100,
         joinDate: new Date().toISOString().split("T")[0],
+        role: "user"
       };
       
       setUser(mockUser);
@@ -150,6 +188,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         register,
         logout,
+        isAdmin,
+        isModerator,
       }}
     >
       {children}

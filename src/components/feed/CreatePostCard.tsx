@@ -6,12 +6,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Image, Link, Smile } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
-const CreatePostCard = () => {
+interface CreatePostCardProps {
+  onSubmit: (content: string, image?: string) => void;
+}
+
+const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
   const [content, setContent] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isPosting, setIsPosting] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const handlePost = () => {
     if (!content.trim()) {
@@ -24,15 +30,17 @@ const CreatePostCard = () => {
 
     setIsPosting(true);
     
-    // Simulate post creation
-    setTimeout(() => {
-      setIsPosting(false);
-      setContent("");
-      toast({
-        title: "Post created!",
-        description: "Your post has been published",
-      });
-    }, 1000);
+    // Call the onSubmit prop
+    onSubmit(content);
+    
+    // Reset state
+    setIsPosting(false);
+    setContent("");
+    
+    toast({
+      title: "Post created!",
+      description: "Your post has been published",
+    });
   };
 
   const handleFileUpload = () => {
@@ -53,8 +61,8 @@ const CreatePostCard = () => {
       <CardContent className="pt-4">
         <div className="flex space-x-3">
           <Avatar>
-            <AvatarImage src="/placeholder.svg" alt="@user" />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "@user"} />
+            <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
             <Textarea
