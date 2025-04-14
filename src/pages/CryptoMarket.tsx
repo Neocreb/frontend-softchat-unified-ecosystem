@@ -7,6 +7,9 @@ import CryptoTradePanel from "@/components/crypto/CryptoTradePanel";
 import CryptoPortfolio from "@/components/crypto/CryptoPortfolio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 export type Crypto = {
   id: string;
@@ -23,6 +26,7 @@ const CryptoMarket = () => {
   const [cryptos, setCryptos] = useState<Crypto[]>([]);
   const [selectedCrypto, setSelectedCrypto] = useState<Crypto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -117,9 +121,25 @@ const CryptoMarket = () => {
     });
   };
 
+  const filteredCryptos = cryptos.filter(crypto => 
+    crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <div className="container py-6 space-y-6">
-      <h1 className="text-2xl font-bold">Cryptocurrency Market</h1>
+    <div className="container py-6 space-y-6 max-w-full">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <h1 className="text-2xl font-bold">Cryptocurrency Market</h1>
+        <div className="relative w-full md:w-64">
+          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search cryptocurrencies"
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
@@ -131,12 +151,19 @@ const CryptoMarket = () => {
                 <CryptoChart crypto={selectedCrypto} />
               )}
               
-              <CryptoList 
-                cryptos={cryptos} 
-                selectedCryptoId={selectedCrypto?.id || ""}
-                onSelectCrypto={handleSelectCrypto}
-                isLoading={isLoading}
-              />
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Market Overview</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <CryptoList 
+                    cryptos={filteredCryptos} 
+                    selectedCryptoId={selectedCrypto?.id || ""}
+                    onSelectCrypto={handleSelectCrypto}
+                    isLoading={isLoading}
+                  />
+                </CardContent>
+              </Card>
             </>
           )}
         </div>

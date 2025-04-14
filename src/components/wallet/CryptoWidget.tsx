@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 type CryptoCurrency = {
   id: string;
@@ -129,24 +130,24 @@ const CryptoWidget = () => {
               key={crypto.id}
               className="flex items-center justify-between p-2 rounded-md hover:bg-muted transition-colors"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-xs font-bold">{crypto.symbol}</span>
+                  <span className="text-xs font-bold">{crypto.symbol.charAt(0)}</span>
                 </div>
-                <div>
-                  <div className="text-sm font-medium">{crypto.name}</div>
+                <div className="min-w-0">
+                  <div className="text-sm font-medium truncate">{crypto.name}</div>
                   <div className="text-xs text-muted-foreground">{crypto.symbol}</div>
                 </div>
               </div>
               
-              <div className="flex-1 px-4">
+              <div className="flex-1 px-4 hidden sm:block">
                 <Sparkline
                   data={crypto.sparkline}
                   color={crypto.change24h >= 0 ? "#22c55e" : "#ef4444"}
                 />
               </div>
               
-              <div className="text-right">
+              <div className="text-right flex-shrink-0">
                 <div className="text-sm font-medium">${crypto.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                 <div className={`text-xs flex items-center justify-end ${
                   crypto.change24h >= 0 ? "text-green-500" : "text-red-500"
@@ -160,7 +161,7 @@ const CryptoWidget = () => {
                 </div>
               </div>
               
-              <Button variant="ghost" size="icon" className="ml-2 h-8 w-8">
+              <Button variant="ghost" size="icon" className="ml-2 h-8 w-8 flex-shrink-0">
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -168,8 +169,8 @@ const CryptoWidget = () => {
         </div>
         
         <div className="pt-2 flex justify-center">
-          <Button variant="outline" size="sm" className="w-full">
-            Go to Crypto Trading
+          <Button variant="outline" size="sm" className="w-full" asChild>
+            <Link to="/crypto">Go to Crypto Trading</Link>
           </Button>
         </div>
       </CardContent>

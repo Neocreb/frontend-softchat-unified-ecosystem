@@ -90,17 +90,17 @@ const CryptoChart = ({ crypto }: CryptoChartProps) => {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-2">
             <img 
               src={crypto.image} 
               alt={crypto.name} 
               className="h-8 w-8 rounded-full"
             />
-            <CardTitle className="text-xl">
+            <CardTitle className="text-xl truncate">
               {crypto.name} ({crypto.symbol.toUpperCase()})
             </CardTitle>
-            <div className="text-2xl font-bold ml-4">
+            <div className="text-2xl font-bold">
               ${crypto.current_price.toLocaleString()}
             </div>
             <div 
@@ -113,12 +113,12 @@ const CryptoChart = ({ crypto }: CryptoChartProps) => {
           </div>
           
           <Tabs value={timeRange} onValueChange={(value) => setTimeRange(value as TimeRange)}>
-            <TabsList>
-              <TabsTrigger value="24h">24H</TabsTrigger>
-              <TabsTrigger value="7d">7D</TabsTrigger>
-              <TabsTrigger value="30d">30D</TabsTrigger>
-              <TabsTrigger value="90d">90D</TabsTrigger>
-              <TabsTrigger value="1y">1Y</TabsTrigger>
+            <TabsList className="grid grid-cols-5 h-8">
+              <TabsTrigger value="24h" className="px-2 py-1 text-xs">24H</TabsTrigger>
+              <TabsTrigger value="7d" className="px-2 py-1 text-xs">7D</TabsTrigger>
+              <TabsTrigger value="30d" className="px-2 py-1 text-xs">30D</TabsTrigger>
+              <TabsTrigger value="90d" className="px-2 py-1 text-xs">90D</TabsTrigger>
+              <TabsTrigger value="1y" className="px-2 py-1 text-xs">1Y</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
