@@ -1,14 +1,17 @@
-
-import { useState } from "react";
-import { useNotification } from "@/hooks/use-notification";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { 
-  MoreHorizontal, Search, Filter, UserPlus, Edit, Trash, Shield, 
-  CheckCircle, XCircle, UserCog 
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { UserPlus, Pencil, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,249 +20,186 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
-type UserStatus = "active" | "pending" | "suspended";
-
-type AdminUser = {
+// Sample user data type
+type User = {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "moderator" | "user";
-  status: UserStatus;
-  verified: boolean;
-  joinDate: string;
-  level: "bronze" | "silver" | "gold" | "platinum";
+  role: string;
+  status: string;
 };
 
-const mockUsers: AdminUser[] = [
+// Sample user data
+const sampleUsers: User[] = [
   {
-    id: "user1",
+    id: "1",
     name: "John Doe",
-    email: "john@example.com",
-    role: "user",
-    status: "active",
-    verified: true,
-    joinDate: "2025-01-15",
-    level: "bronze"
-  },
-  {
-    id: "user2",
-    name: "Sarah Johnson",
-    email: "sarah@example.com",
-    role: "user",
-    status: "active",
-    verified: true,
-    joinDate: "2025-01-20",
-    level: "silver"
-  },
-  {
-    id: "admin1",
-    name: "Admin User",
-    email: "admin@example.com",
+    email: "john.doe@example.com",
     role: "admin",
     status: "active",
-    verified: true,
-    joinDate: "2025-01-01",
-    level: "platinum"
   },
   {
-    id: "mod1",
-    name: "Moderator User",
-    email: "mod@example.com",
-    role: "moderator",
-    status: "active",
-    verified: true,
-    joinDate: "2025-01-10",
-    level: "gold"
+    id: "2",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    role: "user",
+    status: "inactive",
   },
   {
-    id: "user3",
-    name: "Alex Rivera",
-    email: "alex@example.com",
+    id: "3",
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
     role: "user",
     status: "pending",
-    verified: false,
-    joinDate: "2025-02-05",
-    level: "bronze"
   },
   {
-    id: "user4",
-    name: "Jamie Smith",
-    email: "jamie@example.com",
+    id: "4",
+    name: "Bob Williams",
+    email: "bob.williams@example.com",
     role: "user",
     status: "suspended",
-    verified: true,
-    joinDate: "2025-01-25",
-    level: "bronze"
   },
 ];
 
 const UserManagement = () => {
-  const [users, setUsers] = useState<AdminUser[]>(mockUsers);
-  const [searchQuery, setSearchQuery] = useState("");
-  const notification = useNotification();
+  const [users, setUsers] = useState<User[]>(sampleUsers);
+  const [search, setSearch] = useState("");
+  const [roleFilter, setRoleFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const handleDeleteUser = (id: string) => {
-    setUsers(users.filter(user => user.id !== id));
-    notification.success("User deleted successfully");
+  // Filtered users based on search and filters
+  const filteredUsers = users.filter((user) => {
+    const searchMatch = user.name.toLowerCase().includes(search.toLowerCase()) || user.email.toLowerCase().includes(search.toLowerCase());
+    const roleMatch = roleFilter ? user.role === roleFilter : true;
+    const statusMatch = statusFilter ? user.status === statusFilter : true;
+    return searchMatch && roleMatch && statusMatch;
+  });
+
+  // Function to handle user deletion
+  const handleDeleteUser = () => {
+    if (selectedUser) {
+      setUsers(users.filter((user) => user.id !== selectedUser.id));
+      setSelectedUser(null);
+      setIsDeleteDialogOpen(false);
+    }
   };
 
-  const handleVerifyUser = (id: string) => {
-    setUsers(users.map(user => 
-      user.id === id ? { ...user, verified: true } : user
-    ));
-    notification.success("User verified successfully");
+  // Function to handle opening the delete confirmation dialog
+  const openDeleteDialog = (user: User) => {
+    setSelectedUser(user);
+    setIsDeleteDialogOpen(true);
   };
 
-  const handleSuspendUser = (id: string) => {
-    setUsers(users.map(user => 
-      user.id === id ? { ...user, status: "suspended" as UserStatus } : user
-    ));
-    notification.warning("User suspended");
+  // Function to handle closing the delete confirmation dialog
+  const closeDeleteDialog = () => {
+    setSelectedUser(null);
+    setIsDeleteDialogOpen(false);
   };
 
-  const handleActivateUser = (id: string) => {
-    setUsers(users.map(user => 
-      user.id === id ? { ...user, status: "active" as UserStatus } : user
-    ));
-    notification.success("User activated");
-  };
-
-  const handlePromoteToModerator = (id: string) => {
-    setUsers(users.map(user => 
-      user.id === id ? { ...user, role: "moderator" as AdminUser["role"] } : user
-    ));
-    notification.success("User promoted to moderator");
-  };
-
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Function to get status badge based on user status
+  function getStatusBadge(status: string) {
+    switch (status) {
+      case "active":
+        return <Badge variant="secondary">Active</Badge>;
+      case "inactive":
+        return <Badge variant="outline">Inactive</Badge>;
+      case "suspended":
+        return <Badge variant="destructive">Suspended</Badge>;
+      case "pending":
+        return <Badge>Pending</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  }
 
   return (
-    <div className="container py-6 space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="container py-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
         <h1 className="text-2xl font-bold">User Management</h1>
         <Button>
-          <UserPlus className="h-4 w-4 mr-2" />
+          <UserPlus className="mr-2 h-4 w-4" />
           Add User
         </Button>
       </div>
-      
-      <div className="flex gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search users..." 
-            className="pl-9"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <Button variant="outline">
-          <Filter className="h-4 w-4 mr-2" />
-          Filter
-        </Button>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <Input type="text" placeholder="Search users..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Select onValueChange={setRoleFilter}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Filter by role" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All Roles</SelectItem>
+            <SelectItem value="admin">Admin</SelectItem>
+            <SelectItem value="user">User</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select onValueChange={setStatusFilter}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All Statuses</SelectItem>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="inactive">Inactive</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
+            <SelectItem value="suspended">Suspended</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-      
-      <div className="border rounded-md">
+
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead className="w-[200px]">Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Level</TableHead>
-              <TableHead>Joined</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell className="flex items-center gap-2">
-                  {user.name}
-                  {user.verified && <CheckCircle className="h-4 w-4 text-green-500" />}
-                </TableCell>
+                <TableCell className="font-medium">{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <Badge variant={user.role === "admin" ? "destructive" : user.role === "moderator" ? "default" : "outline"}>
-                    {user.role}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge 
-                    variant={
-                      user.status === "active" ? "success" : 
-                      user.status === "pending" ? "warning" : 
-                      "destructive"
-                    }
-                  >
-                    {user.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge 
-                    variant={
-                      user.level === "platinum" ? "outline" : 
-                      user.level === "gold" ? "outline" : 
-                      user.level === "silver" ? "outline" : 
-                      "outline"
-                    }
-                  >
-                    {user.level}
-                  </Badge>
-                </TableCell>
-                <TableCell>{user.joinDate}</TableCell>
+                <TableCell>{user.role}</TableCell>
+                <TableCell>{getStatusBadge(user.status)}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <Pencil className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem onClick={() => notification.info("Edit user profile")}>
-                        <Edit className="h-4 w-4 mr-2" />
+                      <DropdownMenuItem>
+                        <Pencil className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      {!user.verified && (
-                        <DropdownMenuItem onClick={() => handleVerifyUser(user.id)}>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Verify
-                        </DropdownMenuItem>
-                      )}
-                      {user.status === "active" ? (
-                        <DropdownMenuItem onClick={() => handleSuspendUser(user.id)}>
-                          <XCircle className="h-4 w-4 mr-2" />
-                          Suspend
-                        </DropdownMenuItem>
-                      ) : (
-                        <DropdownMenuItem onClick={() => handleActivateUser(user.id)}>
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          Activate
-                        </DropdownMenuItem>
-                      )}
                       <DropdownMenuSeparator />
-                      {user.role === "user" && (
-                        <DropdownMenuItem onClick={() => handlePromoteToModerator(user.id)}>
-                          <Shield className="h-4 w-4 mr-2" />
-                          Make Moderator
-                        </DropdownMenuItem>
-                      )}
-                      <DropdownMenuItem onClick={() => notification.info("Change user permissions")}>
-                        <UserCog className="h-4 w-4 mr-2" />
-                        Permissions
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem 
-                        className="text-destructive focus:text-destructive"
-                        onClick={() => handleDeleteUser(user.id)}
-                      >
-                        <Trash className="h-4 w-4 mr-2" />
+                      <DropdownMenuItem onClick={() => openDeleteDialog(user)}>
+                        <Trash2 className="mr-2 h-4 w-4" />
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -270,6 +210,21 @@ const UserManagement = () => {
           </TableBody>
         </Table>
       </div>
+
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. Are you sure you want to delete <span className="font-medium">{selectedUser?.name}</span>?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={closeDeleteDialog}>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={handleDeleteUser}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

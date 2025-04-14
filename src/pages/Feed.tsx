@@ -7,26 +7,45 @@ import PostCard from "@/components/feed/PostCard";
 import FeedSidebar from "@/components/feed/FeedSidebar";
 import CreatePostCard from "@/components/feed/CreatePostCard";
 
+// Define the Post type to match what PostCard expects
+type Post = {
+  id: string;
+  author: {
+    name: string;
+    handle: string;
+    avatar: string;
+  };
+  content: string;
+  createdAt: string;
+  likes: number;
+  comments: number;
+  shares: number;
+};
+
 // Sample posts data
 const samplePosts = [
   {
     id: "1",
-    authorName: "John Doe",
-    authorHandle: "@johndoe",
-    authorAvatar: "/placeholder.svg",
+    author: {
+      name: "John Doe",
+      handle: "@johndoe",
+      avatar: "/placeholder.svg",
+    },
     content: "Just launched my new website! Check it out and let me know what you think.",
-    timestamp: "2h ago",
+    createdAt: "2h ago",
     likes: 24,
     comments: 5,
     shares: 2,
   },
   {
     id: "2",
-    authorName: "Jane Smith",
-    authorHandle: "@janesmith",
-    authorAvatar: "/placeholder.svg",
+    author: {
+      name: "Jane Smith",
+      handle: "@janesmith",
+      avatar: "/placeholder.svg",
+    },
     content: "Excited to announce that I'll be speaking at the Web Development Conference next month! #WebDev #Conference",
-    timestamp: "5h ago",
+    createdAt: "5h ago",
     likes: 56,
     comments: 12,
     shares: 8,
@@ -35,17 +54,19 @@ const samplePosts = [
 ];
 
 const Feed = () => {
-  const [posts, setPosts] = useState(samplePosts);
+  const [posts, setPosts] = useState<Post[]>(samplePosts);
   const [activeTab, setActiveTab] = useState("all");
 
   const handleCreatePost = (content: string) => {
-    const newPost = {
+    const newPost: Post = {
       id: Date.now().toString(),
-      authorName: "Your Name",
-      authorHandle: "@yourhandle",
-      authorAvatar: "/placeholder.svg",
+      author: {
+        name: "Your Name",
+        handle: "@yourhandle",
+        avatar: "/placeholder.svg",
+      },
       content,
-      timestamp: "Just now",
+      createdAt: "Just now",
       likes: 0,
       comments: 0,
       shares: 0,
