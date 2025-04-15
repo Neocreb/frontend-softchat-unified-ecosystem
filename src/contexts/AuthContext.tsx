@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useNotification } from "@/hooks/use-notification";
 import { ExtendedUser, UserProfile } from "@/types/user";
 import { enhanceUserWithProfile, signIn, signUp, signOut, getCurrentSession } from "@/services/authService";
-import { fetchUserProfile } from "@/services/profileService";
+import { fetchUserProfile, updateUserProfile } from "@/services/profileService";
 import { getAdminRoles, AdminRole } from "@/services/adminService";
 
 interface AuthContextType {
@@ -20,6 +20,7 @@ interface AuthContextType {
   isAdmin: () => boolean;
   getAdminRoles: () => Promise<AdminRole[]>;
   getUserProfile: () => Promise<UserProfile | null>;
+  updateProfile: (data: Partial<UserProfile>) => Promise<UserProfile | null>; // Added this method
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -77,6 +78,38 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const getUserProfile = async (): Promise<UserProfile | null> => {
     if (!user) return null;
     return fetchUserProfile(user.id);
+  };
+
+  // Add updateProfile method
+  const updateProfile = async (profileData: Partial<UserProfile>): Promise<UserProfile | null> => {
+    if (!user) return null;
+    
+    try {
+      const updatedProfile = await updateUserProfile(user.id, profileData);
+      
+      // Update the user state with the new profile data
+      if (updatedProfile) {
+        setUser(prev => {
+          if (!prev) return null;
+          
+          return {
+            ...prev,
+            profile: {
+              ...prev.profile,
+              ...updatedProfile
+            },
+            // Update convenience properties
+            name: updatedProfile.full_name || prev.name,
+            avatar: updatedProfile.avatar_url || prev.avatar
+          };
+        });
+      }
+      
+      return updatedProfile;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      throw error;
+    }
   };
 
   const login = async (email: string, password: string) => {
@@ -150,6 +183,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isAdmin,
         getAdminRoles: fetchAdminRoles,
         getUserProfile,
+        updateProfile, // Add the new method to the context value
       }}
     >
       {children}

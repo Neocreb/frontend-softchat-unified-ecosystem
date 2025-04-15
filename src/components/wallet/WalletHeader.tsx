@@ -1,6 +1,6 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bank } from "lucide-react";
+import { Building } from "lucide-react"; // Changed from Bank to Building which is available
 
 interface WalletHeaderProps {
   activeTab: string;
@@ -27,7 +27,7 @@ const WalletHeader = ({ activeTab, setActiveTab }: WalletHeaderProps) => {
               Transactions
             </TabsTrigger>
             <TabsTrigger value="bank">
-              <Bank className="h-4 w-4 mr-1" />
+              <Building className="h-4 w-4 mr-1" /> {/* Changed from Bank to Building */}
               Bank
             </TabsTrigger>
           </TabsList>
