@@ -1,131 +1,77 @@
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useEffect, useState } from "react";
+import { Session, User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { useNotification } from "@/hooks/use-notification";
 
-export type UserRole = "user" | "admin" | "moderator";
+interface AdminRole {
+  role: 'super_admin' | 'content_admin' | 'user_admin' | 'marketplace_admin' | 'crypto_admin';
+}
 
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  username: string;
-  avatar: string;
-  verified: boolean;
-  level: "bronze" | "silver" | "gold" | "platinum";
-  points: number;
-  joinDate: string;
-  role?: UserRole;
-};
-
-type AuthContextType = {
-  user: User | null;
+interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
+  user: User | null;
+  session: Session | null;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAdmin: () => boolean;
-  isModerator: () => boolean;
-};
+  getAdminRoles: () => Promise<AdminRole[]>;
+}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
-  const navigate = useNavigate();
+  const notify = useNotification();
 
   useEffect(() => {
-    // Check if user is stored in localStorage
-    const storedUser = localStorage.getItem("softchat_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
-  }, []);
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, newSession) => {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        
+        if (event === 'SIGNED_IN') {
+          notify.success('Signed in successfully');
+        } else if (event === 'SIGNED_OUT') {
+          notify.info('Signed out successfully');
+        }
+      }
+    );
 
-  const isAdmin = () => {
-    return user?.role === "admin";
-  };
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
+      setIsLoading(false);
+    });
 
-  const isModerator = () => {
-    return user?.role === "moderator" || user?.role === "admin";
-  };
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [notify]);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       
-      // Mock login - in a real app, this would validate with a backend
-      if (email === "admin@example.com" && password === "admin") {
-        // Admin user
-        const mockUser: User = {
-          id: "admin123",
-          name: "Admin User",
-          email: "admin@example.com",
-          username: "admin",
-          avatar: "/placeholder.svg",
-          verified: true,
-          level: "platinum",
-          points: 9999,
-          joinDate: "2025-01-01",
-          role: "admin"
-        };
-        
-        setUser(mockUser);
-        localStorage.setItem("softchat_user", JSON.stringify(mockUser));
-        toast({
-          title: "Admin login successful",
-          description: "Welcome to the admin panel!",
-        });
-        navigate("/");
-      } else if (email === "demo@example.com" && password === "password") {
-        // Regular user
-        const mockUser: User = {
-          id: "user123",
-          name: "John Doe",
-          email: "demo@example.com",
-          username: "johndoe",
-          avatar: "/placeholder.svg",
-          verified: true,
-          level: "bronze",
-          points: 2450,
-          joinDate: "2025-01-15",
-          role: "user"
-        };
-        
-        setUser(mockUser);
-        localStorage.setItem("softchat_user", JSON.stringify(mockUser));
-        toast({
-          title: "Login successful",
-          description: "Welcome back to Softchat!",
-        });
-        navigate("/");
-      } else {
-        toast({
-          title: "Login failed",
-          description: "Invalid email or password",
-          variant: "destructive",
-        });
+      if (error) {
+        throw error;
       }
-    } catch (error) {
-      toast({
-        title: "Login failed",
-        description: "An error occurred during login",
-        variant: "destructive",
+      
+      // Auth state listener will handle session update
+    } catch (error: any) {
+      notify.error('Login failed', {
+        description: error.message || 'Please check your email and password',
       });
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -134,65 +80,99 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-      // Mock registration
-      const mockUser: User = {
-        id: "user" + Math.floor(Math.random() * 1000),
-        name,
-        email,
-        username: email.split("@")[0],
-        avatar: "/placeholder.svg",
-        verified: false,
-        level: "bronze",
-        points: 100,
-        joinDate: new Date().toISOString().split("T")[0],
-        role: "user"
-      };
-      
-      setUser(mockUser);
-      localStorage.setItem("softchat_user", JSON.stringify(mockUser));
-      toast({
-        title: "Registration successful",
-        description: "Welcome to Softchat!",
+      const { error } = await supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+          data: {
+            full_name: name,
+          }
+        }
       });
-      navigate("/");
-    } catch (error) {
-      toast({
-        title: "Registration failed",
-        description: "An error occurred during registration",
-        variant: "destructive",
+      
+      if (error) {
+        throw error;
+      }
+      
+      notify.success('Registration successful', {
+        description: 'Welcome to Softchat!',
+      });
+      
+      // Auth state listener will handle session update
+    } catch (error: any) {
+      notify.error('Registration failed', {
+        description: error.message || 'Please try again',
+      });
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Auth state listener will handle session update
+    } catch (error: any) {
+      notify.error('Logout failed', {
+        description: error.message,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("softchat_user");
-    toast({
-      title: "Logged out",
-      description: "You have been logged out successfully",
-    });
-    navigate("/auth");
+  const isAdmin = () => {
+    return !!user; // For now, all logged in users are admins until we implement admin role check
+  };
+
+  const getAdminRoles = async (): Promise<AdminRole[]> => {
+    if (!user) return [];
+    
+    try {
+      const { data, error } = await supabase
+        .from('admin_permissions')
+        .select('role')
+        .eq('user_id', user.id);
+        
+      if (error) throw error;
+      
+      return data as AdminRole[];
+    } catch (error) {
+      console.error('Error fetching admin roles:', error);
+      return [];
+    }
   };
 
   return (
     <AuthContext.Provider
       value={{
-        user,
         isAuthenticated: !!user,
         isLoading,
+        user,
+        session,
         login,
         register,
         logout,
         isAdmin,
-        isModerator,
+        getAdminRoles,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };

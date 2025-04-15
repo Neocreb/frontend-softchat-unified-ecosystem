@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -17,7 +16,8 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { useNotification } from "@/hooks/use-notification";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -39,7 +39,9 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const EnhancedAuthForm = () => {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
-  const { login, register, isLoading } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const { login, register: registerUser, isLoading } = useAuth();
+  const notify = useNotification();
 
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -60,11 +62,25 @@ const EnhancedAuthForm = () => {
   });
 
   const handleLoginSubmit = async (values: LoginFormValues) => {
-    await login(values.email, values.password);
+    try {
+      await login(values.email, values.password);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Error is handled in the AuthContext
+    }
   };
 
   const handleRegisterSubmit = async (values: RegisterFormValues) => {
-    await register(values.name, values.email, values.password);
+    try {
+      await registerUser(values.name, values.email, values.password);
+      setActiveTab("login");
+      notify.success("Account created successfully", {
+        description: "You can now log in with your credentials",
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      // Error is handled in the AuthContext
+    }
   };
 
   return (
@@ -92,7 +108,14 @@ const EnhancedAuthForm = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your email" {...field} />
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="you@example.com" 
+                            className="pl-10" 
+                            {...field} 
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -105,7 +128,28 @@ const EnhancedAuthForm = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="Enter your password" {...field} />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            type={showPassword ? "text" : "password"} 
+                            placeholder="Enter your password" 
+                            className="pl-10 pr-10" 
+                            {...field} 
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-10 w-10"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -126,7 +170,7 @@ const EnhancedAuthForm = () => {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
-              <span>Demo account: demo@example.com / password</span>
+              <span>Demo account: demo@example.com / password123</span>
             </div>
           </CardFooter>
         </TabsContent>
@@ -148,7 +192,14 @@ const EnhancedAuthForm = () => {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your full name" {...field} />
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="Enter your full name" 
+                            className="pl-10" 
+                            {...field} 
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -161,7 +212,14 @@ const EnhancedAuthForm = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter your email" {...field} />
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            placeholder="Enter your email" 
+                            className="pl-10" 
+                            {...field} 
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -174,7 +232,28 @@ const EnhancedAuthForm = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="Create a password" {...field} />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            type={showPassword ? "text" : "password"} 
+                            placeholder="Create a password" 
+                            className="pl-10 pr-10" 
+                            {...field} 
+                          />
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="absolute right-0 top-0 h-10 w-10"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -187,7 +266,15 @@ const EnhancedAuthForm = () => {
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="Confirm your password" {...field} />
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input 
+                            type={showPassword ? "text" : "password"} 
+                            placeholder="Confirm your password" 
+                            className="pl-10 pr-10" 
+                            {...field} 
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
