@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -73,10 +72,12 @@ const EnhancedAuthForm = () => {
   const handleRegisterSubmit = async (values: RegisterFormValues) => {
     try {
       await registerUser(values.name, values.email, values.password);
-      setActiveTab("login");
-      notify.success("Account created successfully", {
-        description: "You can now log in with your credentials",
+      
+      notify.success("Registration successful", {
+        description: "Welcome to Softchat!",
       });
+      
+      setActiveTab("login");
     } catch (error) {
       console.error("Registration error:", error);
       // Error is handled in the AuthContext
@@ -170,7 +171,7 @@ const EnhancedAuthForm = () => {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
-              <span>Demo account: demo@example.com / password123</span>
+              <span>Demo account: demo@softchat.com / password123</span>
             </div>
           </CardFooter>
         </TabsContent>
