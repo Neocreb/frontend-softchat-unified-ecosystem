@@ -1,14 +1,13 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { Session, User } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useNotification } from "@/hooks/use-notification";
 import { ExtendedUser, UserProfile } from "@/types/user";
-
-interface AdminRole {
-  role: 'super_admin' | 'content_admin' | 'user_admin' | 'marketplace_admin' | 'crypto_admin';
-}
+import { enhanceUserWithProfile, signIn, signUp, signOut, getCurrentSession } from "@/services/authService";
+import { fetchUserProfile } from "@/services/profileService";
+import { getAdminRoles, AdminRole } from "@/services/adminService";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -31,97 +30,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<ExtendedUser | null>(null);
   const { toast } = useToast();
   const notify = useNotification();
-
-  // Function to fetch user profile from the profiles table
-  const fetchUserProfile = async (userId: string) => {
-    try {
-      // Using any to bypass TypeScript issues with Supabase types
-      const { data: profile, error } = await (supabase as any)
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        console.error("Error fetching user profile:", error);
-        return null;
-      }
-
-      return profile as UserProfile;
-    } catch (error) {
-      console.error("Error in fetchUserProfile:", error);
-      return null;
-    }
-  };
-
-  // Helper function to get points and level for the user
-  const getUserPointsAndLevel = async (userId: string) => {
-    try {
-      // Using any to bypass TypeScript issues with Supabase types
-      const { data: rewardPoints, error: pointsError } = await (supabase as any).rpc('get_user_points', { user_uuid: userId });
-      
-      if (pointsError) {
-        console.error("Error fetching user points:", pointsError);
-        return { points: 0, level: 'bronze' };
-      }
-
-      // Get tier thresholds
-      const { data: tierSettings, error: settingsError } = await (supabase as any)
-        .from('app_settings')
-        .select('value')
-        .eq('key', 'loyalty_tiers')
-        .single();
-
-      if (settingsError) {
-        console.error("Error fetching tier settings:", settingsError);
-        return { points: rewardPoints || 0, level: 'bronze' };
-      }
-
-      const tiers = tierSettings?.value as Record<string, number>;
-      
-      // Determine user level based on points
-      let level = 'bronze';
-      if (rewardPoints && tiers) {
-        if (rewardPoints >= tiers.platinum) {
-          level = 'platinum';
-        } else if (rewardPoints >= tiers.gold) {
-          level = 'gold';
-        } else if (rewardPoints >= tiers.silver) {
-          level = 'silver';
-        }
-      }
-
-      return { points: rewardPoints || 0, level };
-    } catch (error) {
-      console.error("Error in getUserPointsAndLevel:", error);
-      return { points: 0, level: 'bronze' };
-    }
-  };
-
-  // Function to enhance the user object with profile data
-  const enhanceUserWithProfile = async (supabaseUser: User | null): Promise<ExtendedUser | null> => {
-    if (!supabaseUser) return null;
-
-    try {
-      const profile = await fetchUserProfile(supabaseUser.id);
-      const { points, level } = await getUserPointsAndLevel(supabaseUser.id);
-
-      const enhancedUser: ExtendedUser = {
-        ...supabaseUser,
-        profile,
-        // Add convenience properties
-        name: profile?.full_name || supabaseUser.email?.split('@')[0] || 'User',
-        avatar: profile?.avatar_url || '/placeholder.svg',
-        points,
-        level
-      };
-
-      return enhancedUser;
-    } catch (error) {
-      console.error("Error enhancing user:", error);
-      return supabaseUser as ExtendedUser;
-    }
-  };
 
   useEffect(() => {
     // Set up auth state listener
@@ -148,7 +56,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
+    getCurrentSession().then(async (currentSession) => {
       setSession(currentSession);
       
       if (currentSession?.user) {
@@ -174,12 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      
-      if (error) {
-        throw error;
-      }
-      
+      await signIn(email, password);
       // Auth state listener will handle session update
     } catch (error: any) {
       notify.error('Login failed', {
@@ -194,19 +97,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signUp({ 
-        email, 
-        password,
-        options: {
-          data: {
-            full_name: name,
-          }
-        }
-      });
-      
-      if (error) {
-        throw error;
-      }
+      await signUp(name, email, password);
       
       notify.success('Registration successful', {
         description: 'Welcome to Softchat!',
@@ -226,12 +117,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        throw error;
-      }
-      
+      await signOut();
       // Auth state listener will handle session update
     } catch (error: any) {
       notify.error('Logout failed', {
@@ -246,23 +132,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return !!user; // For now, all logged in users are admins until we implement admin role check
   };
 
-  const getAdminRoles = async (): Promise<AdminRole[]> => {
+  const fetchAdminRoles = async (): Promise<AdminRole[]> => {
     if (!user) return [];
-    
-    try {
-      // Using any to bypass TypeScript issues with Supabase types
-      const { data, error } = await (supabase as any)
-        .from('admin_permissions')
-        .select('role')
-        .eq('user_id', user.id);
-        
-      if (error) throw error;
-      
-      return data as AdminRole[];
-    } catch (error) {
-      console.error('Error fetching admin roles:', error);
-      return [];
-    }
+    return getAdminRoles(user.id);
   };
 
   return (
@@ -276,7 +148,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         register,
         logout,
         isAdmin,
-        getAdminRoles,
+        getAdminRoles: fetchAdminRoles,
         getUserProfile,
       }}
     >
