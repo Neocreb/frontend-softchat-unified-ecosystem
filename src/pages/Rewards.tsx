@@ -9,6 +9,7 @@ import RewardsOverview from "@/components/rewards/RewardsOverview";
 import EarnPoints from "@/components/rewards/EarnPoints";
 import RedeemRewards from "@/components/rewards/RedeemRewards";
 import RewardsHistory from "@/components/rewards/RewardsHistory";
+import { UserLevel } from "@/types/user";
 
 const Rewards = () => {
   const { user } = useAuth();
@@ -19,7 +20,7 @@ const Rewards = () => {
   
   // Use default values if points/level are not available yet
   const userPoints = user.points || 0;
-  const userLevel = user.level || 'bronze';
+  const userLevel = (user.level as UserLevel) || 'bronze';
   
   const { currentLevel, nextLevel, progress } = calculateNextLevelProgress(userPoints);
   const availableRewards = getAvailableRewards(userLevel);

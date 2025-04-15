@@ -1,6 +1,9 @@
 
 import { User as SupabaseUser } from "@supabase/supabase-js";
 
+// Define the user level type
+export type UserLevel = 'bronze' | 'silver' | 'gold' | 'platinum';
+
 // Extended user type that includes profile data
 export interface UserProfile {
   id: string;
@@ -18,7 +21,7 @@ export interface UserProfile {
   created_at?: string;
   updated_at?: string;
   points?: number;
-  level?: string;
+  level?: UserLevel;
 }
 
 // Combined user type with auth and profile data
@@ -28,5 +31,5 @@ export interface ExtendedUser extends SupabaseUser {
   name?: string;
   avatar?: string;
   points?: number;
-  level?: string;
+  level?: UserLevel;
 }
