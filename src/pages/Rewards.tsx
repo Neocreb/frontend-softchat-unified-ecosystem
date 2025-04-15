@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
@@ -17,8 +17,12 @@ const Rewards = () => {
   
   if (!user) return null;
   
-  const { currentLevel, nextLevel, progress } = calculateNextLevelProgress(user.points);
-  const availableRewards = getAvailableRewards(user.level);
+  // Use default values if points/level are not available yet
+  const userPoints = user.points || 0;
+  const userLevel = user.level || 'bronze';
+  
+  const { currentLevel, nextLevel, progress } = calculateNextLevelProgress(userPoints);
+  const availableRewards = getAvailableRewards(userLevel);
   const levelColors = {
     bronze: "bg-orange-600",
     silver: "bg-slate-400",
@@ -47,7 +51,7 @@ const Rewards = () => {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsContent value="overview" className="mt-0">
           <RewardsOverview 
-            user={user}
+            user={{ ...user, points: userPoints, level: userLevel }}
             currentLevel={currentLevel}
             nextLevel={nextLevel}
             progress={progress}
@@ -63,7 +67,7 @@ const Rewards = () => {
         
         <TabsContent value="redeem" className="mt-0">
           <RedeemRewards 
-            user={user}
+            user={{ ...user, points: userPoints }}
             availableRewards={availableRewards}
             redeemReward={redeemReward}
           />

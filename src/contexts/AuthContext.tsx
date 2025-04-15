@@ -4,6 +4,7 @@ import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useNotification } from "@/hooks/use-notification";
+import { ExtendedUser, UserProfile } from "@/types/user";
 
 interface AdminRole {
   role: 'super_admin' | 'content_admin' | 'user_admin' | 'marketplace_admin' | 'crypto_admin';
@@ -12,13 +13,14 @@ interface AdminRole {
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user: User | null;
+  user: ExtendedUser | null;
   session: Session | null;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isAdmin: () => boolean;
   getAdminRoles: () => Promise<AdminRole[]>;
+  getUserProfile: () => Promise<UserProfile | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,16 +28,112 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
   const { toast } = useToast();
   const notify = useNotification();
+
+  // Function to fetch user profile from the profiles table
+  const fetchUserProfile = async (userId: string) => {
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching user profile:", error);
+        return null;
+      }
+
+      return profile as UserProfile;
+    } catch (error) {
+      console.error("Error in fetchUserProfile:", error);
+      return null;
+    }
+  };
+
+  // Helper function to get points and level for the user
+  const getUserPointsAndLevel = async (userId: string) => {
+    try {
+      const { data: rewardPoints, error: pointsError } = await supabase.rpc('get_user_points', { user_uuid: userId });
+      
+      if (pointsError) {
+        console.error("Error fetching user points:", pointsError);
+        return { points: 0, level: 'bronze' };
+      }
+
+      // Get tier thresholds
+      const { data: tierSettings, error: settingsError } = await supabase
+        .from('app_settings')
+        .select('value')
+        .eq('key', 'loyalty_tiers')
+        .single();
+
+      if (settingsError) {
+        console.error("Error fetching tier settings:", settingsError);
+        return { points: rewardPoints || 0, level: 'bronze' };
+      }
+
+      const tiers = tierSettings.value as Record<string, number>;
+      
+      // Determine user level based on points
+      let level = 'bronze';
+      if (rewardPoints >= tiers.platinum) {
+        level = 'platinum';
+      } else if (rewardPoints >= tiers.gold) {
+        level = 'gold';
+      } else if (rewardPoints >= tiers.silver) {
+        level = 'silver';
+      }
+
+      return { points: rewardPoints || 0, level };
+    } catch (error) {
+      console.error("Error in getUserPointsAndLevel:", error);
+      return { points: 0, level: 'bronze' };
+    }
+  };
+
+  // Function to enhance the user object with profile data
+  const enhanceUserWithProfile = async (supabaseUser: User | null): Promise<ExtendedUser | null> => {
+    if (!supabaseUser) return null;
+
+    try {
+      const profile = await fetchUserProfile(supabaseUser.id);
+      const { points, level } = await getUserPointsAndLevel(supabaseUser.id);
+
+      const enhancedUser: ExtendedUser = {
+        ...supabaseUser,
+        profile,
+        // Add convenience properties
+        name: profile?.full_name || supabaseUser.email?.split('@')[0] || 'User',
+        avatar: profile?.avatar_url || '/placeholder.svg',
+        points,
+        level
+      };
+
+      return enhancedUser;
+    } catch (error) {
+      console.error("Error enhancing user:", error);
+      return supabaseUser as ExtendedUser;
+    }
+  };
 
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
+      async (event, newSession) => {
         setSession(newSession);
-        setUser(newSession?.user ?? null);
+        
+        // Use setTimeout to avoid potential deadlock with Supabase auth
+        if (newSession?.user) {
+          setTimeout(async () => {
+            const enhancedUser = await enhanceUserWithProfile(newSession.user);
+            setUser(enhancedUser);
+          }, 0);
+        } else {
+          setUser(null);
+        }
         
         if (event === 'SIGNED_IN') {
           notify.success('Signed in successfully');
@@ -46,9 +144,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     // Check for existing session
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
       setSession(currentSession);
-      setUser(currentSession?.user ?? null);
+      
+      if (currentSession?.user) {
+        const enhancedUser = await enhanceUserWithProfile(currentSession.user);
+        setUser(enhancedUser);
+      } else {
+        setUser(null);
+      }
+      
       setIsLoading(false);
     });
 
@@ -56,6 +161,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       subscription.unsubscribe();
     };
   }, [notify]);
+
+  const getUserProfile = async (): Promise<UserProfile | null> => {
+    if (!user) return null;
+    return fetchUserProfile(user.id);
+  };
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
@@ -162,6 +272,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout,
         isAdmin,
         getAdminRoles,
+        getUserProfile,
       }}
     >
       {children}
