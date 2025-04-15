@@ -24,6 +24,29 @@ export const fetchUserProfile = async (userId: string): Promise<UserProfile | nu
   }
 };
 
+// Function to update user profile data
+export const updateUserProfile = async (userId: string, profileData: Partial<UserProfile>): Promise<UserProfile | null> => {
+  try {
+    // Using any to bypass TypeScript issues with Supabase types
+    const { data, error } = await (supabase as any)
+      .from('profiles')
+      .update(profileData)
+      .eq('id', userId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error updating user profile:", error);
+      throw error;
+    }
+
+    return data as UserProfile;
+  } catch (error) {
+    console.error("Error in updateUserProfile:", error);
+    throw error;
+  }
+};
+
 // Helper function to get points and level for the user
 export const getUserPointsAndLevel = async (userId: string): Promise<{ points: number; level: UserLevel }> => {
   try {

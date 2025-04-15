@@ -1,8 +1,8 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { ExtendedUser } from "@/types/user";
-import { fetchUserProfile, getUserPointsAndLevel } from "./profileService";
+import { ExtendedUser, UserProfile } from "@/types/user";
+import { fetchUserProfile, getUserPointsAndLevel, updateUserProfile } from "./profileService";
 
 // Function to enhance the user object with profile data
 export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise<ExtendedUser | null> => {
@@ -26,6 +26,16 @@ export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise
   } catch (error) {
     console.error("Error enhancing user:", error);
     return supabaseUser as ExtendedUser;
+  }
+};
+
+// Function to update user profile
+export const updateUserProfileData = async (userId: string, profileData: Partial<UserProfile>): Promise<UserProfile | null> => {
+  try {
+    return await updateUserProfile(userId, profileData);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    throw error;
   }
 };
 

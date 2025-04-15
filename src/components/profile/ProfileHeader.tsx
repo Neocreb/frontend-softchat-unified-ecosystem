@@ -1,167 +1,111 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Calendar, MapPin, Link, Edit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, MessageCircle, User, Settings, Shield, ChevronRight } from "lucide-react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState } from "react";
+import EditProfileModal from "./EditProfileModal";
 
 const ProfileHeader = () => {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
-  const handleFollowToggle = () => {
-    setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsFollowing(!isFollowing);
-      setIsLoading(false);
-      
-      toast({
-        title: isFollowing ? "Unfollowed" : "Followed",
-        description: isFollowing 
-          ? "You are no longer following this user" 
-          : "You are now following this user",
-      });
-    }, 1000);
-  };
+  const { user } = useAuth();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   return (
     <div className="space-y-6">
-      <div className="relative">
-        {/* Cover Image */}
-        <div className="h-48 w-full bg-gradient-to-r from-softchat-primary via-softchat-secondary to-softchat-accent rounded-lg overflow-hidden">
-          <div className="absolute bottom-4 right-4">
-            <Button variant="secondary" size="sm" className="bg-white/20 backdrop-blur-md border-white/20 text-white">
-              <Settings className="mr-2 h-4 w-4" />
-              Edit Profile
-            </Button>
-          </div>
-        </div>
+      {/* Cover Image */}
+      <div className="h-40 md:h-60 bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl overflow-hidden relative">
+        <img
+          src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1920&auto=format&fit=crop"
+          alt="Cover"
+          className="w-full h-full object-cover opacity-75"
+        />
         
-        {/* Profile Details */}
-        <div className="sm:flex sm:items-end sm:space-x-5 px-4 sm:px-6">
-          <div className="relative -mt-12 sm:-mt-16 flex">
-            <Avatar className="h-24 w-24 ring-4 ring-white sm:h-32 sm:w-32">
-              <AvatarImage src="/placeholder.svg" alt="John Doe" />
-              <AvatarFallback className="text-lg">JD</AvatarFallback>
-            </Avatar>
+        {/* Edit Profile Button */}
+        <Button 
+          variant="secondary" 
+          size="sm" 
+          className="absolute top-4 right-4"
+          onClick={() => setIsEditModalOpen(true)}
+        >
+          <Edit className="h-4 w-4 mr-1" />
+          Edit Profile
+        </Button>
+      </div>
+      
+      {/* Profile Info */}
+      <div className="flex flex-col md:flex-row gap-4 items-start">
+        <Avatar className="h-24 w-24 border-4 border-background relative -mt-12 md:-mt-16 ml-4">
+          <AvatarImage src={user?.profile?.avatar_url || "/placeholder.svg"} alt={user?.profile?.full_name || "User"} />
+          <AvatarFallback className="text-2xl font-bold">
+            {user?.profile?.full_name?.substring(0, 2).toUpperCase() || "U"}
+          </AvatarFallback>
+          
+          {user?.profile?.is_verified && (
+            <div className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-1 border-2 border-background">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+          )}
+          
+          {user?.level && (
+            <Badge variant="outline" className="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white border-2 border-background">
+              {user.level}
+            </Badge>
+          )}
+        </Avatar>
+        
+        <div className="flex-1 space-y-3 md:space-y-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+              {user?.profile?.full_name || "User"}
+              {user?.profile?.is_verified && (
+                <Badge variant="outline" className="bg-blue-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </Badge>
+              )}
+            </h1>
+            <p className="text-muted-foreground">@{user?.profile?.username || user?.email?.split('@')[0]}</p>
           </div>
           
-          <div className="mt-4 sm:mt-0 sm:flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <div className="flex items-center">
-                <h1 className="text-xl font-bold">John Doe</h1>
-                <Badge variant="default" className="ml-2 px-1.5 py-0.5 bg-softchat-primary hover:bg-softchat-primary/90">
-                  <Shield className="mr-1 h-3 w-3" />
-                  Verified
-                </Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">@johndoe</p>
-              
-              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                <div className="flex items-center">
-                  <MapPin className="mr-1 h-4 w-4" />
-                  New York, USA
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  Joined April 2023
-                </div>
-              </div>
-              
-              <div className="mt-3 flex space-x-4">
-                <div>
-                  <span className="font-semibold">1,248</span>{" "}
-                  <span className="text-muted-foreground">Posts</span>
-                </div>
-                <div>
-                  <span className="font-semibold">4,519</span>{" "}
-                  <span className="text-muted-foreground">Followers</span>
-                </div>
-                <div>
-                  <span className="font-semibold">892</span>{" "}
-                  <span className="text-muted-foreground">Following</span>
-                </div>
-              </div>
+          <p className="md:text-lg">
+            {user?.profile?.bio || "No bio yet."}
+          </p>
+          
+          <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <MapPin className="h-4 w-4" />
+              <span>San Francisco, CA</span>
             </div>
-            
-            <div className="mt-4 sm:mt-0 flex space-x-2">
-              <Button 
-                onClick={handleFollowToggle}
-                disabled={isLoading}
-                variant={isFollowing ? "outline" : "default"}
-              >
-                {isLoading ? "Loading..." : isFollowing ? "Following" : "Follow"}
-              </Button>
-              <Button variant="outline">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Message
-              </Button>
+            <div className="flex items-center gap-1">
+              <Link className="h-4 w-4" />
+              <a href="#" className="hover:underline text-blue-500">softchat.io/profile</a>
+            </div>
+            <div className="flex items-center gap-1">
+              <Calendar className="h-4 w-4" />
+              <span>Joined April 2023</span>
+            </div>
+          </div>
+          
+          <div className="flex gap-6">
+            <div>
+              <span className="font-bold">256</span> <span className="text-muted-foreground">Following</span>
+            </div>
+            <div>
+              <span className="font-bold">4.2K</span> <span className="text-muted-foreground">Followers</span>
+            </div>
+            <div>
+              <span className="font-bold">{user?.points || 0}</span> <span className="text-muted-foreground">Points</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div className="px-4 sm:px-6">
-        <p className="text-sm">
-          Full-stack developer passionate about creating amazing user experiences.
-          Cryptocurrency enthusiast and early Web3 adopter. Love to travel and discover new places.
-        </p>
-      </div>
-      
-      <Card>
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-softchat-primary to-softchat-accent flex items-center justify-center">
-                <User className="h-5 w-5 text-white" />
-              </div>
-              <div className="ml-4">
-                <div className="text-sm font-medium">Bronze Level</div>
-                <div className="text-xs text-muted-foreground">2,450 / 5,000 points</div>
-              </div>
-            </div>
-            <Button variant="ghost" size="sm" className="gap-1">
-              View Rewards
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="mt-3 h-2 w-full rounded-full bg-muted">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-softchat-primary to-softchat-accent"
-              style={{ width: "49%" }}
-            ></div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Tabs defaultValue="posts">
-        <TabsList className="w-full justify-start border-b rounded-none h-auto p-0">
-          <TabsTrigger
-            value="posts"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none py-3 px-4"
-          >
-            Posts
-          </TabsTrigger>
-          <TabsTrigger
-            value="marketplace"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none py-3 px-4"
-          >
-            Marketplace
-          </TabsTrigger>
-          <TabsTrigger
-            value="crypto"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none py-3 px-4"
-          >
-            Crypto
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      {/* Edit Profile Modal */}
+      <EditProfileModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} />
     </div>
   );
 };

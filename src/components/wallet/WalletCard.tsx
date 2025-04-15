@@ -1,120 +1,144 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Wallet, ArrowDown, ArrowUp, Plus, TrendingUp } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+interface Contact {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+}
 
 const WalletCard = () => {
-  const [balance, setBalance] = useState(2450.75);
-  const [isLoading, setIsLoading] = useState(false);
+  const [balance, setBalance] = useState(17034.81);
+  const [activeTab, setActiveTab] = useState("coins");
   const { toast } = useToast();
 
-  const handleAddFunds = () => {
-    setIsLoading(true);
-    
-    // Simulate adding funds
-    setTimeout(() => {
-      setBalance(prev => prev + 100);
-      setIsLoading(false);
-      toast({
-        title: "Funds added",
-        description: "$100.00 has been added to your wallet",
-      });
-    }, 1500);
+  // Mock contacts data
+  const contacts: Contact[] = [
+    { id: "1", name: "John Doe", username: "mysteriox", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
+    { id: "2", name: "Alicia Smith", username: "aliciasmith", avatar: "https://randomuser.me/api/portraits/women/44.jpg" },
+    { id: "3", name: "Raj Patel", username: "mysterxxx", avatar: "https://randomuser.me/api/portraits/men/68.jpg" },
+    { id: "4", name: "Sarah Chen", username: "thesemper", avatar: "https://randomuser.me/api/portraits/women/33.jpg" },
+    { id: "5", name: "Jonathan Miller", username: "jona", avatar: "https://randomuser.me/api/portraits/men/41.jpg" },
+  ];
+
+  const handleSend = () => {
+    toast({
+      title: "Send money",
+      description: "Choose a contact to send money to",
+    });
+  };
+
+  const handleReceive = () => {
+    toast({
+      title: "Receive money",
+      description: "Your wallet address has been copied to clipboard",
+    });
+  };
+
+  const handleWithdraw = () => {
+    toast({
+      title: "Withdrawal initiated",
+      description: "Your funds will be transferred to your bank account",
+    });
   };
 
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-3 bg-gradient-to-r from-softchat-primary to-softchat-accent text-white">
-        <CardTitle className="flex items-center gap-2">
-          <Wallet className="h-5 w-5" />
-          Your Wallet
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="flex justify-between items-center mb-5">
-          <div>
-            <div className="text-sm text-muted-foreground">Total Balance</div>
-            <div className="text-3xl font-bold">${balance.toFixed(2)}</div>
+    <Card className="overflow-hidden bg-gradient-to-b from-white to-blue-50 border-0 shadow-lg">
+      <CardContent className="p-6 space-y-6">
+        {/* Balance Section */}
+        <div className="text-center space-y-2">
+          <div className="text-sm text-gray-500 flex items-center justify-center gap-1">
+            Balance 
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
+              <path d="M12 8V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M8 12L16 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
           </div>
-          <Button onClick={handleAddFunds} disabled={isLoading}>
-            {isLoading ? "Processing..." : (
-              <>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Funds
-              </>
-            )}
+          <div className="text-5xl font-bold">${balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="grid grid-cols-2 gap-4">
+          <Button 
+            onClick={handleSend} 
+            className="bg-blue-500 hover:bg-blue-600 text-white py-6 rounded-xl flex items-center justify-center gap-2"
+          >
+            <ArrowUp className="h-5 w-5" />
+            <span className="text-lg">Send</span>
+          </Button>
+          <Button 
+            onClick={handleReceive} 
+            variant="outline" 
+            className="bg-white border-gray-200 py-6 rounded-xl flex items-center justify-center gap-2"
+          >
+            <ArrowDown className="h-5 w-5" />
+            <span className="text-lg">Receive</span>
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="rounded-lg border p-3">
-            <div className="text-sm text-muted-foreground mb-1">Rewards</div>
-            <div className="text-lg font-semibold">$120.50</div>
+        {/* Contacts Section */}
+        <div>
+          <div className="flex justify-between items-center mb-4">
+            <div className="text-lg font-medium">Contacts</div>
+            <Button variant="link" className="text-blue-500 p-0">view all</Button>
           </div>
-          <div className="rounded-lg border p-3">
-            <div className="text-sm text-muted-foreground mb-1">Marketplace</div>
-            <div className="text-lg font-semibold">$830.25</div>
-          </div>
-          <div className="rounded-lg border p-3">
-            <div className="text-sm text-muted-foreground mb-1">Crypto Profit</div>
-            <div className="text-lg font-semibold text-green-500">+$1,500.00</div>
+          <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+            {contacts.map((contact) => (
+              <div key={contact.id} className="flex flex-col items-center min-w-[80px]">
+                <Avatar className="h-16 w-16 rounded-full border-2 border-white shadow">
+                  <AvatarImage src={contact.avatar} alt={contact.name} />
+                  <AvatarFallback>{contact.name.substring(0, 2)}</AvatarFallback>
+                </Avatar>
+                <span className="text-sm text-gray-500 mt-1">@{contact.username}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex justify-between items-center border-b pb-4">
-            <div className="text-sm font-medium">Recent Transactions</div>
-            <Button variant="link" size="sm" className="h-auto p-0">
-              View All
-            </Button>
-          </div>
-
-          {[
-            {
-              type: "deposit",
-              description: "Crypto Trade Profit",
-              amount: 245.75,
-              date: "Apr 12, 2025",
-              icon: TrendingUp,
-            },
-            {
-              type: "withdrawal",
-              description: "Marketplace Purchase",
-              amount: -120.00,
-              date: "Apr 10, 2025",
-              icon: ArrowUp,
-            },
-            {
-              type: "deposit",
-              description: "Rewards Redemption",
-              amount: 35.50,
-              date: "Apr 8, 2025",
-              icon: ArrowDown,
-            },
-          ].map((transaction, index) => (
-            <div key={index} className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                  transaction.type === "deposit" ? "bg-green-100" : "bg-red-100"
-                }`}>
-                  <transaction.icon className={`h-4 w-4 ${
-                    transaction.type === "deposit" ? "text-green-600" : "text-red-600"
-                  }`} />
-                </div>
-                <div>
-                  <div className="text-sm font-medium">{transaction.description}</div>
-                  <div className="text-xs text-muted-foreground">{transaction.date}</div>
-                </div>
+        {/* Tabs Navigation */}
+        <div>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="w-full bg-transparent border-b justify-start gap-6 h-auto pb-2">
+              <TabsTrigger 
+                value="coins" 
+                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:text-black data-[state=active]:shadow-none px-0 pb-2 ${activeTab === 'coins' ? 'text-black' : 'text-gray-400'}`}
+              >
+                Coins
+              </TabsTrigger>
+              <TabsTrigger 
+                value="nfts" 
+                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:text-black data-[state=active]:shadow-none px-0 pb-2 ${activeTab === 'nfts' ? 'text-black' : 'text-gray-400'}`}
+              >
+                NFTs
+              </TabsTrigger>
+              <TabsTrigger 
+                value="dapps" 
+                className={`text-lg font-medium data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:text-black data-[state=active]:shadow-none px-0 pb-2 ${activeTab === 'dapps' ? 'text-black' : 'text-gray-400'}`}
+              >
+                dApps
+              </TabsTrigger>
+              <div className="ml-auto">
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <Search className="h-5 w-5" />
+                </Button>
               </div>
-              <div className={`font-medium ${
-                transaction.type === "deposit" ? "text-green-600" : "text-red-600"
-              }`}>
-                {transaction.type === "deposit" ? "+" : ""}{transaction.amount.toFixed(2)}
-              </div>
-            </div>
-          ))}
+            </TabsList>
+          </Tabs>
+        </div>
+        
+        {/* Bank Withdrawal Section */}
+        <div className="mt-4 border-t pt-4">
+          <Button onClick={handleWithdraw} className="w-full bg-green-500 hover:bg-green-600">
+            Withdraw to Bank Account
+          </Button>
         </div>
       </CardContent>
     </Card>

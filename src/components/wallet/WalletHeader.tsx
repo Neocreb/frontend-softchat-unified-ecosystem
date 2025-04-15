@@ -1,5 +1,6 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Bank } from "lucide-react";
 
 interface WalletHeaderProps {
   activeTab: string;
@@ -24,6 +25,10 @@ const WalletHeader = ({ activeTab, setActiveTab }: WalletHeaderProps) => {
             </TabsTrigger>
             <TabsTrigger value="transactions">
               Transactions
+            </TabsTrigger>
+            <TabsTrigger value="bank">
+              <Bank className="h-4 w-4 mr-1" />
+              Bank
             </TabsTrigger>
           </TabsList>
         </Tabs>
