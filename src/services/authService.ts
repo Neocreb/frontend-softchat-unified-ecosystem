@@ -19,7 +19,8 @@ export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise
       name: profile?.full_name || supabaseUser.email?.split('@')[0] || 'User',
       avatar: profile?.avatar_url || '/placeholder.svg',
       points,
-      level
+      level,
+      role: profile?.role || 'user',
     };
 
     return enhancedUser;

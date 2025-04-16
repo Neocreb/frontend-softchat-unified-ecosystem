@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Post } from "@/components/feed/PostCard";
 import CreatePostCard from "@/components/feed/CreatePostCard";
@@ -7,12 +6,9 @@ import { useNotification } from "@/hooks/use-notification";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import FooterNav from "@/components/layout/FooterNav";
 import { useAuth } from "@/contexts/AuthContext";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import { PostComment } from "@/types/user";
 
-// Mock post comments
 const mockComments: PostComment[] = [
   {
     id: "1",
@@ -106,7 +102,6 @@ const mockPosts: Post[] = [
   },
 ];
 
-// Mock user stories
 const stories = [
   { id: "1", username: "you", avatar: "https://randomuser.me/api/portraits/men/32.jpg", isUser: true },
   { id: "2", username: "mysteriox", avatar: "https://randomuser.me/api/portraits/men/43.jpg", hasNewStory: true },
@@ -128,11 +123,9 @@ const EnhancedFeed = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    // Simulate loading posts
     const timer = setTimeout(() => {
       setPosts(mockPosts);
       
-      // Initialize comments for each post
       const initialComments: Record<string, PostComment[]> = {};
       mockPosts.forEach(post => {
         initialComments[post.id] = post.id === "1" ? mockComments : [];
@@ -146,7 +139,6 @@ const EnhancedFeed = () => {
   }, []);
 
   const handleCreatePost = (content: string, image?: string) => {
-    // In a real app, we would call an API to create the post
     const newPost: Post = {
       id: `new-${Date.now()}`,
       author: {
@@ -185,20 +177,17 @@ const EnhancedFeed = () => {
       }
     };
 
-    // Update comments for this post
     setPostComments(prev => ({
       ...prev,
       [postId]: [...(prev[postId] || []), newComment]
     }));
 
-    // Update comment count on the post
     setPosts(prev => prev.map(post => 
       post.id === postId 
         ? { ...post, comments: post.comments + 1 }
         : post
     ));
 
-    // Clear input
     setCommentInputs(prev => ({ ...prev, [postId]: "" }));
     
     notification.success("Comment added");
@@ -207,7 +196,6 @@ const EnhancedFeed = () => {
   const handleViewStory = (storyId: string) => {
     setActiveStory(storyId);
     
-    // Auto-close story after 5 seconds
     setTimeout(() => {
       setActiveStory(null);
     }, 5000);
@@ -218,8 +206,7 @@ const EnhancedFeed = () => {
   };
 
   return (
-    <div className="container py-6 pb-20 md:pb-6 max-w-3xl mx-auto">
-      {/* Stories row */}
+    <div className="max-w-full mx-auto px-4 py-6 pb-20 md:pb-6 md:max-w-3xl">
       <div className="mb-6 overflow-x-auto">
         <div className="flex gap-4 pb-2">
           {stories.map((story) => (
@@ -250,7 +237,6 @@ const EnhancedFeed = () => {
         </div>
       </div>
       
-      {/* Active story viewer */}
       {activeStory && (
         <div className="fixed inset-0 z-50 bg-black flex items-center justify-center" onClick={() => setActiveStory(null)}>
           <div className="relative w-full max-w-md h-[80vh]">
@@ -300,12 +286,10 @@ const EnhancedFeed = () => {
         </div>
       )}
       
-      {/* Create post and feed */}
       <div className="space-y-6">
         <CreatePostCard onSubmit={handleCreatePost} />
         
         {isLoading ? (
-          // Loading skeleton
           <>
             {[1, 2, 3].map((index) => (
               <div key={index} className="space-y-4 bg-card rounded-lg border p-4">
@@ -331,7 +315,6 @@ const EnhancedFeed = () => {
               <div key={post.id} className="space-y-2">
                 <EnhancedPostCard post={post} />
                 
-                {/* Comments section */}
                 <div className="px-4 pb-2">
                   {postComments[post.id] && postComments[post.id].length > 0 && (
                     <div className="py-2 space-y-3">
@@ -357,7 +340,6 @@ const EnhancedFeed = () => {
                     </div>
                   )}
                   
-                  {/* Add comment input */}
                   <div className="flex items-center gap-2 pt-1">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,9 @@ export type Post = {
   shares: number;
   liked?: boolean;
   bookmarked?: boolean;
+  isAd?: boolean;
+  adUrl?: string;
+  adCta?: string;
 };
 
 interface PostCardProps {

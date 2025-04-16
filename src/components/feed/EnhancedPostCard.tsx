@@ -3,7 +3,8 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Check, ExternalLink } from "lucide-react";
 import PostActions from "./PostActions";
 import { Post } from "./PostCard";
 
@@ -33,6 +34,7 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
               <span>@{post.author.username}</span>
               <span>·</span>
               <span>{post.createdAt}</span>
+              {post.isAd && <span className="ml-1 text-xs text-muted-foreground">Sponsored</span>}
             </div>
           </div>
         </div>
@@ -46,6 +48,17 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
               alt="Post attachment"
               className="h-auto w-full object-cover transition-transform hover:scale-105"
             />
+          </div>
+        )}
+        {post.isAd && post.adUrl && (
+          <div className="mt-3">
+            <Button
+              variant="default"
+              className="w-full"
+              onClick={() => window.open(post.adUrl, '_blank')}
+            >
+              {post.adCta || "Learn More"} <ExternalLink className="ml-2 h-4 w-4" />
+            </Button>
           </div>
         )}
       </CardContent>
