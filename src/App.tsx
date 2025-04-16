@@ -16,6 +16,10 @@ import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
+import Videos from "./pages/Videos";
+import Chat from "./pages/Chat";
+import Explore from "./pages/Explore";
+import Create from "./pages/Create";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -75,6 +79,10 @@ const AppRoutes = () => {
         <Route path="marketplace" element={<Marketplace />} />
         <Route path="crypto" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
+        <Route path="videos" element={<Videos />} />
+        <Route path="chat" element={<Chat />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="create" element={<Create />} />
         
         {/* Admin Routes */}
         <Route path="admin/dashboard" element={
@@ -87,7 +95,6 @@ const AppRoutes = () => {
             <UserManagement />
           </AdminRoute>
         } />
-        {/* Add more admin routes as needed */}
       </Route>
       
       <Route path="*" element={<NotFound />} />

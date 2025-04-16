@@ -23,6 +23,7 @@ export interface UserProfile {
   points?: number;
   level?: UserLevel;
   contacts?: string[];
+  role?: 'user' | 'admin';
 }
 
 // Combined user type with auth and profile data
@@ -33,6 +34,7 @@ export interface ExtendedUser extends SupabaseUser {
   avatar?: string;
   points?: number;
   level?: UserLevel;
+  role?: 'user' | 'admin';
 }
 
 // Contact type for wallet
@@ -56,4 +58,51 @@ export interface Transaction {
   status: 'pending' | 'completed' | 'failed';
   description?: string;
   created_at: string;
+}
+
+// Chat message type
+export interface ChatMessage {
+  id: string;
+  sender_id: string;
+  recipient_id: string;
+  content: string;
+  is_read: boolean;
+  created_at: string;
+  sender?: {
+    name: string;
+    avatar: string;
+    username: string;
+    is_verified: boolean;
+  };
+}
+
+// Chat conversation type
+export interface ChatConversation {
+  id: string;
+  last_message?: string;
+  last_message_time?: string;
+  unread_count: number;
+  participant: {
+    id: string;
+    name: string;
+    username: string;
+    avatar: string;
+    is_verified: boolean;
+    last_seen?: string;
+  };
+}
+
+// Post comment type
+export interface PostComment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  user: {
+    name: string;
+    username: string;
+    avatar: string;
+    is_verified: boolean;
+  };
 }
