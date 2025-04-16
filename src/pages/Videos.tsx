@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share2, VolumeX, Volume2 } from "lucide-react";
@@ -7,8 +6,39 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import FooterNav from "@/components/layout/FooterNav";
 
-// Mock video data
-const videos = [
+type VideoItem = {
+  id: string;
+  url: string;
+  thumbnail: string;
+  description: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  author: {
+    name: string;
+    username: string;
+    avatar: string;
+    verified: boolean;
+  };
+  isFollowing: boolean;
+};
+
+type AdItem = {
+  isAd: true;
+  ad: {
+    id: string;
+    title: string;
+    description: string;
+    cta: string;
+    image: string;
+    url: string;
+    sponsor: string;
+  };
+};
+
+type ContentItem = VideoItem | AdItem;
+
+const videos: VideoItem[] = [
   {
     id: "1",
     url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
@@ -59,7 +89,6 @@ const videos = [
   },
 ];
 
-// Mock ad data
 const adData = {
   id: "ad1",
   title: "Try our new fitness app!",
@@ -70,14 +99,13 @@ const adData = {
   sponsor: "FitLife Pro",
 };
 
-const VideoPlayer = ({ video, onNext }: { video: any; onNext: () => void }) => {
+const VideoPlayer = ({ video, onNext }: { video: VideoItem; onNext: () => void }) => {
   const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true);
   const [following, setFollowing] = useState(video.isFollowing);
 
   return (
     <div className="relative h-full w-full">
-      {/* Video */}
       <div className="absolute inset-0 bg-black">
         <video
           src={video.url}
@@ -91,18 +119,14 @@ const VideoPlayer = ({ video, onNext }: { video: any; onNext: () => void }) => {
         />
       </div>
 
-      {/* Overlay */}
       <div className="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-b from-transparent via-transparent to-black/50">
-        {/* Top - Sound control */}
         <div className="self-end">
           <Button variant="ghost" size="icon" className="text-white" onClick={() => setMuted(!muted)}>
             {muted ? <VolumeX className="h-6 w-6" /> : <Volume2 className="h-6 w-6" />}
           </Button>
         </div>
 
-        {/* Bottom - Content and actions */}
         <div className="flex items-end justify-between">
-          {/* Content */}
           <div className="flex-1 text-white">
             <div className="flex items-center gap-2 mb-2">
               <Avatar className="h-10 w-10 border-2 border-white">
@@ -133,7 +157,6 @@ const VideoPlayer = ({ video, onNext }: { video: any; onNext: () => void }) => {
             <p className="text-sm mb-4">{video.description}</p>
           </div>
 
-          {/* Actions */}
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col items-center">
               <Button
@@ -165,7 +188,7 @@ const VideoPlayer = ({ video, onNext }: { video: any; onNext: () => void }) => {
   );
 };
 
-const AdCard = ({ ad }: { ad: any }) => {
+const AdCard = ({ ad }: { ad: typeof adData }) => {
   return (
     <div className="relative h-full w-full">
       <div className="absolute inset-0">
@@ -187,7 +210,6 @@ const Videos = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { user } = useAuth();
 
-  // Function to handle swipe
   const handleNextVideo = () => {
     if (currentIndex < videos.length + 1) {
       setCurrentIndex((prev) => prev + 1);
@@ -196,12 +218,17 @@ const Videos = () => {
     }
   };
 
-  const allItems = [...videos.slice(0, 2), { isAd: true, ad: adData }, ...videos.slice(2)];
+  const allItems: ContentItem[] = [
+    ...videos.slice(0, 2), 
+    { isAd: true, ad: adData } as AdItem, 
+    ...videos.slice(2)
+  ];
+
   const currentItem = allItems[currentIndex % allItems.length];
 
   return (
     <div className="h-[calc(100vh-4rem)] pb-16 md:pb-0 bg-black overflow-hidden">
-      {currentItem.isAd ? (
+      {'isAd' in currentItem ? (
         <AdCard ad={currentItem.ad} />
       ) : (
         <VideoPlayer video={currentItem} onNext={handleNextVideo} />

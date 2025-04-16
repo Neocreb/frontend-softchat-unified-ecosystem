@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import FooterNav from "@/components/layout/FooterNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { PlusCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { PostComment } from "@/types/user";
 
 const mockComments: PostComment[] = [
