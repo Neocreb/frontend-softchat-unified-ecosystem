@@ -11,7 +11,7 @@ const Videos = () => {
 
   return (
     <div className="h-[calc(100vh-4rem)] pb-16 md:pb-0 bg-black overflow-hidden">
-      {'isAd' in currentItem ? (
+      {currentItem && 'isAd' in currentItem ? (
         <AdCard ad={currentItem.ad} />
       ) : (
         <VideoPlayer video={currentItem} onNext={handleNextVideo} />
