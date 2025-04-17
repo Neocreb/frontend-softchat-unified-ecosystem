@@ -19,6 +19,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import Videos from "./pages/Videos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
+import Index from "./pages/Index";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -28,7 +29,14 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
   
   if (isLoading) {
-    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
   }
   
   if (!isAuthenticated) {
@@ -43,7 +51,14 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
   
   if (isLoading) {
-    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
   }
   
   if (!isAuthenticated) {
@@ -63,16 +78,25 @@ const AppRoutes = () => {
   
   return (
     <Routes>
+      <Route path="/" element={<Index />} />
+      
       <Route path="/auth" element={
-        isAuthenticated ? <Navigate to="/" replace /> : <Auth />
+        isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />
       } />
+      
+      <Route path="/feed" element={
+        <ProtectedRoute>
+          <AppLayout />
+        </ProtectedRoute>
+      }>
+        <Route index element={<EnhancedFeed />} />
+      </Route>
       
       <Route path="/" element={
         <ProtectedRoute>
           <AppLayout />
         </ProtectedRoute>
       }>
-        <Route index element={<EnhancedFeed />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="marketplace" element={<Marketplace />} />
