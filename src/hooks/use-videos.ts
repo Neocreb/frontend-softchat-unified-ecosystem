@@ -21,7 +21,8 @@ export const useVideos = () => {
     }
   };
 
-  const getCurrentItem = (): ContentItem => {
+  const getCurrentItem = (): ContentItem | null => {
+    if (allItems.length === 0) return null;
     return allItems[currentIndex % allItems.length];
   };
 
