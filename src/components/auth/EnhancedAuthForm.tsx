@@ -27,7 +27,8 @@ const EnhancedAuthForm = () => {
     try {
       if (isLogin) {
         await login(email, password);
-        notification.success("Successfully logged in!");
+        notification.success("Successfully logged in!");window.location.href = "/feed";
+
       } else {
         if (!name) {
           throw new Error("Name is required");
