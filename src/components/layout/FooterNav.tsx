@@ -11,7 +11,7 @@ const FooterNav = () => {
     {
       icon: Home,
       label: "Feed",
-      href: "/",
+      href: "/feed",
       active: location.pathname === "/" || location.pathname === "/feed",
     },
     {
@@ -47,7 +47,7 @@ const FooterNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 inset-x-0 bg-background border-t md:hidden z-50">
+    <div className="fixed bottom-0 inset-x-0 bg-background border-t md:hidden z-[100]">
       <div className="grid grid-cols-6 h-16">
         {navItems.map((item) => (
           <Link key={item.href} to={item.href} className="w-full">

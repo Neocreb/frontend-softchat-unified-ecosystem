@@ -66,7 +66,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!isAdmin()) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/feed" replace />;
   }
   
   return <>{children}</>;
@@ -78,12 +78,15 @@ const AppRoutes = () => {
   
   return (
     <Routes>
+      {/* Root path redirects to index page for proper authentication handling */}
       <Route path="/" element={<Index />} />
       
+      {/* Auth route - redirects to feed if already authenticated */}
       <Route path="/auth" element={
         isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />
       } />
       
+      {/* Feed route - only accessible if authenticated */}
       <Route path="/feed" element={
         <ProtectedRoute>
           <AppLayout />
@@ -92,7 +95,8 @@ const AppRoutes = () => {
         <Route index element={<EnhancedFeed />} />
       </Route>
       
-      <Route path="/" element={
+      {/* All other protected routes */}
+      <Route element={
         <ProtectedRoute>
           <AppLayout />
         </ProtectedRoute>

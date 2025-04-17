@@ -73,157 +73,157 @@ const EnhancedFeed = () => {
   };
 
   return (
-    <div className="max-w-full mx-auto px-4 py-6 pb-20 md:pb-6 md:max-w-[680px]">
-      <Stories 
-        stories={mockStories} 
-        onViewStory={handleViewStory} 
-        onCreateStory={handleCreateStory} 
-      />
-      
-      {activeStory && (
-        <StoryView 
-          activeStory={activeStory} 
+    <div className="flex justify-center w-full">
+      <div className="w-full max-w-2xl mx-auto px-4 py-6 pb-20 md:pb-6">
+        <Stories 
           stories={mockStories} 
-          onClose={() => setActiveStory(null)} 
+          onViewStory={handleViewStory} 
+          onCreateStory={handleCreateStory} 
         />
-      )}
-      
-      {/* Create Post Box with Tabs */}
-      <div className="bg-background rounded-lg shadow mb-6 overflow-hidden">
-        <Tabs defaultValue="post" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="post" className="flex items-center gap-2">
-              <Image className="h-4 w-4" />
-              <span>Post</span>
-            </TabsTrigger>
-            <TabsTrigger value="video" className="flex items-center gap-2">
-              <Video className="h-4 w-4" />
-              <span>Video</span>
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="post" className="p-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
-                <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
-              </Avatar>
-              <Textarea
-                placeholder="What's on your mind?"
-                className="flex-1 resize-none"
-                value={postContent}
-                onChange={(e) => setPostContent(e.target.value)}
-              />
-            </div>
+        
+        {activeStory && (
+          <StoryView 
+            activeStory={activeStory} 
+            stories={mockStories} 
+            onClose={() => setActiveStory(null)} 
+          />
+        )}
+        
+        {/* Create Post Box with Tabs */}
+        <div className="bg-background rounded-lg shadow mb-6 overflow-hidden">
+          <Tabs defaultValue="post" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="post" className="flex items-center gap-2">
+                <Image className="h-4 w-4" />
+                <span>Post</span>
+              </TabsTrigger>
+              <TabsTrigger value="video" className="flex items-center gap-2">
+                <Video className="h-4 w-4" />
+                <span>Video</span>
+              </TabsTrigger>
+            </TabsList>
             
-            {previewUrl && (
-              <div className="relative">
-                <img src={previewUrl} alt="Preview" className="w-full rounded-lg max-h-80 object-cover" />
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  className="absolute top-2 right-2 h-6 w-6 rounded-full"
-                  onClick={() => {
-                    setSelectedFile(null);
-                    setPreviewUrl(null);
-                  }}
-                >
-                  &times;
-                </Button>
-              </div>
-            )}
-            
-            <div className="flex items-center justify-between mt-4">
-              <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="flex items-center gap-1 text-muted-foreground"
-                  onClick={() => document.getElementById("image-upload")?.click()}
-                >
-                  <Image className="h-5 w-5" />
-                  <span>Photo</span>
-                </Button>
-                <input 
-                  id="image-upload" 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
-                  onChange={handleFileChange} 
+            <TabsContent value="post" className="p-4 space-y-4">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
+                  <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
+                </Avatar>
+                <Textarea
+                  placeholder="What's on your mind?"
+                  className="flex-1 resize-none"
+                  value={postContent}
+                  onChange={(e) => setPostContent(e.target.value)}
                 />
-                
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="flex items-center gap-1 text-muted-foreground"
-                  onClick={() => {
-                    notification.info("Tag a friend feature coming soon!");
-                  }}
-                >
-                  <UserPlus className="h-5 w-5" />
-                  <span>Tag</span>
-                </Button>
               </div>
               
-              <Button 
-                onClick={handlePostSubmit} 
-                disabled={isPosting || (!postContent.trim() && !selectedFile)}
-              >
-                {isPosting ? "Posting..." : "Post"}
-              </Button>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="video" className="p-4 space-y-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
-                <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
-              </Avatar>
-              <Textarea
-                placeholder="Add a description for your video..."
-                className="flex-1 resize-none"
-                value={postContent}
-                onChange={(e) => setPostContent(e.target.value)}
-              />
-            </div>
+              {previewUrl && (
+                <div className="relative">
+                  <img src={previewUrl} alt="Preview" className="w-full rounded-lg max-h-80 object-cover" />
+                  <Button
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2 h-6 w-6 rounded-full"
+                    onClick={() => {
+                      setSelectedFile(null);
+                      setPreviewUrl(null);
+                    }}
+                  >
+                    &times;
+                  </Button>
+                </div>
+              )}
+              
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="flex items-center gap-1 text-muted-foreground"
+                    onClick={() => document.getElementById("image-upload")?.click()}
+                  >
+                    <Image className="h-5 w-5" />
+                    <span>Photo</span>
+                  </Button>
+                  <input 
+                    id="image-upload" 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleFileChange} 
+                  />
+                  
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="flex items-center gap-1 text-muted-foreground"
+                    onClick={() => {
+                      notification.info("Tag a friend feature coming soon!");
+                    }}
+                  >
+                    <UserPlus className="h-5 w-5" />
+                    <span>Tag</span>
+                  </Button>
+                </div>
+                
+                <Button 
+                  onClick={handlePostSubmit} 
+                  disabled={isPosting || (!postContent.trim() && !selectedFile)}
+                >
+                  {isPosting ? "Posting..." : "Post"}
+                </Button>
+              </div>
+            </TabsContent>
             
-            <div 
-              className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
-              onClick={handleVideoUpload}
-            >
-              <Video className="h-12 w-12 text-muted-foreground mb-3" />
-              <p className="text-muted-foreground text-center">Click to upload a video</p>
-              <p className="text-xs text-muted-foreground mt-1">MP4 or WebM format</p>
-            </div>
-            
-            <div className="flex justify-end mt-4">
-              <Button onClick={handleVideoUpload}>Upload Video</Button>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-      
-      <div className="space-y-6">
-        {isLoading ? (
-          <FeedSkeleton />
-        ) : (
-          <>
-            {posts.map((post) => (
-              <div key={post.id} className="space-y-2">
-                <EnhancedPostCard post={post} />
-                <CommentSection 
-                  postId={post.id} 
-                  comments={postComments[post.id] || []} 
-                  onAddComment={handleAddComment} 
+            <TabsContent value="video" className="p-4 space-y-4">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
+                  <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
+                </Avatar>
+                <Textarea
+                  placeholder="Add a description for your video..."
+                  className="flex-1 resize-none"
+                  value={postContent}
+                  onChange={(e) => setPostContent(e.target.value)}
                 />
               </div>
-            ))}
-          </>
-        )}
+              
+              <div 
+                className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
+                onClick={handleVideoUpload}
+              >
+                <Video className="h-12 w-12 text-muted-foreground mb-3" />
+                <p className="text-muted-foreground text-center">Click to upload a video</p>
+                <p className="text-xs text-muted-foreground mt-1">MP4 or WebM format</p>
+              </div>
+              
+              <div className="flex justify-end mt-4">
+                <Button onClick={handleVideoUpload}>Upload Video</Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+        
+        <div className="space-y-6">
+          {isLoading ? (
+            <FeedSkeleton />
+          ) : (
+            <>
+              {posts.map((post) => (
+                <div key={post.id} className="space-y-2">
+                  <EnhancedPostCard post={post} />
+                  <CommentSection 
+                    postId={post.id} 
+                    comments={postComments[post.id] || []} 
+                    onAddComment={handleAddComment} 
+                  />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
-      
-      <FooterNav />
     </div>
   );
 };

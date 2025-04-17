@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -50,17 +51,17 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden max-w-full">
       <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
-        <Avatar className="h-9 w-9">
+        <Avatar className="h-9 w-9 flex-shrink-0">
           <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
           <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 min-w-0 space-y-1">
           <div className="flex items-center">
-            <span className="font-semibold">{post.author.name}</span>
+            <span className="font-semibold truncate">{post.author.name}</span>
             {post.author.verified && (
-              <Badge variant="default" className="ml-1 px-1 py-0 h-5 bg-softchat-primary hover:bg-softchat-primary/90">
+              <Badge variant="default" className="ml-1 px-1 py-0 h-5 bg-softchat-primary hover:bg-softchat-primary/90 flex-shrink-0">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -77,17 +78,17 @@ const PostCard = ({ post }: PostCardProps) => {
             )}
           </div>
           <div className="flex items-center text-sm text-muted-foreground">
-            <span>@{post.author.username}</span>
-            <span className="mx-1">·</span>
-            <span>{post.createdAt}</span>
+            <span className="truncate">@{post.author.username}</span>
+            <span className="mx-1 flex-shrink-0">·</span>
+            <span className="flex-shrink-0">{post.createdAt}</span>
           </div>
         </div>
-        <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+        <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 flex-shrink-0">
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </CardHeader>
       <CardContent className="px-4 py-3 text-sm">
-        <p className="mb-3">{post.content}</p>
+        <p className="mb-3 break-words">{post.content}</p>
         {post.image && (
           <div className="overflow-hidden rounded-md -mx-1">
             <img

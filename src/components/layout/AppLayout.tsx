@@ -1,6 +1,7 @@
 
 import { Outlet } from "react-router-dom";
 import EnhancedHeader from "./EnhancedHeader";
+import FooterNav from "./FooterNav";
 import { useAuth } from "@/contexts/AuthContext";
 import AdminSidebar from "./AdminSidebar";
 
@@ -13,10 +14,11 @@ const AppLayout = () => {
       <EnhancedHeader />
       <div className="flex flex-1">
         {isAdmin && <AdminSidebar />}
-        <main className="flex-1">
+        <main className="flex-1 w-full max-w-screen-xl mx-auto">
           <Outlet />
         </main>
       </div>
+      <FooterNav />
     </div>
   );
 };
