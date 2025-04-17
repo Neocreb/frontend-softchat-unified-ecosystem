@@ -19,7 +19,6 @@ import UserManagement from "./pages/admin/UserManagement";
 import Videos from "./pages/Videos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
-import Create from "./pages/Create";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -82,7 +81,6 @@ const AppRoutes = () => {
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
-        <Route path="create" element={<Create />} />
         
         {/* Admin Routes */}
         <Route path="admin/dashboard" element={

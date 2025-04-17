@@ -1,29 +1,102 @@
 
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { User, Session } from "@supabase/supabase-js";
+import { createContext, useState, useEffect, useContext } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { enhanceUserWithProfile, signIn, signOut, signUp, updateUserProfileData } from "@/services/authService";
-import { ExtendedUser, UserProfile } from "@/types/user";
+import { User, Session } from "@supabase/supabase-js";
 
-type AuthState = {
+interface AuthContextType {
+  user: User | null;
+  session: Session | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  error: string | null;
-  user: ExtendedUser | null;
-  session: Session | null;
-  setUser: (user: ExtendedUser | null) => void;
-  setError: (error: string | null) => void;
-};
-
-interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
-  updateProfile: (profileData: Partial<UserProfile>) => Promise<void>;
+  login: (email: string, password: string) => Promise<{ error: any }>;
+  signup: (email: string, password: string, name?: string) => Promise<{ error: any, user: any }>;
+  logout: () => void;
   isAdmin: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Set up auth state listener FIRST (to prevent missing auth events)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, newSession) => {
+        setSession(newSession);
+        setUser(newSession?.user ?? null);
+        setIsLoading(false);
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const login = async (email: string, password: string) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      return { error };
+    } catch (error) {
+      console.error("Login error:", error);
+      return { error };
+    }
+  };
+
+  const signup = async (email: string, password: string, name?: string) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+          },
+        },
+      });
+      return { error, user: data.user };
+    } catch (error) {
+      console.error("Signup error:", error);
+      return { error, user: null };
+    }
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  const isAdmin = () => {
+    return user?.email?.endsWith("@admin.com") || false;
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        isAuthenticated: !!user,
+        isLoading,
+        login,
+        signup,
+        logout,
+        isAdmin,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -31,193 +104,4 @@ export const useAuth = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-};
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [authState, setAuthState] = useState<AuthState>({
-    isAuthenticated: false,
-    isLoading: true,
-    error: null,
-    user: null,
-    session: null,
-    setUser: () => {},
-    setError: () => {},
-  });
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session) {
-          const enhancedUser = await enhanceUserWithProfile(session.user);
-          setAuthState(prev => ({
-            ...prev,
-            isAuthenticated: true,
-            user: enhancedUser,
-            session,
-            isLoading: false,
-          }));
-        } else {
-          setAuthState(prev => ({
-            ...prev,
-            isLoading: false,
-          }));
-        }
-      } catch (error) {
-        console.error("Error fetching session:", error);
-        setAuthState(prev => ({
-          ...prev,
-          error: "Failed to fetch session",
-          isLoading: false,
-        }));
-      }
-    };
-
-    fetchSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        const enhancedUser = await enhanceUserWithProfile(session.user);
-        setAuthState(prev => ({
-          ...prev,
-          isAuthenticated: true,
-          user: enhancedUser,
-          session,
-        }));
-      } else if (event === 'SIGNED_OUT') {
-        setAuthState(prev => ({
-          ...prev,
-          isAuthenticated: false,
-          user: null,
-          session: null,
-        }));
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  const setUser = (user: ExtendedUser | null) => {
-    setAuthState(prev => ({
-      ...prev,
-      user,
-      isAuthenticated: !!user,
-    }));
-  };
-
-  const setError = (error: string | null) => {
-    setAuthState(prev => ({
-      ...prev,
-      error,
-    }));
-  };
-
-  // Update profile function
-  const updateProfile = async (profileData: Partial<UserProfile>) => {
-    if (!authState.user) {
-      throw new Error("User not authenticated");
-    }
-    
-    try {
-      const updatedProfile = await updateUserProfileData(authState.user.id, profileData);
-      
-      if (updatedProfile) {
-        const enhancedUser = { 
-          ...authState.user,
-          profile: updatedProfile,
-          name: updatedProfile.full_name || authState.user.name,
-          avatar: updatedProfile.avatar_url || authState.user.avatar,
-        };
-        
-        setUser(enhancedUser);
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      throw error;
-    }
-  };
-
-  const login = async (email: string, password: string) => {
-    setAuthState(prev => ({
-      ...prev,
-      isLoading: true,
-      error: null,
-    }));
-
-    try {
-      const data = await signIn(email, password);
-      // Auth state will be updated by the onAuthStateChange listener
-    } catch (error: any) {
-      setAuthState(prev => ({
-        ...prev,
-        error: error.message || "Failed to sign in",
-        isLoading: false,
-      }));
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    setAuthState(prev => ({
-      ...prev,
-      isLoading: true,
-      error: null,
-    }));
-
-    try {
-      await signOut();
-      // Auth state will be updated by the onAuthStateChange listener
-    } catch (error: any) {
-      setAuthState(prev => ({
-        ...prev,
-        error: error.message || "Failed to sign out",
-        isLoading: false,
-      }));
-      throw error;
-    }
-  };
-
-  const register = async (name: string, email: string, password: string) => {
-    setAuthState(prev => ({
-      ...prev,
-      isLoading: true,
-      error: null,
-    }));
-
-    try {
-      await signUp(name, email, password);
-      // After registration, we'll either be signed in automatically or need to verify email
-    } catch (error: any) {
-      setAuthState(prev => ({
-        ...prev,
-        error: error.message || "Failed to register",
-        isLoading: false,
-      }));
-      throw error;
-    }
-  };
-
-  const isAdmin = () => {
-    return authState.user?.role === 'admin';
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
-        ...authState,
-        setUser,
-        setError,
-        login,
-        logout,
-        register,
-        updateProfile,
-        isAdmin,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
 };

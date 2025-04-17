@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, TrendingUp, Hash, Users } from "lucide-react";
+import { Search, TrendingUp, Hash, Users, LayoutGrid, Store } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import FooterNav from "@/components/layout/FooterNav";
 
@@ -104,6 +104,74 @@ const popularHashtags = [
   { id: "10", tag: "fitness", posts: 19600000 },
 ];
 
+// Mock groups
+const groups = [
+  {
+    id: "1",
+    name: "Web Development Hub",
+    members: 254000,
+    category: "Technology",
+    cover: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: "2",
+    name: "Crypto Enthusiasts",
+    members: 180000,
+    category: "Finance",
+    cover: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: "3",
+    name: "Travel Addicts",
+    members: 320000,
+    category: "Travel",
+    cover: "https://images.unsplash.com/photo-1523906921802-b5d2d899e93b?q=80&w=800&auto=format&fit=crop",
+  },
+  {
+    id: "4",
+    name: "Foodies United",
+    members: 275000,
+    category: "Food",
+    cover: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=800&auto=format&fit=crop",
+  },
+];
+
+// Mock pages
+const pages = [
+  {
+    id: "1",
+    name: "National Geographic",
+    followers: 50000000,
+    category: "Media",
+    verified: true,
+    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+  },
+  {
+    id: "2",
+    name: "Tesla",
+    followers: 15000000,
+    category: "Automotive",
+    verified: true,
+    avatar: "https://randomuser.me/api/portraits/men/2.jpg",
+  },
+  {
+    id: "3",
+    name: "NASA",
+    followers: 35000000,
+    category: "Science",
+    verified: true,
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+  },
+  {
+    id: "4",
+    name: "Netflix",
+    followers: 70000000,
+    category: "Entertainment",
+    verified: true,
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+  },
+];
+
 const formatNumber = (num: number) => {
   if (num >= 1000000) {
     return (num / 1000000).toFixed(1) + "M";
@@ -131,9 +199,19 @@ const Explore = () => {
   const filteredHashtags = popularHashtags.filter(hashtag => 
     hashtag.tag.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  
+  const filteredGroups = groups.filter(group => 
+    group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    group.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
+  const filteredPages = pages.filter(page => 
+    page.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    page.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="container pb-16 md:pb-0 pt-4">
+    <div className="container max-w-[680px] pb-16 md:pb-0 pt-4">
       <div className="space-y-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -146,18 +224,26 @@ const Explore = () => {
         </div>
         
         <Tabs defaultValue="trending" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="trending" className="flex items-center gap-1">
               <TrendingUp className="h-4 w-4" />
-              <span>Trending</span>
+              <span className="hidden sm:inline">Trending</span>
             </TabsTrigger>
             <TabsTrigger value="people" className="flex items-center gap-1">
               <Users className="h-4 w-4" />
-              <span>People</span>
+              <span className="hidden sm:inline">People</span>
             </TabsTrigger>
             <TabsTrigger value="hashtags" className="flex items-center gap-1">
               <Hash className="h-4 w-4" />
-              <span>Hashtags</span>
+              <span className="hidden sm:inline">Hashtags</span>
+            </TabsTrigger>
+            <TabsTrigger value="groups" className="flex items-center gap-1">
+              <LayoutGrid className="h-4 w-4" />
+              <span className="hidden sm:inline">Groups</span>
+            </TabsTrigger>
+            <TabsTrigger value="pages" className="flex items-center gap-1">
+              <Store className="h-4 w-4" />
+              <span className="hidden sm:inline">Pages</span>
             </TabsTrigger>
           </TabsList>
           
@@ -239,6 +325,71 @@ const Explore = () => {
                 </div>
               )}
             </div>
+          </TabsContent>
+          
+          <TabsContent value="groups" className="mt-4 space-y-4">
+            {filteredGroups.length > 0 ? (
+              filteredGroups.map((group) => (
+                <div key={group.id} className="rounded-lg overflow-hidden border cursor-pointer hover:shadow-md">
+                  <div className="h-32 overflow-hidden">
+                    <img src={group.cover} alt={group.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-3">
+                    <h3 className="font-semibold">{group.name}</h3>
+                    <p className="text-sm text-muted-foreground">{group.category} • {formatNumber(group.members)} members</p>
+                    <button className="mt-2 w-full text-center py-1.5 bg-blue-500 text-white rounded-md text-sm font-medium">Join Group</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">No groups found</p>
+              </div>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="pages" className="mt-4 space-y-4">
+            {filteredPages.length > 0 ? (
+              filteredPages.map((page) => (
+                <div key={page.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src={page.avatar} alt={page.name} />
+                        <AvatarFallback>{page.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      {page.verified && (
+                        <div className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-0.5 border-2 border-white">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <div className="flex items-center">
+                        <span className="font-semibold">{page.name}</span>
+                        {page.verified && (
+                          <Badge variant="outline" className="ml-1 bg-blue-500 p-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">{page.category}</p>
+                      <p className="text-xs text-muted-foreground">{formatNumber(page.followers)} followers</p>
+                    </div>
+                  </div>
+                  <button className="text-sm font-semibold text-blue-500">Follow</button>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">No pages found</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
