@@ -17,7 +17,7 @@ const EnhancedAuthForm = () => {
   const [password, setPassword] = useState("password123");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, register, error } = useAuth();
+  const { login, signup, error } = useAuth();
   const notification = useNotification();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +32,7 @@ const EnhancedAuthForm = () => {
         if (!name) {
           throw new Error("Name is required");
         }
-        await register(name, email, password);
+        await signup(email, password, name);
         notification.success("Registration successful! Please check your email for verification.");
       }
     } catch (err: any) {
