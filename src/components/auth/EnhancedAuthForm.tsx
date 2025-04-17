@@ -11,15 +11,6 @@ import SocialAuth from "./SocialAuth";
 import AuthFooter from "./AuthFooter";
 
 const EnhancedAuthForm = () => {
-  import { useRouter } from "next/router"; // add this at the top
-const router = useRouter(); // add this just below the function line
-
-useEffect(() => {
-  if (user && isAuthenticated) {
-    router.push("/feed"); // change to your post-login page
-  }
-}, [user, isAuthenticated]);
-
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("demo@softchat.com");
