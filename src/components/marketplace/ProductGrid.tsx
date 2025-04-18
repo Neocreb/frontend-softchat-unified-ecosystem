@@ -1,119 +1,46 @@
 
 import { useState, useEffect } from "react";
-import ProductCard, { Product } from "./ProductCard";
+import { useNavigate } from "react-router-dom";
+import { Product } from "@/types/marketplace";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Mock product data
-const mockProducts: Product[] = [
-  {
-    id: "1",
-    name: "Wireless Noise Cancelling Headphones",
-    description: "Premium wireless headphones with active noise cancellation",
-    price: 299.99,
-    discountPrice: 249.99,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
-    category: "electronics",
-    rating: 4.8,
-    inStock: true,
-    isNew: true,
-    isFeatured: true,
-  },
-  {
-    id: "2",
-    name: "Smart Watch Series 5",
-    description: "Track your fitness and stay connected with this smart watch",
-    price: 199.99,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2R1Y3R8ZW58MHx8MHx8fDA%3D",
-    category: "electronics",
-    rating: 4.5,
-    inStock: true,
-  },
-  {
-    id: "3",
-    name: "Premium Cotton T-Shirt",
-    description: "Comfortable 100% cotton t-shirt with modern fit",
-    price: 29.99,
-    discountPrice: 19.99,
-    image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHQlMjBzaGlydHxlbnwwfHwwfHx8MA%3D%3D",
-    category: "clothing",
-    rating: 4.2,
-    inStock: true,
-    isFeatured: true,
-  },
-  {
-    id: "4",
-    name: "Designer Sunglasses",
-    description: "UV protection sunglasses with polarized lenses",
-    price: 159.99,
-    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
-    category: "accessories",
-    rating: 4.7,
-    inStock: false,
-  },
-  {
-    id: "5",
-    name: "Portable Bluetooth Speaker",
-    description: "Waterproof speaker with 20 hours battery life",
-    price: 89.99,
-    discountPrice: 69.99,
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ymx1ZXRvb3RoJTIwc3BlYWtlcnxlbnwwfHwwfHx8MA%3D%3D",
-    category: "electronics",
-    rating: 4.4,
-    inStock: true,
-    isNew: true,
-  },
-  {
-    id: "6",
-    name: "Organic Face Serum",
-    description: "Hydrating serum with natural ingredients",
-    price: 49.99,
-    image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHNraW5jYXJlfGVufDB8fDB8fHww",
-    category: "beauty",
-    rating: 4.9,
-    inStock: true,
-    isFeatured: true,
-  },
-  {
-    id: "7",
-    name: "Running Shoes",
-    description: "Lightweight breathable shoes for runners",
-    price: 129.99,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D",
-    category: "footwear",
-    rating: 4.6,
-    inStock: true,
-  },
-  {
-    id: "8",
-    name: "Coffee Maker",
-    description: "Programmable drip coffee maker with thermal carafe",
-    price: 149.99,
-    discountPrice: 119.99,
-    image: "https://images.unsplash.com/photo-1544486361-2ed1d35c1270?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8Y29mZmVlJTIwbWFrZXJ8ZW58MHx8MHx8fDA%3D",
-    category: "home",
-    rating: 4.3,
-    inStock: true,
-  },
-];
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MessageCircle } from "lucide-react";
+import ProductCard from "./ProductCard";
+import { useMarketplace } from "@/contexts/MarketplaceContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProductGridProps {
-  category: string;
-  searchQuery: string;
+  category?: string;
+  searchQuery?: string;
+  sortBy?: "recent" | "popular" | "price-low" | "price-high";
   onAddToCart: (productId: string) => void;
+  onAddToWishlist: (productId: string) => void;
+  limit?: number;
 }
 
-const ProductGrid = ({ category, searchQuery, onAddToCart }: ProductGridProps) => {
+const ProductGrid = ({ 
+  category = "all", 
+  searchQuery = "", 
+  sortBy,
+  onAddToCart, 
+  onAddToWishlist,
+  limit 
+}: ProductGridProps) => {
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const { products, setActiveProduct } = useMarketplace();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   
   useEffect(() => {
     // Simulate API fetch delay
     const timer = setTimeout(() => {
-      let filteredProducts = [...mockProducts];
+      let filtered = [...products];
       
       // Filter by category if not "all"
       if (category !== "all") {
-        filteredProducts = filteredProducts.filter(
+        filtered = filtered.filter(
           product => product.category === category
         );
       }
@@ -121,19 +48,59 @@ const ProductGrid = ({ category, searchQuery, onAddToCart }: ProductGridProps) =
       // Filter by search query
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        filteredProducts = filteredProducts.filter(
+        filtered = filtered.filter(
           product => 
             product.name.toLowerCase().includes(query) || 
-            product.description.toLowerCase().includes(query)
+            product.description.toLowerCase().includes(query) ||
+            product.category.toLowerCase().includes(query) ||
+            (product.tags && product.tags.some(tag => tag.toLowerCase().includes(query)))
         );
       }
+
+      // Sort products
+      if (sortBy) {
+        switch (sortBy) {
+          case "recent":
+            filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            break;
+          case "popular":
+            filtered.sort((a, b) => (b.rating * (b.reviewCount || 1)) - (a.rating * (a.reviewCount || 1)));
+            break;
+          case "price-low":
+            filtered.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
+            break;
+          case "price-high":
+            filtered.sort((a, b) => (b.discountPrice || b.price) - (a.discountPrice || a.price));
+            break;
+        }
+      }
+
+      // Apply limit if specified
+      if (limit && limit > 0) {
+        filtered = filtered.slice(0, limit);
+      }
       
-      setProducts(filteredProducts);
+      setFilteredProducts(filtered);
       setLoading(false);
     }, 800);
     
     return () => clearTimeout(timer);
-  }, [category, searchQuery]);
+  }, [category, searchQuery, sortBy, products, limit]);
+
+  const handleViewProduct = (product: Product) => {
+    setActiveProduct(product);
+    // TODO: Navigate to product detail page once created
+    // navigate(`/marketplace/product/${product.id}`);
+  };
+
+  const handleMessageSeller = (sellerId: string, productId: string) => {
+    if (!isAuthenticated) {
+      navigate('/auth');
+      return;
+    }
+    
+    navigate('/chat');
+  };
   
   if (loading) {
     return (
@@ -158,24 +125,38 @@ const ProductGrid = ({ category, searchQuery, onAddToCart }: ProductGridProps) =
     );
   }
   
-  if (products.length === 0) {
+  if (filteredProducts.length === 0) {
     return (
-      <div className="text-center py-10">
+      <div className="text-center py-10 border rounded-lg bg-gray-50 p-8">
         <h3 className="text-lg font-medium">No products found</h3>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-muted-foreground mt-2 mb-6">
           Try changing your search or filter criteria
         </p>
+        <Button 
+          variant="outline" 
+          onClick={() => {
+            // Reset filters
+            navigate('/marketplace');
+          }}
+        >
+          Browse all products
+        </Button>
       </div>
     );
   }
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
         <ProductCard 
           key={product.id} 
           product={product} 
           onAddToCart={onAddToCart} 
+          onAddToWishlist={onAddToWishlist}
+          onViewProduct={handleViewProduct}
+          onMessageSeller={handleMessageSeller}
+          showSellerInfo={true}
+          sponsored={product.isSponsored}
         />
       ))}
     </div>
@@ -183,5 +164,3 @@ const ProductGrid = ({ category, searchQuery, onAddToCart }: ProductGridProps) =
 };
 
 export default ProductGrid;
-
-import { Card } from "@/components/ui/card";

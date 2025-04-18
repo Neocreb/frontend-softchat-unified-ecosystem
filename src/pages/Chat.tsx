@@ -1,227 +1,75 @@
 
-import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { ChatConversation, ChatMessage } from "@/types/user";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChatProvider, useChat } from "@/contexts/ChatContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Send, Plus, Check } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { useNotification } from "@/hooks/use-notification";
+import { Search, Send, Plus, Check, ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import FooterNav from "@/components/layout/FooterNav";
 
-// Mock data for conversations
-const mockConversations: ChatConversation[] = [
-  {
-    id: "1",
-    last_message: "Meta has introduced the Movie Gen I - model for video generation",
-    last_message_time: "11:23",
-    unread_count: 1,
-    participant: {
-      id: "101",
-      name: "Mike Planton",
-      username: "mikeplanton",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      is_verified: true,
-      last_seen: "2 hours ago"
-    }
-  },
-  {
-    id: "2",
-    last_message: "Hey, did you receive the news?",
-    last_message_time: "09:31",
-    unread_count: 1,
-    participant: {
-      id: "102",
-      name: "Alicia Wernet",
-      username: "aliciaw",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      is_verified: true,
-      last_seen: "3 hours ago"
-    }
-  },
-  {
-    id: "3",
-    last_message: "Photo",
-    last_message_time: "08:11",
-    unread_count: 0,
-    participant: {
-      id: "103",
-      name: "ION Community",
-      username: "ioncommunity",
-      avatar: "https://cdn-icons-png.flaticon.com/512/3820/3820331.png",
-      is_verified: true,
-      last_seen: "1 day ago"
-    }
-  },
-  {
-    id: "4",
-    last_message: "Are you sure? I haven't heard of.",
-    last_message_time: "30.09",
-    unread_count: 0,
-    participant: {
-      id: "104",
-      name: "Diedo Shonli",
-      username: "diedoshonli",
-      avatar: "https://randomuser.me/api/portraits/men/42.jpg",
-      is_verified: false,
-      last_seen: "2 days ago"
-    }
-  },
-  {
-    id: "5",
-    last_message: "Hi ☃️ Snowman, 📣 Join us for an",
-    last_message_time: "31.09",
-    unread_count: 0,
-    participant: {
-      id: "105",
-      name: "Ice Open Network",
-      username: "iceopennetwork",
-      avatar: "https://cdn-icons-png.flaticon.com/512/6639/6639786.png",
-      is_verified: false,
-      last_seen: "5 days ago"
-    }
-  }
-];
-
-// Mock messages for a chat
-const mockMessages: ChatMessage[] = [
-  {
-    id: "1",
-    sender_id: "101",
-    recipient_id: "current-user",
-    content: "Hi there! How are you doing?",
-    is_read: true,
-    created_at: "2023-04-15T10:30:00Z",
-    sender: {
-      name: "Mike Planton",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      username: "mikeplanton",
-      is_verified: true
-    }
-  },
-  {
-    id: "2",
-    sender_id: "current-user",
-    recipient_id: "101",
-    content: "I'm good, thanks! Just checking out the new features on Softchat.",
-    is_read: true,
-    created_at: "2023-04-15T10:35:00Z"
-  },
-  {
-    id: "3",
-    sender_id: "101",
-    recipient_id: "current-user",
-    content: "Meta has introduced the Movie Gen I - model for video generation. It's amazing what they're doing with AI these days.",
-    is_read: false,
-    created_at: "2023-04-15T10:40:00Z",
-    sender: {
-      name: "Mike Planton",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      username: "mikeplanton",
-      is_verified: true
-    }
-  }
-];
-
-const Chat = () => {
-  const { user } = useAuth();
+const ChatInterface = () => {
+  const { 
+    conversations, 
+    messages, 
+    selectedChat, 
+    messageInput, 
+    setMessageInput, 
+    setSelectedChat, 
+    sendMessage, 
+    markAsRead,
+    searchConversations
+  } = useChat();
   const [activeTab, setActiveTab] = useState("all");
-  const [conversations, setConversations] = useState<ChatConversation[]>(mockConversations);
-  const [selectedChat, setSelectedChat] = useState<ChatConversation | null>(null);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [messageInput, setMessageInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const notify = useNotification();
-
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  
+  // Scroll to bottom when messages change
   useEffect(() => {
-    // In a real app, we would fetch conversations from the API
-    setConversations(mockConversations);
-  }, []);
-
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selectedChat, messages]);
+  
+  // Mark messages as read when selecting a chat
   useEffect(() => {
     if (selectedChat) {
-      // In a real app, we would fetch messages for the selected chat
-      setMessages(mockMessages);
-      
-      // Mark messages as read
-      const updatedMessages = mockMessages.map(msg => ({
-        ...msg,
-        is_read: true
-      }));
-      
-      setMessages(updatedMessages);
+      markAsRead(selectedChat.id);
     }
   }, [selectedChat]);
-
+  
   const handleSendMessage = () => {
     if (!messageInput.trim() || !selectedChat) return;
-    
-    // Create a new message
-    const newMessage: ChatMessage = {
-      id: `new-${Date.now()}`,
-      sender_id: "current-user",
-      recipient_id: selectedChat.participant.id,
-      content: messageInput,
-      is_read: false,
-      created_at: new Date().toISOString()
-    };
-    
-    // Add the message to the chat
-    setMessages([...messages, newMessage]);
-    
-    // Update last message in conversations list
-    const updatedConversations = conversations.map(conv => 
-      conv.id === selectedChat.id 
-        ? {
-            ...conv,
-            last_message: messageInput,
-            last_message_time: "Just now"
-          }
-        : conv
-    );
-    
-    setConversations(updatedConversations);
-    
-    // Clear the input
-    setMessageInput("");
-    
-    // In a real app, we would send the message to the API
-    notify.success("Message sent");
+    sendMessage(messageInput);
   };
-
-  const filteredConversations = conversations.filter(conv => 
-    conv.participant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    conv.participant.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (conv.last_message && conv.last_message.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
-
-  const handleSelectChat = (conversation: ChatConversation) => {
+  
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+  
+  const handleSelectChat = (conversation: any) => {
     setSelectedChat(conversation);
-    
-    // Update the unread count
-    const updatedConversations = conversations.map(conv => 
-      conv.id === conversation.id 
-        ? { ...conv, unread_count: 0 }
-        : conv
-    );
-    
-    setConversations(updatedConversations);
   };
-
+  
   const handleBackToList = () => {
     setSelectedChat(null);
   };
-
+  
+  const filteredConversations = searchQuery 
+    ? searchConversations(searchQuery)
+    : conversations;
+  
   const getFilteredConversations = () => {
     if (activeTab === "all") return filteredConversations;
     if (activeTab === "unread") return filteredConversations.filter(conv => conv.unread_count > 0);
     return filteredConversations;
   };
-
+  
   return (
     <div className="container pb-16 md:pb-0 pt-4 min-h-screen">
       {!selectedChat ? (
@@ -310,7 +158,6 @@ const Chat = () => {
                     onClick={() => handleSelectChat(conversation)}
                   >
                     <CardContent className="p-3">
-                      {/* Same conversation content as above */}
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <Avatar className="h-12 w-12">
@@ -360,19 +207,7 @@ const Chat = () => {
           {/* Chat header */}
           <div className="flex items-center p-3 border-b">
             <Button variant="ghost" size="icon" onClick={handleBackToList} className="mr-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="m15 18-6-6 6-6" />
-              </svg>
+              <ChevronLeft className="h-5 w-5" />
             </Button>
             
             <div className="flex items-center gap-3">
@@ -386,9 +221,7 @@ const Chat = () => {
                   <span className="font-medium">{selectedChat.participant.name}</span>
                   {selectedChat.participant.is_verified && (
                     <Badge variant="outline" className="ml-1 bg-blue-500 p-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
+                      <Check className="h-3 w-3 text-white" />
                     </Badge>
                   )}
                 </div>
@@ -401,7 +234,7 @@ const Chat = () => {
           
           {/* Chat messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((message) => (
+            {messages[selectedChat.id]?.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.sender_id === "current-user" ? "justify-end" : "justify-start"}`}
@@ -429,6 +262,7 @@ const Chat = () => {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
           
           {/* Chat input */}
@@ -437,7 +271,7 @@ const Chat = () => {
               placeholder="Type a message..."
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              onKeyDown={handleKeyPress}
               className="flex-1"
             />
             <Button onClick={handleSendMessage} size="icon" className="rounded-full">
@@ -446,9 +280,15 @@ const Chat = () => {
           </div>
         </div>
       )}
-      
-      <FooterNav />
     </div>
+  );
+};
+
+const Chat = () => {
+  return (
+    <ChatProvider>
+      <ChatInterface />
+    </ChatProvider>
   );
 };
 

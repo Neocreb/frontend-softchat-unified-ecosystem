@@ -1,39 +1,72 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Heart, Star } from "lucide-react";
-
-export type Product = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  discountPrice?: number;
-  image: string;
-  category: string;
-  rating: number;
-  inStock: boolean;
-  isNew?: boolean;
-  isFeatured?: boolean;
-};
+import { 
+  ShoppingCart, 
+  Heart, 
+  Star, 
+  MessageCircle, 
+  Eye, 
+  Check
+} from "lucide-react";
+import { Product } from "@/types/marketplace";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
   onAddToCart: (productId: string) => void;
+  onAddToWishlist: (productId: string) => void;
+  onViewProduct?: (product: Product) => void;
+  onMessageSeller?: (sellerId: string, productId: string) => void;
+  className?: string;
+  showSellerInfo?: boolean;
+  featured?: boolean;
+  sponsored?: boolean;
 }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+const ProductCard = ({ 
+  product, 
+  onAddToCart, 
+  onAddToWishlist,
+  onViewProduct,
+  onMessageSeller,
+  className,
+  showSellerInfo = false,
+  featured = false,
+  sponsored = false
+}: ProductCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
   
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsLiked(!isLiked);
+    onAddToWishlist(product.id);
   };
   
-  const handleAddToCart = () => {
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onAddToCart(product.id);
+  };
+
+  const handleViewProduct = () => {
+    if (onViewProduct) {
+      onViewProduct(product);
+    } else {
+      // Navigate to product detail page once it exists
+      // navigate(`/marketplace/product/${product.id}`);
+    }
+  };
+
+  const handleMessageSeller = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onMessageSeller) {
+      onMessageSeller(product.sellerId, product.id);
+    }
   };
   
   const discountPercentage = product.discountPrice 
@@ -42,10 +75,22 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   
   return (
     <Card 
-      className="overflow-hidden h-full flex flex-col transition-all duration-200 hover:shadow-md"
+      className={cn(
+        "overflow-hidden h-full flex flex-col transition-all duration-200 hover:shadow-md cursor-pointer relative",
+        featured && "border-blue-300 shadow-md",
+        sponsored && "border-amber-300 shadow-md",
+        className
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleViewProduct}
     >
+      {sponsored && (
+        <div className="absolute top-0 right-0 left-0 bg-amber-100 text-amber-800 z-10 text-xs font-medium py-0.5 px-2 text-center">
+          Sponsored
+        </div>
+      )}
+      
       <div className="relative pt-[100%] overflow-hidden bg-muted">
         <img 
           src={product.image} 
@@ -56,7 +101,7 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         />
         
         {product.isNew && (
-          <Badge className="absolute top-2 left-2 bg-softchat-primary">New</Badge>
+          <Badge className="absolute top-2 left-2 bg-blue-500">New</Badge>
         )}
         
         {product.discountPrice && (
@@ -76,6 +121,23 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
       </div>
       
       <CardHeader className="p-3 pb-0">
+        {showSellerInfo && (
+          <div className="flex items-center gap-2 mb-2">
+            <div className="flex-shrink-0 h-6 w-6 rounded-full overflow-hidden">
+              <img 
+                src={product.sellerAvatar} 
+                alt={product.sellerName}
+                className="h-full w-full object-cover" 
+              />
+            </div>
+            <div className="flex items-center text-sm">
+              <span className="font-medium">{product.sellerName}</span>
+              {product.sellerVerified && (
+                <Check className="h-3 w-3 text-blue-500 ml-1" />
+              )}
+            </div>
+          </div>
+        )}
         <div className="text-sm text-muted-foreground">{product.category}</div>
         <h3 className="font-medium line-clamp-2 h-12">{product.name}</h3>
       </CardHeader>
@@ -84,6 +146,9 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         <div className="flex items-center gap-1 text-sm">
           <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
           <span>{product.rating.toFixed(1)}</span>
+          {product.reviewCount && (
+            <span className="text-muted-foreground">({product.reviewCount})</span>
+          )}
         </div>
       </CardContent>
       
@@ -99,15 +164,28 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           )}
         </div>
         
-        <Button 
-          size="sm" 
-          className="h-8"
-          onClick={handleAddToCart}
-          disabled={!product.inStock}
-        >
-          <ShoppingCart className="h-4 w-4 mr-1" />
-          {product.inStock ? "Add" : "Sold Out"}
-        </Button>
+        <div className="flex gap-1">
+          {onMessageSeller && (
+            <Button 
+              size="sm" 
+              variant="ghost"
+              className="h-8 px-2"
+              onClick={handleMessageSeller}
+            >
+              <MessageCircle className="h-4 w-4" />
+            </Button>
+          )}
+          
+          <Button 
+            size="sm" 
+            className="h-8"
+            onClick={handleAddToCart}
+            disabled={!product.inStock}
+          >
+            <ShoppingCart className="h-4 w-4 mr-1" />
+            {product.inStock ? "Add" : "Sold Out"}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

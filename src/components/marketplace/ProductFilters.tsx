@@ -1,21 +1,17 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { Search, Filter, X } from "lucide-react";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Search, X } from "lucide-react";
-
-const categories = [
-  { id: "all", name: "All Categories" },
-  { id: "electronics", name: "Electronics" },
-  { id: "clothing", name: "Clothing" },
-  { id: "accessories", name: "Accessories" },
-  { id: "beauty", name: "Beauty & Health" },
-  { id: "home", name: "Home & Kitchen" },
-  { id: "footwear", name: "Footwear" },
-];
+import { useMarketplace } from "@/contexts/MarketplaceContext";
 
 interface ProductFiltersProps {
   activeCategory: string;
@@ -28,16 +24,19 @@ const ProductFilters = ({
   onCategoryChange, 
   onSearch 
 }: ProductFiltersProps) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 500]);
+  const [searchInput, setSearchInput] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const { setFilter } = useMarketplace();
+  
+  const productTags = [
+    "wireless", "audio", "electronics", "wearable", "fitness", 
+    "apparel", "casual", "fashion", "skincare", "kitchen", 
+    "home", "organic", "sports"
+  ];
   
   const handleSearch = () => {
-    onSearch(searchQuery);
-  };
-  
-  const handleClearSearch = () => {
-    setSearchQuery("");
-    onSearch("");
+    onSearch(searchInput);
   };
   
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -46,129 +45,105 @@ const ProductFilters = ({
     }
   };
   
+  const handleClearSearch = () => {
+    setSearchInput("");
+    onSearch("");
+  };
+  
+  const handlePriceChange = (value: number[]) => {
+    setPriceRange(value);
+    setFilter({ minPrice: value[0], maxPrice: value[1] });
+  };
+  
+  const handleTagToggle = (tag: string) => {
+    const newTags = selectedTags.includes(tag)
+      ? selectedTags.filter(t => t !== tag)
+      : [...selectedTags, tag];
+    
+    setSelectedTags(newTags);
+    setFilter({ tags: newTags.length > 0 ? newTags : undefined });
+  };
+  
+  const handleClearFilters = () => {
+    setPriceRange([0, 1000]);
+    setSelectedTags([]);
+    setSearchInput("");
+    onSearch("");
+    onCategoryChange("all");
+    setFilter({});
+  };
+  
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Search</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <Input
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={handleKeyPress}
-                className="pr-8"
+      <div className="relative">
+        <Input
+          placeholder="Search products"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+          className="pl-9 pr-9"
+        />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        {searchInput && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6"
+            onClick={handleClearSearch}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      
+      <Accordion type="multiple" defaultValue={["price", "tags"]} className="w-full">
+        <AccordionItem value="price">
+          <AccordionTrigger>Price Range</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4">
+              <Slider
+                defaultValue={[0, 1000]}
+                value={priceRange}
+                max={1000}
+                step={10}
+                onValueChange={handlePriceChange}
               />
-              {searchQuery && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-0 top-0 h-full w-8 p-0"
-                  onClick={handleClearSearch}
+              <div className="flex justify-between text-sm">
+                <span>${priceRange[0]}</span>
+                <span>${priceRange[1]}</span>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="tags">
+          <AccordionTrigger>Tags</AccordionTrigger>
+          <AccordionContent>
+            <div className="flex flex-wrap gap-2">
+              {productTags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant={selectedTags.includes(tag) ? "default" : "outline"}
+                  className="cursor-pointer capitalize"
+                  onClick={() => handleTagToggle(tag)}
                 >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
+                  {tag}
+                </Badge>
+              ))}
             </div>
-            <Button onClick={handleSearch} className="shrink-0">
-              <Search className="h-4 w-4 mr-1" />
-              Search
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Categories</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <Badge
-                key={category.id}
-                variant={activeCategory === category.id ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() => onCategoryChange(category.id)}
-              >
-                {category.name}
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Price Range</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <Slider
-              defaultValue={priceRange}
-              min={0}
-              max={1000}
-              step={10}
-              value={priceRange}
-              onValueChange={(value) => setPriceRange(value as number[])}
-            />
-            <div className="flex justify-between">
-              <span>${priceRange[0]}</span>
-              <span>${priceRange[1]}</span>
-            </div>
-            <Button 
-              size="sm" 
-              className="w-full"
-              onClick={() => console.log("Apply price filter", priceRange)}
-            >
-              Apply
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base">Filters</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="in-stock"
-                className="h-4 w-4 rounded border-gray-300"
-              />
-              <label htmlFor="in-stock" className="ml-2 text-sm">
-                In Stock Only
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="on-sale"
-                className="h-4 w-4 rounded border-gray-300"
-              />
-              <label htmlFor="on-sale" className="ml-2 text-sm">
-                On Sale
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="new-arrivals"
-                className="h-4 w-4 rounded border-gray-300"
-              />
-              <label htmlFor="new-arrivals" className="ml-2 text-sm">
-                New Arrivals
-              </label>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <Button 
+        variant="outline" 
+        size="sm" 
+        className="w-full"
+        onClick={handleClearFilters}
+      >
+        <Filter className="h-4 w-4 mr-2" />
+        Clear Filters
+      </Button>
     </div>
   );
 };

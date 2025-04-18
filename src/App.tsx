@@ -5,12 +5,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { MarketplaceProvider } from "./contexts/MarketplaceContext";
+import { ChatProvider } from "./contexts/ChatContext";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
+import MarketplaceBoost from "./pages/marketplace/MarketplaceBoost";
+import MarketplaceCart from "./pages/marketplace/MarketplaceCart";
+import MarketplaceCheckout from "./pages/marketplace/MarketplaceCheckout";
+import MarketplaceList from "./pages/marketplace/MarketplaceList";
+import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
+import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
+import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
 import CryptoMarket from "./pages/CryptoMarket";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
@@ -117,13 +126,26 @@ const AppRoutes = () => {
       {/* Protected routes inside app layout */}
       <Route path="/" element={
         <ProtectedRoute>
-          <AppLayout />
+          <MarketplaceProvider>
+            <ChatProvider>
+              <AppLayout />
+            </ChatProvider>
+          </MarketplaceProvider>
         </ProtectedRoute>
       }>
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
+        
+        {/* Marketplace routes */}
         <Route path="marketplace" element={<Marketplace />} />
+        <Route path="marketplace/my" element={<MarketplaceDashboard />} />
+        <Route path="marketplace/list" element={<MarketplaceList />} />
+        <Route path="marketplace/seller/:username" element={<MarketplaceSeller />} />
+        <Route path="marketplace/wishlist" element={<MarketplaceWishlist />} />
+        <Route path="marketplace/cart" element={<MarketplaceCart />} />
+        <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
+        
         <Route path="crypto" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="videos" element={<Videos />} />

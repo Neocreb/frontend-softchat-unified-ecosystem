@@ -1,246 +1,226 @@
 
-import { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Session } from "@supabase/supabase-js";
-import { UserProfile, ExtendedUser } from "@/types/user";
-import { enhanceUserWithProfile, updateUserProfileData } from "@/services/authService";
+import { Session, User } from "@supabase/supabase-js";
 
-interface AuthContextType {
-  user: ExtendedUser | null;
-  session: Session | null;
+// Define types for our context
+type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<{ error: any }>;
-  signup: (email: string, password: string, name?: string) => Promise<{ error: any, user: any }>;
-  logout: () => void;
+  user: User | null;
+  session: Session | null;
+  error: Error | null;
+  login: (email: string, password: string) => Promise<{ error?: Error }>;
+  logout: () => Promise<void>;
+  signup: (email: string, password: string, name: string) => Promise<{ error?: Error }>;
   isAdmin: () => boolean;
-  updateProfile: (profileData: Partial<UserProfile>) => Promise<UserProfile | null>;
-  error: string | null;
-  register: (name: string, email: string, password: string) => Promise<{ error: any, user: any }>;
-}
+};
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// Create the auth context with default values
+const AuthContext = createContext<AuthContextType>({
+  isAuthenticated: false,
+  isLoading: true,
+  user: null,
+  session: null,
+  error: null,
+  login: async () => ({ error: undefined }),
+  logout: async () => {},
+  signup: async () => ({ error: undefined }),
+  isAdmin: () => false,
+});
 
+// Custom hook to use the auth context
+export const useAuth = () => useContext(AuthContext);
+
+// Authentication provider component
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<ExtendedUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  const [error, setError] = useState<Error | null>(null);
+  
+  // Check for an existing session on component mount
   useEffect(() => {
-    console.log("AuthProvider: Setting up auth state");
-    let mounted = true;
-
-    // Set up auth state listener FIRST (to prevent missing auth events)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, newSession) => {
-        console.log("Auth state changed:", event, newSession?.user?.email);
-        
-        if (!mounted) return;
-        
-        if (newSession) {
-          setSession(newSession);
-          
-          try {
-            // Enhance user with profile data
-            const enhancedUser = await enhanceUserWithProfile(newSession.user);
-            if (mounted) {
-              setUser(enhancedUser);
-              console.log("User set with profile:", enhancedUser?.email);
-            }
-          } catch (err) {
-            console.error("Error enhancing user:", err);
-            // Still set the user even if profile enhancement fails
-            if (mounted) {
-              setUser(newSession.user as ExtendedUser);
-              console.log("User set without profile:", newSession.user?.email);
-            }
-          }
-        } else {
-          if (mounted) {
-            setSession(null);
-            setUser(null);
-            console.log("User and session cleared");
-          }
-        }
-        
-        if (mounted) {
-          setIsLoading(false);
-          console.log("Auth loading completed from state change");
-        }
-      }
-    );
-
-    // THEN check for existing session
-    const checkSession = async () => {
+    console.log("AuthProvider: Initializing");
+    
+    const initializeAuth = async () => {
       try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
-        console.log("Initial session check:", currentSession?.user?.email);
+        console.log("AuthProvider: Checking for existing session");
         
-        if (!mounted) return;
-        
-        if (currentSession) {
-          setSession(currentSession);
-          
-          try {
-            const enhancedUser = await enhanceUserWithProfile(currentSession.user);
-            if (mounted) {
-              setUser(enhancedUser);
-              console.log("Initial user set with profile");
-            }
-          } catch (err) {
-            console.error("Error enhancing initial user:", err);
-            // Still set the user even if profile enhancement fails
-            if (mounted) {
-              setUser(currentSession.user as ExtendedUser);
-              console.log("Initial user set without profile");
-            }
-          }
+        // Get the current session
+        const { data: { session }, error } = await supabase.auth.getSession();
+
+        if (error) {
+          throw error;
         }
-        
-        if (mounted) {
-          setIsLoading(false);
-          console.log("Auth loading completed from initial check");
+
+        if (session) {
+          console.log("AuthProvider: Found existing session", session);
+          setSession(session);
+          setUser(session.user);
+        } else {
+          console.log("AuthProvider: No existing session found");
+          setSession(null);
+          setUser(null);
         }
-      } catch (error) {
-        console.error("Session check error:", error);
-        if (mounted) {
-          setIsLoading(false);
-          console.log("Auth loading completed after error");
-        }
+      } catch (err) {
+        console.error("AuthProvider: Error checking session", err);
+        setError(err instanceof Error ? err : new Error(String(err)));
+      } finally {
+        console.log("AuthProvider: Initialization complete");
+        setIsLoading(false);
       }
     };
 
-    checkSession();
+    initializeAuth();
 
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log("AuthProvider: Auth state changed", event, session ? "session exists" : "no session");
+        
+        setSession(session);
+        setUser(session?.user || null);
+        setIsLoading(false);
+      }
+    );
+
+    // Cleanup subscription on unmount
     return () => {
-      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
 
+  // Login function
   const login = async (email: string, password: string) => {
-    setError(null);
+    console.log("AuthProvider: Login attempt", email);
     setIsLoading(true);
+    
     try {
-      console.log("Attempting login for:", email);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      
+
       if (error) {
-        console.error("Login error:", error.message);
-        setError(error.message);
-      } else {
-        console.log("Login successful for:", email);
+        console.error("AuthProvider: Login error", error);
+        setError(error);
+        return { error };
       }
+
+      console.log("AuthProvider: Login successful", data);
+      setUser(data.user);
+      setSession(data.session);
       
-      setIsLoading(false);
+      return {};
+    } catch (err) {
+      console.error("AuthProvider: Login exception", err);
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error);
       return { error };
-    } catch (error: any) {
-      console.error("Login exception:", error);
-      setError(error.message || "An error occurred during login");
+    } finally {
       setIsLoading(false);
-      return { error };
     }
   };
 
-  const signup = async (email: string, password: string, name?: string) => {
-    setError(null);
+  // Logout function
+  const logout = async () => {
+    console.log("AuthProvider: Logout attempt");
+    setIsLoading(true);
+    
     try {
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("AuthProvider: Logout error", error);
+        setError(error);
+      } else {
+        console.log("AuthProvider: Logout successful");
+        setUser(null);
+        setSession(null);
+      }
+    } catch (err) {
+      console.error("AuthProvider: Logout exception", err);
+      setError(err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Signup function
+  const signup = async (email: string, password: string, name: string) => {
+    console.log("AuthProvider: Signup attempt", email);
+    setIsLoading(true);
+    
+    try {
+      // For demo purposes, we're using fake data for user profile
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             name,
+            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`,
+            role: "user",
           },
         },
       });
-      
+
       if (error) {
-        setError(error.message);
+        console.error("AuthProvider: Signup error", error);
+        setError(error);
+        return { error };
       }
+
+      console.log("AuthProvider: Signup successful", data);
+      // In a real app, we would handle email verification here
+      setUser(data.user);
+      setSession(data.session);
       
-      return { error, user: data.user };
-    } catch (error: any) {
-      console.error("Signup error:", error);
-      setError(error.message || "An error occurred during signup");
-      return { error, user: null };
+      return {};
+    } catch (err) {
+      console.error("AuthProvider: Signup exception", err);
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error);
+      return { error };
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Alias for signup to be used in EnhancedAuthForm
-  const register = async (name: string, email: string, password: string) => {
-    return signup(email, password, name);
-  };
-
-  const logout = async () => {
-    await supabase.auth.signOut();
-  };
-
+  // Check if current user is an admin
   const isAdmin = () => {
-    return user?.email?.endsWith("@admin.com") || user?.role === 'admin' || false;
+    return user?.user_metadata.role === "admin";
   };
 
-  const updateProfile = async (profileData: Partial<UserProfile>) => {
-    if (!user) return null;
-    
-    try {
-      const updatedProfile = await updateUserProfileData(user.id, profileData);
-      
-      // Update the user state with the new profile data
-      if (updatedProfile) {
-        setUser(prev => {
-          if (!prev) return null;
-          return {
-            ...prev,
-            profile: {
-              ...prev.profile,
-              ...updatedProfile
-            },
-            // Update convenience properties
-            name: updatedProfile.full_name || prev.name,
-            avatar: updatedProfile.avatar_url || prev.avatar,
-            role: updatedProfile.role || prev.role,
-          };
-        });
-      }
-      
-      return updatedProfile;
-    } catch (error: any) {
-      console.error("Update profile error:", error);
-      setError(error.message || "An error occurred updating profile");
-      return null;
-    }
+  // Extract authentication state from session
+  const isAuthenticated = !!session;
+
+  // Create the context value
+  const contextValue = {
+    isAuthenticated,
+    isLoading,
+    user,
+    session,
+    error,
+    login,
+    logout,
+    signup,
+    isAdmin,
   };
 
+  console.log("AuthProvider: Current state", { 
+    isAuthenticated, 
+    isLoading,
+    hasUser: !!user,
+    hasSession: !!session,
+    hasError: !!error
+  });
+
+  // Render the provider
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        session,
-        isAuthenticated: !!user && !!session,
-        isLoading,
-        login,
-        signup,
-        logout,
-        isAdmin,
-        updateProfile,
-        error,
-        register,
-      }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };

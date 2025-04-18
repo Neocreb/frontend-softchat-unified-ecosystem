@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MessageCircle, Menu, X, User, ShoppingCart, Home, TrendingUp, Wallet, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,11 @@ const EnhancedHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  const handleChatClick = () => {
+    navigate("/chat");
+  };
   
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -72,7 +77,12 @@ const EnhancedHeader = () => {
         <div className="flex items-center gap-3">
           <NotificationsDropdown />
           
-          <Button variant="ghost" size="icon" aria-label="Messages">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            aria-label="Messages"
+            onClick={handleChatClick}
+          >
             <MessageCircle className="h-5 w-5" />
           </Button>
           
@@ -80,15 +90,15 @@ const EnhancedHeader = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "@user"} />
-                  <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "SC"}</AvatarFallback>
+                  <AvatarImage src={user?.user_metadata?.avatar || "/placeholder.svg"} alt={user?.user_metadata?.name || "@user"} />
+                  <AvatarFallback>{user?.user_metadata?.name?.substring(0, 2).toUpperCase() || "SC"}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user?.name || "User"}</p>
+                  <p className="text-sm font-medium leading-none">{user?.user_metadata?.name || "User"}</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user?.email || "user@example.com"}
                   </p>
@@ -154,6 +164,10 @@ const EnhancedHeader = () => {
           <Link to="/rewards" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Award className="h-5 w-5" />
             <span>Rewards</span>
+          </Link>
+          <Link to="/chat" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <MessageCircle className="h-5 w-5" />
+            <span>Chat</span>
           </Link>
         </div>
       </div>
