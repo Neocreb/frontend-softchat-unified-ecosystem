@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import FooterNav from "@/components/layout/FooterNav";
 import SearchBar from "@/components/explore/SearchBar";
 import ExploreTabs from "@/components/explore/ExploreTabs";
@@ -208,27 +209,31 @@ const Explore = () => {
       <div className="space-y-4">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         
-        <ExploreTabs defaultValue={activeTab} onValueChange={setActiveTab} />
-        
-        <TabsContent value="trending">
-          <TrendingTopics topics={filteredTopics} />
-        </TabsContent>
-        
-        <TabsContent value="people">
-          <SuggestedUsers users={filteredUsers} />
-        </TabsContent>
-        
-        <TabsContent value="hashtags">
-          <PopularHashtags hashtags={filteredHashtags} />
-        </TabsContent>
-        
-        <TabsContent value="groups">
-          <ExploreGroups groups={filteredGroups} />
-        </TabsContent>
-        
-        <TabsContent value="pages">
-          <ExplorePages pages={filteredPages} />
-        </TabsContent>
+        {/* Use Tabs component directly instead of just ExploreTabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          {/* Reuse the ExploreTabs for the TabsList part */}
+          <ExploreTabs defaultValue={activeTab} onValueChange={setActiveTab} />
+          
+          <TabsContent value="trending">
+            <TrendingTopics topics={filteredTopics} />
+          </TabsContent>
+          
+          <TabsContent value="people">
+            <SuggestedUsers users={filteredUsers} />
+          </TabsContent>
+          
+          <TabsContent value="hashtags">
+            <PopularHashtags hashtags={filteredHashtags} />
+          </TabsContent>
+          
+          <TabsContent value="groups">
+            <ExploreGroups groups={filteredGroups} />
+          </TabsContent>
+          
+          <TabsContent value="pages">
+            <ExplorePages pages={filteredPages} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
