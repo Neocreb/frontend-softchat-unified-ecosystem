@@ -20,7 +20,7 @@ const EnhancedAuthForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, signup, error } = useAuth();
   const notification = useNotification();
-  const navigate = useNavigate(); // Add this line
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,18 +28,27 @@ const EnhancedAuthForm = () => {
 
     try {
       if (isLogin) {
-        await login(email, password);
+        const result = await login(email, password);
+        if (result.error) {
+          throw result.error;
+        }
         notification.success("Successfully logged in!");
-        navigate("/feed"); // Use React Router navigation instead of direct window.location
+        console.log("Login successful, navigating to /feed");
+        navigate("/feed");
       } else {
         if (!name) {
           throw new Error("Name is required");
         }
-        await signup(email, password, name);
+        const result = await signup(email, password, name);
+        if (result.error) {
+          throw result.error;
+        }
         notification.success("Registration successful! Please check your email for verification.");
-        navigate("/feed"); // Navigate after successful signup
+        console.log("Registration successful, navigating to /feed");
+        navigate("/feed");
       }
     } catch (err: any) {
+      console.error("Auth error:", err);
       notification.error(err.message || "Authentication failed");
     } finally {
       setIsSubmitting(false);
@@ -49,10 +58,15 @@ const EnhancedAuthForm = () => {
   const handleDemoLogin = async () => {
     setIsSubmitting(true);
     try {
-      await login("demo@softchat.com", "password123");
+      const result = await login("demo@softchat.com", "password123");
+      if (result.error) {
+        throw result.error;
+      }
       notification.success("Successfully logged in with demo account!");
-      navigate("/feed"); // Use React Router navigation
+      console.log("Demo login successful, navigating to /feed");
+      navigate("/feed");
     } catch (err: any) {
+      console.error("Demo login error:", err);
       notification.error(err.message || "Demo login failed");
     } finally {
       setIsSubmitting(false);

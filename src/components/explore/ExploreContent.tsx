@@ -28,7 +28,7 @@ const ExploreContent = ({
 }: ExploreContentProps) => {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <ExploreTabs defaultValue={activeTab} onValueChange={setActiveTab} />
+      <ExploreTabs activeTab={activeTab} onValueChange={setActiveTab} />
       
       <TabsContent value="trending">
         <TrendingTopics topics={filteredTopics} />

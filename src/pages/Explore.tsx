@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
 import { useExplore } from "@/hooks/use-explore";

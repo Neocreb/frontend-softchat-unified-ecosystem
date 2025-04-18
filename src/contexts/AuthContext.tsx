@@ -31,11 +31,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Set up auth state listener FIRST (to prevent missing auth events)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
+        console.log("Auth state changed:", event, newSession?.user?.email);
         setSession(newSession);
         
         if (newSession?.user) {
-          const enhancedUser = await enhanceUserWithProfile(newSession.user);
-          setUser(enhancedUser);
+          try {
+            const enhancedUser = await enhanceUserWithProfile(newSession.user);
+            setUser(enhancedUser);
+          } catch (err) {
+            console.error("Error enhancing user:", err);
+            // Still set the user even if profile enhancement fails
+            setUser(newSession.user as ExtendedUser);
+          }
         } else {
           setUser(null);
         }
@@ -46,11 +53,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
+      console.log("Initial session check:", currentSession?.user?.email);
       setSession(currentSession);
       
       if (currentSession?.user) {
-        const enhancedUser = await enhanceUserWithProfile(currentSession.user);
-        setUser(enhancedUser);
+        try {
+          const enhancedUser = await enhanceUserWithProfile(currentSession.user);
+          setUser(enhancedUser);
+        } catch (err) {
+          console.error("Error enhancing user:", err);
+          // Still set the user even if profile enhancement fails
+          setUser(currentSession.user as ExtendedUser);
+        }
       } else {
         setUser(null);
       }

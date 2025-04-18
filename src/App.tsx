@@ -21,8 +21,15 @@ import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
 import Index from "./pages/Index";
 
-// Create a query client
-const queryClient = new QueryClient();
+// Create a query client with retry configuration
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1, // Only retry once to avoid excessive requests during auth issues
+      refetchOnWindowFocus: false, // Disable refetching when window regains focus
+    },
+  },
+});
 
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -40,9 +47,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!isAuthenticated) {
+    console.log("Not authenticated, redirecting to /auth");
     return <Navigate to="/auth" replace />;
   }
   
+  console.log("Authentication confirmed, rendering protected route");
   return <>{children}</>;
 };
 
@@ -76,7 +85,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 const AppRoutes = () => {
   const { isAuthenticated, isLoading } = useAuth();
   
-  // If still loading auth state, show splash screen
+  // If still loading auth state, show splash screen but with a shorter timeout
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
