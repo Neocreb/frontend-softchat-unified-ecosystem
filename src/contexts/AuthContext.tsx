@@ -28,69 +28,120 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("AuthProvider: Setting up auth state");
+    let mounted = true;
+
     // Set up auth state listener FIRST (to prevent missing auth events)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
         console.log("Auth state changed:", event, newSession?.user?.email);
-        setSession(newSession);
         
-        if (newSession?.user) {
+        if (!mounted) return;
+        
+        if (newSession) {
+          setSession(newSession);
+          
           try {
+            // Enhance user with profile data
             const enhancedUser = await enhanceUserWithProfile(newSession.user);
-            setUser(enhancedUser);
+            if (mounted) {
+              setUser(enhancedUser);
+              console.log("User set with profile:", enhancedUser?.email);
+            }
           } catch (err) {
             console.error("Error enhancing user:", err);
             // Still set the user even if profile enhancement fails
-            setUser(newSession.user as ExtendedUser);
+            if (mounted) {
+              setUser(newSession.user as ExtendedUser);
+              console.log("User set without profile:", newSession.user?.email);
+            }
           }
         } else {
-          setUser(null);
+          if (mounted) {
+            setSession(null);
+            setUser(null);
+            console.log("User and session cleared");
+          }
         }
         
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+          console.log("Auth loading completed from state change");
+        }
       }
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(async ({ data: { session: currentSession } }) => {
-      console.log("Initial session check:", currentSession?.user?.email);
-      setSession(currentSession);
-      
-      if (currentSession?.user) {
-        try {
-          const enhancedUser = await enhanceUserWithProfile(currentSession.user);
-          setUser(enhancedUser);
-        } catch (err) {
-          console.error("Error enhancing user:", err);
-          // Still set the user even if profile enhancement fails
-          setUser(currentSession.user as ExtendedUser);
+    const checkSession = async () => {
+      try {
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        console.log("Initial session check:", currentSession?.user?.email);
+        
+        if (!mounted) return;
+        
+        if (currentSession) {
+          setSession(currentSession);
+          
+          try {
+            const enhancedUser = await enhanceUserWithProfile(currentSession.user);
+            if (mounted) {
+              setUser(enhancedUser);
+              console.log("Initial user set with profile");
+            }
+          } catch (err) {
+            console.error("Error enhancing initial user:", err);
+            // Still set the user even if profile enhancement fails
+            if (mounted) {
+              setUser(currentSession.user as ExtendedUser);
+              console.log("Initial user set without profile");
+            }
+          }
         }
-      } else {
-        setUser(null);
+        
+        if (mounted) {
+          setIsLoading(false);
+          console.log("Auth loading completed from initial check");
+        }
+      } catch (error) {
+        console.error("Session check error:", error);
+        if (mounted) {
+          setIsLoading(false);
+          console.log("Auth loading completed after error");
+        }
       }
-      
-      setIsLoading(false);
-    });
+    };
 
-    return () => subscription.unsubscribe();
+    checkSession();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
     setError(null);
+    setIsLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log("Attempting login for:", email);
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
       if (error) {
+        console.error("Login error:", error.message);
         setError(error.message);
+      } else {
+        console.log("Login successful for:", email);
       }
       
+      setIsLoading(false);
       return { error };
     } catch (error: any) {
-      console.error("Login error:", error);
+      console.error("Login exception:", error);
       setError(error.message || "An error occurred during login");
+      setIsLoading(false);
       return { error };
     }
   };
@@ -170,7 +221,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         user,
         session,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !!session,
         isLoading,
         login,
         signup,

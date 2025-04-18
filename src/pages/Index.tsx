@@ -8,8 +8,10 @@ const Index = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
+    // Only redirect after we know the authentication state
     if (!isLoading) {
-      // Only redirect when we know the authentication state
+      console.log("Index page: Auth state determined", { isAuthenticated, isLoading });
+      
       if (isAuthenticated) {
         navigate("/feed", { replace: true });
       } else {
@@ -18,12 +20,13 @@ const Index = () => {
     }
   }, [navigate, isAuthenticated, isLoading]);
 
-  // Show loading state while authentication is being determined
+  // Show a more informative loading state
   return (
     <div className="h-screen flex items-center justify-center">
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Loading Softchat...</p>
+        <p className="text-muted-foreground">Checking authentication status...</p>
+        {isLoading && <p className="text-xs text-muted-foreground mt-2">This may take a moment</p>}
       </div>
     </div>
   );

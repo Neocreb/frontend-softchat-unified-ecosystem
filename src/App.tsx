@@ -35,17 +35,19 @@ const queryClient = new QueryClient({
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
   
+  // Show loading state while checking authentication
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading authentication...</p>
+          <p className="text-muted-foreground">Checking authentication...</p>
         </div>
       </div>
     );
   }
   
+  // Redirect to auth page if not authenticated
   if (!isAuthenticated) {
     console.log("Not authenticated, redirecting to /auth");
     return <Navigate to="/auth" replace />;
@@ -64,7 +66,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading authentication...</p>
+          <p className="text-muted-foreground">Checking admin rights...</p>
         </div>
       </div>
     );
@@ -85,17 +87,21 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 const AppRoutes = () => {
   const { isAuthenticated, isLoading } = useAuth();
   
-  // If still loading auth state, show splash screen but with a shorter timeout
+  // If still loading auth state, show splash screen
   if (isLoading) {
+    console.log("App routes: Auth is loading");
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading Softchat...</p>
+          <p className="text-xs text-muted-foreground mt-2">Initializing session</p>
         </div>
       </div>
     );
   }
+  
+  console.log("App routes: Auth state determined", { isAuthenticated });
   
   return (
     <Routes>
@@ -103,9 +109,10 @@ const AppRoutes = () => {
       <Route path="/" element={<Index />} />
       
       {/* Auth route - redirects to feed if already authenticated */}
-      <Route path="/auth" element={
-        isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />
-      } />
+      <Route 
+        path="/auth" 
+        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />} 
+      />
       
       {/* Protected routes inside app layout */}
       <Route path="/" element={

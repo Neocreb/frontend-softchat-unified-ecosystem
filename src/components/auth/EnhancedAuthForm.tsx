@@ -18,38 +18,55 @@ const EnhancedAuthForm = () => {
   const [password, setPassword] = useState("password123");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, signup, error } = useAuth();
+  const { login, signup, error: authError } = useAuth();
+  const [error, setError] = useState<string | null>(null);
   const notification = useNotification();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
     try {
+      console.log(`Attempting to ${isLogin ? 'login' : 'register'} user: ${email}`);
+      
       if (isLogin) {
         const result = await login(email, password);
         if (result.error) {
-          throw result.error;
+          setError(result.error.message || "Login failed");
+          notification.error(result.error.message || "Login failed");
+          console.error("Login error:", result.error);
+        } else {
+          notification.success("Successfully logged in!");
+          console.log("Login successful, navigating to /feed");
+          navigate("/feed", { replace: true });
         }
-        notification.success("Successfully logged in!");
-        console.log("Login successful, navigating to /feed");
-        navigate("/feed");
       } else {
         if (!name) {
-          throw new Error("Name is required");
+          const nameError = "Name is required";
+          setError(nameError);
+          notification.error(nameError);
+          setIsSubmitting(false);
+          return;
         }
+        
         const result = await signup(email, password, name);
         if (result.error) {
-          throw result.error;
+          setError(result.error.message || "Registration failed");
+          notification.error(result.error.message || "Registration failed");
+          console.error("Registration error:", result.error);
+        } else {
+          notification.success("Registration successful! Please check your email for verification.");
+          console.log("Registration successful, navigating to /feed");
+          navigate("/feed", { replace: true });
         }
-        notification.success("Registration successful! Please check your email for verification.");
-        console.log("Registration successful, navigating to /feed");
-        navigate("/feed");
       }
     } catch (err: any) {
-      console.error("Auth error:", err);
-      notification.error(err.message || "Authentication failed");
+      console.error("Auth submission error:", err);
+      const errorMessage = err.message || "Authentication failed";
+      setError(errorMessage);
+      notification.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -57,21 +74,32 @@ const EnhancedAuthForm = () => {
 
   const handleDemoLogin = async () => {
     setIsSubmitting(true);
+    setError(null);
+    
     try {
+      console.log("Attempting demo login");
       const result = await login("demo@softchat.com", "password123");
       if (result.error) {
-        throw result.error;
+        setError(result.error.message || "Demo login failed");
+        notification.error(result.error.message || "Demo login failed");
+        console.error("Demo login error:", result.error);
+      } else {
+        notification.success("Successfully logged in with demo account!");
+        console.log("Demo login successful, navigating to /feed");
+        navigate("/feed", { replace: true });
       }
-      notification.success("Successfully logged in with demo account!");
-      console.log("Demo login successful, navigating to /feed");
-      navigate("/feed");
     } catch (err: any) {
       console.error("Demo login error:", err);
-      notification.error(err.message || "Demo login failed");
+      const errorMessage = err.message || "Demo login failed";
+      setError(errorMessage);
+      notification.error(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Use the combined error from auth context and local state
+  const displayError = error || authError;
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -93,7 +121,7 @@ const EnhancedAuthForm = () => {
               showPassword={showPassword}
               setShowPassword={setShowPassword}
               isSubmitting={isSubmitting}
-              error={error}
+              error={displayError}
               onSubmit={handleSubmit}
               onDemoLogin={handleDemoLogin}
             />
@@ -110,7 +138,7 @@ const EnhancedAuthForm = () => {
               showPassword={showPassword}
               setShowPassword={setShowPassword}
               isSubmitting={isSubmitting}
-              error={error}
+              error={displayError}
               onSubmit={handleSubmit}
             />
           </TabsContent>
