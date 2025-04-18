@@ -8,8 +8,8 @@ const Index = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    // Immediate redirect if auth state is known
     if (!isLoading) {
+      // Only redirect when we know the authentication state
       if (isAuthenticated) {
         navigate("/feed", { replace: true });
       } else {

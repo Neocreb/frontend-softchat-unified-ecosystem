@@ -12,9 +12,9 @@ const AppLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <EnhancedHeader />
-      <div className="flex flex-1">
+      <div className="flex flex-1 w-full max-w-screen-xl mx-auto">
         {isAdmin && <AdminSidebar />}
-        <main className="flex-1 w-full max-w-screen-xl mx-auto">
+        <main className="flex-1 w-full pb-16 md:pb-0">
           <Outlet />
         </main>
       </div>

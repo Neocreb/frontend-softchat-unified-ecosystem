@@ -204,7 +204,7 @@ const Explore = () => {
   );
 
   return (
-    <div className="container max-w-[680px] pb-16 md:pb-0 pt-4">
+    <div className="container max-w-[680px] mx-auto pb-16 md:pb-0 pt-4">
       <div className="space-y-4">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         
@@ -230,8 +230,6 @@ const Explore = () => {
           <ExplorePages pages={filteredPages} />
         </TabsContent>
       </div>
-      
-      <FooterNav />
     </div>
   );
 };

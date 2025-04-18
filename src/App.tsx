@@ -21,7 +21,7 @@ import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
 import Index from "./pages/Index";
 
-// Create a client
+// Create a query client
 const queryClient = new QueryClient();
 
 // Protected route component
@@ -33,7 +33,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">Loading authentication...</p>
         </div>
       </div>
     );
@@ -55,7 +55,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-muted-foreground">Loading authentication...</p>
         </div>
       </div>
     );
@@ -74,11 +74,23 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
 // App routes component that uses auth context
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  
+  // If still loading auth state, show splash screen
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading Softchat...</p>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <Routes>
-      {/* Root path redirects to index page for proper authentication handling */}
+      {/* Root path redirects based on auth state */}
       <Route path="/" element={<Index />} />
       
       {/* Auth route - redirects to feed if already authenticated */}
@@ -86,21 +98,13 @@ const AppRoutes = () => {
         isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />
       } />
       
-      {/* Feed route - only accessible if authenticated */}
-      <Route path="/feed" element={
+      {/* Protected routes inside app layout */}
+      <Route path="/" element={
         <ProtectedRoute>
           <AppLayout />
         </ProtectedRoute>
       }>
-        <Route index element={<EnhancedFeed />} />
-      </Route>
-      
-      {/* All other protected routes */}
-      <Route element={
-        <ProtectedRoute>
-          <AppLayout />
-        </ProtectedRoute>
-      }>
+        <Route path="feed" element={<EnhancedFeed />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="marketplace" element={<Marketplace />} />
@@ -109,18 +113,16 @@ const AppRoutes = () => {
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
-        
-        {/* Admin Routes */}
-        <Route path="admin/dashboard" element={
-          <AdminRoute>
-            <AdminDashboard />
-          </AdminRoute>
-        } />
-        <Route path="admin/users" element={
-          <AdminRoute>
-            <UserManagement />
-          </AdminRoute>
-        } />
+      </Route>
+      
+      {/* Admin Routes */}
+      <Route path="/admin" element={
+        <AdminRoute>
+          <AppLayout />
+        </AdminRoute>
+      }>
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="users" element={<UserManagement />} />
       </Route>
       
       <Route path="*" element={<NotFound />} />

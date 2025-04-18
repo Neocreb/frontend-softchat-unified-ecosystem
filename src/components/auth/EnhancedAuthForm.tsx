@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNotification } from "@/hooks/use-notification";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -19,6 +20,7 @@ const EnhancedAuthForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, signup, error } = useAuth();
   const notification = useNotification();
+  const navigate = useNavigate(); // Add this line
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,14 +29,15 @@ const EnhancedAuthForm = () => {
     try {
       if (isLogin) {
         await login(email, password);
-        notification.success("Successfully logged in!");window.location.href = "/feed";
-
+        notification.success("Successfully logged in!");
+        navigate("/feed"); // Use React Router navigation instead of direct window.location
       } else {
         if (!name) {
           throw new Error("Name is required");
         }
         await signup(email, password, name);
         notification.success("Registration successful! Please check your email for verification.");
+        navigate("/feed"); // Navigate after successful signup
       }
     } catch (err: any) {
       notification.error(err.message || "Authentication failed");
@@ -48,6 +51,7 @@ const EnhancedAuthForm = () => {
     try {
       await login("demo@softchat.com", "password123");
       notification.success("Successfully logged in with demo account!");
+      navigate("/feed"); // Use React Router navigation
     } catch (err: any) {
       notification.error(err.message || "Demo login failed");
     } finally {
