@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { 
   Product, 
@@ -337,6 +336,7 @@ type MarketplaceContextType = {
   filter: ProductFilter;
   activeProduct: Product | null;
   activeSeller: SellerProfile | null;
+  isLoading: boolean;
   setFilter: (filter: ProductFilter) => void;
   addToCart: (productId: string, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
@@ -380,6 +380,7 @@ export const MarketplaceProvider = ({ children }: { children: React.ReactNode })
   const [filter, setFilter] = useState<ProductFilter>({});
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [activeSeller, setActiveSeller] = useState<SellerProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [boostOptions] = useState<BoostOption[]>(mockBoostOptions);
 
   // Calculate derived state
@@ -837,6 +838,7 @@ export const MarketplaceProvider = ({ children }: { children: React.ReactNode })
     filter,
     activeProduct,
     activeSeller,
+    isLoading,
     setFilter,
     addToCart,
     removeFromCart,
