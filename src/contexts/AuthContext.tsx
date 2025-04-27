@@ -239,7 +239,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(prev => {
         if (!prev) return null;
         
-        return {
+        // Create a new user object with updated metadata and profile
+        const updatedUser: ExtendedUser = {
           ...prev,
           user_metadata: {
             ...prev.user_metadata,
@@ -247,12 +248,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           },
           name: profileData.full_name || prev.name,
           avatar: profileData.avatar_url || prev.avatar,
-          // Update other computed properties as needed
+          points: profileData.points || prev.points,
+          level: profileData.level || prev.level,
+          role: profileData.role || prev.role,
+          // Ensure the profile property maintains its required fields
           profile: {
-            ...(prev.profile || {}),
-            ...profileData
+            ...prev.profile!,
+            ...profileData,
+            // Explicitly ensure id is not overwritten
+            id: prev.profile?.id || prev.id
           }
         };
+        
+        return updatedUser;
       });
       
     } catch (error) {
