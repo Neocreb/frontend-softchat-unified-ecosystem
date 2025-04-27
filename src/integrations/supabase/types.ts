@@ -9,6 +9,120 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      crypto_settings: {
+        Row: {
+          conversion_rate_softpoints_to_usdt: number
+          id: string
+          min_kyc_level_for_withdrawal: number
+          p2p_fee_percentage: number
+          reward_rate_percentage: number
+          transaction_fee_percentage: number
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          conversion_rate_softpoints_to_usdt?: number
+          id?: string
+          min_kyc_level_for_withdrawal?: number
+          p2p_fee_percentage?: number
+          reward_rate_percentage?: number
+          transaction_fee_percentage?: number
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          conversion_rate_softpoints_to_usdt?: number
+          id?: string
+          min_kyc_level_for_withdrawal?: number
+          p2p_fee_percentage?: number
+          reward_rate_percentage?: number
+          transaction_fee_percentage?: number
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      crypto_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          crypto_type: string
+          fee: number
+          id: string
+          notes: string | null
+          recipient_id: string | null
+          status: string
+          transaction_type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          crypto_type: string
+          fee?: number
+          id?: string
+          notes?: string | null
+          recipient_id?: string | null
+          status?: string
+          transaction_type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          crypto_type?: string
+          fee?: number
+          id?: string
+          notes?: string | null
+          recipient_id?: string | null
+          status?: string
+          transaction_type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      p2p_offers: {
+        Row: {
+          amount: number
+          created_at: string | null
+          crypto_type: string
+          expires_at: string
+          id: string
+          notes: string | null
+          offer_type: string
+          payment_method: string
+          price_per_unit: number
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          crypto_type: string
+          expires_at: string
+          id?: string
+          notes?: string | null
+          offer_type: string
+          payment_method: string
+          price_per_unit: number
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          crypto_type?: string
+          expires_at?: string
+          id?: string
+          notes?: string | null
+          offer_type?: string
+          payment_method?: string
+          price_per_unit?: number
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar: string | null
@@ -42,6 +156,51 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      wallets: {
+        Row: {
+          btc_balance: number
+          created_at: string | null
+          eth_balance: number
+          id: string
+          kyc_documents: Json | null
+          kyc_level: number
+          kyc_verified: boolean
+          softpoints_balance: number
+          sol_balance: number
+          updated_at: string | null
+          usdt_balance: number
+          user_id: string | null
+        }
+        Insert: {
+          btc_balance?: number
+          created_at?: string | null
+          eth_balance?: number
+          id?: string
+          kyc_documents?: Json | null
+          kyc_level?: number
+          kyc_verified?: boolean
+          softpoints_balance?: number
+          sol_balance?: number
+          updated_at?: string | null
+          usdt_balance?: number
+          user_id?: string | null
+        }
+        Update: {
+          btc_balance?: number
+          created_at?: string | null
+          eth_balance?: number
+          id?: string
+          kyc_documents?: Json | null
+          kyc_level?: number
+          kyc_verified?: boolean
+          softpoints_balance?: number
+          sol_balance?: number
+          updated_at?: string | null
+          usdt_balance?: number
+          user_id?: string | null
         }
         Relationships: []
       }

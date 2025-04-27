@@ -1,96 +1,127 @@
 
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { useToast } from "@/components/ui/use-toast";
-import CryptoList from "@/components/crypto/CryptoList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CryptoChart from "@/components/crypto/CryptoChart";
+import CryptoList from "@/components/crypto/CryptoList";
 import CryptoTradePanel from "@/components/crypto/CryptoTradePanel";
 import CryptoPortfolio from "@/components/crypto/CryptoPortfolio";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import P2PMarketplace from "@/components/crypto/P2PMarketplace";
+import SoftPointExchange from "@/components/crypto/SoftPointExchange";
+import CryptoWalletActions from "@/components/crypto/CryptoWalletActions";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 
-export type Crypto = {
+export interface Crypto {
   id: string;
   name: string;
   symbol: string;
   current_price: number;
-  price_change_percentage_24h: number;
-  image: string;
   market_cap: number;
   total_volume: number;
-};
+  price_change_percentage_24h: number;
+  image: string;
+}
 
 const CryptoMarket = () => {
+  const [activeTab, setActiveTab] = useState("market");
   const [cryptos, setCryptos] = useState<Crypto[]>([]);
   const [selectedCrypto, setSelectedCrypto] = useState<Crypto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Simulate fetching crypto data
     const fetchCryptos = async () => {
-      setIsLoading(true);
       try {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Mock data - in a real app, this would be fetched from CoinGecko or similar API
+        // In a real app, this would be fetched from a real API like CoinGecko
+        // For now, we'll use mock data
         const mockData: Crypto[] = [
           {
             id: "bitcoin",
             name: "Bitcoin",
             symbol: "btc",
             current_price: 52835.42,
+            market_cap: 1034278909176,
+            total_volume: 25982611987,
             price_change_percentage_24h: 2.34,
-            image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
-            market_cap: 1032456789012,
-            total_volume: 28765432198
+            image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"
           },
           {
             id: "ethereum",
             name: "Ethereum",
             symbol: "eth",
             current_price: 3145.79,
+            market_cap: 377339750529,
+            total_volume: 18245920134,
             price_change_percentage_24h: -1.23,
-            image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
-            market_cap: 378965432198,
-            total_volume: 16784321567
+            image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png"
           },
           {
-            id: "cardano",
-            name: "Cardano",
-            symbol: "ada",
-            current_price: 0.57,
-            price_change_percentage_24h: 3.45,
-            image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
-            market_cap: 20145632789,
-            total_volume: 532897645
+            id: "tether",
+            name: "Tether",
+            symbol: "usdt",
+            current_price: 1.00,
+            market_cap: 99258852784,
+            total_volume: 47895732908,
+            price_change_percentage_24h: 0.02,
+            image: "https://assets.coingecko.com/coins/images/325/large/Tether.png"
           },
           {
             id: "solana",
             name: "Solana",
             symbol: "sol",
             current_price: 157.83,
+            market_cap: 69573985610,
+            total_volume: 2945801497,
             price_change_percentage_24h: 5.67,
-            image: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
-            market_cap: 65412789456,
-            total_volume: 2145678923
+            image: "https://assets.coingecko.com/coins/images/4128/large/solana.png"
+          },
+          {
+            id: "cardano",
+            name: "Cardano",
+            symbol: "ada",
+            current_price: 0.57,
+            market_cap: 20187657290,
+            total_volume: 591872345,
+            price_change_percentage_24h: -2.15,
+            image: "https://assets.coingecko.com/coins/images/975/large/cardano.png"
           },
           {
             id: "dogecoin",
             name: "Dogecoin",
             symbol: "doge",
-            current_price: 0.16,
-            price_change_percentage_24h: -2.78,
-            image: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png",
-            market_cap: 22456789123,
-            total_volume: 1234567890
+            current_price: 0.17,
+            market_cap: 24753982341,
+            total_volume: 1389752043,
+            price_change_percentage_24h: 3.42,
+            image: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png"
+          },
+          {
+            id: "polkadot",
+            name: "Polkadot",
+            symbol: "dot",
+            current_price: 7.92,
+            market_cap: 10982365923,
+            total_volume: 343298712,
+            price_change_percentage_24h: -3.78,
+            image: "https://assets.coingecko.com/coins/images/12171/large/polkadot.png"
+          },
+          {
+            id: "chainlink",
+            name: "Chainlink",
+            symbol: "link",
+            current_price: 18.37,
+            market_cap: 10754982713,
+            total_volume: 589371285,
+            price_change_percentage_24h: 0.87,
+            image: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png"
           }
         ];
-        
+
         setCryptos(mockData);
         setSelectedCrypto(mockData[0]);
         setIsLoading(false);
@@ -106,93 +137,145 @@ const CryptoMarket = () => {
     };
 
     fetchCryptos();
+    
+    // In a real app, we might set up a websocket or polling for real-time price updates
+    const interval = setInterval(() => {
+      // For demonstration purposes, we'll just add small random price changes to simulate live updates
+      setCryptos(prev => 
+        prev.map(crypto => ({
+          ...crypto,
+          current_price: crypto.current_price * (1 + (Math.random() * 0.01 - 0.005)),
+          price_change_percentage_24h: crypto.price_change_percentage_24h + (Math.random() * 0.4 - 0.2)
+        }))
+      );
+    }, 30000); // Update every 30 seconds
+    
+    return () => clearInterval(interval);
   }, [toast]);
 
-  const handleSelectCrypto = (crypto: Crypto) => {
+  const handleCryptoSelect = (crypto: Crypto) => {
     setSelectedCrypto(crypto);
   };
 
   const handleTrade = (type: 'buy' | 'sell', amount: number) => {
     if (!selectedCrypto) return;
     
+    // In a real app, this would call an API to place the trade
+    console.log(`${type} ${amount} of ${selectedCrypto.name}`);
+    
     toast({
-      title: `${type === 'buy' ? 'Bought' : 'Sold'} ${selectedCrypto.name}`,
-      description: `Successfully ${type === 'buy' ? 'purchased' : 'sold'} ${amount} ${selectedCrypto.symbol.toUpperCase()} at $${selectedCrypto.current_price.toFixed(2)}`,
+      title: "Order Placed",
+      description: `Successfully ${type === 'buy' ? 'bought' : 'sold'} ${amount} ${selectedCrypto.symbol.toUpperCase()}`,
     });
   };
 
-  const filteredCryptos = cryptos.filter(crypto => 
-    crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const handleKYCSubmit = async (data: any) => {
+    try {
+      // In a real app, this would upload documents and update the user's KYC status
+      console.log("KYC data submitted:", data);
+      
+      // Simulate API call to update KYC status
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      toast({
+        title: "KYC Submitted",
+        description: "Your verification documents have been submitted for review.",
+      });
+      
+      return { success: true };
+    } catch (error) {
+      console.error("Error submitting KYC:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit verification documents. Please try again.",
+        variant: "destructive",
+      });
+      return { success: false, error };
+    }
+  };
 
   return (
-    <div className="container py-6 space-y-6 max-w-full">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <h1 className="text-2xl font-bold">Cryptocurrency Market</h1>
-        <div className="relative w-full md:w-64">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search cryptocurrencies"
-            className="pl-8"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </div>
+    <>
+      <Helmet>
+        <title>Crypto Market | Softchat</title>
+      </Helmet>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {isLoading ? (
-            <Skeleton className="h-[400px] w-full" />
-          ) : (
-            <>
-              {selectedCrypto && (
-                <CryptoChart crypto={selectedCrypto} />
-              )}
-              
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Market Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <CryptoList 
-                    cryptos={filteredCryptos} 
-                    selectedCryptoId={selectedCrypto?.id || ""}
-                    onSelectCrypto={handleSelectCrypto}
-                    isLoading={isLoading}
-                  />
-                </CardContent>
-              </Card>
-            </>
-          )}
-        </div>
+      <div className="container px-4 py-4 mx-auto max-w-7xl">
+        <h1 className="text-2xl font-bold mb-6">Crypto Market</h1>
         
-        <div className="space-y-6">
-          <Tabs defaultValue="trade" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="trade">Trade</TabsTrigger>
-              <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-            </TabsList>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full grid grid-cols-4 mb-8">
+            <TabsTrigger value="market">Market</TabsTrigger>
+            <TabsTrigger value="p2p">P2P</TabsTrigger>
+            <TabsTrigger value="convert">Convert</TabsTrigger>
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="market" className="w-full">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+              <div className="xl:col-span-3">
+                {isLoading || !selectedCrypto ? (
+                  <Card>
+                    <CardContent className="p-0">
+                      <Skeleton className="h-[400px] w-full" />
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <CryptoChart crypto={selectedCrypto} />
+                )}
+              </div>
+              
+              <div className="xl:col-span-1">
+                {isLoading || !selectedCrypto ? (
+                  <Card>
+                    <CardContent className="p-0">
+                      <Skeleton className="h-[400px] w-full" />
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <CryptoTradePanel crypto={selectedCrypto} onTrade={handleTrade} />
+                )}
+              </div>
+            </div>
             
-            <TabsContent value="trade" className="mt-4">
-              {isLoading ? (
-                <Skeleton className="h-[300px] w-full" />
-              ) : (
-                <CryptoTradePanel 
-                  crypto={selectedCrypto} 
-                  onTrade={handleTrade}
-                />
-              )}
-            </TabsContent>
-            
-            <TabsContent value="portfolio" className="mt-4">
-              <CryptoPortfolio />
-            </TabsContent>
-          </Tabs>
-        </div>
+            <div className="mt-6 grid grid-cols-1 xl:grid-cols-4 gap-6">
+              <div className="xl:col-span-3">
+                <Card>
+                  <CardContent className="p-0">
+                    {isLoading ? (
+                      <Skeleton className="h-[400px] w-full" />
+                    ) : (
+                      <CryptoList 
+                        cryptos={cryptos} 
+                        selectedCryptoId={selectedCrypto?.id || ''} 
+                        onSelectCrypto={handleCryptoSelect}
+                        isLoading={isLoading}
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <div className="xl:col-span-1">
+                <CryptoPortfolio />
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="p2p">
+            <P2PMarketplace />
+          </TabsContent>
+          
+          <TabsContent value="convert">
+            <SoftPointExchange />
+          </TabsContent>
+          
+          <TabsContent value="wallet">
+            <CryptoWalletActions onKYCSubmit={handleKYCSubmit} />
+          </TabsContent>
+        </Tabs>
       </div>
-    </div>
+    </>
   );
 };
 
