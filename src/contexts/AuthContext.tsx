@@ -2,18 +2,20 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
+import { ExtendedUser, UserProfile } from "@/types/user";
 
 // Define types for our context
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
-  user: User | null;
+  user: ExtendedUser | null;
   session: Session | null;
   error: Error | null;
   login: (email: string, password: string) => Promise<{ error?: Error }>;
   logout: () => Promise<void>;
   signup: (email: string, password: string, name: string) => Promise<{ error?: Error }>;
   isAdmin: () => boolean;
+  updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 };
 
 // Create the auth context with default values
@@ -27,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
   signup: async () => ({ error: undefined }),
   isAdmin: () => false,
+  updateProfile: async () => {},
 });
 
 // Custom hook to use the auth context
@@ -35,10 +38,38 @@ export const useAuth = () => useContext(AuthContext);
 // Authentication provider component
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Define state hooks inside the component function body
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  
+  // Transform user data to include convenience properties
+  const enhanceUserData = (rawUser: User | null): ExtendedUser | null => {
+    if (!rawUser) return null;
+    
+    return {
+      ...rawUser,
+      name: rawUser.user_metadata?.name || rawUser.user_metadata?.full_name || 'User',
+      avatar: rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(rawUser.user_metadata?.name || 'User')}&background=random`,
+      points: rawUser.user_metadata?.points || 0,
+      level: rawUser.user_metadata?.level || 'bronze',
+      role: rawUser.user_metadata?.role || 'user',
+      profile: {
+        id: rawUser.id,
+        username: rawUser.user_metadata?.username,
+        full_name: rawUser.user_metadata?.name || rawUser.user_metadata?.full_name,
+        avatar_url: rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url,
+        bio: rawUser.user_metadata?.bio,
+        points: rawUser.user_metadata?.points || 0,
+        level: rawUser.user_metadata?.level || 'bronze',
+        role: rawUser.user_metadata?.role || 'user',
+        is_verified: rawUser.user_metadata?.is_verified || false,
+        bank_account_name: rawUser.user_metadata?.bank_account_name,
+        bank_account_number: rawUser.user_metadata?.bank_account_number,
+        bank_name: rawUser.user_metadata?.bank_name,
+      }
+    };
+  };
   
   // Check for an existing session on component mount
   useEffect(() => {
@@ -58,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (currentSession) {
           console.log("AuthProvider: Found existing session", currentSession);
           setSession(currentSession);
-          setUser(currentSession.user);
+          setUser(enhanceUserData(currentSession.user));
         } else {
           console.log("AuthProvider: No existing session found");
           setSession(null);
@@ -81,7 +112,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("AuthProvider: Auth state changed", event, newSession ? "session exists" : "no session");
         
         setSession(newSession);
-        setUser(newSession?.user || null);
+        setUser(enhanceUserData(newSession?.user || null));
         setIsLoading(false);
       }
     );
@@ -110,7 +141,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       console.log("AuthProvider: Login successful", data);
-      setUser(data.user);
+      setUser(enhanceUserData(data.user));
       setSession(data.session);
       
       return {};
@@ -175,7 +206,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       console.log("AuthProvider: Signup successful", data);
       // In a real app, we would handle email verification here
-      setUser(data.user);
+      setUser(enhanceUserData(data.user));
       setSession(data.session);
       
       return {};
@@ -189,9 +220,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Update user profile function
+  const updateProfile = async (profileData: Partial<UserProfile>) => {
+    if (!user) {
+      throw new Error("No user logged in");
+    }
+    
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: profileData
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Update local user state with new profile data
+      setUser(prev => {
+        if (!prev) return null;
+        
+        return {
+          ...prev,
+          user_metadata: {
+            ...prev.user_metadata,
+            ...profileData
+          },
+          name: profileData.full_name || prev.name,
+          avatar: profileData.avatar_url || prev.avatar,
+          // Update other computed properties as needed
+          profile: {
+            ...(prev.profile || {}),
+            ...profileData
+          }
+        };
+      });
+      
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      throw error;
+    }
+  };
+
   // Check if current user is an admin
   const isAdmin = () => {
-    return user?.user_metadata.role === "admin";
+    return user?.role === "admin" || user?.user_metadata?.role === "admin";
   };
 
   // Extract authentication state from session
@@ -208,6 +280,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     logout,
     signup,
     isAdmin,
+    updateProfile,
   };
 
   console.log("AuthProvider: Current state", { 

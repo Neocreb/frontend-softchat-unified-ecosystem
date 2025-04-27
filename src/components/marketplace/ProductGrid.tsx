@@ -17,6 +17,7 @@ interface ProductGridProps {
   onAddToCart: (productId: string) => void;
   onAddToWishlist: (productId: string) => void;
   limit?: number;
+  products?: Product[]; // Make 'products' prop optional
 }
 
 const ProductGrid = ({ 
@@ -25,18 +26,22 @@ const ProductGrid = ({
   sortBy,
   onAddToCart, 
   onAddToWishlist,
-  limit 
+  limit,
+  products: propProducts // Rename to avoid conflict with context products
 }: ProductGridProps) => {
   const [loading, setLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const { products, setActiveProduct } = useMarketplace();
+  const { products: contextProducts, setActiveProduct } = useMarketplace();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  
+  // Use the products prop if provided, otherwise use products from context
+  const sourceProducts = propProducts || contextProducts;
   
   useEffect(() => {
     // Simulate API fetch delay
     const timer = setTimeout(() => {
-      let filtered = [...products];
+      let filtered = [...sourceProducts];
       
       // Filter by category if not "all"
       if (category !== "all") {
@@ -85,7 +90,7 @@ const ProductGrid = ({
     }, 800);
     
     return () => clearTimeout(timer);
-  }, [category, searchQuery, sortBy, products, limit]);
+  }, [category, searchQuery, sortBy, sourceProducts, limit]);
 
   const handleViewProduct = (product: Product) => {
     setActiveProduct(product);

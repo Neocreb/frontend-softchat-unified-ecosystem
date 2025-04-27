@@ -34,8 +34,9 @@ const EnhancedAuthForm = () => {
       if (isLogin) {
         const result = await login(email, password);
         if (result.error) {
-          setError(result.error.message || "Login failed");
-          notification.error(result.error.message || "Login failed");
+          const errorMessage = result.error.message || "Login failed";
+          setError(errorMessage);
+          notification.error(errorMessage);
           console.error("Login error:", result.error);
         } else {
           notification.success("Successfully logged in!");
@@ -53,8 +54,9 @@ const EnhancedAuthForm = () => {
         
         const result = await signup(email, password, name);
         if (result.error) {
-          setError(result.error.message || "Registration failed");
-          notification.error(result.error.message || "Registration failed");
+          const errorMessage = result.error.message || "Registration failed";
+          setError(errorMessage);
+          notification.error(errorMessage);
           console.error("Registration error:", result.error);
         } else {
           notification.success("Registration successful! Please check your email for verification.");
@@ -80,8 +82,9 @@ const EnhancedAuthForm = () => {
       console.log("Attempting demo login");
       const result = await login("demo@softchat.com", "password123");
       if (result.error) {
-        setError(result.error.message || "Demo login failed");
-        notification.error(result.error.message || "Demo login failed");
+        const errorMessage = result.error.message || "Demo login failed";
+        setError(errorMessage);
+        notification.error(errorMessage);
         console.error("Demo login error:", result.error);
       } else {
         notification.success("Successfully logged in with demo account!");
@@ -99,7 +102,7 @@ const EnhancedAuthForm = () => {
   };
 
   // Use the combined error from auth context and local state
-  const displayError = error || authError;
+  const displayError = error || (authError ? authError.message : null);
 
   return (
     <Card className="w-full max-w-md mx-auto">
