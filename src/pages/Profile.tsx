@@ -1,103 +1,93 @@
 
+import { useParams } from "react-router-dom";
 import ProfileHeader from "@/components/profile/ProfileHeader";
-import { Post, default as PostCard } from "@/components/feed/PostCard";
-import { useEffect, useState } from "react";
-
-const mockPosts: Post[] = [
-  {
-    id: "1",
-    author: {
-      name: "John Doe",
-      username: "johndoe",
-      avatar: "/placeholder.svg",
-      verified: true,
-    },
-    content: "Just made my first crypto trade on Softchat! The platform makes it so easy to get started with cryptocurrency trading. #crypto #softchat",
-    createdAt: "10 minutes ago",
-    likes: 24,
-    comments: 3,
-    shares: 1,
-  },
-  {
-    id: "2",
-    author: {
-      name: "John Doe",
-      username: "johndoe",
-      avatar: "/placeholder.svg",
-      verified: true,
-    },
-    content: "Working on a new project using React and TypeScript. Loving the developer experience so far!",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-    createdAt: "2 days ago",
-    likes: 68,
-    comments: 5,
-    shares: 2,
-  },
-  {
-    id: "3",
-    author: {
-      name: "John Doe",
-      username: "johndoe",
-      avatar: "/placeholder.svg",
-      verified: true,
-    },
-    content: "Beautiful day for a hike! 🏞️ #outdoors #nature",
-    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=2070&auto=format&fit=crop",
-    createdAt: "1 week ago",
-    likes: 142,
-    comments: 12,
-    shares: 5,
-    liked: true,
-  },
-];
+import ProfileTabs from "@/components/profile/ProfileTabs";
+import { useProfile } from "@/hooks/use-profile";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 const Profile = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { username } = useParams<{ username: string }>();
+  const {
+    profileUser,
+    isLoading,
+    isOwnProfile,
+    posts,
+    products,
+    isFollowing,
+    followerCount,
+    followingCount,
+    toggleFollow,
+    handleAddToCart,
+    handleAddToWishlist,
+    handleDeleteProduct,
+  } = useProfile({ username });
+  
+  const [activeTab, setActiveTab] = useState("posts");
 
-  useEffect(() => {
-    // Simulate loading posts
-    const timer = setTimeout(() => {
-      setPosts(mockPosts);
-      setIsLoading(false);
-    }, 1000);
+  // Loading skeleton
+  if (isLoading) {
+    return (
+      <div className="container py-6 space-y-6">
+        <div className="space-y-4">
+          <div className="h-40 bg-muted rounded-xl animate-pulse" />
+          <div className="flex items-start gap-4">
+            <div className="h-24 w-24 rounded-full bg-muted animate-pulse" />
+            <div className="space-y-2 flex-1">
+              <div className="h-6 w-1/3 bg-muted rounded animate-pulse" />
+              <div className="h-4 w-1/2 bg-muted rounded animate-pulse" />
+              <div className="h-4 w-3/4 bg-muted rounded animate-pulse" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="h-10 w-full bg-muted rounded animate-pulse" />
+          <div className="grid gap-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-40 bg-muted rounded-lg animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    return () => clearTimeout(timer);
-  }, []);
+  // If profile not found
+  if (!profileUser) {
+    return (
+      <div className="container py-6">
+        <div className="text-center py-12">
+          <h1 className="text-2xl font-bold">Profile not found</h1>
+          <p className="text-muted-foreground">This user profile does not exist or has been removed.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-6">
-      <ProfileHeader />
+      <ProfileHeader 
+        profileUser={profileUser} 
+        isOwnProfile={isOwnProfile} 
+        followerCount={followerCount}
+        followingCount={followingCount}
+        isFollowing={isFollowing}
+        onFollowToggle={toggleFollow}
+      />
       
-      <div className="mt-6 space-y-6">
-        {isLoading ? (
-          // Loading skeleton
-          <>
-            {[1, 2, 3].map((index) => (
-              <div key={index} className="space-y-4 bg-card rounded-lg border p-4">
-                <div className="flex items-center space-x-4">
-                  <div className="h-10 w-10 rounded-full bg-muted animate-pulse"></div>
-                  <div className="space-y-2">
-                    <div className="h-4 w-32 bg-muted rounded animate-pulse"></div>
-                    <div className="h-3 w-24 bg-muted rounded animate-pulse"></div>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="h-4 w-full bg-muted rounded animate-pulse"></div>
-                  <div className="h-4 w-full bg-muted rounded animate-pulse"></div>
-                  <div className="h-4 w-2/3 bg-muted rounded animate-pulse"></div>
-                </div>
-                <div className="h-40 bg-muted rounded animate-pulse"></div>
-              </div>
-            ))}
-          </>
-        ) : (
-          <>
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </>
-        )}
+      <div className="mt-6">
+        <ProfileTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          posts={posts}
+          products={products}
+          profileUser={profileUser}
+          isOwnProfile={isOwnProfile}
+          onAddToCart={handleAddToCart}
+          onAddToWishlist={handleAddToWishlist}
+          onDeleteProduct={isOwnProfile ? handleDeleteProduct : undefined}
+        />
       </div>
     </div>
   );
