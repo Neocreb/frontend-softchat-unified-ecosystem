@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
@@ -251,6 +250,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           points: profileData.points || prev.points,
           level: profileData.level || prev.level,
           role: profileData.role || prev.role,
+          app_metadata: prev.app_metadata || {},
           // Ensure the profile property maintains its required fields
           profile: {
             ...prev.profile!,

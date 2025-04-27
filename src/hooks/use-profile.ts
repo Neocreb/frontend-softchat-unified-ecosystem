@@ -3,16 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Post } from '@/components/feed/PostCard';
 import { Product } from '@/types/marketplace';
-import { ExtendedUser } from '@/types/user';
-import { 
-  getUserByUsername, 
-  getFollowersCount, 
-  getFollowingCount, 
-  isFollowing as checkIsFollowing,
-  toggleFollow as toggleFollowStatus,
-  getUserPosts,
-  getUserProducts
-} from '@/services/profileService';
+import { ExtendedUser, UserProfile } from '@/types/user';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UseProfileProps {
@@ -30,66 +21,32 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
   
-  // Check if viewing own profile
   const isOwnProfile = !username || (user && profileUser && user.id === profileUser.id);
 
-  // Fetch profile data
   useEffect(() => {
     const fetchProfileData = async () => {
       setIsLoading(true);
       
       try {
-        // If no username provided or username matches current user, show current user's profile
         if ((!username && user) || (username && user?.profile?.username === username)) {
           setProfileUser(user);
           await fetchUserData(user.id);
           return;
         }
         
-        // Otherwise fetch the requested user profile
         if (username) {
           const profileData = await getUserByUsername(username);
           
           if (profileData) {
-            // Convert to ExtendedUser format
-            const extendedUser: ExtendedUser = {
-              ...profileData,
-              id: profileData.id,
-              email: profileData.email || '',
-              name: profileData.full_name || profileData.username || '',
-              avatar: profileData.avatar_url || '',
-              points: profileData.points || 0,
-              level: profileData.level || 'bronze',
-              role: profileData.role || 'user',
-              created_at: profileData.created_at || new Date().toISOString(),
-              user_metadata: {
-                name: profileData.full_name || profileData.username || '',
-                avatar: profileData.avatar_url || '',
-              },
-              profile: {
-                id: profileData.id,
-                username: profileData.username,
-                full_name: profileData.full_name,
-                avatar_url: profileData.avatar_url,
-                bio: profileData.bio,
-                is_verified: profileData.is_verified,
-                points: profileData.points,
-                level: profileData.level,
-                role: profileData.role,
-              },
-              aud: "authenticated"
-            } as ExtendedUser;
-            
+            const extendedUser = formatUserData(profileData);
             setProfileUser(extendedUser);
             await fetchUserData(profileData.id);
           } else {
-            // Profile not found, use mock data
             createMockProfile(username);
           }
         }
       } catch (error) {
         console.error("Error fetching profile data:", error);
-        // Fallback to mock data
         if (username) {
           createMockProfile(username);
         }
@@ -101,24 +58,19 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     fetchProfileData();
   }, [username, user]);
 
-  // Fetch user data (posts, products, follows)
   const fetchUserData = async (userId: string) => {
     try {
-      // Get followers and following counts
       const followers = await getFollowersCount(userId);
       const following = await getFollowingCount(userId);
       
       setFollowerCount(followers);
       setFollowingCount(following);
       
-      // Check if current user is following this profile
       if (user && user.id !== userId) {
         const following = await checkIsFollowing(user.id, userId);
         setIsFollowing(following);
       }
       
-      // Get user's posts and products
-      // Use real data if available, otherwise use mock data
       try {
         const postsData = await getUserPosts(userId);
         const productsData = await getUserProducts(userId);
@@ -126,34 +78,28 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         if (postsData && postsData.length > 0) {
           setPosts(formatPosts(postsData));
         } else {
-          // Fallback to mock posts
           createMockPosts();
         }
         
         if (productsData && productsData.length > 0) {
           setProducts(formatProducts(productsData));
         } else {
-          // Fallback to mock products
           createMockProducts(userId);
         }
       } catch (error) {
         console.error("Error fetching user content:", error);
-        // Fallback to mock data
         createMockPosts();
         createMockProducts(userId);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
-      // Set mock data for social counts
       setFollowerCount(Math.floor(Math.random() * 1000) + 100);
       setFollowingCount(Math.floor(Math.random() * 500) + 50);
-      // Create mock posts and products
       createMockPosts();
       createMockProducts(userId);
     }
   };
 
-  // Format posts from database to match our Post type
   const formatPosts = (postsData: any[]): Post[] => {
     return postsData.map(post => ({
       id: post.id,
@@ -172,7 +118,6 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     }));
   };
 
-  // Format products from database to match our Product type
   const formatProducts = (productsData: any[]): Product[] => {
     return productsData.map(product => ({
       id: product.id,
@@ -197,7 +142,36 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     }));
   };
 
-  // Create mock profile for demonstration
+  const formatUserData = (profileData: any): ExtendedUser => {
+    return {
+      id: profileData.id,
+      email: profileData.email || '',
+      name: profileData.name || profileData.username || '',
+      avatar: profileData.avatar_url || '/placeholder.svg',
+      points: profileData.points || 0,
+      level: profileData.level || 'bronze',
+      role: profileData.role || 'user',
+      created_at: profileData.created_at || new Date().toISOString(),
+      app_metadata: {},
+      user_metadata: {
+        name: profileData.name || profileData.username || '',
+        avatar: profileData.avatar_url || '/placeholder.svg',
+      },
+      profile: {
+        id: profileData.id,
+        username: profileData.username,
+        full_name: profileData.name || profileData.username || '',
+        avatar_url: profileData.avatar_url || '/placeholder.svg',
+        bio: profileData.bio || '',
+        is_verified: profileData.is_verified || false,
+        points: profileData.points || 0,
+        level: profileData.level || 'bronze',
+        role: profileData.role || 'user',
+      },
+      aud: "authenticated"
+    };
+  };
+
   const createMockProfile = (username: string) => {
     const mockUser: ExtendedUser = {
       id: "mock-" + Date.now(),
@@ -228,16 +202,13 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     
     setProfileUser(mockUser);
     
-    // Set mock social counts
     setFollowerCount(Math.floor(Math.random() * 1000) + 100);
     setFollowingCount(Math.floor(Math.random() * 500) + 50);
     
-    // Create mock posts and products
     createMockPosts();
     createMockProducts(mockUser.id);
   };
 
-  // Create mock posts for demonstration
   const createMockPosts = () => {
     if (!profileUser) return;
     
@@ -265,7 +236,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
           verified: profileUser.profile?.is_verified || false,
         },
         content: "Working on a new project using React and TypeScript. Loving the developer experience so far!",
-        image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop",
         createdAt: "2 days ago",
         likes: 68,
         comments: 5,
@@ -292,7 +263,6 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     setPosts(mockPosts);
   };
 
-  // Create mock products for demonstration
   const createMockProducts = (userId: string) => {
     if (!profileUser) return;
     
@@ -356,7 +326,6 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     setProducts(mockProducts);
   };
 
-  // Toggle follow status
   const toggleFollow = async () => {
     if (!user) {
       toast({
@@ -372,14 +341,12 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
       setIsFollowing(prev => !prev);
       
       if (isFollowing) {
-        // Unfollow logic
         setFollowerCount(prev => prev - 1);
         toast({
           title: "Unfollowed",
           description: `You unfollowed ${profileUser.name}`,
         });
       } else {
-        // Follow logic
         setFollowerCount(prev => prev + 1);
         toast({
           title: "Following",
@@ -387,7 +354,6 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         });
       }
       
-      // Update in database
       if (user.id && profileUser.id) {
         await toggleFollowStatus(user.id, profileUser.id, isFollowing);
       }
@@ -398,13 +364,11 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         description: "Could not update follow status",
         variant: "destructive",
       });
-      // Revert optimistic update
       setIsFollowing(prev => !prev);
       setFollowerCount(followerCount);
     }
   };
 
-  // Handle product actions
   const handleAddToCart = (productId: string) => {
     toast({
       title: "Added to cart",
@@ -421,12 +385,13 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      // In a real app, delete from Supabase
-      const { error } = await supabase.from('products').delete().eq('id', productId);
+      const { error } = await supabase
+        .from('products')
+        .delete()
+        .eq('id', productId);
       
       if (error) throw error;
       
-      // Update local state
       setProducts(products.filter(product => product.id !== productId));
       
       toast({

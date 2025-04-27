@@ -81,6 +81,27 @@ export type Database = {
         }
         Relationships: []
       }
+      followers: {
+        Row: {
+          created_at: string
+          follower_id: string
+          following_id: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          follower_id: string
+          following_id: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          follower_id?: string
+          following_id?: string
+          id?: string
+        }
+        Relationships: []
+      }
       p2p_offers: {
         Row: {
           amount: number
@@ -120,6 +141,154 @@ export type Database = {
           price_per_unit?: number
           status?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          boost_until: string | null
+          category: string | null
+          created_at: string
+          description: string
+          discount_price: number | null
+          id: string
+          image_url: string | null
+          in_stock: boolean | null
+          is_featured: boolean | null
+          is_sponsored: boolean | null
+          name: string
+          price: number
+          rating: number | null
+          review_count: number | null
+          seller_id: string
+          updated_at: string
+        }
+        Insert: {
+          boost_until?: string | null
+          category?: string | null
+          created_at?: string
+          description: string
+          discount_price?: number | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean | null
+          is_featured?: boolean | null
+          is_sponsored?: boolean | null
+          name: string
+          price: number
+          rating?: number | null
+          review_count?: number | null
+          seller_id: string
+          updated_at?: string
+        }
+        Update: {
+          boost_until?: string | null
+          category?: string | null
+          created_at?: string
+          description?: string
+          discount_price?: number | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean | null
+          is_featured?: boolean | null
+          is_sponsored?: boolean | null
+          name?: string
+          price?: number
+          rating?: number | null
+          review_count?: number | null
+          seller_id?: string
+          updated_at?: string
         }
         Relationships: []
       }
