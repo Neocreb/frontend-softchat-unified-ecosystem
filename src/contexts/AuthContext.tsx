@@ -34,6 +34,7 @@ export const useAuth = () => useContext(AuthContext);
 
 // Authentication provider component
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // Define state hooks inside the component function body
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,16 +49,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("AuthProvider: Checking for existing session");
         
         // Get the current session
-        const { data: { session }, error } = await supabase.auth.getSession();
+        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
 
-        if (error) {
-          throw error;
+        if (sessionError) {
+          throw sessionError;
         }
 
-        if (session) {
-          console.log("AuthProvider: Found existing session", session);
-          setSession(session);
-          setUser(session.user);
+        if (currentSession) {
+          console.log("AuthProvider: Found existing session", currentSession);
+          setSession(currentSession);
+          setUser(currentSession.user);
         } else {
           console.log("AuthProvider: No existing session found");
           setSession(null);
@@ -76,11 +77,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Subscribe to auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log("AuthProvider: Auth state changed", event, session ? "session exists" : "no session");
+      async (event, newSession) => {
+        console.log("AuthProvider: Auth state changed", event, newSession ? "session exists" : "no session");
         
-        setSession(session);
-        setUser(session?.user || null);
+        setSession(newSession);
+        setUser(newSession?.user || null);
         setIsLoading(false);
       }
     );
@@ -97,15 +98,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error: loginError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) {
-        console.error("AuthProvider: Login error", error);
-        setError(error);
-        return { error };
+      if (loginError) {
+        console.error("AuthProvider: Login error", loginError);
+        setError(loginError);
+        return { error: loginError };
       }
 
       console.log("AuthProvider: Login successful", data);
@@ -129,11 +130,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     
     try {
-      const { error } = await supabase.auth.signOut();
+      const { error: logoutError } = await supabase.auth.signOut();
       
-      if (error) {
-        console.error("AuthProvider: Logout error", error);
-        setError(error);
+      if (logoutError) {
+        console.error("AuthProvider: Logout error", logoutError);
+        setError(logoutError);
       } else {
         console.log("AuthProvider: Logout successful");
         setUser(null);
@@ -154,7 +155,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     try {
       // For demo purposes, we're using fake data for user profile
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error: signupError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -166,10 +167,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
       });
 
-      if (error) {
-        console.error("AuthProvider: Signup error", error);
-        setError(error);
-        return { error };
+      if (signupError) {
+        console.error("AuthProvider: Signup error", signupError);
+        setError(signupError);
+        return { error: signupError };
       }
 
       console.log("AuthProvider: Signup successful", data);
@@ -197,7 +198,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!session;
 
   // Create the context value
-  const contextValue = {
+  const contextValue: AuthContextType = {
     isAuthenticated,
     isLoading,
     user,
