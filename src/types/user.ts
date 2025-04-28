@@ -78,3 +78,27 @@ export enum UserLevel {
   PLATINUM = 'platinum',
   DIAMOND = 'diamond'
 }
+
+// Add new types for P2P marketplace
+export interface P2POffer {
+  id: string;
+  type: 'buy' | 'sell';
+  crypto_amount: number;
+  crypto_symbol: string;
+  fiat_price: number;
+  fiat_currency: string;
+  min_order: number;
+  max_order: number;
+  payment_methods: string[];
+  seller: {
+    id: string;
+    name: string;
+    avatar: string;
+    is_verified: boolean;
+    rating: number;
+    total_trades: number;
+  };
+  created_at: string;
+  status: 'active' | 'completed' | 'cancelled';
+}
+
