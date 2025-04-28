@@ -68,7 +68,7 @@ export const getUserPosts = async (userId: string) => {
     .from('posts')
     .select(`
       *,
-      profiles (*)
+      profiles:user_id(*)
     `)
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
@@ -82,7 +82,7 @@ export const getUserProducts = async (userId: string) => {
     .from('products')
     .select(`
       *,
-      profiles (*)
+      profiles:seller_id(*)
     `)
     .eq('seller_id', userId)
     .order('created_at', { ascending: false });
@@ -91,22 +91,27 @@ export const getUserProducts = async (userId: string) => {
   return data;
 };
 
-export const fetchUserProfile = async (userId: string) => {
+export const fetchUserProfile = async (userId: string): Promise<UserProfile> => {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
-    .eq('id', userId)
+    .eq('user_id', userId)
     .single();
     
   if (error) throw error;
-  return data;
+  
+  // Ensure id property is present
+  return { 
+    ...data, 
+    id: userId 
+  } as UserProfile;
 };
 
 export const getUserPointsAndLevel = async (userId: string) => {
   const { data, error } = await supabase
     .from('profiles')
     .select('points, level')
-    .eq('id', userId)
+    .eq('user_id', userId)
     .single();
     
   if (error) throw error;
@@ -120,10 +125,10 @@ export const updateUserProfile = async (userId: string, profileData: Partial<Use
   const { data, error } = await supabase
     .from('profiles')
     .update(profileData)
-    .eq('id', userId)
+    .eq('user_id', userId)
     .select()
     .single();
     
   if (error) throw error;
-  return data;
+  return { ...data, id: userId } as UserProfile;
 };

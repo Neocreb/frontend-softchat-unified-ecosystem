@@ -63,7 +63,7 @@ export interface ChatConversation {
   created_at: string;
   updated_at: string;
   unread_count: number;
-  participant_details?: {
+  participant_profile?: {
     id: string;
     name: string;
     avatar: string;

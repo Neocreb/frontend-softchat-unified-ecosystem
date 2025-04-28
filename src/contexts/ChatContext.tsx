@@ -36,49 +36,110 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user) return;
 
     const loadConversations = async () => {
-      const { data: conversationsData, error } = await supabase
-        .from('chat_conversations')
-        .select(`
-          *,
-          participant_details:profiles!chat_conversations_participants_fkey(*)
-        `)
-        .contains('participants', [user.id]);
+      try {
+        // Get all conversations where the current user is a participant
+        const { data: conversationsData, error } = await supabase
+          .from('chat_conversations')
+          .select('*')
+          .contains('participants', [user.id]);
 
-      if (error) {
-        console.error("Error loading conversations:", error);
-        return;
+        if (error) {
+          console.error("Error loading conversations:", error);
+          return;
+        }
+
+        // For each conversation, find the other participant's profile
+        const formattedConversations: ChatConversation[] = [];
+
+        for (const conv of conversationsData) {
+          // Find the other participant (not the current user)
+          const otherParticipantId = conv.participants.find(id => id !== user.id);
+          
+          if (!otherParticipantId) continue;
+
+          // Get the other participant's profile
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', otherParticipantId)
+            .single();
+
+          if (profileError) {
+            console.error("Error loading participant profile:", profileError);
+            continue;
+          }
+          
+          // Get unread count for this conversation
+          const { count: unreadCount, error: countError } = await supabase
+            .from('chat_messages')
+            .select('*', { count: 'exact', head: true })
+            .eq('conversation_id', conv.id)
+            .eq('read', false)
+            .neq('sender_id', user.id);
+            
+          if (countError) {
+            console.error("Error getting unread count:", countError);
+          }
+
+          // Get the last message for this conversation
+          const { data: lastMessageData, error: lastMessageError } = await supabase
+            .from('chat_messages')
+            .select('*')
+            .eq('conversation_id', conv.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
+          formattedConversations.push({
+            id: conv.id,
+            participants: conv.participants,
+            created_at: conv.created_at,
+            updated_at: conv.updated_at,
+            unread_count: unreadCount || 0,
+            last_message: lastMessageData ? {
+              id: lastMessageData.id,
+              content: lastMessageData.content,
+              sender_id: lastMessageData.sender_id,
+              conversation_id: lastMessageData.conversation_id,
+              created_at: lastMessageData.created_at,
+              read: lastMessageData.read,
+            } : undefined,
+            participant_profile: {
+              id: otherParticipantId,
+              name: profileData.full_name || profileData.username || 'User',
+              avatar: profileData.avatar_url || '/placeholder.svg',
+              is_online: false // TODO: Implement online status tracking
+            }
+          });
+        }
+
+        setConversations(formattedConversations);
+
+        // Load messages for each conversation
+        formattedConversations.forEach(conv => {
+          loadMessages(conv.id);
+        });
+      } catch (error) {
+        console.error("Error in loadConversations:", error);
       }
-
-      const formattedConversations: ChatConversation[] = conversationsData.map(conv => ({
-        id: conv.id,
-        participants: conv.participants,
-        participant_details: conv.participant_details,
-        created_at: conv.created_at,
-        updated_at: conv.updated_at,
-        unread_count: 0 // This will be updated when we fetch messages
-      }));
-
-      setConversations(formattedConversations);
-
-      // Load messages for each conversation
-      formattedConversations.forEach(conv => {
-        loadMessages(conv.id);
-      });
     };
 
     loadConversations();
 
     // Subscribe to new messages
     const channel = supabase
-      .channel('chat_messages')
+      .channel('chat_messages_channel')
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
-        table: 'chat_messages',
-        filter: `conversation_id=in.(${conversations.map(c => c.id).join(',')})`
+        table: 'chat_messages'
       }, payload => {
         const newMessage = payload.new as ChatMessage;
-        handleNewMessage(newMessage);
+        
+        // Only process messages for conversations the user is part of
+        if (conversations.some(c => c.id === newMessage.conversation_id)) {
+          handleNewMessage(newMessage);
+        }
       })
       .subscribe();
 
@@ -88,37 +149,52 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user]);
 
   const loadMessages = async (conversationId: string) => {
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .select(`
-        *,
-        sender:profiles(*)
-      `)
-      .eq('conversation_id', conversationId)
-      .order('created_at', { ascending: true });
+    try {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select(`
+          *,
+          sender:profiles!chat_messages_sender_id_fkey(*)
+        `)
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true });
 
-    if (error) {
-      console.error("Error loading messages:", error);
-      return;
+      if (error) {
+        console.error("Error loading messages:", error);
+        return;
+      }
+
+      const formattedMessages: ChatMessage[] = data.map(msg => {
+        // Check if sender exists and handle possible errors
+        let senderName = 'Unknown';
+        let senderAvatar = '/placeholder.svg';
+        
+        if (msg.sender && typeof msg.sender === 'object') {
+          senderName = msg.sender.full_name || msg.sender.username || 'Unknown';
+          senderAvatar = msg.sender.avatar_url || '/placeholder.svg';
+        }
+        
+        return {
+          id: msg.id,
+          content: msg.content,
+          sender_id: msg.sender_id,
+          conversation_id: msg.conversation_id,
+          created_at: msg.created_at,
+          read: msg.read,
+          sender: {
+            name: senderName,
+            avatar: senderAvatar
+          }
+        };
+      });
+
+      setMessages(prev => ({
+        ...prev,
+        [conversationId]: formattedMessages
+      }));
+    } catch (error) {
+      console.error("Error in loadMessages:", error);
     }
-
-    const formattedMessages: ChatMessage[] = data.map(msg => ({
-      id: msg.id,
-      content: msg.content,
-      sender_id: msg.sender_id,
-      conversation_id: msg.conversation_id,
-      created_at: msg.created_at,
-      read: msg.read,
-      sender: msg.sender ? {
-        name: msg.sender.full_name || msg.sender.username || 'Unknown',
-        avatar: msg.sender.avatar_url || '/placeholder.svg'
-      } : undefined
-    }));
-
-    setMessages(prev => ({
-      ...prev,
-      [conversationId]: formattedMessages
-    }));
   };
 
   const handleNewMessage = (message: ChatMessage) => {
@@ -162,7 +238,20 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (error) throw error;
 
-      handleNewMessage(message as ChatMessage);
+      const newMessage: ChatMessage = {
+        id: message.id,
+        content: message.content,
+        sender_id: message.sender_id,
+        conversation_id: message.conversation_id,
+        created_at: message.created_at,
+        read: message.read,
+        sender: {
+          name: user.name || 'User',
+          avatar: user.avatar || '/placeholder.svg'
+        }
+      };
+
+      handleNewMessage(newMessage);
       setMessageInput("");
     } catch (error) {
       console.error("Error sending message:", error);
@@ -215,6 +304,18 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
 
+      // Get the other user's profile
+      const { data: otherUserProfile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching user profile:", profileError);
+        throw profileError;
+      }
+
       // Create new conversation
       const { data: conversation, error } = await supabase
         .from('chat_conversations')
@@ -228,7 +329,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       const newChat: ChatConversation = {
         ...conversation,
-        unread_count: 0
+        unread_count: 0,
+        participant_profile: {
+          id: userId,
+          name: otherUserProfile.full_name || otherUserProfile.username || 'User',
+          avatar: otherUserProfile.avatar_url || '/placeholder.svg',
+          is_online: false
+        }
       };
 
       setConversations(prev => [newChat, ...prev]);
@@ -252,10 +359,11 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     const normalizedQuery = query.toLowerCase();
     return conversations.filter(conv => {
-      const participant = conv.participant_details;
-      return participant &&
-        (participant.name.toLowerCase().includes(normalizedQuery) ||
-         conv.last_message?.content.toLowerCase().includes(normalizedQuery));
+      const participantName = conv.participant_profile?.name?.toLowerCase() || '';
+      const lastMessageContent = conv.last_message?.content?.toLowerCase() || '';
+      
+      return participantName.includes(normalizedQuery) || 
+             lastMessageContent.includes(normalizedQuery);
     });
   };
 

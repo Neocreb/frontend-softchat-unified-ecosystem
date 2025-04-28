@@ -109,25 +109,27 @@ const ChatInterface = () => {
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <Avatar className="h-12 w-12">
-                            <AvatarImage src={conversation.participant.avatar} alt={conversation.participant.name} />
-                            <AvatarFallback>{conversation.participant.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                            <AvatarImage src={conversation.participant_profile?.avatar} alt={conversation.participant_profile?.name} />
+                            <AvatarFallback>{conversation.participant_profile?.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                           </Avatar>
-                          {conversation.participant.is_verified && (
-                            <div className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-0.5 border-2 border-white">
-                              <Check className="h-2 w-2" />
+                          {conversation.participant_profile?.is_online && (
+                            <div className="absolute bottom-0 right-0 bg-green-500 text-white rounded-full p-1 border-2 border-white">
+                              <div className="h-2 w-2" />
                             </div>
                           )}
                         </div>
                         
                         <div className="flex-1">
                           <div className="flex justify-between items-center">
-                            <span className="font-medium">{conversation.participant.name}</span>
-                            <span className="text-xs text-muted-foreground">{conversation.last_message_time}</span>
+                            <span className="font-medium">{conversation.participant_profile?.name}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {conversation.last_message ? new Date(conversation.last_message.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}
+                            </span>
                           </div>
                           
                           <div className="flex justify-between items-center">
                             <p className="text-sm text-muted-foreground truncate max-w-[180px]">
-                              {conversation.last_message}
+                              {conversation.last_message?.content || 'No messages yet'}
                             </p>
                             {conversation.unread_count > 0 && (
                               <Badge variant="default" className="bg-blue-500 text-white">
@@ -161,25 +163,27 @@ const ChatInterface = () => {
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <Avatar className="h-12 w-12">
-                            <AvatarImage src={conversation.participant.avatar} alt={conversation.participant.name} />
-                            <AvatarFallback>{conversation.participant.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                            <AvatarImage src={conversation.participant_profile?.avatar} alt={conversation.participant_profile?.name} />
+                            <AvatarFallback>{conversation.participant_profile?.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                           </Avatar>
-                          {conversation.participant.is_verified && (
-                            <div className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-0.5 border-2 border-white">
-                              <Check className="h-2 w-2" />
+                          {conversation.participant_profile?.is_online && (
+                            <div className="absolute bottom-0 right-0 bg-green-500 text-white rounded-full p-1 border-2 border-white">
+                              <div className="h-2 w-2" />
                             </div>
                           )}
                         </div>
                         
                         <div className="flex-1">
                           <div className="flex justify-between items-center">
-                            <span className="font-medium">{conversation.participant.name}</span>
-                            <span className="text-xs text-muted-foreground">{conversation.last_message_time}</span>
+                            <span className="font-medium">{conversation.participant_profile?.name}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {conversation.last_message ? new Date(conversation.last_message.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}
+                            </span>
                           </div>
                           
                           <div className="flex justify-between items-center">
                             <p className="text-sm text-muted-foreground truncate max-w-[180px]">
-                              {conversation.last_message}
+                              {conversation.last_message?.content || 'No messages yet'}
                             </p>
                             {conversation.unread_count > 0 && (
                               <Badge variant="default" className="bg-blue-500 text-white">
@@ -212,21 +216,21 @@ const ChatInterface = () => {
             
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={selectedChat.participant.avatar} alt={selectedChat.participant.name} />
-                <AvatarFallback>{selectedChat.participant.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                <AvatarImage src={selectedChat.participant_profile?.avatar} alt={selectedChat.participant_profile?.name} />
+                <AvatarFallback>{selectedChat.participant_profile?.name.substring(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
               
               <div>
                 <div className="flex items-center">
-                  <span className="font-medium">{selectedChat.participant.name}</span>
-                  {selectedChat.participant.is_verified && (
-                    <Badge variant="outline" className="ml-1 bg-blue-500 p-0">
-                      <Check className="h-3 w-3 text-white" />
+                  <span className="font-medium">{selectedChat.participant_profile?.name}</span>
+                  {selectedChat.participant_profile?.is_online && (
+                    <Badge variant="outline" className="ml-1 bg-green-500 p-0">
+                      <div className="h-2 w-2" />
                     </Badge>
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {selectedChat.participant.last_seen ? `Last seen ${selectedChat.participant.last_seen}` : "Online"}
+                  {selectedChat.participant_profile?.is_online ? "Online" : "Offline"}
                 </p>
               </div>
             </div>
@@ -237,11 +241,11 @@ const ChatInterface = () => {
             {messages[selectedChat.id]?.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.sender_id === "current-user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${message.sender_id === user?.id ? "justify-end" : "justify-start"}`}
               >
                 <div
                   className={`max-w-[70%] px-4 py-2 rounded-2xl ${
-                    message.sender_id === "current-user"
+                    message.sender_id === user?.id
                       ? "bg-blue-500 text-white rounded-br-none"
                       : "bg-gray-100 rounded-bl-none"
                   }`}
@@ -249,13 +253,13 @@ const ChatInterface = () => {
                   <p>{message.content}</p>
                   <div
                     className={`text-xs mt-1 ${
-                      message.sender_id === "current-user" ? "text-blue-100" : "text-gray-500"
+                      message.sender_id === user?.id ? "text-blue-100" : "text-gray-500"
                     }`}
                   >
                     {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    {message.sender_id === "current-user" && (
+                    {message.sender_id === user?.id && (
                       <span className="ml-1">
-                        {message.is_read ? "✓✓" : "✓"}
+                        {message.read ? "✓✓" : "✓"}
                       </span>
                     )}
                   </div>

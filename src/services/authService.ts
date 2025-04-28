@@ -2,9 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
-import { 
-  fetchUserProfile, getUserPointsAndLevel, updateUserProfile 
-} from "./profileService";
+import { fetchUserProfile, getUserPointsAndLevel, updateUserProfile } from "./profileService";
 
 // Function to enhance the user object with profile data
 export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise<ExtendedUser | null> => {
@@ -23,12 +21,22 @@ export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise
       points,
       level,
       role: profile?.role || 'user',
+      app_metadata: supabaseUser.app_metadata || {}
     };
 
     return enhancedUser;
   } catch (error) {
     console.error("Error enhancing user:", error);
-    return supabaseUser as ExtendedUser;
+    // Provide default values if profile fetch fails
+    return {
+      ...supabaseUser,
+      name: supabaseUser.email?.split('@')[0] || 'User',
+      avatar: '/placeholder.svg',
+      points: 0,
+      level: 'bronze',
+      role: 'user',
+      app_metadata: supabaseUser.app_metadata || {}
+    } as ExtendedUser;
   }
 };
 

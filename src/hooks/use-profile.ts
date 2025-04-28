@@ -47,9 +47,13 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
           const profileData = await getUserByUsername(username);
           
           if (profileData) {
-            const extendedUser = formatUserData(profileData) as ExtendedUser;
+            const enhancedProfile = {
+              ...profileData,
+              id: profileData.user_id
+            };
+            const extendedUser = formatUserData(enhancedProfile) as ExtendedUser;
             setProfileUser(extendedUser);
-            await fetchUserData(profileData.id);
+            await fetchUserData(profileData.user_id);
           } else {
             createMockProfile(username);
           }
@@ -119,10 +123,10 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
       comments: post.comments || 0,
       shares: 0,
       author: {
-        name: post.author?.full_name || post.author?.username || 'Unknown',
-        username: post.author?.username || 'user',
-        avatar: post.author?.avatar_url || '/placeholder.svg',
-        verified: post.author?.is_verified || false
+        name: post.profiles?.full_name || post.profiles?.username || 'Unknown',
+        username: post.profiles?.username || 'user',
+        avatar: post.profiles?.avatar_url || '/placeholder.svg',
+        verified: post.profiles?.is_verified || false
       }
     }));
   };
@@ -143,33 +147,32 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
       isFeatured: product.is_featured || false,
       isSponsored: product.is_sponsored || false,
       sellerId: product.seller_id,
-      sellerName: product.seller?.full_name || product.seller?.username || 'User',
-      sellerAvatar: product.seller?.avatar_url || '/placeholder.svg',
-      sellerVerified: product.seller?.is_verified || false,
+      sellerName: product.profiles?.full_name || product.profiles?.username || 'User',
+      sellerAvatar: product.profiles?.avatar_url || '/placeholder.svg',
+      sellerVerified: product.profiles?.is_verified || false,
       createdAt: product.created_at,
       updatedAt: product.updated_at || product.created_at
     }));
   };
 
   const formatUserData = (profileData: any): ExtendedUser => {
-    return {
-      id: profileData.id,
+    const formattedUser: any = {
+      id: profileData.user_id || profileData.id,
       email: profileData.email || '',
-      name: profileData.name || profileData.username || '',
+      name: profileData.full_name || profileData.username || '',
       avatar: profileData.avatar_url || '/placeholder.svg',
       points: profileData.points || 0,
       level: profileData.level || 'bronze',
       role: profileData.role || 'user',
       created_at: profileData.created_at || new Date().toISOString(),
-      app_metadata: {},
       user_metadata: {
-        name: profileData.name || profileData.username || '',
+        name: profileData.full_name || profileData.username || '',
         avatar: profileData.avatar_url || '/placeholder.svg',
       },
       profile: {
-        id: profileData.id,
+        id: profileData.user_id || profileData.id,
         username: profileData.username,
-        full_name: profileData.name || profileData.username || '',
+        full_name: profileData.full_name || profileData.username || '',
         avatar_url: profileData.avatar_url || '/placeholder.svg',
         bio: profileData.bio || '',
         is_verified: profileData.is_verified || false,
@@ -177,32 +180,17 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         level: profileData.level || 'bronze',
         role: profileData.role || 'user',
       },
-      aud: "authenticated",
-      confirmed_at: '',
-      last_sign_in_at: '',
-      factors: null,
-      recovery_sent_at: null,
-      role: '',
-      updated_at: '',
-      email_confirmed_at: '',
-      phone_confirmed_at: '',
-      confirmation_sent_at: '',
-      phone: null,
-      banned_until: null,
-      reauthentication_sent_at: null,
-      invited_at: null,
-      action_link: null,
-      email_change_sent_at: null,
-      new_email: null,
-      identities: null,
-      is_anonymous: false,
-      deleted_at: null
-    } as ExtendedUser;
+      app_metadata: {},
+      aud: "authenticated"
+    };
+
+    return formattedUser as ExtendedUser;
   };
 
   const createMockProfile = (username: string) => {
-    const mockUser: ExtendedUser = {
-      id: "mock-" + Date.now(),
+    const mockUserId = "mock-" + Date.now();
+    const mockUser = {
+      id: mockUserId,
       email: `${username}@example.com`,
       name: username,
       avatar: `https://ui-avatars.com/api/?name=${username}&background=random`,
@@ -215,7 +203,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         avatar: `https://ui-avatars.com/api/?name=${username}&background=random`,
       },
       profile: {
-        id: "mock-" + Date.now(),
+        id: mockUserId,
         full_name: username,
         username: username,
         avatar_url: `https://ui-avatars.com/api/?name=${username}&background=random`,
@@ -225,6 +213,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         level: 'silver',
         role: 'user',
       },
+      app_metadata: {},
       aud: "authenticated"
     } as ExtendedUser;
     
