@@ -3,162 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { ChatConversation, ChatMessage } from "@/types/user";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
-// Mock data for conversations
-const mockConversations: ChatConversation[] = [
-  {
-    id: "1",
-    last_message: "Meta has introduced the Movie Gen I - model for video generation",
-    last_message_time: "11:23",
-    unread_count: 1,
-    participant: {
-      id: "101",
-      name: "Mike Planton",
-      username: "mikeplanton",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      is_verified: true,
-      last_seen: "2 hours ago"
-    }
-  },
-  {
-    id: "2",
-    last_message: "Hey, did you receive the news?",
-    last_message_time: "09:31",
-    unread_count: 1,
-    participant: {
-      id: "102",
-      name: "Alicia Wernet",
-      username: "aliciaw",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      is_verified: true,
-      last_seen: "3 hours ago"
-    }
-  },
-  {
-    id: "3",
-    last_message: "Photo",
-    last_message_time: "08:11",
-    unread_count: 0,
-    participant: {
-      id: "103",
-      name: "ION Community",
-      username: "ioncommunity",
-      avatar: "https://cdn-icons-png.flaticon.com/512/3820/3820331.png",
-      is_verified: true,
-      last_seen: "1 day ago"
-    }
-  },
-  {
-    id: "4",
-    last_message: "Are you sure? I haven't heard of.",
-    last_message_time: "30.09",
-    unread_count: 0,
-    participant: {
-      id: "104",
-      name: "Diedo Shonli",
-      username: "diedoshonli",
-      avatar: "https://randomuser.me/api/portraits/men/42.jpg",
-      is_verified: false,
-      last_seen: "2 days ago"
-    }
-  },
-  {
-    id: "5",
-    last_message: "Hi ☃️ Snowman, 📣 Join us for an",
-    last_message_time: "31.09",
-    unread_count: 0,
-    participant: {
-      id: "105",
-      name: "Ice Open Network",
-      username: "iceopennetwork",
-      avatar: "https://cdn-icons-png.flaticon.com/512/6639/6639786.png",
-      is_verified: false,
-      last_seen: "5 days ago"
-    }
-  }
-];
-
-// Mock messages for a chat
-const mockMessages: Record<string, ChatMessage[]> = {
-  "1": [
-    {
-      id: "1",
-      sender_id: "101",
-      recipient_id: "current-user",
-      content: "Hi there! How are you doing?",
-      is_read: true,
-      created_at: "2023-04-15T10:30:00Z",
-      sender: {
-        name: "Mike Planton",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        username: "mikeplanton",
-        is_verified: true
-      }
-    },
-    {
-      id: "2",
-      sender_id: "current-user",
-      recipient_id: "101",
-      content: "I'm good, thanks! Just checking out the new features on Softchat.",
-      is_read: true,
-      created_at: "2023-04-15T10:35:00Z"
-    },
-    {
-      id: "3",
-      sender_id: "101",
-      recipient_id: "current-user",
-      content: "Meta has introduced the Movie Gen I - model for video generation. It's amazing what they're doing with AI these days.",
-      is_read: false,
-      created_at: "2023-04-15T10:40:00Z",
-      sender: {
-        name: "Mike Planton",
-        avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-        username: "mikeplanton",
-        is_verified: true
-      }
-    }
-  ],
-  "2": [
-    {
-      id: "1",
-      sender_id: "102",
-      recipient_id: "current-user",
-      content: "Hey, did you hear about the new feature release?",
-      is_read: true,
-      created_at: "2023-04-16T09:30:00Z",
-      sender: {
-        name: "Alicia Wernet",
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-        username: "aliciaw",
-        is_verified: true
-      }
-    },
-    {
-      id: "2",
-      sender_id: "current-user",
-      recipient_id: "102",
-      content: "No, what's new?",
-      is_read: true,
-      created_at: "2023-04-16T09:32:00Z"
-    },
-    {
-      id: "3",
-      sender_id: "102",
-      recipient_id: "current-user",
-      content: "Hey, did you receive the news?",
-      is_read: false,
-      created_at: "2023-04-16T09:35:00Z",
-      sender: {
-        name: "Alicia Wernet",
-        avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-        username: "aliciaw",
-        is_verified: true
-      }
-    }
-  ]
-};
-
-// Define context type
 type ChatContextType = {
   conversations: ChatConversation[];
   messages: Record<string, ChatMessage[]>;
@@ -173,13 +19,10 @@ type ChatContextType = {
   unreadCount: number;
 };
 
-// Create context
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
 
-// Custom hook to use the chat context
 export const useChat = () => useContext(ChatContext);
 
-// Provider component
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -187,133 +30,235 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
   const [selectedChat, setSelectedChat] = useState<ChatConversation | null>(null);
   const [messageInput, setMessageInput] = useState("");
-  
-  // Load initial data
+
+  // Load conversations
   useEffect(() => {
-    // In a real app, we would fetch conversations from an API
-    setConversations(mockConversations);
-    setMessages(mockMessages);
-  }, []);
-  
+    if (!user) return;
+
+    const loadConversations = async () => {
+      const { data: conversationsData, error } = await supabase
+        .from('chat_conversations')
+        .select(`
+          *,
+          participant_details:profiles!chat_conversations_participants_fkey(*)
+        `)
+        .contains('participants', [user.id]);
+
+      if (error) {
+        console.error("Error loading conversations:", error);
+        return;
+      }
+
+      const formattedConversations: ChatConversation[] = conversationsData.map(conv => ({
+        id: conv.id,
+        participants: conv.participants,
+        participant_details: conv.participant_details,
+        created_at: conv.created_at,
+        updated_at: conv.updated_at,
+        unread_count: 0 // This will be updated when we fetch messages
+      }));
+
+      setConversations(formattedConversations);
+
+      // Load messages for each conversation
+      formattedConversations.forEach(conv => {
+        loadMessages(conv.id);
+      });
+    };
+
+    loadConversations();
+
+    // Subscribe to new messages
+    const channel = supabase
+      .channel('chat_messages')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'chat_messages',
+        filter: `conversation_id=in.(${conversations.map(c => c.id).join(',')})`
+      }, payload => {
+        const newMessage = payload.new as ChatMessage;
+        handleNewMessage(newMessage);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  const loadMessages = async (conversationId: string) => {
+    const { data, error } = await supabase
+      .from('chat_messages')
+      .select(`
+        *,
+        sender:profiles(*)
+      `)
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error("Error loading messages:", error);
+      return;
+    }
+
+    const formattedMessages: ChatMessage[] = data.map(msg => ({
+      id: msg.id,
+      content: msg.content,
+      sender_id: msg.sender_id,
+      conversation_id: msg.conversation_id,
+      created_at: msg.created_at,
+      read: msg.read,
+      sender: msg.sender ? {
+        name: msg.sender.full_name || msg.sender.username || 'Unknown',
+        avatar: msg.sender.avatar_url || '/placeholder.svg'
+      } : undefined
+    }));
+
+    setMessages(prev => ({
+      ...prev,
+      [conversationId]: formattedMessages
+    }));
+  };
+
+  const handleNewMessage = (message: ChatMessage) => {
+    // Update messages
+    setMessages(prev => ({
+      ...prev,
+      [message.conversation_id]: [...(prev[message.conversation_id] || []), message]
+    }));
+
+    // Update conversation
+    setConversations(prev => 
+      prev.map(conv => 
+        conv.id === message.conversation_id
+          ? {
+              ...conv,
+              last_message: message,
+              unread_count: message.sender_id !== user?.id ? (conv.unread_count || 0) + 1 : conv.unread_count
+            }
+          : conv
+      )
+    );
+  };
+
   // Calculate unread count
   const unreadCount = conversations.reduce((count, conv) => count + (conv.unread_count || 0), 0);
-  
-  // Send a message
-  const sendMessage = (content: string) => {
-    if (!selectedChat || !content.trim()) return;
-    
-    const newMessage: ChatMessage = {
-      id: `new-${Date.now()}`,
-      sender_id: "current-user",
-      recipient_id: selectedChat.participant.id,
-      content: content.trim(),
-      is_read: false,
-      created_at: new Date().toISOString()
-    };
-    
-    // Update messages
-    const chatMessages = messages[selectedChat.id] || [];
-    const updatedMessages = {
-      ...messages,
-      [selectedChat.id]: [...chatMessages, newMessage]
-    };
-    setMessages(updatedMessages);
-    
-    // Update conversation
-    const updatedConversations = conversations.map(conv => 
-      conv.id === selectedChat.id 
-        ? {
-            ...conv,
-            last_message: content.trim(),
-            last_message_time: "Just now"
-          }
-        : conv
-    );
-    
-    setConversations(updatedConversations);
-    setMessageInput("");
-    
-    // In a real app, we would send the message to the API
-    toast({
-      title: "Message Sent",
-      description: "Your message has been sent",
-    });
+
+  const sendMessage = async (content: string) => {
+    if (!selectedChat || !content.trim() || !user) return;
+
+    try {
+      const { data: message, error } = await supabase
+        .from('chat_messages')
+        .insert({
+          content: content.trim(),
+          sender_id: user.id,
+          conversation_id: selectedChat.id,
+          read: false
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      handleNewMessage(message as ChatMessage);
+      setMessageInput("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send message",
+        variant: "destructive",
+      });
+    }
   };
-  
-  // Mark conversation as read
-  const markAsRead = (chatId: string) => {
-    // Update conversations
-    const updatedConversations = conversations.map(conv => 
-      conv.id === chatId 
-        ? { ...conv, unread_count: 0 }
-        : conv
-    );
-    
-    setConversations(updatedConversations);
-    
-    // Update messages
-    const chatMessages = messages[chatId] || [];
-    const updatedMessages = chatMessages.map(msg => ({
-      ...msg,
-      is_read: true
-    }));
-    
-    setMessages({
-      ...messages,
-      [chatId]: updatedMessages
-    });
+
+  const markAsRead = async (chatId: string) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('chat_messages')
+        .update({ read: true })
+        .eq('conversation_id', chatId)
+        .neq('sender_id', user.id);
+
+      if (error) throw error;
+
+      setConversations(prev =>
+        prev.map(conv =>
+          conv.id === chatId
+            ? { ...conv, unread_count: 0 }
+            : conv
+        )
+      );
+    } catch (error) {
+      console.error("Error marking messages as read:", error);
+    }
   };
-  
-  // Start a new chat
-  const startNewChat = (userId: string, initialMessage?: string) => {
-    // Check if chat already exists
-    const existingChat = conversations.find(conv => conv.participant.id === userId);
-    
-    if (existingChat) {
-      setSelectedChat(existingChat);
+
+  const startNewChat = async (userId: string, initialMessage?: string) => {
+    if (!user) return;
+
+    try {
+      // Check if chat already exists
+      const existingChat = conversations.find(conv =>
+        conv.participants.includes(userId) && conv.participants.includes(user.id)
+      );
+
+      if (existingChat) {
+        setSelectedChat(existingChat);
+        if (initialMessage) {
+          setMessageInput(initialMessage);
+        }
+        return;
+      }
+
+      // Create new conversation
+      const { data: conversation, error } = await supabase
+        .from('chat_conversations')
+        .insert({
+          participants: [user.id, userId],
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const newChat: ChatConversation = {
+        ...conversation,
+        unread_count: 0
+      };
+
+      setConversations(prev => [newChat, ...prev]);
+      setSelectedChat(newChat);
+
       if (initialMessage) {
         setMessageInput(initialMessage);
       }
-      return;
-    }
-    
-    // Create a new conversation
-    const newChat: ChatConversation = {
-      id: `new-${Date.now()}`,
-      last_message: initialMessage || "",
-      last_message_time: "Just now",
-      unread_count: 0,
-      participant: {
-        id: userId,
-        name: "New Contact",
-        username: "newcontact",
-        avatar: "https://ui-avatars.com/api/?name=New+Contact",
-        is_verified: false,
-        last_seen: "Online"
-      }
-    };
-    
-    setConversations([newChat, ...conversations]);
-    setSelectedChat(newChat);
-    
-    if (initialMessage) {
-      setMessageInput(initialMessage);
+    } catch (error) {
+      console.error("Error starting new chat:", error);
+      toast({
+        title: "Error",
+        description: "Could not start new chat",
+        variant: "destructive",
+      });
     }
   };
-  
-  // Search conversations
+
   const searchConversations = (query: string) => {
     if (!query) return conversations;
-    
+
     const normalizedQuery = query.toLowerCase();
-    return conversations.filter(conv => 
-      conv.participant.name.toLowerCase().includes(normalizedQuery) ||
-      conv.participant.username.toLowerCase().includes(normalizedQuery) ||
-      (conv.last_message && conv.last_message.toLowerCase().includes(normalizedQuery))
-    );
+    return conversations.filter(conv => {
+      const participant = conv.participant_details;
+      return participant &&
+        (participant.name.toLowerCase().includes(normalizedQuery) ||
+         conv.last_message?.content.toLowerCase().includes(normalizedQuery));
+    });
   };
-  
-  // Context value
+
   const contextValue: ChatContextType = {
     conversations,
     messages,
@@ -327,7 +272,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     searchConversations,
     unreadCount
   };
-  
+
   return (
     <ChatContext.Provider value={contextValue}>
       {children}

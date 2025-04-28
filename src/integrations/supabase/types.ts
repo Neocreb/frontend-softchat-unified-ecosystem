@@ -9,6 +9,54 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      chat_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          participants: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          participants: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          participants?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      chat_messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          read: boolean
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          read?: boolean
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          read?: boolean
+          sender_id?: string
+        }
+        Relationships: []
+      }
       crypto_settings: {
         Row: {
           conversion_rate_softpoints_to_usdt: number
@@ -295,36 +343,63 @@ export type Database = {
       profiles: {
         Row: {
           avatar: string | null
+          avatar_url: string | null
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_name: string | null
           bio: string | null
           created_at: string | null
+          full_name: string | null
+          is_verified: boolean | null
+          level: string | null
           name: string | null
+          points: number | null
           preferences: Json | null
           role: string | null
           status: string | null
           updated_at: string | null
           user_id: string
+          username: string | null
         }
         Insert: {
           avatar?: string | null
+          avatar_url?: string | null
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
           bio?: string | null
           created_at?: string | null
+          full_name?: string | null
+          is_verified?: boolean | null
+          level?: string | null
           name?: string | null
+          points?: number | null
           preferences?: Json | null
           role?: string | null
           status?: string | null
           updated_at?: string | null
           user_id: string
+          username?: string | null
         }
         Update: {
           avatar?: string | null
+          avatar_url?: string | null
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
           bio?: string | null
           created_at?: string | null
+          full_name?: string | null
+          is_verified?: boolean | null
+          level?: string | null
           name?: string | null
+          points?: number | null
           preferences?: Json | null
           role?: string | null
           status?: string | null
           updated_at?: string | null
           user_id?: string
+          username?: string | null
         }
         Relationships: []
       }

@@ -63,7 +63,7 @@ export interface ChatConversation {
   created_at: string;
   updated_at: string;
   unread_count: number;
-  other_user?: {
+  participant_details?: {
     id: string;
     name: string;
     avatar: string;
@@ -101,4 +101,3 @@ export interface P2POffer {
   created_at: string;
   status: 'active' | 'completed' | 'cancelled';
 }
-
