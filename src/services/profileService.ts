@@ -1,5 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
+import { UserProfile } from '@/types/user';
 
 export const getUserByUsername = async (username: string) => {
   const { data, error } = await supabase
@@ -62,4 +63,64 @@ export const toggleFollow = async (followerId: string, followingId: string, curr
       
     if (error) throw error;
   }
+};
+
+export const getUserPosts = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('posts')
+    .select(`
+      *,
+      author:profiles(*)
+    `)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+    
+  if (error) throw error;
+  return data || [];
+};
+
+export const getUserProducts = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('products')
+    .select(`
+      *,
+      seller:profiles(*)
+    `)
+    .eq('seller_id', userId)
+    .order('created_at', { ascending: false });
+    
+  if (error) throw error;
+  return data || [];
+};
+
+export const fetchUserProfile = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+    
+  if (error) throw error;
+  return data;
+};
+
+export const getUserPointsAndLevel = async (userId: string) => {
+  // In a real app, fetch this from a dedicated table
+  // For now, we'll return mock data
+  return {
+    points: 1250,
+    level: 'silver'
+  };
+};
+
+export const updateUserProfile = async (userId: string, profileData: Partial<UserProfile>) => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(profileData)
+    .eq('user_id', userId)
+    .select()
+    .single();
+    
+  if (error) throw error;
+  return data;
 };

@@ -5,6 +5,15 @@ import { Post } from '@/components/feed/PostCard';
 import { Product } from '@/types/marketplace';
 import { ExtendedUser, UserProfile } from '@/types/user';
 import { supabase } from '@/integrations/supabase/client';
+import { 
+  getUserByUsername, 
+  getFollowersCount,
+  getFollowingCount,
+  isFollowing as checkIsFollowing,
+  toggleFollow as toggleFollowStatus,
+  getUserPosts,
+  getUserProducts
+} from '@/services/profileService';
 
 interface UseProfileProps {
   username?: string;
@@ -38,7 +47,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
           const profileData = await getUserByUsername(username);
           
           if (profileData) {
-            const extendedUser = formatUserData(profileData);
+            const extendedUser = formatUserData(profileData) as ExtendedUser;
             setProfileUser(extendedUser);
             await fetchUserData(profileData.id);
           } else {
@@ -168,8 +177,27 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         level: profileData.level || 'bronze',
         role: profileData.role || 'user',
       },
-      aud: "authenticated"
-    };
+      aud: "authenticated",
+      confirmed_at: '',
+      last_sign_in_at: '',
+      factors: null,
+      recovery_sent_at: null,
+      role: '',
+      updated_at: '',
+      email_confirmed_at: '',
+      phone_confirmed_at: '',
+      confirmation_sent_at: '',
+      phone: null,
+      banned_until: null,
+      reauthentication_sent_at: null,
+      invited_at: null,
+      action_link: null,
+      email_change_sent_at: null,
+      new_email: null,
+      identities: null,
+      is_anonymous: false,
+      deleted_at: null
+    } as ExtendedUser;
   };
 
   const createMockProfile = (username: string) => {

@@ -2,7 +2,9 @@
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
-import { fetchUserProfile, getUserPointsAndLevel, updateUserProfile } from "./profileService";
+import { 
+  fetchUserProfile, getUserPointsAndLevel, updateUserProfile 
+} from "./profileService";
 
 // Function to enhance the user object with profile data
 export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise<ExtendedUser | null> => {
