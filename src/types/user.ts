@@ -71,13 +71,7 @@ export interface ChatConversation {
   };
 }
 
-export enum UserLevel {
-  BRONZE = 'bronze',
-  SILVER = 'silver',
-  GOLD = 'gold',
-  PLATINUM = 'platinum',
-  DIAMOND = 'diamond'
-}
+export type UserLevel = "bronze" | "silver" | "gold" | "platinum" | "diamond";
 
 // Add new types for P2P marketplace
 export interface P2POffer {

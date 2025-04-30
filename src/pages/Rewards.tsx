@@ -20,8 +20,9 @@ const Rewards = () => {
   
   // Use default values if points/level are not available yet
   const userPoints = user.points || 0;
-  // Convert string level to UserLevel enum value
-  const userLevel = user.level?.toLowerCase() as UserLevel || UserLevel.BRONZE;
+  
+  // Convert string level to compatible format
+  const userLevel = user.level?.toLowerCase() as "bronze" | "silver" | "gold" | "platinum";
   
   const { currentLevel, nextLevel, progress } = calculateNextLevelProgress(userPoints);
   const availableRewards = getAvailableRewards(userLevel);
