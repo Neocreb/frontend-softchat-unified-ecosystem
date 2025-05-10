@@ -170,8 +170,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         let senderAvatar = '/placeholder.svg';
         
         if (msg.sender && typeof msg.sender === 'object') {
-          senderName = msg.sender.full_name || msg.sender.username || 'Unknown';
-          senderAvatar = msg.sender.avatar_url || '/placeholder.svg';
+          // Add proper null checks for sender properties
+          senderName = msg.sender?.full_name || msg.sender?.username || 'Unknown';
+          senderAvatar = msg.sender?.avatar_url || '/placeholder.svg';
         }
         
         return {
