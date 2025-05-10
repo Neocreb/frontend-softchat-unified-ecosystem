@@ -1,17 +1,17 @@
 
-import { 
-  Laptop, 
-  Shirt, 
-  Watch, 
-  ShoppingBag, 
-  Home, 
-  HeartPulse, 
-  Scissors, 
-  Coffee, 
-  BookOpen, 
+import {
+  Laptop,
+  Shirt,
+  Watch,
+  ShoppingBag,
+  Home,
+  HeartPulse,
+  Scissors,
+  Coffee,
+  BookOpen,
   Grid
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 interface CategoryMenuProps {
   activeCategory: string;

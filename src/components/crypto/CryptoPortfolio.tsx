@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 type PortfolioCrypto = {
   id: string;
@@ -49,12 +49,12 @@ const mockPortfolio: PortfolioCrypto[] = [
 
 const CryptoPortfolio = () => {
   const totalBalance = mockPortfolio.reduce((total, crypto) => total + crypto.value, 0);
-  
+
   // Calculate total change percentage (weighted average)
   const totalChange = mockPortfolio.reduce((total, crypto) => {
     return total + (crypto.change * crypto.value);
   }, 0) / totalBalance;
-  
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-2">
@@ -65,7 +65,7 @@ const CryptoPortfolio = () => {
           <div className="text-sm text-muted-foreground">Total Balance</div>
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold">${totalBalance.toLocaleString()}</div>
-            <div 
+            <div
               className={cn(
                 "text-sm font-medium",
                 totalChange > 0 ? "text-green-500" : "text-red-500"
@@ -75,14 +75,14 @@ const CryptoPortfolio = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="space-y-3">
           {mockPortfolio.map((crypto) => (
             <div key={crypto.id} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img 
-                  src={crypto.image} 
-                  alt={crypto.name} 
+                <img
+                  src={crypto.image}
+                  alt={crypto.name}
                   className="h-8 w-8 rounded-full"
                 />
                 <div>
@@ -92,10 +92,10 @@ const CryptoPortfolio = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="text-right">
                 <div>${crypto.value.toLocaleString()}</div>
-                <div 
+                <div
                   className={cn(
                     "text-xs flex items-center justify-end",
                     crypto.change > 0 ? "text-green-500" : "text-red-500"
@@ -112,7 +112,7 @@ const CryptoPortfolio = () => {
             </div>
           ))}
         </div>
-        
+
         <div className="mt-4 p-3 bg-muted rounded-md text-sm">
           <div className="font-medium mb-1">Transaction History</div>
           <div className="space-y-2 text-xs">

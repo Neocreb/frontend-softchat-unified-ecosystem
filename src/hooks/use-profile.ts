@@ -4,9 +4,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { Post } from '@/components/feed/PostCard';
 import { Product } from '@/types/marketplace';
 import { ExtendedUser, UserProfile } from '@/types/user';
-import { supabase } from '@/integrations/supabase/client';
-import { 
-  getUserByUsername, 
+import { supabase } from '@/lib/supabase/client';
+import {
+  getUserByUsername,
   getFollowersCount,
   getFollowingCount,
   isFollowing as checkIsFollowing,
@@ -29,23 +29,23 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
-  
+
   const isOwnProfile = !username || (user && profileUser && user.id === profileUser.id);
 
   useEffect(() => {
     const fetchProfileData = async () => {
       setIsLoading(true);
-      
+
       try {
         if ((!username && user) || (username && user?.profile?.username === username)) {
           setProfileUser(user);
           await fetchUserData(user.id);
           return;
         }
-        
+
         if (username) {
           const profileData = await getUserByUsername(username);
-          
+
           if (profileData) {
             const enhancedProfile = {
               ...profileData,
@@ -75,25 +75,25 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     try {
       const followers = await getFollowersCount(userId);
       const following = await getFollowingCount(userId);
-      
+
       setFollowerCount(followers);
       setFollowingCount(following);
-      
+
       if (user && user.id !== userId) {
         const following = await checkIsFollowing(user.id, userId);
         setIsFollowing(following);
       }
-      
+
       try {
         const postsData = await getUserPosts(userId);
         const productsData = await getUserProducts(userId);
-        
+
         if (postsData && postsData.length > 0) {
           setPosts(formatPosts(postsData));
         } else {
           createMockPosts();
         }
-        
+
         if (productsData && productsData.length > 0) {
           setProducts(formatProducts(productsData));
         } else {
@@ -216,19 +216,19 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
       app_metadata: {},
       aud: "authenticated"
     } as ExtendedUser;
-    
+
     setProfileUser(mockUser);
-    
+
     setFollowerCount(Math.floor(Math.random() * 1000) + 100);
     setFollowingCount(Math.floor(Math.random() * 500) + 50);
-    
+
     createMockPosts();
     createMockProducts(mockUser.id);
   };
 
   const createMockPosts = () => {
     if (!profileUser) return;
-    
+
     const mockPosts: Post[] = [
       {
         id: "mock-1",
@@ -282,7 +282,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
 
   const createMockProducts = (userId: string) => {
     if (!profileUser) return;
-    
+
     const mockProducts: Product[] = [
       {
         id: "mock-1",
@@ -356,7 +356,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
 
     try {
       setIsFollowing(prev => !prev);
-      
+
       if (isFollowing) {
         setFollowerCount(prev => prev - 1);
         toast({
@@ -370,7 +370,7 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
           description: `You are now following ${profileUser.name}`,
         });
       }
-      
+
       if (user.id && profileUser.id) {
         await toggleFollowStatus(user.id, profileUser.id, isFollowing);
       }
@@ -406,11 +406,11 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         .from('products')
         .delete()
         .eq('id', productId);
-      
+
       if (error) throw error;
-      
+
       setProducts(products.filter(product => product.id !== productId));
-      
+
       toast({
         title: "Product deleted",
         description: "Your product has been deleted",

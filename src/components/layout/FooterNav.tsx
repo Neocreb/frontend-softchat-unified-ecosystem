@@ -1,12 +1,12 @@
 
 import { Link, useLocation } from "react-router-dom";
 import { Home, Search, Video, ShoppingCart, TrendingUp, Wallet } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 
 const FooterNav = () => {
   const location = useLocation();
-  
+
   const navItems = [
     {
       icon: Home,

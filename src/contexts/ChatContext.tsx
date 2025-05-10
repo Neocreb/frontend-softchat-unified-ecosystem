@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { ChatConversation, ChatMessage } from "@/types/user";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 
 type ChatContextType = {
   conversations: ChatConversation[];
@@ -54,7 +54,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         for (const conv of conversationsData) {
           // Find the other participant (not the current user)
           const otherParticipantId = conv.participants.find(id => id !== user.id);
-          
+
           if (!otherParticipantId) continue;
 
           // Get the other participant's profile
@@ -68,7 +68,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             console.error("Error loading participant profile:", profileError);
             continue;
           }
-          
+
           // Get unread count for this conversation
           const { count: unreadCount, error: countError } = await supabase
             .from('chat_messages')
@@ -76,7 +76,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             .eq('conversation_id', conv.id)
             .eq('read', false)
             .neq('sender_id', user.id);
-            
+
           if (countError) {
             console.error("Error getting unread count:", countError);
           }
@@ -135,7 +135,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         table: 'chat_messages'
       }, payload => {
         const newMessage = payload.new as ChatMessage;
-        
+
         // Only process messages for conversations the user is part of
         if (conversations.some(c => c.id === newMessage.conversation_id)) {
           handleNewMessage(newMessage);
@@ -168,14 +168,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         // Check if sender exists and handle possible errors
         let senderName = 'Unknown';
         let senderAvatar = '/placeholder.svg';
-        
+
         if (msg.sender && typeof msg.sender === 'object') {
           // Make sure to use optional chaining for all properties
           const sender = msg.sender as Record<string, any>; // Type assertion to avoid null checks
           senderName = sender?.full_name || sender?.username || 'Unknown';
           senderAvatar = sender?.avatar_url || '/placeholder.svg';
         }
-        
+
         return {
           id: msg.id,
           content: msg.content,
@@ -207,14 +207,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }));
 
     // Update conversation
-    setConversations(prev => 
-      prev.map(conv => 
+    setConversations(prev =>
+      prev.map(conv =>
         conv.id === message.conversation_id
           ? {
-              ...conv,
-              last_message: message,
-              unread_count: message.sender_id !== user?.id ? (conv.unread_count || 0) + 1 : conv.unread_count
-            }
+            ...conv,
+            last_message: message,
+            unread_count: message.sender_id !== user?.id ? (conv.unread_count || 0) + 1 : conv.unread_count
+          }
           : conv
       )
     );
@@ -363,9 +363,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     return conversations.filter(conv => {
       const participantName = conv.participant_profile?.name?.toLowerCase() || '';
       const lastMessageContent = conv.last_message?.content?.toLowerCase() || '';
-      
-      return participantName.includes(normalizedQuery) || 
-             lastMessageContent.includes(normalizedQuery);
+
+      return participantName.includes(normalizedQuery) ||
+        lastMessageContent.includes(normalizedQuery);
     });
   };
 

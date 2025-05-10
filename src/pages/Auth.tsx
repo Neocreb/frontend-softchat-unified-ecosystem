@@ -11,9 +11,11 @@ const Auth = () => {
           <span className="font-bold">Softchat</span>
         </div>
       </header>
-      <main className="flex-1 grid lg:grid-cols-2">
-        <div className="hidden lg:block bg-gradient-to-br from-softchat-primary to-softchat-accent flex items-center justify-center">
-          <div className="max-w-md px-8 text-white">
+
+      <main className="flex-1 gap-0.5 grid lg:grid-cols-2">
+        <div className="hidden lg:block bg-gradient-to-br from-softchat-primary to-softchat-accent 
+        flex items-center justify-center shadow-xl rounded-lg">
+          <div className="max-w-md px-8 py-32 ml-10 mt-20 text-white">
             <div className="space-y-2 mb-6">
               <h1 className="text-3xl font-bold">Welcome to Softchat</h1>
               <p className="text-muted text-white/80">

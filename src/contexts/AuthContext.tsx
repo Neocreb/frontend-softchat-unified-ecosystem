@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
 
@@ -25,10 +25,10 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   error: null,
   login: async () => ({ error: undefined }),
-  logout: async () => {},
+  logout: async () => { },
   signup: async () => ({ error: undefined }),
   isAdmin: () => false,
-  updateProfile: async () => {},
+  updateProfile: async () => { },
 });
 
 // Custom hook to use the auth context
@@ -41,11 +41,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  
+
   // Transform user data to include convenience properties
   const enhanceUserData = (rawUser: User | null): ExtendedUser | null => {
     if (!rawUser) return null;
-    
+
     return {
       ...rawUser,
       name: rawUser.user_metadata?.name || rawUser.user_metadata?.full_name || 'User',
@@ -69,15 +69,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
   };
-  
+
   // Check for an existing session on component mount
   useEffect(() => {
     console.log("AuthProvider: Initializing");
-    
+
     const initializeAuth = async () => {
       try {
         console.log("AuthProvider: Checking for existing session");
-        
+
         // Get the current session
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
 
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
         console.log("AuthProvider: Auth state changed", event, newSession ? "session exists" : "no session");
-        
+
         setSession(newSession);
         setUser(enhanceUserData(newSession?.user || null));
         setIsLoading(false);
@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     console.log("AuthProvider: Login attempt", email);
     setIsLoading(true);
-    
+
     try {
       const { data, error: loginError } = await supabase.auth.signInWithPassword({
         email,
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("AuthProvider: Login successful", data);
       setUser(enhanceUserData(data.user));
       setSession(data.session);
-      
+
       return {};
     } catch (err) {
       console.error("AuthProvider: Login exception", err);
@@ -158,10 +158,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     console.log("AuthProvider: Logout attempt");
     setIsLoading(true);
-    
+
     try {
       const { error: logoutError } = await supabase.auth.signOut();
-      
+
       if (logoutError) {
         console.error("AuthProvider: Logout error", logoutError);
         setError(logoutError);
@@ -182,7 +182,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signup = async (email: string, password: string, name: string) => {
     console.log("AuthProvider: Signup attempt", email);
     setIsLoading(true);
-    
+
     try {
       // For demo purposes, we're using fake data for user profile
       const { data, error: signupError } = await supabase.auth.signUp({
@@ -207,7 +207,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // In a real app, we would handle email verification here
       setUser(enhanceUserData(data.user));
       setSession(data.session);
-      
+
       return {};
     } catch (err) {
       console.error("AuthProvider: Signup exception", err);
@@ -224,20 +224,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (!user) {
       throw new Error("No user logged in");
     }
-    
+
     try {
       const { error } = await supabase.auth.updateUser({
         data: profileData
       });
-      
+
       if (error) {
         throw error;
       }
-      
+
       // Update local user state with new profile data
       setUser(prev => {
         if (!prev) return null;
-        
+
         // Create a new user object with updated metadata and profile
         const updatedUser: ExtendedUser = {
           ...prev,
@@ -259,10 +259,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             id: prev.profile?.id || prev.id
           }
         };
-        
+
         return updatedUser;
       });
-      
+
     } catch (error) {
       console.error("Error updating profile:", error);
       throw error;
@@ -291,8 +291,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     updateProfile,
   };
 
-  console.log("AuthProvider: Current state", { 
-    isAuthenticated, 
+  console.log("AuthProvider: Current state", {
+    isAuthenticated,
     isLoading,
     hasUser: !!user,
     hasSession: !!session,
