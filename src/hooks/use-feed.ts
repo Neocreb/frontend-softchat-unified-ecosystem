@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Post } from "@/components/feed/PostCard";
 import { PostComment } from "@/types/user";
@@ -6,20 +5,29 @@ import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
 import { mockPosts, mockComments } from "@/data/mockFeedData";
 
-
 export const useFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [postComments, setPostComments] = useState<Record<string, PostComment[]>>({});
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const notification = useNotification();
   const { user } = useAuth();
 
+  const PAGE_SIZE = 5; // Number of posts per page
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      setPosts(mockPosts);
+      // Simulate paginated data
+      const startIndex = (page - 1) * PAGE_SIZE;
+      const endIndex = startIndex + PAGE_SIZE;
+      const paginatedPosts = mockPosts.slice(0, endIndex);
+
+      setPosts(paginatedPosts);
+      setHasMore(endIndex < mockPosts.length);
 
       const initialComments: Record<string, PostComment[]> = {};
-      mockPosts.forEach(post => {
+      paginatedPosts.forEach(post => {
         initialComments[post.id] = post.id === "1" ? mockComments : [];
       });
       setPostComments(initialComments);
@@ -28,7 +36,13 @@ export const useFeed = () => {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [page]);
+
+  const loadMorePosts = () => {
+    if (!isLoading && hasMore) {
+      setPage(prev => prev + 1);
+    }
+  };
 
   const handleCreatePost = (content: string, image?: string) => {
     const newPost: Post = {
@@ -86,6 +100,8 @@ export const useFeed = () => {
     posts,
     isLoading,
     postComments,
+    hasMore,
+    loadMorePosts,
     handleCreatePost,
     handleAddComment
   };

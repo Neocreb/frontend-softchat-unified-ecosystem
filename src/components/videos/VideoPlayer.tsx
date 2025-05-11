@@ -9,15 +9,15 @@ import { VideoItem } from "@/types/video";
 interface VideoPlayerProps {
   video: VideoItem;
   onNext: () => void;
+  onPrev: () => void;
 }
-
-const VideoPlayer = ({ video, onNext }: VideoPlayerProps) => {
+function VideoPlayer({ video, onNext }: VideoPlayerProps) {
   const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true);
   const [following, setFollowing] = useState(video.isFollowing);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full overflow-y-hidden">
       <div className="absolute inset-0 bg-black">
         <video
           src={video.url}
@@ -27,8 +27,7 @@ const VideoPlayer = ({ video, onNext }: VideoPlayerProps) => {
           loop
           muted={muted}
           playsInline
-          onClick={() => setMuted(!muted)}
-        />
+          onClick={() => setMuted(!muted)} />
       </div>
 
       <div className="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-b from-transparent via-transparent to-black/50">
@@ -56,9 +55,9 @@ const VideoPlayer = ({ video, onNext }: VideoPlayerProps) => {
                     </Badge>
                   )}
                 </div>
-                <Button 
-                  variant={following ? "outline" : "default"} 
-                  size="sm" 
+                <Button
+                  variant={following ? "outline" : "default"}
+                  size="sm"
                   className="h-7 text-xs"
                   onClick={() => setFollowing(!following)}
                 >
@@ -98,6 +97,6 @@ const VideoPlayer = ({ video, onNext }: VideoPlayerProps) => {
       </div>
     </div>
   );
-};
+}
 
 export default VideoPlayer;

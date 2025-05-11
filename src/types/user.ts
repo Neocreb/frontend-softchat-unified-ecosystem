@@ -17,6 +17,7 @@ export interface UserProfile {
 }
 
 export interface ExtendedUser extends User {
+  username(arg0: string, username: any): unknown;
   name: string;
   avatar: string;
   points: number;
