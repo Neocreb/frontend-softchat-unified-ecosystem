@@ -1,107 +1,60 @@
-
 import EnhancedAuthForm from "@/components/auth/EnhancedAuthForm";
-import SoftchatLogo from "@/components/shared/SoftchatLogo";
+
+const ChecklistItem = ({ text }: { text: string }) => (
+  <li className="flex items-center gap-2 text-softchat-primary">
+    <CheckIcon className="h-5 w-5 text-softchat-accent" />
+    <span>{text}</span>
+  </li>
+);
+
+const CheckIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
 
 const Auth = () => {
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="flex h-14 items-center px-4 lg:px-6 border-b">
-        <div className="flex items-center gap-2">
-          <SoftchatLogo className="h-6 w-6" />
-          <span className="font-bold">Softchat</span>
-        </div>
-      </header>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="flex flex-col md:flex-row w-full max-w-6xl rounded-2xl shadow-2xl overflow-hidden">
+        {/* Left Side */}
+        <div className="hidden md:block w-full md:w-1/2 ml-5 p-6 sm:p-8 rounded-lg object-cover">
+          <h2 className="text-2xl sm:text-4xl font-bold text-softchat-primary mb-2">Welcome to Softchat</h2>
+          <p className="text-gray-800 mb-6 sm:mb-8">The unified ecosystem for social media, e-commerce, crypto, and rewards.</p>
 
-      <main className="flex-1 gap-0.5 grid lg:grid-cols-2">
-        <div className="hidden lg:block bg-gradient-to-br from-softchat-primary to-softchat-accent 
-        flex items-center justify-center shadow-xl rounded-lg">
-          <div className="max-w-md px-8 py-32 ml-10 mt-20 text-white">
-            <div className="space-y-2 mb-6">
-              <h1 className="text-3xl font-bold">Welcome to Softchat</h1>
-              <p className="text-muted text-white/80">
-                The unified ecosystem for social media, e-commerce, crypto, and rewards.
-              </p>
-            </div>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
-                <span>Connect with friends and create content</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
-                <span>Shop securely in our marketplace</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
-                <span>Learn crypto trading risk-free</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
-                <span>Earn rewards for everything you do</span>
-              </li>
-            </ul>
+          <ul className="space-y-4">
+            <ChecklistItem text="Connect with friends and create content." />
+            <ChecklistItem text="Shop securely in our marketplace." />
+            <ChecklistItem text="Learn crypto trading risk-free." />
+            <ChecklistItem text="Earn rewards for everything you do." />
+          </ul>
+          <img
+            src="/auth.webp"
+            alt="Auth"
+            className="w-[40rem] h-[20rem] mt-5 object-cover"
+          />
+        </div>
+
+        {/* Right Side (Hidden on mobile) */}
+        <div className="w-full md:w-1/2 relative overflow-hidden shadow-xl">
+          {/* Decorative Blobs */}
+          <div className="absolute -right-10 -top-10 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
+          <div className="absolute -left-10 -bottom-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
+          <div className="flex items-center justify-center p-6 mt-10">
+            <EnhancedAuthForm />
           </div>
         </div>
-        <div className="flex items-center justify-center p-6">
-          <EnhancedAuthForm />
-        </div>
-      </main>
+      </div>
     </div>
   );
 };
