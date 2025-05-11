@@ -105,7 +105,7 @@ const EnhancedAuthForm = () => {
   const displayError = error || (authError ? authError.message : null);
 
   return (
-    <Card className="w-full max-w-md mx-auto ml-8 shawdow-2xl rounded-lg">
+    <Card className="w-full max-w-md mx-auto shawdow-2xl rounded-lg">
       <CardHeader className="space-y-1 text-center">
         <AuthHeader isLogin={isLogin} />
       </CardHeader>
