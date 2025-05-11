@@ -30,7 +30,7 @@ const EnhancedAuthForm = () => {
 
     try {
       console.log(`Attempting to ${isLogin ? 'login' : 'register'} user: ${email}`);
-      
+
       if (isLogin) {
         const result = await login(email, password);
         if (result.error) {
@@ -51,7 +51,7 @@ const EnhancedAuthForm = () => {
           setIsSubmitting(false);
           return;
         }
-        
+
         const result = await signup(email, password, name);
         if (result.error) {
           const errorMessage = result.error.message || "Registration failed";
@@ -77,7 +77,7 @@ const EnhancedAuthForm = () => {
   const handleDemoLogin = async () => {
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
       console.log("Attempting demo login");
       const result = await login("demo@softchat.com", "password123");
@@ -105,7 +105,7 @@ const EnhancedAuthForm = () => {
   const displayError = error || (authError ? authError.message : null);
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto ml-8 shawdow-2xl rounded-lg">
       <CardHeader className="space-y-1 text-center">
         <AuthHeader isLogin={isLogin} />
       </CardHeader>
@@ -129,7 +129,7 @@ const EnhancedAuthForm = () => {
               onDemoLogin={handleDemoLogin}
             />
           </TabsContent>
-          
+
           <TabsContent value="register">
             <RegisterForm
               name={name}

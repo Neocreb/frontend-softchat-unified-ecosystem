@@ -1,5 +1,5 @@
 
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
 import { fetchUserProfile, getUserPointsAndLevel, updateUserProfile } from "./profileService";
@@ -52,17 +52,17 @@ export const updateUserProfileData = async (userId: string, profileData: Partial
 
 export const signIn = async (email: string, password: string) => {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 };
 
 export const signUp = async (name: string, email: string, password: string) => {
-  const { data, error } = await supabase.auth.signUp({ 
-    email, 
+  const { data, error } = await supabase.auth.signUp({
+    email,
     password,
     options: {
       data: {
@@ -70,17 +70,17 @@ export const signUp = async (name: string, email: string, password: string) => {
       }
     }
   });
-  
+
   if (error) {
     throw error;
   }
-  
+
   return data;
 };
 
 export const signOut = async () => {
   const { error } = await supabase.auth.signOut();
-  
+
   if (error) {
     throw error;
   }

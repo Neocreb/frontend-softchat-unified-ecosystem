@@ -6,6 +6,7 @@ import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
 import { mockPosts, mockComments } from "@/data/mockFeedData";
 
+
 export const useFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,13 +17,13 @@ export const useFeed = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setPosts(mockPosts);
-      
+
       const initialComments: Record<string, PostComment[]> = {};
       mockPosts.forEach(post => {
         initialComments[post.id] = post.id === "1" ? mockComments : [];
       });
       setPostComments(initialComments);
-      
+
       setIsLoading(false);
     }, 1000);
 
@@ -72,12 +73,12 @@ export const useFeed = () => {
       [postId]: [...(prev[postId] || []), newComment]
     }));
 
-    setPosts(prev => prev.map(post => 
-      post.id === postId 
+    setPosts(prev => prev.map(post =>
+      post.id === postId
         ? { ...post, comments: post.comments + 1 }
         : post
     ));
-    
+
     notification.success("Comment added");
   };
 

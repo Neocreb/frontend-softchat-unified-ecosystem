@@ -1,20 +1,22 @@
-
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/feed/PostCard";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
 import FeedSidebar from "@/components/feed/FeedSidebar";
+import { createClient } from "@/lib/supabase/client";
+import { Tables } from "@/lib/supabase/types";
 
-// Define the Post type to match what PostCard expects
+// Define the Post type that matches what PostCard expects
 export type Post = {
   id: string;
   content: string;
+  createdAt: string;
   timestamp?: string; // Optional for backward compatibility
-  createdAt: string;  // Added required field
   likes: number;
   comments: number;
-  shares: number;
+  shares: number; // Added missing property
   author: {
     name: string;
     username: string;
@@ -22,61 +24,99 @@ export type Post = {
     avatar: string;
     verified?: boolean;
   };
-  image?: string; // Optional field for posts with images
-  liked?: boolean; // Optional field to track if post is liked by current user
+  image?: string;
+  liked?: boolean;
 };
 
-// Sample posts data
-const posts: Post[] = [
-  {
-    id: "1",
-    content: "Just launched our new AI-powered feature! Check it out at softchat.ai/new-features",
-    timestamp: "2h ago",
-    createdAt: "2h ago", // Added required field
-    likes: 24,
-    comments: 5,
-    shares: 2,
-    author: {
-      name: "Sarah Johnson",
-      username: "sarahj",
-      handle: "@sarahj",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      verified: true,
-    },
-  },
-  {
-    id: "2",
-    content: "Excited to announce that we've raised $5M in seed funding to build the future of social communication! 🚀",
-    timestamp: "5h ago",
-    createdAt: "5h ago", // Added required field
-    likes: 142,
-    comments: 36,
-    shares: 28,
-    author: {
-      name: "David Chen",
-      username: "davidc",
-      handle: "@davidc",
-      avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-    },
-  },
-  {
-    id: "3",
-    content: "What are your favorite productivity tools for remote work? I'm looking for recommendations!",
-    timestamp: "8h ago",
-    createdAt: "8h ago", // Added required field
-    likes: 56,
-    comments: 43,
-    shares: 5,
-    author: {
-      name: "Alex Rivera",
-      username: "alexr",
-      handle: "@alexr",
-      avatar: "https://randomuser.me/api/portraits/men/33.jpg",
-    },
-  },
-];
-
 const Feed = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const SUPABASE_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch posts with author information
+        const { data: postsData, error: postsError } = await supabase
+          .from("posts")
+          .select(`
+            *,
+            profiles:user_id (
+              name,
+              username,
+              avatar_url,
+              is_verified
+            )
+          `)
+          .order("created_at", { ascending: false });
+
+        if (postsError) throw postsError;
+
+        // Get post IDs for batch queries
+        const postIds = postsData.map(post => post.id);
+
+        // Fetch like counts
+        const { data: likesData } = await supabase
+          .from("post_likes")
+          .select("post_id")
+          .in("post_id", postIds);
+
+        // Fetch comment counts
+        const { data: commentsData } = await supabase
+          .from("post_comments")
+          .select("post_id")
+          .in("post_id", postIds);
+
+        // Transform data to match PostCard's expected type
+        const formattedPosts = postsData.map(post => {
+          const likeCount = likesData?.filter(like => like.post_id === post.id).length || 0;
+          const commentCount = commentsData?.filter(comment => comment.post_id === post.id).length || 0;
+
+          return {
+            id: post.id,
+            content: post.content,
+            createdAt: post.created_at,
+            timestamp: new Date(post.created_at).toLocaleTimeString(),
+            likes: likeCount,
+            comments: commentCount,
+            shares: 0, // Default to 0 since shares isn't in your schema
+            author: {
+              name: post.profiles?.name || "Anonymous",
+              username: post.profiles?.username || "anonymous",
+              handle: `@${post.profiles?.username || "anonymous"}`,
+              avatar: post.profiles?.avatar_url || "/default-avatar.png",
+              verified: post.profiles?.is_verified || false,
+            },
+            image: post.image_url || undefined,
+            liked: false, // You'll need to check this against the current user
+          };
+        });
+
+        setPosts(formattedPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="container max-w-6xl py-6">
+        <div className="flex justify-center items-center h-64">
+          <p>Loading posts...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container max-w-6xl py-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

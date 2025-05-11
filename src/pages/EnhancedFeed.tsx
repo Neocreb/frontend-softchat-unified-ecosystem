@@ -26,10 +26,10 @@ const EnhancedFeed = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
-  
+
   const handleViewStory = (storyId: string) => {
     setActiveStory(storyId);
-    
+
     setTimeout(() => {
       setActiveStory(null);
     }, 5000);
@@ -38,12 +38,12 @@ const EnhancedFeed = () => {
   const handleCreateStory = () => {
     notification.info("Story creation coming soon!");
   };
-  
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setSelectedFile(file);
-      
+
       // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -52,12 +52,12 @@ const EnhancedFeed = () => {
       reader.readAsDataURL(file);
     }
   };
-  
+
   const handlePostSubmit = () => {
     if (!postContent.trim() && !selectedFile) return;
-    
+
     setIsPosting(true);
-    
+
     // Simulate post creation
     setTimeout(() => {
       handleCreatePost(postContent, previewUrl || undefined);
@@ -67,7 +67,7 @@ const EnhancedFeed = () => {
       setIsPosting(false);
     }, 1000);
   };
-  
+
   const handleVideoUpload = () => {
     notification.info("Video upload coming soon!");
   };
@@ -75,20 +75,20 @@ const EnhancedFeed = () => {
   return (
     <div className="flex justify-center w-full">
       <div className="w-full max-w-2xl mx-auto px-4 py-6 pb-20 md:pb-6">
-        <Stories 
-          stories={mockStories} 
-          onViewStory={handleViewStory} 
-          onCreateStory={handleCreateStory} 
+        <Stories
+          stories={mockStories}
+          onViewStory={handleViewStory}
+          onCreateStory={handleCreateStory}
         />
-        
+
         {activeStory && (
-          <StoryView 
-            activeStory={activeStory} 
-            stories={mockStories} 
-            onClose={() => setActiveStory(null)} 
+          <StoryView
+            activeStory={activeStory}
+            stories={mockStories}
+            onClose={() => setActiveStory(null)}
           />
         )}
-        
+
         {/* Create Post Box with Tabs */}
         <div className="bg-background rounded-lg shadow mb-6 overflow-hidden">
           <Tabs defaultValue="post" className="w-full">
@@ -102,7 +102,7 @@ const EnhancedFeed = () => {
                 <span>Video</span>
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="post" className="p-4 space-y-4">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -116,7 +116,7 @@ const EnhancedFeed = () => {
                   onChange={(e) => setPostContent(e.target.value)}
                 />
               </div>
-              
+
               {previewUrl && (
                 <div className="relative">
                   <img src={previewUrl} alt="Preview" className="w-full rounded-lg max-h-80 object-cover" />
@@ -133,11 +133,11 @@ const EnhancedFeed = () => {
                   </Button>
                 </div>
               )}
-              
+
               <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center gap-2">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="sm"
                     className="flex items-center gap-1 text-muted-foreground"
                     onClick={() => document.getElementById("image-upload")?.click()}
@@ -145,16 +145,16 @@ const EnhancedFeed = () => {
                     <Image className="h-5 w-5" />
                     <span>Photo</span>
                   </Button>
-                  <input 
-                    id="image-upload" 
-                    type="file" 
-                    accept="image/*" 
-                    className="hidden" 
-                    onChange={handleFileChange} 
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
                   />
-                  
-                  <Button 
-                    variant="ghost" 
+
+                  <Button
+                    variant="ghost"
                     size="sm"
                     className="flex items-center gap-1 text-muted-foreground"
                     onClick={() => {
@@ -165,16 +165,16 @@ const EnhancedFeed = () => {
                     <span>Tag</span>
                   </Button>
                 </div>
-                
-                <Button 
-                  onClick={handlePostSubmit} 
+
+                <Button
+                  onClick={handlePostSubmit}
                   disabled={isPosting || (!postContent.trim() && !selectedFile)}
                 >
                   {isPosting ? "Posting..." : "Post"}
                 </Button>
               </div>
             </TabsContent>
-            
+
             <TabsContent value="video" className="p-4 space-y-4">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -188,8 +188,8 @@ const EnhancedFeed = () => {
                   onChange={(e) => setPostContent(e.target.value)}
                 />
               </div>
-              
-              <div 
+
+              <div
                 className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50"
                 onClick={handleVideoUpload}
               >
@@ -197,14 +197,14 @@ const EnhancedFeed = () => {
                 <p className="text-muted-foreground text-center">Click to upload a video</p>
                 <p className="text-xs text-muted-foreground mt-1">MP4 or WebM format</p>
               </div>
-              
+
               <div className="flex justify-end mt-4">
                 <Button onClick={handleVideoUpload}>Upload Video</Button>
               </div>
             </TabsContent>
           </Tabs>
         </div>
-        
+
         <div className="space-y-6">
           {isLoading ? (
             <FeedSkeleton />
@@ -213,10 +213,10 @@ const EnhancedFeed = () => {
               {posts.map((post) => (
                 <div key={post.id} className="space-y-2">
                   <EnhancedPostCard post={post} />
-                  <CommentSection 
-                    postId={post.id} 
-                    comments={postComments[post.id] || []} 
-                    onAddComment={handleAddComment} 
+                  <CommentSection
+                    postId={post.id}
+                    comments={postComments[post.id] || []}
+                    onAddComment={handleAddComment}
                   />
                 </div>
               ))}

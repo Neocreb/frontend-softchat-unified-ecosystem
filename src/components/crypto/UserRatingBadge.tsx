@@ -1,12 +1,12 @@
 
 import { Star } from "lucide-react";
-import { 
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 interface UserRatingBadgeProps {
   rating: number;
@@ -22,7 +22,7 @@ const UserRatingBadge = ({ rating, trades, kycLevel }: UserRatingBadgeProps) => 
     if (rating >= 2.5) return "text-yellow-500";
     return "text-red-500";
   };
-  
+
   // KYC badge color and text
   const getKYCBadge = () => {
     if (kycLevel >= 3) return { color: "bg-green-500", text: "KYC 3" };
@@ -30,9 +30,9 @@ const UserRatingBadge = ({ rating, trades, kycLevel }: UserRatingBadgeProps) => 
     if (kycLevel === 1) return { color: "bg-yellow-500", text: "KYC 1" };
     return { color: "bg-gray-400", text: "No KYC" };
   };
-  
+
   const kycBadge = getKYCBadge();
-  
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -48,9 +48,9 @@ const UserRatingBadge = ({ rating, trades, kycLevel }: UserRatingBadgeProps) => 
             <div className="font-medium">Trader Rating</div>
             <div className="flex items-center gap-0.5 mt-1">
               {Array.from({ length: 5 }).map((_, i) => (
-                <Star 
+                <Star
                   key={i}
-                  className="h-4 w-4" 
+                  className="h-4 w-4"
                   fill={i < Math.floor(rating) ? "currentColor" : "none"}
                   strokeWidth={1}
                 />
@@ -61,7 +61,7 @@ const UserRatingBadge = ({ rating, trades, kycLevel }: UserRatingBadgeProps) => 
               Based on {trades} completed trades
             </div>
           </div>
-          
+
           <div>
             <div className="font-medium">Verification</div>
             <div className="flex items-center mt-1">

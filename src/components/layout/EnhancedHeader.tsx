@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MessageCircle, Menu, X, User, ShoppingCart, Home, TrendingUp, Wallet, Award } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -23,11 +23,11 @@ const EnhancedHeader = () => {
   const isMobile = useIsMobile();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   const handleChatClick = () => {
     navigate("/chat");
   };
-  
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -43,7 +43,7 @@ const EnhancedHeader = () => {
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           )}
-          
+
           <Link to="/" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl hidden sm:inline-block text-softchat-primary">Softchat</span>
@@ -76,16 +76,16 @@ const EnhancedHeader = () => {
 
         <div className="flex items-center gap-3">
           <NotificationsDropdown />
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
+
+          <Button
+            variant="ghost"
+            size="icon"
             aria-label="Messages"
             onClick={handleChatClick}
           >
             <MessageCircle className="h-5 w-5" />
           </Button>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">

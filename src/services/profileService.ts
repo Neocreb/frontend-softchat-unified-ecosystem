@@ -1,5 +1,5 @@
 
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { UserProfile } from '@/types/user';
 
 export const getUserByUsername = async (username: string) => {
@@ -8,7 +8,7 @@ export const getUserByUsername = async (username: string) => {
     .select('*')
     .eq('username', username)
     .single();
-    
+
   if (error) throw error;
   return data;
 };
@@ -18,7 +18,7 @@ export const getFollowersCount = async (userId: string): Promise<number> => {
     .from('followers')
     .select('*', { count: 'exact', head: true })
     .eq('following_id', userId);
-    
+
   if (error) throw error;
   return count || 0;
 };
@@ -28,7 +28,7 @@ export const getFollowingCount = async (userId: string): Promise<number> => {
     .from('followers')
     .select('*', { count: 'exact', head: true })
     .eq('follower_id', userId);
-    
+
   if (error) throw error;
   return count || 0;
 };
@@ -40,7 +40,7 @@ export const isFollowing = async (followerId: string, followingId: string): Prom
     .eq('follower_id', followerId)
     .eq('following_id', followingId)
     .maybeSingle();
-    
+
   if (error) throw error;
   return !!data;
 };
@@ -52,13 +52,13 @@ export const toggleFollow = async (followerId: string, followingId: string, curr
       .delete()
       .eq('follower_id', followerId)
       .eq('following_id', followingId);
-      
+
     if (error) throw error;
   } else {
     const { error } = await supabase
       .from('followers')
       .insert({ follower_id: followerId, following_id: followingId });
-      
+
     if (error) throw error;
   }
 };
@@ -72,7 +72,7 @@ export const getUserPosts = async (userId: string) => {
     `)
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
-    
+
   if (error) throw error;
   return data;
 };
@@ -86,7 +86,7 @@ export const getUserProducts = async (userId: string) => {
     `)
     .eq('seller_id', userId)
     .order('created_at', { ascending: false });
-    
+
   if (error) throw error;
   return data;
 };
@@ -97,13 +97,13 @@ export const fetchUserProfile = async (userId: string): Promise<UserProfile> => 
     .select('*')
     .eq('user_id', userId)
     .single();
-    
+
   if (error) throw error;
-  
+
   // Ensure id property is present
-  return { 
-    ...data, 
-    id: userId 
+  return {
+    ...data,
+    id: userId
   } as UserProfile;
 };
 
@@ -113,7 +113,7 @@ export const getUserPointsAndLevel = async (userId: string) => {
     .select('points, level')
     .eq('user_id', userId)
     .single();
-    
+
   if (error) throw error;
   return {
     points: data?.points || 0,
@@ -128,7 +128,7 @@ export const updateUserProfile = async (userId: string, profileData: Partial<Use
     .eq('user_id', userId)
     .select()
     .single();
-    
+
   if (error) throw error;
   return { ...data, id: userId } as UserProfile;
 };

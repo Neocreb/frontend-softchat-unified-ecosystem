@@ -2,11 +2,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Menu, X, User, Bell, Home, TrendingUp, Wallet, Award, Video, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -26,7 +26,7 @@ const Header = () => {
   const isMobile = useIsMobile();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -35,7 +35,7 @@ const Header = () => {
       setSearchQuery("");
     }
   };
-  
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-[680px] flex h-16 items-center justify-between">
@@ -51,7 +51,7 @@ const Header = () => {
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           )}
-          
+
           <Link to="/" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl hidden sm:inline-block text-softchat-primary">Softchat</span>
@@ -62,8 +62,8 @@ const Header = () => {
         <div className="hidden md:flex items-center mx-4 flex-1 max-w-md">
           <form onSubmit={handleSearchSubmit} className="w-full relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input 
-              placeholder="Search" 
+            <Input
+              placeholder="Search"
               className="pl-9 bg-muted/40 border-none rounded-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -89,25 +89,25 @@ const Header = () => {
 
         <div className="flex items-center gap-3">
           {/* Mobile Search Trigger */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="md:hidden" 
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
             aria-label="Search"
             onClick={() => setSearchOpen(!searchOpen)}
           >
             <Search className="h-5 w-5" />
           </Button>
-          
+
           <NotificationsDropdown />
-          
+
           {/* Chat Button */}
           <Link to="/chat">
             <Button variant="ghost" size="icon" aria-label="Messages">
               <MessageCircle className="h-5 w-5" />
             </Button>
           </Link>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -164,8 +164,8 @@ const Header = () => {
         <div className="md:hidden p-2 border-t">
           <form onSubmit={handleSearchSubmit} className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input 
-              placeholder="Search" 
+            <Input
+              placeholder="Search"
               className="pl-9 bg-muted/40 border-none rounded-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

@@ -1,6 +1,6 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import type { Crypto } from "@/pages/CryptoMarket";
 
@@ -21,7 +21,7 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
         <div className="hidden sm:block sm:col-span-2 text-right">Market Cap</div>
         <div className="hidden sm:block sm:col-span-2 text-right">Volume</div>
       </div>
-      
+
       <div className="max-h-[400px] overflow-auto">
         {isLoading ? (
           <>
@@ -58,9 +58,9 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
                   onClick={() => onSelectCrypto(crypto)}
                 >
                   <div className="col-span-6 sm:col-span-4 flex items-center gap-2">
-                    <img 
-                      src={crypto.image} 
-                      alt={crypto.name} 
+                    <img
+                      src={crypto.image}
+                      alt={crypto.name}
                       className="h-8 w-8 rounded-full flex-shrink-0"
                     />
                     <div className="min-w-0 truncate">
@@ -70,16 +70,16 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="col-span-3 sm:col-span-2 text-right self-center truncate">
                     ${crypto.current_price.toLocaleString()}
                   </div>
-                  
-                  <div 
+
+                  <div
                     className={cn(
                       "col-span-3 sm:col-span-2 text-right self-center flex items-center justify-end",
-                      crypto.price_change_percentage_24h > 0 
-                        ? "text-green-500" 
+                      crypto.price_change_percentage_24h > 0
+                        ? "text-green-500"
                         : "text-red-500"
                     )}
                   >
@@ -92,11 +92,11 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
                       {Math.abs(crypto.price_change_percentage_24h).toFixed(2)}%
                     </span>
                   </div>
-                  
+
                   <div className="hidden sm:block sm:col-span-2 text-right self-center truncate">
                     ${(crypto.market_cap / 1000000000).toFixed(2)}B
                   </div>
-                  
+
                   <div className="hidden sm:block sm:col-span-2 text-right self-center truncate">
                     ${(crypto.total_volume / 1000000).toFixed(2)}M
                   </div>

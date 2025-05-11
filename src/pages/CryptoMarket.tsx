@@ -10,7 +10,7 @@ import P2PMarketplace from "@/components/crypto/P2PMarketplace";
 import SoftPointExchange from "@/components/crypto/SoftPointExchange";
 import CryptoWalletActions from "@/components/crypto/CryptoWalletActions";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -136,11 +136,11 @@ const CryptoMarket = () => {
     };
 
     fetchCryptos();
-    
+
     // In a real app, we might set up a websocket or polling for real-time price updates
     const interval = setInterval(() => {
       // For demonstration purposes, we'll just add small random price changes to simulate live updates
-      setCryptos(prev => 
+      setCryptos(prev =>
         prev.map(crypto => ({
           ...crypto,
           current_price: crypto.current_price * (1 + (Math.random() * 0.01 - 0.005)),
@@ -148,7 +148,7 @@ const CryptoMarket = () => {
         }))
       );
     }, 30000); // Update every 30 seconds
-    
+
     return () => clearInterval(interval);
   }, [toast]);
 
@@ -158,10 +158,10 @@ const CryptoMarket = () => {
 
   const handleTrade = (type: 'buy' | 'sell', amount: number) => {
     if (!selectedCrypto) return;
-    
+
     // In a real app, this would call an API to place the trade
     console.log(`${type} ${amount} of ${selectedCrypto.name}`);
-    
+
     toast({
       title: "Order Placed",
       description: `Successfully ${type === 'buy' ? 'bought' : 'sold'} ${amount} ${selectedCrypto.symbol.toUpperCase()}`,
@@ -172,15 +172,15 @@ const CryptoMarket = () => {
     try {
       // In a real app, this would upload documents and update the user's KYC status
       console.log("KYC data submitted:", data);
-      
+
       // Simulate API call to update KYC status
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       toast({
         title: "KYC Submitted",
         description: "Your verification documents have been submitted for review.",
       });
-      
+
       return { success: true };
     } catch (error) {
       console.error("Error submitting KYC:", error);
@@ -198,10 +198,10 @@ const CryptoMarket = () => {
       <Helmet>
         <title>Crypto Market | Softchat</title>
       </Helmet>
-      
+
       <div className="container px-4 py-4 mx-auto max-w-7xl">
         <h1 className="text-2xl font-bold mb-6">Crypto Market</h1>
-        
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="w-full grid grid-cols-4 mb-8">
             <TabsTrigger value="market">Market</TabsTrigger>
@@ -209,7 +209,7 @@ const CryptoMarket = () => {
             <TabsTrigger value="convert">Convert</TabsTrigger>
             <TabsTrigger value="wallet">Wallet</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="market" className="w-full">
             <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
               <div className="xl:col-span-3">
@@ -223,7 +223,7 @@ const CryptoMarket = () => {
                   <CryptoChart crypto={selectedCrypto} />
                 )}
               </div>
-              
+
               <div className="xl:col-span-1">
                 {isLoading || !selectedCrypto ? (
                   <Card>
@@ -236,7 +236,7 @@ const CryptoMarket = () => {
                 )}
               </div>
             </div>
-            
+
             <div className="mt-6 grid grid-cols-1 xl:grid-cols-4 gap-6">
               <div className="xl:col-span-3">
                 <Card>
@@ -244,9 +244,9 @@ const CryptoMarket = () => {
                     {isLoading ? (
                       <Skeleton className="h-[400px] w-full" />
                     ) : (
-                      <CryptoList 
-                        cryptos={cryptos} 
-                        selectedCryptoId={selectedCrypto?.id || ''} 
+                      <CryptoList
+                        cryptos={cryptos}
+                        selectedCryptoId={selectedCrypto?.id || ''}
                         onSelectCrypto={handleCryptoSelect}
                         isLoading={isLoading}
                       />
@@ -254,21 +254,21 @@ const CryptoMarket = () => {
                   </CardContent>
                 </Card>
               </div>
-              
+
               <div className="xl:col-span-1">
                 <CryptoPortfolio />
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="p2p">
             <P2PMarketplace />
           </TabsContent>
-          
+
           <TabsContent value="convert">
             <SoftPointExchange />
           </TabsContent>
-          
+
           <TabsContent value="wallet">
             <CryptoWalletActions onKYCSubmit={handleKYCSubmit} />
           </TabsContent>
