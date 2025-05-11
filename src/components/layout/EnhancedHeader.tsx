@@ -29,21 +29,10 @@ const EnhancedHeader = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur 
+    supports-[backdrop-filter]:bg-background/60 shadow-md">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          {isMobile && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          )}
-
           <Link to="/" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl hidden sm:inline-block text-softchat-primary">Softchat</span>
@@ -140,7 +129,7 @@ const EnhancedHeader = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
+          "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background shadow-md",
           mobileMenuOpen ? "block" : "hidden"
         )}
       >

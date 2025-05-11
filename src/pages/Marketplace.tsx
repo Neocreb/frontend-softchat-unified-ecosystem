@@ -24,15 +24,15 @@ const MarketplaceContent = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
-  const { 
-    addToCart, 
-    addToWishlist, 
-    setFilter, 
+  const {
+    addToCart,
+    addToWishlist,
+    setFilter,
     sponsoredProducts,
     featuredProducts,
     isLoading
   } = useMarketplace();
-  
+
   // Redirect to auth if trying to access protected tabs while not authenticated
   useEffect(() => {
     if (!isAuthenticated && (activeTab === "dashboard" || activeTab === "list")) {
@@ -44,17 +44,17 @@ const MarketplaceContent = () => {
       });
     }
   }, [isAuthenticated, activeTab, toast]);
-  
+
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
     setFilter({ category: category === "all" ? undefined : category });
   };
-  
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setFilter({ searchQuery: query });
   };
-  
+
   const handleAddToCart = (productId: string) => {
     if (!isAuthenticated) {
       toast({
@@ -65,7 +65,7 @@ const MarketplaceContent = () => {
       navigate("/auth");
       return;
     }
-    
+
     addToCart(productId);
     toast({
       title: "Added to cart",
@@ -83,14 +83,14 @@ const MarketplaceContent = () => {
       navigate("/auth");
       return;
     }
-    
+
     addToWishlist(productId);
     toast({
       title: "Added to wishlist",
       description: "Product has been added to your wishlist",
     });
   };
-  
+
   const handleListProductSuccess = () => {
     toast({
       title: "Product Listed",
@@ -98,16 +98,16 @@ const MarketplaceContent = () => {
     });
     setActiveTab("dashboard");
   };
-  
+
   return (
     <div className="container py-6 space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Marketplace</h1>
       </div>
-      
-      <Tabs 
-        value={activeTab} 
-        onValueChange={setActiveTab} 
+
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
         className="w-full"
       >
         <div className="overflow-x-auto pb-2">
@@ -123,36 +123,36 @@ const MarketplaceContent = () => {
             )}
           </TabsList>
         </div>
-        
+
         {/* Browse Products Tab */}
         <TabsContent value="browse" className="space-y-8 pt-4">
           {featuredProducts.length > 0 && (
-            <FeaturedProducts 
-              onAddToCart={handleAddToCart} 
-              onAddToWishlist={handleAddToWishlist}
-            />
-          )}
-          
-          {sponsoredProducts.length > 0 && (
-            <SponsoredProducts 
+            <FeaturedProducts
               onAddToCart={handleAddToCart}
               onAddToWishlist={handleAddToWishlist}
             />
           )}
-          
+
+          {sponsoredProducts.length > 0 && (
+            <SponsoredProducts
+              onAddToCart={handleAddToCart}
+              onAddToWishlist={handleAddToWishlist}
+            />
+          )}
+
           <div className="flex flex-col md:flex-row gap-6">
             <aside className="w-full md:w-64 shrink-0">
-              <CategoryMenu 
+              <CategoryMenu
                 activeCategory={activeCategory}
                 onCategoryChange={handleCategoryChange}
               />
-              <ProductFilters 
+              <ProductFilters
                 activeCategory={activeCategory}
                 onCategoryChange={handleCategoryChange}
                 onSearch={handleSearch}
               />
             </aside>
-            
+
             <main className="flex-1">
               {isLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -161,7 +161,7 @@ const MarketplaceContent = () => {
                   ))}
                 </div>
               ) : (
-                <ProductGrid 
+                <ProductGrid
                   category={activeCategory}
                   searchQuery={searchQuery}
                   onAddToCart={handleAddToCart}
@@ -171,7 +171,7 @@ const MarketplaceContent = () => {
             </main>
           </div>
         </TabsContent>
-        
+
         {/* Sponsored Products Tab */}
         <TabsContent value="sponsored" className="space-y-8 pt-4">
           {isLoading ? (
@@ -183,7 +183,7 @@ const MarketplaceContent = () => {
           ) : sponsoredProducts.length > 0 ? (
             <div>
               <h2 className="text-xl font-semibold mb-4">Boosted Products</h2>
-              <ProductGrid 
+              <ProductGrid
                 products={sponsoredProducts}
                 onAddToCart={handleAddToCart}
                 onAddToWishlist={handleAddToWishlist}
@@ -196,7 +196,7 @@ const MarketplaceContent = () => {
             </div>
           )}
         </TabsContent>
-        
+
         {/* Seller Dashboard Tab */}
         <TabsContent value="dashboard" className="space-y-4 pt-4">
           {isAuthenticated ? (
@@ -211,7 +211,7 @@ const MarketplaceContent = () => {
             </div>
           )}
         </TabsContent>
-        
+
         {/* List Product Tab */}
         <TabsContent value="list" className="space-y-4 pt-4">
           {isAuthenticated ? (
@@ -226,7 +226,7 @@ const MarketplaceContent = () => {
             </div>
           )}
         </TabsContent>
-        
+
         {/* Wishlist Tab */}
         <TabsContent value="wishlist" className="space-y-4 pt-4">
           {isAuthenticated ? (

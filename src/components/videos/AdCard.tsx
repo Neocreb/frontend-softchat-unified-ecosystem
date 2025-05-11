@@ -2,10 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { AdData } from "@/types/video";
 
-interface AdCardProps {
+export interface AdCardProps {
   ad: AdData;
+  onNext: () => void;
+  onPrev: () => void;
 }
-
 const AdCard = ({ ad }: AdCardProps) => {
   return (
     <div className="relative h-full w-full">

@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import CreatePostCard from "@/components/feed/CreatePostCard";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import FooterNav from "@/components/layout/FooterNav";
@@ -19,17 +18,49 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const EnhancedFeed = () => {
   const [activeStory, setActiveStory] = useState<string | null>(null);
-  const { posts, isLoading, postComments, handleCreatePost, handleAddComment } = useFeed();
+  const {
+    posts,
+    isLoading,
+    postComments,
+    handleCreatePost,
+    handleAddComment,
+    loadMorePosts,
+    hasMore
+  } = useFeed();
   const notification = useNotification();
   const { user } = useAuth();
   const [postContent, setPostContent] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  // Infinite scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+        if (firstEntry.isIntersecting && hasMore && !isLoading) {
+          loadMorePosts();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentLoader = loaderRef.current;
+    if (currentLoader) {
+      observer.observe(currentLoader);
+    }
+
+    return () => {
+      if (currentLoader) {
+        observer.unobserve(currentLoader);
+      }
+    };
+  }, [hasMore, isLoading, loadMorePosts]);
 
   const handleViewStory = (storyId: string) => {
     setActiveStory(storyId);
-
     setTimeout(() => {
       setActiveStory(null);
     }, 5000);
@@ -44,7 +75,6 @@ const EnhancedFeed = () => {
       const file = e.target.files[0];
       setSelectedFile(file);
 
-      // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
@@ -53,19 +83,21 @@ const EnhancedFeed = () => {
     }
   };
 
-  const handlePostSubmit = () => {
+  const handlePostSubmit = async () => {
     if (!postContent.trim() && !selectedFile) return;
 
     setIsPosting(true);
-
-    // Simulate post creation
-    setTimeout(() => {
-      handleCreatePost(postContent, previewUrl || undefined);
+    try {
+      await handleCreatePost(postContent, previewUrl || undefined);
       setPostContent("");
       setSelectedFile(null);
       setPreviewUrl(null);
+      notification.success("Post created successfully");
+    } catch (error) {
+      notification.error("Failed to create post");
+    } finally {
       setIsPosting(false);
-    }, 1000);
+    }
   };
 
   const handleVideoUpload = () => {
@@ -119,7 +151,11 @@ const EnhancedFeed = () => {
 
               {previewUrl && (
                 <div className="relative">
-                  <img src={previewUrl} alt="Preview" className="w-full rounded-lg max-h-80 object-cover" />
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="w-full rounded-lg max-h-80 object-cover"
+                  />
                   <Button
                     variant="destructive"
                     size="icon"
@@ -157,9 +193,7 @@ const EnhancedFeed = () => {
                     variant="ghost"
                     size="sm"
                     className="flex items-center gap-1 text-muted-foreground"
-                    onClick={() => {
-                      notification.info("Tag a friend feature coming soon!");
-                    }}
+                    onClick={() => notification.info("Tag a friend feature coming soon!")}
                   >
                     <UserPlus className="h-5 w-5" />
                     <span>Tag</span>
@@ -206,7 +240,7 @@ const EnhancedFeed = () => {
         </div>
 
         <div className="space-y-6">
-          {isLoading ? (
+          {isLoading && posts.length === 0 ? (
             <FeedSkeleton />
           ) : (
             <>
@@ -220,6 +254,17 @@ const EnhancedFeed = () => {
                   />
                 </div>
               ))}
+
+              {/* Infinite scroll loader */}
+              <div ref={loaderRef} className="flex justify-center py-4">
+                {isLoading && posts.length > 0 ? (
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                ) : hasMore ? (
+                  <p className="text-muted-foreground text-sm">Scroll to load more</p>
+                ) : (
+                  <p className="text-muted-foreground text-sm">No more posts to load</p>
+                )}
+              </div>
             </>
           )}
         </div>

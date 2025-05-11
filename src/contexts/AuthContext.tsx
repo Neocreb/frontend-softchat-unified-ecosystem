@@ -49,6 +49,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return {
       ...rawUser,
       name: rawUser.user_metadata?.name || rawUser.user_metadata?.full_name || 'User',
+      username: rawUser.user_metadata?.username || 'unknown', // Ensure username is included
       avatar: rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(rawUser.user_metadata?.name || 'User')}&background=random`,
       points: rawUser.user_metadata?.points || 0,
       level: rawUser.user_metadata?.level || 'bronze',
