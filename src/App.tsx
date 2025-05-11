@@ -22,6 +22,7 @@ import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
 import CryptoMarket from "./pages/CryptoMarket";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
+import Settings from "./pages/Settings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import Videos from "./pages/Videos";
@@ -42,7 +43,7 @@ const queryClient = new QueryClient({
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
-  
+
   // Show loading state while checking authentication
   if (isLoading) {
     return (
@@ -54,13 +55,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
   }
-  
+
   // Redirect to auth page if not authenticated
   if (!isAuthenticated) {
     console.log("Not authenticated, redirecting to /auth");
     return <Navigate to="/auth" replace />;
   }
-  
+
   console.log("Authentication confirmed, rendering protected route");
   return <>{children}</>;
 };
@@ -68,7 +69,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // Admin route component
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
-  
+
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -79,22 +80,22 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
   }
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
   }
-  
+
   if (!isAdmin()) {
     return <Navigate to="/feed" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
 // App routes component that uses auth context
 const AppRoutes = () => {
   const { isAuthenticated, isLoading } = useAuth();
-  
+
   // If still loading auth state, show splash screen
   if (isLoading) {
     console.log("App routes: Auth is loading");
@@ -108,20 +109,20 @@ const AppRoutes = () => {
       </div>
     );
   }
-  
+
   console.log("App routes: Auth state determined", { isAuthenticated });
-  
+
   return (
     <Routes>
       {/* Root path redirects based on auth state */}
       <Route path="/" element={<Index />} />
-      
+
       {/* Auth route - redirects to feed if already authenticated */}
-      <Route 
-        path="/auth" 
-        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />} 
+      <Route
+        path="/auth"
+        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
       />
-      
+
       {/* Protected routes inside app layout */}
       <Route path="/" element={
         <ProtectedRoute>
@@ -135,7 +136,7 @@ const AppRoutes = () => {
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
-        
+
         {/* Marketplace routes */}
         <Route path="marketplace" element={<Marketplace />} />
         <Route path="marketplace/my" element={<MarketplaceDashboard />} />
@@ -144,14 +145,16 @@ const AppRoutes = () => {
         <Route path="marketplace/wishlist" element={<MarketplaceWishlist />} />
         <Route path="marketplace/cart" element={<MarketplaceCart />} />
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
-        
+
         <Route path="crypto" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
+        <Route path="settings" element={<Settings />} />
+
       </Route>
-      
+
       {/* Admin Routes */}
       <Route path="/admin" element={
         <AdminRoute>
@@ -161,7 +164,7 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
       </Route>
-      
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

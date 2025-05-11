@@ -10,11 +10,12 @@ import FeedSkeleton from "@/components/feed/FeedSkeleton";
 import { useFeed } from "@/hooks/use-feed";
 import { mockStories } from "@/data/mockFeedData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Image, UserPlus, Video } from "lucide-react";
+import { Image, UserPlus, Video, MapPin, Smile, X } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { Input } from "@/components/ui/input";
 
 const EnhancedFeed = () => {
   const [activeStory, setActiveStory] = useState<string | null>(null);
@@ -33,7 +34,19 @@ const EnhancedFeed = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState(false);
+  const [location, setLocation] = useState<string | null>(null);
+  const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
+  const [showUserSuggestions, setShowUserSuggestions] = useState(false);
+  const [suggestedUsers, setSuggestedUsers] = useState<string[]>([]);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  // Mock user data - replace with actual user search
+  const users = [
+    { id: "1", username: "johndoe", name: "John Doe" },
+    { id: "2", username: "janedoe", name: "Jane Doe" },
+    { id: "3", username: "alice", name: "Alice Smith" },
+  ];
 
   // Infinite scroll observer
   useEffect(() => {
@@ -83,15 +96,76 @@ const EnhancedFeed = () => {
     }
   };
 
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setPostContent(value);
+
+    // Detect @ mentions
+    if (value.includes("@")) {
+      const lastAtPos = value.lastIndexOf("@");
+      const searchTerm = value.substring(lastAtPos + 1).split(/\s/)[0];
+
+      if (searchTerm) {
+        setShowUserSuggestions(true);
+        setSuggestedUsers(
+          users
+            .filter(user =>
+              user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              user.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map(user => user.username)
+        );
+      } else {
+        setShowUserSuggestions(false);
+      }
+    } else {
+      setShowUserSuggestions(false);
+    }
+  };
+
+  const handleTagUser = (username: string) => {
+    const content = postContent;
+    const lastAtPos = content.lastIndexOf("@");
+    const newContent = content.substring(0, lastAtPos) + username + " ";
+
+    setPostContent(newContent);
+    setTaggedUsers([...taggedUsers, username]);
+    setShowUserSuggestions(false);
+
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
+
+  const handleAddLocation = () => {
+    notification.info("Location addition coming soon!");
+  };
+
+  const handleRemoveLocation = () => {
+    setLocation(null);
+  };
+
+  const handleRemoveTag = (username: string) => {
+    setTaggedUsers(taggedUsers.filter(u => u !== username));
+    setPostContent(postContent.replace(`@${username}`, ""));
+  };
+
   const handlePostSubmit = async () => {
     if (!postContent.trim() && !selectedFile) return;
 
     setIsPosting(true);
     try {
-      await handleCreatePost(postContent, previewUrl || undefined);
+      await handleCreatePost({
+        content: postContent,
+        mediaUrl: previewUrl || undefined,
+        location,
+        taggedUsers
+      });
       setPostContent("");
       setSelectedFile(null);
       setPreviewUrl(null);
+      setLocation(null);
+      setTaggedUsers([]);
       notification.success("Post created successfully");
     } catch (error) {
       notification.error("Failed to create post");
@@ -106,7 +180,7 @@ const EnhancedFeed = () => {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="w-full max-w-2xl mx-auto px-4 py-6 pb-20 md:pb-6">
+      <div className="w-full max-w-5xl mx-auto px-4 py-6 pb-20 md:pb-6">
         <Stories
           stories={mockStories}
           onViewStory={handleViewStory}
@@ -142,12 +216,28 @@ const EnhancedFeed = () => {
                   <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
                 <Textarea
+                  ref={textareaRef}
                   placeholder="What's on your mind?"
                   className="flex-1 resize-none"
                   value={postContent}
-                  onChange={(e) => setPostContent(e.target.value)}
+                  onChange={handleTextChange}
                 />
               </div>
+
+              {/* User suggestions dropdown */}
+              {showUserSuggestions && suggestedUsers.length > 0 && (
+                <div className="border rounded-lg bg-popover shadow-lg z-10 max-h-60 overflow-auto">
+                  {suggestedUsers.map(username => (
+                    <div
+                      key={username}
+                      className="p-2 hover:bg-accent cursor-pointer"
+                      onClick={() => handleTagUser(username)}
+                    >
+                      @{username}
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {previewUrl && (
                 <div className="relative">
@@ -165,10 +255,40 @@ const EnhancedFeed = () => {
                       setPreviewUrl(null);
                     }}
                   >
-                    &times;
+                    <X className="h-4 w-4" />
                   </Button>
                 </div>
               )}
+
+              {/* Display tagged users and location */}
+              <div className="flex flex-wrap gap-2">
+                {taggedUsers.map(username => (
+                  <div
+                    key={username}
+                    className="flex items-center gap-1 bg-accent px-2 py-1 rounded-full text-sm"
+                  >
+                    @{username}
+                    <button
+                      onClick={() => handleRemoveTag(username)}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+                {location && (
+                  <div className="flex items-center gap-1 bg-accent px-2 py-1 rounded-full text-sm">
+                    <MapPin className="h-3 w-3" />
+                    {location}
+                    <button
+                      onClick={handleRemoveLocation}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                )}
+              </div>
 
               <div className="flex items-center justify-between mt-4">
                 <div className="flex items-center gap-2">
@@ -193,10 +313,35 @@ const EnhancedFeed = () => {
                     variant="ghost"
                     size="sm"
                     className="flex items-center gap-1 text-muted-foreground"
-                    onClick={() => notification.info("Tag a friend feature coming soon!")}
+                    onClick={() => {
+                      setPostContent(postContent + "@");
+                      if (textareaRef.current) {
+                        textareaRef.current.focus();
+                      }
+                    }}
                   >
                     <UserPlus className="h-5 w-5" />
                     <span>Tag</span>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-1 text-muted-foreground"
+                    onClick={handleAddLocation}
+                  >
+                    <MapPin className="h-5 w-5" />
+                    <span>Location</span>
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-1 text-muted-foreground"
+                    onClick={() => notification.info("This feature is coming soon!")}
+                  >
+                    <Smile className="h-5 w-5" />
+                    <span>Feeling</span>
                   </Button>
                 </div>
 

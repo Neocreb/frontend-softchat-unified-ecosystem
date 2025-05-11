@@ -7,16 +7,19 @@ export interface User {
     verified: boolean;
 }
 
-export interface Post {
+export type CreatePost = {
     id: string;
-    author: User;
+    author: {
+        name: string;
+        username: string;
+        avatar: string;
+        verified: boolean;
+    };
     content: string;
+    image?: string;
+    location?: string | null;
     createdAt: string;
     likes: number;
     comments: number;
     shares: number;
-    image?: string;
-    isAd?: boolean;
-    adUrl?: string;
-    adCta?: string;
-}
+};

@@ -27,7 +27,7 @@ const EnhancedCreatePostCard = () => {
     }
 
     setIsPosting(true);
-    
+
     // Simulate post creation
     setTimeout(() => {
       setIsPosting(false);
@@ -49,7 +49,7 @@ const EnhancedCreatePostCard = () => {
     if (!file) return;
 
     setIsUploading(true);
-    
+
     // Create a preview
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -81,7 +81,7 @@ const EnhancedCreatePostCard = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
-            
+
             {previewImage && (
               <div className="relative mt-3">
                 <Button
@@ -111,10 +111,10 @@ const EnhancedCreatePostCard = () => {
             accept="image/*"
             onChange={handleFileChange}
           />
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground" 
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground"
             onClick={handleFileUpload}
             disabled={isUploading}
           >
@@ -140,9 +140,9 @@ const EnhancedCreatePostCard = () => {
             Emoji
           </Button>
         </div>
-        <Button 
-          variant="default" 
-          size="sm" 
+        <Button
+          variant="default"
+          size="sm"
           onClick={handlePost}
           disabled={isPosting || (!content.trim() && !previewImage)}
         >

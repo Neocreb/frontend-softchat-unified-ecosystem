@@ -12,11 +12,15 @@ export type Post = {
   author: {
     name: string;
     username: string;
-    avatar?: string;
+    location?: string | null;
+    taggedUsers?: string[] | null;
+    avatar?: string | null;
     verified?: boolean;
   };
   content: string;
-  image?: string;
+  image?: string | null;
+  location?: string | null;
+  taggedUsers?: string[] | null;
   createdAt: string;
   likes: number;
   comments: number;
@@ -24,8 +28,8 @@ export type Post = {
   liked?: boolean;
   bookmarked?: boolean;
   isAd?: boolean;
-  adUrl?: string;
-  adCta?: string;
+  adUrl?: string | null;
+  adCta?: string | null;
 };
 
 interface PostCardProps {
