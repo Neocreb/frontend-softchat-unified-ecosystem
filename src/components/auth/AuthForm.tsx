@@ -37,10 +37,9 @@ const AuthForm = () => {
     <div className="mx-auto w-full max-w-md space-y-6 p-6 md:p-8">
       <div className="flex flex-col items-center space-y-2 text-center">
         <SoftchatLogo className="h-12 w-12" />
-        <h1 className="text-2xl font-bold">Welcome to Softchat</h1>
         <p className="text-sm text-muted-foreground">
-          {mode === "signin" 
-            ? "Sign in to your account to continue" 
+          {mode === "signin"
+            ? "Sign in to your account to continue"
             : "Create an account to get started"}
         </p>
       </div>
@@ -57,16 +56,16 @@ const AuthForm = () => {
               <Label htmlFor="email">Email</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="email" 
-                  placeholder="you@example.com" 
-                  type="email" 
+                <Input
+                  id="email"
+                  placeholder="you@example.com"
+                  type="email"
                   required
                   className="pl-10"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
@@ -76,9 +75,9 @@ const AuthForm = () => {
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="password" 
-                  type={showPassword ? "text" : "password"} 
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   className="pl-10 pr-10"
                 />
@@ -97,7 +96,7 @@ const AuthForm = () => {
                 </Button>
               </div>
             </div>
-            
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}
             </Button>
@@ -110,36 +109,36 @@ const AuthForm = () => {
               <Label htmlFor="name">Full Name</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="name" 
-                  placeholder="John Doe" 
+                <Input
+                  id="name"
+                  placeholder="John Doe"
                   required
                   className="pl-10"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="email-signup">Email</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="email-signup" 
-                  placeholder="you@example.com" 
-                  type="email" 
+                <Input
+                  id="email-signup"
+                  placeholder="you@example.com"
+                  type="email"
                   required
                   className="pl-10"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password-signup">Password</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="password-signup" 
-                  type={showPassword ? "text" : "password"} 
+                <Input
+                  id="password-signup"
+                  type={showPassword ? "text" : "password"}
                   required
                   className="pl-10 pr-10"
                 />
@@ -158,7 +157,7 @@ const AuthForm = () => {
                 </Button>
               </div>
             </div>
-            
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Creating account..." : "Create Account"}
             </Button>
@@ -200,7 +199,7 @@ const AuthForm = () => {
           Google
         </Button>
       </div>
-      
+
       <p className="text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <a href="#" className="underline underline-offset-4 hover:text-primary">
