@@ -1,9 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Post } from "@/components/feed/PostCard";
 import { PostComment } from "@/types/user";
 import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
 import { mockPosts, mockComments } from "@/data/mockFeedData";
+import { CreatePost } from "@/types/post";
+
+type CreatePostParams = {
+  content: string;
+  mediaUrl?: string;
+  location?: string | null;
+  taggedUsers?: string[];
+};
 
 export const useFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -16,6 +24,19 @@ export const useFeed = () => {
 
   const PAGE_SIZE = 5; // Number of posts per page
 
+  // Format date as "X time ago"
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  };
+
+  // Load posts with pagination
   useEffect(() => {
     const timer = setTimeout(() => {
       // Simulate paginated data
@@ -44,7 +65,13 @@ export const useFeed = () => {
     }
   };
 
-  const handleCreatePost = (content: string, image?: string) => {
+  // Enhanced post creation with all metadata
+  const handleCreatePost = useCallback(({
+    content,
+    mediaUrl,
+    location,
+    taggedUsers = []
+  }: CreatePostParams) => {
     const newPost: Post = {
       id: `new-${Date.now()}`,
       author: {
@@ -54,18 +81,27 @@ export const useFeed = () => {
         verified: !!user?.profile?.is_verified,
       },
       content,
-      image,
+      image: mediaUrl,
+      location: location || null,
+      taggedUsers: taggedUsers || null,
       createdAt: "Just now",
       likes: 0,
       comments: 0,
       shares: 0,
     };
 
-    setPosts([newPost, ...posts]);
-    notification.success("Post created successfully");
-  };
+    setPosts(prev => [newPost, ...prev]);
 
-  const handleAddComment = (postId: string, commentText: string) => {
+    // Initialize empty comments for the new post
+    setPostComments(prev => ({
+      ...prev,
+      [newPost.id]: []
+    }));
+
+    notification.success("Post created successfully");
+  }, [user, notification]);
+
+  const handleAddComment = useCallback((postId: string, commentText: string) => {
     if (!commentText || !commentText.trim()) return;
 
     const newComment: PostComment = {
@@ -94,7 +130,7 @@ export const useFeed = () => {
     ));
 
     notification.success("Comment added");
-  };
+  }, [user, notification]);
 
   return {
     posts,

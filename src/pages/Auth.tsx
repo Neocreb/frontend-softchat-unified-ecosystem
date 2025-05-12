@@ -50,7 +50,7 @@ const Auth = () => {
           {/* Decorative Blobs */}
           <div className="absolute -right-10 -top-10 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
           <div className="absolute -left-10 -bottom-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30"></div>
-          <div className="flex items-center justify-center p-6 mt-10">
+          <div className="flex items-center justify-center p-6">
             <EnhancedAuthForm />
           </div>
         </div>
