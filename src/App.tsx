@@ -28,7 +28,9 @@ import UserManagement from "./pages/admin/UserManagement";
 import Videos from "./pages/Videos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
-import Index from "./pages/Index";
+import LandingPage from "./pages/Landing";
+
+
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -115,7 +117,9 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Root path redirects based on auth state */}
-      <Route path="/" element={<Index />} />
+     {/* <Route path="/" element={<Index />} /> */} 
+     <Route path="/" element={<LandingPage />} />
+
 
       {/* Auth route - redirects to feed if already authenticated */}
       <Route
@@ -188,3 +192,4 @@ const App = () => {
 };
 
 export default App;
+
