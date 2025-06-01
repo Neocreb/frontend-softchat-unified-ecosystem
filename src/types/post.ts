@@ -29,6 +29,10 @@ export interface Post {
     isAd?: boolean;
     adUrl?: string | null;
     adCta?: string | null;
+    poll?: {
+        question: string;
+        options: string[];
+    };
 }
 
 export type CreatePost = {
@@ -46,4 +50,8 @@ export type CreatePost = {
     likes: number;
     comments: number;
     shares: number;
+    poll?: {
+        question: string;
+        options: string[];
+    };
 };

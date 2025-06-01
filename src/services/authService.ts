@@ -21,7 +21,11 @@ export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise
       points,
       level,
       role: profile?.role || 'user',
-      app_metadata: supabaseUser.app_metadata || {}
+      app_metadata: supabaseUser.app_metadata || {},
+      username: (arg0: string, username: any) => {
+        // This function implementation matches the type definition
+        return profile?.username || supabaseUser.email?.split('@')[0] || 'user';
+      }
     };
 
     return enhancedUser;
@@ -35,7 +39,10 @@ export const enhanceUserWithProfile = async (supabaseUser: User | null): Promise
       points: 0,
       level: 'bronze',
       role: 'user',
-      app_metadata: supabaseUser.app_metadata || {}
+      app_metadata: supabaseUser.app_metadata || {},
+      username: (arg0: string, username: any) => {
+        return supabaseUser.email?.split('@')[0] || 'user';
+      }
     } as ExtendedUser;
   }
 };
