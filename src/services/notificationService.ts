@@ -41,10 +41,10 @@ export const notificationService = {
     }
   },
 
-  // Get user notifications using direct query since types aren't updated yet
+  // Get user notifications using RPC function fallback to direct query
   async getUserNotifications(userId: string, limit: number = 50): Promise<NotificationData[]> {
     try {
-      // Using direct query to avoid TypeScript type issues
+      // Try using RPC function first
       const response = await supabase
         .rpc('get_user_notifications', { 
           user_id: userId, 
@@ -52,46 +52,37 @@ export const notificationService = {
         });
 
       if (response.error) {
-        // Fallback to direct table access if RPC doesn't exist
-        const { data, error } = await supabase
+        console.log('RPC function not available, using direct query');
+        // Fallback to direct table access with proper typing
+        const query = supabase
           .from('notifications' as any)
           .select('*')
           .eq('user_id', userId)
           .order('created_at', { ascending: false })
           .limit(limit);
 
+        const { data, error } = await query;
+
         if (error) throw error;
-        return data || [];
+        return (data || []) as NotificationData[];
       }
 
-      return response.data || [];
+      return (response.data || []) as NotificationData[];
     } catch (error) {
       console.error('Error getting notifications:', error);
-      // Try alternative approach
-      try {
-        const { data, error } = await supabase
-          .from('notifications' as any)
-          .select('*')
-          .eq('user_id', userId)
-          .order('created_at', { ascending: false })
-          .limit(limit);
-
-        if (error) throw error;
-        return data || [];
-      } catch (fallbackError) {
-        console.error('Fallback error:', fallbackError);
-        return [];
-      }
+      return [];
     }
   },
 
   // Mark notification as read
   async markAsRead(notificationId: string): Promise<void> {
     try {
-      await supabase
+      const { error } = await supabase
         .from('notifications' as any)
         .update({ read: true })
         .eq('id', notificationId);
+      
+      if (error) throw error;
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -100,11 +91,13 @@ export const notificationService = {
   // Mark all notifications as read
   async markAllAsRead(userId: string): Promise<void> {
     try {
-      await supabase
+      const { error } = await supabase
         .from('notifications' as any)
         .update({ read: true })
         .eq('user_id', userId)
         .eq('read', false);
+      
+      if (error) throw error;
     } catch (error) {
       console.error('Error marking all notifications as read:', error);
     }
