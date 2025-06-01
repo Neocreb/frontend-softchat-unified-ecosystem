@@ -6,6 +6,7 @@ import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
 import { mockPosts, mockComments } from "@/data/mockFeedData";
 import { CreatePost } from "@/types/post";
+import { notificationService } from "@/services/notificationService";
 
 type CreatePostParams = {
   content: string;
@@ -108,7 +109,7 @@ export const useFeed = () => {
     notification.success("Post created successfully");
   }, [user, notification]);
 
-  const handleAddComment = useCallback((postId: string, commentText: string) => {
+  const handleAddComment = useCallback(async (postId: string, commentText: string) => {
     if (!commentText || !commentText.trim()) return;
 
     const newComment: PostComment = {
@@ -136,8 +137,19 @@ export const useFeed = () => {
         : post
     ));
 
+    // Create notification for post author (if not commenting on own post)
+    const post = posts.find(p => p.id === postId);
+    if (post && post.author.username !== user?.profile?.username) {
+      await notificationService.createNotification(
+        'post-author-id', // In real app, get actual post author ID
+        'comment',
+        'New comment on your post',
+        `${user?.name || 'Someone'} commented on your post: ${commentText.substring(0, 50)}...`
+      );
+    }
+
     notification.success("Comment added");
-  }, [user, notification]);
+  }, [user, notification, posts]);
 
   return {
     posts,
