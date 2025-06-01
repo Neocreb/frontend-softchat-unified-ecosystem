@@ -214,8 +214,9 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         role: 'user',
       },
       app_metadata: {},
-      aud: "authenticated"
-    } as ExtendedUser;
+      aud: "authenticated",
+      username: () => username // Add the missing username method
+    } as unknown as ExtendedUser;
 
     setProfileUser(mockUser);
 

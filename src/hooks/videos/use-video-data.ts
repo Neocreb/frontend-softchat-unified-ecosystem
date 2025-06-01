@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { mockVideos } from '@/data/mockVideosData';
-import type { Video } from '@/types/video';
+import type { VideoItem as Video } from '@/types/video';
 
 export const useVideoData = () => {
   const [videos, setVideos] = useState<Video[]>([]);

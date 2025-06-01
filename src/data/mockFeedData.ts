@@ -98,11 +98,11 @@ export const mockPosts: Post[] = [
 
 export const mockStories: Story[] = [
   { id: "1", username: "you", avatar: "https://randomuser.me/api/portraits/men/32.jpg", isUser: true },
-  { id: "2", username: "mysteriox", avatar: "https://randomuser.me/api/portraits/men/43.jpg", hasNewStory: true },
-  { id: "3", username: "foxxydude", avatar: "https://randomuser.me/api/portraits/men/62.jpg", hasNewStory: true },
-  { id: "4", username: "mikeyduy", avatar: "https://randomuser.me/api/portraits/men/52.jpg", hasNewStory: true },
-  { id: "5", username: "suppe", avatar: "https://randomuser.me/api/portraits/men/66.jpg" },
-  { id: "6", username: "jane_doe", avatar: "https://randomuser.me/api/portraits/women/22.jpg", hasNewStory: true },
-  { id: "7", username: "chris90", avatar: "https://randomuser.me/api/portraits/men/29.jpg" },
-  { id: "8", username: "lisa", avatar: "https://randomuser.me/api/portraits/women/65.jpg", hasNewStory: true },
+  { id: "2", username: "mysteriox", avatar: "https://randomuser.me/api/portraits/men/43.jpg", hasNewStory: true, isUser: false },
+  { id: "3", username: "foxxydude", avatar: "https://randomuser.me/api/portraits/men/62.jpg", hasNewStory: true, isUser: false },
+  { id: "4", username: "mikeyduy", avatar: "https://randomuser.me/api/portraits/men/52.jpg", hasNewStory: true, isUser: false },
+  { id: "5", username: "suppe", avatar: "https://randomuser.me/api/portraits/men/66.jpg", isUser: false },
+  { id: "6", username: "jane_doe", avatar: "https://randomuser.me/api/portraits/women/22.jpg", hasNewStory: true, isUser: false },
+  { id: "7", username: "chris90", avatar: "https://randomuser.me/api/portraits/men/29.jpg", isUser: false },
+  { id: "8", username: "lisa", avatar: "https://randomuser.me/api/portraits/women/65.jpg", hasNewStory: true, isUser: false },
 ];

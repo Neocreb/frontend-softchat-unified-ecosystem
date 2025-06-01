@@ -11,6 +11,10 @@ type CreatePostParams = {
   mediaUrl?: string;
   location?: string | null;
   taggedUsers?: string[];
+  poll?: {
+    question: string;
+    options: string[];
+  };
 };
 
 export const useFeed = () => {
@@ -70,7 +74,8 @@ export const useFeed = () => {
     content,
     mediaUrl,
     location,
-    taggedUsers = []
+    taggedUsers = [],
+    poll
   }: CreatePostParams) => {
     const newPost: Post = {
       id: `new-${Date.now()}`,
@@ -88,6 +93,7 @@ export const useFeed = () => {
       likes: 0,
       comments: 0,
       shares: 0,
+      poll: poll
     };
 
     setPosts(prev => [newPost, ...prev]);

@@ -186,13 +186,18 @@ const EnhancedFeed = () => {
 
     setIsPosting(true);
     try {
-      await handleCreatePost({
+      const postData: any = {
         content: postContent,
         mediaUrl: previewUrl || undefined,
         location,
         taggedUsers,
-        poll: showPoll ? { question: pollQuestion, options: pollOptions } : undefined
-      });
+      };
+
+      if (showPoll) {
+        postData.poll = { question: pollQuestion, options: pollOptions };
+      }
+
+      await handleCreatePost(postData);
       setPostContent("");
       setSelectedFile(null);
       setPreviewUrl(null);
