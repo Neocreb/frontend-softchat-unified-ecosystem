@@ -24,7 +24,7 @@ export const notificationService = {
     relatedPostId?: string
   ): Promise<string | null> {
     try {
-      const { data, error } = await supabase.rpc('create_notification', {
+      const { data, error } = await (supabase as any).rpc('create_notification', {
         p_user_id: userId,
         p_type: type,
         p_title: title,
