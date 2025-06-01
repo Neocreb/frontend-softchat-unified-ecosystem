@@ -1,5 +1,4 @@
-
-import { Post } from "@/components/feed/PostCard";
+import { Post } from "@/types/post";
 import { PostComment } from "@/types/user";
 import { Story } from "@/components/feed/Stories";
 
