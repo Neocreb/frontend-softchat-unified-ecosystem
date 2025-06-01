@@ -9,6 +9,7 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
+import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
@@ -29,8 +30,8 @@ import Videos from "./pages/Videos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
 import LandingPage from "./pages/Landing";
-
-
+import Notifications from "./pages/Notifications";
+import Messages from "./pages/Messages";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -42,8 +43,12 @@ const queryClient = new QueryClient({
   },
 });
 
-// Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+// Protected route component - now properly typed
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated, isLoading } = useAuth();
 
   // Show loading state while checking authentication
@@ -68,8 +73,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Admin route component
-const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+// Admin route component - now properly typed
+interface AdminRouteProps {
+  children: React.ReactNode;
+}
+
+const AdminRoute = ({ children }: AdminRouteProps) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
   if (isLoading) {
@@ -117,9 +126,8 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Root path redirects based on auth state */}
-     {/* <Route path="/" element={<Index />} /> */} 
-     <Route path="/" element={<LandingPage />} />
-
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/home" element={<Home />} />
 
       {/* Auth route - redirects to feed if already authenticated */}
       <Route
@@ -140,6 +148,8 @@ const AppRoutes = () => {
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="messages" element={<Messages />} />
 
         {/* Marketplace routes */}
         <Route path="marketplace" element={<Marketplace />} />
@@ -192,4 +202,3 @@ const App = () => {
 };
 
 export default App;
-

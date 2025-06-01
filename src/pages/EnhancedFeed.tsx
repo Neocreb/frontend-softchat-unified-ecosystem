@@ -7,10 +7,12 @@ import Stories, { Story } from "@/components/feed/Stories";
 import StoryView from "@/components/feed/StoryView";
 import CommentSection from "@/components/feed/CommentSection";
 import FeedSkeleton from "@/components/feed/FeedSkeleton";
+import PollCard from "@/components/feed/PollCard";
+import ForYouFeed from "@/components/feed/ForYouFeed";
 import { useFeed } from "@/hooks/use-feed";
 import { mockStories } from "@/data/mockFeedData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Image, UserPlus, Video, MapPin, Smile, X } from "lucide-react";
+import { Image, UserPlus, Video, MapPin, Smile, X, BarChart3 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,6 +21,7 @@ import { Input } from "@/components/ui/input";
 
 const EnhancedFeed = () => {
   const [activeStory, setActiveStory] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("following");
   const {
     posts,
     isLoading,
@@ -38,6 +41,9 @@ const EnhancedFeed = () => {
   const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
   const [showUserSuggestions, setShowUserSuggestions] = useState(false);
   const [suggestedUsers, setSuggestedUsers] = useState<string[]>([]);
+  const [pollQuestion, setPollQuestion] = useState("");
+  const [pollOptions, setPollOptions] = useState(["", ""]);
+  const [showPoll, setShowPoll] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const loaderRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +53,19 @@ const EnhancedFeed = () => {
     { id: "2", username: "janedoe", name: "Jane Doe" },
     { id: "3", username: "alice", name: "Alice Smith" },
   ];
+
+  // Mock poll data
+  const [mockPoll, setMockPoll] = useState({
+    question: "What's your favorite crypto trading strategy?",
+    options: [
+      { id: "1", text: "HODLing for long term", votes: 45 },
+      { id: "2", text: "Day trading", votes: 32 },
+      { id: "3", text: "DCA (Dollar Cost Averaging)", votes: 67 },
+      { id: "4", text: "Swing trading", votes: 23 }
+    ],
+    totalVotes: 167,
+    hasVoted: false
+  });
 
   // Infinite scroll observer
   useEffect(() => {
@@ -81,6 +100,18 @@ const EnhancedFeed = () => {
 
   const handleCreateStory = () => {
     notification.info("Story creation coming soon!");
+  };
+
+  const handlePollVote = (optionId: string) => {
+    setMockPoll(prev => ({
+      ...prev,
+      hasVoted: true,
+      options: prev.options.map(opt => 
+        opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt
+      ),
+      totalVotes: prev.totalVotes + 1
+    }));
+    notification.success("Vote recorded!");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,7 +182,7 @@ const EnhancedFeed = () => {
   };
 
   const handlePostSubmit = async () => {
-    if (!postContent.trim() && !selectedFile) return;
+    if (!postContent.trim() && !selectedFile && !showPoll) return;
 
     setIsPosting(true);
     try {
@@ -159,13 +190,17 @@ const EnhancedFeed = () => {
         content: postContent,
         mediaUrl: previewUrl || undefined,
         location,
-        taggedUsers
+        taggedUsers,
+        poll: showPoll ? { question: pollQuestion, options: pollOptions } : undefined
       });
       setPostContent("");
       setSelectedFile(null);
       setPreviewUrl(null);
       setLocation(null);
       setTaggedUsers([]);
+      setShowPoll(false);
+      setPollQuestion("");
+      setPollOptions(["", ""]);
       notification.success("Post created successfully");
     } catch (error) {
       notification.error("Failed to create post");
@@ -176,6 +211,25 @@ const EnhancedFeed = () => {
 
   const handleVideoUpload = () => {
     notification.info("Video upload coming soon!");
+  };
+
+  const addPollOption = () => {
+    if (pollOptions.length < 4) {
+      setPollOptions([...pollOptions, ""]);
+    }
+  };
+
+  const updatePollOption = (index: number, value: string) => {
+    const newOptions = [...pollOptions];
+    newOptions[index] = value;
+    setPollOptions(newOptions);
+  };
+
+  const removePollOption = (index: number) => {
+    if (pollOptions.length > 2) {
+      const newOptions = pollOptions.filter((_, i) => i !== index);
+      setPollOptions(newOptions);
+    }
   };
 
   return (
@@ -195,13 +249,26 @@ const EnhancedFeed = () => {
           />
         )}
 
+        {/* Sample Poll */}
+        <PollCard
+          question={mockPoll.question}
+          options={mockPoll.options}
+          totalVotes={mockPoll.totalVotes}
+          hasVoted={mockPoll.hasVoted}
+          onVote={handlePollVote}
+        />
+
         {/* Create Post Box with Tabs */}
         <div className="bg-background rounded-lg shadow mb-6 overflow-hidden">
           <Tabs defaultValue="post" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="post" className="flex items-center gap-2">
                 <Image className="h-4 w-4" />
                 <span>Post</span>
+              </TabsTrigger>
+              <TabsTrigger value="poll" className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                <span>Poll</span>
               </TabsTrigger>
               <TabsTrigger value="video" className="flex items-center gap-2">
                 <Video className="h-4 w-4" />
@@ -354,6 +421,59 @@ const EnhancedFeed = () => {
               </div>
             </TabsContent>
 
+            <TabsContent value="poll" className="p-4 space-y-4">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
+                  <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
+                </Avatar>
+                <Input
+                  placeholder="Ask a question..."
+                  value={pollQuestion}
+                  onChange={(e) => setPollQuestion(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                {pollOptions.map((option, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <Input
+                      placeholder={`Option ${index + 1}`}
+                      value={option}
+                      onChange={(e) => updatePollOption(index, e.target.value)}
+                    />
+                    {pollOptions.length > 2 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removePollOption(index)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                
+                {pollOptions.length < 4 && (
+                  <Button variant="outline" onClick={addPollOption} className="w-full">
+                    Add Option
+                  </Button>
+                )}
+              </div>
+
+              <div className="flex justify-end mt-4">
+                <Button
+                  onClick={() => {
+                    setShowPoll(true);
+                    handlePostSubmit();
+                  }}
+                  disabled={!pollQuestion.trim() || pollOptions.filter(opt => opt.trim()).length < 2}
+                >
+                  Create Poll
+                </Button>
+              </div>
+            </TabsContent>
+
             <TabsContent value="video" className="p-4 space-y-4">
               <div className="flex items-center gap-3">
                 <Avatar className="h-10 w-10">
@@ -384,35 +504,47 @@ const EnhancedFeed = () => {
           </Tabs>
         </div>
 
-        <div className="space-y-6">
-          {isLoading && posts.length === 0 ? (
-            <FeedSkeleton />
-          ) : (
-            <>
-              {posts.map((post) => (
-                <div key={post.id} className="space-y-2">
-                  <EnhancedPostCard post={post} />
-                  <CommentSection
-                    postId={post.id}
-                    comments={postComments[post.id] || []}
-                    onAddComment={handleAddComment}
-                  />
-                </div>
-              ))}
+        {/* Feed Content with Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="following">Following</TabsTrigger>
+            <TabsTrigger value="foryou">For You</TabsTrigger>
+          </TabsList>
 
-              {/* Infinite scroll loader */}
-              <div ref={loaderRef} className="flex justify-center py-4">
-                {isLoading && posts.length > 0 ? (
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                ) : hasMore ? (
-                  <p className="text-muted-foreground text-sm">Scroll to load more</p>
-                ) : (
-                  <p className="text-muted-foreground text-sm">No more posts to load</p>
-                )}
-              </div>
-            </>
-          )}
-        </div>
+          <TabsContent value="following" className="space-y-6">
+            {isLoading && posts.length === 0 ? (
+              <FeedSkeleton />
+            ) : (
+              <>
+                {posts.map((post) => (
+                  <div key={post.id} className="space-y-2">
+                    <EnhancedPostCard post={post} />
+                    <CommentSection
+                      postId={post.id}
+                      comments={postComments[post.id] || []}
+                      onAddComment={handleAddComment}
+                    />
+                  </div>
+                ))}
+
+                {/* Infinite scroll loader */}
+                <div ref={loaderRef} className="flex justify-center py-4">
+                  {isLoading && posts.length > 0 ? (
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  ) : hasMore ? (
+                    <p className="text-muted-foreground text-sm">Scroll to load more</p>
+                  ) : (
+                    <p className="text-muted-foreground text-sm">No more posts to load</p>
+                  )}
+                </div>
+              </>
+            )}
+          </TabsContent>
+
+          <TabsContent value="foryou">
+            <ForYouFeed />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
