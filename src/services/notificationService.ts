@@ -14,7 +14,7 @@ export interface NotificationData {
 }
 
 export const notificationService = {
-  // Create a notification
+  // Create a notification using the database function
   async createNotification(
     userId: string,
     type: NotificationData['type'],
@@ -41,21 +41,47 @@ export const notificationService = {
     }
   },
 
-  // Get user notifications
+  // Get user notifications using direct query since types aren't updated yet
   async getUserNotifications(userId: string, limit: number = 50): Promise<NotificationData[]> {
     try {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(limit);
+      // Using direct query to avoid TypeScript type issues
+      const response = await supabase
+        .rpc('get_user_notifications', { 
+          user_id: userId, 
+          notification_limit: limit 
+        });
 
-      if (error) throw error;
-      return data || [];
+      if (response.error) {
+        // Fallback to direct table access if RPC doesn't exist
+        const { data, error } = await supabase
+          .from('notifications' as any)
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(limit);
+
+        if (error) throw error;
+        return data || [];
+      }
+
+      return response.data || [];
     } catch (error) {
       console.error('Error getting notifications:', error);
-      return [];
+      // Try alternative approach
+      try {
+        const { data, error } = await supabase
+          .from('notifications' as any)
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(limit);
+
+        if (error) throw error;
+        return data || [];
+      } catch (fallbackError) {
+        console.error('Fallback error:', fallbackError);
+        return [];
+      }
     }
   },
 
@@ -63,7 +89,7 @@ export const notificationService = {
   async markAsRead(notificationId: string): Promise<void> {
     try {
       await supabase
-        .from('notifications')
+        .from('notifications' as any)
         .update({ read: true })
         .eq('id', notificationId);
     } catch (error) {
@@ -75,7 +101,7 @@ export const notificationService = {
   async markAllAsRead(userId: string): Promise<void> {
     try {
       await supabase
-        .from('notifications')
+        .from('notifications' as any)
         .update({ read: true })
         .eq('user_id', userId)
         .eq('read', false);
@@ -88,7 +114,7 @@ export const notificationService = {
   async getUnreadCount(userId: string): Promise<number> {
     try {
       const { count, error } = await supabase
-        .from('notifications')
+        .from('notifications' as any)
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
         .eq('read', false);

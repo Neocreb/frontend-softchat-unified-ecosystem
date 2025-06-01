@@ -1,6 +1,5 @@
 
 import { supabase } from "@/lib/supabase/client";
-import { useNotification } from "@/hooks/use-notification";
 
 export interface ChatMessage {
   id: string;
@@ -23,6 +22,12 @@ export interface ChatConversation {
   updated_at: string;
   last_message?: ChatMessage;
   unread_count?: number;
+  other_user?: {
+    id: string;
+    name: string;
+    username: string;
+    avatar: string;
+  };
 }
 
 export const messagingService = {
@@ -68,14 +73,7 @@ export const messagingService = {
           sender_id: senderId,
           content: content
         })
-        .select(`
-          *,
-          sender:profiles!chat_messages_sender_id_fkey(
-            name,
-            username,
-            avatar_url
-          )
-        `)
+        .select('*')
         .single();
 
       if (error) throw error;
@@ -86,6 +84,13 @@ export const messagingService = {
         .update({ updated_at: new Date().toISOString() })
         .eq('id', conversationId);
 
+      // Get sender profile information
+      const { data: senderProfile } = await supabase
+        .from('profiles')
+        .select('name, username, avatar_url')
+        .eq('user_id', senderId)
+        .single();
+
       return {
         id: data.id,
         sender_id: data.sender_id,
@@ -93,10 +98,10 @@ export const messagingService = {
         content: data.content,
         created_at: data.created_at,
         read: data.read,
-        sender: data.sender ? {
-          name: data.sender.name || 'Unknown',
-          username: data.sender.username || 'unknown',
-          avatar: data.sender.avatar_url || '/placeholder.svg'
+        sender: senderProfile ? {
+          name: senderProfile.name || 'Unknown',
+          username: senderProfile.username || 'unknown',
+          avatar: senderProfile.avatar_url || '/placeholder.svg'
         } : undefined
       };
     } catch (error) {
@@ -108,34 +113,43 @@ export const messagingService = {
   // Get messages for a conversation
   async getMessages(conversationId: string, limit: number = 50): Promise<ChatMessage[]> {
     try {
-      const { data, error } = await supabase
+      const { data: messages, error } = await supabase
         .from('chat_messages')
-        .select(`
-          *,
-          sender:profiles!chat_messages_sender_id_fkey(
-            name,
-            username,
-            avatar_url
-          )
-        `)
+        .select('*')
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: false })
         .limit(limit);
 
       if (error) throw error;
 
-      return (data || []).map(msg => ({
+      // Get unique sender IDs
+      const senderIds = [...new Set(messages?.map(msg => msg.sender_id) || [])];
+      
+      // Get sender profiles
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('user_id, name, username, avatar_url')
+        .in('user_id', senderIds);
+
+      const profileMap = new Map(
+        profiles?.map(profile => [
+          profile.user_id,
+          {
+            name: profile.name || 'Unknown',
+            username: profile.username || 'unknown',
+            avatar: profile.avatar_url || '/placeholder.svg'
+          }
+        ]) || []
+      );
+
+      return (messages || []).map(msg => ({
         id: msg.id,
         sender_id: msg.sender_id,
         conversation_id: msg.conversation_id,
         content: msg.content,
         created_at: msg.created_at,
         read: msg.read,
-        sender: msg.sender ? {
-          name: msg.sender.name || 'Unknown',
-          username: msg.sender.username || 'unknown',
-          avatar: msg.sender.avatar_url || '/placeholder.svg'
-        } : undefined
+        sender: profileMap.get(msg.sender_id)
       })).reverse();
     } catch (error) {
       console.error('Error getting messages:', error);
@@ -146,54 +160,91 @@ export const messagingService = {
   // Get user's conversations
   async getUserConversations(userId: string): Promise<ChatConversation[]> {
     try {
-      const { data, error } = await supabase
+      const { data: conversations, error } = await supabase
         .from('chat_conversations')
-        .select(`
-          *,
-          messages:chat_messages(
-            id,
-            content,
-            created_at,
-            sender_id,
-            read,
-            sender:profiles!chat_messages_sender_id_fkey(
-              name,
-              username,
-              avatar_url
-            )
-          )
-        `)
+        .select('*')
         .contains('participants', [userId])
         .order('updated_at', { ascending: false });
 
       if (error) throw error;
 
-      return (data || []).map(conv => {
-        const messages = conv.messages || [];
-        const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-        const unreadCount = messages.filter(msg => !msg.read && msg.sender_id !== userId).length;
+      const conversationsWithDetails = await Promise.all(
+        (conversations || []).map(async (conv) => {
+          // Get last message
+          const { data: lastMessage } = await supabase
+            .from('chat_messages')
+            .select('*')
+            .eq('conversation_id', conv.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
 
-        return {
-          id: conv.id,
-          participants: conv.participants,
-          created_at: conv.created_at,
-          updated_at: conv.updated_at,
-          last_message: lastMessage ? {
-            id: lastMessage.id,
-            sender_id: lastMessage.sender_id,
-            conversation_id: conv.id,
-            content: lastMessage.content,
-            created_at: lastMessage.created_at,
-            read: lastMessage.read,
-            sender: lastMessage.sender ? {
-              name: lastMessage.sender.name || 'Unknown',
-              username: lastMessage.sender.username || 'unknown',
-              avatar: lastMessage.sender.avatar_url || '/placeholder.svg'
-            } : undefined
-          } : undefined,
-          unread_count: unreadCount
-        };
-      });
+          // Get unread count
+          const { count: unreadCount } = await supabase
+            .from('chat_messages')
+            .select('*', { count: 'exact', head: true })
+            .eq('conversation_id', conv.id)
+            .neq('sender_id', userId)
+            .eq('read', false);
+
+          // Get other user info
+          const otherUserId = conv.participants.find(id => id !== userId);
+          let otherUser = undefined;
+          
+          if (otherUserId) {
+            const { data: otherUserProfile } = await supabase
+              .from('profiles')
+              .select('user_id, name, username, avatar_url')
+              .eq('user_id', otherUserId)
+              .single();
+
+            if (otherUserProfile) {
+              otherUser = {
+                id: otherUserProfile.user_id,
+                name: otherUserProfile.name || 'Unknown',
+                username: otherUserProfile.username || 'unknown',
+                avatar: otherUserProfile.avatar_url || '/placeholder.svg'
+              };
+            }
+          }
+
+          // Get sender info for last message if exists
+          let lastMessageWithSender = undefined;
+          if (lastMessage) {
+            const { data: senderProfile } = await supabase
+              .from('profiles')
+              .select('name, username, avatar_url')
+              .eq('user_id', lastMessage.sender_id)
+              .single();
+
+            lastMessageWithSender = {
+              id: lastMessage.id,
+              sender_id: lastMessage.sender_id,
+              conversation_id: lastMessage.conversation_id,
+              content: lastMessage.content,
+              created_at: lastMessage.created_at,
+              read: lastMessage.read,
+              sender: senderProfile ? {
+                name: senderProfile.name || 'Unknown',
+                username: senderProfile.username || 'unknown',
+                avatar: senderProfile.avatar_url || '/placeholder.svg'
+              } : undefined
+            };
+          }
+
+          return {
+            id: conv.id,
+            participants: conv.participants,
+            created_at: conv.created_at,
+            updated_at: conv.updated_at,
+            last_message: lastMessageWithSender,
+            unread_count: unreadCount || 0,
+            other_user: otherUser
+          };
+        })
+      );
+
+      return conversationsWithDetails;
     } catch (error) {
       console.error('Error getting conversations:', error);
       return [];
