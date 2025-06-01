@@ -1,5 +1,6 @@
+
 import { useState, useEffect, useCallback } from "react";
-import { Post } from "@/components/feed/PostCard";
+import { Post } from "@/types/post";
 import { PostComment } from "@/types/user";
 import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
