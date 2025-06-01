@@ -41,33 +41,19 @@ export const notificationService = {
     }
   },
 
-  // Get user notifications using RPC function fallback to direct query
+  // Get user notifications using direct query
   async getUserNotifications(userId: string, limit: number = 50): Promise<NotificationData[]> {
     try {
-      // Try using RPC function first
-      const response = await supabase
-        .rpc('get_user_notifications', { 
-          user_id: userId, 
-          notification_limit: limit 
-        });
+      // Use direct query with proper typing
+      const { data, error } = await (supabase as any)
+        .from('notifications')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(limit);
 
-      if (response.error) {
-        console.log('RPC function not available, using direct query');
-        // Fallback to direct table access with proper typing
-        const query = supabase
-          .from('notifications' as any)
-          .select('*')
-          .eq('user_id', userId)
-          .order('created_at', { ascending: false })
-          .limit(limit);
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-        return (data || []) as NotificationData[];
-      }
-
-      return (response.data || []) as NotificationData[];
+      if (error) throw error;
+      return (data || []) as NotificationData[];
     } catch (error) {
       console.error('Error getting notifications:', error);
       return [];
@@ -77,8 +63,8 @@ export const notificationService = {
   // Mark notification as read
   async markAsRead(notificationId: string): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('notifications' as any)
+      const { error } = await (supabase as any)
+        .from('notifications')
         .update({ read: true })
         .eq('id', notificationId);
       
@@ -91,8 +77,8 @@ export const notificationService = {
   // Mark all notifications as read
   async markAllAsRead(userId: string): Promise<void> {
     try {
-      const { error } = await supabase
-        .from('notifications' as any)
+      const { error } = await (supabase as any)
+        .from('notifications')
         .update({ read: true })
         .eq('user_id', userId)
         .eq('read', false);
@@ -106,8 +92,8 @@ export const notificationService = {
   // Get unread count
   async getUnreadCount(userId: string): Promise<number> {
     try {
-      const { count, error } = await supabase
-        .from('notifications' as any)
+      const { count, error } = await (supabase as any)
+        .from('notifications')
         .select('*', { count: 'exact', head: true })
         .eq('user_id', userId)
         .eq('read', false);
