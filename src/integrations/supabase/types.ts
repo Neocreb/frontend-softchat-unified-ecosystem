@@ -57,6 +57,88 @@ export type Database = {
         }
         Relationships: []
       }
+      content_analytics: {
+        Row: {
+          analyzed_at: string
+          engagement_score: number | null
+          hashtags: Json | null
+          id: string
+          post_id: string | null
+          quality_score: number | null
+          sentiment_score: number | null
+          topics: Json | null
+        }
+        Insert: {
+          analyzed_at?: string
+          engagement_score?: number | null
+          hashtags?: Json | null
+          id?: string
+          post_id?: string | null
+          quality_score?: number | null
+          sentiment_score?: number | null
+          topics?: Json | null
+        }
+        Update: {
+          analyzed_at?: string
+          engagement_score?: number | null
+          hashtags?: Json | null
+          id?: string
+          post_id?: string | null
+          quality_score?: number | null
+          sentiment_score?: number | null
+          topics?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_analytics_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_recommendations: {
+        Row: {
+          clicked: boolean
+          created_at: string
+          id: string
+          post_id: string | null
+          reason: string | null
+          score: number
+          shown: boolean
+          user_id: string
+        }
+        Insert: {
+          clicked?: boolean
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          reason?: string | null
+          score: number
+          shown?: boolean
+          user_id: string
+        }
+        Update: {
+          clicked?: boolean
+          created_at?: string
+          id?: string
+          post_id?: string | null
+          reason?: string | null
+          score?: number
+          shown?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_recommendations_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crypto_settings: {
         Row: {
           conversion_rate_softpoints_to_usdt: number
@@ -129,6 +211,94 @@ export type Database = {
         }
         Relationships: []
       }
+      disputes: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          raised_by: string
+          reason: string
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          trade_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          raised_by: string
+          reason: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          trade_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          raised_by?: string
+          reason?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          trade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disputes_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      escrows: {
+        Row: {
+          amount: number
+          created_at: string
+          crypto_type: string
+          id: string
+          refunded_at: string | null
+          released_at: string | null
+          status: string
+          trade_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          crypto_type: string
+          id?: string
+          refunded_at?: string | null
+          released_at?: string | null
+          status?: string
+          trade_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          crypto_type?: string
+          id?: string
+          refunded_at?: string | null
+          released_at?: string | null
+          status?: string
+          trade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "escrows_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       followers: {
         Row: {
           created_at: string
@@ -147,6 +317,69 @@ export type Database = {
           follower_id?: string
           following_id?: string
           id?: string
+        }
+        Relationships: []
+      }
+      kyc_documents: {
+        Row: {
+          created_at: string
+          document_type: string
+          document_url: string
+          id: string
+          user_id: string
+          verification_status: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_type: string
+          document_url: string
+          id?: string
+          user_id: string
+          verification_status?: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_type?: string
+          document_url?: string
+          id?: string
+          user_id?: string
+          verification_status?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      moderation_logs: {
+        Row: {
+          action: string
+          confidence_score: number | null
+          content_id: string
+          content_type: string
+          created_at: string
+          id: string
+          reason: string | null
+          reviewed_by: string | null
+        }
+        Insert: {
+          action: string
+          confidence_score?: number | null
+          content_id: string
+          content_type: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+          reviewed_by?: string | null
+        }
+        Update: {
+          action?: string
+          confidence_score?: number | null
+          content_id?: string
+          content_type?: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+          reviewed_by?: string | null
         }
         Relationships: []
       }
@@ -334,6 +567,39 @@ export type Database = {
         }
         Relationships: []
       }
+      price_alerts: {
+        Row: {
+          condition: string
+          created_at: string
+          crypto_symbol: string
+          id: string
+          is_active: boolean
+          target_price: number
+          triggered_at: string | null
+          user_id: string
+        }
+        Insert: {
+          condition: string
+          created_at?: string
+          crypto_symbol: string
+          id?: string
+          is_active?: boolean
+          target_price: number
+          triggered_at?: string | null
+          user_id: string
+        }
+        Update: {
+          condition?: string
+          created_at?: string
+          crypto_symbol?: string
+          id?: string
+          is_active?: boolean
+          target_price?: number
+          triggered_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           boost_until: string | null
@@ -451,6 +717,199 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           username?: string | null
+        }
+        Relationships: []
+      }
+      trade_ratings: {
+        Row: {
+          created_at: string
+          feedback: string | null
+          id: string
+          rated_id: string
+          rater_id: string
+          rating: number
+          trade_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          rated_id: string
+          rater_id: string
+          rating: number
+          trade_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          feedback?: string | null
+          id?: string
+          rated_id?: string
+          rater_id?: string
+          rating?: number
+          trade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trade_ratings_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trades: {
+        Row: {
+          amount: number
+          buyer_id: string
+          cancelled_at: string | null
+          completed_at: string | null
+          created_at: string
+          dispute_id: string | null
+          escrow_id: string | null
+          id: string
+          offer_id: string | null
+          payment_method: string
+          price_per_unit: number
+          seller_id: string
+          status: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          buyer_id: string
+          cancelled_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          dispute_id?: string | null
+          escrow_id?: string | null
+          id?: string
+          offer_id?: string | null
+          payment_method: string
+          price_per_unit: number
+          seller_id: string
+          status?: string
+          total_amount: number
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          buyer_id?: string
+          cancelled_at?: string | null
+          completed_at?: string | null
+          created_at?: string
+          dispute_id?: string | null
+          escrow_id?: string | null
+          id?: string
+          offer_id?: string | null
+          payment_method?: string
+          price_per_unit?: number
+          seller_id?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trades_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "p2p_offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trading_limits: {
+        Row: {
+          current_daily_volume: number
+          current_monthly_volume: number
+          daily_limit: number
+          id: string
+          kyc_level: number
+          monthly_limit: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_daily_volume?: number
+          current_monthly_volume?: number
+          daily_limit?: number
+          id?: string
+          kyc_level?: number
+          monthly_limit?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_daily_volume?: number
+          current_monthly_volume?: number
+          daily_limit?: number
+          id?: string
+          kyc_level?: number
+          monthly_limit?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          ai_enabled: boolean
+          id: string
+          interaction_patterns: Json | null
+          interests: Json | null
+          preferred_content_types: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_enabled?: boolean
+          id?: string
+          interaction_patterns?: Json | null
+          interests?: Json | null
+          preferred_content_types?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_enabled?: boolean
+          id?: string
+          interaction_patterns?: Json | null
+          interests?: Json | null
+          preferred_content_types?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_scores: {
+        Row: {
+          content_score: number
+          id: string
+          reputation_score: number
+          risk_score: number
+          trading_score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content_score?: number
+          id?: string
+          reputation_score?: number
+          risk_score?: number
+          trading_score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content_score?: number
+          id?: string
+          reputation_score?: number
+          risk_score?: number
+          trading_score?: number
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
