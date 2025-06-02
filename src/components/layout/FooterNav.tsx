@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, Video, ShoppingCart, TrendingUp, Wallet } from "lucide-react";
+import { Home, Search, Video, ShoppingCart, TrendingUp, Wallet, Plus } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +21,13 @@ const FooterNav = () => {
       active: location.pathname === "/explore",
     },
     {
+      icon: Plus,
+      label: "Create",
+      href: "/create",
+      active: location.pathname === "/create",
+      special: true,
+    },
+    {
       icon: Video,
       label: "Videos",
       href: "/videos",
@@ -38,12 +45,6 @@ const FooterNav = () => {
       href: "/crypto",
       active: location.pathname === "/crypto" || location.pathname.startsWith("/crypto"),
     },
-    {
-      icon: Wallet,
-      label: "Wallet",
-      href: "/wallet",
-      active: location.pathname === "/wallet",
-    },
   ];
 
   return (
@@ -56,10 +57,15 @@ const FooterNav = () => {
               size="sm"
               className={cn(
                 "w-full flex flex-col items-center justify-center py-2 px-1 h-full rounded-none",
-                item.active ? "text-primary" : "text-muted-foreground"
+                item.active ? "text-primary" : "text-muted-foreground",
+                item.special && item.active && "bg-primary/10"
               )}
             >
-              <item.icon className={cn("h-5 w-5", item.active ? "text-primary" : "text-muted-foreground")} />
+              <item.icon className={cn(
+                "h-5 w-5", 
+                item.active ? "text-primary" : "text-muted-foreground",
+                item.special && "h-6 w-6"
+              )} />
               <span className="text-xs mt-1">{item.label}</span>
             </Button>
           </Link>

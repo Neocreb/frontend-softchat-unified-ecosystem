@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Image, Video, UserPlus, Lock, Globe, Users } from "lucide-react";
 import { useNotification } from "@/hooks/use-notification";
-import FooterNav from "@/components/layout/FooterNav";
 
 const Create = () => {
   const { user } = useAuth();
@@ -53,8 +52,8 @@ const Create = () => {
   };
 
   return (
-    <div className="container pb-16 md:pb-0 pt-4">
-      <h1 className="text-2xl font-bold mb-4">Create</h1>
+    <div className="container max-w-2xl mx-auto py-6 px-4">
+      <h1 className="text-2xl font-bold mb-6">Create</h1>
       
       <Tabs defaultValue="post" value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className="grid w-full grid-cols-2">
@@ -68,7 +67,7 @@ const Create = () => {
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="post" className="mt-4">
+        <TabsContent value="post" className="mt-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
@@ -162,6 +161,7 @@ const Create = () => {
               <Button 
                 onClick={handlePostSubmit} 
                 disabled={isPosting || (!postContent.trim() && !selectedFile)}
+                className="bg-primary hover:bg-primary/90"
               >
                 {isPosting ? "Posting..." : "Post"}
               </Button>
@@ -169,7 +169,7 @@ const Create = () => {
           </div>
         </TabsContent>
         
-        <TabsContent value="video" className="mt-4">
+        <TabsContent value="video" className="mt-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
@@ -255,6 +255,7 @@ const Create = () => {
               <Button 
                 onClick={handlePostSubmit} 
                 disabled={isPosting || !selectedFile}
+                className="bg-primary hover:bg-primary/90"
               >
                 {isPosting ? "Uploading..." : "Upload Video"}
               </Button>
@@ -262,8 +263,6 @@ const Create = () => {
           </div>
         </TabsContent>
       </Tabs>
-      
-      <FooterNav />
     </div>
   );
 };
