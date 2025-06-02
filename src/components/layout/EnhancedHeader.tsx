@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MessageCircle, Menu, X, User, ShoppingCart, Home, TrendingUp, Wallet, Award } from "lucide-react";

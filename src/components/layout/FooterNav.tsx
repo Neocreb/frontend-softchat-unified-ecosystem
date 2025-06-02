@@ -36,7 +36,7 @@ const FooterNav = () => {
       icon: TrendingUp,
       label: "Crypto",
       href: "/crypto",
-      active: location.pathname === "/crypto",
+      active: location.pathname === "/crypto" || location.pathname.startsWith("/crypto"),
     },
     {
       icon: Wallet,

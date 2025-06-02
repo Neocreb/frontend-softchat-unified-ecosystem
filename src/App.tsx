@@ -21,6 +21,7 @@ import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
 import CryptoMarket from "./pages/CryptoMarket";
+import EnhancedCrypto from "./pages/EnhancedCrypto";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import Settings from "./pages/Settings";
@@ -160,7 +161,8 @@ const AppRoutes = () => {
         <Route path="marketplace/cart" element={<MarketplaceCart />} />
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
 
-        <Route path="crypto" element={<CryptoMarket />} />
+        <Route path="crypto" element={<EnhancedCrypto />} />
+        <Route path="crypto/basic" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
