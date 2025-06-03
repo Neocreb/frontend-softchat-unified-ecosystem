@@ -48,7 +48,7 @@ const FooterNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 inset-x-0 bg-background border-t md:hidden z-[100]">
+    <div className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t md:hidden z-[100] shadow-lg">
       <div className="grid grid-cols-6 h-16">
         {navItems.map((item) => (
           <Link key={item.href} to={item.href} className="w-full">
@@ -56,17 +56,18 @@ const FooterNav = () => {
               variant="ghost"
               size="sm"
               className={cn(
-                "w-full flex flex-col items-center justify-center py-2 px-1 h-full rounded-none",
-                item.active ? "text-primary" : "text-muted-foreground",
-                item.special && item.active && "bg-primary/10"
+                "w-full flex flex-col items-center justify-center py-2 px-1 h-full rounded-none transition-all duration-200",
+                item.active ? "text-primary bg-primary/5" : "text-muted-foreground hover:text-foreground hover:bg-accent/50",
+                item.special && item.active && "bg-primary/10 text-primary"
               )}
             >
               <item.icon className={cn(
-                "h-5 w-5", 
+                "h-5 w-5 transition-all duration-200", 
                 item.active ? "text-primary" : "text-muted-foreground",
-                item.special && "h-6 w-6"
+                item.special && "h-6 w-6",
+                item.special && item.active && "text-primary"
               )} />
-              <span className="text-xs mt-1">{item.label}</span>
+              <span className="text-xs mt-1 font-medium">{item.label}</span>
             </Button>
           </Link>
         ))}

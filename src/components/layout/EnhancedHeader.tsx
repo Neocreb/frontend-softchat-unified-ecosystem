@@ -29,7 +29,7 @@ const EnhancedHeader = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur 
-    supports-[backdrop-filter]:bg-background/60 shadow-md">
+    supports-[backdrop-filter]:bg-background/80 shadow-sm">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center gap-2">
@@ -40,7 +40,7 @@ const EnhancedHeader = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/feed" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <Home className="h-4 w-4" />
             <span>Feed</span>
           </Link>
@@ -70,20 +70,21 @@ const EnhancedHeader = () => {
             size="icon"
             aria-label="Messages"
             onClick={handleChatClick}
+            className="hover:bg-accent"
           >
             <MessageCircle className="h-5 w-5" />
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-accent">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user?.user_metadata?.avatar || "/placeholder.svg"} alt={user?.user_metadata?.name || "@user"} />
                   <AvatarFallback>{user?.user_metadata?.name?.substring(0, 2).toUpperCase() || "SC"}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuContent className="w-56 bg-background border shadow-lg" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user?.user_metadata?.name || "User"}</p>
@@ -128,7 +129,7 @@ const EnhancedHeader = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background shadow-md",
+          "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background border-t",
           mobileMenuOpen ? "block" : "hidden"
         )}
       >
