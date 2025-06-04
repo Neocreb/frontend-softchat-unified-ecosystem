@@ -1,34 +1,23 @@
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Users, 
-  Calendar, 
-  MapPin, 
-  Clock, 
-  Plus, 
-  Globe, 
-  Lock, 
-  UserPlus 
-} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Users, Calendar, MapPin, Clock, Plus, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase/client";
-import { cn } from "@/utils/utils";
 
 interface Group {
   id: string;
   name: string;
   description: string;
   avatar_url?: string;
-  cover_url?: string;
-  privacy: 'public' | 'private' | 'invite_only';
-  creator_id: string;
   member_count: number;
-  created_at: string;
-  is_member?: boolean;
+  privacy: 'public' | 'private';
+  creator_id: string;
+  joined?: boolean;
 }
 
 interface Event {
@@ -37,24 +26,18 @@ interface Event {
   description: string;
   location?: string;
   start_date: string;
-  end_date?: string;
   creator_id: string;
-  group_id?: string;
-  max_attendees?: number;
   attendee_count: number;
-  created_at: string;
-  rsvp_status?: 'going' | 'maybe' | 'not_going' | null;
-  group?: {
-    name: string;
-  };
+  max_attendees?: number;
+  attending?: boolean;
 }
 
 const GroupsAndEvents = () => {
   const { user } = useAuth();
   const [groups, setGroups] = useState<Group[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
-  const [activeTab, setActiveTab] = useState<'groups' | 'events'>('groups');
-  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("groups");
 
   useEffect(() => {
     fetchGroups();
@@ -62,263 +45,235 @@ const GroupsAndEvents = () => {
   }, []);
 
   const fetchGroups = async () => {
-    const { data: allGroups } = await supabase
-      .from('groups')
-      .select('*')
-      .eq('privacy', 'public')
-      .order('member_count', { ascending: false });
-
-    const { data: memberships } = await supabase
-      .from('group_members')
-      .select('group_id')
-      .eq('user_id', user?.id);
-
-    if (allGroups) {
-      const memberGroupIds = memberships?.map(m => m.group_id) || [];
-      const enhancedGroups = allGroups.map(group => ({
-        ...group,
-        is_member: memberGroupIds.includes(group.id)
-      }));
-      setGroups(enhancedGroups);
-    }
+    // Mock groups data
+    const mockGroups: Group[] = [
+      {
+        id: '1',
+        name: 'Crypto Traders',
+        description: 'A community for cryptocurrency trading enthusiasts',
+        avatar_url: '/placeholder.svg',
+        member_count: 1250,
+        privacy: 'public',
+        creator_id: 'user1',
+        joined: true
+      },
+      {
+        id: '2',
+        name: 'Video Content Creators',
+        description: 'Share tips and collaborate on video content',
+        avatar_url: '/placeholder.svg',
+        member_count: 856,
+        privacy: 'public',
+        creator_id: 'user2',
+        joined: false
+      },
+      {
+        id: '3',
+        name: 'Local Community',
+        description: 'Connect with people in your area',
+        avatar_url: '/placeholder.svg',
+        member_count: 342,
+        privacy: 'private',
+        creator_id: 'user3',
+        joined: true
+      }
+    ];
+    setGroups(mockGroups);
   };
 
   const fetchEvents = async () => {
-    const { data: allEvents } = await supabase
-      .from('events')
-      .select(`
-        *,
-        groups:group_id (
-          name
-        )
-      `)
-      .gte('start_date', new Date().toISOString())
-      .order('start_date', { ascending: true });
-
-    const { data: rsvps } = await supabase
-      .from('event_rsvps')
-      .select('event_id, status')
-      .eq('user_id', user?.id);
-
-    if (allEvents) {
-      const enhancedEvents = allEvents.map(event => {
-        const userRsvp = rsvps?.find(r => r.event_id === event.id);
-        return {
-          ...event,
-          group: event.groups,
-          rsvp_status: userRsvp?.status || null
-        };
-      });
-      setEvents(enhancedEvents);
-    }
+    // Mock events data
+    const mockEvents: Event[] = [
+      {
+        id: '1',
+        title: 'Crypto Trading Workshop',
+        description: 'Learn advanced trading strategies and market analysis',
+        location: 'Virtual Event',
+        start_date: new Date(Date.now() + 86400000 * 3).toISOString(),
+        creator_id: 'user1',
+        attendee_count: 45,
+        max_attendees: 100,
+        attending: false
+      },
+      {
+        id: '2',
+        title: 'Community Meetup',
+        description: 'Monthly in-person meetup for local members',
+        location: 'Central Park, NYC',
+        start_date: new Date(Date.now() + 86400000 * 7).toISOString(),
+        creator_id: 'user2',
+        attendee_count: 23,
+        max_attendees: 50,
+        attending: true
+      },
+      {
+        id: '3',
+        title: 'Content Creation Bootcamp',
+        description: 'Intensive workshop on creating engaging content',
+        location: 'Online',
+        start_date: new Date(Date.now() + 86400000 * 14).toISOString(),
+        creator_id: 'user3',
+        attendee_count: 67,
+        attending: false
+      }
+    ];
+    setEvents(mockEvents);
   };
 
   const joinGroup = async (groupId: string) => {
-    const { error } = await supabase
-      .from('group_members')
-      .insert({
-        group_id: groupId,
-        user_id: user?.id
-      });
-
-    if (!error) {
-      fetchGroups();
-    }
+    setGroups(prev => prev.map(group => 
+      group.id === groupId 
+        ? { ...group, joined: true, member_count: group.member_count + 1 }
+        : group
+    ));
   };
 
-  const rsvpToEvent = async (eventId: string, status: 'going' | 'maybe' | 'not_going') => {
-    const { error } = await supabase
-      .from('event_rsvps')
-      .upsert({
-        event_id: eventId,
-        user_id: user?.id,
-        status
-      });
-
-    if (!error) {
-      fetchEvents();
-    }
+  const leaveGroup = async (groupId: string) => {
+    setGroups(prev => prev.map(group => 
+      group.id === groupId 
+        ? { ...group, joined: false, member_count: group.member_count - 1 }
+        : group
+    ));
   };
 
-  const getPrivacyIcon = (privacy: string) => {
-    switch (privacy) {
-      case 'public': return <Globe className="h-4 w-4" />;
-      case 'private': return <Lock className="h-4 w-4" />;
-      case 'invite_only': return <UserPlus className="h-4 w-4" />;
-      default: return <Globe className="h-4 w-4" />;
-    }
+  const attendEvent = async (eventId: string) => {
+    setEvents(prev => prev.map(event => 
+      event.id === eventId 
+        ? { ...event, attending: true, attendee_count: event.attendee_count + 1 }
+        : event
+    ));
   };
 
-  const formatEventDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const unattendEvent = async (eventId: string) => {
+    setEvents(prev => prev.map(event => 
+      event.id === eventId 
+        ? { ...event, attending: false, attendee_count: event.attendee_count - 1 }
+        : event
+    ));
   };
+
+  const filteredGroups = groups.filter(group =>
+    group.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    group.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredEvents = events.filter(event =>
+    event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    event.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Groups & Events</h1>
-        <Button onClick={() => setShowCreateModal(true)}>
+        <Button>
           <Plus className="h-4 w-4 mr-2" />
-          Create
+          Create New
         </Button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
-        <Button
-          variant={activeTab === 'groups' ? "default" : "ghost"}
-          onClick={() => setActiveTab('groups')}
-          className="flex items-center gap-2"
-        >
-          <Users className="h-4 w-4" />
-          Groups
-        </Button>
-        <Button
-          variant={activeTab === 'events' ? "default" : "ghost"}
-          onClick={() => setActiveTab('events')}
-          className="flex items-center gap-2"
-        >
-          <Calendar className="h-4 w-4" />
-          Events
-        </Button>
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Search groups and events..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
       </div>
 
-      {/* Groups tab */}
-      {activeTab === 'groups' && (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {groups.map((group) => (
-            <Card key={group.id} className="overflow-hidden">
-              {group.cover_url && (
-                <div 
-                  className="h-32 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${group.cover_url})` }}
-                />
-              )}
-              <CardHeader className="pb-3">
-                <div className="flex items-start gap-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={group.avatar_url} />
-                    <AvatarFallback>{group.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg line-clamp-1">{group.name}</CardTitle>
-                    <div className="flex items-center gap-2 mt-1">
-                      {getPrivacyIcon(group.privacy)}
-                      <span className="text-sm text-muted-foreground capitalize">
-                        {group.privacy.replace('_', ' ')}
-                      </span>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="groups">Groups</TabsTrigger>
+          <TabsTrigger value="events">Events</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="groups" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {filteredGroups.map((group) => (
+              <Card key={group.id}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <Avatar>
+                      <AvatarImage src={group.avatar_url} />
+                      <AvatarFallback>{group.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <CardTitle className="text-base">{group.name}</CardTitle>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant={group.privacy === 'public' ? 'default' : 'secondary'}>
+                          {group.privacy}
+                        </Badge>
+                        <span className="text-sm text-muted-foreground flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          {group.member_count}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {group.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {group.member_count} members
-                  </span>
-                  {group.is_member ? (
-                    <Badge>Joined</Badge>
-                  ) : (
-                    <Button 
-                      size="sm" 
-                      onClick={() => joinGroup(group.id)}
-                    >
-                      Join
-                    </Button>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{group.description}</p>
+                  <Button
+                    variant={group.joined ? "outline" : "default"}
+                    className="w-full"
+                    onClick={() => group.joined ? leaveGroup(group.id) : joinGroup(group.id)}
+                  >
+                    {group.joined ? 'Leave Group' : 'Join Group'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="events" className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            {filteredEvents.map((event) => (
+              <Card key={event.id}>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg">{event.title}</CardTitle>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {new Date(event.start_date).toLocaleDateString()}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {new Date(event.start_date).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </span>
+                  </div>
+                  {event.location && (
+                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <MapPin className="h-3 w-3" />
+                      {event.location}
+                    </span>
                   )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-
-      {/* Events tab */}
-      {activeTab === 'events' && (
-        <div className="space-y-4">
-          {events.map((event) => (
-            <Card key={event.id}>
-              <CardContent className="p-6">
-                <div className="flex gap-4">
-                  {/* Date badge */}
-                  <div className="flex-shrink-0 bg-primary text-primary-foreground rounded-lg p-3 text-center min-w-[80px]">
-                    <div className="text-sm font-medium">
-                      {new Date(event.start_date).toLocaleDateString('en-US', { month: 'short' })}
-                    </div>
-                    <div className="text-2xl font-bold">
-                      {new Date(event.start_date).getDate()}
-                    </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{event.description}</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm text-muted-foreground">
+                      {event.attendee_count} attending
+                      {event.max_attendees && ` • ${event.max_attendees} max`}
+                    </span>
                   </div>
-
-                  {/* Event details */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                    
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        {formatEventDate(event.start_date)}
-                        {event.end_date && ` - ${formatEventDate(event.end_date)}`}
-                      </div>
-                      
-                      {event.location && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4" />
-                          {event.location}
-                        </div>
-                      )}
-                      
-                      {event.group && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Users className="h-4 w-4" />
-                          {event.group.name}
-                        </div>
-                      )}
-                    </div>
-
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                      {event.description}
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        {event.attendee_count} {event.max_attendees && `of ${event.max_attendees}`} attending
-                      </span>
-                      
-                      <div className="flex gap-2">
-                        <Button
-                          variant={event.rsvp_status === 'going' ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => rsvpToEvent(event.id, 'going')}
-                        >
-                          Going
-                        </Button>
-                        <Button
-                          variant={event.rsvp_status === 'maybe' ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => rsvpToEvent(event.id, 'maybe')}
-                        >
-                          Maybe
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+                  <Button
+                    variant={event.attending ? "outline" : "default"}
+                    className="w-full"
+                    onClick={() => event.attending ? unattendEvent(event.id) : attendEvent(event.id)}
+                  >
+                    {event.attending ? 'Cancel RSVP' : 'RSVP'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
