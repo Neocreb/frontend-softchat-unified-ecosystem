@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -33,6 +34,8 @@ import LandingPage from "./pages/Landing";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
+import GroupsPage from "./pages/GroupsPage";
+import GamificationPage from "./pages/GamificationPage";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -169,6 +172,10 @@ const AppRoutes = () => {
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<Settings />} />
+        
+        {/* New feature routes */}
+        <Route path="groups" element={<GroupsPage />} />
+        <Route path="achievements" element={<GamificationPage />} />
 
       </Route>
 

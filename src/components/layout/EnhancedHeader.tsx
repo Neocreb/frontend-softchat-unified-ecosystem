@@ -1,6 +1,7 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MessageCircle, Menu, X, User, ShoppingCart, Home, TrendingUp, Wallet, Award } from "lucide-react";
+import { MessageCircle, Menu, X, User, ShoppingCart, Home, TrendingUp, Wallet, Award, Users, Trophy } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -44,6 +45,10 @@ const EnhancedHeader = () => {
             <Home className="h-4 w-4" />
             <span>Feed</span>
           </Link>
+          <Link to="/groups" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Users className="h-4 w-4" />
+            <span>Groups</span>
+          </Link>
           <Link to="/marketplace" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <ShoppingCart className="h-4 w-4" />
             <span>Marketplace</span>
@@ -52,13 +57,9 @@ const EnhancedHeader = () => {
             <TrendingUp className="h-4 w-4" />
             <span>Crypto</span>
           </Link>
-          <Link to="/wallet" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-            <Wallet className="h-4 w-4" />
-            <span>Wallet</span>
-          </Link>
-          <Link to="/rewards" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-            <Award className="h-4 w-4" />
-            <span>Rewards</span>
+          <Link to="/achievements" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Trophy className="h-4 w-4" />
+            <span>Achievements</span>
           </Link>
         </nav>
 
@@ -107,9 +108,9 @@ const EnhancedHeader = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/rewards" className="flex items-center w-full">
-                  <Award className="mr-2 h-4 w-4" />
-                  <span>Rewards</span>
+                <Link to="/achievements" className="flex items-center w-full">
+                  <Trophy className="mr-2 h-4 w-4" />
+                  <span>Achievements</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -138,6 +139,10 @@ const EnhancedHeader = () => {
             <Home className="h-5 w-5" />
             <span>Feed</span>
           </Link>
+          <Link to="/groups" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Users className="h-5 w-5" />
+            <span>Groups</span>
+          </Link>
           <Link to="/marketplace" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <ShoppingCart className="h-5 w-5" />
             <span>Marketplace</span>
@@ -146,13 +151,9 @@ const EnhancedHeader = () => {
             <TrendingUp className="h-5 w-5" />
             <span>Crypto</span>
           </Link>
-          <Link to="/wallet" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
-            <Wallet className="h-5 w-5" />
-            <span>Wallet</span>
-          </Link>
-          <Link to="/rewards" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
-            <Award className="h-5 w-5" />
-            <span>Rewards</span>
+          <Link to="/achievements" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Trophy className="h-5 w-5" />
+            <span>Achievements</span>
           </Link>
           <Link to="/chat" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <MessageCircle className="h-5 w-5" />
