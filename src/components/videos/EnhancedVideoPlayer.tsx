@@ -109,8 +109,8 @@ const EnhancedVideoPlayer = ({ video, onNext, onPrev }: EnhancedVideoPlayerProps
         {/* Creator info */}
         <div className="flex flex-col items-center space-y-2">
           <Avatar className="h-12 w-12 border-2 border-white">
-            <AvatarImage src={video.avatar || "/placeholder.svg"} />
-            <AvatarFallback>{video.username?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
+            <AvatarImage src={video.author.avatar || "/placeholder.svg"} />
+            <AvatarFallback>{video.author.username?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
           </Avatar>
           {!isFollowing && (
             <Button
@@ -175,13 +175,8 @@ const EnhancedVideoPlayer = ({ video, onNext, onPrev }: EnhancedVideoPlayerProps
       {/* Bottom content info */}
       <div className="absolute bottom-4 left-4 right-20 text-white">
         <div className="space-y-2">
-          <h3 className="font-semibold">@{video.username || 'user'}</h3>
+          <h3 className="font-semibold">@{video.author.username || 'user'}</h3>
           <p className="text-sm">{video.description}</p>
-          {video.hashtags && (
-            <p className="text-sm text-blue-300">
-              {video.hashtags.map(tag => `#${tag}`).join(' ')}
-            </p>
-          )}
         </div>
       </div>
 

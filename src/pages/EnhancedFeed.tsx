@@ -9,7 +9,14 @@ import EnhancedStoriesWrapper from "@/components/feed/EnhancedStories";
 
 const EnhancedFeed = () => {
   const { user } = useAuth();
-  const { posts, isLoading } = useFeed();
+  const { posts, isLoading, handleCreatePost } = useFeed();
+
+  const handlePostSubmit = (content: string, image?: string) => {
+    handleCreatePost({
+      content,
+      mediaUrl: image
+    });
+  };
 
   if (isLoading) {
     return (
@@ -25,7 +32,7 @@ const EnhancedFeed = () => {
       <EnhancedStoriesWrapper />
       
       {/* Create Post */}
-      <CreatePostCard />
+      <CreatePostCard onSubmit={handlePostSubmit} />
       
       {/* Posts Feed */}
       {posts.length === 0 ? (
