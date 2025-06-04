@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -8,6 +9,7 @@ import RewardsOverview from "@/components/rewards/RewardsOverview";
 import EarnPoints from "@/components/rewards/EarnPoints";
 import RedeemRewards from "@/components/rewards/RedeemRewards";
 import RewardsHistory from "@/components/rewards/RewardsHistory";
+import AchievementSystem from "@/components/gamification/AchievementSystem";
 import { UserLevel } from "@/types/user";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -129,6 +131,10 @@ const Rewards = () => {
             availableRewards={availableRewards}
             redeemReward={redeemReward}
           />
+        </TabsContent>
+
+        <TabsContent value="achievements" className="mt-0">
+          <AchievementSystem />
         </TabsContent>
 
         <TabsContent value="history" className="mt-0">

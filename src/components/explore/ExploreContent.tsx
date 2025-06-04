@@ -6,6 +6,7 @@ import SuggestedUsers from "./SuggestedUsers";
 import PopularHashtags from "./PopularHashtags";
 import ExploreGroups from "./ExploreGroups";
 import ExplorePages from "./ExplorePages";
+import GroupsAndEvents from "../groups/GroupsAndEvents";
 
 interface ExploreContentProps {
   activeTab: string;
@@ -43,7 +44,7 @@ const ExploreContent = ({
       </TabsContent>
       
       <TabsContent value="groups">
-        <ExploreGroups groups={filteredGroups} />
+        <GroupsAndEvents />
       </TabsContent>
       
       <TabsContent value="pages">
