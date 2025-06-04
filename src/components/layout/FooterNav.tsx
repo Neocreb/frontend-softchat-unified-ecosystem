@@ -35,15 +35,15 @@ const FooterNav = () => {
     },
     {
       icon: TrendingUp,
-      label: "Crypto",
-      href: "/crypto",
-      active: location.pathname === "/crypto",
+      label: "Trading",
+      href: "/wallet?tab=trading",
+      active: location.pathname === "/crypto" || (location.pathname === "/wallet" && location.search.includes("trading")),
     },
     {
       icon: Wallet,
-      label: "Market",
-      href: "/marketplace",
-      active: location.pathname === "/marketplace",
+      label: "Wallet",
+      href: "/wallet",
+      active: location.pathname === "/wallet" || location.pathname === "/marketplace",
     },
   ];
 
