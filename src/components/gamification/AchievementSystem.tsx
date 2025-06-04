@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils/utils";
-import { Trophy, Target, Calendar, Star, Medal, Award } from "lucide-react";
+import { Trophy, Target, Calendar, Star, Medal, Award, Flame } from "lucide-react";
 
 interface Achievement {
   id: string;
@@ -175,15 +175,8 @@ const AchievementSystem = () => {
 
   const fetchUserPoints = async () => {
     try {
-      const { data } = await supabase
-        .from('profiles')
-        .select('points')
-        .eq('user_id', user?.id)
-        .single();
-
-      if (data) {
-        setUserPoints(data.points || 0);
-      }
+      // Mock points for now since the table structure isn't available yet
+      setUserPoints(1250);
     } catch (error) {
       console.error('Error fetching user points:', error);
       setUserPoints(1250); // Mock points
