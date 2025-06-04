@@ -1,8 +1,23 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Share, Volume2, VolumeX, Play, Pause, ArrowUp, ArrowDown } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { 
+  Play, 
+  Pause, 
+  Volume2, 
+  VolumeX, 
+  Maximize, 
+  Settings, 
+  Heart, 
+  MessageCircle, 
+  Share2,
+  Bookmark,
+  PictureInPicture,
+  SkipBack,
+  SkipForward
+} from "lucide-react";
+import { cn } from "@/utils/utils";
 import { VideoItem } from "@/types/video";
 
 interface EnhancedVideoPlayerProps {
@@ -14,177 +29,329 @@ interface EnhancedVideoPlayerProps {
 const EnhancedVideoPlayer = ({ video, onNext, onPrev }: EnhancedVideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [showControls, setShowControls] = useState(true);
+  const [quality, setQuality] = useState("720p");
+  const [isBuffering, setIsBuffering] = useState(false);
+  const [showQualityMenu, setShowQualityMenu] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play();
-    }
-  }, [video]);
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateTime = () => setCurrentTime(video.currentTime);
+    const updateDuration = () => setDuration(video.duration);
+    const handleWaiting = () => setIsBuffering(true);
+    const handleCanPlay = () => setIsBuffering(false);
+
+    video.addEventListener('timeupdate', updateTime);
+    video.addEventListener('loadedmetadata', updateDuration);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('canplay', handleCanPlay);
+
+    return () => {
+      video.removeEventListener('timeupdate', updateTime);
+      video.removeEventListener('loadedmetadata', updateDuration);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('canplay', handleCanPlay);
+    };
+  }, []);
 
   const togglePlay = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
     }
+    setIsPlaying(!isPlaying);
   };
 
   const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
+    const video = videoRef.current;
+    if (!video) return;
+    
+    video.muted = !isMuted;
+    setIsMuted(!isMuted);
   };
 
-  const handleVideoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    togglePlay();
+  const handleSeek = (value: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    video.currentTime = (value / 100) * duration;
   };
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
+  const handleVolumeChange = (value: number) => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    const newVolume = value / 100;
+    video.volume = newVolume;
+    setVolume(newVolume);
+    setIsMuted(newVolume === 0);
   };
 
-  const handleFollow = () => {
-    setIsFollowing(!isFollowing);
-  };
+  const toggleFullscreen = () => {
+    const video = videoRef.current;
+    if (!video) return;
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: video.description || 'Check out this video!',
-        url: window.location.href,
-      });
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
     } else {
-      navigator.clipboard?.writeText(window.location.href);
+      video.requestFullscreen();
     }
   };
+
+  const togglePictureInPicture = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      } else {
+        await video.requestPictureInPicture();
+      }
+    } catch (error) {
+      console.error('Picture-in-picture failed:', error);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <div className="relative w-full h-full bg-black flex items-center justify-center">
-      {/* Video */}
+    <div 
+      className="relative h-full bg-black group"
+      onMouseEnter={() => setShowControls(true)}
+      onMouseLeave={() => setShowControls(false)}
+    >
       <video
         ref={videoRef}
-        src={video.url}
         className="w-full h-full object-cover"
+        src={video.videoUrl}
+        autoPlay
         loop
-        muted={isMuted}
         playsInline
-        onClick={handleVideoClick}
+        onClick={togglePlay}
       />
 
-      {/* Play/Pause overlay */}
-      {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-20 w-20 rounded-full bg-white/20 hover:bg-white/30 text-white"
-            onClick={togglePlay}
-          >
-            <Play className="h-10 w-10 ml-1" />
-          </Button>
+      {/* Buffering indicator */}
+      {isBuffering && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
         </div>
       )}
 
-      {/* Navigation hints */}
-      <div className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white/50 text-sm">
-        <ArrowUp className="h-4 w-4 mb-1" />
-        <span className="text-xs">Swipe up</span>
-      </div>
-      
-      <div className="absolute bottom-1/2 left-4 transform translate-y-1/2 text-white/50 text-sm">
-        <ArrowDown className="h-4 w-4 mb-1" />
-        <span className="text-xs">Swipe down</span>
-      </div>
-
-      {/* Right side controls */}
-      <div className="absolute bottom-20 right-4 flex flex-col items-center space-y-6 text-white">
-        {/* Creator info */}
-        <div className="flex flex-col items-center space-y-2">
-          <Avatar className="h-12 w-12 border-2 border-white">
-            <AvatarImage src={video.author.avatar || "/placeholder.svg"} />
-            <AvatarFallback>{video.author.username?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
-          </Avatar>
-          {!isFollowing && (
+      {/* Controls overlay */}
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/60 transition-opacity duration-300",
+        showControls ? "opacity-100" : "opacity-0"
+      )}>
+        {/* Top controls */}
+        <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
             <Button
+              variant="ghost"
               size="icon"
-              className="h-6 w-6 rounded-full bg-red-500 hover:bg-red-600 -mt-3"
-              onClick={handleFollow}
+              className="text-white bg-black/20 hover:bg-black/40"
+              onClick={onPrev}
             >
-              <span className="text-xs font-bold">+</span>
+              <SkipBack className="h-5 w-5" />
             </Button>
-          )}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white bg-black/20 hover:bg-black/40"
+              onClick={onNext}
+            >
+              <SkipForward className="h-5 w-5" />
+            </Button>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white bg-black/20 hover:bg-black/40"
+              onClick={togglePictureInPicture}
+            >
+              <PictureInPicture className="h-5 w-5" />
+            </Button>
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white bg-black/20 hover:bg-black/40"
+                onClick={() => setShowQualityMenu(!showQualityMenu)}
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
+              {showQualityMenu && (
+                <div className="absolute top-full right-0 mt-2 bg-black/80 rounded-lg p-2 min-w-[100px]">
+                  {["480p", "720p", "1080p"].map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => {
+                        setQuality(q);
+                        setShowQualityMenu(false);
+                      }}
+                      className={cn(
+                        "block w-full text-left px-3 py-2 text-white hover:bg-white/20 rounded",
+                        quality === q && "bg-white/30"
+                      )}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Like button */}
-        <div className="flex flex-col items-center">
+        {/* Center play button */}
+        <div className="absolute inset-0 flex items-center justify-center">
           <Button
             variant="ghost"
             size="icon"
-            className="h-12 w-12 text-white hover:bg-white/20"
-            onClick={handleLike}
+            className="text-white bg-black/20 hover:bg-black/40 h-16 w-16"
+            onClick={togglePlay}
           >
-            <Heart className={`h-7 w-7 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+            {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8" />}
           </Button>
-          <span className="text-xs mt-1">{video.likes || 0}</span>
         </div>
 
-        {/* Comment button */}
-        <div className="flex flex-col items-center">
+        {/* Bottom controls */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          {/* Progress bar */}
+          <div className="mb-4">
+            <Progress 
+              value={progress} 
+              className="h-1 cursor-pointer"
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const progress = (clickX / rect.width) * 100;
+                handleSeek(progress);
+              }}
+            />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white"
+                  onClick={toggleMute}
+                >
+                  {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                </Button>
+                <div className="w-20">
+                  <Progress 
+                    value={isMuted ? 0 : volume * 100} 
+                    className="h-1 cursor-pointer"
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      const clickX = e.clientX - rect.left;
+                      const volume = (clickX / rect.width) * 100;
+                      handleVolumeChange(volume);
+                    }}
+                  />
+                </div>
+              </div>
+              
+              <div className="text-white text-sm">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </div>
+            </div>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white"
+              onClick={toggleFullscreen}
+            >
+              <Maximize className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Right side engagement panel */}
+        <div className="absolute right-4 bottom-20 flex flex-col gap-4">
           <Button
             variant="ghost"
             size="icon"
-            className="h-12 w-12 text-white hover:bg-white/20"
+            className={cn(
+              "text-white bg-black/20 hover:bg-black/40 h-12 w-12 rounded-full",
+              liked && "text-red-500"
+            )}
+            onClick={() => setLiked(!liked)}
           >
-            <MessageCircle className="h-7 w-7" />
+            <Heart className={cn("h-6 w-6", liked && "fill-current")} />
           </Button>
-          <span className="text-xs mt-1">{video.comments || 0}</span>
-        </div>
-
-        {/* Share button */}
-        <div className="flex flex-col items-center">
+          
           <Button
             variant="ghost"
             size="icon"
-            className="h-12 w-12 text-white hover:bg-white/20"
-            onClick={handleShare}
+            className="text-white bg-black/20 hover:bg-black/40 h-12 w-12 rounded-full"
           >
-            <Share className="h-7 w-7" />
+            <MessageCircle className="h-6 w-6" />
           </Button>
-          <span className="text-xs mt-1">Share</span>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white bg-black/20 hover:bg-black/40 h-12 w-12 rounded-full"
+          >
+            <Share2 className="h-6 w-6" />
+          </Button>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "text-white bg-black/20 hover:bg-black/40 h-12 w-12 rounded-full",
+              bookmarked && "text-yellow-500"
+            )}
+            onClick={() => setBookmarked(!bookmarked)}
+          >
+            <Bookmark className={cn("h-6 w-6", bookmarked && "fill-current")} />
+          </Button>
         </div>
-
-        {/* Mute button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-12 w-12 text-white hover:bg-white/20"
-          onClick={toggleMute}
-        >
-          {isMuted ? <VolumeX className="h-7 w-7" /> : <Volume2 className="h-7 w-7" />}
-        </Button>
       </div>
 
-      {/* Bottom content info */}
-      <div className="absolute bottom-4 left-4 right-20 text-white">
-        <div className="space-y-2">
-          <h3 className="font-semibold">@{video.author.username || 'user'}</h3>
-          <p className="text-sm">{video.description}</p>
+      {/* Video info overlay */}
+      <div className="absolute bottom-4 left-4 max-w-sm">
+        <h3 className="text-white font-semibold mb-1">{video.title}</h3>
+        <p className="text-white/80 text-sm">{video.description}</p>
+        <div className="flex items-center gap-2 mt-2">
+          <img 
+            src={video.creator.avatar} 
+            alt={video.creator.name}
+            className="w-8 h-8 rounded-full"
+          />
+          <span className="text-white text-sm">{video.creator.name}</span>
+          <Button variant="outline" size="sm" className="ml-auto">
+            Follow
+          </Button>
         </div>
       </div>
-
-      {/* Top gradient overlay */}
-      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-      
-      {/* Bottom gradient overlay */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
     </div>
   );
 };

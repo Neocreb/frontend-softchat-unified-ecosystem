@@ -36,45 +36,63 @@ export const useEnhancedMessaging = () => {
   const fetchConversations = async () => {
     if (!user) return;
 
-    try {
-      // Use mock data for now since the enhanced messaging tables aren't fully ready
-      const mockConversations: Conversation[] = [
-        {
-          id: '1',
-          participants: [user.id, 'user2'],
-          updated_at: new Date().toISOString(),
-          last_message: {
-            content: 'Hey! How are you doing?',
-            sender_id: 'user2',
-            created_at: new Date().toISOString(),
-            message_type: 'text'
-          },
-          unread_count: 2,
-          other_user: {
-            name: 'Alice Johnson',
-            avatar: '/placeholder.svg'
-          }
-        },
-        {
-          id: '2',
-          participants: [user.id, 'user3'],
-          updated_at: new Date(Date.now() - 3600000).toISOString(),
-          last_message: {
-            content: 'Thanks for the trade!',
-            sender_id: 'user3',
-            created_at: new Date(Date.now() - 3600000).toISOString(),
-            message_type: 'text'
-          },
-          unread_count: 0,
-          other_user: {
-            name: 'Bob Smith',
-            avatar: '/placeholder.svg'
-          }
-        }
-      ];
-      setConversations(mockConversations);
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
+    const { data: conversations, error } = await supabase
+      .from('chat_conversations')
+      .select(`
+        *,
+        chat_messages!inner (
+          content,
+          sender_id,
+          created_at,
+          message_type,
+          read
+        )
+      `)
+      .contains('participants', [user.id])
+      .order('updated_at', { ascending: false });
+
+    if (conversations) {
+      // Process conversations to get last message and unread count
+      const processedConversations = await Promise.all(
+        conversations.map(async (conv) => {
+          // Get last message
+          const { data: lastMessage } = await supabase
+            .from('chat_messages')
+            .select('*')
+            .eq('conversation_id', conv.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single();
+
+          // Get unread count
+          const { count: unreadCount } = await supabase
+            .from('chat_messages')
+            .select('*', { count: 'exact' })
+            .eq('conversation_id', conv.id)
+            .eq('read', false)
+            .neq('sender_id', user.id);
+
+          // Get other user info
+          const otherUserId = conv.participants.find(p => p !== user.id);
+          const { data: otherUser } = await supabase
+            .from('profiles')
+            .select('name, avatar_url')
+            .eq('user_id', otherUserId)
+            .single();
+
+          return {
+            ...conv,
+            last_message: lastMessage,
+            unread_count: unreadCount || 0,
+            other_user: otherUser ? {
+              name: otherUser.name || 'Unknown',
+              avatar: otherUser.avatar_url || '/placeholder.svg'
+            } : undefined
+          };
+        })
+      );
+
+      setConversations(processedConversations);
     }
     setIsLoading(false);
   };
@@ -102,39 +120,43 @@ export const useEnhancedMessaging = () => {
     if (!user) return null;
 
     // Check if conversation already exists
-    const existingConv = conversations.find(conv => 
-      conv.participants.includes(otherUserId)
-    );
+    const { data: existingConv } = await supabase
+      .from('chat_conversations')
+      .select('id')
+      .contains('participants', [user.id, otherUserId])
+      .single();
 
     if (existingConv) {
       return existingConv.id;
     }
 
-    // Create new conversation (mock for now)
-    const newConvId = Date.now().toString();
-    const newConv: Conversation = {
-      id: newConvId,
-      participants: [user.id, otherUserId],
-      updated_at: new Date().toISOString(),
-      unread_count: 0,
-      other_user: {
-        name: 'New User',
-        avatar: '/placeholder.svg'
-      }
-    };
+    // Create new conversation
+    const { data: newConv, error } = await supabase
+      .from('chat_conversations')
+      .insert({
+        participants: [user.id, otherUserId]
+      })
+      .select('id')
+      .single();
 
-    setConversations(prev => [newConv, ...prev]);
-    return newConvId;
+    if (newConv) {
+      fetchConversations();
+      return newConv.id;
+    }
+
+    return null;
   };
 
   const markConversationAsRead = async (conversationId: string) => {
     if (!user) return;
 
-    setConversations(prev => prev.map(conv => 
-      conv.id === conversationId 
-        ? { ...conv, unread_count: 0 }
-        : conv
-    ));
+    await supabase
+      .from('chat_messages')
+      .update({ read: true })
+      .eq('conversation_id', conversationId)
+      .neq('sender_id', user.id);
+
+    fetchConversations();
   };
 
   return {

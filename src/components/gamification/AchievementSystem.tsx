@@ -1,12 +1,13 @@
+
 import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Trophy, Star, Flame, Target, Award } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase/client";
 import { cn } from "@/utils/utils";
-import { Trophy, Target, Calendar, Star, Medal, Award, Flame } from "lucide-react";
 
 interface Achievement {
   id: string;
@@ -56,130 +57,76 @@ const AchievementSystem = () => {
   }, [user]);
 
   const fetchAchievements = async () => {
-    try {
-      // For now, use mock data since the new tables might not be in the type definitions yet
-      const mockAchievements: Achievement[] = [
-        {
-          id: '1',
-          name: 'First Post',
-          description: 'Create your first post',
-          icon: '🎉',
-          category: 'content',
-          points_reward: 10,
-          badge_color: 'blue',
-          requirements: { posts_count: 1 },
-          earned: false,
-          progress: 50
-        },
-        {
-          id: '2',
-          name: 'Social Butterfly',
-          description: 'Make 10 friends',
-          icon: '🦋',
-          category: 'social',
-          points_reward: 50,
-          badge_color: 'purple',
-          requirements: { friends_count: 10 },
-          earned: true,
-          progress: 100
-        },
-        {
-          id: '3',
-          name: 'Video Lover',
-          description: 'Watch 50 videos',
-          icon: '📹',
-          category: 'engagement',
-          points_reward: 25,
-          badge_color: 'green',
-          requirements: { videos_watched: 50 },
-          earned: false,
-          progress: 75
-        }
-      ];
-      setAchievements(mockAchievements);
-    } catch (error) {
-      console.error('Error fetching achievements:', error);
-      // Set fallback data
-      setAchievements([]);
+    const { data: allAchievements } = await supabase
+      .from('achievements')
+      .select('*');
+
+    const { data: userAchievements } = await supabase
+      .from('user_achievements')
+      .select('achievement_id, progress')
+      .eq('user_id', user?.id);
+
+    if (allAchievements) {
+      const enhancedAchievements = allAchievements.map(achievement => {
+        const userProgress = userAchievements?.find(ua => ua.achievement_id === achievement.id);
+        return {
+          ...achievement,
+          earned: !!userProgress,
+          progress: userProgress?.progress || 0
+        };
+      });
+      setAchievements(enhancedAchievements);
     }
   };
 
   const fetchChallenges = async () => {
-    try {
-      // Mock daily challenges
-      const mockChallenges: Challenge[] = [
-        {
-          id: '1',
-          title: 'Daily Poster',
-          description: 'Create a post today',
-          type: 'post_creation',
-          target_value: 1,
-          points_reward: 10,
-          current_progress: 0,
-          completed: false
-        },
-        {
-          id: '2',
-          title: 'Social Engager',
-          description: 'Like 5 posts today',
-          type: 'likes_given',
-          target_value: 5,
-          points_reward: 5,
-          current_progress: 3,
-          completed: false
-        },
-        {
-          id: '3',
-          title: 'Video Watcher',
-          description: 'Watch 3 videos today',
-          type: 'videos_watched',
-          target_value: 3,
-          points_reward: 8,
-          current_progress: 3,
-          completed: true
-        }
-      ];
-      setChallenges(mockChallenges);
-    } catch (error) {
-      console.error('Error fetching challenges:', error);
-      setChallenges([]);
+    const today = new Date().toISOString().split('T')[0];
+    
+    const { data: dailyChallenges } = await supabase
+      .from('challenges')
+      .select('*')
+      .eq('is_daily', true)
+      .eq('active_date', today);
+
+    const { data: userProgress } = await supabase
+      .from('user_challenge_progress')
+      .select('*')
+      .eq('user_id', user?.id)
+      .eq('date', today);
+
+    if (dailyChallenges) {
+      const enhancedChallenges = dailyChallenges.map(challenge => {
+        const progress = userProgress?.find(up => up.challenge_id === challenge.id);
+        return {
+          ...challenge,
+          current_progress: progress?.current_progress || 0,
+          completed: progress?.completed || false
+        };
+      });
+      setChallenges(enhancedChallenges);
     }
   };
 
   const fetchStreaks = async () => {
-    try {
-      // Mock streak data
-      const mockStreaks: UserStreak[] = [
-        {
-          streak_type: 'posting',
-          current_streak: 5,
-          longest_streak: 12
-        },
-        {
-          streak_type: 'login',
-          current_streak: 15,
-          longest_streak: 25
-        },
-        {
-          streak_type: 'engagement',
-          current_streak: 3,
-          longest_streak: 8
-        }
-      ];
-      setStreaks(mockStreaks);
-    } catch (error) {
-      console.error('Error fetching streaks:', error);
-      setStreaks([]);
+    const { data } = await supabase
+      .from('user_streaks')
+      .select('*')
+      .eq('user_id', user?.id);
+
+    if (data) {
+      setStreaks(data);
     }
   };
 
   const fetchUserPoints = async () => {
-    try {
-      // Mock points for now since the table structure isn't available yet
-      setUserPoints(1250);
-    } catch (error) {
-      console.error('Error fetching user points:', error);
-      setUserPoints(1250); // Mock points
+    const { data } = await supabase
+      .from('profiles')
+      .select('points')
+      .eq('user_id', user?.id)
+      .single();
+
+    if (data) {
+      setUserPoints(data.points || 0);
     }
   };
 

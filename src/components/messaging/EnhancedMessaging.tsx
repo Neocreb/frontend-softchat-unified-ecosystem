@@ -1,307 +1,445 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Send, Search, Phone, Video, MoreVertical, Paperclip, Mic, Smile } from "lucide-react";
+import { 
+  Mic, 
+  MicOff, 
+  Send, 
+  Paperclip, 
+  Smile, 
+  Phone, 
+  Video, 
+  MoreVertical,
+  Heart,
+  ThumbsUp,
+  Laugh,
+  Reply,
+  Download
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase/client";
+import { cn } from "@/utils/utils";
 
 interface Message {
   id: string;
-  content: string;
+  conversation_id: string;
   sender_id: string;
-  created_at: string;
-  message_type: 'text' | 'voice' | 'file' | 'image';
+  content: string;
+  message_type: 'text' | 'voice' | 'file' | 'image' | 'video';
   file_url?: string;
-  sender?: {
+  file_name?: string;
+  file_size?: number;
+  duration?: number;
+  reply_to_id?: string;
+  created_at: string;
+  read: boolean;
+  sender: {
     name: string;
-    avatar_url?: string;
+    avatar: string;
   };
+  reactions?: Array<{
+    emoji: string;
+    user_id: string;
+    count: number;
+  }>;
+  reply_to?: Message;
 }
 
-interface Conversation {
-  id: string;
-  participants: string[];
-  updated_at: string;
-  latest_message?: string;
-  unread_count?: number;
-  other_user?: {
-    name: string;
-    avatar_url?: string;
-    status: 'online' | 'offline';
-  };
+interface EnhancedMessagingProps {
+  conversationId: string;
+  recipientName: string;
+  recipientAvatar: string;
 }
 
-const EnhancedMessaging = () => {
+const EnhancedMessaging = ({ conversationId, recipientName, recipientAvatar }: EnhancedMessagingProps) => {
   const { user } = useAuth();
-  const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [replyingTo, setReplyingTo] = useState<Message | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const recordedChunks = useRef<Blob[]>([]);
 
   useEffect(() => {
-    if (user) {
-      fetchConversations();
-    }
-  }, [user]);
+    fetchMessages();
+    subscribeToMessages();
+  }, [conversationId]);
 
   useEffect(() => {
-    if (selectedConversation) {
-      fetchMessages(selectedConversation);
-    }
-  }, [selectedConversation]);
+    scrollToBottom();
+  }, [messages]);
 
-  const fetchConversations = async () => {
-    try {
-      // Mock conversations data for now
-      const mockConversations: Conversation[] = [
-        {
-          id: '1',
-          participants: [user?.id || '', 'user2'],
-          updated_at: new Date().toISOString(),
-          latest_message: 'Hey! How are you doing?',
-          unread_count: 2,
-          other_user: {
-            name: 'Alice Johnson',
-            avatar_url: '/placeholder.svg',
-            status: 'online'
-          }
-        },
-        {
-          id: '2',
-          participants: [user?.id || '', 'user3'],
-          updated_at: new Date(Date.now() - 3600000).toISOString(),
-          latest_message: 'Thanks for the trade!',
-          unread_count: 0,
-          other_user: {
-            name: 'Bob Smith',
-            avatar_url: '/placeholder.svg',
-            status: 'offline'
-          }
+  const fetchMessages = async () => {
+    const { data, error } = await supabase
+      .from('chat_messages')
+      .select(`
+        *,
+        profiles:sender_id (
+          name,
+          avatar_url
+        )
+      `)
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true });
+
+    if (data) {
+      const formattedMessages = data.map(msg => ({
+        ...msg,
+        sender: {
+          name: msg.profiles?.name || 'Unknown',
+          avatar: msg.profiles?.avatar_url || '/placeholder.svg'
         }
-      ];
-      setConversations(mockConversations);
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
+      }));
+      setMessages(formattedMessages);
     }
   };
 
-  const fetchMessages = async (conversationId: string) => {
-    try {
-      // Mock messages data
-      const mockMessages: Message[] = [
-        {
-          id: '1',
-          content: 'Hey! How are you doing?',
-          sender_id: 'user2',
-          created_at: new Date(Date.now() - 3600000).toISOString(),
-          message_type: 'text',
-          sender: {
-            name: 'Alice Johnson',
-            avatar_url: '/placeholder.svg'
-          }
-        },
-        {
-          id: '2',
-          content: 'I\'m doing great! Just finished a successful trade.',
-          sender_id: user?.id || '',
-          created_at: new Date(Date.now() - 1800000).toISOString(),
-          message_type: 'text'
-        },
-        {
-          id: '3',
-          content: 'That sounds awesome! 🎉',
-          sender_id: 'user2',
-          created_at: new Date().toISOString(),
-          message_type: 'text',
-          sender: {
-            name: 'Alice Johnson',
-            avatar_url: '/placeholder.svg'
-          }
-        }
-      ];
-      setMessages(mockMessages);
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
+  const subscribeToMessages = () => {
+    const subscription = supabase
+      .channel(`conversation:${conversationId}`)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'chat_messages',
+        filter: `conversation_id=eq.${conversationId}`
+      }, (payload) => {
+        fetchMessages(); // Refetch to get complete message with sender info
+      })
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   };
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !selectedConversation) return;
+    if (!newMessage.trim() && !replyingTo) return;
 
-    const message: Message = {
-      id: Date.now().toString(),
+    const messageData = {
+      conversation_id: conversationId,
+      sender_id: user?.id,
       content: newMessage,
-      sender_id: user?.id || '',
-      created_at: new Date().toISOString(),
-      message_type: 'text'
+      message_type: 'text' as const,
+      reply_to_id: replyingTo?.id
     };
 
-    setMessages(prev => [...prev, message]);
-    setNewMessage("");
+    const { error } = await supabase
+      .from('chat_messages')
+      .insert(messageData);
+
+    if (!error) {
+      setNewMessage("");
+      setReplyingTo(null);
+    }
   };
 
-  const filteredConversations = conversations.filter(conv =>
-    conv.other_user?.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder.current = new MediaRecorder(stream);
+      recordedChunks.current = [];
+
+      mediaRecorder.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunks.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.current.onstop = async () => {
+        const blob = new Blob(recordedChunks.current, { type: 'audio/webm' });
+        await uploadVoiceMessage(blob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder.current && isRecording) {
+      mediaRecorder.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const uploadVoiceMessage = async (blob: Blob) => {
+    // In a real implementation, you would upload to Supabase storage
+    // For now, we'll simulate it
+    const messageData = {
+      conversation_id: conversationId,
+      sender_id: user?.id,
+      content: "Voice message",
+      message_type: 'voice' as const,
+      duration: 10 // Placeholder duration
+    };
+
+    await supabase
+      .from('chat_messages')
+      .insert(messageData);
+  };
+
+  const addReaction = async (messageId: string, emoji: string) => {
+    const { error } = await supabase
+      .from('message_reactions')
+      .insert({
+        message_id: messageId,
+        user_id: user?.id,
+        emoji
+      });
+
+    if (!error) {
+      // Refresh messages to show new reaction
+      fetchMessages();
+    }
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const formatDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
-    <div className="flex h-[600px] border rounded-lg overflow-hidden">
-      {/* Conversations List */}
-      <div className="w-1/3 border-r bg-muted/20">
-        <div className="p-4 border-b">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search conversations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
+    <div className="flex flex-col h-full">
+      {/* Chat header */}
+      <div className="flex items-center justify-between p-4 border-b bg-background">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={recipientAvatar} />
+            <AvatarFallback>{recipientName[0]}</AvatarFallback>
+          </Avatar>
+          <div>
+            <h3 className="font-semibold">{recipientName}</h3>
+            <p className="text-sm text-muted-foreground">Online</p>
           </div>
         </div>
         
-        <div className="overflow-y-auto h-full">
-          {filteredConversations.map((conversation) => (
-            <div
-              key={conversation.id}
-              onClick={() => setSelectedConversation(conversation.id)}
-              className={`p-4 border-b cursor-pointer hover:bg-muted/50 transition-colors ${
-                selectedConversation === conversation.id ? 'bg-muted' : ''
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Avatar>
-                    <AvatarImage src={conversation.other_user?.avatar_url} />
-                    <AvatarFallback>
-                      {conversation.other_user?.name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${
-                    conversation.other_user?.status === 'online' ? 'bg-green-500' : 'bg-gray-400'
-                  }`} />
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium truncate">{conversation.other_user?.name}</h3>
-                    {conversation.unread_count && conversation.unread_count > 0 && (
-                      <Badge variant="destructive" className="text-xs">
-                        {conversation.unread_count}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground truncate">
-                    {conversation.latest_message}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon">
+            <Phone className="h-5 w-5" />
+          </Button>
+          <Button variant="ghost" size="icon">
+            <Video className="h-5 w-5" />
+          </Button>
+          <Button variant="ghost" size="icon">
+            <MoreVertical className="h-5 w-5" />
+          </Button>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {selectedConversation ? (
-          <>
-            {/* Chat Header */}
-            <div className="p-4 border-b bg-white flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarImage src={conversations.find(c => c.id === selectedConversation)?.other_user?.avatar_url} />
-                  <AvatarFallback>
-                    {conversations.find(c => c.id === selectedConversation)?.other_user?.name.charAt(0)}
-                  </AvatarFallback>
+      {/* Messages area */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((message) => (
+          <div key={message.id} className="group">
+            {/* Reply indicator */}
+            {message.reply_to && (
+              <div className="ml-12 mb-2 p-2 bg-muted rounded text-sm text-muted-foreground border-l-2 border-muted-foreground">
+                Replying to: {message.reply_to.content}
+              </div>
+            )}
+            
+            <div className={cn(
+              "flex gap-3",
+              message.sender_id === user?.id ? "justify-end" : "justify-start"
+            )}>
+              {message.sender_id !== user?.id && (
+                <Avatar className="h-8 w-8 flex-shrink-0">
+                  <AvatarImage src={message.sender.avatar} />
+                  <AvatarFallback>{message.sender.name[0]}</AvatarFallback>
                 </Avatar>
-                <div>
-                  <h3 className="font-medium">
-                    {conversations.find(c => c.id === selectedConversation)?.other_user?.name}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {conversations.find(c => c.id === selectedConversation)?.other_user?.status}
-                  </p>
-                </div>
-              </div>
+              )}
               
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm">
-                  <Phone className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <Video className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.sender_id === user?.id ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div className={`max-w-[70%] ${
-                    message.sender_id === user?.id
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-muted'
-                  } rounded-lg p-3`}>
+              <div className={cn(
+                "max-w-[70%] space-y-1",
+                message.sender_id === user?.id ? "items-end" : "items-start"
+              )}>
+                <div className={cn(
+                  "rounded-lg p-3 relative group",
+                  message.sender_id === user?.id
+                    ? "bg-primary text-primary-foreground ml-auto"
+                    : "bg-muted"
+                )}>
+                  {/* Message content based on type */}
+                  {message.message_type === 'text' && (
                     <p className="text-sm">{message.content}</p>
-                    <p className={`text-xs mt-1 ${
-                      message.sender_id === user?.id ? 'text-blue-100' : 'text-muted-foreground'
-                    }`}>
-                      {new Date(message.created_at).toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </p>
+                  )}
+                  
+                  {message.message_type === 'voice' && (
+                    <div className="flex items-center gap-2 min-w-[200px]">
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </Button>
+                      <div className="flex-1">
+                        <div className="bg-white/20 h-1 rounded-full">
+                          <div className="bg-white h-full w-1/3 rounded-full"></div>
+                        </div>
+                      </div>
+                      <span className="text-xs">{formatDuration(message.duration || 0)}</span>
+                    </div>
+                  )}
+                  
+                  {message.message_type === 'file' && (
+                    <div className="flex items-center gap-3 min-w-[200px]">
+                      <Paperclip className="h-4 w-4" />
+                      <div className="flex-1">
+                        <p className="text-sm font-medium">{message.file_name}</p>
+                        <p className="text-xs opacity-70">{formatFileSize(message.file_size || 0)}</p>
+                      </div>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
+                  
+                  {(message.message_type === 'image' || message.message_type === 'video') && (
+                    <div className="max-w-[300px]">
+                      {message.message_type === 'image' ? (
+                        <img 
+                          src={message.file_url} 
+                          alt="Shared image" 
+                          className="rounded max-h-[300px] object-cover"
+                        />
+                      ) : (
+                        <video 
+                          src={message.file_url} 
+                          controls 
+                          className="rounded max-h-[300px]"
+                        />
+                      )}
+                    </div>
+                  )}
+
+                  {/* Reaction picker */}
+                  <div className="absolute -bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex gap-1 bg-background border rounded-full p-1 shadow-lg">
+                      {['❤️', '👍', '😂', '😮', '😢', '🔥'].map((emoji) => (
+                        <button
+                          key={emoji}
+                          onClick={() => addReaction(message.id, emoji)}
+                          className="hover:scale-110 transition-transform text-sm p-1"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
 
-            {/* Message Input */}
-            <div className="p-4 border-t bg-white">
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm">
-                  <Paperclip className="h-4 w-4" />
-                </Button>
-                <div className="flex-1 relative">
-                  <Input
-                    placeholder="Type a message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                    className="pr-10"
-                  />
-                  <Button variant="ghost" size="sm" className="absolute right-1 top-1/2 transform -translate-y-1/2">
-                    <Smile className="h-4 w-4" />
+                {/* Message actions */}
+                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setReplyingTo(message)}
+                    className="h-6 px-2 text-xs"
+                  >
+                    <Reply className="h-3 w-3 mr-1" />
+                    Reply
                   </Button>
+                  <span className="text-xs text-muted-foreground">
+                    {new Date(message.created_at).toLocaleTimeString()}
+                  </span>
                 </div>
-                <Button variant="ghost" size="sm">
-                  <Mic className="h-4 w-4" />
-                </Button>
-                <Button onClick={sendMessage} size="sm">
-                  <Send className="h-4 w-4" />
-                </Button>
+
+                {/* Reactions display */}
+                {message.reactions && message.reactions.length > 0 && (
+                  <div className="flex gap-1 mt-1">
+                    {message.reactions.map((reaction, index) => (
+                      <span
+                        key={index}
+                        className="bg-muted px-2 py-1 rounded-full text-xs flex items-center gap-1"
+                      >
+                        {reaction.emoji} {reaction.count}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
-              <p className="text-muted-foreground">Choose a conversation to start messaging</p>
-            </div>
           </div>
-        )}
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Reply indicator */}
+      {replyingTo && (
+        <div className="px-4 py-2 bg-muted border-t">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Reply className="h-4 w-4" />
+              <span className="text-sm">Replying to {replyingTo.sender.name}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setReplyingTo(null)}
+            >
+              Cancel
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground truncate mt-1">
+            {replyingTo.content}
+          </p>
+        </div>
+      )}
+
+      {/* Message input */}
+      <div className="p-4 border-t bg-background">
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon">
+            <Paperclip className="h-5 w-5" />
+          </Button>
+          
+          <div className="flex-1 flex items-center gap-2 bg-muted rounded-full px-4 py-2">
+            <Input
+              placeholder="Type a message..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+            />
+            <Button variant="ghost" size="icon">
+              <Smile className="h-5 w-5" />
+            </Button>
+          </div>
+
+          {newMessage.trim() ? (
+            <Button onClick={sendMessage} size="icon">
+              <Send className="h-5 w-5" />
+            </Button>
+          ) : (
+            <Button
+              variant={isRecording ? "destructive" : "ghost"}
+              size="icon"
+              onMouseDown={startRecording}
+              onMouseUp={stopRecording}
+              onMouseLeave={stopRecording}
+            >
+              {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

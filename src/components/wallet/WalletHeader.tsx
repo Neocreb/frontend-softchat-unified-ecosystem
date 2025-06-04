@@ -1,6 +1,6 @@
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Building, TrendingUp, Users, Award, CreditCard, History } from "lucide-react";
+import { Building } from "lucide-react"; // Changed from Bank to Building which is available
 
 interface WalletHeaderProps {
   activeTab: string;
@@ -12,38 +12,25 @@ const WalletHeader = ({ activeTab, setActiveTab }: WalletHeaderProps) => {
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
       <div>
         <h1 className="text-2xl font-bold">Financial Hub</h1>
-        <p className="text-muted-foreground">Manage your portfolio, trading, rewards, and banking</p>
+        <p className="text-muted-foreground">Manage your wallet, rewards, and investments</p>
       </div>
-      <div className="mt-4 md:mt-0 w-full md:w-auto">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="overflow-x-auto">
-            <TabsList className="grid grid-cols-6 w-full min-w-[600px]">
-              <TabsTrigger value="portfolio" className="flex items-center gap-1 text-xs md:text-sm">
-                <CreditCard className="h-3 w-3 md:h-4 md:w-4" />
-                Portfolio
-              </TabsTrigger>
-              <TabsTrigger value="trading" className="flex items-center gap-1 text-xs md:text-sm">
-                <TrendingUp className="h-3 w-3 md:h-4 md:w-4" />
-                Trading
-              </TabsTrigger>
-              <TabsTrigger value="p2p" className="flex items-center gap-1 text-xs md:text-sm">
-                <Users className="h-3 w-3 md:h-4 md:w-4" />
-                P2P
-              </TabsTrigger>
-              <TabsTrigger value="rewards" className="flex items-center gap-1 text-xs md:text-sm">
-                <Award className="h-3 w-3 md:h-4 md:w-4" />
-                Rewards
-              </TabsTrigger>
-              <TabsTrigger value="bank" className="flex items-center gap-1 text-xs md:text-sm">
-                <Building className="h-3 w-3 md:h-4 md:w-4" />
-                Bank
-              </TabsTrigger>
-              <TabsTrigger value="transactions" className="flex items-center gap-1 text-xs md:text-sm">
-                <History className="h-3 w-3 md:h-4 md:w-4" />
-                History
-              </TabsTrigger>
-            </TabsList>
-          </div>
+      <div className="mt-4 md:mt-0">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="overview">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="rewards">
+              Rewards
+            </TabsTrigger>
+            <TabsTrigger value="transactions">
+              Transactions
+            </TabsTrigger>
+            <TabsTrigger value="bank">
+              <Building className="h-4 w-4 mr-1" /> {/* Changed from Bank to Building */}
+              Bank
+            </TabsTrigger>
+          </TabsList>
         </Tabs>
       </div>
     </div>

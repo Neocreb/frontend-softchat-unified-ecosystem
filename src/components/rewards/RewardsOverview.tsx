@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, Award, CheckCircle, Clock, Trophy } from "lucide-react";
+import { ArrowRight, Award, CheckCircle, Clock } from "lucide-react";
 
 interface RewardsOverviewProps {
   user: any;
@@ -80,22 +80,18 @@ const RewardsOverview = ({
               
               <Card className="bg-muted/50">
                 <CardHeader className="py-3 px-4">
-                  <CardTitle className="text-sm">Achievements</CardTitle>
+                  <CardTitle className="text-sm">Rewards Available</CardTitle>
                 </CardHeader>
                 <CardContent className="py-2 px-4">
-                  <div className="text-2xl font-bold">5</div>
+                  <div className="text-2xl font-bold">{availableRewards.length}</div>
                 </CardContent>
               </Card>
             </div>
           </CardContent>
-          <CardFooter className="flex gap-2">
+          <CardFooter>
             <Button onClick={() => setActiveTab("earn")}>
               Earn more points
               <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            <Button variant="outline" onClick={() => setActiveTab("achievements")}>
-              <Trophy className="mr-2 h-4 w-4" />
-              View achievements
             </Button>
           </CardFooter>
         </Card>
