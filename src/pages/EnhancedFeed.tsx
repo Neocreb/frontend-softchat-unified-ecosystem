@@ -6,7 +6,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import CreatePostCard from "@/components/feed/CreatePostCard";
 import PostCard from "@/components/feed/PostCard";
 import FeedSkeleton from "@/components/feed/FeedSkeleton";
-import EmptyState from "@/components/feed/EmptyState";
+import { NoPostsEmptyState } from "@/components/feed/EmptyState";
 import EnhancedStoriesWrapper from "@/components/feed/EnhancedStories";
 import FeedFilters from "@/components/feed/FeedFilters";
 import TrendingHashtags from "@/components/feed/TrendingHashtags";
@@ -52,7 +52,7 @@ const EnhancedFeed = () => {
           <Tabs value={activeFilter} onValueChange={setActiveFilter}>
             <TabsContent value="trending">
               {posts.length === 0 ? (
-                <EmptyState />
+                <NoPostsEmptyState />
               ) : (
                 <div className="space-y-6">
                   {posts.map((post) => (
