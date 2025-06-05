@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,24 +57,24 @@ const AchievementSystem = () => {
 
   const fetchAchievements = async () => {
     try {
-      // Fetch all achievements
+      // Fetch all achievements using direct query
       const { data: allAchievements, error: achievementsError } = await supabase
-        .from('achievements')
+        .from('achievements' as any)
         .select('*');
 
       if (achievementsError) throw achievementsError;
 
-      // Fetch user's achievements progress
+      // Fetch user's achievements progress using direct query
       const { data: userAchievements, error: userError } = await supabase
-        .from('user_achievements')
+        .from('user_achievements' as any)
         .select('achievement_id, progress, earned_at')
         .eq('user_id', user?.id);
 
       if (userError) throw userError;
 
       if (allAchievements) {
-        const enhancedAchievements = allAchievements.map(achievement => {
-          const userProgress = userAchievements?.find(ua => ua.achievement_id === achievement.id);
+        const enhancedAchievements = allAchievements.map((achievement: any) => {
+          const userProgress = userAchievements?.find((ua: any) => ua.achievement_id === achievement.id);
           return {
             ...achievement,
             earned: !!userProgress?.earned_at,
@@ -93,18 +92,18 @@ const AchievementSystem = () => {
     try {
       const today = new Date().toISOString().split('T')[0];
       
-      // Fetch today's challenges
+      // Fetch today's challenges using direct query
       const { data: dailyChallenges, error: challengesError } = await supabase
-        .from('challenges')
+        .from('challenges' as any)
         .select('*')
         .eq('is_daily', true)
         .eq('active_date', today);
 
       if (challengesError) throw challengesError;
 
-      // Fetch user's progress for today's challenges
+      // Fetch user's progress for today's challenges using direct query
       const { data: userProgress, error: progressError } = await supabase
-        .from('user_challenge_progress')
+        .from('user_challenge_progress' as any)
         .select('*')
         .eq('user_id', user?.id)
         .eq('date', today);
@@ -112,8 +111,8 @@ const AchievementSystem = () => {
       if (progressError) throw progressError;
 
       if (dailyChallenges) {
-        const enhancedChallenges = dailyChallenges.map(challenge => {
-          const progress = userProgress?.find(up => up.challenge_id === challenge.id);
+        const enhancedChallenges = dailyChallenges.map((challenge: any) => {
+          const progress = userProgress?.find((up: any) => up.challenge_id === challenge.id);
           return {
             ...challenge,
             current_progress: progress?.current_progress || 0,
@@ -130,7 +129,7 @@ const AchievementSystem = () => {
   const fetchStreaks = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_streaks')
+        .from('user_streaks' as any)
         .select('*')
         .eq('user_id', user?.id);
 
