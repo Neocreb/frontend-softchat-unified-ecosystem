@@ -57,76 +57,108 @@ const AchievementSystem = () => {
   }, [user]);
 
   const fetchAchievements = async () => {
-    const { data: allAchievements } = await supabase
-      .from('achievements')
-      .select('*');
+    try {
+      // Fetch all achievements
+      const { data: allAchievements, error: achievementsError } = await supabase
+        .from('achievements')
+        .select('*');
 
-    const { data: userAchievements } = await supabase
-      .from('user_achievements')
-      .select('achievement_id, progress')
-      .eq('user_id', user?.id);
+      if (achievementsError) throw achievementsError;
 
-    if (allAchievements) {
-      const enhancedAchievements = allAchievements.map(achievement => {
-        const userProgress = userAchievements?.find(ua => ua.achievement_id === achievement.id);
-        return {
-          ...achievement,
-          earned: !!userProgress,
-          progress: userProgress?.progress || 0
-        };
-      });
-      setAchievements(enhancedAchievements);
+      // Fetch user's achievements progress
+      const { data: userAchievements, error: userError } = await supabase
+        .from('user_achievements')
+        .select('achievement_id, progress, earned_at')
+        .eq('user_id', user?.id);
+
+      if (userError) throw userError;
+
+      if (allAchievements) {
+        const enhancedAchievements = allAchievements.map(achievement => {
+          const userProgress = userAchievements?.find(ua => ua.achievement_id === achievement.id);
+          return {
+            ...achievement,
+            earned: !!userProgress?.earned_at,
+            progress: userProgress?.progress || 0
+          };
+        });
+        setAchievements(enhancedAchievements);
+      }
+    } catch (error) {
+      console.error('Error fetching achievements:', error);
     }
   };
 
   const fetchChallenges = async () => {
-    const today = new Date().toISOString().split('T')[0];
-    
-    const { data: dailyChallenges } = await supabase
-      .from('challenges')
-      .select('*')
-      .eq('is_daily', true)
-      .eq('active_date', today);
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Fetch today's challenges
+      const { data: dailyChallenges, error: challengesError } = await supabase
+        .from('challenges')
+        .select('*')
+        .eq('is_daily', true)
+        .eq('active_date', today);
 
-    const { data: userProgress } = await supabase
-      .from('user_challenge_progress')
-      .select('*')
-      .eq('user_id', user?.id)
-      .eq('date', today);
+      if (challengesError) throw challengesError;
 
-    if (dailyChallenges) {
-      const enhancedChallenges = dailyChallenges.map(challenge => {
-        const progress = userProgress?.find(up => up.challenge_id === challenge.id);
-        return {
-          ...challenge,
-          current_progress: progress?.current_progress || 0,
-          completed: progress?.completed || false
-        };
-      });
-      setChallenges(enhancedChallenges);
+      // Fetch user's progress for today's challenges
+      const { data: userProgress, error: progressError } = await supabase
+        .from('user_challenge_progress')
+        .select('*')
+        .eq('user_id', user?.id)
+        .eq('date', today);
+
+      if (progressError) throw progressError;
+
+      if (dailyChallenges) {
+        const enhancedChallenges = dailyChallenges.map(challenge => {
+          const progress = userProgress?.find(up => up.challenge_id === challenge.id);
+          return {
+            ...challenge,
+            current_progress: progress?.current_progress || 0,
+            completed: progress?.completed || false
+          };
+        });
+        setChallenges(enhancedChallenges);
+      }
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
     }
   };
 
   const fetchStreaks = async () => {
-    const { data } = await supabase
-      .from('user_streaks')
-      .select('*')
-      .eq('user_id', user?.id);
+    try {
+      const { data, error } = await supabase
+        .from('user_streaks')
+        .select('*')
+        .eq('user_id', user?.id);
 
-    if (data) {
-      setStreaks(data);
+      if (error) throw error;
+
+      if (data) {
+        setStreaks(data);
+      }
+    } catch (error) {
+      console.error('Error fetching streaks:', error);
     }
   };
 
   const fetchUserPoints = async () => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('points')
-      .eq('user_id', user?.id)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('points')
+        .eq('user_id', user?.id)
+        .single();
 
-    if (data) {
-      setUserPoints(data.points || 0);
+      if (error) throw error;
+
+      if (data) {
+        setUserPoints(data.points || 0);
+      }
+    } catch (error) {
+      console.error('Error fetching user points:', error);
     }
   };
 
