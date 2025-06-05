@@ -57,16 +57,16 @@ const AchievementSystem = () => {
 
   const fetchAchievements = async () => {
     try {
-      // Fetch all achievements using direct query
+      // Fetch all achievements
       const { data: allAchievements, error: achievementsError } = await supabase
-        .from('achievements' as any)
+        .from('achievements')
         .select('*');
 
       if (achievementsError) throw achievementsError;
 
-      // Fetch user's achievements progress using direct query
+      // Fetch user's achievements progress
       const { data: userAchievements, error: userError } = await supabase
-        .from('user_achievements' as any)
+        .from('user_achievements')
         .select('achievement_id, progress, earned_at')
         .eq('user_id', user?.id);
 
@@ -92,18 +92,18 @@ const AchievementSystem = () => {
     try {
       const today = new Date().toISOString().split('T')[0];
       
-      // Fetch today's challenges using direct query
+      // Fetch today's challenges
       const { data: dailyChallenges, error: challengesError } = await supabase
-        .from('challenges' as any)
+        .from('challenges')
         .select('*')
         .eq('is_daily', true)
         .eq('active_date', today);
 
       if (challengesError) throw challengesError;
 
-      // Fetch user's progress for today's challenges using direct query
+      // Fetch user's progress for today's challenges
       const { data: userProgress, error: progressError } = await supabase
-        .from('user_challenge_progress' as any)
+        .from('user_challenge_progress')
         .select('*')
         .eq('user_id', user?.id)
         .eq('date', today);
@@ -129,14 +129,14 @@ const AchievementSystem = () => {
   const fetchStreaks = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_streaks' as any)
+        .from('user_streaks')
         .select('*')
         .eq('user_id', user?.id);
 
       if (error) throw error;
 
       if (data) {
-        setStreaks(data);
+        setStreaks(data as UserStreak[]);
       }
     } catch (error) {
       console.error('Error fetching streaks:', error);

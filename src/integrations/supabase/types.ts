@@ -371,6 +371,94 @@ export type Database = {
           },
         ]
       }
+      event_rsvps: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_rsvps_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          attendee_count: number
+          created_at: string
+          creator_id: string
+          description: string
+          end_date: string | null
+          group_id: string | null
+          id: string
+          location: string | null
+          max_attendees: number | null
+          start_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          attendee_count?: number
+          created_at?: string
+          creator_id: string
+          description: string
+          end_date?: string | null
+          group_id?: string | null
+          id?: string
+          location?: string | null
+          max_attendees?: number | null
+          start_date: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          attendee_count?: number
+          created_at?: string
+          creator_id?: string
+          description?: string
+          end_date?: string | null
+          group_id?: string | null
+          id?: string
+          location?: string | null
+          max_attendees?: number | null
+          start_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       followers: {
         Row: {
           created_at: string
@@ -389,6 +477,77 @@ export type Database = {
           follower_id?: string
           following_id?: string
           id?: string
+        }
+        Relationships: []
+      }
+      group_members: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          avatar_url: string | null
+          cover_url: string | null
+          created_at: string
+          creator_id: string
+          description: string
+          id: string
+          member_count: number
+          name: string
+          privacy: string
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          cover_url?: string | null
+          created_at?: string
+          creator_id: string
+          description: string
+          id?: string
+          member_count?: number
+          name: string
+          privacy?: string
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          cover_url?: string | null
+          created_at?: string
+          creator_id?: string
+          description?: string
+          id?: string
+          member_count?: number
+          name?: string
+          privacy?: string
+          updated_at?: string
         }
         Relationships: []
       }

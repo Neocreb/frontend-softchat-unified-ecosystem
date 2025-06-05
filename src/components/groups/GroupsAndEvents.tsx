@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -44,7 +43,7 @@ interface Event {
   attendee_count: number;
   created_at: string;
   rsvp_status?: 'going' | 'maybe' | 'not_going' | null;
-  group?: {
+  groups?: {
     name: string;
   };
 }
@@ -62,81 +61,104 @@ const GroupsAndEvents = () => {
   }, []);
 
   const fetchGroups = async () => {
-    const { data: allGroups } = await supabase
-      .from('groups')
-      .select('*')
-      .eq('privacy', 'public')
-      .order('member_count', { ascending: false });
+    try {
+      const { data: allGroups, error: groupsError } = await supabase
+        .from('groups')
+        .select('*')
+        .eq('privacy', 'public')
+        .order('member_count', { ascending: false });
 
-    const { data: memberships } = await supabase
-      .from('group_members')
-      .select('group_id')
-      .eq('user_id', user?.id);
+      if (groupsError) throw groupsError;
 
-    if (allGroups) {
-      const memberGroupIds = memberships?.map(m => m.group_id) || [];
-      const enhancedGroups = allGroups.map(group => ({
-        ...group,
-        is_member: memberGroupIds.includes(group.id)
-      }));
-      setGroups(enhancedGroups);
+      const { data: memberships, error: membershipsError } = await supabase
+        .from('group_members')
+        .select('group_id')
+        .eq('user_id', user?.id);
+
+      if (membershipsError) throw membershipsError;
+
+      if (allGroups) {
+        const memberGroupIds = memberships?.map((m: any) => m.group_id) || [];
+        const enhancedGroups = allGroups.map((group: any) => ({
+          ...group,
+          is_member: memberGroupIds.includes(group.id)
+        }));
+        setGroups(enhancedGroups);
+      }
+    } catch (error) {
+      console.error('Error fetching groups:', error);
     }
   };
 
   const fetchEvents = async () => {
-    const { data: allEvents } = await supabase
-      .from('events')
-      .select(`
-        *,
-        groups:group_id (
-          name
-        )
-      `)
-      .gte('start_date', new Date().toISOString())
-      .order('start_date', { ascending: true });
+    try {
+      const { data: allEvents, error: eventsError } = await supabase
+        .from('events')
+        .select(`
+          *,
+          groups:group_id (
+            name
+          )
+        `)
+        .gte('start_date', new Date().toISOString())
+        .order('start_date', { ascending: true });
 
-    const { data: rsvps } = await supabase
-      .from('event_rsvps')
-      .select('event_id, status')
-      .eq('user_id', user?.id);
+      if (eventsError) throw eventsError;
 
-    if (allEvents) {
-      const enhancedEvents = allEvents.map(event => {
-        const userRsvp = rsvps?.find(r => r.event_id === event.id);
-        return {
-          ...event,
-          group: event.groups,
-          rsvp_status: userRsvp?.status || null
-        };
-      });
-      setEvents(enhancedEvents);
+      const { data: rsvps, error: rsvpsError } = await supabase
+        .from('event_rsvps')
+        .select('event_id, status')
+        .eq('user_id', user?.id);
+
+      if (rsvpsError) throw rsvpsError;
+
+      if (allEvents) {
+        const enhancedEvents = allEvents.map((event: any) => {
+          const userRsvp = rsvps?.find((r: any) => r.event_id === event.id);
+          return {
+            ...event,
+            rsvp_status: userRsvp?.status || null
+          };
+        });
+        setEvents(enhancedEvents);
+      }
+    } catch (error) {
+      console.error('Error fetching events:', error);
     }
   };
 
   const joinGroup = async (groupId: string) => {
-    const { error } = await supabase
-      .from('group_members')
-      .insert({
-        group_id: groupId,
-        user_id: user?.id
-      });
+    try {
+      const { error } = await supabase
+        .from('group_members')
+        .insert({
+          group_id: groupId,
+          user_id: user?.id
+        });
 
-    if (!error) {
-      fetchGroups();
+      if (!error) {
+        fetchGroups();
+      }
+    } catch (error) {
+      console.error('Error joining group:', error);
     }
   };
 
   const rsvpToEvent = async (eventId: string, status: 'going' | 'maybe' | 'not_going') => {
-    const { error } = await supabase
-      .from('event_rsvps')
-      .upsert({
-        event_id: eventId,
-        user_id: user?.id,
-        status
-      });
+    try {
+      const { error } = await supabase
+        .from('event_rsvps')
+        .upsert({
+          event_id: eventId,
+          user_id: user?.id,
+          status
+        });
 
-    if (!error) {
-      fetchEvents();
+      if (!error) {
+        fetchEvents();
+      }
+    } catch (error) {
+      console.error('Error updating RSVP:', error);
     }
   };
 
@@ -278,10 +300,10 @@ const GroupsAndEvents = () => {
                         </div>
                       )}
                       
-                      {event.group && (
+                      {event.groups && (
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                           <Users className="h-4 w-4" />
-                          {event.group.name}
+                          {event.groups.name}
                         </div>
                       )}
                     </div>
