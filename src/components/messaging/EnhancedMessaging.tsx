@@ -19,7 +19,6 @@ import {
   Download
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase/client";
 import { cn } from "@/utils/utils";
 
 interface Message {
@@ -65,76 +64,82 @@ const EnhancedMessaging = ({ conversationId, recipientName, recipientAvatar }: E
   const recordedChunks = useRef<Blob[]>([]);
 
   useEffect(() => {
-    fetchMessages();
-    subscribeToMessages();
+    loadMockMessages();
   }, [conversationId]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const fetchMessages = async () => {
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .select(`
-        *,
-        profiles:sender_id (
-          name,
-          avatar_url
-        )
-      `)
-      .eq('conversation_id', conversationId)
-      .order('created_at', { ascending: true });
-
-    if (data) {
-      const formattedMessages = data.map(msg => ({
-        ...msg,
+  const loadMockMessages = () => {
+    // Mock messages data
+    const mockMessages: Message[] = [
+      {
+        id: '1',
+        conversation_id: conversationId,
+        sender_id: 'other-user',
+        content: 'Hey! How are you doing?',
+        message_type: 'text',
+        created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        read: true,
         sender: {
-          name: msg.profiles?.name || 'Unknown',
-          avatar: msg.profiles?.avatar_url || '/placeholder.svg'
+          name: recipientName,
+          avatar: recipientAvatar
         }
-      }));
-      setMessages(formattedMessages);
-    }
-  };
+      },
+      {
+        id: '2',
+        conversation_id: conversationId,
+        sender_id: user?.id || 'current-user',
+        content: "I'm doing great! Thanks for asking. How about you?",
+        message_type: 'text',
+        created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+        read: true,
+        sender: {
+          name: user?.email || 'You',
+          avatar: '/placeholder.svg'
+        }
+      },
+      {
+        id: '3',
+        conversation_id: conversationId,
+        sender_id: 'other-user',
+        content: 'Pretty good! Working on some exciting crypto projects.',
+        message_type: 'text',
+        created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+        read: true,
+        sender: {
+          name: recipientName,
+          avatar: recipientAvatar
+        }
+      }
+    ];
 
-  const subscribeToMessages = () => {
-    const subscription = supabase
-      .channel(`conversation:${conversationId}`)
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'chat_messages',
-        filter: `conversation_id=eq.${conversationId}`
-      }, (payload) => {
-        fetchMessages(); // Refetch to get complete message with sender info
-      })
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    setMessages(mockMessages);
   };
 
   const sendMessage = async () => {
     if (!newMessage.trim() && !replyingTo) return;
 
-    const messageData = {
+    const newMsg: Message = {
+      id: Date.now().toString(),
       conversation_id: conversationId,
-      sender_id: user?.id,
+      sender_id: user?.id || 'current-user',
       content: newMessage,
-      message_type: 'text' as const,
-      reply_to_id: replyingTo?.id
+      message_type: 'text',
+      reply_to_id: replyingTo?.id,
+      created_at: new Date().toISOString(),
+      read: false,
+      sender: {
+        name: user?.email || 'You',
+        avatar: '/placeholder.svg'
+      },
+      reply_to: replyingTo || undefined
     };
 
-    const { error } = await supabase
-      .from('chat_messages')
-      .insert(messageData);
-
-    if (!error) {
-      setNewMessage("");
-      setReplyingTo(null);
-    }
+    setMessages(prev => [...prev, newMsg]);
+    setNewMessage("");
+    setReplyingTo(null);
   };
 
   const startRecording = async () => {
@@ -170,34 +175,46 @@ const EnhancedMessaging = ({ conversationId, recipientName, recipientAvatar }: E
   };
 
   const uploadVoiceMessage = async (blob: Blob) => {
-    // In a real implementation, you would upload to Supabase storage
-    // For now, we'll simulate it
-    const messageData = {
+    // Simulate voice message
+    const voiceMsg: Message = {
+      id: Date.now().toString(),
       conversation_id: conversationId,
-      sender_id: user?.id,
+      sender_id: user?.id || 'current-user',
       content: "Voice message",
-      message_type: 'voice' as const,
-      duration: 10 // Placeholder duration
+      message_type: 'voice',
+      duration: 10,
+      created_at: new Date().toISOString(),
+      read: false,
+      sender: {
+        name: user?.email || 'You',
+        avatar: '/placeholder.svg'
+      }
     };
 
-    await supabase
-      .from('chat_messages')
-      .insert(messageData);
+    setMessages(prev => [...prev, voiceMsg]);
   };
 
   const addReaction = async (messageId: string, emoji: string) => {
-    const { error } = await supabase
-      .from('message_reactions')
-      .insert({
-        message_id: messageId,
-        user_id: user?.id,
-        emoji
-      });
-
-    if (!error) {
-      // Refresh messages to show new reaction
-      fetchMessages();
-    }
+    // Simulate adding reaction
+    setMessages(prev => prev.map(msg => {
+      if (msg.id === messageId) {
+        const reactions = msg.reactions || [];
+        const existingReaction = reactions.find(r => r.emoji === emoji);
+        
+        if (existingReaction) {
+          existingReaction.count += 1;
+        } else {
+          reactions.push({
+            emoji,
+            user_id: user?.id || 'current-user',
+            count: 1
+          });
+        }
+        
+        return { ...msg, reactions };
+      }
+      return msg;
+    }));
   };
 
   const scrollToBottom = () => {
