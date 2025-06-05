@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Menu, X, User, Bell, Home, TrendingUp, Wallet, Award, Video, MessageCircle } from "lucide-react";
+import { Search, Menu, X, User, Bell, Home, TrendingUp, Wallet, Award, Video, MessageCircle, ShoppingBag } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +38,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container max-w-[680px] flex h-16 items-center justify-between">
+      <div className="container max-w-7xl flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           {isMobile && (
             <Button
@@ -52,7 +52,7 @@ const Header = () => {
             </Button>
           )}
 
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/feed" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl hidden sm:inline-block text-softchat-primary">Softchat</span>
           </Link>
@@ -73,17 +73,20 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/feed" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <Home className="h-5 w-5" />
           </Link>
           <Link to="/videos" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <Video className="h-5 w-5" />
           </Link>
+          <Link to="/marketplace" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <ShoppingBag className="h-5 w-5" />
+          </Link>
           <Link to="/crypto" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <TrendingUp className="h-5 w-5" />
           </Link>
-          <Link to="/chat" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-            <MessageCircle className="h-5 w-5" />
+          <Link to="/explore" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Search className="h-5 w-5" />
           </Link>
         </nav>
 
@@ -183,7 +186,7 @@ const Header = () => {
         )}
       >
         <div className="relative z-20 grid gap-6 rounded-md bg-background p-4">
-          <Link to="/" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+          <Link to="/feed" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Home className="h-5 w-5" />
             <span>Feed</span>
           </Link>
@@ -191,13 +194,17 @@ const Header = () => {
             <Video className="h-5 w-5" />
             <span>Videos</span>
           </Link>
-          <Link to="/explore" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
-            <Search className="h-5 w-5" />
-            <span>Explore</span>
+          <Link to="/marketplace" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <ShoppingBag className="h-5 w-5" />
+            <span>Marketplace</span>
           </Link>
           <Link to="/crypto" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <TrendingUp className="h-5 w-5" />
             <span>Crypto</span>
+          </Link>
+          <Link to="/explore" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Search className="h-5 w-5" />
+            <span>Explore</span>
           </Link>
           <Link to="/wallet" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Wallet className="h-5 w-5" />
