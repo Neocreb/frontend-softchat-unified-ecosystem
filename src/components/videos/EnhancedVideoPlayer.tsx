@@ -142,7 +142,7 @@ const EnhancedVideoPlayer = ({ video, onNext, onPrev }: EnhancedVideoPlayerProps
       <video
         ref={videoRef}
         className="w-full h-full object-cover"
-        src={video.videoUrl}
+        src={video.url}
         autoPlay
         loop
         playsInline
@@ -338,15 +338,15 @@ const EnhancedVideoPlayer = ({ video, onNext, onPrev }: EnhancedVideoPlayerProps
 
       {/* Video info overlay */}
       <div className="absolute bottom-4 left-4 max-w-sm">
-        <h3 className="text-white font-semibold mb-1">{video.title}</h3>
+        <h3 className="text-white font-semibold mb-1">{video.description}</h3>
         <p className="text-white/80 text-sm">{video.description}</p>
         <div className="flex items-center gap-2 mt-2">
           <img 
-            src={video.creator.avatar} 
-            alt={video.creator.name}
+            src={video.author.avatar} 
+            alt={video.author.name}
             className="w-8 h-8 rounded-full"
           />
-          <span className="text-white text-sm">{video.creator.name}</span>
+          <span className="text-white text-sm">{video.author.name}</span>
           <Button variant="outline" size="sm" className="ml-auto">
             Follow
           </Button>

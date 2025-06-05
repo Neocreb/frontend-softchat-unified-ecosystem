@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { PlusCircle, X, Heart, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase/client";
 import { cn } from "@/utils/utils";
 
 interface Story {
@@ -41,29 +40,41 @@ const EnhancedStories = ({ onCreateStory }: EnhancedStoriesProps) => {
   }, []);
 
   const fetchStories = async () => {
-    const { data, error } = await supabase
-      .from('stories')
-      .select(`
-        *,
-        profiles:user_id (
-          name,
-          avatar_url
-        )
-      `)
-      .gt('expires_at', new Date().toISOString())
-      .order('created_at', { ascending: false });
-
-    if (data) {
-      const formattedStories = data.map(story => ({
-        ...story,
+    // Use mock data since stories table doesn't exist
+    const mockStories: Story[] = [
+      {
+        id: '1',
+        user_id: 'user1',
+        content: 'Check out this amazing sunset!',
+        media_url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
+        media_type: 'image',
+        expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        created_at: new Date().toISOString(),
+        view_count: 15,
         user: {
-          name: story.profiles?.name || 'Unknown',
-          avatar: story.profiles?.avatar_url || '/placeholder.svg'
+          name: 'Sarah Johnson',
+          avatar: 'https://randomuser.me/api/portraits/women/44.jpg'
         },
-        viewed: false // TODO: Check if user has viewed this story
-      }));
-      setStories(formattedStories);
-    }
+        viewed: false
+      },
+      {
+        id: '2',
+        user_id: 'user2',
+        content: 'Morning workout complete! 💪',
+        media_url: 'https://images.unsplash.com/photo-1571019613540-996a0b1c0e71?w=400',
+        media_type: 'image',
+        expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        created_at: new Date().toISOString(),
+        view_count: 8,
+        user: {
+          name: 'Mike Chen',
+          avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
+        },
+        viewed: false
+      }
+    ];
+
+    setStories(mockStories);
   };
 
   const viewStory = async (story: Story, index: number) => {
@@ -72,13 +83,8 @@ const EnhancedStories = ({ onCreateStory }: EnhancedStoriesProps) => {
     setIsViewing(true);
     setProgress(0);
 
-    // Record story view
-    await supabase
-      .from('story_views')
-      .insert({
-        story_id: story.id,
-        viewer_id: user?.id
-      });
+    // Mock story view tracking - would normally record to database
+    console.log(`Viewing story ${story.id} by ${story.user.name}`);
 
     // Auto-progress story
     const duration = story.media_type === 'video' ? 15000 : 5000; // 15s for video, 5s for image

@@ -13,23 +13,13 @@ import TrendingHashtags from "@/components/feed/TrendingHashtags";
 
 const EnhancedFeed = () => {
   const { user } = useAuth();
-  const { posts, isLoading, error, refetch } = useFeed();
+  const { posts, isLoading, handleCreatePost } = useFeed();
   const [activeFilter, setActiveFilter] = useState("trending");
 
   if (isLoading) {
     return (
       <div className="container max-w-4xl mx-auto py-6 px-4">
         <FeedSkeleton />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container max-w-4xl mx-auto py-6 px-4">
-        <div className="text-center py-12">
-          <p className="text-muted-foreground">Failed to load feed. Please try again.</p>
-        </div>
       </div>
     );
   }
@@ -46,7 +36,7 @@ const EnhancedFeed = () => {
           <EnhancedStoriesWrapper />
           
           {/* Create Post */}
-          <CreatePostCard onPostCreated={refetch} />
+          <CreatePostCard />
           
           {/* Posts Feed with Filtering */}
           <Tabs value={activeFilter} onValueChange={setActiveFilter}>
@@ -64,7 +54,7 @@ const EnhancedFeed = () => {
             
             <TabsContent value="following">
               <div className="space-y-6">
-                {posts.filter(post => post.user_id !== user?.id).map((post) => (
+                {posts.filter(post => post.author.username !== user?.user_metadata?.name).map((post) => (
                   <PostCard key={post.id} post={post} />
                 ))}
               </div>
@@ -72,7 +62,7 @@ const EnhancedFeed = () => {
             
             <TabsContent value="recent">
               <div className="space-y-6">
-                {posts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).map((post) => (
+                {posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((post) => (
                   <PostCard key={post.id} post={post} />
                 ))}
               </div>
@@ -80,7 +70,7 @@ const EnhancedFeed = () => {
             
             <TabsContent value="featured">
               <div className="space-y-6">
-                {posts.filter(post => post.softpoints && post.softpoints > 50).map((post) => (
+                {posts.filter(post => post.likes && post.likes > 50).map((post) => (
                   <PostCard key={post.id} post={post} />
                 ))}
               </div>
