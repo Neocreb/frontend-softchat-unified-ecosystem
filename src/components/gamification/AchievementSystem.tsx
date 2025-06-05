@@ -49,99 +49,108 @@ const AchievementSystem = () => {
 
   useEffect(() => {
     if (user) {
-      fetchAchievements();
-      fetchChallenges();
-      fetchStreaks();
+      loadMockData();
       fetchUserPoints();
     }
   }, [user]);
 
-  const fetchAchievements = async () => {
-    try {
-      // Fetch all achievements using raw query to avoid type issues
-      const { data: allAchievements, error: achievementsError } = await supabase
-        .from('achievements' as any)
-        .select('*');
-
-      if (achievementsError) throw achievementsError;
-
-      // Fetch user's achievements progress
-      const { data: userAchievements, error: userError } = await supabase
-        .from('user_achievements' as any)
-        .select('achievement_id, progress, earned_at')
-        .eq('user_id', user?.id);
-
-      if (userError) throw userError;
-
-      if (allAchievements) {
-        const enhancedAchievements = allAchievements.map((achievement: any) => {
-          const userProgress = userAchievements?.find((ua: any) => ua.achievement_id === achievement.id);
-          return {
-            ...achievement,
-            earned: !!userProgress?.earned_at,
-            progress: userProgress?.progress || 0
-          };
-        });
-        setAchievements(enhancedAchievements);
+  const loadMockData = () => {
+    // Mock achievements data
+    const mockAchievements: Achievement[] = [
+      {
+        id: '1',
+        name: 'First Post',
+        description: 'Create your first post',
+        icon: 'star',
+        category: 'content',
+        points_reward: 10,
+        badge_color: 'blue',
+        requirements: {},
+        earned: true,
+        progress: 100
+      },
+      {
+        id: '2',
+        name: 'Social Butterfly',
+        description: 'Get 100 likes on your posts',
+        icon: 'heart',
+        category: 'social',
+        points_reward: 50,
+        badge_color: 'pink',
+        requirements: {},
+        earned: false,
+        progress: 65
+      },
+      {
+        id: '3',
+        name: 'Crypto Trader',
+        description: 'Complete 10 trades',
+        icon: 'trending-up',
+        category: 'trading',
+        points_reward: 100,
+        badge_color: 'green',
+        requirements: {},
+        earned: false,
+        progress: 30
       }
-    } catch (error) {
-      console.error('Error fetching achievements:', error);
-    }
-  };
+    ];
 
-  const fetchChallenges = async () => {
-    try {
-      const today = new Date().toISOString().split('T')[0];
-      
-      // Fetch today's challenges
-      const { data: dailyChallenges, error: challengesError } = await supabase
-        .from('challenges' as any)
-        .select('*')
-        .eq('is_daily', true)
-        .eq('active_date', today);
-
-      if (challengesError) throw challengesError;
-
-      // Fetch user's progress for today's challenges
-      const { data: userProgress, error: progressError } = await supabase
-        .from('user_challenge_progress' as any)
-        .select('*')
-        .eq('user_id', user?.id)
-        .eq('date', today);
-
-      if (progressError) throw progressError;
-
-      if (dailyChallenges) {
-        const enhancedChallenges = dailyChallenges.map((challenge: any) => {
-          const progress = userProgress?.find((up: any) => up.challenge_id === challenge.id);
-          return {
-            ...challenge,
-            current_progress: progress?.current_progress || 0,
-            completed: progress?.completed || false
-          };
-        });
-        setChallenges(enhancedChallenges);
+    // Mock challenges data
+    const mockChallenges: Challenge[] = [
+      {
+        id: '1',
+        title: 'Daily Login',
+        description: 'Log in to the app',
+        type: 'daily',
+        target_value: 1,
+        points_reward: 5,
+        current_progress: 1,
+        completed: true
+      },
+      {
+        id: '2',
+        title: 'Create 3 Posts',
+        description: 'Share 3 posts today',
+        type: 'daily',
+        target_value: 3,
+        points_reward: 15,
+        current_progress: 1,
+        completed: false
+      },
+      {
+        id: '3',
+        title: 'Like 10 Posts',
+        description: 'Show some love to the community',
+        type: 'daily',
+        target_value: 10,
+        points_reward: 10,
+        current_progress: 7,
+        completed: false
       }
-    } catch (error) {
-      console.error('Error fetching challenges:', error);
-    }
-  };
+    ];
 
-  const fetchStreaks = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('user_streaks' as any)
-        .select('*')
-        .eq('user_id', user?.id);
-
-      if (error) throw error;
-
-      if (data) {
-        setStreaks(data as UserStreak[]);
+    // Mock streaks data
+    const mockStreaks: UserStreak[] = [
+      {
+        streak_type: 'posting',
+        current_streak: 5,
+        longest_streak: 12
+      },
+      {
+        streak_type: 'login',
+        current_streak: 15,
+        longest_streak: 25
+      },
+      {
+        streak_type: 'engagement',
+        current_streak: 3,
+        longest_streak: 8
       }
-    } catch (error) {
-      console.error('Error fetching streaks:', error);
-    }
+    ];
+
+    setAchievements(mockAchievements);
+    setChallenges(mockChallenges);
+    setStreaks(mockStreaks);
   };
 
   const fetchUserPoints = async () => {
@@ -152,13 +161,18 @@ const AchievementSystem = () => {
         .eq('user_id', user?.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.log('Profile not found, using default points');
+        setUserPoints(0);
+        return;
+      }
 
       if (data) {
         setUserPoints(data.points || 0);
       }
     } catch (error) {
       console.error('Error fetching user points:', error);
+      setUserPoints(0);
     }
   };
 

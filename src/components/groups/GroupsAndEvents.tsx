@@ -64,19 +64,25 @@ const GroupsAndEvents = () => {
   const fetchGroups = async () => {
     try {
       const { data: allGroups, error: groupsError } = await supabase
-        .from('groups' as any)
+        .from('groups')
         .select('*')
         .eq('privacy', 'public')
         .order('member_count', { ascending: false });
 
-      if (groupsError) throw groupsError;
+      if (groupsError) {
+        console.error('Groups table not found or error:', groupsError);
+        setGroups([]);
+        return;
+      }
 
       const { data: memberships, error: membershipsError } = await supabase
-        .from('group_members' as any)
+        .from('group_members')
         .select('group_id')
         .eq('user_id', user?.id);
 
-      if (membershipsError) throw membershipsError;
+      if (membershipsError) {
+        console.error('Group members table not found or error:', membershipsError);
+      }
 
       if (allGroups) {
         const memberGroupIds = memberships?.map((m: any) => m.group_id) || [];
@@ -88,13 +94,14 @@ const GroupsAndEvents = () => {
       }
     } catch (error) {
       console.error('Error fetching groups:', error);
+      setGroups([]);
     }
   };
 
   const fetchEvents = async () => {
     try {
       const { data: allEvents, error: eventsError } = await supabase
-        .from('events' as any)
+        .from('events')
         .select(`
           *,
           groups:group_id (
@@ -104,34 +111,41 @@ const GroupsAndEvents = () => {
         .gte('start_date', new Date().toISOString())
         .order('start_date', { ascending: true });
 
-      if (eventsError) throw eventsError;
+      if (eventsError) {
+        console.error('Events table not found or error:', eventsError);
+        setEvents([]);
+        return;
+      }
 
       const { data: rsvps, error: rsvpsError } = await supabase
-        .from('event_rsvps' as any)
+        .from('event_rsvps')
         .select('event_id, status')
         .eq('user_id', user?.id);
 
-      if (rsvpsError) throw rsvpsError;
+      if (rsvpsError) {
+        console.error('Event RSVPs table not found or error:', rsvpsError);
+      }
 
       if (allEvents) {
         const enhancedEvents = allEvents.map((event: any) => {
           const userRsvp = rsvps?.find((r: any) => r.event_id === event.id);
           return {
             ...event,
-            rsvp_status: userRsvp?.status || null
+            rsvp_status: userRsvp ? userRsvp.status : null
           };
         });
         setEvents(enhancedEvents);
       }
     } catch (error) {
       console.error('Error fetching events:', error);
+      setEvents([]);
     }
   };
 
   const joinGroup = async (groupId: string) => {
     try {
       const { error } = await supabase
-        .from('group_members' as any)
+        .from('group_members')
         .insert({
           group_id: groupId,
           user_id: user?.id
@@ -148,7 +162,7 @@ const GroupsAndEvents = () => {
   const rsvpToEvent = async (eventId: string, status: 'going' | 'maybe' | 'not_going') => {
     try {
       const { error } = await supabase
-        .from('event_rsvps' as any)
+        .from('event_rsvps')
         .upsert({
           event_id: eventId,
           user_id: user?.id,
@@ -216,130 +230,142 @@ const GroupsAndEvents = () => {
       {/* Groups tab */}
       {activeTab === 'groups' && (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {groups.map((group) => (
-            <Card key={group.id} className="overflow-hidden">
-              {group.cover_url && (
-                <div 
-                  className="h-32 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${group.cover_url})` }}
-                />
-              )}
-              <CardHeader className="pb-3">
-                <div className="flex items-start gap-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={group.avatar_url} />
-                    <AvatarFallback>{group.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg line-clamp-1">{group.name}</CardTitle>
-                    <div className="flex items-center gap-2 mt-1">
-                      {getPrivacyIcon(group.privacy)}
-                      <span className="text-sm text-muted-foreground capitalize">
-                        {group.privacy.replace('_', ' ')}
-                      </span>
+          {groups.length === 0 ? (
+            <div className="col-span-full text-center py-8">
+              <p className="text-muted-foreground">No groups available. Database tables may not be set up yet.</p>
+            </div>
+          ) : (
+            groups.map((group) => (
+              <Card key={group.id} className="overflow-hidden">
+                {group.cover_url && (
+                  <div 
+                    className="h-32 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${group.cover_url})` }}
+                  />
+                )}
+                <CardHeader className="pb-3">
+                  <div className="flex items-start gap-3">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={group.avatar_url} />
+                      <AvatarFallback>{group.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg line-clamp-1">{group.name}</CardTitle>
+                      <div className="flex items-center gap-2 mt-1">
+                        {getPrivacyIcon(group.privacy)}
+                        <span className="text-sm text-muted-foreground capitalize">
+                          {group.privacy.replace('_', ' ')}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {group.description}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {group.member_count} members
-                  </span>
-                  {group.is_member ? (
-                    <Badge>Joined</Badge>
-                  ) : (
-                    <Button 
-                      size="sm" 
-                      onClick={() => joinGroup(group.id)}
-                    >
-                      Join
-                    </Button>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {group.description}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      {group.member_count} members
+                    </span>
+                    {group.is_member ? (
+                      <Badge>Joined</Badge>
+                    ) : (
+                      <Button 
+                        size="sm" 
+                        onClick={() => joinGroup(group.id)}
+                      >
+                        Join
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       )}
 
       {/* Events tab */}
       {activeTab === 'events' && (
         <div className="space-y-4">
-          {events.map((event) => (
-            <Card key={event.id}>
-              <CardContent className="p-6">
-                <div className="flex gap-4">
-                  {/* Date badge */}
-                  <div className="flex-shrink-0 bg-primary text-primary-foreground rounded-lg p-3 text-center min-w-[80px]">
-                    <div className="text-sm font-medium">
-                      {new Date(event.start_date).toLocaleDateString('en-US', { month: 'short' })}
-                    </div>
-                    <div className="text-2xl font-bold">
-                      {new Date(event.start_date).getDate()}
-                    </div>
-                  </div>
-
-                  {/* Event details */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                    
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Clock className="h-4 w-4" />
-                        {formatEventDate(event.start_date)}
-                        {event.end_date && ` - ${formatEventDate(event.end_date)}`}
+          {events.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">No events available. Database tables may not be set up yet.</p>
+            </div>
+          ) : (
+            events.map((event) => (
+              <Card key={event.id}>
+                <CardContent className="p-6">
+                  <div className="flex gap-4">
+                    {/* Date badge */}
+                    <div className="flex-shrink-0 bg-primary text-primary-foreground rounded-lg p-3 text-center min-w-[80px]">
+                      <div className="text-sm font-medium">
+                        {new Date(event.start_date).toLocaleDateString('en-US', { month: 'short' })}
                       </div>
-                      
-                      {event.location && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <MapPin className="h-4 w-4" />
-                          {event.location}
-                        </div>
-                      )}
-                      
-                      {event.groups && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Users className="h-4 w-4" />
-                          {event.groups.name}
-                        </div>
-                      )}
-                    </div>
-
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                      {event.description}
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        {event.attendee_count} {event.max_attendees && `of ${event.max_attendees}`} attending
-                      </span>
-                      
-                      <div className="flex gap-2">
-                        <Button
-                          variant={event.rsvp_status === 'going' ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => rsvpToEvent(event.id, 'going')}
-                        >
-                          Going
-                        </Button>
-                        <Button
-                          variant={event.rsvp_status === 'maybe' ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => rsvpToEvent(event.id, 'maybe')}
-                        >
-                          Maybe
-                        </Button>
+                      <div className="text-2xl font-bold">
+                        {new Date(event.start_date).getDate()}
                       </div>
                     </div>
+
+                    {/* Event details */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+                      
+                      <div className="space-y-2 mb-4">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Clock className="h-4 w-4" />
+                          {formatEventDate(event.start_date)}
+                          {event.end_date && ` - ${formatEventDate(event.end_date)}`}
+                        </div>
+                        
+                        {event.location && (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <MapPin className="h-4 w-4" />
+                            {event.location}
+                          </div>
+                        )}
+                        
+                        {event.groups && (
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Users className="h-4 w-4" />
+                            {event.groups.name}
+                          </div>
+                        )}
+                      </div>
+
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                        {event.description}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          {event.attendee_count} {event.max_attendees && `of ${event.max_attendees}`} attending
+                        </span>
+                        
+                        <div className="flex gap-2">
+                          <Button
+                            variant={event.rsvp_status === 'going' ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => rsvpToEvent(event.id, 'going')}
+                          >
+                            Going
+                          </Button>
+                          <Button
+                            variant={event.rsvp_status === 'maybe' ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => rsvpToEvent(event.id, 'maybe')}
+                          >
+                            Maybe
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       )}
     </div>
