@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Trophy, Star, Flame, Target, Award } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/utils/utils";
 
 interface Achievement {
@@ -57,16 +58,16 @@ const AchievementSystem = () => {
 
   const fetchAchievements = async () => {
     try {
-      // Fetch all achievements
+      // Fetch all achievements using raw query to avoid type issues
       const { data: allAchievements, error: achievementsError } = await supabase
-        .from('achievements')
+        .from('achievements' as any)
         .select('*');
 
       if (achievementsError) throw achievementsError;
 
       // Fetch user's achievements progress
       const { data: userAchievements, error: userError } = await supabase
-        .from('user_achievements')
+        .from('user_achievements' as any)
         .select('achievement_id, progress, earned_at')
         .eq('user_id', user?.id);
 
@@ -94,7 +95,7 @@ const AchievementSystem = () => {
       
       // Fetch today's challenges
       const { data: dailyChallenges, error: challengesError } = await supabase
-        .from('challenges')
+        .from('challenges' as any)
         .select('*')
         .eq('is_daily', true)
         .eq('active_date', today);
@@ -103,7 +104,7 @@ const AchievementSystem = () => {
 
       // Fetch user's progress for today's challenges
       const { data: userProgress, error: progressError } = await supabase
-        .from('user_challenge_progress')
+        .from('user_challenge_progress' as any)
         .select('*')
         .eq('user_id', user?.id)
         .eq('date', today);
@@ -129,7 +130,7 @@ const AchievementSystem = () => {
   const fetchStreaks = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_streaks')
+        .from('user_streaks' as any)
         .select('*')
         .eq('user_id', user?.id);
 

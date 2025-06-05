@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +15,7 @@ import {
   UserPlus 
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/lib/supabase/client";
+import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/utils/utils";
 
 interface Group {
@@ -63,7 +64,7 @@ const GroupsAndEvents = () => {
   const fetchGroups = async () => {
     try {
       const { data: allGroups, error: groupsError } = await supabase
-        .from('groups')
+        .from('groups' as any)
         .select('*')
         .eq('privacy', 'public')
         .order('member_count', { ascending: false });
@@ -71,7 +72,7 @@ const GroupsAndEvents = () => {
       if (groupsError) throw groupsError;
 
       const { data: memberships, error: membershipsError } = await supabase
-        .from('group_members')
+        .from('group_members' as any)
         .select('group_id')
         .eq('user_id', user?.id);
 
@@ -93,7 +94,7 @@ const GroupsAndEvents = () => {
   const fetchEvents = async () => {
     try {
       const { data: allEvents, error: eventsError } = await supabase
-        .from('events')
+        .from('events' as any)
         .select(`
           *,
           groups:group_id (
@@ -106,7 +107,7 @@ const GroupsAndEvents = () => {
       if (eventsError) throw eventsError;
 
       const { data: rsvps, error: rsvpsError } = await supabase
-        .from('event_rsvps')
+        .from('event_rsvps' as any)
         .select('event_id, status')
         .eq('user_id', user?.id);
 
@@ -130,7 +131,7 @@ const GroupsAndEvents = () => {
   const joinGroup = async (groupId: string) => {
     try {
       const { error } = await supabase
-        .from('group_members')
+        .from('group_members' as any)
         .insert({
           group_id: groupId,
           user_id: user?.id
@@ -147,7 +148,7 @@ const GroupsAndEvents = () => {
   const rsvpToEvent = async (eventId: string, status: 'going' | 'maybe' | 'not_going') => {
     try {
       const { error } = await supabase
-        .from('event_rsvps')
+        .from('event_rsvps' as any)
         .upsert({
           event_id: eventId,
           user_id: user?.id,
