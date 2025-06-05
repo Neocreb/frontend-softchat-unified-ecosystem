@@ -1,14 +1,20 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useNotification } from "@/hooks/use-notification";
 import CreatePostCard from "@/components/feed/CreatePostCard";
 import EnhancedCreateTabs from "@/components/create/EnhancedCreateTabs";
 
 const Create = () => {
   const notification = useNotification();
+  const [activeTab, setActiveTab] = useState("post");
 
   const handlePostCreated = () => {
     notification.success("Post created successfully!");
+  };
+
+  const handleCreatePost = (content: string, image?: string) => {
+    console.log("Creating post:", content, image);
+    handlePostCreated();
   };
 
   return (
@@ -25,13 +31,13 @@ const Create = () => {
           {/* Quick Post */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Quick Post</h2>
-            <CreatePostCard />
+            <CreatePostCard onSubmit={handleCreatePost} />
           </div>
 
           {/* Enhanced Creation Tools */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Create More</h2>
-            <EnhancedCreateTabs />
+            <EnhancedCreateTabs activeTab={activeTab} onValueChange={setActiveTab} />
           </div>
         </div>
       </div>

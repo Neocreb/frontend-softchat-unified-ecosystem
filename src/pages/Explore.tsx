@@ -19,13 +19,13 @@ const Explore = () => {
     filteredHashtags,
     filteredGroups,
     filteredPages
-  } = useExplore(searchQuery);
+  } = useExplore();
 
   return (
     <div className="container mx-auto py-6 px-4">
       <div className="mb-6">
         <h1 className="text-2xl font-bold mb-4">Explore</h1>
-        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

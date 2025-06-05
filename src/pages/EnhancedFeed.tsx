@@ -16,6 +16,10 @@ const EnhancedFeed = () => {
   const { posts, isLoading, handleCreatePost } = useFeed();
   const [activeFilter, setActiveFilter] = useState("trending");
 
+  const handleCreatePostSubmit = (content: string, image?: string) => {
+    handleCreatePost({ content, mediaUrl: image });
+  };
+
   if (isLoading) {
     return (
       <div className="container max-w-4xl mx-auto py-6 px-4">
@@ -36,7 +40,7 @@ const EnhancedFeed = () => {
           <EnhancedStoriesWrapper />
           
           {/* Create Post */}
-          <CreatePostCard />
+          <CreatePostCard onSubmit={handleCreatePostSubmit} />
           
           {/* Posts Feed with Filtering */}
           <Tabs value={activeFilter} onValueChange={setActiveFilter}>
