@@ -10,11 +10,11 @@ const AppLayout = () => {
   const isAdmin = user?.role === "admin";
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col">
       <EnhancedHeader />
       <div className="flex flex-1 w-full max-w-screen-xl mx-auto">
         {isAdmin && <AdminSidebar />}
-        <main className="flex-1 w-full min-h-0 pb-16 md:pb-0">
+        <main className="flex-1 w-full pb-16 md:pb-0">
           <Outlet />
         </main>
       </div>

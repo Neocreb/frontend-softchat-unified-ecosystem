@@ -8,11 +8,12 @@ interface ExploreTabsProps {
 
 const ExploreTabs = ({ activeTab, onValueChange }: ExploreTabsProps) => {
   return (
-    <TabsList className="grid w-full grid-cols-4">
-      <TabsTrigger value="pages">Pages</TabsTrigger>
-      <TabsTrigger value="groups">Groups</TabsTrigger>
-      <TabsTrigger value="events">Events</TabsTrigger>
+    <TabsList className="grid w-full grid-cols-5">
+      <TabsTrigger value="trending">Trending</TabsTrigger>
       <TabsTrigger value="people">People</TabsTrigger>
+      <TabsTrigger value="hashtags">Hashtags</TabsTrigger>
+      <TabsTrigger value="groups">Groups</TabsTrigger>
+      <TabsTrigger value="pages">Pages</TabsTrigger>
     </TabsList>
   );
 };
