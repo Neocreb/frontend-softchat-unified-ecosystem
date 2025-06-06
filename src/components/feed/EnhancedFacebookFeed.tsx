@@ -60,7 +60,7 @@ const EnhancedFacebookFeed = () => {
                     </div>
                   </Link>
                 </CardContent>
-              </div>
+              </Card>
 
               {/* Quick Navigation */}
               <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
