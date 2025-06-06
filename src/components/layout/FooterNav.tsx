@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, Video, ShoppingCart, TrendingUp, Plus, Users, Trophy } from "lucide-react";
+import { Home, Search, Video, ShoppingCart, TrendingUp, Plus, Award } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 
@@ -34,16 +34,16 @@ const FooterNav = () => {
       active: location.pathname === "/videos",
     },
     {
-      icon: Users,
-      label: "Groups",
-      href: "/groups",
-      active: location.pathname === "/groups",
+      icon: ShoppingCart,
+      label: "Shop",
+      href: "/marketplace",
+      active: location.pathname === "/marketplace",
     },
     {
-      icon: Trophy,
-      label: "Progress",
-      href: "/achievements",
-      active: location.pathname === "/achievements",
+      icon: TrendingUp,
+      label: "Crypto",
+      href: "/crypto",
+      active: location.pathname === "/crypto",
     },
   ];
 

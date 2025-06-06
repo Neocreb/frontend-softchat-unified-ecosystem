@@ -6,6 +6,7 @@ import SuggestedUsers from "./SuggestedUsers";
 import PopularHashtags from "./PopularHashtags";
 import ExploreGroups from "./ExploreGroups";
 import ExplorePages from "./ExplorePages";
+import ExploreEvents from "./ExploreEvents";
 
 interface ExploreContentProps {
   activeTab: string;
@@ -15,6 +16,7 @@ interface ExploreContentProps {
   filteredHashtags: any[];
   filteredGroups: any[];
   filteredPages: any[];
+  filteredEvents?: any[];
 }
 
 const ExploreContent = ({
@@ -24,7 +26,8 @@ const ExploreContent = ({
   filteredUsers,
   filteredHashtags,
   filteredGroups,
-  filteredPages
+  filteredPages,
+  filteredEvents = []
 }: ExploreContentProps) => {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -46,8 +49,18 @@ const ExploreContent = ({
         <ExploreGroups groups={filteredGroups} />
       </TabsContent>
       
+      <TabsContent value="events">
+        <ExploreEvents events={filteredEvents} />
+      </TabsContent>
+      
       <TabsContent value="pages">
         <ExplorePages pages={filteredPages} />
+      </TabsContent>
+      
+      <TabsContent value="places">
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">Places coming soon...</p>
+        </div>
       </TabsContent>
     </Tabs>
   );

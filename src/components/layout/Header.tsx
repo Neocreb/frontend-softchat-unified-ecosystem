@@ -71,10 +71,13 @@ const Header = () => {
           </form>
         </div>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Fixed to show correct main pages */}
         <nav className="hidden md:flex items-center gap-6">
           <Link to="/feed" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <Home className="h-5 w-5" />
+          </Link>
+          <Link to="/explore" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Search className="h-5 w-5" />
           </Link>
           <Link to="/videos" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <Video className="h-5 w-5" />
@@ -85,8 +88,8 @@ const Header = () => {
           <Link to="/crypto" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <TrendingUp className="h-5 w-5" />
           </Link>
-          <Link to="/explore" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-            <Search className="h-5 w-5" />
+          <Link to="/rewards" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+            <Award className="h-5 w-5" />
           </Link>
         </nav>
 
@@ -142,12 +145,6 @@ const Header = () => {
                   <span>Wallet</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/rewards" className="flex items-center w-full">
-                  <Award className="mr-2 h-4 w-4" />
-                  <span>Rewards</span>
-                </Link>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/settings" className="flex items-center w-full">
@@ -178,7 +175,7 @@ const Header = () => {
         </div>
       )}
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Fixed to show correct main pages */}
       <div
         className={cn(
           "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
@@ -189,6 +186,10 @@ const Header = () => {
           <Link to="/feed" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Home className="h-5 w-5" />
             <span>Feed</span>
+          </Link>
+          <Link to="/explore" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Search className="h-5 w-5" />
+            <span>Explore</span>
           </Link>
           <Link to="/videos" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Video className="h-5 w-5" />
@@ -202,9 +203,9 @@ const Header = () => {
             <TrendingUp className="h-5 w-5" />
             <span>Crypto</span>
           </Link>
-          <Link to="/explore" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
-            <Search className="h-5 w-5" />
-            <span>Explore</span>
+          <Link to="/rewards" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
+            <Award className="h-5 w-5" />
+            <span>Rewards</span>
           </Link>
           <Link to="/wallet" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Wallet className="h-5 w-5" />
@@ -213,10 +214,6 @@ const Header = () => {
           <Link to="/chat" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <MessageCircle className="h-5 w-5" />
             <span>Chat</span>
-          </Link>
-          <Link to="/rewards" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
-            <Award className="h-5 w-5" />
-            <span>Rewards</span>
           </Link>
         </div>
       </div>

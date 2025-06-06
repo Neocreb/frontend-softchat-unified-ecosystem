@@ -8,6 +8,7 @@ import FeedSkeleton from "./FeedSkeleton";
 import { NoPostsEmptyState } from "./EmptyState";
 import EnhancedStoriesWrapper from "./EnhancedStories";
 import TrendingHashtags from "./TrendingHashtags";
+import FeedFilters from "./FeedFilters";
 import { Users, Calendar, Trophy, MessageCircle, Bell, Bookmark } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,12 +19,27 @@ import { Badge } from "@/components/ui/badge";
 const EnhancedFacebookFeed = () => {
   const { user } = useAuth();
   const { posts, isLoading, handleCreatePost } = useFeed();
+  const [activeFilter, setActiveFilter] = useState("following");
 
   const handleCreatePostSubmit = (content: string, mediaUrl?: string, mediaType?: 'image' | 'video') => {
     handleCreatePost({ 
       content, 
       mediaUrl
     });
+  };
+
+  const getFilteredPosts = () => {
+    switch (activeFilter) {
+      case "trending":
+        return posts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+      case "recent":
+        return posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case "featured":
+        return posts.filter(post => (post.likes || 0) > 50);
+      case "following":
+      default:
+        return posts;
+    }
   };
 
   if (isLoading) {
@@ -35,6 +51,8 @@ const EnhancedFacebookFeed = () => {
       </div>
     );
   }
+
+  const filteredPosts = getFilteredPosts();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
@@ -64,18 +82,18 @@ const EnhancedFacebookFeed = () => {
               {/* Quick Navigation */}
               <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
                 <CardContent className="p-4 space-y-2">
-                  <Link to="/groups" className="flex items-center space-x-3 hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 p-3 rounded-lg transition-all duration-200 group">
+                  <Link to="/explore" className="flex items-center space-x-3 hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 p-3 rounded-lg transition-all duration-200 group">
                     <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Users className="h-5 w-5 text-white" />
                     </div>
-                    <span className="font-medium">Groups</span>
+                    <span className="font-medium">Explore</span>
                   </Link>
                   
-                  <Link to="/achievements" className="flex items-center space-x-3 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 p-3 rounded-lg transition-all duration-200 group">
+                  <Link to="/rewards" className="flex items-center space-x-3 hover:bg-gradient-to-r hover:from-yellow-50 hover:to-orange-50 p-3 rounded-lg transition-all duration-200 group">
                     <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Trophy className="h-5 w-5 text-white" />
                     </div>
-                    <span className="font-medium">Achievements</span>
+                    <span className="font-medium">Rewards</span>
                   </Link>
                   
                   <Link to="/chat" className="flex items-center space-x-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 p-3 rounded-lg transition-all duration-200 group">
@@ -97,12 +115,18 @@ const EnhancedFacebookFeed = () => {
             {/* Post Composer */}
             <PostComposer onSubmit={handleCreatePostSubmit} />
             
+            {/* Feed Filters */}
+            <FeedFilters 
+              activeFilter={activeFilter}
+              onFilterChange={setActiveFilter}
+            />
+            
             {/* Posts Feed */}
             <div className="space-y-6">
-              {posts.length === 0 ? (
+              {filteredPosts.length === 0 ? (
                 <NoPostsEmptyState />
               ) : (
-                posts.map((post) => (
+                filteredPosts.map((post) => (
                   <EnhancedPostCard key={post.id} post={post} />
                 ))
               )}
@@ -131,9 +155,9 @@ const EnhancedFacebookFeed = () => {
                   </Button>
                   
                   <Button variant="outline" className="w-full justify-start hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 border-2 hover:border-green-300 transition-all duration-200" asChild>
-                    <Link to="/groups">
+                    <Link to="/explore">
                       <Users className="h-4 w-4 mr-2" />
-                      Join Groups
+                      Explore Groups
                     </Link>
                   </Button>
                   
