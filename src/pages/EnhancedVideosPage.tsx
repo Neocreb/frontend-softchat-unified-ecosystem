@@ -210,7 +210,7 @@ const EnhancedVideosPage = () => {
         videoId={('isAd' in currentItem) ? '' : (currentItem as VideoItem).id}
       />
 
-      <style jsx>{`
+      <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;
