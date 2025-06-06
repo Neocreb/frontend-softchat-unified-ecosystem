@@ -5,19 +5,41 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import ExploreContent from "@/components/explore/ExploreContent";
 import SearchBar from "@/components/explore/SearchBar";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Users, Hash } from "lucide-react";
+import { Users, Calendar, FileText, User } from "lucide-react";
 
 const Explore = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("trending");
+  const [activeTab, setActiveTab] = useState("pages");
   
   const {
-    filteredTopics,
     filteredUsers,
-    filteredHashtags,
     filteredGroups,
     filteredPages
   } = useExplore();
+
+  // Mock events data since it's not in the hook
+  const filteredEvents = [
+    {
+      id: "1",
+      name: "Tech Conference 2024",
+      date: "March 15, 2024",
+      location: "San Francisco, CA",
+      attendees: 1250,
+      category: "Technology",
+      cover: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500",
+      organizer: "Tech Events Inc"
+    },
+    {
+      id: "2", 
+      name: "Music Festival",
+      date: "April 20, 2024",
+      location: "Austin, TX",
+      attendees: 5000,
+      category: "Music",
+      cover: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=500",
+      organizer: "Music Events LLC"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -28,57 +50,34 @@ const Explore = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="trending" className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              Trending
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="pages" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Pages
+            </TabsTrigger>
+            <TabsTrigger value="groups" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Groups
+            </TabsTrigger>
+            <TabsTrigger value="events" className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Events
             </TabsTrigger>
             <TabsTrigger value="people" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
+              <User className="h-4 w-4" />
               People
-            </TabsTrigger>
-            <TabsTrigger value="hashtags" className="flex items-center gap-2">
-              <Hash className="h-4 w-4" />
-              Hashtags
             </TabsTrigger>
           </TabsList>
 
           <div className="mt-6">
-            <TabsContent value="trending">
-              <ExploreContent
-                activeTab="trending"
-                setActiveTab={setActiveTab}
-                filteredTopics={filteredTopics}
-                filteredUsers={filteredUsers}
-                filteredHashtags={filteredHashtags}
-                filteredGroups={filteredGroups}
-                filteredPages={filteredPages}
-              />
-            </TabsContent>
-
-            <TabsContent value="people">
-              <ExploreContent
-                activeTab="people"
-                setActiveTab={setActiveTab}
-                filteredTopics={filteredTopics}
-                filteredUsers={filteredUsers}
-                filteredHashtags={filteredHashtags}
-                filteredGroups={filteredGroups}
-                filteredPages={filteredPages}
-              />
-            </TabsContent>
-
-            <TabsContent value="hashtags">
-              <ExploreContent
-                activeTab="hashtags"
-                setActiveTab={setActiveTab}
-                filteredTopics={filteredTopics}
-                filteredUsers={filteredUsers}
-                filteredHashtags={filteredHashtags}
-                filteredGroups={filteredGroups}
-                filteredPages={filteredPages}
-              />
-            </TabsContent>
+            <ExploreContent
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              filteredUsers={filteredUsers}
+              filteredGroups={filteredGroups}
+              filteredPages={filteredPages}
+              filteredEvents={filteredEvents}
+            />
           </div>
         </Tabs>
       </div>

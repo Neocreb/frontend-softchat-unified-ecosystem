@@ -76,9 +76,12 @@ const Header = () => {
 const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
   const links = [
     { text: "Home", href: "/" },
-    { text: "Features", href: "/#features" },
-    { text: "Blog", href: "/blog" },
-    { text: "Contact", href: "/#contact" },
+    { text: "Feed", href: "/feed" },
+    { text: "Videos", href: "/videos" },
+    { text: "Marketplace", href: "/marketplace" },
+    { text: "Crypto", href: "/crypto" },
+    { text: "Explore", href: "/explore" },
+    { text: "Rewards", href: "/rewards" },
   ];
 
   return (

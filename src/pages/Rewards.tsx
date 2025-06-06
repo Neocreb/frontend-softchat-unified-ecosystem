@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -8,6 +9,7 @@ import RewardsOverview from "@/components/rewards/RewardsOverview";
 import EarnPoints from "@/components/rewards/EarnPoints";
 import RedeemRewards from "@/components/rewards/RedeemRewards";
 import RewardsHistory from "@/components/rewards/RewardsHistory";
+import AchievementsTab from "@/components/rewards/AchievementsTab";
 import { UserLevel } from "@/types/user";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -37,6 +39,7 @@ const Rewards = () => {
           <div className="flex gap-2">
             <Skeleton className="h-10 w-24" />
             <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-32" />
             <Skeleton className="h-10 w-24" />
             <Skeleton className="h-10 w-24" />
           </div>
@@ -121,6 +124,10 @@ const Rewards = () => {
 
         <TabsContent value="earn" className="mt-0">
           <EarnPoints earnPoints={earnPoints} />
+        </TabsContent>
+
+        <TabsContent value="achievements" className="mt-0">
+          <AchievementsTab />
         </TabsContent>
 
         <TabsContent value="redeem" className="mt-0">

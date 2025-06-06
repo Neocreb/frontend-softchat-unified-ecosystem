@@ -33,9 +33,6 @@ import Explore from "./pages/Explore";
 import LandingPage from "./pages/Landing";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
-import Create from "./pages/Create";
-import GroupsPage from "./pages/GroupsPage";
-import GamificationPage from "./pages/GamificationPage";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -150,7 +147,6 @@ const AppRoutes = () => {
         </ProtectedRoute>
       }>
         <Route path="feed" element={<EnhancedFeed />} />
-        <Route path="create" element={<Create />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
@@ -166,16 +162,11 @@ const AppRoutes = () => {
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
 
         <Route path="crypto" element={<EnhancedCrypto />} />
-        <Route path="crypto/basic" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<Settings />} />
-        
-        {/* New feature routes */}
-        <Route path="groups" element={<GroupsPage />} />
-        <Route path="achievements" element={<GamificationPage />} />
 
       </Route>
 

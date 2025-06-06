@@ -9,17 +9,19 @@ import { NoPostsEmptyState } from "./EmptyState";
 import EnhancedStoriesWrapper from "./EnhancedStories";
 import TrendingHashtags from "./TrendingHashtags";
 import FeedFilters from "./FeedFilters";
-import { Users, Calendar, Trophy, MessageCircle, Bell, Bookmark } from "lucide-react";
+import FeedCreateTabs from "./FeedCreateTabs";
+import { Users, Calendar, Trophy, MessageCircle, Bell, Image, Video, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 
 const EnhancedFacebookFeed = () => {
   const { user } = useAuth();
   const { posts, isLoading, handleCreatePost } = useFeed();
   const [activeFilter, setActiveFilter] = useState("following");
+  const [activeCreateTab, setActiveCreateTab] = useState("post");
+  const [postTypeFilter, setPostTypeFilter] = useState("all");
 
   const handleCreatePostSubmit = (content: string, mediaUrl?: string, mediaType?: 'image' | 'video') => {
     handleCreatePost({ 
@@ -29,16 +31,28 @@ const EnhancedFacebookFeed = () => {
   };
 
   const getFilteredPosts = () => {
+    let filteredPosts = posts;
+
+    // Filter by content type
+    if (postTypeFilter === "photo") {
+      filteredPosts = filteredPosts.filter(post => post.mediaUrl && post.mediaUrl.includes('image'));
+    } else if (postTypeFilter === "video") {
+      filteredPosts = filteredPosts.filter(post => post.mediaUrl && post.mediaUrl.includes('video'));
+    } else if (postTypeFilter === "poll") {
+      filteredPosts = filteredPosts.filter(post => post.type === "poll");
+    }
+
+    // Filter by feed type
     switch (activeFilter) {
       case "trending":
-        return posts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+        return filteredPosts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
       case "recent":
-        return posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        return filteredPosts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       case "featured":
-        return posts.filter(post => (post.likes || 0) > 50);
+        return filteredPosts.filter(post => (post.likes || 0) > 50);
       case "following":
       default:
-        return posts;
+        return filteredPosts;
     }
   };
 
@@ -112,14 +126,63 @@ const EnhancedFacebookFeed = () => {
             {/* Enhanced Stories Section */}
             <EnhancedStoriesWrapper />
             
-            {/* Post Composer */}
-            <PostComposer onSubmit={handleCreatePostSubmit} />
+            {/* Create Content Section */}
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Create Content</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FeedCreateTabs activeTab={activeCreateTab} onValueChange={setActiveCreateTab} />
+                <PostComposer onSubmit={handleCreatePostSubmit} />
+              </CardContent>
+            </Card>
             
-            {/* Feed Filters */}
-            <FeedFilters 
-              activeFilter={activeFilter}
-              onFilterChange={setActiveFilter}
-            />
+            {/* Post Type Filter */}
+            <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold">Filter Posts</h3>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={postTypeFilter === "all" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setPostTypeFilter("all")}
+                    >
+                      All
+                    </Button>
+                    <Button
+                      variant={postTypeFilter === "photo" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setPostTypeFilter("photo")}
+                    >
+                      <Image className="h-4 w-4 mr-1" />
+                      Photos
+                    </Button>
+                    <Button
+                      variant={postTypeFilter === "video" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setPostTypeFilter("video")}
+                    >
+                      <Video className="h-4 w-4 mr-1" />
+                      Videos
+                    </Button>
+                    <Button
+                      variant={postTypeFilter === "poll" ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setPostTypeFilter("poll")}
+                    >
+                      <BarChart3 className="h-4 w-4 mr-1" />
+                      Polls
+                    </Button>
+                  </div>
+                </div>
+                
+                <FeedFilters 
+                  activeFilter={activeFilter}
+                  onFilterChange={setActiveFilter}
+                />
+              </CardContent>
+            </Card>
             
             {/* Posts Feed */}
             <div className="space-y-6">
@@ -148,9 +211,9 @@ const EnhancedFacebookFeed = () => {
                 </CardHeader>
                 <CardContent className="pt-0 space-y-3">
                   <Button variant="outline" className="w-full justify-start hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border-2 hover:border-blue-300 transition-all duration-200" asChild>
-                    <Link to="/create">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Create Event
+                    <Link to="/videos">
+                      <Video className="h-4 w-4 mr-2" />
+                      Create Video
                     </Link>
                   </Button>
                   
