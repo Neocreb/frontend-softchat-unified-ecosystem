@@ -22,8 +22,7 @@ const EnhancedFacebookFeed = () => {
   const handleCreatePostSubmit = (content: string, mediaUrl?: string, mediaType?: 'image' | 'video') => {
     handleCreatePost({ 
       content, 
-      mediaUrl, 
-      type: mediaType || 'text'
+      mediaUrl
     });
   };
 
