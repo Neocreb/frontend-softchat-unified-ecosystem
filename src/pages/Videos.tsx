@@ -1,8 +1,8 @@
 
-import EnhancedVideosPage from "./EnhancedVideosPage";
+import TikTokVideoFeed from "@/components/videos/TikTokVideoFeed";
 
 const Videos = () => {
-  return <EnhancedVideosPage />;
+  return <TikTokVideoFeed />;
 };
 
 export default Videos;
