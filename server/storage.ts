@@ -120,10 +120,17 @@ export class MemStorage implements IStorage {
   async createProfile(insertProfile: InsertProfile): Promise<Profile> {
     const id = this.generateId();
     const profile: Profile = {
-      ...insertProfile,
       id,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      userId: insertProfile.userId,
+      name: insertProfile.name ?? null,
+      username: insertProfile.username ?? null,
+      fullName: insertProfile.fullName ?? null,
+      bio: insertProfile.bio ?? null,
+      avatarUrl: insertProfile.avatarUrl ?? null,
+      status: insertProfile.status ?? null,
+      preferences: insertProfile.preferences ?? null,
     };
     this.profiles.set(id, profile);
     return profile;
@@ -158,10 +165,17 @@ export class MemStorage implements IStorage {
   async createPost(insertPost: InsertPost): Promise<Post> {
     const id = this.generateId();
     const post: Post = {
-      ...insertPost,
       id,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      userId: insertPost.userId,
+      content: insertPost.content,
+      type: insertPost.type ?? null,
+      filter: insertPost.filter ?? null,
+      imageUrl: insertPost.imageUrl ?? null,
+      videoUrl: insertPost.videoUrl ?? null,
+      tags: insertPost.tags ?? null,
+      softpoints: insertPost.softpoints ?? null,
     };
     this.posts.set(id, post);
     return post;
