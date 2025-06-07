@@ -128,8 +128,16 @@ export class MemStorage implements IStorage {
       username: insertProfile.username ?? null,
       fullName: insertProfile.fullName ?? null,
       bio: insertProfile.bio ?? null,
+      avatar: null,
       avatarUrl: insertProfile.avatarUrl ?? null,
-      status: insertProfile.status ?? null,
+      isVerified: false,
+      level: "bronze",
+      points: 0,
+      role: "user",
+      status: insertProfile.status ?? "active",
+      bankAccountName: null,
+      bankAccountNumber: null,
+      bankName: null,
       preferences: insertProfile.preferences ?? null,
     };
     this.profiles.set(id, profile);
@@ -214,10 +222,22 @@ export class MemStorage implements IStorage {
   async createProduct(insertProduct: InsertProduct): Promise<Product> {
     const id = this.generateId();
     const product: Product = {
-      ...insertProduct,
       id,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      name: insertProduct.name,
+      sellerId: insertProduct.sellerId,
+      description: insertProduct.description,
+      price: insertProduct.price,
+      imageUrl: insertProduct.imageUrl ?? null,
+      discountPrice: insertProduct.discountPrice ?? null,
+      category: insertProduct.category ?? null,
+      isSponsored: insertProduct.isSponsored ?? null,
+      isFeatured: insertProduct.isFeatured ?? null,
+      boostUntil: insertProduct.boostUntil ?? null,
+      inStock: true,
+      rating: "0",
+      reviewCount: "0",
     };
     this.products.set(id, product);
     return product;
@@ -255,7 +275,7 @@ export class MemStorage implements IStorage {
 
   async getFollowers(userId: string): Promise<string[]> {
     const followers: string[] = [];
-    for (const [followerId, following] of this.follows.entries()) {
+    for (const [followerId, following] of Array.from(this.follows.entries())) {
       if (following.has(userId)) {
         followers.push(followerId);
       }
