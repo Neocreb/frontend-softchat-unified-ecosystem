@@ -576,19 +576,19 @@ const AdvancedTradingInterface: React.FC = () => {
                           Cancel
                         </Button>
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-1 text-sm py-1">
                         <div className="flex justify-between">
                           <span className="text-gray-400">Type:</span>
-                          <span>{order.type.toUpperCase()}</span>
+                          <span className="text-white">{order.type.toUpperCase()}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-400">Amount:</span>
-                          <span>{formatNumber(order.amount, 4)}</span>
+                          <span className="text-white">{formatNumber(order.amount, 4)}</span>
                         </div>
                         {order.price && (
                           <div className="flex justify-between">
                             <span className="text-gray-400">Price:</span>
-                            <span>${formatNumber(order.price)}</span>
+                            <span className="text-white">${formatNumber(order.price)}</span>
                           </div>
                         )}
                       </div>
