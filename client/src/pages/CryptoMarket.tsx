@@ -9,6 +9,8 @@ import CryptoPortfolio from "@/components/crypto/CryptoPortfolio";
 import P2PMarketplace from "@/components/crypto/P2PMarketplace";
 import SoftPointExchange from "@/components/crypto/SoftPointExchange";
 import CryptoWalletActions from "@/components/crypto/CryptoWalletActions";
+import AdvancedTradingInterface from "@/components/crypto/AdvancedTradingInterface";
+import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -203,9 +205,11 @@ const CryptoMarket = () => {
         <h1 className="text-2xl font-bold mb-6">Crypto Market</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-4 mb-8">
+          <TabsList className="w-full grid grid-cols-6 mb-8">
             <TabsTrigger value="market">Market</TabsTrigger>
+            <TabsTrigger value="trading">Pro Trading</TabsTrigger>
             <TabsTrigger value="p2p">P2P</TabsTrigger>
+            <TabsTrigger value="enhanced-p2p">Enhanced P2P</TabsTrigger>
             <TabsTrigger value="convert">Convert</TabsTrigger>
             <TabsTrigger value="wallet">Wallet</TabsTrigger>
           </TabsList>
@@ -261,8 +265,16 @@ const CryptoMarket = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="trading">
+            <AdvancedTradingInterface />
+          </TabsContent>
+
           <TabsContent value="p2p">
             <P2PMarketplace />
+          </TabsContent>
+
+          <TabsContent value="enhanced-p2p">
+            <EnhancedP2PMarketplace />
           </TabsContent>
 
           <TabsContent value="convert">
