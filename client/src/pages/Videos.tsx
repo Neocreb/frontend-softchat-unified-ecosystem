@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Heart, MessageCircle, Share, Plus, Music, Volume2, VolumeX, MoreHorizontal, Bookmark, Flag } from 'lucide-react';
+import { Heart, MessageCircle, Share, Plus, Music, Volume2, VolumeX, MoreHorizontal, Bookmark, Search, User, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
@@ -555,9 +555,9 @@ const Videos: React.FC = () => {
       </div>
 
       {/* Creator Modal */}
-      <Dialog open={isCreatorOpen} onOpenChange={setShowCreator}>
+      <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
         <DialogContent className="max-w-2xl bg-black border border-gray-800 rounded-lg p-4">
-          <EnhancedVideoCreator onClose={() => setShowCreator(false)} />
+          <EnhancedVideoCreator onClose={() => setIsCreatorOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>
