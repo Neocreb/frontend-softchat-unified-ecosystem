@@ -216,4 +216,41 @@
   .touch-pan-y {
     touch-action: pan-y;
   }
+
+  /* Video page utilities */
+  .video-container {
+    scroll-snap-type: y mandatory;
+  }
+
+  .video-item {
+    scroll-snap-align: start;
+  }
+
+  /* Snap scroll utilities */
+  .snap-y {
+    scroll-snap-type: y mandatory;
+  }
+
+  .snap-start {
+    scroll-snap-align: start;
+  }
+
+  .snap-always {
+    scroll-snap-stop: always;
+  }
+
+  /* Hide scrollbars */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
 }

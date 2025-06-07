@@ -1,332 +1,471 @@
 
-import { useState, useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import FooterNav from "@/components/layout/FooterNav";
-import VideoPlayer from "@/components/videos/VideoPlayer";
-import AdCard from "@/components/videos/AdCard";
-import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
-import { useVideos } from "@/hooks/use-videos";
-import { VideoItem, AdItem } from "@/types/video";
-import { ArrowUpIcon, Plus, Compass, TrendingUp, User, Heart, Music } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React, { useState, useRef, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Heart, MessageCircle, Share, Plus, Music, Volume2, VolumeX, MoreHorizontal, Bookmark, Flag } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import EnhancedVideoCreator from '@/components/video/EnhancedVideoCreator';
+import { cn } from '@/utils/utils';
 
-const Videos = () => {
-  const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'feed' | 'discover' | 'create' | 'profile'>('feed');
-  const [showCreator, setShowCreator] = useState(false);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const {
-    currentItem,
-    swipeHandlers,
-    handleNextVideo,
-    handlePrevVideo,
-    allItems
-  } = useVideos();
+interface VideoData {
+  id: string;
+  user: {
+    id: string;
+    username: string;
+    displayName: string;
+    avatar: string;
+    verified: boolean;
+  };
+  description: string;
+  music: {
+    title: string;
+    artist: string;
+  };
+  stats: {
+    likes: number;
+    comments: number;
+    shares: number;
+    views: string;
+  };
+  hashtags: string[];
+  videoUrl: string;
+  thumbnail: string;
+  duration: number;
+}
 
-  // Keyboard navigation
+const mockVideos: VideoData[] = [
+  {
+    id: '1',
+    user: {
+      id: '1',
+      username: 'crypto_king',
+      displayName: 'Crypto King',
+      avatar: 'https://i.pravatar.cc/150?img=1',
+      verified: true
+    },
+    description: 'Bitcoin to the moon! 🚀 Who else is holding? #crypto #bitcoin #hodl',
+    music: {
+      title: 'Crypto Anthem',
+      artist: 'Digital Dreams'
+    },
+    stats: {
+      likes: 15400,
+      comments: 892,
+      shares: 445,
+      views: '2.1M'
+    },
+    hashtags: ['crypto', 'bitcoin', 'hodl', 'moon'],
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400',
+    duration: 30
+  },
+  {
+    id: '2',
+    user: {
+      id: '2',
+      username: 'tech_trader',
+      displayName: 'Tech Trader',
+      avatar: 'https://i.pravatar.cc/150?img=2',
+      verified: false
+    },
+    description: 'Day trading tips that actually work! Follow for more 💰 #trading #stocks #daytrading',
+    music: {
+      title: 'Success Vibes',
+      artist: 'Motivation Mix'
+    },
+    stats: {
+      likes: 8900,
+      comments: 567,
+      shares: 234,
+      views: '890K'
+    },
+    hashtags: ['trading', 'stocks', 'daytrading', 'money'],
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400',
+    duration: 45
+  },
+  {
+    id: '3',
+    user: {
+      id: '3',
+      username: 'nft_creator',
+      displayName: 'NFT Creator',
+      avatar: 'https://i.pravatar.cc/150?img=3',
+      verified: true
+    },
+    description: 'Just dropped my latest NFT collection! Link in bio 🎨 #nft #digitalart #opensea',
+    music: {
+      title: 'Digital Dreams',
+      artist: 'Electronic Beats'
+    },
+    stats: {
+      likes: 12600,
+      comments: 445,
+      shares: 789,
+      views: '1.5M'
+    },
+    hashtags: ['nft', 'digitalart', 'opensea', 'blockchain'],
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1634973357973-f2ed2657db3c?w=400',
+    duration: 25
+  },
+  {
+    id: '4',
+    user: {
+      id: '4',
+      username: 'defi_guru',
+      displayName: 'DeFi Guru',
+      avatar: 'https://i.pravatar.cc/150?img=4',
+      verified: true
+    },
+    description: 'Yield farming strategies for 2024! This is not financial advice 📈 #defi #yield #farming',
+    music: {
+      title: 'Future Finance',
+      artist: 'Crypto Sounds'
+    },
+    stats: {
+      likes: 9800,
+      comments: 321,
+      shares: 156,
+      views: '750K'
+    },
+    hashtags: ['defi', 'yield', 'farming', 'protocol'],
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400',
+    duration: 60
+  },
+  {
+    id: '5',
+    user: {
+      id: '5',
+      username: 'web3_dev',
+      displayName: 'Web3 Developer',
+      avatar: 'https://i.pravatar.cc/150?img=5',
+      verified: false
+    },
+    description: 'Building the future of the internet! Check out my latest dApp 🌐 #web3 #blockchain #dapp',
+    music: {
+      title: 'Code & Create',
+      artist: 'Dev Beats'
+    },
+    stats: {
+      likes: 7200,
+      comments: 189,
+      shares: 95,
+      views: '420K'
+    },
+    hashtags: ['web3', 'blockchain', 'dapp', 'coding'],
+    videoUrl: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?w=400',
+    duration: 40
+  }
+];
+
+const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({ video, isActive }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [showMore, setShowMore] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        handlePrevVideo();
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        handleNextVideo();
+    if (videoRef.current) {
+      if (isActive) {
+        videoRef.current.play().catch(console.error);
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isActive]);
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
+  const description = video.description;
+  const truncatedDescription = description.length > 100 
+    ? description.substring(0, 100) + '...' 
+    : description;
+
+  return (
+    <div className="relative h-screen w-full bg-black snap-start snap-always">
+      {/* Video */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        loop
+        muted={isMuted}
+        playsInline
+        preload="metadata"
+        poster={video.thumbnail}
+      >
+        <source src={video.videoUrl} type="video/mp4" />
+      </video>
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+
+      {/* Content overlay */}
+      <div className="absolute inset-0 flex">
+        {/* Left side - user info and description */}
+        <div className="flex-1 flex flex-col justify-end p-4 pb-20 md:pb-4">
+          <div className="space-y-3">
+            {/* User info */}
+            <div className="flex items-center gap-3">
+              <Avatar className="w-12 h-12 border-2 border-white/20">
+                <AvatarImage src={video.user.avatar} />
+                <AvatarFallback>{video.user.displayName[0]}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-white font-semibold text-sm truncate">
+                    @{video.user.username}
+                  </span>
+                  {video.user.verified && (
+                    <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                    </div>
+                  )}
+                </div>
+                <div className="text-white/80 text-xs">{video.user.displayName}</div>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30 text-xs px-3 py-1 h-auto"
+              >
+                Follow
+              </Button>
+            </div>
+
+            {/* Description */}
+            <div className="text-white text-sm">
+              <p className="leading-relaxed">
+                {showMore ? description : truncatedDescription}
+                {description.length > 100 && (
+                  <button
+                    onClick={() => setShowMore(!showMore)}
+                    className="text-white/70 ml-1 underline"
+                  >
+                    {showMore ? 'less' : 'more'}
+                  </button>
+                )}
+              </p>
+              
+              {/* Hashtags */}
+              <div className="flex flex-wrap gap-1 mt-2">
+                {video.hashtags.map((tag) => (
+                  <span key={tag} className="text-blue-300 text-sm">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Music info */}
+            <div className="flex items-center gap-2 text-white/80 text-xs">
+              <Music className="w-3 h-3" />
+              <span className="truncate">
+                {video.music.title} - {video.music.artist}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - action buttons */}
+        <div className="flex flex-col items-center justify-end gap-6 p-4 pb-20 md:pb-8">
+          {/* Like button */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              className={cn(
+                "w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none",
+                isLiked && "bg-red-500/80 hover:bg-red-500"
+              )}
+              onClick={() => setIsLiked(!isLiked)}
+            >
+              <Heart className={cn("w-6 h-6", isLiked ? "fill-white text-white" : "text-white")} />
+            </Button>
+            <span className="text-white text-xs font-medium">
+              {formatNumber(video.stats.likes + (isLiked ? 1 : 0))}
+            </span>
+          </div>
+
+          {/* Comment button */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            >
+              <MessageCircle className="w-6 h-6 text-white" />
+            </Button>
+            <span className="text-white text-xs font-medium">
+              {formatNumber(video.stats.comments)}
+            </span>
+          </div>
+
+          {/* Share button */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            >
+              <Share className="w-6 h-6 text-white" />
+            </Button>
+            <span className="text-white text-xs font-medium">
+              {formatNumber(video.stats.shares)}
+            </span>
+          </div>
+
+          {/* Bookmark button */}
+          <Button
+            size="icon"
+            variant="ghost"
+            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+          >
+            <Bookmark className="w-6 h-6 text-white" />
+          </Button>
+
+          {/* More options */}
+          <Button
+            size="icon"
+            variant="ghost"
+            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+          >
+            <MoreHorizontal className="w-6 h-6 text-white" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Volume control */}
+      <Button
+        size="icon"
+        variant="ghost"
+        className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
+        onClick={() => setIsMuted(!isMuted)}
+      >
+        {isMuted ? (
+          <VolumeX className="w-5 h-5 text-white" />
+        ) : (
+          <Volume2 className="w-5 h-5 text-white" />
+        )}
+      </Button>
+
+      {/* Views count */}
+      <div className="absolute top-4 left-4">
+        <Badge variant="secondary" className="bg-black/40 text-white border-none">
+          {video.stats.views} views
+        </Badge>
+      </div>
+    </div>
+  );
+};
+
+const Videos: React.FC = () => {
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isCreatorOpen, setIsCreatorOpen] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+      const videoHeight = window.innerHeight;
+      const newIndex = Math.round(scrollTop / videoHeight);
+      
+      if (newIndex !== currentVideoIndex && newIndex >= 0 && newIndex < mockVideos.length) {
+        setCurrentVideoIndex(newIndex);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNextVideo, handlePrevVideo]);
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [currentVideoIndex]);
 
-  const renderTikTokInterface = () => {
-    if (!currentItem) {
-      return (
-        <div className="h-screen bg-black flex items-center justify-center text-white">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p>Loading videos...</p>
-          </div>
-        </div>
-      );
-    }
+  return (
+    <>
+      <Helmet>
+        <title>Videos | Softchat</title>
+      </Helmet>
 
-    return (
-      <div className="h-screen bg-black overflow-hidden relative touch-pan-y" {...swipeHandlers}>
-        {'isAd' in currentItem ? (
-          <AdCard
-            ad={(currentItem as AdItem).ad}
-            onNext={handleNextVideo}
-            onPrev={handlePrevVideo}
-          />
-        ) : (
-          <VideoPlayer
-            video={currentItem as VideoItem}
-            onNext={handleNextVideo}
-            onPrev={handlePrevVideo}
-          />
-        )}
-
-        {/* TikTok-style Right Side Actions */}
-        <div className="absolute right-3 bottom-32 md:bottom-24 flex flex-col gap-6 z-20">
-          <Button
-            size="icon"
-            className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border-0 text-white hover:bg-white/30 transition-all duration-200 hover:scale-110"
-            onClick={() => setShowCreator(true)}
-          >
-            <Plus className="w-7 h-7" />
-          </Button>
-          
-          <div className="flex flex-col items-center">
-            <Button
-              size="icon"
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border-0 text-white hover:bg-red-500/80 transition-all duration-200 hover:scale-110"
-            >
-              <Heart className="w-7 h-7" />
-            </Button>
-            <span className="text-white text-xs mt-1 font-medium">1.2K</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <Button
-              size="icon"
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border-0 text-white hover:bg-white/30 transition-all duration-200 hover:scale-110"
-              onClick={() => setActiveTab('discover')}
-            >
-              <Music className="w-7 h-7" />
-            </Button>
-            <span className="text-white text-xs mt-1 font-medium">Sound</span>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <Button
-              size="icon"
-              className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm border-0 text-white hover:bg-white/30 transition-all duration-200 hover:scale-110"
-              onClick={() => setActiveTab('profile')}
-            >
-              <User className="w-7 h-7" />
-            </Button>
-            <span className="text-white text-xs mt-1 font-medium">Profile</span>
-          </div>
-        </div>
-
-        {/* Progress Indicators */}
-        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col gap-1 z-10">
-          {allItems.map((_, index) => (
-            <div
-              key={index}
-              className={`w-1 h-8 rounded-full transition-all duration-300 ${
-                index === currentVideoIndex ? 'bg-white' : 'bg-white/30'
-              }`}
+      <div className="relative h-screen overflow-hidden bg-black">
+        {/* Video container */}
+        <div
+          ref={containerRef}
+          className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+          style={{ scrollBehavior: 'smooth' }}
+        >
+          {mockVideos.map((video, index) => (
+            <VideoCard
+              key={video.id}
+              video={video}
+              isActive={index === currentVideoIndex}
             />
           ))}
         </div>
 
-        {/* Top Navigation indicators */}
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-black/70 to-transparent pointer-events-none z-10">
-          <div className="flex justify-center pt-6">
-            <div className="flex items-center gap-2 text-white/80 text-sm animate-pulse">
-              <ArrowUpIcon className="w-4 h-4" />
-              <span>Swipe up for next</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Gradient */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black/70 to-transparent pointer-events-none z-10" />
-      </div>
-    );
-  };
-
-  if (showCreator) {
-    return (
-      <div className="h-screen bg-black">
-        <div className="p-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => setShowCreator(false)}
-            className="text-white mb-4 hover:bg-white/10"
-          >
-            ← Back to Videos
-          </Button>
-          <EnhancedVideoCreator />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="h-screen bg-black relative">
-      <Tabs value={activeTab} onValueChange={setActiveTab as any} className="h-full">
-        {/* TikTok-style Top Tab Navigation */}
-        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
-          <TabsList className="bg-black/50 backdrop-blur-sm border-0 rounded-full">
-            <TabsTrigger 
-              value="feed" 
-              className="text-white data-[state=active]:bg-white data-[state=active]:text-black rounded-full px-6"
+        {/* Create button */}
+        <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
+          <DialogTrigger asChild>
+            <Button
+              size="icon"
+              className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 shadow-lg z-50"
             >
-              For You
-            </TabsTrigger>
-            <TabsTrigger 
-              value="discover" 
-              className="text-white data-[state=active]:bg-white data-[state=active]:text-black rounded-full px-6"
-            >
-              <TrendingUp className="w-4 h-4 mr-1" />
-              Trending
-            </TabsTrigger>
-          </TabsList>
+              <Plus className="w-6 h-6 text-white" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <EnhancedVideoCreator onClose={() => setIsCreatorOpen(false)} />
+          </DialogContent>
+        </Dialog>
+
+        {/* Navigation dots */}
+        <div className="fixed right-2 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-40">
+          {mockVideos.map((_, index) => (
+            <button
+              key={index}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all",
+                index === currentVideoIndex
+                  ? "bg-white scale-125"
+                  : "bg-white/50 hover:bg-white/70"
+              )}
+              onClick={() => {
+                const container = containerRef.current;
+                if (container) {
+                  container.scrollTo({
+                    top: index * window.innerHeight,
+                    behavior: 'smooth'
+                  });
+                }
+              }}
+            />
+          ))}
         </div>
-
-        <TabsContent value="feed" className="h-full m-0">
-          {renderTikTokInterface()}
-        </TabsContent>
-
-        <TabsContent value="discover" className="h-full m-0">
-          <div className="h-full bg-black text-white overflow-y-auto">
-            <div className="pt-20 p-6 space-y-8">
-              {/* Trending Challenges */}
-              <div>
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-pink-500" />
-                  Trending Challenges
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="bg-gray-900 rounded-xl overflow-hidden group hover:scale-105 transition-transform duration-300">
-                      <div className="w-full h-40 bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center relative">
-                        <div className="text-4xl">🔥</div>
-                        <div className="absolute bottom-2 right-2 bg-black/70 rounded-full px-2 py-1">
-                          <span className="text-xs">{(Math.random() * 1000).toFixed(0)}K</span>
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-bold text-lg">#Challenge{i + 1}</h3>
-                        <p className="text-sm text-gray-400">{(Math.random() * 1000).toFixed(0)}K videos</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Trending Sounds */}
-              <div>
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <Music className="w-6 h-6 text-green-500" />
-                  Trending Sounds
-                </h2>
-                <div className="space-y-4">
-                  {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className="flex items-center gap-4 bg-gray-900 rounded-xl p-4 hover:bg-gray-800 transition-colors duration-200">
-                      <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center">
-                        <Music className="w-8 h-8 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-lg">Trending Sound {i + 1}</h4>
-                        <p className="text-sm text-gray-400">{(Math.random() * 500).toFixed(0)}K videos created</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                          <span className="text-xs text-green-400">Trending now</span>
-                        </div>
-                      </div>
-                      <Button size="sm" className="bg-white text-black hover:bg-gray-200 rounded-full px-6">
-                        Use Sound
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Popular Creators */}
-              <div>
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                  <User className="w-6 h-6 text-purple-500" />
-                  Popular Creators
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="bg-gray-900 rounded-xl p-6 text-center hover:bg-gray-800 transition-colors duration-200">
-                      <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full mx-auto mb-4"></div>
-                      <h3 className="font-bold text-lg">Creator {i + 1}</h3>
-                      <p className="text-sm text-gray-400 mb-3">{(Math.random() * 500).toFixed(0)}K followers</p>
-                      <Button size="sm" variant="outline" className="rounded-full">
-                        Follow
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="profile" className="h-full m-0">
-          <div className="h-full bg-black text-white overflow-y-auto">
-            <div className="pt-20 p-6 text-center space-y-6">
-              <div className="w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full mx-auto flex items-center justify-center text-4xl">
-                {user?.user_metadata?.full_name?.charAt(0) || '👤'}
-              </div>
-              
-              <div>
-                <h2 className="text-2xl font-bold">{user?.user_metadata?.full_name || 'Creator'}</h2>
-                <p className="text-gray-400">@{user?.email?.split('@')[0] || 'username'}</p>
-              </div>
-              
-              <div className="flex justify-center gap-12">
-                <div className="text-center">
-                  <div className="text-2xl font-bold">125</div>
-                  <div className="text-sm text-gray-400">Following</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold">8.9K</div>
-                  <div className="text-sm text-gray-400">Followers</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold">2.1M</div>
-                  <div className="text-sm text-gray-400">Likes</div>
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <Button 
-                  onClick={() => setShowCreator(true)} 
-                  className="w-full bg-pink-600 hover:bg-pink-700 rounded-full py-3"
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Create Video
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full rounded-full py-3 border-gray-600 text-white hover:bg-gray-800"
-                >
-                  Edit Profile
-                </Button>
-              </div>
-
-              {/* User's Videos Grid */}
-              <div className="mt-8">
-                <h3 className="text-lg font-bold mb-4 text-left">Your Videos</h3>
-                <div className="grid grid-cols-3 gap-2">
-                  {Array.from({ length: 9 }).map((_, i) => (
-                    <div key={i} className="aspect-[9/16] bg-gray-800 rounded-lg relative overflow-hidden">
-                      <div className="absolute bottom-2 right-2 bg-black/70 rounded px-1 text-xs">
-                        {(Math.random() * 100).toFixed(0)}K
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Hide FooterNav for immersive experience */}
-      <div className="md:block hidden">
-        <FooterNav />
       </div>
-    </div>
+
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+    </>
   );
 };
 
