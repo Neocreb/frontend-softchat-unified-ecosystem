@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, Video, ShoppingCart, TrendingUp, Wallet, Plus } from "lucide-react";
+import { Home, Search, Video, ShoppingCart, TrendingUp, Wallet, Plus, Zap } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 
@@ -44,6 +44,13 @@ const FooterNav = () => {
       label: "Crypto",
       href: "/crypto",
       active: location.pathname === "/crypto" || location.pathname.startsWith("/crypto"),
+    },
+    {
+      icon: Zap,
+      label: "Enhanced",
+      href: "/enhanced",
+      active: location.pathname === "/enhanced",
+      special: true,
     },
   ];
 

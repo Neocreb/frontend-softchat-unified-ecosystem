@@ -33,6 +33,7 @@ import LandingPage from "./pages/Landing";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
+import EnhancedPlatform from "./pages/EnhancedPlatform";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -169,6 +170,7 @@ const AppRoutes = () => {
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="enhanced" element={<EnhancedPlatform />} />
 
       </Route>
 
