@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import FooterNav from "@/components/layout/FooterNav";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -15,36 +16,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Settings = () => {
     const { user, logout } = useAuth();
+    const { theme, setTheme, isDark } = useTheme();
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
     const [emailNotifications, setEmailNotifications] = useState(true);
-    const [darkMode, setDarkMode] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Dark Mode functionality
     useEffect(() => {
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem("theme");
-        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
-            document.documentElement.classList.add("dark");
-            setDarkMode(true);
-        }
-
         // Simulate loading delay
         const timer = setTimeout(() => setIsLoading(false), 800);
         return () => clearTimeout(timer);
     }, []);
 
-    const toggleDarkMode = (checked: boolean) => {
-        setDarkMode(checked);
-        if (checked) {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-        } else {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-        }
+    const handleThemeChange = (checked: boolean) => {
+        setTheme(checked ? 'dark' : 'light');
     };
 
     if (isLoading) {
@@ -161,8 +145,8 @@ const Settings = () => {
                                 </p>
                             </div>
                             <Switch
-                                checked={darkMode}
-                                onCheckedChange={toggleDarkMode}
+                                checked={isDark}
+                                onCheckedChange={handleThemeChange}
                             />
                         </div>
                     </CardContent>

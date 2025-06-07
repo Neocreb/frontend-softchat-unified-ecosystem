@@ -18,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
 import SoftchatLogo from "../shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,6 +101,8 @@ const Header = () => {
           </Button>
 
           <NotificationsDropdown />
+
+          <ThemeToggle />
 
           {/* Chat Button */}
           <Link to="/chat">
