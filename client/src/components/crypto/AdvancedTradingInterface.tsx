@@ -319,7 +319,7 @@ const AdvancedTradingInterface: React.FC = () => {
                   <div className="text-lg md:text-2xl font-bold text-white">${formatNumber(currentPrice)}</div>
                   <div className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {priceChange >= 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
-                    <span className="text-xs md:text-sm whitespace-nowrap">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
+                    <span className="text-xs md:text-sm whitespace-nowrap text-gray-200">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
                   </div>
                 </div>
                 <div className="text-right min-w-0">
@@ -379,8 +379,8 @@ const AdvancedTradingInterface: React.FC = () => {
                     <span className={trade.type === 'buy' ? 'text-green-400' : 'text-red-400'}>
                       ${formatNumber(trade.price)}
                     </span>
-                    <span>{formatNumber(trade.amount, 4)}</span>
-                    <span>${formatNumber(trade.price * trade.amount)}</span>
+                    <span className="text-gray-300">{formatNumber(trade.amount, 4)}</span>
+                    <span className="text-gray-300">${formatNumber(trade.price * trade.amount)}</span>
                     <span className="text-gray-400">{trade.time}</span>
                   </div>
                 ))}
@@ -408,16 +408,16 @@ const AdvancedTradingInterface: React.FC = () => {
                   {orderBook.asks.slice(0, 8).reverse().map((ask, index) => (
                     <div key={index} className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer">
                       <span className="text-red-400">${formatNumber(ask.price)}</span>
-                      <span>{formatNumber(ask.amount, 4)}</span>
-                      <span>{formatNumber(ask.total)}</span>
+                      <span className="text-gray-300">{formatNumber(ask.amount, 4)}</span>
+                      <span className="text-gray-300">{formatNumber(ask.total)}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Spread */}
                 <div className="py-2 text-center border-y border-gray-700">
-                  <span className="text-lg font-bold">${formatNumber(currentPrice)}</span>
-                  <div className="text-xs text-gray-400">Spread: ${formatNumber(orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0)}</div>
+                  <span className="text-lg font-bold text-white">${formatNumber(currentPrice)}</span>
+                  <div className="text-xs text-gray-300">Spread: ${formatNumber(orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0)}</div>
                 </div>
 
                 {/* Bids */}
@@ -425,8 +425,8 @@ const AdvancedTradingInterface: React.FC = () => {
                   {orderBook.bids.slice(0, 8).map((bid, index) => (
                     <div key={index} className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer">
                       <span className="text-green-400">${formatNumber(bid.price)}</span>
-                      <span>{formatNumber(bid.amount, 4)}</span>
-                      <span>{formatNumber(bid.total)}</span>
+                      <span className="text-gray-300">{formatNumber(bid.amount, 4)}</span>
+                      <span className="text-gray-300">{formatNumber(bid.total)}</span>
                     </div>
                   ))}
                 </div>

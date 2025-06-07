@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
 import { 
   Search, 
   Briefcase, 
@@ -30,7 +31,12 @@ import {
   Calendar,
   Eye,
   ThumbsUp,
-  MessageCircle
+  MessageCircle,
+  Zap,
+  Target,
+  Shield,
+  BookOpen,
+  CheckCircle
 } from "lucide-react";
 import { useNotification } from "@/hooks/use-notification";
 
@@ -45,6 +51,8 @@ interface Job {
     totalSpent: number;
     location: string;
     verified: boolean;
+    jobsPosted: number;
+    hireRate: number;
   };
   budget: {
     type: 'fixed' | 'hourly';
@@ -58,6 +66,8 @@ interface Job {
   postedAt: string;
   category: string;
   featured: boolean;
+  urgency: 'low' | 'medium' | 'high';
+  paymentVerified: boolean;
 }
 
 interface Proposal {
@@ -70,12 +80,40 @@ interface Proposal {
     completedJobs: number;
     skills: string[];
     hourlyRate: number;
+    successRate: number;
+    responseTime: string;
+    lastActive: string;
   };
   coverLetter: string;
   proposedRate: number;
   proposedDuration: string;
+  deliverables: string[];
   submittedAt: string;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: 'pending' | 'accepted' | 'rejected' | 'interview';
+}
+
+interface FreelancerProfile {
+  id: string;
+  name: string;
+  avatar: string;
+  title: string;
+  rating: number;
+  completedJobs: number;
+  totalEarnings: number;
+  skills: string[];
+  hourlyRate: number;
+  availability: string;
+  responseTime: string;
+  successRate: number;
+  languages: string[];
+  certifications: string[];
+  portfolio: Array<{
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    technologies: string[];
+  }>;
 }
 
 const Freelance = () => {
@@ -88,6 +126,7 @@ const Freelance = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [myJobs, setMyJobs] = useState<Job[]>([]);
   const [proposals, setProposals] = useState<Proposal[]>([]);
+  const [topFreelancers, setTopFreelancers] = useState<FreelancerProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Job posting form states
@@ -100,81 +139,95 @@ const Freelance = () => {
   const [jobExperience, setJobExperience] = useState("");
   const [jobSkills, setJobSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
+  const [jobUrgency, setJobUrgency] = useState<'low' | 'medium' | 'high'>('medium');
 
   const categories = [
     "all", "web-development", "mobile-development", "design", "writing", 
-    "marketing", "data-science", "ai-ml", "blockchain", "business"
+    "marketing", "data-science", "ai-ml", "blockchain", "business", "translation",
+    "video-editing", "accounting", "legal", "customer-service"
   ];
 
   const skillSuggestions = [
     "React", "Node.js", "Python", "JavaScript", "TypeScript", "UI/UX Design",
     "Graphic Design", "Content Writing", "SEO", "Digital Marketing", "Data Analysis",
-    "Machine Learning", "Blockchain", "Smart Contracts", "Project Management"
+    "Machine Learning", "Blockchain", "Smart Contracts", "Project Management",
+    "WordPress", "Shopify", "Video Editing", "Translation", "Customer Support"
   ];
 
   useEffect(() => {
     loadJobs();
     loadMyJobs();
     loadProposals();
+    loadTopFreelancers();
   }, [selectedCategory, searchQuery]);
 
   const loadJobs = async () => {
     setIsLoading(true);
-    // Mock data - in real app, fetch from API
+    // Enhanced mock data with more realistic job listings
     const mockJobs: Job[] = [
       {
         id: "1",
         title: "Full Stack React Developer for E-commerce Platform",
-        description: "Looking for an experienced React developer to build a modern e-commerce platform with payment integration, admin dashboard, and mobile responsiveness.",
+        description: "Looking for an experienced React developer to build a modern e-commerce platform with payment integration, admin dashboard, and mobile responsiveness. Must have experience with Node.js, MongoDB, and payment gateways like Stripe.",
         client: {
           name: "TechCorp Inc.",
           avatar: "/placeholder.svg",
           rating: 4.8,
           totalSpent: 25000,
           location: "United States",
-          verified: true
+          verified: true,
+          jobsPosted: 12,
+          hireRate: 85
         },
         budget: { type: 'fixed', amount: 5000 },
-        skills: ["React", "Node.js", "MongoDB", "Payment Integration"],
+        skills: ["React", "Node.js", "MongoDB", "Payment Integration", "JavaScript"],
         duration: "2-3 months",
         experience: 'intermediate',
         proposals: 15,
         postedAt: "2 hours ago",
         category: "web-development",
-        featured: true
+        featured: true,
+        urgency: 'high',
+        paymentVerified: true
       },
       {
         id: "2",
         title: "AI Chatbot Development with Natural Language Processing",
-        description: "Seeking an AI specialist to develop an intelligent chatbot for customer service. Must have experience with NLP, machine learning, and chat interfaces.",
+        description: "Seeking an AI specialist to develop an intelligent chatbot for customer service. Must have experience with NLP, machine learning, and chat interfaces. Integration with existing CRM required.",
         client: {
           name: "StartupXYZ",
           avatar: "/placeholder.svg",
           rating: 4.5,
           totalSpent: 12000,
           location: "Canada",
-          verified: true
+          verified: true,
+          jobsPosted: 8,
+          hireRate: 75
         },
         budget: { type: 'hourly', amount: 75, range: { min: 60, max: 90 } },
-        skills: ["Python", "NLP", "TensorFlow", "OpenAI API"],
+        skills: ["Python", "NLP", "TensorFlow", "OpenAI API", "Machine Learning"],
         duration: "1-2 months",
         experience: 'expert',
         proposals: 8,
         postedAt: "4 hours ago",
         category: "ai-ml",
-        featured: false
+        featured: false,
+        urgency: 'medium',
+        paymentVerified: true
       },
       {
         id: "3",
         title: "Mobile App UI/UX Design for Fitness Platform",
-        description: "Design a modern, user-friendly mobile app interface for a fitness tracking platform. Need wireframes, prototypes, and final designs.",
+        description: "Design a modern, user-friendly mobile app interface for a fitness tracking platform. Need wireframes, prototypes, and final designs. Experience with fitness apps preferred.",
         client: {
           name: "FitLife Solutions",
           avatar: "/placeholder.svg",
           rating: 4.9,
           totalSpent: 8000,
           location: "United Kingdom",
-          verified: true
+          verified: true,
+          jobsPosted: 5,
+          hireRate: 90
         },
         budget: { type: 'fixed', amount: 2500 },
         skills: ["UI/UX Design", "Figma", "Mobile Design", "Prototyping"],
@@ -183,7 +236,34 @@ const Freelance = () => {
         proposals: 22,
         postedAt: "1 day ago",
         category: "design",
-        featured: false
+        featured: false,
+        urgency: 'low',
+        paymentVerified: true
+      },
+      {
+        id: "4",
+        title: "Content Marketing Specialist for Tech Startup",
+        description: "Looking for a content marketing expert to create engaging blog posts, social media content, and email campaigns. Must understand tech industry trends and SEO best practices.",
+        client: {
+          name: "InnovateTech",
+          avatar: "/placeholder.svg",
+          rating: 4.6,
+          totalSpent: 15000,
+          location: "Australia",
+          verified: true,
+          jobsPosted: 15,
+          hireRate: 80
+        },
+        budget: { type: 'hourly', amount: 45, range: { min: 35, max: 55 } },
+        skills: ["Content Writing", "SEO", "Social Media Marketing", "Email Marketing"],
+        duration: "3-6 months",
+        experience: 'intermediate',
+        proposals: 18,
+        postedAt: "2 days ago",
+        category: "marketing",
+        featured: true,
+        urgency: 'medium',
+        paymentVerified: true
       }
     ];
 
@@ -192,28 +272,31 @@ const Freelance = () => {
   };
 
   const loadMyJobs = async () => {
-    // Mock data for posted jobs
     const mockMyJobs: Job[] = [
       {
         id: "my-1",
         title: "Content Writer for Tech Blog",
-        description: "Looking for a skilled content writer to create engaging articles about latest technology trends.",
+        description: "Looking for a skilled content writer to create engaging articles about latest technology trends, AI, and software development. Must have technical writing experience.",
         client: {
           name: user?.name || "You",
           avatar: user?.avatar || "/placeholder.svg",
           rating: 4.7,
           totalSpent: 3000,
           location: "Remote",
-          verified: true
+          verified: true,
+          jobsPosted: 3,
+          hireRate: 85
         },
         budget: { type: 'fixed', amount: 1500 },
-        skills: ["Content Writing", "SEO", "Technology"],
+        skills: ["Content Writing", "SEO", "Technology", "Technical Writing"],
         duration: "1 month",
         experience: 'intermediate',
         proposals: 12,
         postedAt: "3 days ago",
         category: "writing",
-        featured: false
+        featured: false,
+        urgency: 'medium',
+        paymentVerified: true
       }
     ];
 
@@ -221,7 +304,6 @@ const Freelance = () => {
   };
 
   const loadProposals = async () => {
-    // Mock proposals data
     const mockProposals: Proposal[] = [
       {
         id: "prop-1",
@@ -231,22 +313,104 @@ const Freelance = () => {
           avatar: "/placeholder.svg",
           rating: 4.9,
           completedJobs: 45,
-          skills: ["Content Writing", "SEO", "Technical Writing"],
-          hourlyRate: 35
+          skills: ["Content Writing", "SEO", "Technical Writing", "Blog Writing"],
+          hourlyRate: 35,
+          successRate: 95,
+          responseTime: "2 hours",
+          lastActive: "Online now"
         },
-        coverLetter: "I'm an experienced tech writer with 5+ years creating engaging content for technology blogs. I specialize in making complex topics accessible to readers.",
+        coverLetter: "I'm an experienced tech writer with 5+ years creating engaging content for technology blogs. I specialize in making complex topics accessible to readers and have worked with several SaaS companies to improve their content strategy.",
         proposedRate: 1400,
         proposedDuration: "3 weeks",
+        deliverables: ["10 Blog Posts", "SEO Optimization", "Social Media Snippets", "Content Calendar"],
         submittedAt: "2 days ago",
         status: 'pending'
+      },
+      {
+        id: "prop-2",
+        jobId: "my-1",
+        freelancer: {
+          name: "Michael Chen",
+          avatar: "/placeholder.svg",
+          rating: 4.7,
+          completedJobs: 32,
+          skills: ["Content Writing", "Technical Documentation", "Copywriting"],
+          hourlyRate: 42,
+          successRate: 88,
+          responseTime: "4 hours",
+          lastActive: "2 hours ago"
+        },
+        coverLetter: "As a former software developer turned technical writer, I bring a unique perspective to tech content creation. I can explain complex concepts clearly and have a strong understanding of the development process.",
+        proposedRate: 1350,
+        proposedDuration: "4 weeks",
+        deliverables: ["12 Blog Posts", "Technical Documentation", "SEO Strategy"],
+        submittedAt: "1 day ago",
+        status: 'interview'
       }
     ];
 
     setProposals(mockProposals);
   };
 
+  const loadTopFreelancers = async () => {
+    const mockFreelancers: FreelancerProfile[] = [
+      {
+        id: "f1",
+        name: "Alex Rodriguez",
+        avatar: "/placeholder.svg",
+        title: "Full Stack Developer",
+        rating: 4.9,
+        completedJobs: 89,
+        totalEarnings: 125000,
+        skills: ["React", "Node.js", "Python", "AWS", "MongoDB"],
+        hourlyRate: 85,
+        availability: "Available now",
+        responseTime: "1 hour",
+        successRate: 98,
+        languages: ["English", "Spanish"],
+        certifications: ["AWS Certified", "React Professional"],
+        portfolio: [
+          {
+            id: "p1",
+            title: "E-commerce Platform",
+            description: "Built a full-featured e-commerce platform with React and Node.js",
+            image: "/placeholder.svg",
+            technologies: ["React", "Node.js", "MongoDB", "Stripe"]
+          }
+        ]
+      },
+      {
+        id: "f2",
+        name: "Emma Thompson",
+        avatar: "/placeholder.svg",
+        title: "UI/UX Designer",
+        rating: 4.8,
+        completedJobs: 67,
+        totalEarnings: 89000,
+        skills: ["Figma", "Adobe XD", "Sketch", "Prototyping", "User Research"],
+        hourlyRate: 75,
+        availability: "Available in 1 week",
+        responseTime: "2 hours",
+        successRate: 96,
+        languages: ["English", "French"],
+        certifications: ["Google UX Design", "Adobe Certified"],
+        portfolio: [
+          {
+            id: "p2",
+            title: "Mobile Banking App",
+            description: "Designed user-friendly mobile banking interface",
+            image: "/placeholder.svg",
+            technologies: ["Figma", "Prototyping", "User Testing"]
+          }
+        ]
+      }
+    ];
+
+    setTopFreelancers(mockFreelancers);
+  };
+
   const handlePostJob = () => {
-    if (!jobTitle || !jobDescription || !jobBudget) {
+    if (!jobTitle || !jobDescription || !jobBudget || !jobCategory) {
       notify.error("Please fill in all required fields");
       return;
     }
@@ -261,7 +425,9 @@ const Freelance = () => {
         rating: 4.7,
         totalSpent: 0,
         location: "Remote",
-        verified: true
+        verified: true,
+        jobsPosted: 1,
+        hireRate: 0
       },
       budget: {
         type: jobBudgetType,
@@ -273,7 +439,9 @@ const Freelance = () => {
       proposals: 0,
       postedAt: "Just now",
       category: jobCategory,
-      featured: false
+      featured: false,
+      urgency: jobUrgency,
+      paymentVerified: false
     };
 
     setMyJobs(prev => [newJob, ...prev]);
@@ -286,6 +454,7 @@ const Freelance = () => {
     setJobDuration("");
     setJobExperience("");
     setJobSkills([]);
+    setJobUrgency('medium');
 
     notify.success("Job posted successfully!");
     setActiveTab("my-jobs");
@@ -311,24 +480,76 @@ const Freelance = () => {
     return matchesCategory && matchesSearch;
   });
 
+  const getUrgencyBadge = (urgency: string) => {
+    switch (urgency) {
+      case 'high':
+        return <Badge variant="destructive" className="text-xs">Urgent</Badge>;
+      case 'medium':
+        return <Badge variant="secondary" className="text-xs">Medium</Badge>;
+      case 'low':
+        return <Badge variant="outline" className="text-xs">Low</Badge>;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="container max-w-6xl mx-auto py-6 px-4">
-      <div className="flex items-center justify-between mb-6">
+    <div className="container max-w-7xl mx-auto py-6 px-4 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Freelance Platform</h1>
-          <p className="text-muted-foreground">Find work or hire top talent</p>
+          <h1 className="text-3xl font-bold">Freelance Marketplace</h1>
+          <p className="text-muted-foreground">Connect with top talent or find your next opportunity</p>
         </div>
-        <Button onClick={() => setActiveTab("post-job")} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          Post a Job
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setActiveTab("browse")} className="flex items-center gap-2">
+            <Search className="h-4 w-4" />
+            Find Work
+          </Button>
+          <Button onClick={() => setActiveTab("post-job")} className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Post a Job
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-primary">{jobs.length}K+</div>
+            <div className="text-sm text-muted-foreground">Active Jobs</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-primary">50K+</div>
+            <div className="text-sm text-muted-foreground">Freelancers</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-primary">95%</div>
+            <div className="text-sm text-muted-foreground">Success Rate</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="text-2xl font-bold text-primary">$2M+</div>
+            <div className="text-sm text-muted-foreground">Total Paid</div>
+          </CardContent>
+        </Card>
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 mb-6">
+        <TabsList className="grid w-full grid-cols-5 mb-6">
           <TabsTrigger value="browse" className="flex items-center gap-2">
             <Search className="h-4 w-4" />
             Browse Jobs
+          </TabsTrigger>
+          <TabsTrigger value="freelancers" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Top Talent
           </TabsTrigger>
           <TabsTrigger value="my-jobs" className="flex items-center gap-2">
             <Briefcase className="h-4 w-4" />
@@ -346,7 +567,7 @@ const Freelance = () => {
         
         {/* Browse Jobs Tab */}
         <TabsContent value="browse" className="space-y-6">
-          {/* Filters */}
+          {/* Enhanced Filters */}
           <Card>
             <CardContent className="p-4">
               <div className="flex flex-wrap gap-4">
@@ -354,7 +575,7 @@ const Freelance = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search jobs..."
+                      placeholder="Search jobs, skills, or companies..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10"
@@ -376,6 +597,8 @@ const Freelance = () => {
                     <SelectItem value="ai-ml">AI & ML</SelectItem>
                     <SelectItem value="blockchain">Blockchain</SelectItem>
                     <SelectItem value="business">Business</SelectItem>
+                    <SelectItem value="translation">Translation</SelectItem>
+                    <SelectItem value="video-editing">Video Editing</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button variant="outline" className="flex items-center gap-2">
@@ -398,15 +621,25 @@ const Freelance = () => {
                           {job.title}
                         </h3>
                         {job.featured && <Badge variant="secondary">Featured</Badge>}
+                        {getUrgencyBadge(job.urgency)}
+                        {job.paymentVerified && (
+                          <Badge variant="outline" className="text-green-600 border-green-600">
+                            <Shield className="h-3 w-3 mr-1" />
+                            Payment Verified
+                          </Badge>
+                        )}
                       </div>
                       <p className="text-muted-foreground mb-4 line-clamp-2">
                         {job.description}
                       </p>
                       
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {job.skills.map((skill) => (
+                        {job.skills.slice(0, 5).map((skill) => (
                           <Badge key={skill} variant="outline">{skill}</Badge>
                         ))}
+                        {job.skills.length > 5 && (
+                          <Badge variant="outline">+{job.skills.length - 5} more</Badge>
+                        )}
                       </div>
                       
                       <div className="flex items-center gap-6 text-sm text-muted-foreground">
@@ -455,14 +688,87 @@ const Freelance = () => {
                           {job.client.location}
                         </div>
                         <div>${job.client.totalSpent.toLocaleString()}+ spent</div>
+                        <div>{job.client.jobsPosted} jobs posted</div>
+                        <div>{job.client.hireRate}% hire rate</div>
                       </div>
-                      <div className="text-xs text-muted-foreground">{job.postedAt}</div>
-                      <div className="flex gap-2 mt-2">
+                      <div className="text-xs text-muted-foreground mb-2">{job.postedAt}</div>
+                      <div className="flex gap-2">
                         <Button size="sm" variant="outline">
                           <Bookmark className="h-4 w-4" />
                         </Button>
                         <Button size="sm">Apply Now</Button>
                       </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* Top Freelancers Tab */}
+        <TabsContent value="freelancers" className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Top Rated Freelancers</h2>
+            <Button variant="outline">View All</Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {topFreelancers.map((freelancer) => (
+              <Card key={freelancer.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <Avatar className="h-16 w-16">
+                      <AvatarImage src={freelancer.avatar} />
+                      <AvatarFallback>{freelancer.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg">{freelancer.name}</h3>
+                      <p className="text-muted-foreground">{freelancer.title}</p>
+                      <div className="flex items-center gap-4 mt-2 text-sm">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span>{freelancer.rating}</span>
+                        </div>
+                        <span>{freelancer.completedJobs} jobs</span>
+                        <span className="text-green-600">${freelancer.hourlyRate}/hr</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div>
+                      <div className="text-sm text-muted-foreground mb-1">Skills</div>
+                      <div className="flex flex-wrap gap-1">
+                        {freelancer.skills.slice(0, 4).map((skill) => (
+                          <Badge key={skill} variant="outline" className="text-xs">{skill}</Badge>
+                        ))}
+                        {freelancer.skills.length > 4 && (
+                          <Badge variant="outline" className="text-xs">+{freelancer.skills.length - 4}</Badge>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <div className="text-muted-foreground">Success Rate</div>
+                        <div className="font-medium">{freelancer.successRate}%</div>
+                      </div>
+                      <div>
+                        <div className="text-muted-foreground">Response Time</div>
+                        <div className="font-medium">{freelancer.responseTime}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2 pt-2">
+                      <Button variant="outline" size="sm" className="flex-1">
+                        <MessageCircle className="h-4 w-4 mr-1" />
+                        Message
+                      </Button>
+                      <Button size="sm" className="flex-1">
+                        <Send className="h-4 w-4 mr-1" />
+                        Invite
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -487,7 +793,10 @@ const Freelance = () => {
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold mb-2">{job.title}</h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-lg font-semibold">{job.title}</h3>
+                        {getUrgencyBadge(job.urgency)}
+                      </div>
                       <p className="text-muted-foreground mb-4 line-clamp-2">
                         {job.description}
                       </p>
@@ -524,7 +833,7 @@ const Freelance = () => {
           </div>
         </TabsContent>
 
-        {/* Proposals Tab */}
+        {/* Enhanced Proposals Tab */}
         <TabsContent value="proposals" className="space-y-6">
           <h2 className="text-xl font-semibold">Received Proposals</h2>
           
@@ -546,9 +855,16 @@ const Freelance = () => {
                             {proposal.freelancer.rating}
                           </div>
                           <span>•</span>
-                          <span>{proposal.freelancer.completedJobs} jobs completed</span>
+                          <span>{proposal.freelancer.completedJobs} jobs</span>
+                          <span>•</span>
+                          <span>{proposal.freelancer.successRate}% success</span>
                           <span>•</span>
                           <span>${proposal.freelancer.hourlyRate}/hr</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                          <span className="text-green-600">{proposal.freelancer.lastActive}</span>
+                          <span>•</span>
+                          <span>Responds in {proposal.freelancer.responseTime}</span>
                         </div>
                       </div>
                     </div>
@@ -556,12 +872,27 @@ const Freelance = () => {
                     <div className="text-right">
                       <div className="font-semibold">${proposal.proposedRate}</div>
                       <div className="text-sm text-muted-foreground">in {proposal.proposedDuration}</div>
+                      <Badge variant={proposal.status === 'pending' ? 'secondary' : 'default'} className="mt-1">
+                        {proposal.status}
+                      </Badge>
                     </div>
                   </div>
                   
                   <div className="mb-4">
                     <h4 className="font-medium mb-2">Cover Letter</h4>
                     <p className="text-muted-foreground">{proposal.coverLetter}</p>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <h4 className="font-medium mb-2">Deliverables</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {proposal.deliverables.map((deliverable) => (
+                        <Badge key={deliverable} variant="outline" className="flex items-center gap-1">
+                          <CheckCircle className="h-3 w-3" />
+                          {deliverable}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -580,8 +911,14 @@ const Freelance = () => {
                         <MessageCircle className="h-4 w-4 mr-1" />
                         Message
                       </Button>
+                      <Button variant="outline" size="sm">
+                        <Eye className="h-4 w-4 mr-1" />
+                        View Profile
+                      </Button>
                       <Button variant="destructive" size="sm">Decline</Button>
-                      <Button size="sm">Accept</Button>
+                      <Button size="sm">
+                        {proposal.status === 'interview' ? 'Hire' : 'Interview'}
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -590,13 +927,13 @@ const Freelance = () => {
           </div>
         </TabsContent>
 
-        {/* Post Job Tab */}
+        {/* Enhanced Post Job Tab */}
         <TabsContent value="post-job" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Post a New Job</CardTitle>
               <CardDescription>
-                Describe what you need done and find the perfect freelancer
+                Describe what you need done and find the perfect freelancer for your project
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -614,14 +951,14 @@ const Freelance = () => {
                 <Label htmlFor="job-description">Job Description *</Label>
                 <Textarea
                   id="job-description"
-                  placeholder="Describe your project in detail. Include what you need done, any specific requirements, and what success looks like..."
+                  placeholder="Describe your project in detail. Include what you need done, any specific requirements, timeline, and what success looks like..."
                   className="min-h-[120px]"
                   value={jobDescription}
                   onChange={(e) => setJobDescription(e.target.value)}
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label>Category *</Label>
                   <Select value={jobCategory} onValueChange={setJobCategory}>
@@ -638,6 +975,8 @@ const Freelance = () => {
                       <SelectItem value="ai-ml">AI & ML</SelectItem>
                       <SelectItem value="blockchain">Blockchain</SelectItem>
                       <SelectItem value="business">Business</SelectItem>
+                      <SelectItem value="translation">Translation</SelectItem>
+                      <SelectItem value="video-editing">Video Editing</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -652,6 +991,20 @@ const Freelance = () => {
                       <SelectItem value="entry">Entry Level</SelectItem>
                       <SelectItem value="intermediate">Intermediate</SelectItem>
                       <SelectItem value="expert">Expert</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Project Urgency</Label>
+                  <Select value={jobUrgency} onValueChange={(value) => setJobUrgency(value as any)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select urgency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low Priority</SelectItem>
+                      <SelectItem value="medium">Medium Priority</SelectItem>
+                      <SelectItem value="high">Urgent</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -711,7 +1064,7 @@ const Freelance = () => {
               </div>
 
               <div className="space-y-4">
-                <Label>Required Skills</Label>
+                <Label>Required Skills *</Label>
                 <div className="flex gap-2">
                   <Select value={newSkill} onValueChange={setNewSkill}>
                     <SelectTrigger className="flex-1">
@@ -739,10 +1092,23 @@ const Freelance = () => {
 
               <Separator />
 
+              <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
+                <h4 className="font-medium mb-2 flex items-center gap-2">
+                  <Zap className="h-4 w-4" />
+                  Job Posting Tips
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  <li>• Be specific about your requirements and expectations</li>
+                  <li>• Include examples or references when possible</li>
+                  <li>• Set a realistic budget and timeline</li>
+                  <li>• List all required skills to attract qualified freelancers</li>
+                </ul>
+              </div>
+
               <div className="flex justify-end gap-4">
                 <Button variant="outline">Save as Draft</Button>
                 <Button onClick={handlePostJob}>
-                  Post Job
+                  Post Job - Free
                 </Button>
               </div>
             </CardContent>
