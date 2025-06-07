@@ -237,7 +237,7 @@ export class MemStorage implements IStorage {
       boostUntil: insertProduct.boostUntil ?? null,
       inStock: true,
       rating: "0",
-      reviewCount: "0",
+      reviewCount: 0,
     };
     this.products.set(id, product);
     return product;

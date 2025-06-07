@@ -29,8 +29,8 @@ const EnhancedP2PMarketplace = () => {
   const [tradingLimits, setTradingLimits] = useState<any>(null);
   const { toast } = useToast();
 
-  // Mock user ID - in real app, get from auth context
-  const currentUserId = "user-123";
+  // Generate a proper UUID for demo purposes
+  const currentUserId = crypto.randomUUID();
 
   useEffect(() => {
     loadData();
