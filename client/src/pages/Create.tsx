@@ -143,11 +143,11 @@ const Create = () => {
   });
 
   const JobCard = ({ job }: { job: JobOffer }) => (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow bg-card border-border">
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-4">
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-foreground mb-2">{job.title}</h3>
+            <h3 className="text-lg font-semibold text-card-foreground mb-2">{job.title}</h3>
             <p className="text-muted-foreground text-sm mb-3 line-clamp-2">{job.description}</p>
           </div>
           <Badge variant={job.type === 'fixed' ? 'default' : 'secondary'} className="ml-4">
@@ -207,7 +207,7 @@ const Create = () => {
   );
 
   const FreelancerCard = ({ freelancer }: { freelancer: FreelancerProfile }) => (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow bg-card border-border">
       <CardContent className="p-6">
         <div className="flex items-start gap-4 mb-4">
           <Avatar className="h-16 w-16">
@@ -215,7 +215,7 @@ const Create = () => {
             <AvatarFallback>{freelancer.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-foreground">{freelancer.name}</h3>
+            <h3 className="text-lg font-semibold text-card-foreground">{freelancer.name}</h3>
             <p className="text-muted-foreground text-sm mb-2">{freelancer.title}</p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
@@ -257,7 +257,7 @@ const Create = () => {
   );
 
   return (
-    <div className="container py-6 max-w-7xl">
+    <div className="container py-6 max-w-7xl bg-background">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-foreground mb-2">Freelance Marketplace</h1>
         <p className="text-muted-foreground">Find talent or discover opportunities</p>
@@ -272,7 +272,7 @@ const Create = () => {
         </TabsList>
 
         <TabsContent value="browse-jobs" className="space-y-6">
-          <Card>
+          <Card className="bg-card border-border">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
@@ -315,7 +315,7 @@ const Create = () => {
         </TabsContent>
 
         <TabsContent value="find-talent" className="space-y-6">
-          <Card>
+          <Card className="bg-card border-border">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
@@ -355,13 +355,13 @@ const Create = () => {
         </TabsContent>
 
         <TabsContent value="post-job" className="space-y-6">
-          <Card>
+          <Card className="bg-card border-border">
             <CardHeader>
-              <CardTitle>Post a New Job</CardTitle>
+              <CardTitle className="text-card-foreground">Post a New Job</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Job Title</label>
+                <label className="text-sm font-medium text-card-foreground">Job Title</label>
                 <Input
                   placeholder="e.g., Build a React Native mobile app"
                   value={jobForm.title}
@@ -370,7 +370,7 @@ const Create = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium text-card-foreground">Description</label>
                 <Textarea
                   placeholder="Describe your project in detail..."
                   rows={6}
@@ -381,7 +381,7 @@ const Create = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Budget</label>
+                  <label className="text-sm font-medium text-card-foreground">Budget</label>
                   <Input
                     placeholder="e.g., 5000"
                     value={jobForm.budget}
@@ -389,7 +389,7 @@ const Create = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Deadline</label>
+                  <label className="text-sm font-medium text-card-foreground">Deadline</label>
                   <Input
                     type="date"
                     value={jobForm.deadline}
@@ -399,7 +399,7 @@ const Create = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Required Skills</label>
+                <label className="text-sm font-medium text-card-foreground">Required Skills</label>
                 <Input
                   placeholder="e.g., React, Node.js, MongoDB"
                   value={jobForm.skills}
@@ -408,7 +408,7 @@ const Create = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Project Type</label>
+                <label className="text-sm font-medium text-card-foreground">Project Type</label>
                 <Select value={jobForm.type} onValueChange={(value) => setJobForm({ ...jobForm, type: value })}>
                   <SelectTrigger>
                     <SelectValue />
@@ -430,7 +430,7 @@ const Create = () => {
         <TabsContent value="my-projects" className="space-y-6">
           <div className="text-center py-12">
             <Briefcase className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-foreground mb-2">No Projects Yet</h3>
+            <h3 className="text-lg font-medium text-card-foreground mb-2">No Projects Yet</h3>
             <p className="text-muted-foreground mb-4">Start by posting your first job or applying to projects</p>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
