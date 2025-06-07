@@ -191,7 +191,7 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-softchat-600 to-softchat-700 text-white hover:from-softchat-700 hover:to-softchat-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 h-10 py-2 px-4;
+    @apply bg-gradient-to-r from-softchat-600 to-softchat-700 text-white hover:from-softchat-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 h-10 py-2 px-4;
   }
 
   .btn-secondary {
