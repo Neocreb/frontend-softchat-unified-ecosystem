@@ -148,4 +148,44 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .mobile-container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-text {
+    @apply text-sm sm:text-base;
+  }
+
+  .mobile-grid {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .mobile-flex {
+    @apply flex-col sm:flex-row;
+  }
+
+  .mobile-gap {
+    @apply gap-2 sm:gap-4 lg:gap-6;
+  }
+
+  .responsive-text {
+    @apply text-xs sm:text-sm md:text-base;
+  }
+
+  .responsive-padding {
+    @apply p-2 sm:p-4 md:p-6;
+  }
+
+  .responsive-margin {
+    @apply m-2 sm:m-4 md:m-6;
+  }
 }

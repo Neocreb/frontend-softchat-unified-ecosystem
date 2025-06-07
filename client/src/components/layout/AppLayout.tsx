@@ -1,24 +1,18 @@
-
 import { Outlet } from "react-router-dom";
-import EnhancedHeader from "./EnhancedHeader";
+import Header from "./Header";
 import FooterNav from "./FooterNav";
-import { useAuth } from "@/contexts/AuthContext";
-import AdminSidebar from "./AdminSidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const AppLayout = () => {
-  const { user } = useAuth();
-  const isAdmin = user?.role === "admin";
+  const isMobile = useIsMobile();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <EnhancedHeader />
-      <div className="flex flex-1 w-full max-w-screen-xl mx-auto">
-        {isAdmin && <AdminSidebar />}
-        <main className="flex-1 w-full pb-16 md:pb-0">
-          <Outlet />
-        </main>
-      </div>
-      <FooterNav />
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className={`container mx-auto px-4 py-6 ${isMobile ? 'pt-20 pb-20' : 'pt-6'}`}>
+        <Outlet />
+      </main>
+      {isMobile && <FooterNav />}
     </div>
   );
 };

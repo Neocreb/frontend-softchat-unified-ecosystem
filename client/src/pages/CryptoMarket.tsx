@@ -205,18 +205,18 @@ const CryptoMarket = () => {
         <h1 className="text-2xl font-bold mb-6">Crypto Market</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-6 mb-8">
-            <TabsTrigger value="market">Market</TabsTrigger>
-            <TabsTrigger value="trading">Pro Trading</TabsTrigger>
-            <TabsTrigger value="p2p">P2P</TabsTrigger>
-            <TabsTrigger value="enhanced-p2p">Enhanced P2P</TabsTrigger>
-            <TabsTrigger value="convert">Convert</TabsTrigger>
-            <TabsTrigger value="wallet">Wallet</TabsTrigger>
+          <TabsList className="w-full grid grid-cols-3 md:grid-cols-6 mb-8 h-auto">
+            <TabsTrigger value="market" className="text-xs md:text-sm">Market</TabsTrigger>
+            <TabsTrigger value="trading" className="text-xs md:text-sm">Pro Trading</TabsTrigger>
+            <TabsTrigger value="p2p" className="text-xs md:text-sm">P2P</TabsTrigger>
+            <TabsTrigger value="enhanced-p2p" className="text-xs md:text-sm">Enhanced P2P</TabsTrigger>
+            <TabsTrigger value="convert" className="text-xs md:text-sm">Convert</TabsTrigger>
+            <TabsTrigger value="wallet" className="text-xs md:text-sm">Wallet</TabsTrigger>
           </TabsList>
 
           <TabsContent value="market" className="w-full">
-            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-              <div className="xl:col-span-3">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <div className="lg:col-span-3">
                 {isLoading || !selectedCrypto ? (
                   <Card>
                     <CardContent className="p-0">

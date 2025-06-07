@@ -37,8 +37,8 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container max-w-[680px] flex h-16 items-center justify-between">
+    <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container max-w-full px-4 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           {isMobile && (
             <Button
@@ -178,11 +178,11 @@ const Header = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
+          "fixed inset-0 top-16 z-[100] grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
           mobileMenuOpen ? "block" : "hidden"
         )}
       >
-        <div className="relative z-20 grid gap-6 rounded-md bg-background p-4">
+        <div className="relative z-20 grid gap-6 rounded-md bg-background p-4 max-w-sm mx-auto">
           <Link to="/" className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMobileMenuOpen(false)}>
             <Home className="h-5 w-5" />
             <span>Feed</span>
