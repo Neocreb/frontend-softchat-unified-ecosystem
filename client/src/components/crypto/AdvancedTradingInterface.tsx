@@ -314,19 +314,19 @@ const AdvancedTradingInterface: React.FC = () => {
                     <Bookmark className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
-                <div className="flex items-center gap-2 md:gap-6 w-full md:w-auto justify-between md:justify-end">
-                  <div>
-                    <div className="text-lg md:text-2xl font-bold">${formatNumber(currentPrice)}</div>
-                    <div className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {priceChange >= 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
-                      <span className="text-xs md:text-sm">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs md:text-sm text-gray-400">24h Volume</div>
-                    <div className="font-medium text-sm md:text-base">{formatVolume(volume24h)} USDT</div>
+                <div className="flex items-center gap-3 md:gap-6 w-full md:w-auto justify-between md:justify-end">
+                <div className="min-w-0">
+                  <div className="text-lg md:text-2xl font-bold text-white">${formatNumber(currentPrice)}</div>
+                  <div className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {priceChange >= 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
+                    <span className="text-xs md:text-sm whitespace-nowrap">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
                   </div>
                 </div>
+                <div className="text-right min-w-0">
+                  <div className="text-xs md:text-sm text-gray-300">24h Volume</div>
+                  <div className="font-medium text-sm md:text-base text-white">{formatVolume(volume24h)} USDT</div>
+                </div>
+              </div>
               </div>
             </CardContent>
           </Card>
