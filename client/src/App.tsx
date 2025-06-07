@@ -170,7 +170,6 @@ const AppRoutes = () => {
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<Settings />} />
-        <Route path="enhanced" element={<EnhancedPlatform />} />
 
       </Route>
 

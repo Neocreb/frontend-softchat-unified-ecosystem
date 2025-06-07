@@ -188,4 +188,32 @@
   .responsive-margin {
     @apply m-2 sm:m-4 md:m-6;
   }
+
+  .tiktok-container {
+    @apply h-screen overflow-hidden bg-black;
+  }
+
+  .tiktok-video {
+    @apply w-full h-full object-cover;
+  }
+
+  .tiktok-overlay {
+    @apply absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50;
+  }
+
+  .tiktok-actions {
+    @apply absolute right-4 bottom-32 flex flex-col gap-4 z-20;
+  }
+
+  .tiktok-action-btn {
+    @apply w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border-0 text-white hover:bg-white/30 transition-all duration-200 hover:scale-110;
+  }
+
+  .swipe-indicator {
+    @apply absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-black/70 to-transparent pointer-events-none;
+  }
+
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
 }

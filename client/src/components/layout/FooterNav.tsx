@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { Home, Search, Video, ShoppingCart, TrendingUp, Wallet, Plus, Zap } from "lucide-react";
 import { cn } from "@/utils/utils";
@@ -45,18 +44,11 @@ const FooterNav = () => {
       href: "/crypto",
       active: location.pathname === "/crypto" || location.pathname.startsWith("/crypto"),
     },
-    {
-      icon: Zap,
-      label: "Enhanced",
-      href: "/enhanced",
-      active: location.pathname === "/enhanced",
-      special: true,
-    },
   ];
 
   return (
     <div className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb">
-      <div className="grid grid-cols-7 h-16 px-2">
+      <div className="grid grid-cols-6 h-16 px-2">
         {navItems.map((item) => (
           <Link key={item.href} to={item.href} className="w-full">
             <Button
