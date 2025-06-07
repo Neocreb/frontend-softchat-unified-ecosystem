@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -87,10 +88,17 @@ const AdvancedTradingInterface: React.FC = () => {
     { symbol: 'SOL/USDT', price: 98.45, change: -2.15, changePercent: -2.14 }
   ];
 
+  const [orderBookData, setOrderBookData] = useState([
+    { price: 43200, amount: 0.5, type: 'buy' },
+    { price: 43250, amount: 0.3, type: 'sell' },
+    { price: 43180, amount: 0.7, type: 'buy' },
+    { price: 43270, amount: 0.4, type: 'sell' },
+  ]);
+
   useEffect(() => {
     generateMockData();
     initializeChart();
-    
+
     // Simulate real-time updates
     const interval = setInterval(() => {
       updateMarketData();
@@ -104,35 +112,35 @@ const AdvancedTradingInterface: React.FC = () => {
     const basePrice = currentPrice;
     const asks: OrderBookEntry[] = [];
     const bids: OrderBookEntry[] = [];
-    
+
     for (let i = 0; i < 15; i++) {
       const askPrice = basePrice + (i + 1) * 10;
       const bidPrice = basePrice - (i + 1) * 10;
       const askAmount = Math.random() * 2 + 0.1;
       const bidAmount = Math.random() * 2 + 0.1;
-      
+
       asks.push({
         price: askPrice,
         amount: askAmount,
         total: askPrice * askAmount
       });
-      
+
       bids.push({
         price: bidPrice,
         amount: bidAmount,
         total: bidPrice * bidAmount
       });
     }
-    
+
     setOrderBook({ asks, bids });
-    
+
     // Generate recent trades
     const trades: Trade[] = [];
     for (let i = 0; i < 20; i++) {
       const price = basePrice + (Math.random() - 0.5) * 100;
       const amount = Math.random() * 0.5 + 0.01;
       const time = new Date(Date.now() - i * 60000).toLocaleTimeString();
-      
+
       trades.push({
         id: `trade-${i}`,
         price,
@@ -141,9 +149,9 @@ const AdvancedTradingInterface: React.FC = () => {
         type: Math.random() > 0.5 ? 'buy' : 'sell'
       });
     }
-    
+
     setRecentTrades(trades);
-    
+
     // Generate sample orders
     const sampleOrders: Order[] = [
       {
@@ -167,7 +175,7 @@ const AdvancedTradingInterface: React.FC = () => {
         timestamp: new Date(Date.now() - 3600000).toISOString()
       }
     ];
-    
+
     setOpenOrders(sampleOrders.filter(o => o.status === 'pending'));
     setOrderHistory(sampleOrders);
   };
@@ -218,7 +226,7 @@ const AdvancedTradingInterface: React.FC = () => {
 
     setOpenOrders(prev => [...prev, newOrder]);
     setOrderHistory(prev => [...prev, newOrder]);
-    
+
     toast({
       title: "Order Placed",
       description: `${orderSide.toUpperCase()} ${amount} ${selectedPair.split('/')[0]} at ${orderType === 'market' ? 'market price' : `$${price}`}`
@@ -255,7 +263,7 @@ const AdvancedTradingInterface: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-4">
       <div className="grid grid-cols-12 gap-4 h-screen">
-        
+
         {/* Trading Pairs Sidebar */}
         <div className="col-span-2 space-y-4">
           <Card className="bg-gray-900 border-gray-700">
@@ -405,13 +413,13 @@ const AdvancedTradingInterface: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 {/* Spread */}
                 <div className="py-2 text-center border-y border-gray-700">
                   <span className="text-lg font-bold">${formatNumber(currentPrice)}</span>
                   <div className="text-xs text-gray-400">Spread: ${formatNumber(orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0)}</div>
                 </div>
-                
+
                 {/* Bids */}
                 <div className="space-y-1">
                   {orderBook.bids.slice(0, 8).map((bid, index) => (
@@ -473,7 +481,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     />
                   </div>
                 )}
-                
+
                 {orderType === 'stop-loss' && (
                   <div>
                     <label className="text-sm text-gray-400">Stop Price (USDT)</label>
@@ -486,7 +494,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     />
                   </div>
                 )}
-                
+
                 <div>
                   <label className="text-sm text-gray-400">Amount ({selectedPair.split('/')[0]})</label>
                   <Input
@@ -497,7 +505,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     className="bg-gray-800 border-gray-600"
                   />
                 </div>
-                
+
                 {/* Percentage Buttons */}
                 <div className="grid grid-cols-4 gap-1">
                   {[25, 50, 75, 100].map((percent) => (

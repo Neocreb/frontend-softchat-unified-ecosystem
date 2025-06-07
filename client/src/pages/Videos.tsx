@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Heart, MessageCircle, Share, Plus, Music, Volume2, VolumeX, MoreHorizontal, Bookmark, Flag } from 'lucide-react';
@@ -258,7 +257,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({ video, i
                   </button>
                 )}
               </p>
-              
+
               {/* Hashtags */}
               <div className="flex flex-wrap gap-1 mt-2">
                 {video.hashtags.map((tag) => (
@@ -384,7 +383,7 @@ const Videos: React.FC = () => {
       const scrollTop = container.scrollTop;
       const videoHeight = window.innerHeight;
       const newIndex = Math.round(scrollTop / videoHeight);
-      
+
       if (newIndex !== currentVideoIndex && newIndex >= 0 && newIndex < mockVideos.length) {
         setCurrentVideoIndex(newIndex);
       }
@@ -395,77 +394,173 @@ const Videos: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <>
+    <div className="min-h-screen bg-black text-white">
       <Helmet>
         <title>Videos | Softchat</title>
       </Helmet>
 
-      <div className="relative h-screen overflow-hidden bg-black">
-        {/* Video container */}
-        <div
-          ref={containerRef}
-          className="h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
-          style={{ scrollBehavior: 'smooth' }}
-        >
-          {mockVideos.map((video, index) => (
-            <VideoCard
-              key={video.id}
-              video={video}
-              isActive={index === currentVideoIndex}
-            />
-          ))}
-        </div>
-
-        {/* Create button */}
-        <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
-          <DialogTrigger asChild>
+      {/* Header - Mobile Only */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-gray-800">
+        <div className="flex items-center justify-between p-3">
+          <h1 className="text-lg font-bold">Videos</h1>
+          <div className="flex items-center gap-3">
             <Button
+              variant="ghost"
               size="icon"
-              className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 shadow-lg z-50"
+              className="text-white hover:bg-gray-800 h-8 w-8"
             >
-              <Plus className="w-6 h-6 text-white" />
+              <Search className="h-4 w-4" />
             </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <EnhancedVideoCreator onClose={() => setIsCreatorOpen(false)} />
-          </DialogContent>
-        </Dialog>
-
-        {/* Navigation dots */}
-        <div className="fixed right-2 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-40">
-          {mockVideos.map((_, index) => (
-            <button
-              key={index}
-              className={cn(
-                "w-2 h-2 rounded-full transition-all",
-                index === currentVideoIndex
-                  ? "bg-white scale-125"
-                  : "bg-white/50 hover:bg-white/70"
-              )}
-              onClick={() => {
-                const container = containerRef.current;
-                if (container) {
-                  container.scrollTo({
-                    top: index * window.innerHeight,
-                    behavior: 'smooth'
-                  });
-                }
-              }}
-            />
-          ))}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-gray-800 h-8 w-8"
+            >
+              <User className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
 
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-    </>
+      {/* Main Content */}
+      <div className="relative">
+        {/* Desktop Sidebar */}
+        <div className="hidden md:block fixed left-0 top-0 h-full w-16 bg-black/50 z-40">
+          <div className="flex flex-col items-center pt-20 space-y-6">
+            <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+              <Home className="h-6 w-6" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+              <Search className="h-6 w-6" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+              <Heart className="h-6 w-6" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+              <User className="h-6 w-6" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Video Feed */}
+        <div className="md:ml-16 pt-14 md:pt-0 pb-20 md:pb-0">
+          <div className="max-w-md mx-auto">
+            {mockVideos.map((video, index) => (
+              <div
+                key={video.id}
+                className="relative h-[calc(100vh-3.5rem)] md:h-screen w-full snap-start flex items-center justify-center"
+              >
+                {/* Video */}
+                <video
+                  src={video.videoUrl}
+                  poster={video.thumbnail}
+                  className="absolute top-0 left-0 w-full h-full object-cover"
+                  muted
+                  loop
+                  autoPlay
+                />
+
+                {/* Overlays */}
+                <div className="absolute top-0 left-0 w-full h-full bg-black/30"></div>
+
+                {/* Video Info */}
+                <div className="absolute bottom-3 md:bottom-4 left-3 md:left-4 right-16 md:right-20 z-30">
+                  <div className="text-white">
+                    <div className="flex items-center space-x-2 md:space-x-3 mb-2">
+                      <img
+                        src={video.user.avatar}
+                        alt={video.user.displayName}
+                        className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-xs md:text-sm truncate">{video.user.displayName}</h3>
+                        <p className="text-xs text-gray-300 truncate">@{video.user.username}</p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-white border-white hover:bg-white hover:text-black text-xs px-2 md:px-3 py-1 h-7 md:h-8"
+                      >
+                        Follow
+                      </Button>
+                    </div>
+                    <p className="text-xs md:text-sm mb-2 line-clamp-2">{video.description}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {video.hashtags.slice(0, 3).map((tag, tagIndex) => (
+                        <span key={tagIndex} className="text-xs text-blue-300">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Video Actions */}
+                <div className="absolute right-3 md:right-4 bottom-24 md:bottom-20 flex flex-col space-y-3 md:space-y-4 z-30">
+                  <div className="flex flex-col items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
+                    >
+                      <Heart className="h-5 w-5 md:h-6 md:w-6" />
+                    </Button>
+                    <span className="text-white text-xs mt-1">{video.stats.likes}</span>
+                  </div>
+
+                  <div className="flex flex-col items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
+                    >
+                      <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />
+                    </Button>
+                    <span className="text-white text-xs mt-1">{video.stats.comments}</span>
+                  </div>
+
+                  <div className="flex flex-col items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
+                    >
+                      <Share className="h-5 w-5 md:h-6 md:w-6" />
+                    </Button>
+                    <span className="text-white text-xs mt-1">{video.stats.shares}</span>
+                  </div>
+
+                  <div className="flex flex-col items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
+                    >
+                      <MoreHorizontal className="h-5 w-5 md:h-6 md:w-6" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Create Button */}
+        <Button
+          onClick={() => setIsCreatorOpen(true)}
+          className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-12 h-12 md:w-16 md:h-16 shadow-lg"
+        >
+          <Plus className="h-6 w-6 md:h-8 md:w-8" />
+        </Button>
+      </div>
+
+      {/* Creator Modal */}
+      <Dialog open={isCreatorOpen} onOpenChange={setShowCreator}>
+        <DialogContent className="max-w-2xl bg-black border border-gray-800 rounded-lg p-4">
+          <EnhancedVideoCreator onClose={() => setShowCreator(false)} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 
