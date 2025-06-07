@@ -24,7 +24,7 @@ import {
   ThumbsUp,
   Laugh,
   Angry,
-  Sad
+  Frown
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 

@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import FooterNav from "@/components/layout/FooterNav";
 import VideoPlayer from "@/components/videos/VideoPlayer";
 import AdCard from "@/components/videos/AdCard";
+import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import { useVideos } from "@/hooks/use-videos";
 import { VideoItem, AdItem } from "@/types/video";
-import { ArrowUpIcon } from "lucide-react";
+import { ArrowUpIcon, Plus, Compass, TrendingUp, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Videos = () => {
   const { user } = useAuth();
