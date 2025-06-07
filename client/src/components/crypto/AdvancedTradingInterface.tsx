@@ -261,31 +261,31 @@ const AdvancedTradingInterface: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-4">
-      <div className="grid grid-cols-12 gap-4 h-screen">
+    <div className="min-h-screen bg-gray-950 text-white p-2 md:p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
 
         {/* Trading Pairs Sidebar */}
-        <div className="col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-2 md:space-y-4">
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Activity className="w-5 h-5" />
+            <CardHeader className="pb-2 md:pb-3">
+              <CardTitle className="text-sm md:text-lg flex items-center gap-2">
+                <Activity className="w-4 h-4 md:w-5 md:h-5" />
                 Markets
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-1 md:space-y-2 max-h-40 md:max-h-none overflow-y-auto">
               {tradingPairs.map((pair) => (
                 <div
                   key={pair.symbol}
-                  className={`p-2 rounded cursor-pointer transition-colors ${
+                  className={`p-1 md:p-2 rounded cursor-pointer transition-colors ${
                     selectedPair === pair.symbol ? 'bg-blue-600' : 'hover:bg-gray-800'
                   }`}
                   onClick={() => setSelectedPair(pair.symbol)}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-sm">{pair.symbol}</span>
+                    <span className="font-medium text-xs md:text-sm">{pair.symbol}</span>
                     <div className="text-right">
-                      <div className="text-sm">${formatNumber(pair.price)}</div>
+                      <div className="text-xs md:text-sm">${formatNumber(pair.price)}</div>
                       <div className={`text-xs ${pair.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {pair.change >= 0 ? '+' : ''}{pair.changePercent.toFixed(2)}%
                       </div>
@@ -298,33 +298,33 @@ const AdvancedTradingInterface: React.FC = () => {
         </div>
 
         {/* Main Trading Area */}
-        <div className="col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-2 md:space-y-4">
           {/* Price Header */}
           <Card className="bg-gray-900 border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <h1 className="text-2xl font-bold">{selectedPair}</h1>
+            <CardContent className="p-2 md:p-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 md:gap-0">
+                <div className="flex items-center gap-2 md:gap-4">
+                  <h1 className="text-lg md:text-2xl font-bold">{selectedPair}</h1>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsWatchlisted(!isWatchlisted)}
-                    className={isWatchlisted ? 'text-yellow-400' : 'text-gray-400'}
+                    className={`h-6 w-6 md:h-8 md:w-8 ${isWatchlisted ? 'text-yellow-400' : 'text-gray-400'}`}
                   >
-                    <Bookmark className="w-4 h-4" />
+                    <Bookmark className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2 md:gap-6 w-full md:w-auto justify-between md:justify-end">
                   <div>
-                    <div className="text-2xl font-bold">${formatNumber(currentPrice)}</div>
-                    <div className={`flex items-center gap-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {priceChange >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                      <span>{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
+                    <div className="text-lg md:text-2xl font-bold">${formatNumber(currentPrice)}</div>
+                    <div className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      {priceChange >= 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
+                      <span className="text-xs md:text-sm">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm text-gray-400">24h Volume</div>
-                    <div className="font-medium">{formatVolume(volume24h)} USDT</div>
+                    <div className="text-xs md:text-sm text-gray-400">24h Volume</div>
+                    <div className="font-medium text-sm md:text-base">{formatVolume(volume24h)} USDT</div>
                   </div>
                 </div>
               </div>
@@ -333,12 +333,12 @@ const AdvancedTradingInterface: React.FC = () => {
 
           {/* Chart */}
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 md:pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Price Chart</CardTitle>
-                <div className="flex items-center gap-2">
+                <CardTitle className="text-sm md:text-lg">Price Chart</CardTitle>
+                <div className="flex items-center gap-1 md:gap-2">
                   <Select value={chartTimeframe} onValueChange={setChartTimeframe}>
-                    <SelectTrigger className="w-20 bg-gray-800 border-gray-600">
+                    <SelectTrigger className="w-12 md:w-20 bg-gray-800 border-gray-600 text-xs md:text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-800 border-gray-600">
@@ -350,14 +350,14 @@ const AdvancedTradingInterface: React.FC = () => {
                       <SelectItem value="1d">1d</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="ghost" size="icon">
-                    <Settings className="w-4 h-4" />
+                  <Button variant="ghost" size="icon" className="h-6 w-6 md:h-8 md:w-8">
+                    <Settings className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div ref={chartRef} className="h-96 bg-gray-800 rounded"></div>
+              <div ref={chartRef} className="h-48 md:h-96 bg-gray-800 rounded"></div>
             </CardContent>
           </Card>
 
@@ -390,7 +390,7 @@ const AdvancedTradingInterface: React.FC = () => {
         </div>
 
         {/* Order Book & Trading Panel */}
-        <div className="col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-2 md:space-y-4">
           {/* Order Book */}
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-3">
