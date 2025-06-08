@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -87,10 +88,17 @@ const AdvancedTradingInterface: React.FC = () => {
     { symbol: 'SOL/USDT', price: 98.45, change: -2.15, changePercent: -2.14 }
   ];
 
+  const [orderBookData, setOrderBookData] = useState([
+    { price: 43200, amount: 0.5, type: 'buy' },
+    { price: 43250, amount: 0.3, type: 'sell' },
+    { price: 43180, amount: 0.7, type: 'buy' },
+    { price: 43270, amount: 0.4, type: 'sell' },
+  ]);
+
   useEffect(() => {
     generateMockData();
     initializeChart();
-    
+
     // Simulate real-time updates
     const interval = setInterval(() => {
       updateMarketData();
@@ -104,35 +112,35 @@ const AdvancedTradingInterface: React.FC = () => {
     const basePrice = currentPrice;
     const asks: OrderBookEntry[] = [];
     const bids: OrderBookEntry[] = [];
-    
+
     for (let i = 0; i < 15; i++) {
       const askPrice = basePrice + (i + 1) * 10;
       const bidPrice = basePrice - (i + 1) * 10;
       const askAmount = Math.random() * 2 + 0.1;
       const bidAmount = Math.random() * 2 + 0.1;
-      
+
       asks.push({
         price: askPrice,
         amount: askAmount,
         total: askPrice * askAmount
       });
-      
+
       bids.push({
         price: bidPrice,
         amount: bidAmount,
         total: bidPrice * bidAmount
       });
     }
-    
+
     setOrderBook({ asks, bids });
-    
+
     // Generate recent trades
     const trades: Trade[] = [];
     for (let i = 0; i < 20; i++) {
       const price = basePrice + (Math.random() - 0.5) * 100;
       const amount = Math.random() * 0.5 + 0.01;
       const time = new Date(Date.now() - i * 60000).toLocaleTimeString();
-      
+
       trades.push({
         id: `trade-${i}`,
         price,
@@ -141,9 +149,9 @@ const AdvancedTradingInterface: React.FC = () => {
         type: Math.random() > 0.5 ? 'buy' : 'sell'
       });
     }
-    
+
     setRecentTrades(trades);
-    
+
     // Generate sample orders
     const sampleOrders: Order[] = [
       {
@@ -167,7 +175,7 @@ const AdvancedTradingInterface: React.FC = () => {
         timestamp: new Date(Date.now() - 3600000).toISOString()
       }
     ];
-    
+
     setOpenOrders(sampleOrders.filter(o => o.status === 'pending'));
     setOrderHistory(sampleOrders);
   };
@@ -218,7 +226,7 @@ const AdvancedTradingInterface: React.FC = () => {
 
     setOpenOrders(prev => [...prev, newOrder]);
     setOrderHistory(prev => [...prev, newOrder]);
-    
+
     toast({
       title: "Order Placed",
       description: `${orderSide.toUpperCase()} ${amount} ${selectedPair.split('/')[0]} at ${orderType === 'market' ? 'market price' : `$${price}`}`
@@ -253,31 +261,31 @@ const AdvancedTradingInterface: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-4">
-      <div className="grid grid-cols-12 gap-4 h-screen">
-        
+    <div className="min-h-screen bg-gray-950 text-white p-2 md:p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
+
         {/* Trading Pairs Sidebar */}
-        <div className="col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-2 md:space-y-4">
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Activity className="w-5 h-5" />
+            <CardHeader className="pb-2 md:pb-3">
+              <CardTitle className="text-sm md:text-lg flex items-center gap-2">
+                <Activity className="w-4 h-4 md:w-5 md:h-5" />
                 Markets
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2">
+            <CardContent className="space-y-1 md:space-y-2 max-h-40 md:max-h-none overflow-y-auto">
               {tradingPairs.map((pair) => (
                 <div
                   key={pair.symbol}
-                  className={`p-2 rounded cursor-pointer transition-colors ${
+                  className={`p-1 md:p-2 rounded cursor-pointer transition-colors ${
                     selectedPair === pair.symbol ? 'bg-blue-600' : 'hover:bg-gray-800'
                   }`}
                   onClick={() => setSelectedPair(pair.symbol)}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-sm">{pair.symbol}</span>
+                    <span className="font-medium text-xs md:text-sm">{pair.symbol}</span>
                     <div className="text-right">
-                      <div className="text-sm">${formatNumber(pair.price)}</div>
+                      <div className="text-xs md:text-sm">${formatNumber(pair.price)}</div>
                       <div className={`text-xs ${pair.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {pair.change >= 0 ? '+' : ''}{pair.changePercent.toFixed(2)}%
                       </div>
@@ -290,47 +298,47 @@ const AdvancedTradingInterface: React.FC = () => {
         </div>
 
         {/* Main Trading Area */}
-        <div className="col-span-7 space-y-4">
+        <div className="lg:col-span-7 space-y-2 md:space-y-4">
           {/* Price Header */}
           <Card className="bg-gray-900 border-gray-700">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <h1 className="text-2xl font-bold">{selectedPair}</h1>
+            <CardContent className="p-2 md:p-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 md:gap-0">
+                <div className="flex items-center gap-2 md:gap-4">
+                  <h1 className="text-lg md:text-2xl font-bold">{selectedPair}</h1>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsWatchlisted(!isWatchlisted)}
-                    className={isWatchlisted ? 'text-yellow-400' : 'text-gray-400'}
+                    className={`h-6 w-6 md:h-8 md:w-8 ${isWatchlisted ? 'text-yellow-400' : 'text-gray-400'}`}
                   >
-                    <Bookmark className="w-4 h-4" />
+                    <Bookmark className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
-                <div className="flex items-center gap-6">
-                  <div>
-                    <div className="text-2xl font-bold">${formatNumber(currentPrice)}</div>
-                    <div className={`flex items-center gap-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {priceChange >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                      <span>{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm text-gray-400">24h Volume</div>
-                    <div className="font-medium">{formatVolume(volume24h)} USDT</div>
+                <div className="flex items-center gap-3 md:gap-6 w-full md:w-auto justify-between md:justify-end">
+                <div className="min-w-0">
+                  <div className="text-lg md:text-2xl font-bold text-white">${formatNumber(currentPrice)}</div>
+                  <div className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {priceChange >= 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
+                    <span className="text-xs md:text-sm whitespace-nowrap text-gray-200">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
                   </div>
                 </div>
+                <div className="text-right min-w-0">
+                  <div className="text-xs md:text-sm text-gray-300">24h Volume</div>
+                  <div className="font-medium text-sm md:text-base text-white">{formatVolume(volume24h)} USDT</div>
+                </div>
+              </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Chart */}
           <Card className="bg-gray-900 border-gray-700">
-            <CardHeader className="pb-3">
+            <CardHeader className="pb-2 md:pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Price Chart</CardTitle>
-                <div className="flex items-center gap-2">
+                <CardTitle className="text-sm md:text-lg">Price Chart</CardTitle>
+                <div className="flex items-center gap-1 md:gap-2">
                   <Select value={chartTimeframe} onValueChange={setChartTimeframe}>
-                    <SelectTrigger className="w-20 bg-gray-800 border-gray-600">
+                    <SelectTrigger className="w-12 md:w-20 bg-gray-800 border-gray-600 text-xs md:text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="bg-gray-800 border-gray-600">
@@ -342,14 +350,14 @@ const AdvancedTradingInterface: React.FC = () => {
                       <SelectItem value="1d">1d</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="ghost" size="icon">
-                    <Settings className="w-4 h-4" />
+                  <Button variant="ghost" size="icon" className="h-6 w-6 md:h-8 md:w-8">
+                    <Settings className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div ref={chartRef} className="h-96 bg-gray-800 rounded"></div>
+              <div ref={chartRef} className="h-48 md:h-96 bg-gray-800 rounded"></div>
             </CardContent>
           </Card>
 
@@ -371,8 +379,8 @@ const AdvancedTradingInterface: React.FC = () => {
                     <span className={trade.type === 'buy' ? 'text-green-400' : 'text-red-400'}>
                       ${formatNumber(trade.price)}
                     </span>
-                    <span>{formatNumber(trade.amount, 4)}</span>
-                    <span>${formatNumber(trade.price * trade.amount)}</span>
+                    <span className="text-gray-300">{formatNumber(trade.amount, 4)}</span>
+                    <span className="text-gray-300">${formatNumber(trade.price * trade.amount)}</span>
                     <span className="text-gray-400">{trade.time}</span>
                   </div>
                 ))}
@@ -382,7 +390,7 @@ const AdvancedTradingInterface: React.FC = () => {
         </div>
 
         {/* Order Book & Trading Panel */}
-        <div className="col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-2 md:space-y-4">
           {/* Order Book */}
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-3">
@@ -400,25 +408,25 @@ const AdvancedTradingInterface: React.FC = () => {
                   {orderBook.asks.slice(0, 8).reverse().map((ask, index) => (
                     <div key={index} className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer">
                       <span className="text-red-400">${formatNumber(ask.price)}</span>
-                      <span>{formatNumber(ask.amount, 4)}</span>
-                      <span>{formatNumber(ask.total)}</span>
+                      <span className="text-gray-300">{formatNumber(ask.amount, 4)}</span>
+                      <span className="text-gray-300">{formatNumber(ask.total)}</span>
                     </div>
                   ))}
                 </div>
-                
+
                 {/* Spread */}
                 <div className="py-2 text-center border-y border-gray-700">
-                  <span className="text-lg font-bold">${formatNumber(currentPrice)}</span>
-                  <div className="text-xs text-gray-400">Spread: ${formatNumber(orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0)}</div>
+                  <span className="text-lg font-bold text-white">${formatNumber(currentPrice)}</span>
+                  <div className="text-xs text-gray-300">Spread: ${formatNumber(orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0)}</div>
                 </div>
-                
+
                 {/* Bids */}
                 <div className="space-y-1">
                   {orderBook.bids.slice(0, 8).map((bid, index) => (
                     <div key={index} className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer">
                       <span className="text-green-400">${formatNumber(bid.price)}</span>
-                      <span>{formatNumber(bid.amount, 4)}</span>
-                      <span>{formatNumber(bid.total)}</span>
+                      <span className="text-gray-300">{formatNumber(bid.amount, 4)}</span>
+                      <span className="text-gray-300">{formatNumber(bid.total)}</span>
                     </div>
                   ))}
                 </div>
@@ -473,7 +481,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     />
                   </div>
                 )}
-                
+
                 {orderType === 'stop-loss' && (
                   <div>
                     <label className="text-sm text-gray-400">Stop Price (USDT)</label>
@@ -486,7 +494,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     />
                   </div>
                 )}
-                
+
                 <div>
                   <label className="text-sm text-gray-400">Amount ({selectedPair.split('/')[0]})</label>
                   <Input
@@ -497,7 +505,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     className="bg-gray-800 border-gray-600"
                   />
                 </div>
-                
+
                 {/* Percentage Buttons */}
                 <div className="grid grid-cols-4 gap-1">
                   {[25, 50, 75, 100].map((percent) => (
@@ -568,19 +576,19 @@ const AdvancedTradingInterface: React.FC = () => {
                           Cancel
                         </Button>
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-1 text-sm py-1">
                         <div className="flex justify-between">
                           <span className="text-gray-400">Type:</span>
-                          <span>{order.type.toUpperCase()}</span>
+                          <span className="text-white">{order.type.toUpperCase()}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-400">Amount:</span>
-                          <span>{formatNumber(order.amount, 4)}</span>
+                          <span className="text-white">{formatNumber(order.amount, 4)}</span>
                         </div>
                         {order.price && (
                           <div className="flex justify-between">
                             <span className="text-gray-400">Price:</span>
-                            <span>${formatNumber(order.price)}</span>
+                            <span className="text-white">${formatNumber(order.price)}</span>
                           </div>
                         )}
                       </div>

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -163,14 +164,12 @@ const AppRoutes = () => {
         <Route path="marketplace/cart" element={<MarketplaceCart />} />
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
 
-        <Route path="crypto" element={<EnhancedCrypto />} />
-        <Route path="crypto/basic" element={<CryptoMarket />} />
+        <Route path="crypto" element={<CryptoMarket />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<Settings />} />
-        <Route path="enhanced" element={<EnhancedPlatform />} />
 
       </Route>
 
@@ -194,13 +193,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <TooltipProvider>
-            <AppRoutes />
-            <Toaster />
-            <Sonner />
-          </TooltipProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <AppRoutes />
+              <Toaster />
+              <Sonner />
+            </TooltipProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
