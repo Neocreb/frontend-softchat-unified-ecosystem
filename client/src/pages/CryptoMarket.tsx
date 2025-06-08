@@ -201,26 +201,26 @@ const CryptoMarket = () => {
         <title>Crypto Market | Softchat</title>
       </Helmet>
 
-      <div className="container px-3 md:px-4 py-3 md:py-4 mx-auto max-w-7xl">
-        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Crypto Market</h1>
+      <div className="container px-4 py-4 mx-auto max-w-7xl">
+        <h1 className="text-2xl font-bold mb-6">Crypto Market</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-3 md:grid-cols-6 mb-4 md:mb-8 h-auto p-1">
-            <TabsTrigger value="market" className="text-xs md:text-sm px-2 py-2">Market</TabsTrigger>
-            <TabsTrigger value="trading" className="text-xs md:text-sm px-2 py-2">Pro Trading</TabsTrigger>
-            <TabsTrigger value="p2p" className="text-xs md:text-sm px-2 py-2">P2P</TabsTrigger>
-            <TabsTrigger value="enhanced-p2p" className="text-xs md:text-sm px-1 py-2">Enhanced P2P</TabsTrigger>
-            <TabsTrigger value="convert" className="text-xs md:text-sm px-2 py-2">Convert</TabsTrigger>
-            <TabsTrigger value="wallet" className="text-xs md:text-sm px-2 py-2">Wallet</TabsTrigger>
+          <TabsList className="w-full grid grid-cols-6 mb-8">
+            <TabsTrigger value="market">Market</TabsTrigger>
+            <TabsTrigger value="trading">Pro Trading</TabsTrigger>
+            <TabsTrigger value="p2p">P2P</TabsTrigger>
+            <TabsTrigger value="enhanced-p2p">Enhanced P2P</TabsTrigger>
+            <TabsTrigger value="convert">Convert</TabsTrigger>
+            <TabsTrigger value="wallet">Wallet</TabsTrigger>
           </TabsList>
 
           <TabsContent value="market" className="w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
-              <div className="lg:col-span-3">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+              <div className="xl:col-span-3">
                 {isLoading || !selectedCrypto ? (
                   <Card>
                     <CardContent className="p-0">
-                      <Skeleton className="h-[300px] md:h-[400px] w-full" />
+                      <Skeleton className="h-[400px] w-full" />
                     </CardContent>
                   </Card>
                 ) : (
@@ -228,11 +228,11 @@ const CryptoMarket = () => {
                 )}
               </div>
 
-              <div className="lg:col-span-1">
+              <div className="xl:col-span-1">
                 {isLoading || !selectedCrypto ? (
                   <Card>
                     <CardContent className="p-0">
-                      <Skeleton className="h-[300px] md:h-[400px] w-full" />
+                      <Skeleton className="h-[400px] w-full" />
                     </CardContent>
                   </Card>
                 ) : (
@@ -241,12 +241,12 @@ const CryptoMarket = () => {
               </div>
             </div>
 
-            <div className="mt-4 md:mt-6 grid grid-cols-1 xl:grid-cols-4 gap-4 md:gap-6">
+            <div className="mt-6 grid grid-cols-1 xl:grid-cols-4 gap-6">
               <div className="xl:col-span-3">
                 <Card>
                   <CardContent className="p-0">
                     {isLoading ? (
-                      <Skeleton className="h-[300px] md:h-[400px] w-full" />
+                      <Skeleton className="h-[400px] w-full" />
                     ) : (
                       <CryptoList
                         cryptos={cryptos}

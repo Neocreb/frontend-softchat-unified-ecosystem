@@ -92,10 +92,7 @@ const EnhancedVideoCreator: React.FC = () => {
     { id: '2', name: 'Sparkles', type: 'ar', thumbnail: '/api/placeholder/60/60' },
     { id: '3', name: 'Hearts', type: 'ar', thumbnail: '/api/placeholder/60/60' },
     { id: '4', name: 'Blur BG', type: 'background', thumbnail: '/api/placeholder/60/60' },
-    { id: '5', name: 'Text Overlay', type: 'text', thumbnail: '/api/placeholder/60/60' },
-    { id: '6', name: 'Rainbow', type: 'ar', thumbnail: '/api/placeholder/60/60' },
-    { id: '7', name: 'Glow', type: 'beauty', thumbnail: '/api/placeholder/60/60' },
-    { id: '8', name: 'Vintage', type: 'beauty', thumbnail: '/api/placeholder/60/60' }
+    { id: '5', name: 'Text Overlay', type: 'text', thumbnail: '/api/placeholder/60/60' }
   ];
 
   const soundTracks: SoundTrack[] = [
@@ -258,51 +255,17 @@ const EnhancedVideoCreator: React.FC = () => {
         </div>
       </div>
       
-      <div className="p-4 bg-black space-y-4">
-        {/* Quick Actions Row */}
-        <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm" onClick={() => setCameraFacing(cameraFacing === 'user' ? 'environment' : 'user')}>
-            <RotateCcw className="w-4 h-4 mr-1" />
-            Flip
-          </Button>
-          
-          <Button variant="ghost" size="sm" onClick={() => setMicEnabled(!micEnabled)}>
-            {micEnabled ? <Mic className="w-4 h-4 mr-1" /> : <MicOff className="w-4 h-4 mr-1" />}
-            Mic
-          </Button>
-          
-          <Button variant="ghost" size="sm" onClick={() => setTimer(timer === 0 ? 3 : 0)}>
-            <Timer className="w-4 h-4 mr-1" />
-            {timer > 0 ? `${timer}s` : 'Timer'}
-          </Button>
-        </div>
-
-        {/* Filters Row */}
-        <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          {filters.map(filter => (
-            <Button
-              key={filter.id}
-              variant={currentFilter === filter.id ? "default" : "ghost"}
-              size="sm"
-              className="flex-shrink-0 text-xs"
-              onClick={() => setCurrentFilter(currentFilter === filter.id ? null : filter.id)}
-            >
-              {filter.name}
-            </Button>
-          ))}
-        </div>
-
-        {/* Main Controls */}
+      <div className="p-4 bg-black">
         <div className="flex items-center justify-between">
           <div className="flex flex-col items-center">
-            <span className="text-xs mb-2 text-gray-400">Speed</span>
+            <span className="text-xs mb-1">Speed</span>
             <div className="flex gap-1">
               {[0.5, 1, 1.5, 2].map(speedValue => (
                 <Button
                   key={speedValue}
                   variant={speed === speedValue ? "default" : "ghost"}
                   size="sm"
-                  className="text-xs px-2 py-1"
+                  className="text-xs"
                   onClick={() => setSpeed(speedValue)}
                 >
                   {speedValue}x
@@ -315,62 +278,29 @@ const EnhancedVideoCreator: React.FC = () => {
             <Button
               variant="ghost"
               size="icon"
-              className={`w-20 h-20 rounded-full border-4 transition-all duration-200 ${
-                isRecording 
-                  ? 'border-red-500 bg-red-500 scale-110' 
-                  : 'border-white bg-white hover:scale-105'
-              }`}
+              className="w-20 h-20 rounded-full border-4 border-white bg-red-500"
               onClick={isRecording ? handleStopRecording : handleStartRecording}
               disabled={getTotalDuration() >= maxDuration}
             >
               {isRecording ? (
-                <Square className="w-8 h-8 text-white" />
+                <Square className="w-8 h-8" />
               ) : (
-                <div className="w-6 h-6 bg-red-500 rounded-full" />
+                <div className="w-6 h-6 bg-white rounded-full" />
               )}
             </Button>
-            {isRecording && (
-              <div className="text-xs text-red-400 animate-pulse">Recording...</div>
-            )}
           </div>
           
           <div className="flex flex-col items-center gap-2">
-            <Button variant="ghost" size="sm" className="text-xs">
-              <Sparkles className="w-4 h-4 mr-1" />
-              Effects
-            </Button>
-            <Button variant="ghost" size="sm" className="text-xs">
-              <Music className="w-4 h-4 mr-1" />
-              Sounds
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs"
+              onClick={() => setTimer(3)}
+            >
+              <Timer className="w-3 h-3 mr-1" />
+              3s
             </Button>
           </div>
-        </div>
-
-        {/* Effects Grid (when effects button is pressed) */}
-        <div className="grid grid-cols-4 gap-2">
-          {effects.slice(0, 8).map(effect => (
-            <Button
-              key={effect.id}
-              variant={selectedEffects.includes(effect.id) ? "default" : "ghost"}
-              size="sm"
-              className="aspect-square text-xs flex flex-col"
-              onClick={() => {
-                setSelectedEffects(prev => 
-                  prev.includes(effect.id) 
-                    ? prev.filter(id => id !== effect.id)
-                    : [...prev, effect.id]
-                );
-              }}
-            >
-              <div className="text-lg mb-1">
-                {effect.type === 'beauty' && '✨'}
-                {effect.type === 'ar' && '🦄'}
-                {effect.type === 'background' && '🌈'}
-                {effect.type === 'text' && '📝'}
-              </div>
-              <span className="text-xs">{effect.name}</span>
-            </Button>
-          ))}
         </div>
       </div>
     </div>

@@ -241,10 +241,10 @@ const EnhancedP2PMarketplace = () => {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 h-auto">
-          <TabsTrigger value="marketplace" className="text-xs md:text-sm">Marketplace</TabsTrigger>
-          <TabsTrigger value="my_trades" className="text-xs md:text-sm">My Trades</TabsTrigger>
-          <TabsTrigger value="create_offer" className="text-xs md:text-sm">Create Offer</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
+          <TabsTrigger value="my_trades">My Trades</TabsTrigger>
+          <TabsTrigger value="create_offer">Create Offer</TabsTrigger>
         </TabsList>
 
         {/* Marketplace Tab */}
