@@ -28,6 +28,7 @@ const HeroSection = () => {
             </Link>
 
             {/* ✅ Join Waitlist Button */}
+            <a href='#contact'>
             <Button
               size="lg"
               variant="outline"
@@ -35,7 +36,9 @@ const HeroSection = () => {
             >
               Join Waitlist
             </Button>
+             </a>
           </div>
+         
 
           <div className="mt-16 relative">
             <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-softchat-500 to-teal-400 opacity-70 blur-sm"></div>

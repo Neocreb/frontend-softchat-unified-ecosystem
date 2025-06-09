@@ -75,28 +75,29 @@ const Header = () => {
 // NavLinks component for reusability between desktop and mobile
 const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
   const links = [
-    { text: "Home", href: "/" },
-    { text: "Features", href: "/#features" },
-    { text: "Blog", href: "/blog" },
-    { text: "Contact", href: "/#contact" },
+    { text: "Home", href: "/ " },
+    { text: "Features", href: "#features" },
+    { text: "Why Softchat", href: "#why-softchat" },
+    { text: "Newsletter", href: "#contact" },
   ];
 
   return (
     <>
       {links.map((link) => (
-        <Link 
+        <a 
           key={link.text}
-          to={link.href}
+          href={link.href}
           className={`${
             mobile ? 'block py-2 text-lg' : 'text-sm font-medium'
           } text-gray-800 hover:text-softchat-600 transition-colors`}
           onClick={closeMenu}
         >
           {link.text}
-        </Link>
+        </a>
       ))}
     </>
   );
 };
+
 
 export default Header;
