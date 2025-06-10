@@ -68,35 +68,10 @@ const WalletDashboardContent = () => {
     },
   ];
 
-  useEffect(() => {
-    loadWalletData();
-  }, []);
-
-  const loadWalletData = async () => {
-    setIsLoading(true);
-    try {
-      const [balance, transactions] = await Promise.all([
-        walletService.getWalletBalance(),
-        walletService.getTransactions(),
-      ]);
-
-      setWalletBalance(balance);
-      setAllTransactions(transactions);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load wallet data",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const refreshData = async () => {
     setIsRefreshing(true);
     try {
-      await loadWalletData();
+      await refreshWallet();
       toast({
         title: "Updated",
         description: "Wallet data refreshed successfully",
@@ -114,18 +89,7 @@ const WalletDashboardContent = () => {
 
   const getTransactionsForSource = (sourceId: string) => {
     if (sourceId === "all") return allTransactions;
-    return allTransactions.filter((t) => t.source === sourceId);
-  };
-
-  const getEarningsGrowth = () => {
-    const last30Days = allTransactions.filter((t) => {
-      const transactionDate = new Date(t.timestamp);
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-      return transactionDate >= thirtyDaysAgo && t.amount > 0;
-    });
-
-    return last30Days.reduce((sum, t) => sum + t.amount, 0);
+    return getTransactionsBySource(sourceId);
   };
 
   if (isLoading) {
