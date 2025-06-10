@@ -437,15 +437,15 @@ const AdvancedTradingInterface: React.FC = () => {
           </Card>
 
           {/* Recent Trades */}
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg text-white">
+              <CardTitle className="text-lg text-gray-900">
                 Recent Trades
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-1 max-h-40 overflow-y-auto">
-                <div className="grid grid-cols-4 text-xs text-gray-300 pb-2 border-b border-gray-700 font-medium">
+                <div className="grid grid-cols-4 text-xs text-gray-600 pb-2 border-b border-gray-200 font-medium">
                   <span>Price</span>
                   <span>Amount</span>
                   <span>Total</span>
@@ -454,24 +454,24 @@ const AdvancedTradingInterface: React.FC = () => {
                 {recentTrades.map((trade) => (
                   <div
                     key={trade.id}
-                    className="grid grid-cols-4 text-sm py-1 hover:bg-gray-800 rounded px-1"
+                    className="grid grid-cols-4 text-sm py-1 hover:bg-gray-50 rounded px-1"
                   >
                     <span
                       className={
                         trade.type === "buy"
-                          ? "text-green-400 font-medium"
-                          : "text-red-400 font-medium"
+                          ? "text-green-600 font-medium"
+                          : "text-red-600 font-medium"
                       }
                     >
                       ${formatNumber(trade.price)}
                     </span>
-                    <span className="text-gray-200">
+                    <span className="text-gray-700">
                       {formatNumber(trade.amount, 4)}
                     </span>
-                    <span className="text-gray-200">
+                    <span className="text-gray-700">
                       ${formatNumber(trade.price * trade.amount)}
                     </span>
-                    <span className="text-gray-300">{trade.time}</span>
+                    <span className="text-gray-500">{trade.time}</span>
                   </div>
                 ))}
               </div>
