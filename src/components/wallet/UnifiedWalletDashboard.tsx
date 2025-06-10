@@ -232,24 +232,28 @@ const WalletDashboardContent = () => {
         </CardContent>
       </Card>
 
-      {/* Tabbed Interface */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5 h-auto">
+      {/* Tabbed Interface - Income Source Navigation */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
+        <TabsList className="grid w-full grid-cols-5 h-auto bg-gray-100 p-1 rounded-lg">
           <TabsTrigger
             value="all"
-            className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3"
+            className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
           >
             <span className="text-lg">💰</span>
-            <span className="text-[10px] sm:text-xs">All</span>
+            <span className="text-[10px] sm:text-xs font-medium">All</span>
           </TabsTrigger>
           {walletSources.map((source) => (
             <TabsTrigger
               key={source.id}
               value={source.id}
-              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3"
+              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
             >
               <span className="text-lg">{source.icon}</span>
-              <span className="text-[10px] sm:text-xs text-center leading-tight">
+              <span className="text-[10px] sm:text-xs text-center leading-tight font-medium">
                 <span className="sm:hidden">{source.name.split(" ")[0]}</span>
                 <span className="hidden sm:inline">{source.name}</span>
               </span>
