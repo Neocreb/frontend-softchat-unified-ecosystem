@@ -555,9 +555,11 @@ const AdvancedTradingInterface: React.FC = () => {
           </Card>
 
           {/* Trading Panel */}
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg text-white">Place Order</CardTitle>
+              <CardTitle className="text-lg text-gray-900">
+                Place Order
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Order Type */}
@@ -565,22 +567,22 @@ const AdvancedTradingInterface: React.FC = () => {
                 value={orderType}
                 onValueChange={(value) => setOrderType(value as any)}
               >
-                <TabsList className="grid w-full grid-cols-3 bg-gray-800">
+                <TabsList className="grid w-full grid-cols-3 bg-gray-100">
                   <TabsTrigger
                     value="limit"
-                    className="text-xs text-gray-200 data-[state=active]:text-white"
+                    className="text-xs text-gray-600 data-[state=active]:text-gray-900"
                   >
                     Limit
                   </TabsTrigger>
                   <TabsTrigger
                     value="market"
-                    className="text-xs text-gray-200 data-[state=active]:text-white"
+                    className="text-xs text-gray-600 data-[state=active]:text-gray-900"
                   >
                     Market
                   </TabsTrigger>
                   <TabsTrigger
                     value="stop-loss"
-                    className="text-xs text-gray-200 data-[state=active]:text-white"
+                    className="text-xs text-gray-600 data-[state=active]:text-gray-900"
                   >
                     Stop
                   </TabsTrigger>
