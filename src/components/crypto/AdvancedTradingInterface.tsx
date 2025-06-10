@@ -647,7 +647,7 @@ const AdvancedTradingInterface: React.FC = () => {
                       key={percent}
                       variant="outline"
                       size="sm"
-                      className="text-xs"
+                      className="text-xs text-gray-200 border-gray-600 hover:bg-gray-700 hover:text-white"
                       onClick={() => {
                         // Calculate amount based on percentage of available balance
                         const mockBalance = 1.5; // Mock balance
@@ -661,10 +661,10 @@ const AdvancedTradingInterface: React.FC = () => {
               </div>
 
               {/* Total */}
-              <div className="p-3 bg-gray-800 rounded">
+              <div className="p-3 bg-gray-800 rounded border border-gray-600">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-400">Total:</span>
-                  <span>
+                  <span className="text-gray-200 font-medium">Total:</span>
+                  <span className="text-white font-medium">
                     {amount && price
                       ? `${formatNumber(parseFloat(amount) * parseFloat(price))} USDT`
                       : "0.00 USDT"}
