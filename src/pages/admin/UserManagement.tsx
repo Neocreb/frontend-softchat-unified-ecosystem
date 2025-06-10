@@ -50,8 +50,9 @@ const UserManagement = () => {
     const searchMatch =
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase());
-    const roleMatch = roleFilter ? user.role === roleFilter : true;
-    const statusMatch = statusFilter ? user.status === statusFilter : true;
+    const roleMatch = roleFilter === "all" ? true : user.role === roleFilter;
+    const statusMatch =
+      statusFilter === "all" ? true : user.status === statusFilter;
     return searchMatch && roleMatch && statusMatch;
   });
 
