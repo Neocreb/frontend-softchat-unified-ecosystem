@@ -1,417 +1,1065 @@
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Users,
+  TrendingUp,
+  TrendingDown,
+  Shield,
+  Clock,
+  Star,
+  MessageCircle,
+  Filter,
+  Search,
+  Plus,
+  AlertTriangle,
+  CheckCircle,
+  Globe,
+  CreditCard,
+  Smartphone,
+  Building,
+  DollarSign,
+  Timer,
+  Award,
+  Eye,
+  ThumbsUp,
+  Flag,
+} from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Shield, TrendingUp, Filter, Plus } from "lucide-react";
-import { P2POffer } from "@/types/user";
-import P2POfferCard from "./P2POfferCard";
-import TradeCard from "../trading/TradeCard";
-import KYCVerificationModal from "../kyc/KYCVerificationModal";
-import { tradingService, Trade } from "@/services/tradingService";
-import { kycService } from "@/services/kycService";
+import { cryptoService } from "@/services/cryptoService";
+import { P2POffer, P2PTrade, UserProfile } from "@/types/crypto";
+import { cn } from "@/lib/utils";
 
-const EnhancedP2PMarketplace = () => {
-  const [activeTab, setActiveTab] = useState<'marketplace' | 'my_trades' | 'create_offer'>('marketplace');
-  const [marketplaceSubTab, setMarketplaceSubTab] = useState<'buy' | 'sell'>('buy');
-  const [selectedCrypto, setSelectedCrypto] = useState("btc");
-  const [selectedPayment, setSelectedPayment] = useState("all");
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+export default function EnhancedP2PMarketplace() {
+  const [activeTab, setActiveTab] = useState("marketplace");
+  const [marketplaceTab, setMarketplaceTab] = useState("buy");
   const [offers, setOffers] = useState<P2POffer[]>([]);
-  const [userTrades, setUserTrades] = useState<Trade[]>([]);
+  const [myTrades, setMyTrades] = useState<P2PTrade[]>([]);
+  const [selectedAsset, setSelectedAsset] = useState("BTC");
+  const [selectedFiat, setSelectedFiat] = useState("USD");
+  const [selectedPayment, setSelectedPayment] = useState("all");
+  const [minAmount, setMinAmount] = useState("");
+  const [maxAmount, setMaxAmount] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [kycLevel, setKycLevel] = useState(0);
-  const [tradingLimits, setTradingLimits] = useState<any>(null);
+  const [showCreateOffer, setShowCreateOffer] = useState(false);
+  const [showOfferDetails, setShowOfferDetails] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<P2POffer | null>(null);
+
+  // Create offer form state
+  const [newOffer, setNewOffer] = useState({
+    type: "SELL" as "BUY" | "SELL",
+    asset: "BTC",
+    fiatCurrency: "USD",
+    price: "",
+    minAmount: "",
+    maxAmount: "",
+    totalAmount: "",
+    paymentMethods: [] as string[],
+    terms: "",
+    autoReply: "",
+  });
+
   const { toast } = useToast();
 
-  // Generate a proper UUID for demo purposes
-  const currentUserId = crypto.randomUUID();
+  const assets = ["BTC", "ETH", "USDT", "BNB", "ADA", "SOL", "DOT", "AVAX"];
+  const fiatCurrencies = [
+    "USD",
+    "EUR",
+    "GBP",
+    "NGN",
+    "KES",
+    "GHS",
+    "ZAR",
+    "EGP",
+  ];
+  const paymentMethods = [
+    { id: "bank", name: "Bank Transfer", icon: Building },
+    { id: "wise", name: "Wise", icon: Globe },
+    { id: "paypal", name: "PayPal", icon: CreditCard },
+    { id: "revolut", name: "Revolut", icon: Smartphone },
+    { id: "mobile", name: "Mobile Money", icon: Smartphone },
+    { id: "cash", name: "Cash", icon: DollarSign },
+  ];
 
   useEffect(() => {
-    loadData();
-  }, [activeTab, marketplaceSubTab, selectedCrypto, selectedPayment]);
+    loadP2PData();
+  }, [activeTab, selectedAsset, selectedFiat]);
 
-  const loadData = async () => {
+  const loadP2PData = async () => {
     setIsLoading(true);
     try {
-      if (activeTab === 'marketplace') {
-        await loadOffers();
-      } else if (activeTab === 'my_trades') {
-        await loadUserTrades();
+      if (activeTab === "marketplace") {
+        const offersData = await cryptoService.getP2POffers({
+          asset: selectedAsset,
+          fiatCurrency: selectedFiat,
+          type: marketplaceTab.toUpperCase(),
+        });
+        setOffers(offersData);
       }
-      
-      // Load user KYC and trading data
-      await loadUserData();
+      // In a real app, load user's trades
+      setMyTrades([]);
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error("Failed to load P2P data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load P2P marketplace data",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const loadOffers = async () => {
-    // Simulate API call with enhanced mock data
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    const mockOffers: P2POffer[] = Array.from({ length: 12 }, (_, i) => ({
-      id: `offer-${i}`,
-      type: Math.random() > 0.5 ? 'buy' : 'sell',
-      crypto_amount: selectedCrypto === 'btc' ? 0.1 + Math.random() * 0.9 : 10 + Math.random() * 90,
-      crypto_symbol: selectedCrypto.toUpperCase(),
-      fiat_price: selectedCrypto === 'btc' ? 52000 + Math.random() * 1000 : 3000 + Math.random() * 100,
-      fiat_currency: 'USD',
-      min_order: 100 + Math.random() * 900,
-      max_order: 10000 + Math.random() * 40000,
-      payment_methods: ['Bank Transfer', 'Wise', 'Revolut', 'PayPal'].sort(() => Math.random() - 0.5).slice(0, 1 + Math.floor(Math.random() * 3)),
-      seller: {
-        id: `user-${i}`,
-        name: `Trader${i + 1}`,
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`,
-        is_verified: Math.random() > 0.3,
-        rating: 3.5 + Math.random() * 1.5,
-        total_trades: Math.floor(10 + Math.random() * 990),
-        completion_rate: 85 + Math.random() * 15,
-        avg_release_time: Math.floor(5 + Math.random() * 25)
-      },
-      created_at: new Date().toISOString(),
-      status: 'active'
-    }));
-
-    // Apply filters
-    const filteredOffers = mockOffers.filter(offer => {
-      const matchesType = marketplaceSubTab === 'buy' ? offer.type === 'sell' : offer.type === 'buy';
-      const matchesPayment = selectedPayment === 'all' || 
-                           offer.payment_methods.includes(selectedPayment);
-      const matchesPrice = (!priceRange.min || offer.fiat_price >= parseFloat(priceRange.min)) &&
-                          (!priceRange.max || offer.fiat_price <= parseFloat(priceRange.max));
-      
-      return matchesType && matchesPayment && matchesPrice;
-    }).sort((a, b) => {
-      if (marketplaceSubTab === 'buy') {
-        return a.fiat_price - b.fiat_price;
-      } else {
-        return b.fiat_price - a.fiat_price;
-      }
-    });
-
-    setOffers(filteredOffers);
-  };
-
-  const loadUserTrades = async () => {
+  const handleCreateOffer = async () => {
     try {
-      const trades = await tradingService.getUserTrades(currentUserId);
-      setUserTrades(trades);
-    } catch (error) {
-      console.error('Error loading user trades:', error);
-    }
-  };
+      const offerData = {
+        type: newOffer.type,
+        asset: newOffer.asset,
+        fiatCurrency: newOffer.fiatCurrency,
+        price: parseFloat(newOffer.price),
+        minAmount: parseFloat(newOffer.minAmount),
+        maxAmount: parseFloat(newOffer.maxAmount),
+        totalAmount: parseFloat(newOffer.totalAmount),
+        availableAmount: parseFloat(newOffer.totalAmount),
+        paymentMethods: paymentMethods.filter((pm) =>
+          newOffer.paymentMethods.includes(pm.id),
+        ),
+        terms: newOffer.terms,
+        autoReply: newOffer.autoReply,
+        status: "ACTIVE" as const,
+        completionRate: 0,
+        avgReleaseTime: 0,
+        totalTrades: 0,
+      };
 
-  const loadUserData = async () => {
-    try {
-      const limits = await kycService.getUserTradingLimits(currentUserId);
-      setTradingLimits(limits);
-      setKycLevel(limits?.kyc_level || 0);
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    }
-  };
+      const createdOffer = await cryptoService.createP2POffer(offerData);
+      setOffers((prev) => [createdOffer, ...prev]);
+      setShowCreateOffer(false);
 
-  const handleOfferAction = async (offer: P2POffer) => {
-    // Check KYC requirements
-    if (kycLevel === 0) {
-      toast({
-        title: "KYC Verification Required",
-        description: "Please complete KYC verification to start trading.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Check trading limits
-    const tradeAmount = offer.min_order;
-    if (tradingLimits && tradeAmount > tradingLimits.daily_limit - tradingLimits.current_daily_volume) {
-      toast({
-        title: "Trading Limit Exceeded",
-        description: "This trade would exceed your daily trading limit.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      // Create trade
-      const newTrade = await tradingService.createTrade({
-        buyer_id: marketplaceSubTab === 'buy' ? currentUserId : offer.seller.id,
-        seller_id: marketplaceSubTab === 'buy' ? offer.seller.id : currentUserId,
-        offer_id: offer.id,
-        amount: offer.crypto_amount,
-        price_per_unit: offer.fiat_price,
-        total_amount: offer.crypto_amount * offer.fiat_price,
-        payment_method: offer.payment_methods[0],
-        status: 'pending'
+      // Reset form
+      setNewOffer({
+        type: "SELL",
+        asset: "BTC",
+        fiatCurrency: "USD",
+        price: "",
+        minAmount: "",
+        maxAmount: "",
+        totalAmount: "",
+        paymentMethods: [],
+        terms: "",
+        autoReply: "",
       });
 
-      if (newTrade) {
-        toast({
-          title: "Trade Created",
-          description: `Trade order created successfully. Trade ID: ${newTrade.id.slice(0, 8)}`,
-        });
-        setActiveTab('my_trades');
-      }
-    } catch (error) {
-      console.error('Error creating trade:', error);
       toast({
-        title: "Trade Creation Failed",
-        description: "Please try again later.",
+        title: "Offer Created",
+        description: "Your P2P offer has been created successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create offer",
         variant: "destructive",
       });
     }
   };
 
-  const handleTradeAction = async (trade: Trade, action: string) => {
-    try {
-      switch (action) {
-        case 'confirm_payment':
-          await tradingService.updateTradeStatus(trade.id, 'in_progress');
-          toast({ title: "Payment confirmed", description: "Trade is now in progress." });
-          break;
-        case 'accept_trade':
-          await tradingService.updateTradeStatus(trade.id, 'in_progress');
-          toast({ title: "Trade accepted", description: "Trade is now in progress." });
-          break;
-        case 'decline_trade':
-          await tradingService.updateTradeStatus(trade.id, 'cancelled');
-          toast({ title: "Trade declined", description: "Trade has been cancelled." });
-          break;
-        case 'mark_complete':
-          await tradingService.updateTradeStatus(trade.id, 'completed');
-          toast({ title: "Trade completed", description: "Trade has been marked as complete." });
-          break;
-        case 'raise_dispute':
-          // In real app, open dispute modal
-          toast({ title: "Dispute raised", description: "A dispute has been created for this trade." });
-          break;
-        case 'rate_trader':
-          // In real app, open rating modal
-          toast({ title: "Rating submitted", description: "Thank you for your feedback." });
-          break;
-      }
-      
-      loadUserTrades(); // Reload trades
-    } catch (error) {
-      console.error('Error handling trade action:', error);
-      toast({
-        title: "Action Failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    }
+  const formatCurrency = (amount: number, currency: string) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency === "NGN" ? "USD" : currency, // Fallback for unsupported currencies
+      minimumFractionDigits: 2,
+    }).format(amount);
   };
+
+  const formatCrypto = (amount: number, asset: string) => {
+    return `${amount.toFixed(8)} ${asset}`;
+  };
+
+  const getTraderRating = (rating: number) => {
+    if (rating >= 4.8) return { color: "text-green-600", label: "Excellent" };
+    if (rating >= 4.5) return { color: "text-blue-600", label: "Very Good" };
+    if (rating >= 4.0) return { color: "text-yellow-600", label: "Good" };
+    return { color: "text-red-600", label: "Fair" };
+  };
+
+  const getReleaseTimeColor = (minutes: number) => {
+    if (minutes <= 15) return "text-green-600";
+    if (minutes <= 30) return "text-yellow-600";
+    return "text-red-600";
+  };
+
+  const filteredOffers = offers.filter((offer) => {
+    if (
+      searchQuery &&
+      !offer.user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
+      return false;
+    }
+
+    if (
+      selectedPayment !== "all" &&
+      !offer.paymentMethods.some((pm) => pm.id === selectedPayment)
+    ) {
+      return false;
+    }
+
+    if (minAmount && offer.maxAmount < parseFloat(minAmount)) {
+      return false;
+    }
+
+    if (maxAmount && offer.minAmount > parseFloat(maxAmount)) {
+      return false;
+    }
+
+    return true;
+  });
 
   return (
     <div className="space-y-6">
-      {/* Header with KYC Status */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              Enhanced P2P Trading
-            </CardTitle>
-            <div className="flex items-center gap-3">
-              <KYCVerificationModal 
-                userId={currentUserId}
-                currentLevel={kycLevel}
-                onLevelUpdate={setKycLevel}
-              />
-              {tradingLimits && (
-                <Badge variant="outline">
-                  Daily: ${tradingLimits.current_daily_volume.toLocaleString()} / ${tradingLimits.daily_limit.toLocaleString()}
-                </Badge>
-              )}
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">P2P Marketplace</h1>
+          <p className="text-gray-600">
+            Trade crypto directly with other users
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Button onClick={() => setShowCreateOffer(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Create Offer
+          </Button>
+        </div>
+      </div>
+
+      {/* Trust Indicators */}
+      <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-center gap-8 text-sm">
+            <div className="flex items-center gap-2 text-blue-800">
+              <Shield className="h-4 w-4" />
+              <span className="font-medium">Escrow Protection</span>
+            </div>
+            <div className="flex items-center gap-2 text-green-800">
+              <Award className="h-4 w-4" />
+              <span className="font-medium">Verified Traders</span>
+            </div>
+            <div className="flex items-center gap-2 text-purple-800">
+              <Clock className="h-4 w-4" />
+              <span className="font-medium">24/7 Support</span>
+            </div>
+            <div className="flex items-center gap-2 text-orange-800">
+              <Users className="h-4 w-4" />
+              <span className="font-medium">Active Community</span>
             </div>
           </div>
-        </CardHeader>
+        </CardContent>
       </Card>
 
-      {/* Main Tabs */}
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-3 h-auto">
-          <TabsTrigger value="marketplace" className="text-xs md:text-sm">Marketplace</TabsTrigger>
-          <TabsTrigger value="my_trades" className="text-xs md:text-sm">My Trades</TabsTrigger>
-          <TabsTrigger value="create_offer" className="text-xs md:text-sm">Create Offer</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
+          <TabsTrigger value="my-trades">My Trades</TabsTrigger>
+          <TabsTrigger value="my-offers">My Offers</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
 
         {/* Marketplace Tab */}
-        <TabsContent value="marketplace" className="space-y-4">
+        <TabsContent value="marketplace" className="space-y-6">
+          {/* Filters */}
           <Card>
-            <CardHeader>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Tabs value={marketplaceSubTab} onValueChange={(v) => setMarketplaceSubTab(v as any)} className="flex-1">
-                  <TabsList className="w-full sm:w-auto">
-                    <TabsTrigger value="buy">Buy Crypto</TabsTrigger>
-                    <TabsTrigger value="sell">Sell Crypto</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-                
-                <div className="flex flex-1 gap-4">
-                  <Select value={selectedCrypto} onValueChange={setSelectedCrypto}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Crypto" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="btc">Bitcoin (BTC)</SelectItem>
-                        <SelectItem value="eth">Ethereum (ETH)</SelectItem>
-                        <SelectItem value="usdt">Tether (USDT)</SelectItem>
-                        <SelectItem value="sol">Solana (SOL)</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  
-                  <Select value={selectedPayment} onValueChange={setSelectedPayment}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Payment Method" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="all">All Methods</SelectItem>
-                        <SelectItem value="Bank Transfer">Bank Transfer</SelectItem>
-                        <SelectItem value="Wise">Wise</SelectItem>
-                        <SelectItem value="Revolut">Revolut</SelectItem>
-                        <SelectItem value="PayPal">PayPal</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+            <CardContent className="p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                <div>
+                  <Tabs
+                    value={marketplaceTab}
+                    onValueChange={setMarketplaceTab}
+                  >
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="buy" className="text-green-600">
+                        Buy
+                      </TabsTrigger>
+                      <TabsTrigger value="sell" className="text-red-600">
+                        Sell
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
                 </div>
-              </div>
 
-              {/* Price Filter */}
-              <div className="flex items-center gap-4">
-                <Filter className="h-4 w-4" />
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="minPrice">Min Price:</Label>
-                  <Input
-                    id="minPrice"
-                    type="number"
-                    placeholder="0"
-                    value={priceRange.min}
-                    onChange={(e) => setPriceRange(prev => ({ ...prev, min: e.target.value }))}
-                    className="w-24"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="maxPrice">Max Price:</Label>
-                  <Input
-                    id="maxPrice"
-                    type="number"
-                    placeholder="∞"
-                    value={priceRange.max}
-                    onChange={(e) => setPriceRange(prev => ({ ...prev, max: e.target.value }))}
-                    className="w-24"
-                  />
-                </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setPriceRange({ min: '', max: '' })}
+                <Select value={selectedAsset} onValueChange={setSelectedAsset}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Asset" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {assets.map((asset) => (
+                      <SelectItem key={asset} value={asset}>
+                        {asset}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={selectedFiat} onValueChange={setSelectedFiat}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fiatCurrencies.map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={selectedPayment}
+                  onValueChange={setSelectedPayment}
                 >
-                  Clear
-                </Button>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Payment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Methods</SelectItem>
+                    {paymentMethods.map((method) => (
+                      <SelectItem key={method.id} value={method.id}>
+                        {method.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <Input
+                  placeholder="Min amount"
+                  value={minAmount}
+                  onChange={(e) => setMinAmount(e.target.value)}
+                  type="number"
+                />
+
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="Search traders..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
               </div>
-            </CardHeader>
-            
-            <CardContent>
-              {isLoading ? (
-                <div className="py-12 text-center">
-                  <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-                  <p className="text-muted-foreground">Loading offers...</p>
-                </div>
-              ) : offers.length === 0 ? (
-                <div className="py-12 text-center">
-                  <TrendingUp className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                  <p className="text-lg font-medium">No offers found</p>
-                  <p className="text-muted-foreground">
-                    Try adjusting your filters or check back later
-                  </p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {offers.map((offer) => (
-                    <P2POfferCard 
-                      key={offer.id}
-                      offer={offer}
-                      onAction={handleOfferAction}
-                    />
-                  ))}
-                </div>
-              )}
             </CardContent>
           </Card>
+
+          {/* Offers List */}
+          <div className="space-y-4">
+            {isLoading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p>Loading offers...</p>
+              </div>
+            ) : filteredOffers.length > 0 ? (
+              filteredOffers.map((offer) => {
+                const ratingInfo = getTraderRating(offer.user.rating);
+                return (
+                  <Card
+                    key={offer.id}
+                    className="hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => {
+                      setSelectedOffer(offer);
+                      setShowOfferDetails(true);
+                    }}
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        {/* Trader Info */}
+                        <div className="flex items-center gap-4">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage src={offer.user.avatar} />
+                            <AvatarFallback>
+                              {offer.user.username.slice(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-semibold">
+                                {offer.user.username}
+                              </span>
+                              {offer.user.isVerified && (
+                                <CheckCircle className="h-4 w-4 text-blue-500" />
+                              )}
+                              <Badge variant="outline" className="text-xs">
+                                KYC {offer.user.kycLevel}
+                              </Badge>
+                            </div>
+
+                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                                <span className={ratingInfo.color}>
+                                  {offer.user.rating.toFixed(1)} (
+                                  {ratingInfo.label})
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-1">
+                                <Users className="h-4 w-4" />
+                                <span>{offer.user.totalTrades} trades</span>
+                              </div>
+
+                              <div className="flex items-center gap-1">
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                                <span>
+                                  {offer.user.completionRate.toFixed(1)}%
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-1">
+                                <Clock
+                                  className={cn(
+                                    "h-4 w-4",
+                                    getReleaseTimeColor(
+                                      offer.user.avgReleaseTime,
+                                    ),
+                                  )}
+                                />
+                                <span
+                                  className={getReleaseTimeColor(
+                                    offer.user.avgReleaseTime,
+                                  )}
+                                >
+                                  ~{offer.user.avgReleaseTime}min
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Offer Details */}
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center lg:text-left">
+                          <div>
+                            <div className="text-sm text-gray-600">Price</div>
+                            <div className="font-bold text-lg">
+                              {formatCurrency(offer.price, offer.fiatCurrency)}
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="text-sm text-gray-600">
+                              Available
+                            </div>
+                            <div className="font-semibold">
+                              {formatCrypto(
+                                offer.availableAmount / offer.price,
+                                offer.asset,
+                              )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="text-sm text-gray-600">Limits</div>
+                            <div className="font-semibold text-sm">
+                              {formatCurrency(
+                                offer.minAmount,
+                                offer.fiatCurrency,
+                              )}{" "}
+                              -
+                              {formatCurrency(
+                                offer.maxAmount,
+                                offer.fiatCurrency,
+                              )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <div className="text-sm text-gray-600 mb-2">
+                              Payment
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                              {offer.paymentMethods
+                                .slice(0, 2)
+                                .map((method) => (
+                                  <Badge
+                                    key={method.id}
+                                    variant="outline"
+                                    className="text-xs"
+                                  >
+                                    {method.name}
+                                  </Badge>
+                                ))}
+                              {offer.paymentMethods.length > 2 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{offer.paymentMethods.length - 2} more
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Button */}
+                        <div className="flex flex-col gap-2">
+                          <Button
+                            className={cn(
+                              "w-full",
+                              offer.type === "SELL"
+                                ? "bg-green-600 hover:bg-green-700"
+                                : "bg-red-600 hover:bg-red-700",
+                            )}
+                          >
+                            {offer.type === "SELL" ? "Buy" : "Sell"}{" "}
+                            {offer.asset}
+                          </Button>
+
+                          <Button variant="outline" size="sm">
+                            <MessageCircle className="h-4 w-4 mr-2" />
+                            Chat
+                          </Button>
+                        </div>
+                      </div>
+
+                      {offer.terms && (
+                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                          <div className="text-sm text-gray-600">
+                            Terms: {offer.terms}
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })
+            ) : (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">
+                    No Offers Found
+                  </h3>
+                  <p className="text-gray-600">
+                    Try adjusting your filters or create your own offer
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </TabsContent>
 
         {/* My Trades Tab */}
-        <TabsContent value="my_trades" className="space-y-4">
+        <TabsContent value="my-trades" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Your Active Trades</CardTitle>
+              <CardTitle>Active Trades</CardTitle>
             </CardHeader>
             <CardContent>
-              {isLoading ? (
-                <div className="py-12 text-center">
-                  <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-                  <p className="text-muted-foreground">Loading trades...</p>
-                </div>
-              ) : userTrades.length === 0 ? (
-                <div className="py-12 text-center">
-                  <TrendingUp className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                  <p className="text-lg font-medium">No trades yet</p>
-                  <p className="text-muted-foreground">
-                    Start trading to see your orders here
-                  </p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {userTrades.map((trade) => (
-                    <TradeCard
-                      key={trade.id}
-                      trade={trade}
-                      onAction={handleTradeAction}
-                      currentUserId={currentUserId}
-                    />
-                  ))}
-                </div>
-              )}
+              <div className="text-center py-12">
+                <MessageCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Active Trades</h3>
+                <p className="text-gray-600">
+                  Your active P2P trades will appear here
+                </p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Create Offer Tab */}
-        <TabsContent value="create_offer" className="space-y-4">
+        {/* My Offers Tab */}
+        <TabsContent value="my-offers" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Plus className="h-5 w-5" />
-                Create New Offer
-              </CardTitle>
+              <CardTitle>My Offers</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  Offer creation form coming soon...
+                <Plus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">
+                  No Offers Created
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Create your first P2P offer to start trading
+                </p>
+                <Button onClick={() => setShowCreateOffer(true)}>
+                  Create Offer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* History Tab */}
+        <TabsContent value="history" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Trade History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-12">
+                <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Trade History</h3>
+                <p className="text-gray-600">
+                  Your completed trades will appear here
                 </p>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Create Offer Dialog */}
+      <Dialog open={showCreateOffer} onOpenChange={setShowCreateOffer}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create P2P Offer</DialogTitle>
+            <DialogDescription>
+              Create a new offer to buy or sell cryptocurrency
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {/* Offer Type */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                I want to
+              </label>
+              <Tabs
+                value={newOffer.type.toLowerCase()}
+                onValueChange={(value) =>
+                  setNewOffer((prev) => ({
+                    ...prev,
+                    type: value.toUpperCase() as "BUY" | "SELL",
+                  }))
+                }
+              >
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="sell" className="text-green-600">
+                    Sell {newOffer.asset}
+                  </TabsTrigger>
+                  <TabsTrigger value="buy" className="text-red-600">
+                    Buy {newOffer.asset}
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+
+            {/* Asset and Currency */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Asset</label>
+                <Select
+                  value={newOffer.asset}
+                  onValueChange={(value) =>
+                    setNewOffer((prev) => ({ ...prev, asset: value }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {assets.map((asset) => (
+                      <SelectItem key={asset} value={asset}>
+                        {asset}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Fiat Currency
+                </label>
+                <Select
+                  value={newOffer.fiatCurrency}
+                  onValueChange={(value) =>
+                    setNewOffer((prev) => ({ ...prev, fiatCurrency: value }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {fiatCurrencies.map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Price and Amounts */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Price per {newOffer.asset} ({newOffer.fiatCurrency})
+                </label>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={newOffer.price}
+                  onChange={(e) =>
+                    setNewOffer((prev) => ({ ...prev, price: e.target.value }))
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Total Amount ({newOffer.fiatCurrency})
+                </label>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={newOffer.totalAmount}
+                  onChange={(e) =>
+                    setNewOffer((prev) => ({
+                      ...prev,
+                      totalAmount: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Min Order ({newOffer.fiatCurrency})
+                </label>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={newOffer.minAmount}
+                  onChange={(e) =>
+                    setNewOffer((prev) => ({
+                      ...prev,
+                      minAmount: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Max Order ({newOffer.fiatCurrency})
+                </label>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={newOffer.maxAmount}
+                  onChange={(e) =>
+                    setNewOffer((prev) => ({
+                      ...prev,
+                      maxAmount: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            {/* Payment Methods */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                Payment Methods
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                {paymentMethods.map((method) => (
+                  <label
+                    key={method.id}
+                    className="flex items-center space-x-2 p-2 border rounded-lg cursor-pointer hover:bg-gray-50"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={newOffer.paymentMethods.includes(method.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setNewOffer((prev) => ({
+                            ...prev,
+                            paymentMethods: [...prev.paymentMethods, method.id],
+                          }));
+                        } else {
+                          setNewOffer((prev) => ({
+                            ...prev,
+                            paymentMethods: prev.paymentMethods.filter(
+                              (id) => id !== method.id,
+                            ),
+                          }));
+                        }
+                      }}
+                    />
+                    <method.icon className="h-4 w-4" />
+                    <span className="text-sm">{method.name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Terms and Auto Reply */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                Terms (Optional)
+              </label>
+              <Input
+                placeholder="e.g., Payment within 15 minutes required"
+                value={newOffer.terms}
+                onChange={(e) =>
+                  setNewOffer((prev) => ({ ...prev, terms: e.target.value }))
+                }
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                Auto Reply Message (Optional)
+              </label>
+              <Input
+                placeholder="e.g., Thank you for your order. Please make payment within 15 minutes."
+                value={newOffer.autoReply}
+                onChange={(e) =>
+                  setNewOffer((prev) => ({
+                    ...prev,
+                    autoReply: e.target.value,
+                  }))
+                }
+              />
+            </div>
+
+            {/* Summary */}
+            {newOffer.price && newOffer.totalAmount && (
+              <div className="p-4 bg-gray-50 rounded-lg space-y-2">
+                <div className="font-medium">Offer Summary:</div>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>You will {newOffer.type.toLowerCase()}:</span>
+                    <span>
+                      {formatCrypto(
+                        parseFloat(newOffer.totalAmount) /
+                          parseFloat(newOffer.price),
+                        newOffer.asset,
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>For:</span>
+                    <span>
+                      {formatCurrency(
+                        parseFloat(newOffer.totalAmount),
+                        newOffer.fiatCurrency,
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Rate:</span>
+                    <span>
+                      {formatCurrency(
+                        parseFloat(newOffer.price),
+                        newOffer.fiatCurrency,
+                      )}{" "}
+                      per {newOffer.asset}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowCreateOffer(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleCreateOffer}
+                disabled={
+                  !newOffer.price ||
+                  !newOffer.totalAmount ||
+                  !newOffer.minAmount ||
+                  !newOffer.maxAmount ||
+                  newOffer.paymentMethods.length === 0
+                }
+              >
+                Create Offer
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Offer Details Dialog */}
+      <Dialog open={showOfferDetails} onOpenChange={setShowOfferDetails}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedOffer?.type === "SELL" ? "Buy" : "Sell"}{" "}
+              {selectedOffer?.asset}
+            </DialogTitle>
+            <DialogDescription>
+              Trade with {selectedOffer?.user.username}
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedOffer && (
+            <div className="space-y-6">
+              {/* Trader Info */}
+              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src={selectedOffer.user.avatar} />
+                  <AvatarFallback>
+                    {selectedOffer.user.username.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-semibold">
+                      {selectedOffer.user.username}
+                    </span>
+                    {selectedOffer.user.isVerified && (
+                      <CheckCircle className="h-4 w-4 text-blue-500" />
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                    <div>Rating: {selectedOffer.user.rating.toFixed(1)}/5</div>
+                    <div>Trades: {selectedOffer.user.totalTrades}</div>
+                    <div>
+                      Completion: {selectedOffer.user.completionRate.toFixed(1)}
+                      %
+                    </div>
+                    <div>
+                      Avg Release: ~{selectedOffer.user.avgReleaseTime}min
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Offer Details */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-sm text-gray-600">Price</div>
+                    <div className="text-xl font-bold">
+                      {formatCurrency(
+                        selectedOffer.price,
+                        selectedOffer.fiatCurrency,
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-sm text-gray-600">Available</div>
+                    <div className="font-semibold">
+                      {formatCrypto(
+                        selectedOffer.availableAmount / selectedOffer.price,
+                        selectedOffer.asset,
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <div className="text-sm text-gray-600">Order Limits</div>
+                    <div className="font-semibold">
+                      {formatCurrency(
+                        selectedOffer.minAmount,
+                        selectedOffer.fiatCurrency,
+                      )}{" "}
+                      -{" "}
+                      {formatCurrency(
+                        selectedOffer.maxAmount,
+                        selectedOffer.fiatCurrency,
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-sm text-gray-600">Payment Methods</div>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {selectedOffer.paymentMethods.map((method) => (
+                        <Badge
+                          key={method.id}
+                          variant="outline"
+                          className="text-xs"
+                        >
+                          {method.name}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Terms */}
+              {selectedOffer.terms && (
+                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="text-sm font-medium text-yellow-800 mb-1">
+                    Terms & Conditions:
+                  </div>
+                  <div className="text-sm text-yellow-700">
+                    {selectedOffer.terms}
+                  </div>
+                </div>
+              )}
+
+              {/* Trade Form */}
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    Amount ({selectedOffer.fiatCurrency})
+                  </label>
+                  <Input
+                    type="number"
+                    placeholder={`${selectedOffer.minAmount} - ${selectedOffer.maxAmount}`}
+                    min={selectedOffer.minAmount}
+                    max={selectedOffer.maxAmount}
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowOfferDetails(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className={cn(
+                      selectedOffer.type === "SELL"
+                        ? "bg-green-600 hover:bg-green-700"
+                        : "bg-red-600 hover:bg-red-700",
+                    )}
+                  >
+                    {selectedOffer.type === "SELL" ? "Buy" : "Sell"}{" "}
+                    {selectedOffer.asset}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
-};
-
-export default EnhancedP2PMarketplace;
+}
