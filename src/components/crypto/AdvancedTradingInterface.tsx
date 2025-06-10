@@ -283,7 +283,7 @@ const AdvancedTradingInterface: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-2 md:p-4">
+    <div className="min-h-screen bg-white text-gray-900 p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
         {/* Trading Pairs Sidebar */}
         <div className="lg:col-span-2 space-y-2 md:space-y-4">
