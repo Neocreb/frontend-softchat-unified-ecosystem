@@ -599,7 +599,7 @@ const AdvancedTradingInterface: React.FC = () => {
               <div className="space-y-3">
                 {orderType !== "market" && (
                   <div>
-                    <label className="text-sm text-gray-400">
+                    <label className="text-sm text-gray-200 font-medium block mb-1">
                       Price (USDT)
                     </label>
                     <Input
@@ -607,14 +607,14 @@ const AdvancedTradingInterface: React.FC = () => {
                       placeholder="0.00"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
-                      className="bg-gray-800 border-gray-600"
+                      className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
                     />
                   </div>
                 )}
 
                 {orderType === "stop-loss" && (
                   <div>
-                    <label className="text-sm text-gray-400">
+                    <label className="text-sm text-gray-200 font-medium block mb-1">
                       Stop Price (USDT)
                     </label>
                     <Input
@@ -622,13 +622,13 @@ const AdvancedTradingInterface: React.FC = () => {
                       placeholder="0.00"
                       value={stopPrice}
                       onChange={(e) => setStopPrice(e.target.value)}
-                      className="bg-gray-800 border-gray-600"
+                      className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
                     />
                   </div>
                 )}
 
                 <div>
-                  <label className="text-sm text-gray-400">
+                  <label className="text-sm text-gray-200 font-medium block mb-1">
                     Amount ({selectedPair.split("/")[0]})
                   </label>
                   <Input
@@ -636,7 +636,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     placeholder="0.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="bg-gray-800 border-gray-600"
+                    className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
                   />
                 </div>
 
