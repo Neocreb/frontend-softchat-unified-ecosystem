@@ -11,6 +11,7 @@ import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
+import EnhancedFreelance from "./pages/EnhancedFreelance";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
