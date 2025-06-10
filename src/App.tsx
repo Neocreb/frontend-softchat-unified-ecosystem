@@ -163,7 +163,7 @@ const AppRoutes = () => {
         <Route path="messages" element={<Messages />} />
 
         {/* Marketplace routes */}
-        <Route path="marketplace" element={<Marketplace />} />
+        <Route path="marketplace" element={<EnhancedMarketplace />} />
         <Route path="marketplace/my" element={<MarketplaceDashboard />} />
         <Route path="marketplace/list" element={<MarketplaceList />} />
         <Route
