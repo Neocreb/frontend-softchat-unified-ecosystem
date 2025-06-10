@@ -9,7 +9,10 @@ const AppLayout = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className={`container mx-auto px-4 py-6 ${isMobile ? 'pt-20 pb-20' : 'pt-6'}`}>
+      {/* Add proper spacing for fixed header (h-16 = 4rem = 64px) + additional padding */}
+      <main
+        className={`container mx-auto px-4 ${isMobile ? "pt-20 pb-24" : "pt-20 pb-6"}`}
+      >
         <Outlet />
       </main>
       {isMobile && <FooterNav />}
