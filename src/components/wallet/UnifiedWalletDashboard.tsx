@@ -335,4 +335,12 @@ const WalletDashboardContent = () => {
   );
 };
 
+const UnifiedWalletDashboard = () => {
+  return (
+    <WalletProvider>
+      <WalletDashboardContent />
+    </WalletProvider>
+  );
+};
+
 export default UnifiedWalletDashboard;
