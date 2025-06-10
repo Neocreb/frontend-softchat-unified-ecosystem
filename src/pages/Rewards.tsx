@@ -114,7 +114,7 @@ const Rewards = () => {
   };
 
   return (
-    <div className="container py-6">
+    <div className="max-w-7xl mx-auto">
       <RewardsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
