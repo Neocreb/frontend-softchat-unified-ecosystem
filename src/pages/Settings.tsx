@@ -28,7 +28,7 @@ const Settings = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] pb-16 md:pb-0 bg-background text-foreground overflow-hidden">
+      <div className="min-h-screen pb-16 md:pb-0 bg-background text-foreground overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <Skeleton className="h-8 w-48 mb-6" />
 
