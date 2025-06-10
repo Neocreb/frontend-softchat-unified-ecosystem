@@ -383,10 +383,10 @@ const AdvancedTradingInterface: React.FC = () => {
           </Card>
 
           {/* Chart */}
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="pb-2 md:pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm md:text-lg text-white">
+                <CardTitle className="text-sm md:text-lg text-gray-900">
                   Price Chart
                 </CardTitle>
                 <div className="flex items-center gap-1 md:gap-2">
@@ -394,26 +394,26 @@ const AdvancedTradingInterface: React.FC = () => {
                     value={chartTimeframe}
                     onValueChange={setChartTimeframe}
                   >
-                    <SelectTrigger className="w-12 md:w-20 bg-gray-800 border-gray-600 text-white text-xs md:text-sm">
+                    <SelectTrigger className="w-12 md:w-20 bg-white border-gray-300 text-gray-900 text-xs md:text-sm">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-gray-600">
-                      <SelectItem value="1m" className="text-white">
+                    <SelectContent className="bg-white border-gray-200">
+                      <SelectItem value="1m" className="text-gray-900">
                         1m
                       </SelectItem>
-                      <SelectItem value="5m" className="text-white">
+                      <SelectItem value="5m" className="text-gray-900">
                         5m
                       </SelectItem>
-                      <SelectItem value="15m" className="text-white">
+                      <SelectItem value="15m" className="text-gray-900">
                         15m
                       </SelectItem>
-                      <SelectItem value="1h" className="text-white">
+                      <SelectItem value="1h" className="text-gray-900">
                         1h
                       </SelectItem>
-                      <SelectItem value="4h" className="text-white">
+                      <SelectItem value="4h" className="text-gray-900">
                         4h
                       </SelectItem>
-                      <SelectItem value="1d" className="text-white">
+                      <SelectItem value="1d" className="text-gray-900">
                         1d
                       </SelectItem>
                     </SelectContent>
@@ -421,7 +421,7 @@ const AdvancedTradingInterface: React.FC = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-6 md:h-8 md:w-8 text-gray-300 hover:text-white"
+                    className="h-6 w-6 md:h-8 md:w-8 text-gray-600 hover:text-gray-900"
                   >
                     <Settings className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
@@ -431,7 +431,7 @@ const AdvancedTradingInterface: React.FC = () => {
             <CardContent>
               <div
                 ref={chartRef}
-                className="h-48 md:h-96 bg-gray-800 rounded border border-gray-700"
+                className="h-48 md:h-96 bg-gray-50 rounded border border-gray-200"
               ></div>
             </CardContent>
           </Card>
