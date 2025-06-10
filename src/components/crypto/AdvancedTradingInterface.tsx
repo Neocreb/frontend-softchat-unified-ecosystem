@@ -690,7 +690,7 @@ const AdvancedTradingInterface: React.FC = () => {
           {/* Open Orders */}
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Open Orders</CardTitle>
+              <CardTitle className="text-lg text-white">Open Orders</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -698,13 +698,14 @@ const AdvancedTradingInterface: React.FC = () => {
                   openOrders.map((order) => (
                     <div
                       key={order.id}
-                      className="p-2 bg-gray-800 rounded text-xs"
+                      className="p-2 bg-gray-800 rounded text-xs border border-gray-700"
                     >
                       <div className="flex justify-between items-center mb-1">
                         <Badge
                           variant={
                             order.side === "buy" ? "default" : "destructive"
                           }
+                          className="text-white"
                         >
                           {order.side.toUpperCase()}
                         </Badge>
@@ -712,28 +713,28 @@ const AdvancedTradingInterface: React.FC = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleCancelOrder(order.id)}
-                          className="text-red-400 hover:text-red-300 h-6 px-2"
+                          className="text-red-400 hover:text-red-300 hover:bg-red-900/20 h-6 px-2"
                         >
                           Cancel
                         </Button>
                       </div>
                       <div className="space-y-1 text-sm py-1">
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Type:</span>
-                          <span className="text-white">
+                          <span className="text-gray-300">Type:</span>
+                          <span className="text-white font-medium">
                             {order.type.toUpperCase()}
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Amount:</span>
-                          <span className="text-white">
+                          <span className="text-gray-300">Amount:</span>
+                          <span className="text-white font-medium">
                             {formatNumber(order.amount, 4)}
                           </span>
                         </div>
                         {order.price && (
                           <div className="flex justify-between">
-                            <span className="text-gray-400">Price:</span>
-                            <span className="text-white">
+                            <span className="text-gray-300">Price:</span>
+                            <span className="text-white font-medium">
                               ${formatNumber(order.price)}
                             </span>
                           </div>
@@ -742,7 +743,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-center text-gray-400 py-4">
+                  <div className="text-center text-gray-300 py-4">
                     <p>No open orders</p>
                   </div>
                 )}
