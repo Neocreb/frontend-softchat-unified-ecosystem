@@ -427,32 +427,39 @@ const AdvancedTradingInterface: React.FC = () => {
           {/* Recent Trades */}
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Recent Trades</CardTitle>
+              <CardTitle className="text-lg text-white">
+                Recent Trades
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-1 max-h-40 overflow-y-auto">
-                <div className="grid grid-cols-4 text-xs text-gray-400 pb-2 border-b border-gray-700">
+                <div className="grid grid-cols-4 text-xs text-gray-300 pb-2 border-b border-gray-700 font-medium">
                   <span>Price</span>
                   <span>Amount</span>
                   <span>Total</span>
                   <span>Time</span>
                 </div>
                 {recentTrades.map((trade) => (
-                  <div key={trade.id} className="grid grid-cols-4 text-sm py-1">
+                  <div
+                    key={trade.id}
+                    className="grid grid-cols-4 text-sm py-1 hover:bg-gray-800 rounded px-1"
+                  >
                     <span
                       className={
-                        trade.type === "buy" ? "text-green-400" : "text-red-400"
+                        trade.type === "buy"
+                          ? "text-green-400 font-medium"
+                          : "text-red-400 font-medium"
                       }
                     >
                       ${formatNumber(trade.price)}
                     </span>
-                    <span className="text-gray-300">
+                    <span className="text-gray-200">
                       {formatNumber(trade.amount, 4)}
                     </span>
-                    <span className="text-gray-300">
+                    <span className="text-gray-200">
                       ${formatNumber(trade.price * trade.amount)}
                     </span>
-                    <span className="text-gray-400">{trade.time}</span>
+                    <span className="text-gray-300">{trade.time}</span>
                   </div>
                 ))}
               </div>
