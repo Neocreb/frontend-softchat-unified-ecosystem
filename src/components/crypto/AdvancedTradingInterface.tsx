@@ -287,10 +287,10 @@ const AdvancedTradingInterface: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
         {/* Trading Pairs Sidebar */}
         <div className="lg:col-span-2 space-y-2 md:space-y-4">
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="pb-2 md:pb-3">
-              <CardTitle className="text-sm md:text-lg flex items-center gap-2 text-white">
-                <Activity className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
+              <CardTitle className="text-sm md:text-lg flex items-center gap-2 text-gray-900">
+                <Activity className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                 Markets
               </CardTitle>
             </CardHeader>
@@ -300,8 +300,8 @@ const AdvancedTradingInterface: React.FC = () => {
                   key={pair.symbol}
                   className={`p-1 md:p-2 rounded cursor-pointer transition-colors ${
                     selectedPair === pair.symbol
-                      ? "bg-blue-600 text-white"
-                      : "hover:bg-gray-800 text-gray-200"
+                      ? "bg-blue-100 text-blue-900 border border-blue-200"
+                      : "hover:bg-gray-50 text-gray-700"
                   }`}
                   onClick={() => setSelectedPair(pair.symbol)}
                 >
@@ -310,11 +310,11 @@ const AdvancedTradingInterface: React.FC = () => {
                       {pair.symbol}
                     </span>
                     <div className="text-right">
-                      <div className="text-xs md:text-sm text-white">
+                      <div className="text-xs md:text-sm text-gray-900 font-medium">
                         ${formatNumber(pair.price)}
                       </div>
                       <div
-                        className={`text-xs font-medium ${pair.change >= 0 ? "text-green-400" : "text-red-400"}`}
+                        className={`text-xs font-medium ${pair.change >= 0 ? "text-green-600" : "text-red-600"}`}
                       >
                         {pair.change >= 0 ? "+" : ""}
                         {pair.changePercent.toFixed(2)}%
