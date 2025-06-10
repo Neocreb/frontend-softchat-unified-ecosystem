@@ -15,6 +15,7 @@ import EnhancedFreelance from "./pages/EnhancedFreelance";
 import Profile from "./pages/Profile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
+import EnhancedMarketplace from "./pages/EnhancedMarketplace";
 import MarketplaceCart from "./pages/marketplace/MarketplaceCart";
 import MarketplaceCheckout from "./pages/marketplace/MarketplaceCheckout";
 import MarketplaceList from "./pages/marketplace/MarketplaceList";
