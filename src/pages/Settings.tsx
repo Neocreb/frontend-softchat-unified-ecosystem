@@ -88,7 +88,7 @@ const Settings = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] pb-16 md:pb-0 bg-background text-foreground overflow-hidden">
+    <div className="min-h-screen pb-16 md:pb-0 bg-background text-foreground overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
