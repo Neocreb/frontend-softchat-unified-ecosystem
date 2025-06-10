@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useWallet } from "@/hooks/use-wallet";
+import { useFreelanceWallet } from "@/hooks/use-freelance-wallet";
 import { useToast } from "@/components/ui/use-toast";
 import {
   DollarSign,
