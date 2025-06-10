@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
@@ -14,14 +13,14 @@ const Explore = () => {
     filteredUsers,
     filteredHashtags,
     filteredGroups,
-    filteredPages
+    filteredPages,
   } = useExplore();
 
   return (
-    <div className="container max-w-[680px] mx-auto pb-16 md:pb-0 pt-4">
+    <div className="max-w-[680px] mx-auto">
       <div className="space-y-4">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        
+
         <ExploreContent
           activeTab={activeTab}
           setActiveTab={setActiveTab}
