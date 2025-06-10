@@ -25,7 +25,13 @@ interface FreelanceProject {
 }
 
 const FreelanceWalletCard = () => {
-  const { getSourceBalance, getTransactionsBySource } = useWallet();
+  const {
+    freelanceBalance,
+    freelanceTransactions,
+    freelanceStats,
+    earningsThisMonth,
+    activeProjectsCount,
+  } = useFreelanceWallet();
   const { toast } = useToast();
 
   // Mock freelance projects data
