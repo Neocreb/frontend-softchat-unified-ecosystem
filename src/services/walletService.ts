@@ -189,39 +189,47 @@ export const walletService = {
   async processDeposit(
     request: DepositRequest,
   ): Promise<{ success: boolean; transactionId?: string; message: string }> {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch("/api/wallet/deposit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      });
 
-    const transactionId = `deposit_${Date.now()}`;
+      const result = await response.json();
 
-    // Add transaction to mock data
-    const newTransaction: Transaction = {
-      id: transactionId,
-      type: "deposit",
-      amount: request.amount,
-      source: request.method === "card" ? "card" : "bank",
-      description: request.description || `Deposit via ${request.method}`,
-      timestamp: new Date().toISOString(),
-      status: "pending",
-      sourceIcon: request.method === "card" ? "💳" : "🏦",
-    };
+      if (!response.ok) {
+        return {
+          success: false,
+          message: result.error || "Deposit failed",
+        };
+      }
 
-    mockTransactions.unshift(newTransaction);
-
-    // Update balance
-    mockWalletBalance.total += request.amount;
-    mockWalletBalance[request.source] += request.amount;
-
-    return {
-      success: true,
-      transactionId,
-      message: "Deposit processed successfully",
-    };
+      return result;
+    } catch (error) {
+      console.error("Error processing deposit:", error);
+      return {
+        success: false,
+        message: "Network error occurred",
+      };
+    }
   },
 
   // Get bank accounts
   async getBankAccounts(): Promise<BankAccount[]> {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    return mockBankAccounts;
+    try {
+      const response = await fetch("/api/wallet/bank-accounts");
+      if (!response.ok) {
+        throw new Error("Failed to fetch bank accounts");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching bank accounts:", error);
+      // Fallback to mock data in case of error
+      return mockBankAccounts;
+    }
   },
 
   // Add bank account
