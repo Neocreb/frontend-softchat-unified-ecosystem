@@ -94,7 +94,7 @@ const WalletDashboardContent = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-6 space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Skeleton */}
         <div className="flex items-center justify-between">
           <Skeleton className="h-8 w-48" />
