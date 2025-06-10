@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { WalletBalance, Transaction } from "@/types/wallet";
-import { walletService } from "@/services/walletService";
+import { WalletProvider, useWalletContext } from "@/contexts/WalletContext";
 import WalletSourceCard from "./WalletSourceCard";
 import WithdrawModal from "./WithdrawModal";
 import DepositModal from "./DepositModal";
@@ -21,13 +20,17 @@ import {
   EyeOff,
 } from "lucide-react";
 
-const UnifiedWalletDashboard = () => {
-  const [walletBalance, setWalletBalance] = useState<WalletBalance | null>(
-    null,
-  );
-  const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
+const WalletDashboardContent = () => {
+  const {
+    walletBalance,
+    transactions: allTransactions,
+    isLoading,
+    refreshWallet,
+    getTransactionsBySource,
+    getTotalEarnings,
+  } = useWalletContext();
+
   const [activeTab, setActiveTab] = useState("all");
-  const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showDepositModal, setShowDepositModal] = useState(false);
