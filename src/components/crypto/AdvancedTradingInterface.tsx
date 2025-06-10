@@ -1,25 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Label } from '@/components/ui/label';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  BarChart3, 
-  Activity, 
-  DollarSign, 
-  Shield, 
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import {
+  TrendingUp,
+  TrendingDown,
+  BarChart3,
+  Activity,
+  DollarSign,
+  Shield,
   AlertTriangle,
   Settings,
   Bookmark,
   Eye,
-  Bell
-} from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+  Bell,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface OrderBookEntry {
   price: number;
@@ -32,17 +44,17 @@ interface Trade {
   price: number;
   amount: number;
   time: string;
-  type: 'buy' | 'sell';
+  type: "buy" | "sell";
 }
 
 interface Order {
   id: string;
-  type: 'market' | 'limit' | 'stop-loss' | 'take-profit';
-  side: 'buy' | 'sell';
+  type: "market" | "limit" | "stop-loss" | "take-profit";
+  side: "buy" | "sell";
   amount: number;
   price?: number;
   stopPrice?: number;
-  status: 'pending' | 'filled' | 'cancelled';
+  status: "pending" | "filled" | "cancelled";
   filled: number;
   timestamp: string;
 }
@@ -57,42 +69,52 @@ interface CandlestickData {
 }
 
 const AdvancedTradingInterface: React.FC = () => {
-  const [selectedPair, setSelectedPair] = useState('BTC/USDT');
-  const [orderType, setOrderType] = useState<'market' | 'limit' | 'stop-loss'>('limit');
-  const [orderSide, setOrderSide] = useState<'buy' | 'sell'>('buy');
-  const [amount, setAmount] = useState('');
-  const [price, setPrice] = useState('');
-  const [stopPrice, setStopPrice] = useState('');
-  const [orderBook, setOrderBook] = useState<{asks: OrderBookEntry[], bids: OrderBookEntry[]}>({
+  const [selectedPair, setSelectedPair] = useState("BTC/USDT");
+  const [orderType, setOrderType] = useState<"market" | "limit" | "stop-loss">(
+    "limit",
+  );
+  const [orderSide, setOrderSide] = useState<"buy" | "sell">("buy");
+  const [amount, setAmount] = useState("");
+  const [price, setPrice] = useState("");
+  const [stopPrice, setStopPrice] = useState("");
+  const [orderBook, setOrderBook] = useState<{
+    asks: OrderBookEntry[];
+    bids: OrderBookEntry[];
+  }>({
     asks: [],
-    bids: []
+    bids: [],
   });
   const [recentTrades, setRecentTrades] = useState<Trade[]>([]);
   const [openOrders, setOpenOrders] = useState<Order[]>([]);
   const [orderHistory, setOrderHistory] = useState<Order[]>([]);
-  const [currentPrice, setCurrentPrice] = useState(43250.50);
+  const [currentPrice, setCurrentPrice] = useState(43250.5);
   const [priceChange, setPriceChange] = useState(2.34);
   const [priceChangePercent, setPriceChangePercent] = useState(0.054);
   const [volume24h, setVolume24h] = useState(1234567890);
-  const [chartTimeframe, setChartTimeframe] = useState('1h');
+  const [chartTimeframe, setChartTimeframe] = useState("1h");
   const [isWatchlisted, setIsWatchlisted] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   // Trading pairs data
   const tradingPairs = [
-    { symbol: 'BTC/USDT', price: 43250.50, change: 2.34, changePercent: 0.054 },
-    { symbol: 'ETH/USDT', price: 2650.75, change: -45.25, changePercent: -1.68 },
-    { symbol: 'BNB/USDT', price: 315.80, change: 8.90, changePercent: 2.90 },
-    { symbol: 'ADA/USDT', price: 0.4852, change: 0.0123, changePercent: 2.60 },
-    { symbol: 'SOL/USDT', price: 98.45, change: -2.15, changePercent: -2.14 }
+    { symbol: "BTC/USDT", price: 43250.5, change: 2.34, changePercent: 0.054 },
+    {
+      symbol: "ETH/USDT",
+      price: 2650.75,
+      change: -45.25,
+      changePercent: -1.68,
+    },
+    { symbol: "BNB/USDT", price: 315.8, change: 8.9, changePercent: 2.9 },
+    { symbol: "ADA/USDT", price: 0.4852, change: 0.0123, changePercent: 2.6 },
+    { symbol: "SOL/USDT", price: 98.45, change: -2.15, changePercent: -2.14 },
   ];
 
   const [orderBookData, setOrderBookData] = useState([
-    { price: 43200, amount: 0.5, type: 'buy' },
-    { price: 43250, amount: 0.3, type: 'sell' },
-    { price: 43180, amount: 0.7, type: 'buy' },
-    { price: 43270, amount: 0.4, type: 'sell' },
+    { price: 43200, amount: 0.5, type: "buy" },
+    { price: 43250, amount: 0.3, type: "sell" },
+    { price: 43180, amount: 0.7, type: "buy" },
+    { price: 43270, amount: 0.4, type: "sell" },
   ]);
 
   useEffect(() => {
@@ -122,13 +144,13 @@ const AdvancedTradingInterface: React.FC = () => {
       asks.push({
         price: askPrice,
         amount: askAmount,
-        total: askPrice * askAmount
+        total: askPrice * askAmount,
       });
 
       bids.push({
         price: bidPrice,
         amount: bidAmount,
-        total: bidPrice * bidAmount
+        total: bidPrice * bidAmount,
       });
     }
 
@@ -146,7 +168,7 @@ const AdvancedTradingInterface: React.FC = () => {
         price,
         amount,
         time,
-        type: Math.random() > 0.5 ? 'buy' : 'sell'
+        type: Math.random() > 0.5 ? "buy" : "sell",
       });
     }
 
@@ -155,34 +177,34 @@ const AdvancedTradingInterface: React.FC = () => {
     // Generate sample orders
     const sampleOrders: Order[] = [
       {
-        id: 'order-1',
-        type: 'limit',
-        side: 'buy',
+        id: "order-1",
+        type: "limit",
+        side: "buy",
         amount: 0.1,
         price: 43000,
-        status: 'pending',
+        status: "pending",
         filled: 0,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       },
       {
-        id: 'order-2',
-        type: 'limit',
-        side: 'sell',
+        id: "order-2",
+        type: "limit",
+        side: "sell",
         amount: 0.05,
         price: 43500,
-        status: 'filled',
+        status: "filled",
         filled: 0.05,
-        timestamp: new Date(Date.now() - 3600000).toISOString()
-      }
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
     ];
 
-    setOpenOrders(sampleOrders.filter(o => o.status === 'pending'));
+    setOpenOrders(sampleOrders.filter((o) => o.status === "pending"));
     setOrderHistory(sampleOrders);
   };
 
   const updateMarketData = () => {
     const change = (Math.random() - 0.5) * 10;
-    setCurrentPrice(prev => Math.max(prev + change, 1000));
+    setCurrentPrice((prev) => Math.max(prev + change, 1000));
     setPriceChange(change);
     setPriceChangePercent((change / currentPrice) * 100);
   };
@@ -203,11 +225,11 @@ const AdvancedTradingInterface: React.FC = () => {
   };
 
   const handlePlaceOrder = () => {
-    if (!amount || (orderType !== 'market' && !price)) {
+    if (!amount || (orderType !== "market" && !price)) {
       toast({
         title: "Invalid Order",
         description: "Please fill in all required fields",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -217,39 +239,39 @@ const AdvancedTradingInterface: React.FC = () => {
       type: orderType,
       side: orderSide,
       amount: parseFloat(amount),
-      price: orderType !== 'market' ? parseFloat(price) : undefined,
-      stopPrice: orderType === 'stop-loss' ? parseFloat(stopPrice) : undefined,
-      status: 'pending',
+      price: orderType !== "market" ? parseFloat(price) : undefined,
+      stopPrice: orderType === "stop-loss" ? parseFloat(stopPrice) : undefined,
+      status: "pending",
       filled: 0,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
-    setOpenOrders(prev => [...prev, newOrder]);
-    setOrderHistory(prev => [...prev, newOrder]);
+    setOpenOrders((prev) => [...prev, newOrder]);
+    setOrderHistory((prev) => [...prev, newOrder]);
 
     toast({
       title: "Order Placed",
-      description: `${orderSide.toUpperCase()} ${amount} ${selectedPair.split('/')[0]} at ${orderType === 'market' ? 'market price' : `$${price}`}`
+      description: `${orderSide.toUpperCase()} ${amount} ${selectedPair.split("/")[0]} at ${orderType === "market" ? "market price" : `$${price}`}`,
     });
 
     // Reset form
-    setAmount('');
-    setPrice('');
-    setStopPrice('');
+    setAmount("");
+    setPrice("");
+    setStopPrice("");
   };
 
   const handleCancelOrder = (orderId: string) => {
-    setOpenOrders(prev => prev.filter(order => order.id !== orderId));
+    setOpenOrders((prev) => prev.filter((order) => order.id !== orderId));
     toast({
       title: "Order Cancelled",
-      description: "Your order has been cancelled successfully"
+      description: "Your order has been cancelled successfully",
     });
   };
 
   const formatNumber = (num: number, decimals: number = 2) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat("en-US", {
       minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
+      maximumFractionDigits: decimals,
     }).format(num);
   };
 
@@ -263,7 +285,6 @@ const AdvancedTradingInterface: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
-
         {/* Trading Pairs Sidebar */}
         <div className="lg:col-span-2 space-y-2 md:space-y-4">
           <Card className="bg-gray-900 border-gray-700">
@@ -278,16 +299,25 @@ const AdvancedTradingInterface: React.FC = () => {
                 <div
                   key={pair.symbol}
                   className={`p-1 md:p-2 rounded cursor-pointer transition-colors ${
-                    selectedPair === pair.symbol ? 'bg-blue-600' : 'hover:bg-gray-800'
+                    selectedPair === pair.symbol
+                      ? "bg-blue-600"
+                      : "hover:bg-gray-800"
                   }`}
                   onClick={() => setSelectedPair(pair.symbol)}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-xs md:text-sm">{pair.symbol}</span>
+                    <span className="font-medium text-xs md:text-sm">
+                      {pair.symbol}
+                    </span>
                     <div className="text-right">
-                      <div className="text-xs md:text-sm">${formatNumber(pair.price)}</div>
-                      <div className={`text-xs ${pair.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {pair.change >= 0 ? '+' : ''}{pair.changePercent.toFixed(2)}%
+                      <div className="text-xs md:text-sm">
+                        ${formatNumber(pair.price)}
+                      </div>
+                      <div
+                        className={`text-xs ${pair.change >= 0 ? "text-green-400" : "text-red-400"}`}
+                      >
+                        {pair.change >= 0 ? "+" : ""}
+                        {pair.changePercent.toFixed(2)}%
                       </div>
                     </div>
                   </div>
@@ -304,29 +334,50 @@ const AdvancedTradingInterface: React.FC = () => {
             <CardContent className="p-2 md:p-4">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 md:gap-0">
                 <div className="flex items-center gap-2 md:gap-4">
-                  <h1 className="text-lg md:text-2xl font-bold">{selectedPair}</h1>
+                  <h1 className="text-lg md:text-2xl font-bold">
+                    {selectedPair}
+                  </h1>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsWatchlisted(!isWatchlisted)}
-                    className={`h-6 w-6 md:h-8 md:w-8 ${isWatchlisted ? 'text-yellow-400' : 'text-gray-400'}`}
+                    className={`h-6 w-6 md:h-8 md:w-8 ${isWatchlisted ? "text-yellow-400" : "text-gray-400"}`}
                   >
                     <Bookmark className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
                 <div className="flex items-center gap-3 md:gap-6 w-full md:w-auto justify-between md:justify-end">
-                <div className="min-w-0">
-                  <div className="text-lg md:text-2xl font-bold text-white">${formatNumber(currentPrice)}</div>
-                  <div className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {priceChange >= 0 ? <TrendingUp className="w-3 h-3 md:w-4 md:h-4" /> : <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />}
-                    <span className="text-xs md:text-sm whitespace-nowrap text-gray-200">{priceChange >= 0 ? '+' : ''}{formatNumber(priceChange)} ({priceChangePercent >= 0 ? '+' : ''}{formatNumber(priceChangePercent, 3)}%)</span>
+                  <div className="min-w-0">
+                    <div className="text-lg md:text-2xl font-bold text-white">
+                      ${formatNumber(currentPrice)}
+                    </div>
+                    <div
+                      className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? "text-green-400" : "text-red-400"}`}
+                    >
+                      {priceChange >= 0 ? (
+                        <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
+                      ) : (
+                        <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />
+                      )}
+                      <span
+                        className={`text-xs md:text-sm whitespace-nowrap ${priceChange >= 0 ? "text-green-400" : "text-red-400"}`}
+                      >
+                        {priceChange >= 0 ? "+" : ""}
+                        {formatNumber(priceChange)} (
+                        {priceChangePercent >= 0 ? "+" : ""}
+                        {formatNumber(priceChangePercent, 3)}%)
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right min-w-0">
+                    <div className="text-xs md:text-sm text-gray-300">
+                      24h Volume
+                    </div>
+                    <div className="font-medium text-sm md:text-base text-white">
+                      {formatVolume(volume24h)} USDT
+                    </div>
                   </div>
                 </div>
-                <div className="text-right min-w-0">
-                  <div className="text-xs md:text-sm text-gray-300">24h Volume</div>
-                  <div className="font-medium text-sm md:text-base text-white">{formatVolume(volume24h)} USDT</div>
-                </div>
-              </div>
               </div>
             </CardContent>
           </Card>
@@ -335,9 +386,14 @@ const AdvancedTradingInterface: React.FC = () => {
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-2 md:pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-sm md:text-lg">Price Chart</CardTitle>
+                <CardTitle className="text-sm md:text-lg">
+                  Price Chart
+                </CardTitle>
                 <div className="flex items-center gap-1 md:gap-2">
-                  <Select value={chartTimeframe} onValueChange={setChartTimeframe}>
+                  <Select
+                    value={chartTimeframe}
+                    onValueChange={setChartTimeframe}
+                  >
                     <SelectTrigger className="w-12 md:w-20 bg-gray-800 border-gray-600 text-xs md:text-sm">
                       <SelectValue />
                     </SelectTrigger>
@@ -350,14 +406,21 @@ const AdvancedTradingInterface: React.FC = () => {
                       <SelectItem value="1d">1d</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 md:h-8 md:w-8">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 md:h-8 md:w-8"
+                  >
                     <Settings className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div ref={chartRef} className="h-48 md:h-96 bg-gray-800 rounded"></div>
+              <div
+                ref={chartRef}
+                className="h-48 md:h-96 bg-gray-800 rounded"
+              ></div>
             </CardContent>
           </Card>
 
@@ -376,11 +439,19 @@ const AdvancedTradingInterface: React.FC = () => {
                 </div>
                 {recentTrades.map((trade) => (
                   <div key={trade.id} className="grid grid-cols-4 text-sm py-1">
-                    <span className={trade.type === 'buy' ? 'text-green-400' : 'text-red-400'}>
+                    <span
+                      className={
+                        trade.type === "buy" ? "text-green-400" : "text-red-400"
+                      }
+                    >
                       ${formatNumber(trade.price)}
                     </span>
-                    <span className="text-gray-300">{formatNumber(trade.amount, 4)}</span>
-                    <span className="text-gray-300">${formatNumber(trade.price * trade.amount)}</span>
+                    <span className="text-gray-300">
+                      {formatNumber(trade.amount, 4)}
+                    </span>
+                    <span className="text-gray-300">
+                      ${formatNumber(trade.price * trade.amount)}
+                    </span>
                     <span className="text-gray-400">{trade.time}</span>
                   </div>
                 ))}
@@ -405,28 +476,56 @@ const AdvancedTradingInterface: React.FC = () => {
                     <span>Amount</span>
                     <span>Total</span>
                   </div>
-                  {orderBook.asks.slice(0, 8).reverse().map((ask, index) => (
-                    <div key={index} className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer">
-                      <span className="text-red-400">${formatNumber(ask.price)}</span>
-                      <span className="text-gray-300">{formatNumber(ask.amount, 4)}</span>
-                      <span className="text-gray-300">{formatNumber(ask.total)}</span>
-                    </div>
-                  ))}
+                  {orderBook.asks
+                    .slice(0, 8)
+                    .reverse()
+                    .map((ask, index) => (
+                      <div
+                        key={index}
+                        className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer"
+                      >
+                        <span className="text-red-400">
+                          ${formatNumber(ask.price)}
+                        </span>
+                        <span className="text-gray-300">
+                          {formatNumber(ask.amount, 4)}
+                        </span>
+                        <span className="text-gray-300">
+                          {formatNumber(ask.total)}
+                        </span>
+                      </div>
+                    ))}
                 </div>
 
                 {/* Spread */}
                 <div className="py-2 text-center border-y border-gray-700">
-                  <span className="text-lg font-bold text-white">${formatNumber(currentPrice)}</span>
-                  <div className="text-xs text-gray-300">Spread: ${formatNumber(orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0)}</div>
+                  <span className="text-lg font-bold text-white">
+                    ${formatNumber(currentPrice)}
+                  </span>
+                  <div className="text-xs text-gray-300">
+                    Spread: $
+                    {formatNumber(
+                      orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0,
+                    )}
+                  </div>
                 </div>
 
                 {/* Bids */}
                 <div className="space-y-1">
                   {orderBook.bids.slice(0, 8).map((bid, index) => (
-                    <div key={index} className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer">
-                      <span className="text-green-400">${formatNumber(bid.price)}</span>
-                      <span className="text-gray-300">{formatNumber(bid.amount, 4)}</span>
-                      <span className="text-gray-300">{formatNumber(bid.total)}</span>
+                    <div
+                      key={index}
+                      className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer"
+                    >
+                      <span className="text-green-400">
+                        ${formatNumber(bid.price)}
+                      </span>
+                      <span className="text-gray-300">
+                        {formatNumber(bid.amount, 4)}
+                      </span>
+                      <span className="text-gray-300">
+                        {formatNumber(bid.total)}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -441,27 +540,40 @@ const AdvancedTradingInterface: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Order Type */}
-              <Tabs value={orderType} onValueChange={(value) => setOrderType(value as any)}>
+              <Tabs
+                value={orderType}
+                onValueChange={(value) => setOrderType(value as any)}
+              >
                 <TabsList className="grid w-full grid-cols-3 bg-gray-800">
-                  <TabsTrigger value="limit" className="text-xs">Limit</TabsTrigger>
-                  <TabsTrigger value="market" className="text-xs">Market</TabsTrigger>
-                  <TabsTrigger value="stop-loss" className="text-xs">Stop</TabsTrigger>
+                  <TabsTrigger value="limit" className="text-xs">
+                    Limit
+                  </TabsTrigger>
+                  <TabsTrigger value="market" className="text-xs">
+                    Market
+                  </TabsTrigger>
+                  <TabsTrigger value="stop-loss" className="text-xs">
+                    Stop
+                  </TabsTrigger>
                 </TabsList>
               </Tabs>
 
               {/* Buy/Sell Toggle */}
               <div className="grid grid-cols-2 gap-2">
                 <Button
-                  variant={orderSide === 'buy' ? 'default' : 'outline'}
-                  onClick={() => setOrderSide('buy')}
-                  className={orderSide === 'buy' ? 'bg-green-600 hover:bg-green-700' : ''}
+                  variant={orderSide === "buy" ? "default" : "outline"}
+                  onClick={() => setOrderSide("buy")}
+                  className={
+                    orderSide === "buy" ? "bg-green-600 hover:bg-green-700" : ""
+                  }
                 >
                   Buy
                 </Button>
                 <Button
-                  variant={orderSide === 'sell' ? 'default' : 'outline'}
-                  onClick={() => setOrderSide('sell')}
-                  className={orderSide === 'sell' ? 'bg-red-600 hover:bg-red-700' : ''}
+                  variant={orderSide === "sell" ? "default" : "outline"}
+                  onClick={() => setOrderSide("sell")}
+                  className={
+                    orderSide === "sell" ? "bg-red-600 hover:bg-red-700" : ""
+                  }
                 >
                   Sell
                 </Button>
@@ -469,9 +581,11 @@ const AdvancedTradingInterface: React.FC = () => {
 
               {/* Order Inputs */}
               <div className="space-y-3">
-                {orderType !== 'market' && (
+                {orderType !== "market" && (
                   <div>
-                    <label className="text-sm text-gray-400">Price (USDT)</label>
+                    <label className="text-sm text-gray-400">
+                      Price (USDT)
+                    </label>
                     <Input
                       type="number"
                       placeholder="0.00"
@@ -482,9 +596,11 @@ const AdvancedTradingInterface: React.FC = () => {
                   </div>
                 )}
 
-                {orderType === 'stop-loss' && (
+                {orderType === "stop-loss" && (
                   <div>
-                    <label className="text-sm text-gray-400">Stop Price (USDT)</label>
+                    <label className="text-sm text-gray-400">
+                      Stop Price (USDT)
+                    </label>
                     <Input
                       type="number"
                       placeholder="0.00"
@@ -496,7 +612,9 @@ const AdvancedTradingInterface: React.FC = () => {
                 )}
 
                 <div>
-                  <label className="text-sm text-gray-400">Amount ({selectedPair.split('/')[0]})</label>
+                  <label className="text-sm text-gray-400">
+                    Amount ({selectedPair.split("/")[0]})
+                  </label>
                   <Input
                     type="number"
                     placeholder="0.00"
@@ -517,7 +635,7 @@ const AdvancedTradingInterface: React.FC = () => {
                       onClick={() => {
                         // Calculate amount based on percentage of available balance
                         const mockBalance = 1.5; // Mock balance
-                        setAmount((mockBalance * percent / 100).toFixed(4));
+                        setAmount(((mockBalance * percent) / 100).toFixed(4));
                       }}
                     >
                       {percent}%
@@ -531,10 +649,9 @@ const AdvancedTradingInterface: React.FC = () => {
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-400">Total:</span>
                   <span>
-                    {amount && price ? 
-                      `${formatNumber(parseFloat(amount) * parseFloat(price))} USDT` : 
-                      '0.00 USDT'
-                    }
+                    {amount && price
+                      ? `${formatNumber(parseFloat(amount) * parseFloat(price))} USDT`
+                      : "0.00 USDT"}
                   </span>
                 </div>
               </div>
@@ -543,12 +660,13 @@ const AdvancedTradingInterface: React.FC = () => {
               <Button
                 onClick={handlePlaceOrder}
                 className={`w-full ${
-                  orderSide === 'buy' 
-                    ? 'bg-green-600 hover:bg-green-700' 
-                    : 'bg-red-600 hover:bg-red-700'
+                  orderSide === "buy"
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-red-600 hover:bg-red-700"
                 }`}
               >
-                {orderSide === 'buy' ? 'Buy' : 'Sell'} {selectedPair.split('/')[0]}
+                {orderSide === "buy" ? "Buy" : "Sell"}{" "}
+                {selectedPair.split("/")[0]}
               </Button>
             </CardContent>
           </Card>
@@ -562,9 +680,16 @@ const AdvancedTradingInterface: React.FC = () => {
               <div className="space-y-2 max-h-40 overflow-y-auto">
                 {openOrders.length > 0 ? (
                   openOrders.map((order) => (
-                    <div key={order.id} className="p-2 bg-gray-800 rounded text-xs">
+                    <div
+                      key={order.id}
+                      className="p-2 bg-gray-800 rounded text-xs"
+                    >
                       <div className="flex justify-between items-center mb-1">
-                        <Badge variant={order.side === 'buy' ? 'default' : 'destructive'}>
+                        <Badge
+                          variant={
+                            order.side === "buy" ? "default" : "destructive"
+                          }
+                        >
                           {order.side.toUpperCase()}
                         </Badge>
                         <Button
@@ -579,16 +704,22 @@ const AdvancedTradingInterface: React.FC = () => {
                       <div className="space-y-1 text-sm py-1">
                         <div className="flex justify-between">
                           <span className="text-gray-400">Type:</span>
-                          <span className="text-white">{order.type.toUpperCase()}</span>
+                          <span className="text-white">
+                            {order.type.toUpperCase()}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-400">Amount:</span>
-                          <span className="text-white">{formatNumber(order.amount, 4)}</span>
+                          <span className="text-white">
+                            {formatNumber(order.amount, 4)}
+                          </span>
                         </div>
                         {order.price && (
                           <div className="flex justify-between">
                             <span className="text-gray-400">Price:</span>
-                            <span className="text-white">${formatNumber(order.price)}</span>
+                            <span className="text-white">
+                              ${formatNumber(order.price)}
+                            </span>
                           </div>
                         )}
                       </div>
