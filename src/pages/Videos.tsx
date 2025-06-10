@@ -489,7 +489,7 @@ const Videos: React.FC = () => {
             {mockVideos.map((video, index) => (
               <div
                 key={video.id}
-                className="relative h-[calc(100vh-3.5rem)] md:h-screen w-full snap-start flex items-center justify-center"
+                className="relative h-screen w-full snap-start flex items-center justify-center"
               >
                 {/* Video */}
                 <video
