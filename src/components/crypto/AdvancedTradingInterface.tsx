@@ -330,29 +330,29 @@ const AdvancedTradingInterface: React.FC = () => {
         {/* Main Trading Area */}
         <div className="lg:col-span-7 space-y-2 md:space-y-4">
           {/* Price Header */}
-          <Card className="bg-gray-900 border-gray-700">
+          <Card className="bg-white border-gray-200 shadow-sm">
             <CardContent className="p-2 md:p-4">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2 md:gap-0">
                 <div className="flex items-center gap-2 md:gap-4">
-                  <h1 className="text-lg md:text-2xl font-bold">
+                  <h1 className="text-lg md:text-2xl font-bold text-gray-900">
                     {selectedPair}
                   </h1>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => setIsWatchlisted(!isWatchlisted)}
-                    className={`h-6 w-6 md:h-8 md:w-8 ${isWatchlisted ? "text-yellow-400" : "text-gray-400"}`}
+                    className={`h-6 w-6 md:h-8 md:w-8 ${isWatchlisted ? "text-yellow-500" : "text-gray-400"}`}
                   >
                     <Bookmark className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
                 <div className="flex items-center gap-3 md:gap-6 w-full md:w-auto justify-between md:justify-end">
                   <div className="min-w-0">
-                    <div className="text-lg md:text-2xl font-bold text-white">
+                    <div className="text-lg md:text-2xl font-bold text-gray-900">
                       ${formatNumber(currentPrice)}
                     </div>
                     <div
-                      className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? "text-green-400" : "text-red-400"}`}
+                      className={`flex items-center gap-1 text-sm md:text-base ${priceChange >= 0 ? "text-green-600" : "text-red-600"}`}
                     >
                       {priceChange >= 0 ? (
                         <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />
@@ -360,7 +360,7 @@ const AdvancedTradingInterface: React.FC = () => {
                         <TrendingDown className="w-3 h-3 md:w-4 md:h-4" />
                       )}
                       <span
-                        className={`text-xs md:text-sm whitespace-nowrap ${priceChange >= 0 ? "text-green-400" : "text-red-400"}`}
+                        className={`text-xs md:text-sm whitespace-nowrap ${priceChange >= 0 ? "text-green-600" : "text-red-600"}`}
                       >
                         {priceChange >= 0 ? "+" : ""}
                         {formatNumber(priceChange)} (
@@ -370,10 +370,10 @@ const AdvancedTradingInterface: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right min-w-0">
-                    <div className="text-xs md:text-sm text-gray-300">
+                    <div className="text-xs md:text-sm text-gray-600">
                       24h Volume
                     </div>
-                    <div className="font-medium text-sm md:text-base text-white">
+                    <div className="font-medium text-sm md:text-base text-gray-900">
                       {formatVolume(volume24h)} USDT
                     </div>
                   </div>
