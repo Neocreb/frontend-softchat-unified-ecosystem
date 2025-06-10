@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { calculateNextLevelProgress, getAvailableRewards, REWARD_ACTIONS, getPointsForAction, getDescriptionForAction } from "@/services/rewardsService";
+import {
+  calculateNextLevelProgress,
+  getAvailableRewards,
+  REWARD_ACTIONS,
+  getPointsForAction,
+  getDescriptionForAction,
+} from "@/services/rewardsService";
 import RewardsHeader from "@/components/rewards/RewardsHeader";
 import RewardsOverview from "@/components/rewards/RewardsOverview";
 import EarnPoints from "@/components/rewards/EarnPoints";
@@ -30,7 +36,7 @@ const Rewards = () => {
 
   if (isLoading) {
     return (
-      <div className="container py-6">
+      <div className="max-w-7xl mx-auto">
         {/* Header Skeleton */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <Skeleton className="h-8 w-48" />
@@ -77,18 +83,23 @@ const Rewards = () => {
   const userPoints = user.points || 0;
 
   // Convert string level to compatible format
-  const userLevel = user.level?.toLowerCase() as "bronze" | "silver" | "gold" | "platinum";
+  const userLevel = user.level?.toLowerCase() as
+    | "bronze"
+    | "silver"
+    | "gold"
+    | "platinum";
 
-  const { currentLevel, nextLevel, progress } = calculateNextLevelProgress(userPoints);
+  const { currentLevel, nextLevel, progress } =
+    calculateNextLevelProgress(userPoints);
   const availableRewards = getAvailableRewards(userLevel);
   const levelColors = {
     bronze: "bg-orange-600",
     silver: "bg-slate-400",
     gold: "bg-yellow-500",
-    platinum: "bg-gradient-to-r from-purple-500 to-indigo-500"
+    platinum: "bg-gradient-to-r from-purple-500 to-indigo-500",
   };
 
-  const earnPoints = (action: typeof REWARD_ACTIONS[number]) => {
+  const earnPoints = (action: (typeof REWARD_ACTIONS)[number]) => {
     toast({
       title: "Points earned!",
       description: `You earned ${getPointsForAction(action)} points for ${getDescriptionForAction(action)}`,
