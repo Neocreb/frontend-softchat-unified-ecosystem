@@ -157,43 +157,32 @@ export const walletService = {
   async processWithdrawal(
     request: WithdrawalRequest,
   ): Promise<{ success: boolean; transactionId?: string; message: string }> {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch("/api/wallet/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      });
 
-    // Mock validation
-    if (request.amount > mockWalletBalance.total) {
+      const result = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          message: result.error || "Withdrawal failed",
+        };
+      }
+
+      return result;
+    } catch (error) {
+      console.error("Error processing withdrawal:", error);
       return {
         success: false,
-        message: "Insufficient funds",
+        message: "Network error occurred",
       };
     }
-
-    const transactionId = `withdrawal_${Date.now()}`;
-
-    // Add transaction to mock data
-    const newTransaction: Transaction = {
-      id: transactionId,
-      type: "withdrawal",
-      amount: -request.amount,
-      source: "bank",
-      description: request.description || "Withdrawal to bank account",
-      timestamp: new Date().toISOString(),
-      status: "pending",
-      sourceIcon: "🏦",
-    };
-
-    mockTransactions.unshift(newTransaction);
-
-    // Update balance
-    mockWalletBalance.total -= request.amount;
-    if (request.source && request.source !== "total") {
-      (mockWalletBalance as any)[request.source] -= request.amount;
-    }
-
-    return {
-      success: true,
-      transactionId,
-      message: "Withdrawal request submitted successfully",
-    };
   },
 
   // Process deposit
