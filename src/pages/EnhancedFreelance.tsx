@@ -1,0 +1,791 @@
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import {
+  Search,
+  Filter,
+  Plus,
+  Star,
+  TrendingUp,
+  Users,
+  DollarSign,
+  Briefcase,
+  Clock,
+  Award,
+  MessageCircle,
+  Settings,
+} from "lucide-react";
+import {
+  JobPosting,
+  FreelancerProfile,
+  SearchFilters,
+  Project,
+} from "@/types/freelance";
+import { freelanceService } from "@/services/freelanceService";
+import FreelancerProfileCard from "@/components/freelance/FreelancerProfileCard";
+import JobCard from "@/components/freelance/JobCard";
+import ProposalForm from "@/components/freelance/ProposalForm";
+import ProjectDashboard from "@/components/freelance/ProjectDashboard";
+import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+
+const EnhancedFreelance: React.FC = () => {
+  const [activeTab, setActiveTab] = useState("browse-jobs");
+  const [jobs, setJobs] = useState<JobPosting[]>([]);
+  const [freelancers, setFreelancers] = useState<FreelancerProfile[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState<SearchFilters>({});
+  const [categories, setCategories] = useState<string[]>([]);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
+  const [showProposalForm, setShowProposalForm] = useState(false);
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  // Job posting form state
+  const [jobForm, setJobForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    subcategory: "",
+    budgetType: "fixed" as "fixed" | "hourly",
+    budgetAmount: "",
+    budgetMin: "",
+    budgetMax: "",
+    deadline: "",
+    duration: "",
+    experienceLevel: "intermediate" as "entry" | "intermediate" | "expert",
+    skills: [] as string[],
+    skillInput: "",
+  });
+
+  useEffect(() => {
+    loadInitialData();
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === "browse-jobs") {
+      searchJobs();
+    } else if (activeTab === "find-talent") {
+      searchFreelancers();
+    }
+  }, [activeTab, filters, searchQuery]);
+
+  const loadInitialData = async () => {
+    try {
+      const [categoriesData, skillsData] = await Promise.all([
+        freelanceService.getCategories(),
+        freelanceService.getSkills(),
+      ]);
+      setCategories(categoriesData);
+      setSkills(skillsData);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load initial data",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const searchJobs = async () => {
+    setIsLoading(true);
+    try {
+      const searchFilters: SearchFilters = {
+        ...filters,
+        skills: searchQuery ? [searchQuery] : filters.skills,
+      };
+      const jobsData = await freelanceService.searchJobs(searchFilters);
+      setJobs(jobsData);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to search jobs",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const searchFreelancers = async () => {
+    setIsLoading(true);
+    try {
+      const searchFilters: SearchFilters = {
+        ...filters,
+        skills: searchQuery ? [searchQuery] : filters.skills,
+      };
+      const freelancersData =
+        await freelanceService.searchFreelancers(searchFilters);
+      setFreelancers(freelancersData);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to search freelancers",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleJobApplication = (job: JobPosting) => {
+    setSelectedJob(job);
+    setShowProposalForm(true);
+  };
+
+  const handleJobDetails = (job: JobPosting) => {
+    // Would open a detailed job view modal
+    toast({
+      title: "Job Details",
+      description: `Viewing details for: ${job.title}`,
+    });
+  };
+
+  const handleHireFreelancer = (freelancer: FreelancerProfile) => {
+    // Would open a hire freelancer modal
+    toast({
+      title: "Hire Freelancer",
+      description: `Initiating hire process for: ${freelancer.name}`,
+    });
+  };
+
+  const handleMessageFreelancer = (freelancer: FreelancerProfile) => {
+    // Would open messaging interface
+    toast({
+      title: "Message Sent",
+      description: `Opening chat with ${freelancer.name}`,
+    });
+  };
+
+  const handleSubmitProposal = async (proposalData: any) => {
+    try {
+      await freelanceService.submitProposal(proposalData);
+      toast({
+        title: "Proposal Submitted",
+        description: "Your proposal has been sent successfully!",
+      });
+      setShowProposalForm(false);
+      setSelectedJob(null);
+    } catch (error) {
+      throw error; // Let ProposalForm handle the error
+    }
+  };
+
+  const handleJobSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to post a job",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const jobData: Omit<
+        JobPosting,
+        "id" | "postedDate" | "applicationsCount" | "proposals"
+      > = {
+        title: jobForm.title,
+        description: jobForm.description,
+        category: jobForm.category,
+        subcategory: jobForm.subcategory,
+        budget: {
+          type: jobForm.budgetType,
+          ...(jobForm.budgetType === "fixed"
+            ? { amount: parseFloat(jobForm.budgetAmount) }
+            : {
+                min: parseFloat(jobForm.budgetMin),
+                max: parseFloat(jobForm.budgetMax),
+              }),
+        },
+        deadline: jobForm.deadline,
+        duration: jobForm.duration,
+        experienceLevel: jobForm.experienceLevel,
+        skills: jobForm.skills,
+        client: {
+          id: user.id || "1",
+          name: user.name || "Current User",
+          email: user.email || "user@example.com",
+          avatar:
+            user.avatar ||
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+          location: "Remote",
+          timezone: "UTC",
+          verified: true,
+          joinedDate: "2023-01-01",
+          totalSpent: 0,
+          jobsPosted: 0,
+          hireRate: 0,
+          rating: 5.0,
+          paymentVerified: true,
+        },
+        status: "open",
+        visibility: "public",
+      };
+
+      await freelanceService.createJobPosting(jobData);
+
+      toast({
+        title: "Job Posted Successfully",
+        description: "Your job has been posted and is now live!",
+      });
+
+      // Reset form
+      setJobForm({
+        title: "",
+        description: "",
+        category: "",
+        subcategory: "",
+        budgetType: "fixed",
+        budgetAmount: "",
+        budgetMin: "",
+        budgetMax: "",
+        deadline: "",
+        duration: "",
+        experienceLevel: "intermediate",
+        skills: [],
+        skillInput: "",
+      });
+
+      // Switch to browse jobs tab to see the new job
+      setActiveTab("browse-jobs");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to post job. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const addSkill = () => {
+    if (
+      jobForm.skillInput.trim() &&
+      !jobForm.skills.includes(jobForm.skillInput.trim())
+    ) {
+      setJobForm({
+        ...jobForm,
+        skills: [...jobForm.skills, jobForm.skillInput.trim()],
+        skillInput: "",
+      });
+    }
+  };
+
+  const removeSkill = (skillToRemove: string) => {
+    setJobForm({
+      ...jobForm,
+      skills: jobForm.skills.filter((skill) => skill !== skillToRemove),
+    });
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto bg-white">
+      {/* Hero Section */}
+      <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Freelance Marketplace
+          </h1>
+          <p className="text-xl text-gray-600 mb-6">
+            Connect with top talent or find your next opportunity
+          </p>
+          <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-blue-600" />
+              <span>10,000+ Freelancers</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-green-600" />
+              <span>5,000+ Jobs Posted</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-yellow-500" />
+              <span>4.8 Average Rating</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5 text-purple-600" />
+              <span>$2M+ Paid Out</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Tabs */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
+        <TabsList className="grid w-full grid-cols-4 bg-gray-100">
+          <TabsTrigger value="browse-jobs" className="flex items-center gap-2">
+            <Search className="h-4 w-4" />
+            Browse Jobs
+          </TabsTrigger>
+          <TabsTrigger value="find-talent" className="flex items-center gap-2">
+            <Users className="h-4 w-4" />
+            Find Talent
+          </TabsTrigger>
+          <TabsTrigger value="post-job" className="flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Post Job
+          </TabsTrigger>
+          <TabsTrigger value="my-projects" className="flex items-center gap-2">
+            <Briefcase className="h-4 w-4" />
+            My Projects
+          </TabsTrigger>
+        </TabsList>
+
+        {/* Browse Jobs Tab */}
+        <TabsContent value="browse-jobs" className="space-y-6">
+          {/* Search and Filters */}
+          <Card className="bg-white border-gray-200">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search for jobs by skills, title, or keywords..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Select
+                    value={filters.category || ""}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, category: value || undefined })
+                    }
+                  >
+                    <SelectTrigger className="w-48">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Categories</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline" size="icon">
+                    <Filter className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Jobs Grid */}
+          <div className="grid gap-6">
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i} className="animate-pulse">
+                    <CardContent className="p-6">
+                      <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                      <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
+                      <div className="space-y-2">
+                        <div className="h-3 bg-gray-200 rounded"></div>
+                        <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : jobs.length === 0 ? (
+              <Card className="bg-white border-gray-200">
+                <CardContent className="p-12 text-center">
+                  <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No Jobs Found
+                  </h3>
+                  <p className="text-gray-600">
+                    Try adjusting your search criteria or browse all categories.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              jobs.map((job) => (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  onApply={handleJobApplication}
+                  onViewDetails={handleJobDetails}
+                />
+              ))
+            )}
+          </div>
+        </TabsContent>
+
+        {/* Find Talent Tab */}
+        <TabsContent value="find-talent" className="space-y-6">
+          {/* Search and Filters */}
+          <Card className="bg-white border-gray-200">
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search for freelancers by skills, name, or expertise..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Select>
+                    <SelectTrigger className="w-48">
+                      <SelectValue placeholder="Skill" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {skills.map((skill) => (
+                        <SelectItem key={skill} value={skill}>
+                          {skill}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button variant="outline" size="icon">
+                    <Filter className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Freelancers Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {isLoading ? (
+              <div className="col-span-full space-y-4">
+                {[1, 2].map((i) => (
+                  <Card key={i} className="animate-pulse">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-16 h-16 bg-gray-200 rounded-full"></div>
+                        <div className="flex-1 space-y-2">
+                          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                          <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                          <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : freelancers.length === 0 ? (
+              <div className="col-span-full">
+                <Card className="bg-white border-gray-200">
+                  <CardContent className="p-12 text-center">
+                    <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No Freelancers Found
+                    </h3>
+                    <p className="text-gray-600">
+                      Try adjusting your search criteria to find the right
+                      talent.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            ) : (
+              freelancers.map((freelancer) => (
+                <FreelancerProfileCard
+                  key={freelancer.id}
+                  freelancer={freelancer}
+                  onHire={handleHireFreelancer}
+                  onMessage={handleMessageFreelancer}
+                />
+              ))
+            )}
+          </div>
+        </TabsContent>
+
+        {/* Post Job Tab */}
+        <TabsContent value="post-job" className="space-y-6">
+          <Card className="bg-white border-gray-200">
+            <CardHeader>
+              <CardTitle className="text-gray-900 flex items-center gap-2">
+                <Plus className="h-5 w-5" />
+                Post a New Job
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleJobSubmit} className="space-y-6">
+                {/* Basic Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">Job Title *</Label>
+                    <Input
+                      id="title"
+                      placeholder="e.g., Build a React Native mobile app"
+                      value={jobForm.title}
+                      onChange={(e) =>
+                        setJobForm({ ...jobForm, title: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="category">Category *</Label>
+                    <Select
+                      value={jobForm.category}
+                      onValueChange={(value) =>
+                        setJobForm({ ...jobForm, category: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="space-y-2">
+                  <Label htmlFor="description">Project Description *</Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Describe your project in detail, including requirements, goals, and any specific preferences..."
+                    rows={8}
+                    value={jobForm.description}
+                    onChange={(e) =>
+                      setJobForm({ ...jobForm, description: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
+                {/* Budget */}
+                <div className="space-y-4">
+                  <Label>Budget *</Label>
+                  <div className="space-y-4">
+                    <Select
+                      value={jobForm.budgetType}
+                      onValueChange={(value: "fixed" | "hourly") =>
+                        setJobForm({ ...jobForm, budgetType: value })
+                      }
+                    >
+                      <SelectTrigger className="w-48">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="fixed">Fixed Price</SelectItem>
+                        <SelectItem value="hourly">Hourly Rate</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {jobForm.budgetType === "fixed" ? (
+                      <div className="space-y-2">
+                        <Label htmlFor="budgetAmount">Total Budget ($)</Label>
+                        <Input
+                          id="budgetAmount"
+                          type="number"
+                          min="1"
+                          placeholder="e.g., 5000"
+                          value={jobForm.budgetAmount}
+                          onChange={(e) =>
+                            setJobForm({
+                              ...jobForm,
+                              budgetAmount: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="budgetMin">Min Rate ($/hr)</Label>
+                          <Input
+                            id="budgetMin"
+                            type="number"
+                            min="1"
+                            placeholder="e.g., 50"
+                            value={jobForm.budgetMin}
+                            onChange={(e) =>
+                              setJobForm({
+                                ...jobForm,
+                                budgetMin: e.target.value,
+                              })
+                            }
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="budgetMax">Max Rate ($/hr)</Label>
+                          <Input
+                            id="budgetMax"
+                            type="number"
+                            min="1"
+                            placeholder="e.g., 100"
+                            value={jobForm.budgetMax}
+                            onChange={(e) =>
+                              setJobForm({
+                                ...jobForm,
+                                budgetMax: e.target.value,
+                              })
+                            }
+                            required
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Timeline and Experience */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="duration">Project Duration</Label>
+                    <Select
+                      value={jobForm.duration}
+                      onValueChange={(value) =>
+                        setJobForm({ ...jobForm, duration: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select duration" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1-2 weeks">1-2 weeks</SelectItem>
+                        <SelectItem value="1 month">1 month</SelectItem>
+                        <SelectItem value="2-3 months">2-3 months</SelectItem>
+                        <SelectItem value="3-6 months">3-6 months</SelectItem>
+                        <SelectItem value="6+ months">6+ months</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="deadline">Deadline</Label>
+                    <Input
+                      id="deadline"
+                      type="date"
+                      value={jobForm.deadline}
+                      onChange={(e) =>
+                        setJobForm({ ...jobForm, deadline: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="experienceLevel">Experience Level</Label>
+                    <Select
+                      value={jobForm.experienceLevel}
+                      onValueChange={(value: any) =>
+                        setJobForm({ ...jobForm, experienceLevel: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="entry">Entry Level</SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate
+                        </SelectItem>
+                        <SelectItem value="expert">Expert</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Skills */}
+                <div className="space-y-4">
+                  <Label>Required Skills</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Add a skill (e.g., React, Node.js)"
+                      value={jobForm.skillInput}
+                      onChange={(e) =>
+                        setJobForm({ ...jobForm, skillInput: e.target.value })
+                      }
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && (e.preventDefault(), addSkill())
+                      }
+                    />
+                    <Button type="button" onClick={addSkill} variant="outline">
+                      Add
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {jobForm.skills.map((skill) => (
+                      <Badge
+                        key={skill}
+                        variant="secondary"
+                        className="cursor-pointer hover:bg-red-100"
+                        onClick={() => removeSkill(skill)}
+                      >
+                        {skill} ×
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  size="lg"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Post Job
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* My Projects Tab */}
+        <TabsContent value="my-projects">
+          <ProjectDashboard
+            userId={user?.id || "1"}
+            userType="freelancer" // This would be determined by user role
+          />
+        </TabsContent>
+      </Tabs>
+
+      {/* Proposal Form Modal */}
+      <ProposalForm
+        isOpen={showProposalForm}
+        onClose={() => {
+          setShowProposalForm(false);
+          setSelectedJob(null);
+        }}
+        job={selectedJob}
+        onSubmit={handleSubmitProposal}
+        freelancerId={user?.id || "1"}
+      />
+    </div>
+  );
+};
+
+export default EnhancedFreelance;

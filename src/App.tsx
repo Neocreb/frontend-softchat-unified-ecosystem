@@ -118,7 +118,9 @@ const AppRoutes = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading Softchat...</p>
-          <p className="text-xs text-muted-foreground mt-2">Initializing session</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Initializing session
+          </p>
         </div>
       </div>
     );
@@ -139,17 +141,20 @@ const AppRoutes = () => {
       />
 
       {/* Protected routes inside app layout */}
-      <Route path="/" element={
-        <ProtectedRoute>
-          <MarketplaceProvider>
-            <ChatProvider>
-              <AppLayout />
-            </ChatProvider>
-          </MarketplaceProvider>
-        </ProtectedRoute>
-      }>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <MarketplaceProvider>
+              <ChatProvider>
+                <AppLayout />
+              </ChatProvider>
+            </MarketplaceProvider>
+          </ProtectedRoute>
+        }
+      >
         <Route path="feed" element={<EnhancedFeed />} />
-        <Route path="create" element={<Create />} />
+        <Route path="create" element={<EnhancedFreelance />} />
         <Route path="profile" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
@@ -159,7 +164,10 @@ const AppRoutes = () => {
         <Route path="marketplace" element={<Marketplace />} />
         <Route path="marketplace/my" element={<MarketplaceDashboard />} />
         <Route path="marketplace/list" element={<MarketplaceList />} />
-        <Route path="marketplace/seller/:username" element={<MarketplaceSeller />} />
+        <Route
+          path="marketplace/seller/:username"
+          element={<MarketplaceSeller />}
+        />
         <Route path="marketplace/wishlist" element={<MarketplaceWishlist />} />
         <Route path="marketplace/cart" element={<MarketplaceCart />} />
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
@@ -170,15 +178,17 @@ const AppRoutes = () => {
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<Settings />} />
-
       </Route>
 
       {/* Admin Routes */}
-      <Route path="/admin" element={
-        <AdminRoute>
-          <AppLayout />
-        </AdminRoute>
-      }>
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AppLayout />
+          </AdminRoute>
+        }
+      >
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
       </Route>
