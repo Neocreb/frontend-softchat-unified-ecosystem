@@ -484,7 +484,7 @@ const Videos: React.FC = () => {
         </div>
 
         {/* Video Feed */}
-        <div className="md:ml-16 pt-14 md:pt-0 pb-20 md:pb-0">
+        <div className="md:ml-16 -mt-20 md:-mt-20 pb-20 md:pb-0">
           <div className="max-w-md mx-auto">
             {mockVideos.map((video, index) => (
               <div
