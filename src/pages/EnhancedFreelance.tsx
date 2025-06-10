@@ -371,9 +371,12 @@ const EnhancedFreelance: React.FC = () => {
                 </div>
                 <div className="flex gap-2">
                   <Select
-                    value={filters.category || ""}
+                    value={filters.category || "all"}
                     onValueChange={(value) =>
-                      setFilters({ ...filters, category: value || undefined })
+                      setFilters({
+                        ...filters,
+                        category: value === "all" ? undefined : value,
+                      })
                     }
                   >
                     <SelectTrigger className="w-48">
