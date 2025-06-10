@@ -34,7 +34,7 @@ const mockTransactions: Transaction[] = [
     description: "Web design project completion",
     timestamp: "2024-01-14T16:45:00Z",
     status: "completed",
-    sourceIcon: "����",
+    sourceIcon: "💼",
   },
   {
     id: "3",
@@ -100,9 +100,17 @@ const mockBankAccounts: BankAccount[] = [
 export const walletService = {
   // Get wallet balance
   async getWalletBalance(): Promise<WalletBalance> {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return mockWalletBalance;
+    try {
+      const response = await fetch("/api/wallet");
+      if (!response.ok) {
+        throw new Error("Failed to fetch wallet balance");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching wallet balance:", error);
+      // Fallback to mock data in case of error
+      return mockWalletBalance;
+    }
   },
 
   // Get transactions
@@ -110,21 +118,39 @@ export const walletService = {
     source?: string,
     limit?: number,
   ): Promise<Transaction[]> {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    let transactions = [...mockTransactions];
+    try {
+      const params = new URLSearchParams();
+      if (source) params.append("source", source);
+      if (limit) params.append("limit", limit.toString());
 
-    if (source && source !== "all") {
-      transactions = transactions.filter((t) => t.source === source);
+      const response = await fetch(`/api/wallet/transactions?${params}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch transactions");
+      }
+
+      const transactions = await response.json();
+      return transactions.sort(
+        (a: Transaction, b: Transaction) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+      );
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      // Fallback to mock data in case of error
+      let transactions = [...mockTransactions];
+
+      if (source && source !== "all") {
+        transactions = transactions.filter((t) => t.source === source);
+      }
+
+      if (limit) {
+        transactions = transactions.slice(0, limit);
+      }
+
+      return transactions.sort(
+        (a, b) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+      );
     }
-
-    if (limit) {
-      transactions = transactions.slice(0, limit);
-    }
-
-    return transactions.sort(
-      (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-    );
   },
 
   // Process withdrawal
