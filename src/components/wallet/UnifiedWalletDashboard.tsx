@@ -234,23 +234,25 @@ const WalletDashboardContent = () => {
 
       {/* Tabbed Interface */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="all" className="flex items-center gap-2 text-sm">
+        <TabsList className="grid w-full grid-cols-5 h-auto">
+          <TabsTrigger
+            value="all"
+            className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3"
+          >
             <span className="text-lg">💰</span>
-            <span className="hidden xs:inline sm:hidden">All</span>
-            <span className="hidden sm:inline">All Transactions</span>
+            <span className="text-[10px] sm:text-xs">All</span>
           </TabsTrigger>
           {walletSources.map((source) => (
             <TabsTrigger
               key={source.id}
               value={source.id}
-              className="flex items-center gap-2 text-sm"
+              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3"
             >
               <span className="text-lg">{source.icon}</span>
-              <span className="hidden xs:inline sm:hidden">
-                {source.name.split(" ")[0]}
+              <span className="text-[10px] sm:text-xs text-center leading-tight">
+                <span className="sm:hidden">{source.name.split(" ")[0]}</span>
+                <span className="hidden sm:inline">{source.name}</span>
               </span>
-              <span className="hidden sm:inline">{source.name}</span>
             </TabsTrigger>
           ))}
         </TabsList>
