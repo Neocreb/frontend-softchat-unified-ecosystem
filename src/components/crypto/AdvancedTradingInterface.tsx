@@ -213,11 +213,11 @@ const AdvancedTradingInterface: React.FC = () => {
     // In a real implementation, this would initialize TradingView or Chart.js
     if (chartRef.current) {
       chartRef.current.innerHTML = `
-        <div class="flex items-center justify-center h-full bg-gray-900 rounded">
-          <div class="text-center text-gray-400">
-            <BarChart3 class="w-16 h-16 mx-auto mb-4" />
-            <p>Advanced Trading Chart</p>
-            <p class="text-sm">TradingView Integration</p>
+        <div class="flex items-center justify-center h-full bg-gray-50 rounded border border-gray-200">
+          <div class="text-center text-gray-600">
+            <BarChart3 class="w-16 h-16 mx-auto mb-4 text-gray-400" />
+            <p class="text-gray-700 font-medium">Advanced Trading Chart</p>
+            <p class="text-sm text-gray-500">TradingView Integration</p>
           </div>
         </div>
       `;
