@@ -615,7 +615,7 @@ const AdvancedTradingInterface: React.FC = () => {
               <div className="space-y-3">
                 {orderType !== "market" && (
                   <div>
-                    <label className="text-sm text-gray-200 font-medium block mb-1">
+                    <label className="text-sm text-gray-700 font-medium block mb-1">
                       Price (USDT)
                     </label>
                     <Input
@@ -623,14 +623,14 @@ const AdvancedTradingInterface: React.FC = () => {
                       placeholder="0.00"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
-                      className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
+                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                     />
                   </div>
                 )}
 
                 {orderType === "stop-loss" && (
                   <div>
-                    <label className="text-sm text-gray-200 font-medium block mb-1">
+                    <label className="text-sm text-gray-700 font-medium block mb-1">
                       Stop Price (USDT)
                     </label>
                     <Input
@@ -638,13 +638,13 @@ const AdvancedTradingInterface: React.FC = () => {
                       placeholder="0.00"
                       value={stopPrice}
                       onChange={(e) => setStopPrice(e.target.value)}
-                      className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
+                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                     />
                   </div>
                 )}
 
                 <div>
-                  <label className="text-sm text-gray-200 font-medium block mb-1">
+                  <label className="text-sm text-gray-700 font-medium block mb-1">
                     Amount ({selectedPair.split("/")[0]})
                   </label>
                   <Input
@@ -652,7 +652,7 @@ const AdvancedTradingInterface: React.FC = () => {
                     placeholder="0.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-400"
+                    className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   />
                 </div>
 
@@ -663,7 +663,7 @@ const AdvancedTradingInterface: React.FC = () => {
                       key={percent}
                       variant="outline"
                       size="sm"
-                      className="text-xs text-gray-200 border-gray-600 hover:bg-gray-700 hover:text-white"
+                      className="text-xs text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-900"
                       onClick={() => {
                         // Calculate amount based on percentage of available balance
                         const mockBalance = 1.5; // Mock balance
@@ -677,10 +677,10 @@ const AdvancedTradingInterface: React.FC = () => {
               </div>
 
               {/* Total */}
-              <div className="p-3 bg-gray-800 rounded border border-gray-600">
+              <div className="p-3 bg-gray-50 rounded border border-gray-200">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-200 font-medium">Total:</span>
-                  <span className="text-white font-medium">
+                  <span className="text-gray-700 font-medium">Total:</span>
+                  <span className="text-gray-900 font-medium">
                     {amount && price
                       ? `${formatNumber(parseFloat(amount) * parseFloat(price))} USDT`
                       : "0.00 USDT"}
