@@ -472,13 +472,13 @@ const AdvancedTradingInterface: React.FC = () => {
           {/* Order Book */}
           <Card className="bg-gray-900 border-gray-700">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Order Book</CardTitle>
+              <CardTitle className="text-lg text-white">Order Book</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 {/* Asks */}
                 <div className="space-y-1">
-                  <div className="grid grid-cols-3 text-xs text-gray-400 pb-1">
+                  <div className="grid grid-cols-3 text-xs text-gray-300 pb-1 font-medium">
                     <span>Price</span>
                     <span>Amount</span>
                     <span>Total</span>
@@ -489,15 +489,15 @@ const AdvancedTradingInterface: React.FC = () => {
                     .map((ask, index) => (
                       <div
                         key={index}
-                        className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer"
+                        className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer rounded px-1"
                       >
-                        <span className="text-red-400">
+                        <span className="text-red-400 font-medium">
                           ${formatNumber(ask.price)}
                         </span>
-                        <span className="text-gray-300">
+                        <span className="text-gray-200">
                           {formatNumber(ask.amount, 4)}
                         </span>
-                        <span className="text-gray-300">
+                        <span className="text-gray-200">
                           {formatNumber(ask.total)}
                         </span>
                       </div>
@@ -505,11 +505,11 @@ const AdvancedTradingInterface: React.FC = () => {
                 </div>
 
                 {/* Spread */}
-                <div className="py-2 text-center border-y border-gray-700">
+                <div className="py-2 text-center border-y border-gray-700 bg-gray-800/50">
                   <span className="text-lg font-bold text-white">
                     ${formatNumber(currentPrice)}
                   </span>
-                  <div className="text-xs text-gray-300">
+                  <div className="text-xs text-gray-200">
                     Spread: $
                     {formatNumber(
                       orderBook.asks[0]?.price - orderBook.bids[0]?.price || 0,
@@ -522,15 +522,15 @@ const AdvancedTradingInterface: React.FC = () => {
                   {orderBook.bids.slice(0, 8).map((bid, index) => (
                     <div
                       key={index}
-                      className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer"
+                      className="grid grid-cols-3 text-xs py-0.5 hover:bg-gray-800 cursor-pointer rounded px-1"
                     >
-                      <span className="text-green-400">
+                      <span className="text-green-400 font-medium">
                         ${formatNumber(bid.price)}
                       </span>
-                      <span className="text-gray-300">
+                      <span className="text-gray-200">
                         {formatNumber(bid.amount, 4)}
                       </span>
-                      <span className="text-gray-300">
+                      <span className="text-gray-200">
                         {formatNumber(bid.total)}
                       </span>
                     </div>
