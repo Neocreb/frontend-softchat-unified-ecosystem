@@ -68,9 +68,9 @@ const Header = () => {
             </Button>
           )}
 
-          <Link to="/" className="flex items-center gap-2">
-            <SoftchatLogo className="h-8 w-8" />
-            <span className="font-bold text-xl hidden sm:inline-block text-softchat-primary">
+          <Link to="/" className="flex items-center gap-1 sm:gap-2 min-w-0">
+            <SoftchatLogo className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />
+            <span className="font-bold text-lg sm:text-xl hidden sm:inline-block text-softchat-primary truncate">
               Softchat
             </span>
           </Link>
