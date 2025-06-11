@@ -447,26 +447,28 @@ export default function EnhancedRewards() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="w-full max-w-7xl mx-auto space-y-4 md:space-y-8 px-2 md:px-4">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">SoftPoints Rewards</h1>
-          <p className="text-gray-600 mt-1">
+      <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl md:text-3xl font-bold">SoftPoints Rewards</h1>
+          <p className="text-sm md:text-base text-gray-600 mt-1">
             Earn SoftPoints for every activity and convert them to real money
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-shrink-0">
           <Card className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
-            <CardContent className="p-4 flex items-center gap-3">
-              <Coins className="h-8 w-8" />
-              <div>
-                <div className="text-sm opacity-90">Your Balance</div>
-                <div className="text-2xl font-bold">
+            <CardContent className="p-3 md:p-4 flex items-center gap-2 md:gap-3">
+              <Coins className="h-6 w-6 md:h-8 md:w-8 flex-shrink-0" />
+              <div className="min-w-0">
+                <div className="text-xs md:text-sm opacity-90">
+                  Your Balance
+                </div>
+                <div className="text-xl md:text-2xl font-bold">
                   {formatPoints(userStats.currentBalance)} SP
                 </div>
-                <div className="text-sm opacity-90">
+                <div className="text-xs md:text-sm opacity-90 truncate">
                   ≈ {calculateCashValue(userStats.currentBalance)}
                 </div>
               </div>
@@ -476,19 +478,21 @@ export default function EnhancedRewards() {
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <TrendingUp className="h-5 w-5 text-green-600" />
+          <CardContent className="p-3 md:p-4">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="p-1.5 md:p-2 bg-green-100 rounded-lg flex-shrink-0">
+                <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
               </div>
-              <div>
-                <div className="text-sm text-gray-600">Total Earned</div>
-                <div className="text-xl font-bold">
+              <div className="min-w-0 flex-1">
+                <div className="text-xs md:text-sm text-gray-600">
+                  Total Earned
+                </div>
+                <div className="text-lg md:text-xl font-bold">
                   {formatPoints(userStats.totalEarned)} SP
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-xs md:text-sm text-gray-500 truncate">
                   ≈ {calculateCashValue(userStats.totalEarned)}
                 </div>
               </div>
@@ -497,20 +501,22 @@ export default function EnhancedRewards() {
         </Card>
 
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Award className="h-5 w-5 text-blue-600" />
+          <CardContent className="p-3 md:p-4">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="p-1.5 md:p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                <Award className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
               </div>
-              <div>
-                <div className="text-sm text-gray-600">Current Level</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-xs md:text-sm text-gray-600">
+                  Current Level
+                </div>
                 <div className="flex items-center gap-2">
                   {getLevelBadge(userStats.level)}
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs md:text-sm text-gray-500">
                     #{userStats.rank}
                   </span>
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-xs md:text-sm text-gray-500 truncate">
                   {userStats.nextLevelPoints} SP to next level
                 </div>
               </div>
@@ -519,32 +525,40 @@ export default function EnhancedRewards() {
         </Card>
 
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Target className="h-5 w-5 text-orange-600" />
+          <CardContent className="p-3 md:p-4">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="p-1.5 md:p-2 bg-orange-100 rounded-lg flex-shrink-0">
+                <Target className="h-4 w-4 md:h-5 md:w-5 text-orange-600" />
               </div>
-              <div>
-                <div className="text-sm text-gray-600">Daily Streak</div>
-                <div className="text-xl font-bold">
+              <div className="min-w-0 flex-1">
+                <div className="text-xs md:text-sm text-gray-600">
+                  Daily Streak
+                </div>
+                <div className="text-lg md:text-xl font-bold">
                   {userStats.streakDays} days
                 </div>
-                <div className="text-sm text-gray-500">Keep it up!</div>
+                <div className="text-xs md:text-sm text-gray-500">
+                  Keep it up!
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Users className="h-5 w-5 text-purple-600" />
+          <CardContent className="p-3 md:p-4">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="p-1.5 md:p-2 bg-purple-100 rounded-lg flex-shrink-0">
+                <Users className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
               </div>
-              <div>
-                <div className="text-sm text-gray-600">Community Rank</div>
-                <div className="text-xl font-bold">#{userStats.rank}</div>
-                <div className="text-sm text-gray-500">
+              <div className="min-w-0 flex-1">
+                <div className="text-xs md:text-sm text-gray-600">
+                  Community Rank
+                </div>
+                <div className="text-lg md:text-xl font-bold">
+                  #{userStats.rank}
+                </div>
+                <div className="text-xs md:text-sm text-gray-500 truncate">
                   of {formatPoints(userStats.totalUsers)} users
                 </div>
               </div>
@@ -554,30 +568,60 @@ export default function EnhancedRewards() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="earn">Earn Points</TabsTrigger>
-          <TabsTrigger value="redeem">Redeem</TabsTrigger>
-          <TabsTrigger value="convert">Convert to Cash</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
-        </TabsList>
+        {/* Mobile optimized tab list */}
+        <div className="w-full overflow-x-auto">
+          <div className="border-b border-gray-200">
+            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0">
+              <TabsTrigger
+                value="overview"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger
+                value="earn"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Earn Points
+              </TabsTrigger>
+              <TabsTrigger
+                value="redeem"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Redeem
+              </TabsTrigger>
+              <TabsTrigger
+                value="convert"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Convert
+              </TabsTrigger>
+              <TabsTrigger
+                value="history"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                History
+              </TabsTrigger>
+            </TabsList>
+          </div>
+        </div>
 
         {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6">
+        <TabsContent value="overview" className="space-y-4 md:space-y-6 mt-4">
           {/* Level Progress */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Crown className="h-5 w-5" />
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Crown className="h-4 w-4 md:h-5 md:w-5" />
                 Level Progress
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+              <div className="space-y-3 md:space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                  <div className="flex items-center gap-2 md:gap-3">
                     {getLevelBadge(userStats.level)}
-                    <ArrowRight className="h-4 w-4 text-gray-400" />
+                    <ArrowRight className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
                     {levelInfo[userStats.level as keyof typeof levelInfo]
                       .next && (
                       <Badge variant="outline">
@@ -588,12 +632,15 @@ export default function EnhancedRewards() {
                       </Badge>
                     )}
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-xs md:text-sm text-gray-600">
                     {userStats.levelProgress}% Complete
                   </div>
                 </div>
-                <Progress value={userStats.levelProgress} className="h-3" />
-                <div className="text-sm text-gray-600">
+                <Progress
+                  value={userStats.levelProgress}
+                  className="h-2 md:h-3"
+                />
+                <div className="text-xs md:text-sm text-gray-600">
                   {userStats.nextLevelPoints} more SP needed to reach the next
                   level
                 </div>
@@ -602,20 +649,24 @@ export default function EnhancedRewards() {
           </Card>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <Card
               className="hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => setActiveTab("earn")}
             >
-              <CardContent className="p-6 text-center">
-                <div className="p-3 bg-green-100 rounded-full mx-auto w-fit mb-4">
-                  <Plus className="h-8 w-8 text-green-600" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="p-2 md:p-3 bg-green-100 rounded-full mx-auto w-fit mb-3 md:mb-4">
+                  <Plus className="h-6 w-6 md:h-8 md:w-8 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Earn More Points</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="font-semibold text-base md:text-lg mb-2">
+                  Earn More Points
+                </h3>
+                <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">
                   Complete activities to earn SoftPoints
                 </p>
-                <Button className="w-full">Start Earning</Button>
+                <Button className="w-full text-sm md:text-base">
+                  Start Earning
+                </Button>
               </CardContent>
             </Card>
 
@@ -623,15 +674,20 @@ export default function EnhancedRewards() {
               className="hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => setActiveTab("convert")}
             >
-              <CardContent className="p-6 text-center">
-                <div className="p-3 bg-blue-100 rounded-full mx-auto w-fit mb-4">
-                  <DollarSign className="h-8 w-8 text-blue-600" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="p-2 md:p-3 bg-blue-100 rounded-full mx-auto w-fit mb-3 md:mb-4">
+                  <DollarSign className="h-6 w-6 md:h-8 md:w-8 text-blue-600" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Convert to Cash</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="font-semibold text-base md:text-lg mb-2">
+                  Convert to Cash
+                </h3>
+                <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">
                   Turn your SoftPoints into real money
                 </p>
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  className="w-full text-sm md:text-base"
+                >
                   Convert Now
                 </Button>
               </CardContent>
@@ -641,15 +697,20 @@ export default function EnhancedRewards() {
               className="hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => setActiveTab("redeem")}
             >
-              <CardContent className="p-6 text-center">
-                <div className="p-3 bg-purple-100 rounded-full mx-auto w-fit mb-4">
-                  <Gift className="h-8 w-8 text-purple-600" />
+              <CardContent className="p-4 md:p-6 text-center">
+                <div className="p-2 md:p-3 bg-purple-100 rounded-full mx-auto w-fit mb-3 md:mb-4">
+                  <Gift className="h-6 w-6 md:h-8 md:w-8 text-purple-600" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">Redeem Rewards</h3>
-                <p className="text-gray-600 mb-4">
+                <h3 className="font-semibold text-base md:text-lg mb-2">
+                  Redeem Rewards
+                </h3>
+                <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">
                   Exchange points for exclusive rewards
                 </p>
-                <Button variant="outline" className="w-full">
+                <Button
+                  variant="outline"
+                  className="w-full text-sm md:text-base"
+                >
                   Browse Rewards
                 </Button>
               </CardContent>
@@ -659,24 +720,24 @@ export default function EnhancedRewards() {
           {/* Featured Rewards */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Sparkles className="h-4 w-4 md:h-5 md:w-5" />
                 Featured Rewards
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                 {rewards
                   .filter((r) => r.featured)
                   .map((reward) => (
                     <div
                       key={reward.id}
-                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                      className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow"
                     >
-                      <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center gap-2 md:gap-3 mb-3">
                         <div
                           className={cn(
-                            "p-2 rounded-lg",
+                            "p-1.5 md:p-2 rounded-lg flex-shrink-0",
                             reward.type === "cash"
                               ? "bg-green-100"
                               : reward.type === "premium"
@@ -686,7 +747,7 @@ export default function EnhancedRewards() {
                         >
                           <reward.icon
                             className={cn(
-                              "h-5 w-5",
+                              "h-4 w-4 md:h-5 md:w-5",
                               reward.type === "cash"
                                 ? "text-green-600"
                                 : reward.type === "premium"
@@ -695,18 +756,20 @@ export default function EnhancedRewards() {
                             )}
                           />
                         </div>
-                        <div>
-                          <div className="font-semibold">{reward.name}</div>
-                          <div className="text-sm text-gray-600">
+                        <div className="min-w-0 flex-1">
+                          <div className="font-semibold text-sm md:text-base truncate">
+                            {reward.name}
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-600">
                             {reward.value}
                           </div>
                         </div>
                       </div>
-                      <div className="text-sm text-gray-600 mb-3">
+                      <div className="text-xs md:text-sm text-gray-600 mb-3">
                         {reward.description}
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-blue-600">
+                        <span className="font-semibold text-blue-600 text-sm md:text-base">
                           {formatPoints(reward.pointsRequired)} SP
                         </span>
                         <Button
@@ -715,6 +778,7 @@ export default function EnhancedRewards() {
                           disabled={
                             userStats.currentBalance < reward.pointsRequired
                           }
+                          className="text-xs md:text-sm"
                         >
                           Redeem
                         </Button>
@@ -727,44 +791,55 @@ export default function EnhancedRewards() {
         </TabsContent>
 
         {/* Earn Points Tab */}
-        <TabsContent value="earn" className="space-y-6">
+        <TabsContent value="earn" className="space-y-4 md:space-y-6 mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Target className="h-4 w-4 md:h-5 md:w-5" />
                 Daily Activities
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 {activities
                   .filter((a) => a.type === "daily")
                   .map((activity) => (
-                    <div key={activity.id} className="border rounded-lg p-4">
+                    <div
+                      key={activity.id}
+                      className="border rounded-lg p-3 md:p-4"
+                    >
                       <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className={cn("p-2 rounded-lg", activity.color)}>
-                            <activity.icon className="h-5 w-5 text-white" />
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                          <div
+                            className={cn(
+                              "p-1.5 md:p-2 rounded-lg flex-shrink-0",
+                              activity.color,
+                            )}
+                          >
+                            <activity.icon className="h-4 w-4 md:h-5 md:w-5 text-white" />
                           </div>
-                          <div>
-                            <div className="font-semibold">{activity.name}</div>
-                            <div className="text-sm text-gray-600">
+                          <div className="min-w-0 flex-1">
+                            <div className="font-semibold text-sm md:text-base">
+                              {activity.name}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-600">
                               {activity.description}
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="font-semibold text-blue-600">
+                        <div className="text-right flex-shrink-0">
+                          <div className="font-semibold text-blue-600 text-sm md:text-base">
                             +{activity.points} SP
                           </div>
                           {activity.completed ? (
-                            <CheckCircle className="h-5 w-5 text-green-500 ml-auto" />
+                            <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-green-500 ml-auto" />
                           ) : (
                             <Button
                               size="sm"
                               onClick={() =>
                                 handleCompleteActivity(activity.id)
                               }
+                              className="text-xs md:text-sm"
                             >
                               Complete
                             </Button>
@@ -779,36 +854,47 @@ export default function EnhancedRewards() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Zap className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Zap className="h-4 w-4 md:h-5 md:w-5" />
                 Social Activities
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 {activities
                   .filter((a) => a.type === "social")
                   .map((activity) => (
-                    <div key={activity.id} className="border rounded-lg p-4">
+                    <div
+                      key={activity.id}
+                      className="border rounded-lg p-3 md:p-4"
+                    >
                       <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className={cn("p-2 rounded-lg", activity.color)}>
-                            <activity.icon className="h-5 w-5 text-white" />
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                          <div
+                            className={cn(
+                              "p-1.5 md:p-2 rounded-lg flex-shrink-0",
+                              activity.color,
+                            )}
+                          >
+                            <activity.icon className="h-4 w-4 md:h-5 md:w-5 text-white" />
                           </div>
-                          <div>
-                            <div className="font-semibold">{activity.name}</div>
-                            <div className="text-sm text-gray-600">
+                          <div className="min-w-0 flex-1">
+                            <div className="font-semibold text-sm md:text-base">
+                              {activity.name}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-600">
                               {activity.description}
                             </div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="font-semibold text-blue-600">
+                        <div className="text-right flex-shrink-0">
+                          <div className="font-semibold text-blue-600 text-sm md:text-base">
                             +{activity.points} SP
                           </div>
                           <Button
                             size="sm"
                             onClick={() => handleCompleteActivity(activity.id)}
+                            className="text-xs md:text-sm"
                           >
                             Do Now
                           </Button>
@@ -816,7 +902,7 @@ export default function EnhancedRewards() {
                       </div>
                       {activity.progress && activity.maxProgress && (
                         <div className="mt-3">
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs md:text-sm mb-1">
                             <span>Progress</span>
                             <span>
                               {activity.progress}/{activity.maxProgress}
@@ -838,39 +924,50 @@ export default function EnhancedRewards() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Trophy className="h-4 w-4 md:h-5 md:w-5" />
                 Platform Activities
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {activities
                   .filter((a) =>
                     ["trading", "marketplace", "referral"].includes(a.type),
                   )
                   .map((activity) => (
-                    <div key={activity.id} className="border rounded-lg p-4">
+                    <div
+                      key={activity.id}
+                      className="border rounded-lg p-3 md:p-4"
+                    >
                       <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className={cn("p-2 rounded-lg", activity.color)}>
-                            <activity.icon className="h-5 w-5 text-white" />
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                          <div
+                            className={cn(
+                              "p-1.5 md:p-2 rounded-lg flex-shrink-0",
+                              activity.color,
+                            )}
+                          >
+                            <activity.icon className="h-4 w-4 md:h-5 md:w-5 text-white" />
                           </div>
-                          <div>
-                            <div className="font-semibold">{activity.name}</div>
-                            <div className="text-sm text-gray-600">
+                          <div className="min-w-0 flex-1">
+                            <div className="font-semibold text-sm md:text-base">
+                              {activity.name}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-600">
                               {activity.description}
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-blue-600">
+                        <span className="font-semibold text-blue-600 text-sm md:text-base">
                           +{activity.points} SP
                         </span>
                         <Button
                           size="sm"
                           onClick={() => handleCompleteActivity(activity.id)}
+                          className="text-xs md:text-sm"
                         >
                           Start
                         </Button>
@@ -883,11 +980,11 @@ export default function EnhancedRewards() {
         </TabsContent>
 
         {/* Redeem Tab */}
-        <TabsContent value="redeem" className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Redeem Rewards</h2>
+        <TabsContent value="redeem" className="space-y-4 md:space-y-6 mt-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h2 className="text-xl md:text-2xl font-bold">Redeem Rewards</h2>
             <Select defaultValue="all">
-              <SelectTrigger className="w-48">
+              <SelectTrigger className="w-full sm:w-48">
                 <SelectValue placeholder="Filter by category" />
               </SelectTrigger>
               <SelectContent>
@@ -901,17 +998,17 @@ export default function EnhancedRewards() {
             </Select>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {rewards.map((reward) => (
               <Card
                 key={reward.id}
                 className="hover:shadow-lg transition-shadow"
               >
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
                     <div
                       className={cn(
-                        "p-3 rounded-lg",
+                        "p-2 md:p-3 rounded-lg flex-shrink-0",
                         reward.type === "cash"
                           ? "bg-green-100"
                           : reward.type === "premium"
@@ -925,7 +1022,7 @@ export default function EnhancedRewards() {
                     >
                       <reward.icon
                         className={cn(
-                          "h-6 w-6",
+                          "h-5 w-5 md:h-6 md:w-6",
                           reward.type === "cash"
                             ? "text-green-600"
                             : reward.type === "premium"
@@ -938,32 +1035,44 @@ export default function EnhancedRewards() {
                         )}
                       />
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">{reward.name}</h3>
-                      <div className="text-sm text-gray-600">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold text-base md:text-lg truncate">
+                        {reward.name}
+                      </h3>
+                      <div className="text-xs md:text-sm text-gray-600">
                         {reward.category}
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-gray-600 mb-4">{reward.description}</p>
+                  <p className="text-sm md:text-base text-gray-600 mb-3 md:mb-4">
+                    {reward.description}
+                  </p>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Value:</span>
-                      <span className="font-semibold">{reward.value}</span>
+                      <span className="text-xs md:text-sm text-gray-600">
+                        Value:
+                      </span>
+                      <span className="font-semibold text-sm md:text-base">
+                        {reward.value}
+                      </span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Cost:</span>
-                      <span className="font-semibold text-blue-600">
+                      <span className="text-xs md:text-sm text-gray-600">
+                        Cost:
+                      </span>
+                      <span className="font-semibold text-blue-600 text-sm md:text-base">
                         {formatPoints(reward.pointsRequired)} SP
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Available:</span>
-                      <span className="text-sm">
+                      <span className="text-xs md:text-sm text-gray-600">
+                        Available:
+                      </span>
+                      <span className="text-xs md:text-sm">
                         {reward.availability > 100
                           ? "100+"
                           : reward.availability}
@@ -973,7 +1082,7 @@ export default function EnhancedRewards() {
                     {reward.discount && (
                       <Badge
                         variant="secondary"
-                        className="w-full justify-center"
+                        className="w-full justify-center text-xs md:text-sm"
                       >
                         {reward.discount}% Off
                       </Badge>
@@ -981,7 +1090,7 @@ export default function EnhancedRewards() {
                   </div>
 
                   <Button
-                    className="w-full mt-4"
+                    className="w-full mt-3 md:mt-4 text-sm md:text-base"
                     onClick={() => handleRedeemReward(reward)}
                     disabled={userStats.currentBalance < reward.pointsRequired}
                   >
@@ -996,30 +1105,32 @@ export default function EnhancedRewards() {
         </TabsContent>
 
         {/* Convert to Cash Tab */}
-        <TabsContent value="convert" className="space-y-6">
+        <TabsContent value="convert" className="space-y-4 md:space-y-6 mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <DollarSign className="h-4 w-4 md:h-5 md:w-5" />
                 Convert SoftPoints to Cash
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                  <div className="bg-blue-50 rounded-lg p-4">
-                    <h3 className="font-semibold mb-2">Conversion Rate</h3>
-                    <div className="text-2xl font-bold text-blue-600">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                <div className="space-y-4 md:space-y-6">
+                  <div className="bg-blue-50 rounded-lg p-3 md:p-4">
+                    <h3 className="font-semibold mb-2 text-sm md:text-base">
+                      Conversion Rate
+                    </h3>
+                    <div className="text-xl md:text-2xl font-bold text-blue-600">
                       100 SP = $1.00
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-xs md:text-sm text-gray-600 mt-1">
                       Minimum conversion: 500 SP ($5.00)
                     </p>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3 md:space-y-4">
                     <div>
-                      <label className="text-sm font-medium mb-2 block">
+                      <label className="text-xs md:text-sm font-medium mb-2 block">
                         Enter SoftPoints to Convert
                       </label>
                       <Input
@@ -1029,14 +1140,17 @@ export default function EnhancedRewards() {
                         onChange={(e) => setConversionAmount(e.target.value)}
                         min="500"
                         max={userStats.currentBalance}
+                        className="text-sm md:text-base"
                       />
                     </div>
 
                     {conversionAmount && parseInt(conversionAmount) >= 500 && (
-                      <div className="bg-green-50 rounded-lg p-4">
+                      <div className="bg-green-50 rounded-lg p-3 md:p-4">
                         <div className="flex justify-between items-center">
-                          <span>You will receive:</span>
-                          <span className="text-xl font-bold text-green-600">
+                          <span className="text-sm md:text-base">
+                            You will receive:
+                          </span>
+                          <span className="text-lg md:text-xl font-bold text-green-600">
                             {calculateCashValue(parseInt(conversionAmount))}
                           </span>
                         </div>
@@ -1044,7 +1158,7 @@ export default function EnhancedRewards() {
                     )}
 
                     <Button
-                      className="w-full"
+                      className="w-full text-sm md:text-base"
                       onClick={() => setShowConvertDialog(true)}
                       disabled={
                         !conversionAmount ||
@@ -1057,10 +1171,12 @@ export default function EnhancedRewards() {
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="font-semibold">Quick Convert Options</h3>
+                <div className="space-y-3 md:space-y-4">
+                  <h3 className="font-semibold text-sm md:text-base">
+                    Quick Convert Options
+                  </h3>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {[
                       { sp: 500, cash: 5 },
                       { sp: 1000, cash: 10 },
@@ -1071,7 +1187,7 @@ export default function EnhancedRewards() {
                       <div
                         key={option.sp}
                         className={cn(
-                          "border rounded-lg p-3 cursor-pointer hover:bg-gray-50 transition-colors",
+                          "border rounded-lg p-2 md:p-3 cursor-pointer hover:bg-gray-50 transition-colors",
                           userStats.currentBalance < option.sp &&
                             "opacity-50 cursor-not-allowed",
                         )}
@@ -1081,10 +1197,10 @@ export default function EnhancedRewards() {
                         }
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-medium">
+                          <span className="font-medium text-sm md:text-base">
                             {formatPoints(option.sp)} SP
                           </span>
-                          <span className="text-green-600 font-semibold">
+                          <span className="text-green-600 font-semibold text-sm md:text-base">
                             ${option.cash}.00
                           </span>
                         </div>
@@ -1099,24 +1215,38 @@ export default function EnhancedRewards() {
           {/* Payment Methods */}
           <Card>
             <CardHeader>
-              <CardTitle>Payment Methods</CardTitle>
+              <CardTitle className="text-base md:text-lg">
+                Payment Methods
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="border rounded-lg p-4 text-center">
-                  <CreditCard className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                  <div className="font-semibold">Bank Transfer</div>
-                  <div className="text-sm text-gray-600">2-3 business days</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+                <div className="border rounded-lg p-3 md:p-4 text-center">
+                  <CreditCard className="h-6 w-6 md:h-8 md:w-8 mx-auto mb-2 text-blue-600" />
+                  <div className="font-semibold text-sm md:text-base">
+                    Bank Transfer
+                  </div>
+                  <div className="text-xs md:text-sm text-gray-600">
+                    2-3 business days
+                  </div>
                 </div>
-                <div className="border rounded-lg p-4 text-center">
-                  <Wallet className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                  <div className="font-semibold">Digital Wallet</div>
-                  <div className="text-sm text-gray-600">Instant transfer</div>
+                <div className="border rounded-lg p-3 md:p-4 text-center">
+                  <Wallet className="h-6 w-6 md:h-8 md:w-8 mx-auto mb-2 text-green-600" />
+                  <div className="font-semibold text-sm md:text-base">
+                    Digital Wallet
+                  </div>
+                  <div className="text-xs md:text-sm text-gray-600">
+                    Instant transfer
+                  </div>
                 </div>
-                <div className="border rounded-lg p-4 text-center">
-                  <Receipt className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-                  <div className="font-semibold">Check</div>
-                  <div className="text-sm text-gray-600">5-7 business days</div>
+                <div className="border rounded-lg p-3 md:p-4 text-center">
+                  <Receipt className="h-6 w-6 md:h-8 md:w-8 mx-auto mb-2 text-purple-600" />
+                  <div className="font-semibold text-sm md:text-base">
+                    Check
+                  </div>
+                  <div className="text-xs md:text-sm text-gray-600">
+                    5-7 business days
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -1124,25 +1254,25 @@ export default function EnhancedRewards() {
         </TabsContent>
 
         {/* History Tab */}
-        <TabsContent value="history" className="space-y-6">
+        <TabsContent value="history" className="space-y-4 md:space-y-6 mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <History className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <History className="h-4 w-4 md:h-5 md:w-5" />
                 Transaction History
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {transactions.map((transaction) => (
                   <div
                     key={transaction.id}
-                    className="flex items-center justify-between p-4 border rounded-lg"
+                    className="flex items-center justify-between p-3 md:p-4 border rounded-lg"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                       <div
                         className={cn(
-                          "p-2 rounded-lg",
+                          "p-1.5 md:p-2 rounded-lg flex-shrink-0",
                           transaction.type === "earned"
                             ? "bg-green-100"
                             : transaction.type === "spent"
@@ -1151,27 +1281,37 @@ export default function EnhancedRewards() {
                         )}
                       >
                         {transaction.type === "earned" ? (
-                          <Plus className={cn("h-5 w-5 text-green-600")} />
+                          <Plus
+                            className={cn(
+                              "h-4 w-4 md:h-5 md:w-5 text-green-600",
+                            )}
+                          />
                         ) : transaction.type === "spent" ? (
-                          <Minus className={cn("h-5 w-5 text-red-600")} />
+                          <Minus
+                            className={cn("h-4 w-4 md:h-5 md:w-5 text-red-600")}
+                          />
                         ) : (
-                          <RefreshCw className={cn("h-5 w-5 text-blue-600")} />
+                          <RefreshCw
+                            className={cn(
+                              "h-4 w-4 md:h-5 md:w-5 text-blue-600",
+                            )}
+                          />
                         )}
                       </div>
-                      <div>
-                        <div className="font-semibold">
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-sm md:text-base">
                           {transaction.description}
                         </div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-xs md:text-sm text-gray-600">
                           {new Date(transaction.timestamp).toLocaleDateString()}{" "}
                           • {transaction.category}
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right flex-shrink-0">
                       <div
                         className={cn(
-                          "font-semibold",
+                          "font-semibold text-sm md:text-base",
                           transaction.type === "earned"
                             ? "text-green-600"
                             : transaction.type === "spent"
@@ -1190,6 +1330,7 @@ export default function EnhancedRewards() {
                               ? "secondary"
                               : "destructive"
                         }
+                        className="text-xs"
                       >
                         {transaction.status}
                       </Badge>
@@ -1204,33 +1345,35 @@ export default function EnhancedRewards() {
 
       {/* Convert Dialog */}
       <Dialog open={showConvertDialog} onOpenChange={setShowConvertDialog}>
-        <DialogContent>
+        <DialogContent className="w-[95vw] max-w-md">
           <DialogHeader>
-            <DialogTitle>Confirm Cash Conversion</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-lg">
+              Confirm Cash Conversion
+            </DialogTitle>
+            <DialogDescription className="text-sm">
               Are you sure you want to convert {conversionAmount} SoftPoints to{" "}
               {calculateCashValue(parseInt(conversionAmount || "0"))}?
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-3 md:p-4">
               <div className="space-y-2">
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span>SoftPoints:</span>
                   <span className="font-semibold">{conversionAmount} SP</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span>Cash Value:</span>
                   <span className="font-semibold text-green-600">
                     {calculateCashValue(parseInt(conversionAmount || "0"))}
                   </span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span>Processing Fee:</span>
                   <span className="font-semibold">$0.00</span>
                 </div>
                 <hr />
-                <div className="flex justify-between">
+                <div className="flex justify-between text-sm">
                   <span className="font-semibold">You'll Receive:</span>
                   <span className="font-semibold text-green-600">
                     {calculateCashValue(parseInt(conversionAmount || "0"))}
@@ -1242,14 +1385,14 @@ export default function EnhancedRewards() {
               <Button
                 variant="outline"
                 onClick={() => setShowConvertDialog(false)}
-                className="flex-1"
+                className="flex-1 text-sm"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleConvertToCash}
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 text-sm"
               >
                 {isLoading ? "Converting..." : "Confirm Conversion"}
               </Button>

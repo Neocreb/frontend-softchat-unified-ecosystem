@@ -146,40 +146,47 @@ export default function EnhancedCrypto() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="w-full max-w-7xl mx-auto space-y-4 md:space-y-8 px-2 md:px-4">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Crypto Platform</h1>
-          <p className="text-gray-600 mt-1">
+      <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl md:text-3xl font-bold truncate">
+            Crypto Platform
+          </h1>
+          <p className="text-sm md:text-base text-gray-600 mt-1">
             Complete cryptocurrency trading, DeFi, and portfolio management
           </p>
         </div>
 
         {marketData && (
-          <div className="flex items-center gap-6 text-sm">
-            <div className="text-center">
-              <div className="text-gray-600">Market Cap</div>
-              <div className="font-bold">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm overflow-x-auto">
+            <div className="text-center min-w-0 flex-shrink-0">
+              <div className="text-gray-600 text-xs md:text-sm">Market Cap</div>
+              <div className="font-bold text-sm md:text-base truncate">
                 {formatCurrency(marketData.globalStats.totalMarketCap)}
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-gray-600">24h Volume</div>
-              <div className="font-bold">
+            <div className="text-center min-w-0 flex-shrink-0">
+              <div className="text-gray-600 text-xs md:text-sm">24h Volume</div>
+              <div className="font-bold text-sm md:text-base truncate">
                 {formatCurrency(marketData.globalStats.totalVolume24h)}
               </div>
             </div>
-            <div className="text-center">
-              <div className="text-gray-600">Fear & Greed</div>
+            <div className="text-center min-w-0 flex-shrink-0">
+              <div className="text-gray-600 text-xs md:text-sm">
+                Fear & Greed
+              </div>
               <div
                 className={cn(
-                  "font-bold",
+                  "font-bold text-sm md:text-base",
                   getFearGreedColor(marketData?.fearGreedIndex?.value || 50),
                 )}
               >
-                {marketData?.fearGreedIndex?.value || 50} (
-                {getFearGreedLabel(marketData?.fearGreedIndex?.value || 50)})
+                {marketData?.fearGreedIndex?.value || 50}
+                <span className="hidden sm:inline">
+                  {" "}
+                  ({getFearGreedLabel(marketData?.fearGreedIndex?.value || 50)})
+                </span>
               </div>
             </div>
           </div>
@@ -188,21 +195,23 @@ export default function EnhancedCrypto() {
 
       {/* Quick Stats Cards */}
       {marketData && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Globe className="h-5 w-5 text-blue-600" />
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="p-1.5 md:p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                  <Globe className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                 </div>
-                <div>
-                  <div className="text-sm text-gray-600">Total Market Cap</div>
-                  <div className="text-xl font-bold">
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs md:text-sm text-gray-600">
+                    Total Market Cap
+                  </div>
+                  <div className="text-lg md:text-xl font-bold truncate">
                     {formatCurrency(marketData.globalStats.totalMarketCap)}
                   </div>
                   <div
                     className={cn(
-                      "text-sm font-medium",
+                      "text-xs md:text-sm font-medium",
                       getChangeColor(marketData.globalStats.marketCapChange24h),
                     )}
                   >
@@ -216,19 +225,20 @@ export default function EnhancedCrypto() {
           </Card>
 
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Activity className="h-5 w-5 text-green-600" />
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="p-1.5 md:p-2 bg-green-100 rounded-lg flex-shrink-0">
+                  <Activity className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
                 </div>
-                <div>
-                  <div className="text-sm text-gray-600">24h Volume</div>
-                  <div className="text-xl font-bold">
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs md:text-sm text-gray-600">
+                    24h Volume
+                  </div>
+                  <div className="text-lg md:text-xl font-bold truncate">
                     {formatCurrency(marketData.globalStats.totalVolume24h)}
                   </div>
-                  <div className="text-sm text-gray-600">
-                    Across {marketData.globalStats.markets.toLocaleString()}{" "}
-                    markets
+                  <div className="text-xs md:text-sm text-gray-600 truncate">
+                    {marketData.globalStats.markets.toLocaleString()} markets
                   </div>
                 </div>
               </div>
@@ -236,17 +246,19 @@ export default function EnhancedCrypto() {
           </Card>
 
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Target className="h-5 w-5 text-orange-600" />
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="p-1.5 md:p-2 bg-orange-100 rounded-lg flex-shrink-0">
+                  <Target className="h-4 w-4 md:h-5 md:w-5 text-orange-600" />
                 </div>
-                <div>
-                  <div className="text-sm text-gray-600">BTC Dominance</div>
-                  <div className="text-xl font-bold">
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs md:text-sm text-gray-600">
+                    BTC Dominance
+                  </div>
+                  <div className="text-lg md:text-xl font-bold">
                     {(marketData.globalStats.btcDominance || 0).toFixed(1)}%
                   </div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-xs md:text-sm text-gray-600">
                     ETH: {(marketData.globalStats.ethDominance || 0).toFixed(1)}
                     %
                   </div>
@@ -256,18 +268,18 @@ export default function EnhancedCrypto() {
           </Card>
 
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Brain className="h-5 w-5 text-purple-600" />
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="p-1.5 md:p-2 bg-purple-100 rounded-lg flex-shrink-0">
+                  <Brain className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                 </div>
-                <div>
-                  <div className="text-sm text-gray-600">
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs md:text-sm text-gray-600">
                     Fear & Greed Index
                   </div>
                   <div
                     className={cn(
-                      "text-xl font-bold",
+                      "text-lg md:text-xl font-bold",
                       getFearGreedColor(
                         marketData?.fearGreedIndex?.value || 50,
                       ),
@@ -277,7 +289,7 @@ export default function EnhancedCrypto() {
                   </div>
                   <div
                     className={cn(
-                      "text-sm font-medium",
+                      "text-xs md:text-sm font-medium truncate",
                       getFearGreedColor(
                         marketData?.fearGreedIndex?.value || 50,
                       ),
@@ -293,60 +305,100 @@ export default function EnhancedCrypto() {
       )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="overflow-x-auto pb-2">
-          <TabsList className="min-w-max grid grid-cols-7">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="trading">Trading</TabsTrigger>
-            <TabsTrigger value="wallet">Portfolio & Wallet</TabsTrigger>
-            <TabsTrigger value="p2p">P2P</TabsTrigger>
-            <TabsTrigger value="defi">DeFi</TabsTrigger>
-            <TabsTrigger value="news">News</TabsTrigger>
-            <TabsTrigger value="education">Learn</TabsTrigger>
-          </TabsList>
+        {/* Mobile optimized tab list with horizontal scroll */}
+        <div className="w-full overflow-x-auto">
+          <div className="border-b border-gray-200">
+            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0">
+              <TabsTrigger
+                value="overview"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger
+                value="trading"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Trading
+              </TabsTrigger>
+              <TabsTrigger
+                value="wallet"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Portfolio
+              </TabsTrigger>
+              <TabsTrigger
+                value="p2p"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                P2P
+              </TabsTrigger>
+              <TabsTrigger
+                value="defi"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                DeFi
+              </TabsTrigger>
+              <TabsTrigger
+                value="news"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                News
+              </TabsTrigger>
+              <TabsTrigger
+                value="education"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Learn
+              </TabsTrigger>
+            </TabsList>
+          </div>
         </div>
 
         {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <TabsContent value="overview" className="space-y-4 md:space-y-6 mt-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
             {/* Top Cryptocurrencies */}
             <Card className="lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                  <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
                   Top Cryptocurrencies
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+              <CardContent className="px-3 md:px-6">
+                <div className="space-y-2 md:space-y-3">
                   {cryptos.slice(0, 10).map((crypto, index) => (
                     <div
                       key={crypto.id}
-                      className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50"
+                      className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 text-sm font-medium text-gray-500">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
                           #{index + 1}
                         </div>
                         <img
                           src={crypto.image}
                           alt={crypto.name}
-                          className="w-8 h-8 rounded-full"
+                          className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
                         />
-                        <div>
-                          <div className="font-medium">{crypto.name}</div>
-                          <div className="text-sm text-gray-600">
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-sm md:text-base truncate">
+                            {crypto.name}
+                          </div>
+                          <div className="text-xs md:text-sm text-gray-600">
                             {crypto.symbol.toUpperCase()}
                           </div>
                         </div>
                       </div>
 
-                      <div className="text-right">
-                        <div className="font-semibold">
+                      <div className="text-right min-w-0 flex-shrink-0">
+                        <div className="font-semibold text-sm md:text-base">
                           {formatCurrency(crypto.current_price)}
                         </div>
                         <div
                           className={cn(
-                            "text-sm",
+                            "text-xs md:text-sm",
                             getChangeColor(crypto.price_change_percentage_24h),
                           )}
                         >
@@ -354,9 +406,13 @@ export default function EnhancedCrypto() {
                         </div>
                       </div>
 
-                      <div className="text-right text-sm text-gray-600 w-20">
-                        <div>Vol: {formatCurrency(crypto.total_volume)}</div>
-                        <div>MCap: {formatCurrency(crypto.market_cap)}</div>
+                      <div className="text-right text-xs md:text-sm text-gray-600 w-16 md:w-20 ml-2 hidden sm:block">
+                        <div className="truncate">
+                          Vol: {formatCurrency(crypto.total_volume)}
+                        </div>
+                        <div className="truncate">
+                          MCap: {formatCurrency(crypto.market_cap)}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -366,9 +422,9 @@ export default function EnhancedCrypto() {
 
             {/* Market Sentiment */}
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Brain className="h-5 w-5" />
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                  <Brain className="h-4 w-4 md:h-5 md:w-5" />
                   Market Sentiment
                 </CardTitle>
               </CardHeader>
@@ -377,7 +433,7 @@ export default function EnhancedCrypto() {
                   <div className="text-center">
                     <div
                       className={cn(
-                        "text-3xl font-bold",
+                        "text-2xl md:text-3xl font-bold",
                         getFearGreedColor(
                           marketData?.fearGreedIndex.value || 50,
                         ),
@@ -385,12 +441,12 @@ export default function EnhancedCrypto() {
                     >
                       {marketData?.fearGreedIndex.value || 50}
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs md:text-sm text-gray-600">
                       Fear & Greed Index
                     </div>
                     <div
                       className={cn(
-                        "text-sm font-medium",
+                        "text-xs md:text-sm font-medium",
                         getFearGreedColor(
                           marketData?.fearGreedIndex.value || 50,
                         ),
@@ -404,7 +460,7 @@ export default function EnhancedCrypto() {
 
                   {marketData && (
                     <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-xs md:text-sm">
                         <span>Volatility</span>
                         <span className="font-medium">
                           {(
@@ -413,9 +469,9 @@ export default function EnhancedCrypto() {
                           %
                         </span>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      <div className="flex justify-between text-xs md:text-sm">
                         <span>Market Volume</span>
-                        <span className="font-medium">
+                        <span className="font-medium truncate ml-2">
                           {formatCurrency(
                             marketData.globalStats.totalVolume24h,
                           )}
@@ -430,36 +486,36 @@ export default function EnhancedCrypto() {
 
           {/* Market Movers */}
           {marketData && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-green-600">
-                    <TrendingUp className="h-5 w-5" />
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-green-600 text-base md:text-lg">
+                    <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
                     Top Gainers (24h)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {marketData.topMovers.gainers.map((crypto) => (
                       <div
                         key={crypto.id}
                         className="flex items-center justify-between"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                           <img
                             src={crypto.image}
                             alt={crypto.name}
-                            className="w-6 h-6 rounded-full"
+                            className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
                           />
-                          <span className="font-medium">
+                          <span className="font-medium text-sm md:text-base truncate">
                             {crypto.symbol.toUpperCase()}
                           </span>
                         </div>
-                        <div className="text-right">
-                          <div className="font-semibold">
+                        <div className="text-right flex-shrink-0">
+                          <div className="font-semibold text-sm md:text-base">
                             {formatCurrency(crypto.current_price)}
                           </div>
-                          <div className="text-green-600 text-sm font-medium">
+                          <div className="text-green-600 text-xs md:text-sm font-medium">
                             {formatPercentage(
                               crypto.price_change_percentage_24h,
                             )}
@@ -472,34 +528,34 @@ export default function EnhancedCrypto() {
               </Card>
 
               <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-red-600">
-                    <TrendingDown className="h-5 w-5" />
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-red-600 text-base md:text-lg">
+                    <TrendingDown className="h-4 w-4 md:h-5 md:w-5" />
                     Top Losers (24h)
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
+                  <div className="space-y-2 md:space-y-3">
                     {marketData.topMovers.losers.map((crypto) => (
                       <div
                         key={crypto.id}
                         className="flex items-center justify-between"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                           <img
                             src={crypto.image}
                             alt={crypto.name}
-                            className="w-6 h-6 rounded-full"
+                            className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
                           />
-                          <span className="font-medium">
+                          <span className="font-medium text-sm md:text-base truncate">
                             {crypto.symbol.toUpperCase()}
                           </span>
                         </div>
-                        <div className="text-right">
-                          <div className="font-semibold">
+                        <div className="text-right flex-shrink-0">
+                          <div className="font-semibold text-sm md:text-base">
                             {formatCurrency(crypto.current_price)}
                           </div>
-                          <div className="text-red-600 text-sm font-medium">
+                          <div className="text-red-600 text-xs md:text-sm font-medium">
                             {formatPercentage(
                               crypto.price_change_percentage_24h,
                             )}
@@ -516,8 +572,8 @@ export default function EnhancedCrypto() {
           {/* Latest News Preview */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Globe className="h-4 w-4 md:h-5 md:w-5" />
                 Latest Crypto News
               </CardTitle>
             </CardHeader>
@@ -526,29 +582,31 @@ export default function EnhancedCrypto() {
                 {news.slice(0, 6).map((article) => (
                   <div
                     key={article.id}
-                    className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                    className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
                   >
                     {article.image && (
                       <img
                         src={article.image}
                         alt={article.title}
-                        className="w-full h-32 object-cover rounded mb-3"
+                        className="w-full h-28 md:h-32 object-cover rounded mb-3"
                       />
                     )}
                     <div className="space-y-2">
-                      <h3 className="font-semibold line-clamp-2">
+                      <h3 className="font-semibold text-sm md:text-base line-clamp-2">
                         {article.title}
                       </h3>
-                      <p className="text-sm text-gray-600 line-clamp-2">
+                      <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
                         {article.summary}
                       </p>
                       <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{article.source}</span>
-                        <span>
+                        <span className="truncate flex-1 mr-2">
+                          {article.source}
+                        </span>
+                        <span className="flex-shrink-0">
                           {new Date(article.publishedAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 flex-wrap">
                         <Badge
                           variant={
                             article.sentiment === "POSITIVE"
@@ -561,7 +619,7 @@ export default function EnhancedCrypto() {
                         >
                           {article.sentiment}
                         </Badge>
-                        {article.relatedAssets?.map((asset) => (
+                        {article.relatedAssets?.slice(0, 2).map((asset) => (
                           <Badge
                             key={asset}
                             variant="outline"
@@ -580,23 +638,27 @@ export default function EnhancedCrypto() {
         </TabsContent>
 
         {/* Unified Trading Tab */}
-        <TabsContent value="trading" className="space-y-6">
-          <div className="flex items-center justify-between">
+        <TabsContent value="trading" className="space-y-4 md:space-y-6 mt-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold">Trading Dashboard</h2>
-              <p className="text-gray-600">
+              <h2 className="text-xl md:text-2xl font-bold">
+                Trading Dashboard
+              </h2>
+              <p className="text-sm md:text-base text-gray-600">
                 Professional trading interface with advanced tools
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Trading Mode:</span>
+              <span className="text-xs md:text-sm text-gray-600">
+                Trading Mode:
+              </span>
               <Select
                 value={tradingMode}
                 onValueChange={(value: "basic" | "advanced") =>
                   setTradingMode(value)
                 }
               >
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-28 md:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -614,33 +676,35 @@ export default function EnhancedCrypto() {
         </TabsContent>
 
         {/* Portfolio & Wallet Tab - Consolidated */}
-        <TabsContent value="wallet" className="space-y-6">
-          <div className="flex items-center gap-2 mb-6">
-            <Wallet className="h-6 w-6" />
-            <h2 className="text-2xl font-bold">Portfolio & Wallet</h2>
+        <TabsContent value="wallet" className="space-y-4 md:space-y-6 mt-4">
+          <div className="flex items-center gap-2 mb-4 md:mb-6">
+            <Wallet className="h-5 w-5 md:h-6 md:w-6" />
+            <h2 className="text-xl md:text-2xl font-bold">
+              Portfolio & Wallet
+            </h2>
           </div>
 
           {portfolio ? (
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {/* Portfolio Overview */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                 <Card className="lg:col-span-2">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <PieChart className="h-5 w-5" />
+                    <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                      <PieChart className="h-4 w-4 md:h-5 md:w-5" />
                       Portfolio Overview
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-6">
-                      <div className="flex items-center justify-between">
+                    <div className="space-y-4 md:space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                          <div className="text-3xl font-bold">
+                          <div className="text-2xl md:text-3xl font-bold">
                             {formatCurrency(portfolio.totalValue)}
                           </div>
                           <div
                             className={cn(
-                              "text-lg font-medium",
+                              "text-base md:text-lg font-medium",
                               getChangeColor(portfolio.totalChangePercent24h),
                             )}
                           >
@@ -648,11 +712,13 @@ export default function EnhancedCrypto() {
                             (24h)
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm text-gray-600">P&L (24h)</div>
+                        <div className="text-left sm:text-right">
+                          <div className="text-xs md:text-sm text-gray-600">
+                            P&L (24h)
+                          </div>
                           <div
                             className={cn(
-                              "text-xl font-bold",
+                              "text-lg md:text-xl font-bold",
                               getChangeColor(portfolio.totalChange24h),
                             )}
                           >
@@ -661,28 +727,30 @@ export default function EnhancedCrypto() {
                         </div>
                       </div>
 
-                      <div className="space-y-3">
+                      <div className="space-y-2 md:space-y-3">
                         {portfolio.assets.map((asset) => (
                           <div
                             key={asset.asset}
-                            className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
+                            className="flex items-center justify-between p-2 md:p-3 rounded-lg bg-gray-50"
                           >
-                            <div className="flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                              <div>
-                                <div className="font-medium">{asset.asset}</div>
-                                <div className="text-sm text-gray-600">
+                            <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                              <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                              <div className="min-w-0">
+                                <div className="font-medium text-sm md:text-base">
+                                  {asset.asset}
+                                </div>
+                                <div className="text-xs md:text-sm text-gray-600 truncate">
                                   {asset.total} {asset.asset}
                                 </div>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <div className="font-semibold">
+                            <div className="text-right flex-shrink-0">
+                              <div className="font-semibold text-sm md:text-base">
                                 {formatCurrency(asset.usdValue)}
                               </div>
                               <div
                                 className={cn(
-                                  "text-sm",
+                                  "text-xs md:text-sm",
                                   getChangeColor(asset.changePercent24h),
                                 )}
                               >
@@ -699,20 +767,20 @@ export default function EnhancedCrypto() {
                 {/* Asset Allocation */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <PieChart className="h-5 w-5" />
+                    <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                      <PieChart className="h-4 w-4 md:h-5 md:w-5" />
                       Allocation
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
+                    <div className="space-y-3 md:space-y-4">
                       {portfolio.allocation.map((item) => (
                         <div key={item.asset} className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-sm font-medium">
+                          <div className="flex justify-between text-sm">
+                            <span className="font-medium truncate flex-1 mr-2">
                               {item.asset}
                             </span>
-                            <span className="text-sm">
+                            <span className="flex-shrink-0">
                               {(item.percentage || 0).toFixed(1)}%
                             </span>
                           </div>
@@ -733,60 +801,68 @@ export default function EnhancedCrypto() {
               </div>
 
               {/* Wallet Actions */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                 <Card>
-                  <CardContent className="p-4 text-center">
-                    <div className="p-3 bg-green-100 rounded-lg mx-auto w-fit mb-3">
-                      <ArrowUpDown className="h-6 w-6 text-green-600" />
+                  <CardContent className="p-3 md:p-4 text-center">
+                    <div className="p-2 md:p-3 bg-green-100 rounded-lg mx-auto w-fit mb-3">
+                      <ArrowUpDown className="h-5 w-5 md:h-6 md:w-6 text-green-600" />
                     </div>
-                    <h3 className="font-semibold mb-2">Buy Crypto</h3>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <h3 className="font-semibold mb-2 text-sm md:text-base">
+                      Buy Crypto
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-600 mb-3">
                       Purchase crypto with credit card or bank transfer
                     </p>
-                    <Button className="w-full">Buy Now</Button>
+                    <Button className="w-full text-sm">Buy Now</Button>
                   </CardContent>
                 </Card>
 
                 <Card>
-                  <CardContent className="p-4 text-center">
-                    <div className="p-3 bg-blue-100 rounded-lg mx-auto w-fit mb-3">
-                      <CreditCard className="h-6 w-6 text-blue-600" />
+                  <CardContent className="p-3 md:p-4 text-center">
+                    <div className="p-2 md:p-3 bg-blue-100 rounded-lg mx-auto w-fit mb-3">
+                      <CreditCard className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
                     </div>
-                    <h3 className="font-semibold mb-2">Deposit</h3>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <h3 className="font-semibold mb-2 text-sm md:text-base">
+                      Deposit
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-600 mb-3">
                       Add funds to your wallet
                     </p>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full text-sm">
                       Deposit
                     </Button>
                   </CardContent>
                 </Card>
 
                 <Card>
-                  <CardContent className="p-4 text-center">
-                    <div className="p-3 bg-orange-100 rounded-lg mx-auto w-fit mb-3">
-                      <Banknote className="h-6 w-6 text-orange-600" />
+                  <CardContent className="p-3 md:p-4 text-center">
+                    <div className="p-2 md:p-3 bg-orange-100 rounded-lg mx-auto w-fit mb-3">
+                      <Banknote className="h-5 w-5 md:h-6 md:w-6 text-orange-600" />
                     </div>
-                    <h3 className="font-semibold mb-2">Withdraw</h3>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <h3 className="font-semibold mb-2 text-sm md:text-base">
+                      Withdraw
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-600 mb-3">
                       Transfer funds to external wallet
                     </p>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full text-sm">
                       Withdraw
                     </Button>
                   </CardContent>
                 </Card>
 
                 <Card>
-                  <CardContent className="p-4 text-center">
-                    <div className="p-3 bg-purple-100 rounded-lg mx-auto w-fit mb-3">
-                      <TrendingUpIcon className="h-6 w-6 text-purple-600" />
+                  <CardContent className="p-3 md:p-4 text-center">
+                    <div className="p-2 md:p-3 bg-purple-100 rounded-lg mx-auto w-fit mb-3">
+                      <TrendingUpIcon className="h-5 w-5 md:h-6 md:w-6 text-purple-600" />
                     </div>
-                    <h3 className="font-semibold mb-2">Earn</h3>
-                    <p className="text-sm text-gray-600 mb-3">
+                    <h3 className="font-semibold mb-2 text-sm md:text-base">
+                      Earn
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-600 mb-3">
                       Stake and earn rewards
                     </p>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full text-sm">
                       Start Earning
                     </Button>
                   </CardContent>
@@ -794,10 +870,12 @@ export default function EnhancedCrypto() {
               </div>
             </div>
           ) : (
-            <div className="text-center py-12">
-              <Wallet className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No Portfolio Data</h3>
-              <p className="text-gray-600">
+            <div className="text-center py-8 md:py-12">
+              <Wallet className="h-10 w-10 md:h-12 md:w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-base md:text-lg font-semibold mb-2">
+                No Portfolio Data
+              </h3>
+              <p className="text-sm md:text-base text-gray-600">
                 Start trading to see your portfolio here
               </p>
               <Button className="mt-4">Start Trading</Button>
@@ -806,58 +884,58 @@ export default function EnhancedCrypto() {
         </TabsContent>
 
         {/* P2P Marketplace Tab */}
-        <TabsContent value="p2p" className="space-y-6">
+        <TabsContent value="p2p" className="space-y-4 md:space-y-6 mt-4">
           <EnhancedP2PMarketplace />
         </TabsContent>
 
         {/* DeFi Dashboard Tab */}
-        <TabsContent value="defi" className="space-y-6">
+        <TabsContent value="defi" className="space-y-4 md:space-y-6 mt-4">
           <DeFiDashboard />
         </TabsContent>
 
         {/* News Tab */}
-        <TabsContent value="news" className="space-y-6">
+        <TabsContent value="news" className="space-y-4 md:space-y-6 mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <Globe className="h-4 w-4 md:h-5 md:w-5" />
                 Crypto News & Analysis
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {news.map((article) => (
                   <div
                     key={article.id}
-                    className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                    className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
                   >
                     {article.image && (
                       <img
                         src={article.image}
                         alt={article.title}
-                        className="w-full h-40 object-cover rounded mb-4"
+                        className="w-full h-32 md:h-40 object-cover rounded mb-3 md:mb-4"
                       />
                     )}
-                    <div className="space-y-3">
-                      <h3 className="font-semibold text-lg line-clamp-2">
+                    <div className="space-y-2 md:space-y-3">
+                      <h3 className="font-semibold text-base md:text-lg line-clamp-2">
                         {article.title}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3">
+                      <p className="text-sm md:text-base text-gray-600 line-clamp-3">
                         {article.summary}
                       </p>
 
-                      <div className="flex items-center justify-between text-sm text-gray-500">
-                        <div className="flex items-center gap-2">
-                          <span>{article.source}</span>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs md:text-sm text-gray-500">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="truncate">{article.source}</span>
                           <span>•</span>
-                          <span>{article.author}</span>
+                          <span className="truncate">{article.author}</span>
                         </div>
-                        <span>
+                        <span className="flex-shrink-0">
                           {new Date(article.publishedAt).toLocaleDateString()}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 md:gap-2 flex-wrap">
                         <Badge
                           variant={
                             article.sentiment === "POSITIVE"
@@ -866,11 +944,16 @@ export default function EnhancedCrypto() {
                                 ? "destructive"
                                 : "secondary"
                           }
+                          className="text-xs"
                         >
                           {article.sentiment}
                         </Badge>
-                        {article.relatedAssets?.map((asset) => (
-                          <Badge key={asset} variant="outline">
+                        {article.relatedAssets?.slice(0, 2).map((asset) => (
+                          <Badge
+                            key={asset}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {asset}
                           </Badge>
                         ))}
@@ -884,24 +967,26 @@ export default function EnhancedCrypto() {
         </TabsContent>
 
         {/* Education Tab */}
-        <TabsContent value="education" className="space-y-6">
+        <TabsContent value="education" className="space-y-4 md:space-y-6 mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
                 Crypto Education Center
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {educationContent.map((content) => (
                   <div
                     key={content.id}
-                    className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                    className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
                   >
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">{content.category}</Badge>
+                    <div className="space-y-2 md:space-y-3">
+                      <div className="flex items-center gap-1 md:gap-2 flex-wrap">
+                        <Badge variant="outline" className="text-xs">
+                          {content.category}
+                        </Badge>
                         <Badge
                           variant={
                             content.difficulty === "BEGINNER"
@@ -910,26 +995,29 @@ export default function EnhancedCrypto() {
                                 ? "default"
                                 : "destructive"
                           }
+                          className="text-xs"
                         >
                           {content.difficulty}
                         </Badge>
                       </div>
 
-                      <h3 className="font-semibold text-lg">{content.title}</h3>
-                      <p className="text-gray-600 line-clamp-2">
+                      <h3 className="font-semibold text-base md:text-lg line-clamp-2">
+                        {content.title}
+                      </h3>
+                      <p className="text-sm md:text-base text-gray-600 line-clamp-2">
                         {content.summary}
                       </p>
 
-                      <div className="flex items-center justify-between text-sm text-gray-500">
+                      <div className="flex items-center justify-between text-xs md:text-sm text-gray-500">
                         <span>{content.readTime} min read</span>
                         <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <Star className="h-3 w-3 md:h-4 md:w-4 fill-yellow-400 text-yellow-400" />
                           <span>{content.rating}</span>
                         </div>
                       </div>
 
                       {content.tags && (
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 flex-wrap">
                           {content.tags.slice(0, 3).map((tag) => (
                             <Badge
                               key={tag}
