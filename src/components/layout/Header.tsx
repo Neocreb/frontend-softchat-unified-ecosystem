@@ -77,12 +77,12 @@ const Header = () => {
         </div>
 
         {/* Desktop Search */}
-        <div className="hidden md:flex items-center mx-4 flex-1 max-w-md">
+        <div className="hidden md:flex items-center mx-2 lg:mx-4 flex-1 max-w-md">
           <form onSubmit={handleSearchSubmit} className="w-full relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
               placeholder="Search"
-              className="pl-9 bg-muted/40 border-none rounded-full"
+              className="pl-9 bg-muted/40 border-none rounded-full text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
