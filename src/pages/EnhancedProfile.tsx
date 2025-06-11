@@ -377,51 +377,257 @@ const EnhancedProfile = () => {
 
   return (
     <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">
-      <div className="w-full max-w-5xl mx-auto">
-        {/* Instagram/Facebook-Style Profile Header */}
-        <div className="p-3 sm:p-4 md:p-6 lg:p-8">
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
-            {/* Profile Picture */}
-            <div className="flex justify-center sm:justify-start">
-              <div className="relative flex-shrink-0">
-                <Avatar className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 border-2 sm:border-4 border-white shadow-lg">
-                  <AvatarImage
-                    src={editForm.avatar || profile.avatar}
-                    alt={profile.displayName}
+      <div className="w-full max-w-6xl mx-auto">
+        {/* Facebook-Style Cover Photo Section */}
+        <div className="relative">
+          {/* Cover Photo */}
+          <div className="relative h-48 sm:h-56 md:h-72 lg:h-80 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 overflow-hidden rounded-b-lg">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${profile.coverPhoto || "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"})`,
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+
+            {/* Cover Photo Actions */}
+            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex gap-2">
+              {isEditing && (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="bg-white/90 text-black hover:bg-white"
+                  onClick={() =>
+                    document.getElementById("cover-upload")?.click()
+                  }
+                  disabled={uploading}
+                >
+                  <Camera className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">Edit Cover</span>
+                </Button>
+              )}
+              <Button
+                size="sm"
+                variant="secondary"
+                className="bg-white/90 text-black hover:bg-white"
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+              <input
+                id="cover-upload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    toast({
+                      title: "Cover Photo Updated",
+                      description:
+                        "Your cover photo has been updated successfully.",
+                    });
+                  }
+                }}
+                className="hidden"
+              />
+            </div>
+          </div>
+
+          {/* Profile Information Section */}
+          <div className="px-3 sm:px-4 md:px-6 lg:px-8">
+            <div className="relative">
+              {/* Profile Avatar - Positioned over cover photo */}
+              <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-4">
+                <div className="relative inline-block">
+                  <Avatar className="w-24 h-24 sm:w-28 sm:w-28 md:w-32 md:h-32 lg:w-36 lg:h-36 border-4 border-white shadow-xl">
+                    <AvatarImage
+                      src={editForm.avatar || profile.avatar}
+                      alt={profile.displayName}
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="text-xl sm:text-2xl font-bold">
+                      {profile.displayName
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  {/* Online status indicator */}
+                  <div className="absolute bottom-2 right-2 h-4 w-4 sm:h-5 sm:w-5 bg-green-500 border-2 border-white rounded-full"></div>
+
+                  {/* Edit Avatar Button */}
+                  {isEditing && (
+                    <Button
+                      size="icon"
+                      variant="secondary"
+                      className="absolute bottom-0 right-0 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white shadow-md hover:bg-gray-50"
+                      onClick={() =>
+                        document.getElementById("avatar-upload")?.click()
+                      }
+                      disabled={uploading}
+                    >
+                      <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </Button>
+                  )}
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleAvatarUpload(file);
+                    }}
+                    className="hidden"
                   />
-                  <AvatarFallback className="text-4xl">
-                    {profile.displayName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                {/* Online status indicator */}
-                <div className="absolute bottom-2 right-2 w-6 h-6 bg-green-500 border-4 border-white rounded-full"></div>
-                {/* Edit Avatar Button */}
-                {isEditing && (
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    className="absolute bottom-0 right-0 h-8 w-8 rounded-full"
-                    onClick={() =>
-                      document.getElementById("avatar-upload")?.click()
-                    }
-                    disabled={uploading}
-                  >
-                    <Camera className="h-4 w-4" />
+                </div>
+              </div>
+
+              {/* Enhanced Profile Info */}
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+                        {profile.displayName}
+                      </h1>
+                      {profile.isVerified && (
+                        <Verified className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 fill-current" />
+                      )}
+                    </div>
+                    <p className="text-gray-600 text-sm sm:text-base">
+                      @{profile.username}
+                    </p>
+                    {profile.title && (
+                      <p className="text-gray-700 font-medium text-sm sm:text-base">
+                        {profile.title}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Enhanced Stats */}
+                  <div className="flex items-center gap-4 sm:gap-6 text-sm sm:text-base">
+                    <div className="text-center">
+                      <div className="font-bold text-lg">{profile.posts}</div>
+                      <div className="text-gray-600 text-xs sm:text-sm">
+                        Posts
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-bold text-lg">
+                        {formatNumber(profile.followers)}
+                      </div>
+                      <div className="text-gray-600 text-xs sm:text-sm">
+                        Followers
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-bold text-lg">
+                        {formatNumber(profile.following)}
+                      </div>
+                      <div className="text-gray-600 text-xs sm:text-sm">
+                        Following
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-bold text-lg flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        {profile.reputation}
+                      </div>
+                      <div className="text-gray-600 text-xs sm:text-sm">
+                        Rating
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Level and Badges */}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge
+                      variant="outline"
+                      className="border-yellow-400 text-yellow-600"
+                    >
+                      <Star className="h-3 w-3 mr-1 fill-current" />
+                      Level {profile.level}
+                    </Badge>
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        "border-green-400 text-green-600",
+                        kycBadge.color,
+                      )}
+                    >
+                      <Shield className="h-3 w-3 mr-1" />
+                      {kycBadge.label}
+                    </Badge>
+                    <Badge
+                      variant="outline"
+                      className="border-green-400 text-green-600"
+                    >
+                      <div className="h-2 w-2 bg-green-500 rounded-full mr-1"></div>
+                      Online
+                    </Badge>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 sm:gap-3">
+                  {!isEditing ? (
+                    <>
+                      <Button
+                        variant="outline"
+                        className="flex-1 sm:flex-none"
+                        onClick={() => setIsEditing(true)}
+                      >
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit Profile
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setActiveTab("settings")}
+                      >
+                        <Settings className="h-4 w-4 mr-2" />
+                        <span className="hidden sm:inline">Settings</span>
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="outline"
+                        className="flex-1 sm:flex-none"
+                        onClick={() => {
+                          setIsEditing(false);
+                          setEditForm(profile);
+                          setEditingSection(null);
+                        }}
+                      >
+                        <X className="h-4 w-4 mr-2" />
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleSaveProfile}
+                        disabled={isLoading}
+                        className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700"
+                      >
+                        <Save className="h-4 w-4 mr-2" />
+                        Save
+                      </Button>
+                    </>
+                  )}
+                  <Button variant="outline" size="icon">
+                    <Share2 className="h-4 w-4" />
                   </Button>
-                )}
-                <input
-                  id="avatar-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleAvatarUpload(file);
-                  }}
-                  className="hidden"
-                />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content with improved spacing */}
+        <div className="p-3 sm:p-4 md:p-6 lg:p-8">
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8">
+            {/* Profile Picture - Legacy layout for tablets and up */}
+            <div className="hidden lg:flex justify-center lg:justify-start">
+              <div className="relative flex-shrink-0">
+                {/* This section is now handled by the cover photo layout above */}
               </div>
             </div>
 
