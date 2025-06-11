@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -19,8 +18,11 @@ import {
   Target,
   Brain,
   Wallet,
-  LineChart,
-  BookOpen,
+  ArrowUpDown,
+  Plus,
+  Minus,
+  Bell,
+  Star,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
@@ -28,29 +30,31 @@ import {
   Cryptocurrency,
   MarketData,
   Portfolio,
-  News,
-  EducationContent,
+  OrderBook,
+  Trade,
 } from "@/types/crypto";
-import EnhancedTradingDashboard from "@/components/crypto/EnhancedTradingDashboard";
 import { cn } from "@/lib/utils";
 
 export default function EnhancedCrypto() {
-  const [activeTab, setActiveTab] = useState("overview");
   const [cryptos, setCryptos] = useState<Cryptocurrency[]>([]);
   const [marketData, setMarketData] = useState<MarketData | null>(null);
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
-  const [news, setNews] = useState<News[]>([]);
-  const [educationContent, setEducationContent] = useState<EducationContent[]>(
-    [],
-  );
+  const [orderBook, setOrderBook] = useState<OrderBook | null>(null);
+  const [recentTrades, setRecentTrades] = useState<Trade[]>([]);
   const [selectedPair, setSelectedPair] = useState("BTCUSDT");
+  const [orderType, setOrderType] = useState("limit");
+  const [side, setSide] = useState<"buy" | "sell">("buy");
+  const [price, setPrice] = useState("");
+  const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const { toast } = useToast();
 
   useEffect(() => {
     loadCryptoData();
-  }, []);
+    const interval = setInterval(updateRealTimeData, 3000);
+    return () => clearInterval(interval);
+  }, [selectedPair]);
 
   const loadCryptoData = async () => {
     setIsLoading(true);
@@ -59,21 +63,21 @@ export default function EnhancedCrypto() {
         cryptosData,
         marketDataResult,
         portfolioData,
-        newsData,
-        educationData,
+        orderBookData,
+        tradesData,
       ] = await Promise.all([
-        cryptoService.getCryptocurrencies(20),
+        cryptoService.getCryptocurrencies(15),
         cryptoService.getMarketData(),
         cryptoService.getPortfolio(),
-        cryptoService.getNews(6),
-        cryptoService.getEducationContent(),
+        cryptoService.getOrderBook(selectedPair),
+        cryptoService.getRecentTrades(selectedPair, 10),
       ]);
 
       setCryptos(cryptosData);
       setMarketData(marketDataResult);
       setPortfolio(portfolioData);
-      setNews(newsData);
-      setEducationContent(educationData);
+      setOrderBook(orderBookData);
+      setRecentTrades(tradesData);
     } catch (error) {
       console.error("Failed to load crypto data:", error);
       toast({
@@ -83,6 +87,19 @@ export default function EnhancedCrypto() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const updateRealTimeData = async () => {
+    try {
+      const [newOrderBook, newTrades] = await Promise.all([
+        cryptoService.getOrderBook(selectedPair),
+        cryptoService.getRecentTrades(selectedPair, 5),
+      ]);
+      setOrderBook(newOrderBook);
+      setRecentTrades((prev) => [...newTrades, ...prev].slice(0, 10));
+    } catch (error) {
+      console.error("Failed to update real-time data:", error);
     }
   };
 
@@ -113,21 +130,55 @@ export default function EnhancedCrypto() {
     return "text-blue-600";
   };
 
-  const getFearGreedLabel = (value: number) => {
-    const safeValue = value || 50;
-    if (safeValue <= 25) return "Extreme Fear";
-    if (safeValue <= 45) return "Fear";
-    if (safeValue <= 55) return "Neutral";
-    if (safeValue <= 75) return "Greed";
-    return "Extreme Greed";
+  const getCurrentPair = () => {
+    return cryptos.find(
+      (c) => c.symbol.toUpperCase() + "USDT" === selectedPair,
+    );
   };
+
+  const currentPair = getCurrentPair();
+
+  const handlePlaceOrder = () => {
+    if (!price || !amount) {
+      toast({
+        title: "Invalid Order",
+        description: "Please enter both price and amount",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Order Placed",
+      description: `${side.toUpperCase()} order for ${amount} ${selectedPair.replace("USDT", "")} at $${price}`,
+    });
+
+    setPrice("");
+    setAmount("");
+  };
+
+  if (isLoading) {
+    return (
+      <div className="mobile-container mobile-space-y">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-24 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+          <div className="h-96 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mobile-container mobile-space-y">
-      {/* Header */}
-      <div className="mobile-flex lg:items-start lg:justify-between">
+      {/* Header with Market Overview */}
+      <div className="mobile-flex lg:items-center lg:justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold truncate">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">
             Crypto Trading
           </h1>
           <p className="mobile-text text-gray-600 mt-1">
@@ -135,36 +186,34 @@ export default function EnhancedCrypto() {
           </p>
         </div>
 
-        {marketData && (
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm overflow-x-auto">
-            <div className="text-center min-w-0 flex-shrink-0">
-              <div className="text-gray-600 text-xs md:text-sm">Market Cap</div>
-              <div className="font-bold text-sm md:text-base truncate">
-                {formatCurrency(marketData.globalStats.totalMarketCap)}
-              </div>
-            </div>
-            <div className="text-center min-w-0 flex-shrink-0">
-              <div className="text-gray-600 text-xs md:text-sm">
-                Fear & Greed
+        {currentPair && (
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Badge variant="outline" className="text-lg px-3 py-1">
+              {currentPair.symbol.toUpperCase()}/USDT
+            </Badge>
+            <div className="text-right">
+              <div className="text-xl md:text-2xl font-bold">
+                {formatCurrency(currentPair.current_price)}
               </div>
               <div
                 className={cn(
-                  "font-bold text-sm md:text-base",
-                  getFearGreedColor(marketData?.fearGreedIndex?.value || 50),
+                  "text-sm font-medium flex items-center gap-1",
+                  getChangeColor(currentPair.price_change_percentage_24h),
                 )}
               >
-                {marketData?.fearGreedIndex?.value || 50}
-                <span className="hidden sm:inline">
-                  {" "}
-                  ({getFearGreedLabel(marketData?.fearGreedIndex?.value || 50)})
-                </span>
+                {currentPair.price_change_percentage_24h >= 0 ? (
+                  <TrendingUp className="h-4 w-4" />
+                ) : (
+                  <TrendingDown className="h-4 w-4" />
+                )}
+                {formatPercentage(currentPair.price_change_percentage_24h)}
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Quick Stats Cards - Simplified */}
+      {/* Market Stats */}
       {marketData && (
         <div className="mobile-grid-2">
           <Card>
@@ -208,9 +257,6 @@ export default function EnhancedCrypto() {
                   <div className="text-lg md:text-xl font-bold truncate">
                     {formatCurrency(marketData.globalStats.totalVolume24h)}
                   </div>
-                  <div className="text-xs md:text-sm text-gray-600 truncate">
-                    {marketData.globalStats.markets.toLocaleString()} markets
-                  </div>
                 </div>
               </div>
             </CardContent>
@@ -228,10 +274,6 @@ export default function EnhancedCrypto() {
                   </div>
                   <div className="text-lg md:text-xl font-bold">
                     {(marketData.globalStats.btcDominance || 0).toFixed(1)}%
-                  </div>
-                  <div className="text-xs md:text-sm text-gray-600">
-                    ETH: {(marketData.globalStats.ethDominance || 0).toFixed(1)}
-                    %
                   </div>
                 </div>
               </div>
@@ -258,16 +300,6 @@ export default function EnhancedCrypto() {
                   >
                     {marketData?.fearGreedIndex?.value || 50}
                   </div>
-                  <div
-                    className={cn(
-                      "text-xs md:text-sm font-medium truncate",
-                      getFearGreedColor(
-                        marketData?.fearGreedIndex?.value || 50,
-                      ),
-                    )}
-                  >
-                    {getFearGreedLabel(marketData?.fearGreedIndex?.value || 50)}
-                  </div>
                 </div>
               </div>
             </CardContent>
@@ -275,461 +307,346 @@ export default function EnhancedCrypto() {
         </div>
       )}
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        {/* Simplified tab list */}
-        <div className="w-full mobile-tabs">
-          <div className="border-b border-gray-200">
-            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0 gap-1">
-              <TabsTrigger
-                value="overview"
-                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger
-                value="trading"
-                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
-              >
-                Trading
-              </TabsTrigger>
-              <TabsTrigger
-                value="portfolio"
-                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
-              >
-                Portfolio
-              </TabsTrigger>
-              <TabsTrigger
-                value="learn"
-                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
-              >
-                Learn
-              </TabsTrigger>
-            </TabsList>
-          </div>
-        </div>
-
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="mobile-space-y mt-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-            {/* Top Cryptocurrencies */}
-            <Card className="lg:col-span-2">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                  <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
-                  Top Cryptocurrencies
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6">
-                <div className="space-y-2 md:space-y-3">
-                  {cryptos.slice(0, 8).map((crypto, index) => (
-                    <div
-                      key={crypto.id}
-                      className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50"
-                    >
-                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                        <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
-                          #{index + 1}
+      {/* Main Trading Interface */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 md:gap-6">
+        {/* Cryptocurrency List & Pair Selection */}
+        <Card className="xl:col-span-1">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base md:text-lg">Markets</CardTitle>
+          </CardHeader>
+          <CardContent className="px-3 md:px-6">
+            <div className="space-y-2">
+              {cryptos.map((crypto) => {
+                const pairSymbol = crypto.symbol.toUpperCase() + "USDT";
+                const isSelected = selectedPair === pairSymbol;
+                return (
+                  <div
+                    key={crypto.id}
+                    className={cn(
+                      "flex items-center justify-between p-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors",
+                      isSelected && "bg-blue-50 border border-blue-200",
+                    )}
+                    onClick={() => setSelectedPair(pairSymbol)}
+                  >
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <img
+                        src={crypto.image}
+                        alt={crypto.name}
+                        className="w-6 h-6 rounded-full flex-shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-medium text-sm truncate">
+                          {crypto.symbol.toUpperCase()}
                         </div>
-                        <img
-                          src={crypto.image}
-                          alt={crypto.name}
-                          className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm md:text-base truncate">
-                            {crypto.name}
+                        <div className="text-xs text-gray-600 truncate">
+                          {crypto.name}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right flex-shrink-0">
+                      <div className="font-semibold text-sm">
+                        {formatCurrency(crypto.current_price)}
+                      </div>
+                      <div
+                        className={cn(
+                          "text-xs",
+                          getChangeColor(crypto.price_change_percentage_24h),
+                        )}
+                      >
+                        {formatPercentage(crypto.price_change_percentage_24h)}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Order Book & Recent Trades */}
+        <Card className="xl:col-span-1">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base md:text-lg">Order Book</CardTitle>
+          </CardHeader>
+          <CardContent className="px-3 md:px-6">
+            {orderBook ? (
+              <div className="space-y-3">
+                {/* Asks */}
+                <div>
+                  <div className="text-xs font-medium text-gray-600 mb-1">
+                    Asks
+                  </div>
+                  <div className="space-y-1">
+                    {orderBook.asks.slice(0, 5).map((ask, index) => (
+                      <div key={index} className="flex justify-between text-xs">
+                        <span className="text-red-600 font-mono">
+                          {ask.price.toFixed(2)}
+                        </span>
+                        <span className="font-mono">
+                          {ask.quantity.toFixed(4)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Current Price */}
+                {currentPair && (
+                  <div className="text-center py-2 border-y">
+                    <div className="text-base font-bold">
+                      {formatCurrency(currentPair.current_price)}
+                    </div>
+                  </div>
+                )}
+
+                {/* Bids */}
+                <div>
+                  <div className="text-xs font-medium text-gray-600 mb-1">
+                    Bids
+                  </div>
+                  <div className="space-y-1">
+                    {orderBook.bids.slice(0, 5).map((bid, index) => (
+                      <div key={index} className="flex justify-between text-xs">
+                        <span className="text-green-600 font-mono">
+                          {bid.price.toFixed(2)}
+                        </span>
+                        <span className="font-mono">
+                          {bid.quantity.toFixed(4)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Recent Trades */}
+                <div className="pt-3 border-t">
+                  <div className="text-xs font-medium text-gray-600 mb-2">
+                    Recent Trades
+                  </div>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {recentTrades.slice(0, 8).map((trade, index) => (
+                      <div key={index} className="flex justify-between text-xs">
+                        <span
+                          className={cn(
+                            "font-mono",
+                            trade.isBuyerMaker
+                              ? "text-red-600"
+                              : "text-green-600",
+                          )}
+                        >
+                          {trade.price.toFixed(2)}
+                        </span>
+                        <span className="font-mono">
+                          {trade.quantity.toFixed(4)}
+                        </span>
+                        <span className="text-gray-500">
+                          {new Date(trade.time).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">Loading...</div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Trading Panel */}
+        <Card className="xl:col-span-1">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base md:text-lg">Place Order</CardTitle>
+          </CardHeader>
+          <CardContent className="px-3 md:px-6">
+            <div className="space-y-4">
+              {/* Buy/Sell Toggle */}
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant={side === "buy" ? "default" : "outline"}
+                  onClick={() => setSide("buy")}
+                  className={cn(
+                    "w-full",
+                    side === "buy" && "bg-green-600 hover:bg-green-700",
+                  )}
+                >
+                  Buy
+                </Button>
+                <Button
+                  variant={side === "sell" ? "default" : "outline"}
+                  onClick={() => setSide("sell")}
+                  className={cn(
+                    "w-full",
+                    side === "sell" && "bg-red-600 hover:bg-red-700",
+                  )}
+                >
+                  Sell
+                </Button>
+              </div>
+
+              {/* Order Type */}
+              <div>
+                <label className="text-xs font-medium mb-1 block">
+                  Order Type
+                </label>
+                <Select value={orderType} onValueChange={setOrderType}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="market">Market</SelectItem>
+                    <SelectItem value="limit">Limit</SelectItem>
+                    <SelectItem value="stop">Stop Loss</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Price */}
+              <div>
+                <label className="text-xs font-medium mb-1 block">
+                  Price (USDT)
+                </label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono"
+                />
+              </div>
+
+              {/* Amount */}
+              <div>
+                <label className="text-xs font-medium mb-1 block">
+                  Amount ({selectedPair.replace("USDT", "")})
+                </label>
+                <input
+                  type="number"
+                  placeholder="0.00000000"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-mono"
+                />
+              </div>
+
+              {/* Total */}
+              <div>
+                <label className="text-xs font-medium mb-1 block">
+                  Total (USDT)
+                </label>
+                <div className="px-3 py-2 bg-gray-50 rounded-md text-sm font-mono">
+                  {price && amount
+                    ? (parseFloat(price) * parseFloat(amount)).toFixed(2)
+                    : "0.00"}
+                </div>
+              </div>
+
+              <Button
+                onClick={handlePlaceOrder}
+                className={cn(
+                  "w-full",
+                  side === "buy"
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-red-600 hover:bg-red-700",
+                )}
+              >
+                {side === "buy" ? "Buy" : "Sell"}{" "}
+                {selectedPair.replace("USDT", "")}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Portfolio */}
+        <Card className="xl:col-span-1">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <Wallet className="h-4 w-4 md:h-5 md:w-5" />
+              Portfolio
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="px-3 md:px-6">
+            {portfolio ? (
+              <div className="space-y-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold">
+                    {formatCurrency(portfolio.totalValue)}
+                  </div>
+                  <div
+                    className={cn(
+                      "text-sm font-medium",
+                      getChangeColor(portfolio.totalChangePercent24h),
+                    )}
+                  >
+                    {formatPercentage(portfolio.totalChangePercent24h)} (24h)
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  {portfolio.assets.slice(0, 6).map((asset) => (
+                    <div
+                      key={asset.asset}
+                      className="flex items-center justify-between p-2 rounded-lg bg-gray-50"
+                    >
+                      <div className="flex items-center gap-2 min-w-0 flex-1">
+                        <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                        <div className="min-w-0">
+                          <div className="font-medium text-sm">
+                            {asset.asset}
                           </div>
-                          <div className="text-xs md:text-sm text-gray-600">
-                            {crypto.symbol.toUpperCase()}
+                          <div className="text-xs text-gray-600 truncate">
+                            {asset.total} {asset.asset}
                           </div>
                         </div>
                       </div>
-
-                      <div className="text-right min-w-0 flex-shrink-0">
-                        <div className="font-semibold text-sm md:text-base">
-                          {formatCurrency(crypto.current_price)}
+                      <div className="text-right flex-shrink-0">
+                        <div className="font-semibold text-sm">
+                          {formatCurrency(asset.usdValue)}
                         </div>
                         <div
                           className={cn(
-                            "text-xs md:text-sm",
-                            getChangeColor(crypto.price_change_percentage_24h),
+                            "text-xs",
+                            getChangeColor(asset.changePercent24h),
                           )}
                         >
-                          {formatPercentage(crypto.price_change_percentage_24h)}
+                          {formatPercentage(asset.changePercent24h)}
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Market Sentiment */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                  <Brain className="h-4 w-4 md:h-5 md:w-5" />
-                  Market Sentiment
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="text-center">
-                    <div
-                      className={cn(
-                        "text-2xl md:text-3xl font-bold",
-                        getFearGreedColor(
-                          marketData?.fearGreedIndex.value || 50,
-                        ),
-                      )}
-                    >
-                      {marketData?.fearGreedIndex.value || 50}
-                    </div>
-                    <div className="text-xs md:text-sm text-gray-600">
-                      Fear & Greed Index
-                    </div>
-                    <div
-                      className={cn(
-                        "text-xs md:text-sm font-medium",
-                        getFearGreedColor(
-                          marketData?.fearGreedIndex.value || 50,
-                        ),
-                      )}
-                    >
-                      {getFearGreedLabel(
-                        marketData?.fearGreedIndex.value || 50,
-                      )}
-                    </div>
+                <div className="pt-3 border-t">
+                  <div className="text-xs text-gray-600 mb-2">
+                    Quick Actions
                   </div>
-
-                  {marketData && (
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs md:text-sm">
-                        <span>24h Volume</span>
-                        <span className="font-medium truncate ml-2">
-                          {formatCurrency(
-                            marketData.globalStats.totalVolume24h,
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-xs md:text-sm">
-                        <span>Active Markets</span>
-                        <span className="font-medium">
-                          {marketData.globalStats.markets.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button variant="outline" size="sm" className="text-xs">
+                      <Plus className="h-3 w-3 mr-1" />
+                      Deposit
+                    </Button>
+                    <Button variant="outline" size="sm" className="text-xs">
+                      <Minus className="h-3 w-3 mr-1" />
+                      Withdraw
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Market Movers - Simplified */}
-          {marketData && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-green-600 text-base md:text-lg">
-                    <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
-                    Top Gainers (24h)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 md:space-y-3">
-                    {marketData.topMovers.gainers.slice(0, 4).map((crypto) => (
-                      <div
-                        key={crypto.id}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                          <img
-                            src={crypto.image}
-                            alt={crypto.name}
-                            className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
-                          />
-                          <span className="font-medium text-sm md:text-base truncate">
-                            {crypto.symbol.toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <div className="font-semibold text-sm md:text-base">
-                            {formatCurrency(crypto.current_price)}
-                          </div>
-                          <div className="text-green-600 text-xs md:text-sm font-medium">
-                            {formatPercentage(
-                              crypto.price_change_percentage_24h,
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-red-600 text-base md:text-lg">
-                    <TrendingDown className="h-4 w-4 md:h-5 md:w-5" />
-                    Top Losers (24h)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 md:space-y-3">
-                    {marketData.topMovers.losers.slice(0, 4).map((crypto) => (
-                      <div
-                        key={crypto.id}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                          <img
-                            src={crypto.image}
-                            alt={crypto.name}
-                            className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
-                          />
-                          <span className="font-medium text-sm md:text-base truncate">
-                            {crypto.symbol.toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="text-right flex-shrink-0">
-                          <div className="font-semibold text-sm md:text-base">
-                            {formatCurrency(crypto.current_price)}
-                          </div>
-                          <div className="text-red-600 text-xs md:text-sm font-medium">
-                            {formatPercentage(
-                              crypto.price_change_percentage_24h,
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Latest News - Simplified */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                <Globe className="h-4 w-4 md:h-5 md:w-5" />
-                Latest Crypto News
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {news.map((article) => (
-                  <div
-                    key={article.id}
-                    className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
-                  >
-                    {article.image && (
-                      <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-24 md:h-28 object-cover rounded mb-3"
-                      />
-                    )}
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-sm md:text-base line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
-                        {article.summary}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span className="truncate flex-1 mr-2">
-                          {article.source}
-                        </span>
-                        <span className="flex-shrink-0">
-                          {new Date(article.publishedAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Trading Tab */}
-        <TabsContent value="trading" className="mobile-space-y mt-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold">
-                Trading Dashboard
-              </h2>
-              <p className="text-sm md:text-base text-gray-600">
-                Professional trading interface
-              </p>
-            </div>
-          </div>
-
-          <EnhancedTradingDashboard
-            selectedPair={selectedPair}
-            onPairSelect={setSelectedPair}
-          />
-        </TabsContent>
-
-        {/* Portfolio Tab - Simplified */}
-        <TabsContent value="portfolio" className="mobile-space-y mt-4">
-          <div className="flex items-center gap-2 mb-4 md:mb-6">
-            <Wallet className="h-5 w-5 md:h-6 md:w-6" />
-            <h2 className="text-xl md:text-2xl font-bold">Portfolio</h2>
-          </div>
-
-          {portfolio ? (
-            <div className="space-y-4 md:space-y-6">
-              {/* Portfolio Overview */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                    <LineChart className="h-4 w-4 md:h-5 md:w-5" />
-                    Portfolio Overview
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4 md:space-y-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div>
-                        <div className="text-2xl md:text-3xl font-bold">
-                          {formatCurrency(portfolio.totalValue)}
-                        </div>
-                        <div
-                          className={cn(
-                            "text-base md:text-lg font-medium",
-                            getChangeColor(portfolio.totalChangePercent24h),
-                          )}
-                        >
-                          {formatPercentage(portfolio.totalChangePercent24h)}{" "}
-                          (24h)
-                        </div>
-                      </div>
-                      <div className="text-left sm:text-right">
-                        <div className="text-xs md:text-sm text-gray-600">
-                          P&L (24h)
-                        </div>
-                        <div
-                          className={cn(
-                            "text-lg md:text-xl font-bold",
-                            getChangeColor(portfolio.totalChange24h),
-                          )}
-                        >
-                          {formatCurrency(portfolio.totalChange24h)}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 md:space-y-3">
-                      {portfolio.assets.slice(0, 5).map((asset) => (
-                        <div
-                          key={asset.asset}
-                          className="flex items-center justify-between p-2 md:p-3 rounded-lg bg-gray-50"
-                        >
-                          <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                            <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
-                            <div className="min-w-0">
-                              <div className="font-medium text-sm md:text-base">
-                                {asset.asset}
-                              </div>
-                              <div className="text-xs md:text-sm text-gray-600 truncate">
-                                {asset.total} {asset.asset}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-right flex-shrink-0">
-                            <div className="font-semibold text-sm md:text-base">
-                              {formatCurrency(asset.usdValue)}
-                            </div>
-                            <div
-                              className={cn(
-                                "text-xs md:text-sm",
-                                getChangeColor(asset.changePercent24h),
-                              )}
-                            >
-                              {formatPercentage(asset.changePercent24h)}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          ) : (
-            <div className="text-center py-8 md:py-12">
-              <Wallet className="h-10 w-10 md:h-12 md:w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-base md:text-lg font-semibold mb-2">
-                No Portfolio Data
-              </h3>
-              <p className="text-sm md:text-base text-gray-600">
-                Start trading to see your portfolio here
-              </p>
-              <Button className="mt-4">Start Trading</Button>
-            </div>
-          )}
-        </TabsContent>
-
-        {/* Learn Tab - Educational Content */}
-        <TabsContent value="learn" className="mobile-space-y mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
-                Crypto Education
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {educationContent.slice(0, 6).map((content) => (
-                  <div
-                    key={content.id}
-                    className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
-                  >
-                    <div className="space-y-2 md:space-y-3">
-                      <div className="flex items-center gap-1 md:gap-2 flex-wrap">
-                        <Badge variant="outline" className="text-xs">
-                          {content.category}
-                        </Badge>
-                        <Badge
-                          variant={
-                            content.difficulty === "BEGINNER"
-                              ? "secondary"
-                              : content.difficulty === "INTERMEDIATE"
-                                ? "default"
-                                : "destructive"
-                          }
-                          className="text-xs"
-                        >
-                          {content.difficulty}
-                        </Badge>
-                      </div>
-
-                      <h3 className="font-semibold text-base md:text-lg line-clamp-2">
-                        {content.title}
-                      </h3>
-                      <p className="text-sm md:text-base text-gray-600 line-clamp-2">
-                        {content.summary}
-                      </p>
-
-                      <div className="flex items-center justify-between text-xs md:text-sm text-gray-500">
-                        <span>{content.readTime} min read</span>
-                        <div className="flex items-center gap-1">
-                          <span>⭐ {content.rating}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            ) : (
+              <div className="text-center py-8">
+                <Wallet className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                <p className="text-sm text-gray-600">No portfolio data</p>
+                <Button size="sm" className="mt-2">
+                  Start Trading
+                </Button>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
