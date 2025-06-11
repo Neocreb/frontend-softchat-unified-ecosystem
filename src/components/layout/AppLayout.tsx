@@ -8,16 +8,19 @@ const AppLayout = () => {
   const isMobile = useIsMobile();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
       {/* Add proper spacing for fixed header and ensure no horizontal overflow */}
       <main
-        className={`w-full max-w-full overflow-x-hidden ${isMobile ? "pt-16 pb-20 px-2" : "pt-20 pb-6 px-4"}`}
+        className={`w-full max-w-full overflow-x-hidden flex-1 ${isMobile ? "pt-16 pb-20 px-2" : "pt-20 pb-6 px-4"}`}
       >
         <div className="w-full max-w-full mx-auto">
           <Outlet />
         </div>
       </main>
+      {/* Desktop Footer */}
+      {!isMobile && <DesktopFooter />}
+      {/* Mobile Footer Navigation */}
       {isMobile && <FooterNav />}
     </div>
   );
