@@ -826,8 +826,8 @@ const EnhancedProfile = () => {
           </TabsContent>
 
           {/* Media Tab - Only Images and Videos */}
-          <TabsContent value="media" className="mt-0">
-            <div className="grid grid-cols-3 gap-1 md:gap-2">
+          <TabsContent value="media" className="mt-0 w-full max-w-full">
+            <div className="grid grid-cols-3 gap-0.5 sm:gap-1 md:gap-2 w-full">
               {mockPosts
                 .filter(
                   (post) => post.type === "image" || post.type === "video",
