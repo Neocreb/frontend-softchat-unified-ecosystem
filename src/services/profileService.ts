@@ -132,10 +132,15 @@ export class ProfileService {
         .eq("following_id", followingId)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.warn(
+          `Follow status query failed: ${error.message}. Defaulting to not following.`,
+        );
+        return false;
+      }
       return !!data;
-    } catch (error) {
-      console.error("Error checking follow status:", error);
+    } catch (error: any) {
+      console.warn("Error checking follow status:", error?.message || error);
       return false;
     }
   }
