@@ -328,8 +328,8 @@ const EnhancedSettings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto p-6">
+    <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">
+      <div className="w-full max-w-6xl mx-auto p-3 sm:p-4 md:p-6">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
