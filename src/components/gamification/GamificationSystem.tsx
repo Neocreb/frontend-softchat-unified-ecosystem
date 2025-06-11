@@ -54,6 +54,7 @@ import {
   Globe,
   Home,
   Settings,
+  Compass,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
