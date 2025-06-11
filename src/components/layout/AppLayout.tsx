@@ -15,10 +15,14 @@ const AppLayout = () => {
       <SecondaryNav />
       {/* Add proper spacing for fixed header and ensure no horizontal overflow */}
       <main
-        className={`w-full max-w-full overflow-x-hidden flex-1 ${isMobile ? "pt-16 pb-20 px-3" : "pt-20 pb-6 px-4"}`}
+        className={`w-full max-w-full overflow-x-hidden flex-1 ${
+          isMobile ? "pt-14 pb-20 px-2" : "pt-20 pb-6 px-4"
+        }`}
       >
-        <div className="w-full max-w-full mx-auto prevent-mobile-overflow">
-          <Outlet />
+        <div className="w-full max-w-full mx-auto">
+          <div className={`${isMobile ? "py-2" : "py-4"}`}>
+            <Outlet />
+          </div>
         </div>
       </main>
       {/* Desktop Footer */}

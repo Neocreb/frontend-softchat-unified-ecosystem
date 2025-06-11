@@ -94,21 +94,21 @@ const WalletDashboardContent = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="mobile-container mobile-space-y">
         {/* Header Skeleton */}
         <div className="flex items-center justify-between">
-          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-6 md:h-8 w-32 md:w-48" />
           <div className="flex gap-2">
-            <Skeleton className="h-10 w-24" />
-            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-8 md:h-10 w-16 md:w-24" />
+            <Skeleton className="h-8 md:h-10 w-16 md:w-24" />
           </div>
         </div>
 
         {/* Balance Card Skeleton */}
         <Card>
-          <CardContent className="p-8">
-            <Skeleton className="h-12 w-64 mx-auto mb-4" />
-            <Skeleton className="h-6 w-32 mx-auto" />
+          <CardContent className="p-6 md:p-8">
+            <Skeleton className="h-8 md:h-12 w-48 md:w-64 mx-auto mb-4" />
+            <Skeleton className="h-4 md:h-6 w-24 md:w-32 mx-auto" />
           </CardContent>
         </Card>
 
@@ -116,10 +116,10 @@ const WalletDashboardContent = () => {
         <div className="space-y-4">
           <div className="flex gap-4">
             {[1, 2, 3, 4, 5].map((i) => (
-              <Skeleton key={i} className="h-10 w-24" />
+              <Skeleton key={i} className="h-8 md:h-10 w-16 md:w-24" />
             ))}
           </div>
-          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-48 md:h-64 w-full" />
         </div>
       </div>
     );
@@ -130,82 +130,86 @@ const WalletDashboardContent = () => {
   const earningsGrowth = getTotalEarnings(30);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="mobile-container mobile-space-y">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Unified Wallet</h1>
-          <p className="text-gray-600">
+      <div className="mobile-flex sm:items-center sm:justify-between">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+            Unified Wallet
+          </h1>
+          <p className="text-sm md:text-base text-gray-600">
             Manage all your earnings and funds in one place
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-shrink-0">
           <Button
             variant="outline"
             onClick={refreshData}
             disabled={isRefreshing}
-            className="flex items-center gap-2"
+            className="flex items-center gap-1 md:gap-2 text-xs md:text-sm"
           >
             <RefreshCw
-              className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+              className={`h-3 w-3 md:h-4 md:w-4 ${isRefreshing ? "animate-spin" : ""}`}
             />
-            Refresh
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
           <Button
             onClick={() => setShowDepositModal(true)}
-            className="bg-green-600 hover:bg-green-700 flex items-center gap-2"
+            className="bg-green-600 hover:bg-green-700 flex items-center gap-1 md:gap-2 text-xs md:text-sm"
           >
-            <ArrowDownLeft className="h-4 w-4" />
-            Deposit
+            <ArrowDownLeft className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Deposit</span>
           </Button>
           <Button
             onClick={() => setShowWithdrawModal(true)}
             variant="outline"
-            className="border-red-200 text-red-600 hover:bg-red-50 flex items-center gap-2"
+            className="border-red-200 text-red-600 hover:bg-red-50 flex items-center gap-1 md:gap-2 text-xs md:text-sm"
           >
-            <ArrowUpRight className="h-4 w-4" />
-            Withdraw
+            <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4" />
+            <span className="hidden sm:inline">Withdraw</span>
           </Button>
         </div>
       </div>
 
       {/* Total Balance Card */}
       <Card className="overflow-hidden">
-        <CardContent className="p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-white/20 rounded-full">
-                <Wallet className="h-6 w-6" />
+        <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+          <div className="flex items-center justify-between mb-4 md:mb-6">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+              <div className="p-2 md:p-3 bg-white/20 rounded-full flex-shrink-0">
+                <Wallet className="h-5 w-5 md:h-6 md:w-6" />
               </div>
-              <div>
-                <h2 className="text-lg font-medium text-blue-100">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-base md:text-lg font-medium text-blue-100">
                   Total Balance
                 </h2>
-                <p className="text-blue-200 text-sm">All sources combined</p>
+                <p className="text-blue-200 text-xs md:text-sm">
+                  All sources combined
+                </p>
               </div>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setBalanceVisible(!balanceVisible)}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 flex-shrink-0"
             >
               {balanceVisible ? (
-                <EyeOff className="h-4 w-4" />
+                <EyeOff className="h-3 w-3 md:h-4 md:w-4" />
               ) : (
-                <Eye className="h-4 w-4" />
+                <Eye className="h-3 w-3 md:h-4 md:w-4" />
               )}
             </Button>
           </div>
 
-          <div className="text-center space-y-4">
-            <div className="text-5xl font-bold">
+          <div className="text-center space-y-3 md:space-y-4">
+            <div className="text-3xl md:text-5xl font-bold">
               {balanceVisible ? `$${walletBalance.total.toFixed(2)}` : "••••••"}
             </div>
             {earningsGrowth > 0 && (
               <div className="flex items-center justify-center gap-2 text-green-200">
-                <TrendingUp className="h-4 w-4" />
-                <span className="text-sm">
+                <TrendingUp className="h-3 w-3 md:h-4 md:w-4" />
+                <span className="text-xs md:text-sm">
                   +${earningsGrowth.toFixed(2)} earned this month
                 </span>
               </div>
@@ -213,18 +217,23 @@ const WalletDashboardContent = () => {
           </div>
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 mt-6 md:mt-8">
             {walletSources.map((source) => {
               const balance = walletBalance[
                 source.id as keyof WalletBalance
               ] as number;
               return (
                 <div key={source.id} className="text-center">
-                  <div className="text-2xl mb-1">{source.icon}</div>
-                  <div className="text-lg font-semibold">
+                  <div className="text-lg md:text-2xl mb-1">{source.icon}</div>
+                  <div className="text-base md:text-lg font-semibold">
                     {balanceVisible ? `$${balance.toFixed(2)}` : "••••"}
                   </div>
-                  <div className="text-xs text-blue-200">{source.name}</div>
+                  <div className="text-xs text-blue-200 leading-tight">
+                    <span className="sm:hidden">
+                      {source.name.split(" ")[0]}
+                    </span>
+                    <span className="hidden sm:inline">{source.name}</span>
+                  </div>
                 </div>
               );
             })}
@@ -236,41 +245,48 @@ const WalletDashboardContent = () => {
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="space-y-6"
+        className="space-y-4 md:space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-5 h-auto bg-gray-100 p-1 rounded-lg">
-          <TabsTrigger
-            value="all"
-            className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-          >
-            <span className="text-lg">💰</span>
-            <span className="text-[10px] sm:text-xs font-medium">All</span>
-          </TabsTrigger>
-          {walletSources.map((source) => (
-            <TabsTrigger
-              key={source.id}
-              value={source.id}
-              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-xs sm:text-sm p-2 sm:p-3 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-            >
-              <span className="text-lg">{source.icon}</span>
-              <span className="text-[10px] sm:text-xs text-center leading-tight font-medium">
-                <span className="sm:hidden">{source.name.split(" ")[0]}</span>
-                <span className="hidden sm:inline">{source.name}</span>
-              </span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        {/* Mobile optimized tab list */}
+        <div className="w-full mobile-tabs">
+          <div className="border-b border-gray-200">
+            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0 gap-1">
+              <TabsTrigger
+                value="all"
+                className="flex flex-col items-center gap-1 px-3 py-2 text-xs data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                <span className="text-base">💰</span>
+                <span className="font-medium">All</span>
+              </TabsTrigger>
+              {walletSources.map((source) => (
+                <TabsTrigger
+                  key={source.id}
+                  value={source.id}
+                  className="flex flex-col items-center gap-1 px-3 py-2 text-xs data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                >
+                  <span className="text-base">{source.icon}</span>
+                  <span className="text-center leading-tight font-medium">
+                    <span className="sm:hidden">
+                      {source.name.split(" ")[0]}
+                    </span>
+                    <span className="hidden sm:inline">{source.name}</span>
+                  </span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+        </div>
 
         {/* All Transactions Tab */}
-        <TabsContent value="all" className="space-y-6">
+        <TabsContent value="all" className="space-y-4 md:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center justify-between text-base md:text-lg">
                 <span className="flex items-center gap-2">
                   <span className="text-lg">💰</span>
                   All Transactions
                 </span>
-                <Badge variant="outline">
+                <Badge variant="outline" className="text-xs md:text-sm">
                   {allTransactions.length} transactions
                 </Badge>
               </CardTitle>
@@ -286,10 +302,10 @@ const WalletDashboardContent = () => {
                   ))}
                 </div>
               ) : (
-                <div className="p-8 text-center text-gray-500">
-                  <div className="text-3xl mb-2">💸</div>
-                  <p>No transactions yet</p>
-                  <p className="text-sm text-gray-400 mt-1">
+                <div className="p-6 md:p-8 text-center text-gray-500">
+                  <div className="text-2xl md:text-3xl mb-2">💸</div>
+                  <p className="text-sm md:text-base">No transactions yet</p>
+                  <p className="text-xs md:text-sm text-gray-400 mt-1">
                     Your transaction history will appear here
                   </p>
                 </div>
