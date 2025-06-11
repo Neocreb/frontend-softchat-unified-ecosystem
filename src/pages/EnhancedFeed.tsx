@@ -36,6 +36,8 @@ import { cn } from "@/lib/utils";
 import { MediaUploadModal } from "@/components/feed/MediaUploadModal";
 import { FeelingLocationModal } from "@/components/feed/FeelingLocationModal";
 import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
+import { StoryCreationModal } from "@/components/feed/StoryCreationModal";
+import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
 import {
   MediaUpload,
   PostCreationData,
