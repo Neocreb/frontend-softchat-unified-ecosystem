@@ -24,7 +24,7 @@ import {
   TrendingUp,
   Users,
   Eye,
-  Clock,
+  Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UserProfile, ExtendedUser, MockUser } from "@/types/user";
@@ -35,9 +35,7 @@ interface EnhancedProfileProps {
   username?: string; // Optional username parameter for viewing other profiles
 }
 
-const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
-  username: propUsername,
-}) => {
+const EnhancedProfile: React.FC<EnhancedProfileProps> = ({ username: propUsername }) => {
   const { username: paramUsername } = useParams<{ username: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -59,8 +57,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   const [activeSection, setActiveSection] = useState("profile");
 
   // Determine if this is the current user's own profile
-  const isOwnProfile =
-    !targetUsername || (user && user.profile?.username === targetUsername);
+  const isOwnProfile = !targetUsername || (user && user.profile?.username === targetUsername);
 
   // Load profile data
   useEffect(() => {
@@ -97,7 +94,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
           if (profile.id) {
             const [followers, following] = await Promise.all([
               profileService.getFollowersCount(profile.id),
-              profileService.getFollowingCount(profile.id),
+              profileService.getFollowingCount(profile.id)
             ]);
 
             setFollowerCount(followers);
@@ -105,22 +102,18 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
             // Check if current user is following this profile
             if (user && user.id && !isOwnProfile) {
-              const following = await profileService.isFollowing(
-                user.id,
-                profile.id,
-              );
+              const following = await profileService.isFollowing(user.id, profile.id);
               setIsFollowing(following);
             }
 
             // Load content if not already loaded (for real users)
             if (!posts.length) {
               try {
-                const [userPosts, userProducts, userServices] =
-                  await Promise.all([
-                    profileService.getUserPosts(profile.id),
-                    profileService.getUserProducts(profile.id),
-                    profileService.getUserServices(profile.id),
-                  ]);
+                const [userPosts, userProducts, userServices] = await Promise.all([
+                  profileService.getUserPosts(profile.id),
+                  profileService.getUserProducts(profile.id),
+                  profileService.getUserServices(profile.id)
+                ]);
 
                 // Handle posts
                 if (userPosts && userPosts.length > 0) {
@@ -143,10 +136,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   setServices(generateMockServices());
                 }
               } catch (error: any) {
-                console.warn(
-                  "Error loading user content:",
-                  error?.message || error,
-                );
+                console.warn("Error loading user content:", error?.message || error);
                 // Set mock data on error
                 setPosts(generateMockPosts());
                 if (profile.marketplace_profile) {
@@ -162,17 +152,18 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
           toast({
             title: "Profile not found",
             description: "The requested profile could not be found.",
-            variant: "destructive",
+            variant: "destructive"
           });
           navigate("/feed");
         }
-      } catch (error) {
-        console.error("Error loading profile:", error);
+      } catch (error: any) {
+        console.error("Error loading profile:", error?.message || error);
         toast({
           title: "Error loading profile",
           description: "Failed to load the profile. Please try again.",
-          variant: "destructive",
+          variant: "destructive"
         });
+      }
       } finally {
         setIsLoading(false);
       }
@@ -187,7 +178,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       toast({
         title: "Authentication required",
         description: "Please log in to follow users.",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
@@ -195,7 +186,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     try {
       await profileService.toggleFollow(user.id, profileUser.id, isFollowing);
       setIsFollowing(!isFollowing);
-      setFollowerCount((prev) => (isFollowing ? prev - 1 : prev + 1));
+      setFollowerCount(prev => isFollowing ? prev - 1 : prev + 1);
 
       toast({
         title: isFollowing ? "Unfollowed" : "Following",
@@ -206,7 +197,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       toast({
         title: "Error",
         description: "Failed to update follow status. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
@@ -261,7 +252,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   };
 
   const handleContactSeller = (productId: string) => {
-    const product = products.find((p) => p.id === productId);
+    const product = products.find(p => p.id === productId);
     if (product && profileUser) {
       navigate(`/chat?user=${profileUser.username}&product=${productId}`);
     }
@@ -269,56 +260,53 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
   // Helper functions
   const formatPosts = (postsData: any[]) => {
-    return postsData.map((post) => ({
+    return postsData.map(post => ({
       id: post.id,
       content: post.content,
       image: post.image_url,
       created_at: post.created_at,
       likes: post.likes || Math.floor(Math.random() * 50),
       comments: post.comments || Math.floor(Math.random() * 10),
-      shares: Math.floor(Math.random() * 5),
+      shares: Math.floor(Math.random() * 5)
     }));
   };
 
   const formatProducts = (productsData: any[]): Product[] => {
-    return productsData.map((product) => ({
+    return productsData.map(product => ({
       id: product.id,
       name: product.name,
       description: product.description,
       price: product.price,
       discountPrice: product.discount_price,
-      image:
-        product.image_url || "https://source.unsplash.com/400x400/?product",
-      category: product.category || "General",
+      image: product.image_url || 'https://source.unsplash.com/400x400/?product',
+      category: product.category || 'General',
       rating: product.rating || 4.5,
       reviewCount: product.review_count || 0,
       inStock: product.in_stock !== false,
-      isNew:
-        new Date(product.created_at).getTime() >
-        Date.now() - 7 * 24 * 60 * 60 * 1000,
+      isNew: new Date(product.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000,
       isFeatured: product.is_featured || false,
       sellerId: product.seller_id,
-      sellerName: profileUser?.full_name || "User",
-      sellerAvatar: profileUser?.avatar_url || "",
+      sellerName: profileUser?.full_name || 'User',
+      sellerAvatar: profileUser?.avatar_url || '',
       sellerVerified: profileUser?.is_verified || false,
       createdAt: product.created_at,
       updatedAt: product.updated_at || product.created_at,
-      condition: product.condition || "new",
+      condition: product.condition || 'new'
     }));
   };
 
   const formatServices = (servicesData: any[]) => {
-    return servicesData.map((service) => ({
+    return servicesData.map(service => ({
       id: service.id,
       title: service.title,
       description: service.description,
-      category: service.category || "Development",
+      category: service.category || 'Development',
       price_range: {
         min: service.min_price || 50,
-        max: service.max_price || 500,
+        max: service.max_price || 500
       },
       delivery_time: service.delivery_time || 7,
-      featured: service.featured || false,
+      featured: service.featured || false
     }));
   };
 
@@ -330,20 +318,17 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       "Working on something amazing. Can't wait to share it with everyone! ✨",
       "Great day at the office! Love what I do 💼",
       "Learning new technologies is always exciting. #TechLife",
-      "Beautiful sunset today! Nature never fails to inspire 🌅",
+      "Beautiful sunset today! Nature never fails to inspire 🌅"
     ];
 
     return Array.from({ length: 3 }, (_, i) => ({
       id: `mock-${i + 1}`,
       content: postTemplates[i % postTemplates.length],
-      image:
-        i === 0 ? `https://source.unsplash.com/800x600/?technology,${i}` : null,
-      created_at: new Date(
-        Date.now() - (i + 1) * 24 * 60 * 60 * 1000,
-      ).toISOString(),
+      image: i === 0 ? `https://source.unsplash.com/800x600/?technology,${i}` : null,
+      created_at: new Date(Date.now() - (i + 1) * 24 * 60 * 60 * 1000).toISOString(),
       likes: Math.floor(Math.random() * 100) + 10,
       comments: Math.floor(Math.random() * 20) + 2,
-      shares: Math.floor(Math.random() * 10),
+      shares: Math.floor(Math.random() * 10)
     }));
   };
 
@@ -356,22 +341,22 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
         description: "High-quality wireless headphones with noise cancellation",
         price: 199.99,
         category: "Electronics",
-        image: "https://source.unsplash.com/400x400/?headphones",
+        image: "https://source.unsplash.com/400x400/?headphones"
       },
       {
         name: "Smart Fitness Tracker",
         description: "Advanced fitness tracker with heart rate monitoring",
         price: 149.99,
         category: "Electronics",
-        image: "https://source.unsplash.com/400x400/?fitness,tracker",
+        image: "https://source.unsplash.com/400x400/?fitness,tracker"
       },
       {
         name: "Organic Coffee Beans",
         description: "Premium organic coffee beans from Colombia",
         price: 24.99,
         category: "Food & Beverages",
-        image: "https://source.unsplash.com/400x400/?coffee,beans",
-      },
+        image: "https://source.unsplash.com/400x400/?coffee,beans"
+      }
     ];
 
     return productTemplates.map((template, i) => ({
@@ -383,14 +368,12 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       isNew: i === 0,
       isFeatured: i === 1,
       sellerId: profileUser.id,
-      sellerName: profileUser.full_name || "User",
-      sellerAvatar: profileUser.avatar_url || "",
+      sellerName: profileUser.full_name || 'User',
+      sellerAvatar: profileUser.avatar_url || '',
       sellerVerified: profileUser.is_verified || false,
-      createdAt: new Date(
-        Date.now() - (i + 1) * 7 * 24 * 60 * 60 * 1000,
-      ).toISOString(),
+      createdAt: new Date(Date.now() - (i + 1) * 7 * 24 * 60 * 60 * 1000).toISOString(),
       updatedAt: new Date().toISOString(),
-      condition: "new" as const,
+      condition: 'new' as const
     }));
   };
 
@@ -401,23 +384,21 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       {
         id: "mock-service-1",
         title: "Full Stack Web Development",
-        description:
-          "Complete web application development from design to deployment",
+        description: "Complete web application development from design to deployment",
         category: "Development",
         price_range: { min: 500, max: 5000 },
         delivery_time: 14,
-        featured: true,
+        featured: true
       },
       {
         id: "mock-service-2",
         title: "UI/UX Design Consultation",
-        description:
-          "Professional UI/UX design and user experience optimization",
+        description: "Professional UI/UX design and user experience optimization",
         category: "Design",
         price_range: { min: 200, max: 1500 },
         delivery_time: 7,
-        featured: false,
-      },
+        featured: false
+      }
     ];
   };
 
@@ -484,7 +465,11 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
         <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b px-4 py-2">
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate(-1)}
+              >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
               <div>
