@@ -602,8 +602,11 @@ const EnhancedProfile = () => {
         </div>
 
         {/* Story Highlights - Achievement Highlights */}
-        <div className="px-6 md:px-8 pb-6">
-          <div className="flex items-center gap-4 overflow-x-auto pb-2">
+        <div className="px-3 sm:px-4 md:px-6 lg:px-8 pb-4 sm:pb-6">
+          <div
+            className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             <div className="flex flex-col items-center gap-1 min-w-0">
               <div className="w-16 h-16 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors">
                 <Plus className="w-6 h-6 text-gray-400" />
