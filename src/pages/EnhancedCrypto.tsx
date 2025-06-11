@@ -400,7 +400,9 @@ export default function EnhancedCrypto() {
                       <div className="flex justify-between text-sm">
                         <span>Volatility</span>
                         <span className="font-medium">
-                          {marketData.globalStats.dominanceChange24h.toFixed(1)}
+                          {(
+                            marketData.globalStats.dominanceChange24h || 0
+                          ).toFixed(1)}
                           %
                         </span>
                       </div>
