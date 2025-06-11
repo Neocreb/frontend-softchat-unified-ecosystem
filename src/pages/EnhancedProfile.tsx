@@ -72,8 +72,6 @@ import {
   Key,
   History,
   FileDown,
-  UserPlus,
-  MessageCircle,
 } from "lucide-react";
 import {
   enhancedProfileService,
@@ -92,7 +90,7 @@ const mockPosts = [
     id: "1",
     type: "image",
     content:
-      "Just closed my first big crypto trade today! 🚀 The market has been incredible lately. Feeling grateful for all the opportunities in this space!",
+      "Just closed my first big crypto trade today! 🚀 The market has been incredible lately.",
     imageUrl:
       "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400&h=400&fit=crop",
     timestamp: "2 hours ago",
@@ -104,7 +102,7 @@ const mockPosts = [
     id: "2",
     type: "video",
     content:
-      "Working on some exciting new features! 🚀 Check out this sneak peek of what's coming next.",
+      "Working on some exciting new features! 🚀 Check out this sneak peek.",
     imageUrl:
       "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=400&fit=crop",
     videoUrl:
@@ -118,13 +116,45 @@ const mockPosts = [
   {
     id: "3",
     type: "image",
-    content:
-      "Beautiful sunset from my balcony today! 🌅 Sometimes you need to stop and appreciate the simple things.",
+    content: "Beautiful sunset from my balcony today! 🌅",
     imageUrl:
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
     timestamp: "3 days ago",
     likes: 123,
     comments: 23,
+    isLiked: false,
+  },
+  {
+    id: "4",
+    type: "image",
+    content: "Coffee and code - the perfect combination ☕️",
+    imageUrl:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=400&fit=crop",
+    timestamp: "1 week ago",
+    likes: 89,
+    comments: 12,
+    isLiked: false,
+  },
+  {
+    id: "5",
+    type: "image",
+    content: "Team building day! Great to meet everyone in person 👥",
+    imageUrl:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=400&fit=crop",
+    timestamp: "2 weeks ago",
+    likes: 456,
+    comments: 67,
+    isLiked: true,
+  },
+  {
+    id: "6",
+    type: "image",
+    content: "New workspace setup! Loving the productivity boost 💻",
+    imageUrl:
+      "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&h=400&fit=crop",
+    timestamp: "3 weeks ago",
+    likes: 234,
+    comments: 34,
     isLiked: false,
   },
 ];
@@ -138,10 +168,11 @@ const EnhancedProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editingSection, setEditingSection] = useState<string | null>(null);
-  const [isEditingCover, setIsEditingCover] = useState(false);
 
   // Form states for editing
   const [editForm, setEditForm] = useState<Partial<UserProfile>>({});
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
 
   // Bank account states
@@ -244,28 +275,6 @@ const EnhancedProfile = () => {
     }
   };
 
-  const handleCoverPhotoUpload = () => {
-    toast({
-      title: "Cover Photo Updated",
-      description: "Your cover photo has been updated successfully.",
-    });
-    setIsEditingCover(false);
-  };
-
-  const handleFollowUser = () => {
-    toast({
-      title: "Following",
-      description: "You are now following this user.",
-    });
-  };
-
-  const handleMessageUser = () => {
-    toast({
-      title: "Message Sent",
-      description: "Opening chat conversation...",
-    });
-  };
-
   const handleAddBankAccount = async () => {
     if (!user?.id || !profile) return;
 
@@ -352,300 +361,264 @@ const EnhancedProfile = () => {
   const reputation = getReputation(profile.reputation);
 
   return (
-    <div className="min-h-screen bg-background mobile-container">
-      <div className="w-full max-w-6xl mx-auto">
-        {/* Facebook-Style Cover Photo Section */}
-        <div className="relative">
-          {/* Cover Photo */}
-          <div className="relative h-48 sm:h-56 md:h-72 lg:h-80 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 overflow-hidden rounded-b-lg">
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${profile.coverPhoto || "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"})`,
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+    <div className="w-full max-w-5xl mx-auto mobile-container">
+      {/* Facebook-Style Cover Photo Section */}
+      <div className="relative">
+        {/* Cover Photo */}
+        <div className="relative h-48 sm:h-56 md:h-72 lg:h-80 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 overflow-hidden rounded-b-lg">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url(${profile.banner || "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"})`,
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
 
-            {/* Cover Photo Actions */}
-            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex gap-2">
-              {isEditing && (
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  className="bg-white/90 text-black hover:bg-white"
-                  onClick={() => setIsEditingCover(true)}
-                  disabled={uploading}
-                >
-                  <Camera className="h-4 w-4 mr-1" />
-                  <span className="hidden sm:inline">Edit Cover</span>
-                </Button>
-              )}
+          {/* Cover Photo Actions */}
+          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex gap-2">
+            {isEditing && (
               <Button
                 size="sm"
                 variant="secondary"
                 className="bg-white/90 text-black hover:bg-white"
+                onClick={() =>
+                  document.getElementById("banner-upload")?.click()
+                }
+                disabled={uploading}
               >
-                <MoreHorizontal className="h-4 w-4" />
+                <Camera className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Edit Cover</span>
               </Button>
+            )}
+            <Button
+              size="sm"
+              variant="secondary"
+              className="bg-white/90 text-black hover:bg-white"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+            <input
+              id="banner-upload"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setBannerFile(file);
+                  toast({
+                    title: "Cover photo updated",
+                    description: "Your cover photo has been updated.",
+                  });
+                }
+              }}
+              className="hidden"
+            />
+          </div>
+        </div>
+
+        {/* Profile Information Section */}
+        <div className="px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="relative">
+            {/* Profile Avatar - Positioned over cover photo */}
+            <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-4">
+              <div className="relative inline-block">
+                <Avatar className="w-24 h-24 sm:w-28 sm:w-28 md:w-32 md:h-32 lg:w-36 lg:h-36 border-4 border-white shadow-xl">
+                  <AvatarImage
+                    src={editForm.avatar || profile.avatar}
+                    alt={profile.displayName}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="text-xl sm:text-2xl font-bold">
+                    {profile.displayName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+
+                {/* Online status indicator */}
+                <div className="absolute bottom-2 right-2 h-4 w-4 sm:h-5 sm:w-5 bg-green-500 border-2 border-white rounded-full"></div>
+
+                {/* Edit Avatar Button */}
+                {isEditing && (
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="absolute bottom-0 right-0 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white shadow-md hover:bg-gray-50"
+                    onClick={() =>
+                      document.getElementById("avatar-upload")?.click()
+                    }
+                    disabled={uploading}
+                  >
+                    <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
+                  </Button>
+                )}
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleAvatarUpload(file);
+                  }}
+                  className="hidden"
+                />
+              </div>
             </div>
 
-            {/* Edit Cover Photo Modal */}
-            {isEditingCover && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
-                <Card className="w-full max-w-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Upload className="h-5 w-5" />
-                      Update Cover Photo
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex flex-col gap-3">
-                      <Button className="w-full">
-                        <Upload className="h-4 w-4 mr-2" />
-                        Upload Photo
-                      </Button>
-                      <Button variant="outline" className="w-full">
-                        <Image className="h-4 w-4 mr-2" />
-                        Choose from Gallery
-                      </Button>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={handleCoverPhotoUpload}
-                        className="flex-1"
-                      >
-                        <CheckCircle className="h-4 w-4 mr-2" />
-                        Save
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsEditingCover(false)}
-                        className="flex-1"
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Cancel
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </div>
-
-          {/* Profile Information Section */}
-          <div className="px-3 sm:px-4 md:px-6 lg:px-8">
-            <div className="relative">
-              {/* Profile Avatar - Positioned over cover photo */}
-              <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-4">
-                <div className="relative inline-block">
-                  <Avatar className="w-24 h-24 sm:w-28 sm:w-28 md:w-32 md:h-32 lg:w-36 lg:h-36 border-4 border-white shadow-xl">
-                    <AvatarImage
-                      src={editForm.avatar || profile.avatar}
-                      alt={profile.displayName}
-                      className="object-cover"
-                    />
-                    <AvatarFallback className="text-xl sm:text-2xl font-bold">
-                      {profile.displayName
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </AvatarFallback>
-                  </Avatar>
-
-                  {/* Online status indicator */}
-                  <div className="absolute bottom-2 right-2 h-4 w-4 sm:h-5 sm:w-5 bg-green-500 border-2 border-white rounded-full"></div>
-
-                  {/* Edit Avatar Button */}
-                  {isEditing && (
-                    <Button
-                      size="icon"
-                      variant="secondary"
-                      className="absolute bottom-0 right-0 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white shadow-md hover:bg-gray-50"
-                      onClick={() =>
-                        document.getElementById("avatar-upload")?.click()
-                      }
-                      disabled={uploading}
-                    >
-                      <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
-                    </Button>
-                  )}
-                  <input
-                    id="avatar-upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleAvatarUpload(file);
-                    }}
-                    className="hidden"
-                  />
-                </div>
-              </div>
-
-              {/* Enhanced Profile Info */}
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
-                <div className="space-y-3">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-                        {profile.displayName}
-                      </h1>
-                      {profile.isVerified && (
-                        <Verified className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 fill-current" />
-                      )}
-                    </div>
-                    <p className="text-gray-600 text-sm sm:text-base">
-                      @{profile.username}
-                    </p>
-                    {profile.title && (
-                      <p className="text-gray-700 font-medium text-sm sm:text-base">
-                        {profile.title}
-                      </p>
+            {/* Enhanced Profile Info */}
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+              <div className="space-y-3">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+                      {profile.displayName}
+                    </h1>
+                    {profile.isVerified && (
+                      <Verified className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 fill-current" />
                     )}
                   </div>
-
-                  {/* Enhanced Stats */}
-                  <div className="flex items-center gap-4 sm:gap-6 text-sm sm:text-base">
-                    <div className="text-center">
-                      <div className="font-bold text-lg">{profile.posts}</div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Posts
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-lg">
-                        {formatNumber(profile.followers)}
-                      </div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Followers
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-lg">
-                        {formatNumber(profile.following)}
-                      </div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Following
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-lg flex items-center gap-1">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        {profile.reputation}
-                      </div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Rating
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Level and Badges */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <Badge
-                      variant="outline"
-                      className="border-yellow-400 text-yellow-600"
-                    >
-                      <Star className="h-3 w-3 mr-1 fill-current" />
-                      Level {profile.level}
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "border-green-400 text-green-600",
-                        kycBadge.color,
-                      )}
-                    >
-                      <Shield className="h-3 w-3 mr-1" />
-                      {kycBadge.label}
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      className="border-green-400 text-green-600"
-                    >
-                      <div className="h-2 w-2 bg-green-500 rounded-full mr-1"></div>
-                      Online
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-2 sm:gap-3">
-                  {!isEditing ? (
-                    <>
-                      <Button
-                        className="flex-1 sm:flex-none"
-                        onClick={handleFollowUser}
-                      >
-                        <UserPlus className="h-4 w-4 mr-2" />
-                        Follow
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="flex-1 sm:flex-none"
-                        onClick={handleMessageUser}
-                      >
-                        <MessageCircle className="h-4 w-4 mr-2" />
-                        Message
-                      </Button>
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsEditing(true)}
-                      >
-                        <Edit className="h-4 w-4 mr-2" />
-                        <span className="hidden sm:inline">Edit</span>
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        className="flex-1 sm:flex-none"
-                        onClick={() => {
-                          setIsEditing(false);
-                          setEditForm(profile);
-                          setEditingSection(null);
-                        }}
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={handleSaveProfile}
-                        disabled={isLoading}
-                        className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700"
-                      >
-                        <Save className="h-4 w-4 mr-2" />
-                        Save
-                      </Button>
-                    </>
+                  <p className="text-gray-600 text-sm sm:text-base">
+                    @{profile.username}
+                  </p>
+                  {profile.title && (
+                    <p className="text-gray-700 font-medium text-sm sm:text-base">
+                      {profile.title}
+                    </p>
                   )}
-                  <Button variant="outline" size="icon">
-                    <Share2 className="h-4 w-4" />
-                  </Button>
                 </div>
+
+                {/* Enhanced Stats */}
+                <div className="flex items-center gap-4 sm:gap-6 text-sm sm:text-base">
+                  <div className="text-center">
+                    <div className="font-bold text-lg">{profile.posts}</div>
+                    <div className="text-gray-600 text-xs sm:text-sm">
+                      Posts
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-lg">
+                      {formatNumber(profile.followers)}
+                    </div>
+                    <div className="text-gray-600 text-xs sm:text-sm">
+                      Followers
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-lg">
+                      {formatNumber(profile.following)}
+                    </div>
+                    <div className="text-gray-600 text-xs sm:text-sm">
+                      Following
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="font-bold text-lg flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      {profile.reputation}
+                    </div>
+                    <div className="text-gray-600 text-xs sm:text-sm">
+                      Rating
+                    </div>
+                  </div>
+                </div>
+
+                {/* Level and Badges */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge
+                    variant="outline"
+                    className="border-yellow-400 text-yellow-600"
+                  >
+                    <Star className="h-3 w-3 mr-1 fill-current" />
+                    Level {profile.level}
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "border-green-400 text-green-600",
+                      kycBadge.color,
+                    )}
+                  >
+                    <Shield className="h-3 w-3 mr-1" />
+                    {kycBadge.label}
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-green-400 text-green-600"
+                  >
+                    <div className="h-2 w-2 bg-green-500 rounded-full mr-1"></div>
+                    Online
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 sm:gap-3">
+                {!isEditing ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      className="flex-1 sm:flex-none"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setActiveTab("settings")}
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">Settings</span>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      className="flex-1 sm:flex-none"
+                      onClick={() => {
+                        setIsEditing(false);
+                        setEditForm(profile);
+                        setEditingSection(null);
+                      }}
+                    >
+                      <X className="h-4 w-4 mr-2" />
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleSaveProfile}
+                      disabled={isLoading}
+                      className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700"
+                    >
+                      <Save className="h-4 w-4 mr-2" />
+                      Save
+                    </Button>
+                  </>
+                )}
+                <Button variant="outline" size="icon">
+                  <Share2 className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="px-3 sm:px-4 md:px-6 lg:px-8 pb-6">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
-            {/* Enhanced Sidebar */}
-            <div className="lg:col-span-1 space-y-4 order-2 lg:order-1">
-              {/* Bio and Info Card */}
+      {/* Main Content with improved spacing */}
+      <div className="p-3 sm:p-4 md:p-6 lg:p-8">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8">
+          {/* Profile Content */}
+          <div className="flex-1 space-y-3 sm:space-y-4 min-w-0">
+            {/* Bio and About Section */}
+            {profile.bio && (
               <Card>
-                <CardContent className="p-4 sm:p-6 space-y-4">
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">About</h3>
-                    <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
-                      {profile.bio ||
-                        "Software Developer | Tech Enthusiast\nBuilding amazing experiences with code 🚀"}
-                    </p>
-                  </div>
+                <CardContent className="p-4 sm:p-6">
+                  <p className="text-sm sm:text-base whitespace-pre-line mb-4">
+                    {profile.bio}
+                  </p>
 
-                  <div className="space-y-3 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                     {profile.address && (
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <MapPin className="w-4 h-4 flex-shrink-0" />
@@ -693,283 +666,744 @@ const EnhancedProfile = () => {
                   </div>
                 </CardContent>
               </Card>
+            )}
 
-              {/* Enhanced Achievements Card */}
+            {/* Stats and Reputation */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card>
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Achievements</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {profile.achievements
-                    .slice(0, 6)
-                    .map((achievement, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors"
-                      >
-                        <div className="text-2xl">🏆</div>
-                        <div className="flex-1">
-                          <div className="font-medium text-sm">
-                            {achievement.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {achievement.description}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {profile.reputation}/5.0
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Reputation
+                  </div>
+                  <span className="font-medium">{reputation.label}</span>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-orange-600">
+                    {profile.achievements.length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Achievements
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    Level {profile.kycLevel}
+                  </div>
+                  <div className="text-sm text-muted-foreground">KYC Level</div>
+                  <span className="font-medium">{kycBadge.label}</span>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Main Content */}
-            <div className="lg:col-span-3 order-1 lg:order-2">
-              <Tabs
-                value={activeTab}
-                onValueChange={setActiveTab}
-                className="space-y-4 md:space-y-6"
-              >
-                <div className="mobile-tabs">
-                  <TabsList className="grid w-full grid-cols-4">
-                    <TabsTrigger
-                      value="posts"
-                      className="mobile-tab touch-target"
-                    >
-                      <MessageSquare className="h-4 w-4 mr-1" />
-                      <span className="hidden sm:inline">Posts</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="media"
-                      className="mobile-tab touch-target"
-                    >
-                      <Camera className="h-4 w-4 mr-1" />
-                      <span className="hidden sm:inline">Media</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="activity"
-                      className="mobile-tab touch-target"
-                    >
-                      <TrendingUp className="h-4 w-4 mr-1" />
-                      <span className="hidden sm:inline">Activity</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="settings"
-                      className="mobile-tab touch-target"
-                    >
-                      <Settings className="h-4 w-4 mr-1" />
-                      <span className="hidden sm:inline">Settings</span>
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-
-                <TabsContent value="posts" className="space-y-4">
-                  {mockPosts.map((post) => (
-                    <Card
-                      key={post.id}
-                      className="hover:shadow-md transition-shadow"
-                    >
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="flex items-start gap-3">
-                          <Avatar className="h-10 w-10 flex-shrink-0">
-                            <AvatarImage
-                              src={profile.avatar}
-                              alt={profile.displayName}
-                            />
-                            <AvatarFallback>
-                              {profile.displayName
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")}
-                            </AvatarFallback>
-                          </Avatar>
+            {/* Achievements Grid */}
+            {profile.achievements && profile.achievements.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Achievements</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {profile.achievements
+                      .slice(0, 6)
+                      .map((achievement, index) => (
+                        <div
+                          key={achievement.id || index}
+                          className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg"
+                        >
+                          <div className="text-2xl">{achievement.icon}</div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-2 flex-wrap">
-                              <span className="font-semibold">
-                                {profile.displayName}
-                              </span>
-                              {profile.isVerified && (
-                                <Verified
-                                  className="h-4 w-4 text-blue-500 flex-shrink-0"
-                                  fill="currentColor"
-                                />
-                              )}
-                              <span className="text-muted-foreground text-sm break-all">
-                                @{profile.username}
-                              </span>
-                              <span className="text-muted-foreground text-sm">
-                                •
-                              </span>
-                              <span className="text-muted-foreground text-sm">
-                                {post.timestamp}
-                              </span>
+                            <div className="font-medium text-sm truncate">
+                              {achievement.name}
                             </div>
-                            <p className="text-sm mb-3 whitespace-pre-line leading-relaxed">
-                              {post.content}
-                            </p>
-                            {post.imageUrl && (
-                              <div className="mb-4">
-                                <img
-                                  src={post.imageUrl}
-                                  alt="Post content"
-                                  className="rounded-lg max-w-full h-auto border"
-                                />
-                              </div>
-                            )}
-                            <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                              <button className="flex items-center gap-1 hover:text-red-500 transition-colors touch-target">
-                                <Heart
-                                  className={cn(
-                                    "h-4 w-4",
-                                    post.isLiked && "fill-red-500 text-red-500",
-                                  )}
-                                />
-                                <span>{post.likes}</span>
-                              </button>
-                              <button className="flex items-center gap-1 hover:text-blue-500 transition-colors touch-target">
-                                <MessageSquare className="h-4 w-4" />
-                                <span>{post.comments}</span>
-                              </button>
-                              <button className="flex items-center gap-1 hover:text-green-500 transition-colors touch-target">
-                                <Share2 className="h-4 w-4" />
-                                Share
-                              </button>
+                            <div className="text-xs text-muted-foreground">
+                              {achievement.description}
                             </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </TabsContent>
-
-                <TabsContent value="media" className="space-y-4">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-2 sm:gap-4">
-                    {mockPosts
-                      .filter((post) => post.imageUrl)
-                      .map((post) => (
-                        <div
-                          key={post.id}
-                          className="aspect-square rounded-lg overflow-hidden bg-muted hover:scale-105 transition-transform cursor-pointer"
-                        >
-                          <img
-                            src={post.imageUrl}
-                            alt="Media content"
-                            className="w-full h-full object-cover"
-                          />
                         </div>
                       ))}
                   </div>
-                </TabsContent>
+                </CardContent>
+              </Card>
+            )}
 
-                <TabsContent value="activity" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Recent Activity</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <Heart className="h-5 w-5 text-red-500 flex-shrink-0" />
+            {/* Enhanced Tabs */}
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="w-full"
+            >
+              <div className="mobile-tabs">
+                <TabsList className="grid w-full grid-cols-5 mobile-grid-5">
+                  <TabsTrigger
+                    value="posts"
+                    className="mobile-tab touch-target"
+                  >
+                    <MessageSquare className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Posts</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="about"
+                    className="mobile-tab touch-target"
+                  >
+                    <Users className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">About</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="professional"
+                    className="mobile-tab touch-target"
+                  >
+                    <Briefcase className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Work</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="financial"
+                    className="mobile-tab touch-target"
+                  >
+                    <CreditCard className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Finance</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="settings"
+                    className="mobile-tab touch-target"
+                  >
+                    <Settings className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Settings</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              {/* Posts Tab Content */}
+              <TabsContent value="posts" className="space-y-4">
+                {mockPosts.map((post) => (
+                  <Card
+                    key={post.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="h-10 w-10 flex-shrink-0">
+                          <AvatarImage
+                            src={profile.avatar}
+                            alt={profile.displayName}
+                          />
+                          <AvatarFallback>
+                            {profile.displayName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm">
-                            Liked a post by{" "}
-                            <span className="font-medium">@tech_guru</span>
+                          <div className="flex items-center gap-2 mb-2 flex-wrap">
+                            <span className="font-semibold">
+                              {profile.displayName}
+                            </span>
+                            {profile.isVerified && (
+                              <Verified
+                                className="h-4 w-4 text-blue-500 flex-shrink-0"
+                                fill="currentColor"
+                              />
+                            )}
+                            <span className="text-muted-foreground text-sm break-all">
+                              @{profile.username}
+                            </span>
+                            <span className="text-muted-foreground text-sm">
+                              •
+                            </span>
+                            <span className="text-muted-foreground text-sm">
+                              {post.timestamp}
+                            </span>
+                          </div>
+                          <p className="text-sm mb-3 whitespace-pre-line leading-relaxed">
+                            {post.content}
                           </p>
-                          <p className="text-xs text-muted-foreground">
-                            2 hours ago
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                        <Users className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm">
-                            Started following{" "}
-                            <span className="font-medium">@design_pro</span>
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            4 hours ago
-                          </p>
+                          {post.imageUrl && (
+                            <div className="mb-4">
+                              <img
+                                src={post.imageUrl}
+                                alt="Post content"
+                                className="rounded-lg max-w-full h-auto border"
+                              />
+                            </div>
+                          )}
+                          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                            <button className="flex items-center gap-1 hover:text-red-500 transition-colors touch-target">
+                              <Heart
+                                className={cn(
+                                  "h-4 w-4",
+                                  post.isLiked && "fill-red-500 text-red-500",
+                                )}
+                              />
+                              <span>{post.likes}</span>
+                            </button>
+                            <button className="flex items-center gap-1 hover:text-blue-500 transition-colors touch-target">
+                              <MessageSquare className="h-4 w-4" />
+                              <span>{post.comments}</span>
+                            </button>
+                            <button className="flex items-center gap-1 hover:text-green-500 transition-colors touch-target">
+                              <Share2 className="h-4 w-4" />
+                              Share
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
+                ))}
+              </TabsContent>
 
-                <TabsContent value="settings" className="space-y-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Profile Settings</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      {isEditing && (
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="displayName">Display Name</Label>
-                            <Input
-                              id="displayName"
-                              value={editForm.displayName || ""}
-                              onChange={(e) =>
-                                setEditForm({
-                                  ...editForm,
-                                  displayName: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="bio">Bio</Label>
-                            <Textarea
-                              id="bio"
-                              value={editForm.bio || ""}
-                              onChange={(e) =>
-                                setEditForm({
-                                  ...editForm,
-                                  bio: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="title">Job Title</Label>
-                            <Input
-                              id="title"
-                              value={editForm.title || ""}
-                              onChange={(e) =>
-                                setEditForm({
-                                  ...editForm,
-                                  title: e.target.value,
-                                })
-                              }
-                            />
+              {/* About Tab Content */}
+              <TabsContent value="about" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Personal Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-sm font-medium">Full Name</Label>
+                        <p className="text-sm">
+                          {profile.firstName} {profile.lastName}
+                        </p>
+                      </div>
+                      {profile.dateOfBirth && (
+                        <div>
+                          <Label className="text-sm font-medium">
+                            Date of Birth
+                          </Label>
+                          <p className="text-sm">
+                            {new Date(profile.dateOfBirth).toLocaleDateString()}
+                          </p>
+                        </div>
+                      )}
+                      <div>
+                        <Label className="text-sm font-medium">Email</Label>
+                        <div className="flex items-center gap-2">
+                          <p className="text-sm">{profile.email}</p>
+                          {profile.emailVerified && (
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          )}
+                        </div>
+                      </div>
+                      {profile.phone && (
+                        <div>
+                          <Label className="text-sm font-medium">Phone</Label>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm">{profile.phone}</p>
+                            {profile.phoneVerified && (
+                              <CheckCircle className="h-4 w-4 text-green-600" />
+                            )}
                           </div>
                         </div>
                       )}
+                    </div>
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium">Email Notifications</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Receive email updates about your account
-                          </p>
-                        </div>
-                        <Switch defaultChecked />
-                      </div>
+                    <Separator />
 
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium">
-                            Two-Factor Authentication
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Add an extra layer of security to your account
-                          </p>
-                        </div>
-                        <Switch />
+                    <div>
+                      <Label className="text-sm font-medium">Address</Label>
+                      {profile.address ? (
+                        <p className="text-sm">
+                          {profile.address.city}, {profile.address.state},{" "}
+                          {profile.address.country}
+                        </p>
+                      ) : (
+                        <p className="text-sm text-muted-foreground">
+                          No address provided
+                        </p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Skills Section */}
+                {profile.skills && profile.skills.length > 0 && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Skills</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {profile.skills.map((skill, index) => (
+                          <Badge key={index} variant="secondary">
+                            {skill}
+                          </Badge>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
-              </Tabs>
-            </div>
+                )}
+
+                {/* Achievements Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>All Achievements</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {profile.achievements.map((achievement) => (
+                        <div
+                          key={achievement.id}
+                          className="flex items-center gap-3 p-3 border rounded-lg"
+                        >
+                          <div className="text-2xl">{achievement.icon}</div>
+                          <div className="flex-1">
+                            <h4 className="font-medium text-sm">
+                              {achievement.name}
+                            </h4>
+                            <p className="text-xs text-muted-foreground">
+                              {achievement.description}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Unlocked{" "}
+                              {formatDistanceToNow(
+                                new Date(achievement.unlockedAt),
+                              )}{" "}
+                              ago
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Professional Tab Content */}
+              <TabsContent value="professional" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Professional Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {profile.title && (
+                      <div>
+                        <Label className="text-sm font-medium">Job Title</Label>
+                        <p className="text-sm">{profile.title}</p>
+                      </div>
+                    )}
+                    {profile.company && (
+                      <div>
+                        <Label className="text-sm font-medium">Company</Label>
+                        <p className="text-sm">{profile.company}</p>
+                      </div>
+                    )}
+                    {profile.industry && (
+                      <div>
+                        <Label className="text-sm font-medium">Industry</Label>
+                        <p className="text-sm">{profile.industry}</p>
+                      </div>
+                    )}
+                    {profile.experience && (
+                      <div>
+                        <Label className="text-sm font-medium">
+                          Experience
+                        </Label>
+                        <p className="text-sm">{profile.experience}</p>
+                      </div>
+                    )}
+                    {profile.education && (
+                      <div>
+                        <Label className="text-sm font-medium">Education</Label>
+                        <p className="text-sm">{profile.education}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Professional Links */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Professional Links</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {profile.website && (
+                      <div className="flex items-center gap-2">
+                        <Globe className="h-4 w-4" />
+                        <a
+                          href={profile.website}
+                          className="text-blue-500 hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {profile.website}
+                        </a>
+                      </div>
+                    )}
+                    {profile.linkedIn && (
+                      <div className="flex items-center gap-2">
+                        <ExternalLink className="h-4 w-4" />
+                        <a
+                          href={profile.linkedIn}
+                          className="text-blue-500 hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          LinkedIn Profile
+                        </a>
+                      </div>
+                    )}
+                    {profile.github && (
+                      <div className="flex items-center gap-2">
+                        <ExternalLink className="h-4 w-4" />
+                        <a
+                          href={profile.github}
+                          className="text-blue-500 hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          GitHub Profile
+                        </a>
+                      </div>
+                    )}
+                    {profile.portfolio && (
+                      <div className="flex items-center gap-2">
+                        <ExternalLink className="h-4 w-4" />
+                        <a
+                          href={profile.portfolio}
+                          className="text-blue-500 hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Portfolio
+                        </a>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Financial Tab Content */}
+              <TabsContent value="financial" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Bank Accounts</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {profile.bankAccounts.length === 0 ? (
+                      <div className="text-center py-8">
+                        <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-muted-foreground mb-4">
+                          No bank accounts added yet
+                        </p>
+                        <Button onClick={() => setShowAddBank(true)}>
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Bank Account
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {profile.bankAccounts.map((account) => (
+                          <div
+                            key={account.id}
+                            className="flex items-center justify-between p-4 border rounded-lg"
+                          >
+                            <div>
+                              <h4 className="font-medium">
+                                {account.bankName}
+                              </h4>
+                              <p className="text-sm text-muted-foreground">
+                                {account.accountName}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                ****{account.accountNumber.slice(-4)}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {account.isDefault && (
+                                <Badge variant="secondary">Default</Badge>
+                              )}
+                              {account.isVerified && (
+                                <CheckCircle className="h-4 w-4 text-green-600" />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowAddBank(true)}
+                          className="w-full"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Another Account
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Preferences */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Preferences</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label className="text-sm font-medium">
+                        Preferred Currency
+                      </Label>
+                      <Select
+                        value={profile.preferredCurrency}
+                        onValueChange={(value) =>
+                          setProfile((prev) =>
+                            prev ? { ...prev, preferredCurrency: value } : prev,
+                          )
+                        }
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {enhancedProfileService
+                            .getSupportedCurrencies()
+                            .map((currency) => (
+                              <SelectItem
+                                key={currency.code}
+                                value={currency.code}
+                              >
+                                {currency.symbol} {currency.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Settings Tab Content */}
+              <TabsContent value="settings" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Security & Verification</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium">
+                          KYC Level {profile.kycLevel}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {kycBadge.label}
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{
+                              width: `${(profile.kycLevel / 3) * 100}%`,
+                            }}
+                          ></div>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {profile.kycLevel === 0 &&
+                            "Upload basic identification"}
+                          {profile.kycLevel === 1 && "Upload proof of address"}
+                          {profile.kycLevel === 2 &&
+                            "Complete video verification"}
+                          {profile.kycLevel === 3 && "Fully verified"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span>Email Verified</span>
+                      {profile.emailVerified ? (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <X className="h-5 w-5 text-red-600" />
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span>Phone Verified</span>
+                      {profile.phoneVerified ? (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <X className="h-5 w-5 text-red-600" />
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span>Two-Factor Authentication</span>
+                      {profile.twoFactorEnabled ? (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      ) : (
+                        <X className="h-5 w-5 text-red-600" />
+                      )}
+                    </div>
+
+                    <KYCVerificationModal
+                      isOpen={false}
+                      onClose={() => {}}
+                      userId={profile.id}
+                      currentLevel={profile.kycLevel}
+                      onSuccess={() =>
+                        setProfile((prev) =>
+                          prev
+                            ? { ...prev, kycLevel: prev.kycLevel + 1 }
+                            : prev,
+                        )
+                      }
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Privacy Settings */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Privacy Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label className="text-sm font-medium">
+                        Profile Visibility
+                      </Label>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Who can see your profile
+                      </p>
+                      <Select
+                        value={profile.profileVisibility}
+                        onValueChange={(value) =>
+                          setProfile((prev) =>
+                            prev
+                              ? { ...prev, profileVisibility: value as any }
+                              : prev,
+                          )
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="public">Public</SelectItem>
+                          <SelectItem value="followers">
+                            Followers Only
+                          </SelectItem>
+                          <SelectItem value="private">Private</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">
+                          Display email on profile
+                        </div>
+                      </div>
+                      <Switch
+                        checked={profile.showEmail}
+                        onCheckedChange={(checked) =>
+                          setProfile((prev) =>
+                            prev ? { ...prev, showEmail: checked } : prev,
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">
+                          Display phone number on profile
+                        </div>
+                      </div>
+                      <Switch
+                        checked={profile.showPhone}
+                        onCheckedChange={(checked) =>
+                          setProfile((prev) =>
+                            prev ? { ...prev, showPhone: checked } : prev,
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">
+                          Display location on profile
+                        </div>
+                      </div>
+                      <Switch
+                        checked={profile.showLocation}
+                        onCheckedChange={(checked) =>
+                          setProfile((prev) =>
+                            prev ? { ...prev, showLocation: checked } : prev,
+                          )
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium text-sm">
+                          Allow direct messages
+                        </div>
+                      </div>
+                      <Switch
+                        checked={profile.allowDirectMessages}
+                        onCheckedChange={(checked) =>
+                          setProfile((prev) =>
+                            prev
+                              ? { ...prev, allowDirectMessages: checked }
+                              : prev,
+                          )
+                        }
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Data Export & Management */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Data Management</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-medium">Export Your Data</div>
+                        <div className="text-sm text-muted-foreground">
+                          Download all your account data
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        onClick={async () => {
+                          try {
+                            await enhancedProfileService.exportUserData(
+                              profile.id,
+                              "complete",
+                            );
+                            toast({
+                              title: "Export started",
+                              description:
+                                "Your data export has been started. You'll receive an email when it's ready.",
+                            });
+                          } catch (error) {
+                            toast({
+                              title: "Export failed",
+                              description: "Failed to start data export.",
+                              variant: "destructive",
+                            });
+                          }
+                        }}
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Export
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
