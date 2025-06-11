@@ -376,10 +376,10 @@ const EnhancedProfile = () => {
   const reputation = getReputation(profile.reputation);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">
+      <div className="w-full max-w-5xl mx-auto">
         {/* Instagram/Facebook-Style Profile Header */}
-        <div className="p-6 md:p-8">
+        <div className="p-3 sm:p-4 md:p-6 lg:p-8">
           <div className="flex flex-col md:flex-row gap-6 md:gap-8">
             {/* Profile Picture */}
             <div className="flex justify-center md:justify-start">
