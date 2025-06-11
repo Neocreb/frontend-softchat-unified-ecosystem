@@ -129,8 +129,11 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         } else if (profileUser?.freelance_profile) {
           setServices(createMockServices());
         }
-      } catch (contentError) {
-        console.error("Error fetching user content:", contentError);
+      } catch (contentError: any) {
+        console.warn(
+          "Error fetching user content:",
+          contentError?.message || contentError,
+        );
         // Set mock data on error
         setPosts(createMockPosts());
         if (profileUser?.marketplace_profile) {
@@ -140,8 +143,8 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
           setServices(createMockServices());
         }
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    } catch (error: any) {
+      console.warn("Error fetching user data:", error?.message || error);
       // Set mock data on error
       setFollowerCount(Math.floor(Math.random() * 1000) + 100);
       setFollowingCount(Math.floor(Math.random() * 500) + 50);
