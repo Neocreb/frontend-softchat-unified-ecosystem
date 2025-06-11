@@ -268,18 +268,22 @@ export default function EnhancedCrypto() {
                   <div
                     className={cn(
                       "text-xl font-bold",
-                      getFearGreedColor(marketData.fearGreedIndex.value),
+                      getFearGreedColor(
+                        marketData?.fearGreedIndex?.value || 50,
+                      ),
                     )}
                   >
-                    {marketData.fearGreedIndex.value}
+                    {marketData?.fearGreedIndex?.value || 50}
                   </div>
                   <div
                     className={cn(
                       "text-sm font-medium",
-                      getFearGreedColor(marketData.fearGreedIndex.value),
+                      getFearGreedColor(
+                        marketData?.fearGreedIndex?.value || 50,
+                      ),
                     )}
                   >
-                    {getFearGreedLabel(marketData.fearGreedIndex.value)}
+                    {getFearGreedLabel(marketData?.fearGreedIndex?.value || 50)}
                   </div>
                 </div>
               </div>
