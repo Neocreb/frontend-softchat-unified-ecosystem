@@ -1,7 +1,11 @@
 import { useState } from "react";
 import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
+import SuggestedUsers from "@/components/profile/SuggestedUsers";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useExplore } from "@/hooks/use-explore";
+import { Users, TrendingUp, Hash, Globe } from "lucide-react";
 
 const Explore = () => {
   const {
