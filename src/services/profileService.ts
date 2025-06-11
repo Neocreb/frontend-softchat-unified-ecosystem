@@ -380,6 +380,13 @@ export class ProfileService {
 
   // Mock user generation for demonstration
   generateMockUser(identifier: string): MockUser {
+    // First check if it's a predefined mock user
+    if (mockUsers[identifier]) {
+      console.log(`Using predefined mock user: ${identifier}`);
+      return mockUsers[identifier];
+    }
+
+    // Generate a new mock user
     const mockUserId = `mock-${identifier}-${Date.now()}`;
     const displayName =
       identifier.charAt(0).toUpperCase() +
