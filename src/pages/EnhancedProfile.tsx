@@ -490,7 +490,7 @@ const EnhancedProfile = () => {
               </div>
 
               {/* Stats - Instagram Style */}
-              <div className="flex items-center gap-6 text-sm">
+              <div className="flex items-center gap-4 sm:gap-6 text-sm overflow-x-auto">
                 <div className="flex items-center gap-1">
                   <span className="font-semibold">{profile.posts}</span>
                   <span className="text-muted-foreground">posts</span>
