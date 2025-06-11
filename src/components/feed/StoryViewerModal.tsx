@@ -1,6 +1,7 @@
 // src/components/feed/StoryViewerModal.tsx
 import { useState, useEffect, useRef } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
@@ -209,6 +210,9 @@ export function StoryViewerModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md max-h-screen h-screen p-0 bg-black">
+        <VisuallyHidden>
+          <DialogTitle>View Story</DialogTitle>
+        </VisuallyHidden>
         <div className="relative h-full flex flex-col">
           {/* Progress bars */}
           <div className="absolute top-4 left-4 right-4 z-20 flex gap-1">

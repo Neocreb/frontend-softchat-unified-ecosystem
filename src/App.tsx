@@ -1,3 +1,4 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,6 +8,18 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import {
+  AccessibilityProvider,
+  AccessibilityControlPanel,
+  KeyboardNavigationHelper,
+  ReadingGuide,
+} from "./components/accessibility/AccessibilityFeatures";
+import { OnboardingTour } from "./components/onboarding/OnboardingTour";
+import { NotificationSystem } from "./components/notifications/NotificationSystem";
+import {
+  ConnectionStatus,
+  PWAInstallPrompt,
+} from "./components/mobile/MobileOptimizations";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -40,6 +53,11 @@ import Messages from "./pages/Messages";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
+import ProfileDemo from "./components/profile/ProfileDemo";
+import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
+import DataManagement from "./components/data/DataManagement";
+import GamificationSystem from "./components/gamification/GamificationSystem";
+import AIFeatures from "./components/ai/AIFeatures";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -161,7 +179,10 @@ const AppRoutes = () => {
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="create" element={<EnhancedFreelance />} />
         <Route path="profile" element={<EnhancedProfile />} />
+        <Route path="profile/:username" element={<EnhancedProfile />} />
+        <Route path="user/:username" element={<EnhancedProfile />} />
         <Route path="profile/legacy" element={<Profile />} />
+        <Route path="demo/profiles" element={<ProfileDemo />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="messages" element={<Messages />} />
@@ -185,6 +206,25 @@ const AppRoutes = () => {
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<EnhancedSettings />} />
         <Route path="settings/legacy" element={<Settings />} />
+        <Route path="analytics" element={<AnalyticsDashboard />} />
+        <Route path="data" element={<DataManagement />} />
+        <Route path="achievements" element={<GamificationSystem />} />
+        <Route
+          path="ai"
+          element={
+            <div className="space-y-6 p-6">
+              <h1 className="text-2xl font-bold">AI Features</h1>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <AIFeatures.SmartFeedCuration />
+                <AIFeatures.AIContentAssistant />
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <AIFeatures.SmartPricePrediction />
+                <AIFeatures.AutoContentModeration />
+              </div>
+            </div>
+          }
+        />
       </Route>
 
       {/* Admin Routes */}
@@ -207,16 +247,44 @@ const AppRoutes = () => {
 
 const App = () => {
   console.log("App rendering");
+
+  // Register service worker for PWA
+  React.useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("SW registered: ", registration);
+        })
+        .catch((registrationError) => {
+          console.log("SW registration failed: ", registrationError);
+        });
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>
-            <TooltipProvider>
-              <AppRoutes />
-              <Toaster />
-              <Sonner />
-            </TooltipProvider>
+            <AccessibilityProvider>
+              <TooltipProvider>
+                <AppRoutes />
+
+                {/* Global Components */}
+                <OnboardingTour />
+                <NotificationSystem />
+                <AccessibilityControlPanel />
+                <KeyboardNavigationHelper />
+                <ReadingGuide />
+                <ConnectionStatus />
+                <PWAInstallPrompt />
+
+                {/* Toasters */}
+                <Toaster />
+                <Sonner />
+              </TooltipProvider>
+            </AccessibilityProvider>
           </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>

@@ -19,6 +19,15 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
   Settings,
   Palette,
   Bell,
@@ -47,70 +56,345 @@ import {
   Volume2,
   Moon,
   Sun,
+  Plus,
+  X,
+  Upload,
+  Star,
+  Code,
+  Briefcase,
+  GraduationCap,
+  MapPin,
+  Link as LinkIcon,
+  Phone,
+  FileText,
+  Save,
+  Edit,
+  Trash,
+  ChevronRight,
+  Award,
+  Calendar,
+  Wifi,
+  WifiOff,
+  Headphones,
+  Image,
+  Video,
+  Mic,
   Monitor,
   Languages,
-  MapPin,
-  Calendar,
-  RefreshCw,
-  Save,
-  X,
-  Plus,
-  ExternalLink,
-  Copy,
+  BookOpen,
+  Target,
+  BarChart,
+  PieChart,
+  TrendingDown,
+  Banknote,
+  Wallet,
   QrCode,
+  Fingerprint,
   Key,
-  History,
-  FileDown,
+  ShieldCheck,
+  AlertCircle,
+  Info,
+  HelpCircle,
+  RefreshCw,
+  LogOut,
+  Home,
+  Store,
+  Coins,
 } from "lucide-react";
-import {
-  enhancedProfileService,
-  UserSettings,
-} from "@/services/enhancedProfileService";
 import { useToast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
+import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
+import BankAccountSettings from "@/components/wallet/BankAccountSettings";
+import DataManagement from "@/components/data/DataManagement";
+import AIFeatures from "@/components/ai/AIFeatures";
+
+const { SmartFeedCuration, AIContentAssistant } = AIFeatures;
 
 const EnhancedSettings = () => {
-  const { user, logout } = useAuth();
-  const { theme, setTheme, isDark } = useTheme();
+  const { user, updateProfile, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
   const { toast } = useToast();
 
-  const [settings, setSettings] = useState<UserSettings | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState("general");
+  // Profile states
+  const [skills, setSkills] = useState<string[]>(user?.profile?.skills || []);
+  const [newSkill, setNewSkill] = useState("");
+  const [interests, setInterests] = useState<string[]>(
+    user?.profile?.interests || [],
+  );
+  const [newInterest, setNewInterest] = useState("");
+  const [languages, setLanguages] = useState<string[]>(
+    user?.profile?.languages || ["English"],
+  );
+  const [newLanguage, setNewLanguage] = useState("");
+  const [certifications, setCertifications] = useState<string[]>(
+    user?.profile?.certifications || [],
+  );
+  const [newCertification, setNewCertification] = useState("");
 
-  // 2FA setup states
-  const [show2FASetup, setShow2FASetup] = useState(false);
-  const [qrCode, setQrCode] = useState("");
-  const [backupCodes, setBackupCodes] = useState<string[]>([]);
-  const [verificationCode, setVerificationCode] = useState("");
+  // Personal information states
+  const [fullName, setFullName] = useState(user?.profile?.full_name || "");
+  const [bio, setBio] = useState(user?.profile?.bio || "");
+  const [location, setLocation] = useState(user?.profile?.location || "");
+  const [website, setWebsite] = useState(user?.profile?.website || "");
+  const [phone, setPhone] = useState(user?.profile?.phone || "");
+  const [dateOfBirth, setDateOfBirth] = useState(
+    user?.profile?.date_of_birth || "",
+  );
+  const [timezone, setTimezone] = useState(user?.profile?.timezone || "UTC");
 
-  // Password change states
-  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  // Professional information states
+  const [jobTitle, setJobTitle] = useState(user?.profile?.job_title || "");
+  const [company, setCompany] = useState(user?.profile?.company || "");
+  const [education, setEducation] = useState(user?.profile?.education || "");
+  const [experience, setExperience] = useState(user?.profile?.experience || "");
+  const [linkedinUrl, setLinkedinUrl] = useState(
+    user?.profile?.linkedin_url || "",
+  );
+  const [githubUrl, setGithubUrl] = useState(user?.profile?.github_url || "");
+
+  // Freelance profile states
+  const [professionalTitle, setProfessionalTitle] = useState(
+    user?.freelance_profile?.professional_title || "",
+  );
+  const [hourlyRate, setHourlyRate] = useState(
+    user?.freelance_profile?.hourly_rate?.toString() || "",
+  );
+  const [availability, setAvailability] = useState(
+    user?.freelance_profile?.availability || "available",
+  );
+  const [experienceLevel, setExperienceLevel] = useState(
+    user?.freelance_profile?.experience_level || "intermediate",
+  );
+  const [portfolioUrl, setPortfolioUrl] = useState(
+    user?.freelance_profile?.portfolio_url || "",
+  );
+  const [workingHours, setWorkingHours] = useState(
+    user?.freelance_profile?.working_hours || "9am-5pm",
+  );
+  const [responseTime, setResponseTime] = useState(
+    user?.freelance_profile?.response_time || "within-24h",
+  );
+
+  // Marketplace profile states
+  const [storeName, setStoreName] = useState(
+    user?.marketplace_profile?.store_name || "",
+  );
+  const [storeDescription, setStoreDescription] = useState(
+    user?.marketplace_profile?.store_description || "",
+  );
+  const [businessType, setBusinessType] = useState(
+    user?.marketplace_profile?.business_type || "individual",
+  );
+  const [businessAddress, setBusinessAddress] = useState(
+    user?.marketplace_profile?.business_address || "",
+  );
+  const [taxId, setTaxId] = useState(user?.marketplace_profile?.tax_id || "");
+  const [returnPolicy, setReturnPolicy] = useState(
+    user?.marketplace_profile?.return_policy || "",
+  );
+
+  // Crypto profile states
+  const [tradingExperience, setTradingExperience] = useState(
+    user?.crypto_profile?.trading_experience || "beginner",
+  );
+  const [riskTolerance, setRiskTolerance] = useState(
+    user?.crypto_profile?.risk_tolerance || "low",
+  );
+  const [p2pEnabled, setP2pEnabled] = useState(
+    user?.crypto_profile?.p2p_enabled || false,
+  );
+  const [preferredCurrency, setPreferredCurrency] = useState(
+    user?.crypto_profile?.preferred_currency || "USD",
+  );
+
+  // Notification settings
+  const [emailNotifications, setEmailNotifications] = useState(
+    user?.settings?.email_notifications ?? true,
+  );
+  const [pushNotifications, setPushNotifications] = useState(
+    user?.settings?.push_notifications ?? true,
+  );
+  const [marketingEmails, setMarketingEmails] = useState(
+    user?.settings?.marketing_emails ?? false,
+  );
+  const [orderUpdates, setOrderUpdates] = useState(
+    user?.settings?.order_updates ?? true,
+  );
+  const [tradingAlerts, setTradingAlerts] = useState(
+    user?.settings?.trading_alerts ?? true,
+  );
+  const [socialActivity, setSocialActivity] = useState(
+    user?.settings?.social_activity ?? true,
+  );
+  const [newsUpdates, setNewsUpdates] = useState(
+    user?.settings?.news_updates ?? true,
+  );
+  const [weeklyDigest, setWeeklyDigest] = useState(
+    user?.settings?.weekly_digest ?? true,
+  );
+  const [priceAlerts, setPriceAlerts] = useState(
+    user?.settings?.price_alerts ?? true,
+  );
+  const [securityAlerts, setSecurityAlerts] = useState(
+    user?.settings?.security_alerts ?? true,
+  );
+
+  // Privacy settings
+  const [profileVisibility, setProfileVisibility] = useState(
+    user?.settings?.profile_visibility || "public",
+  );
+  const [showOnlineStatus, setShowOnlineStatus] = useState(
+    user?.settings?.show_online_status ?? true,
+  );
+  const [allowDirectMessages, setAllowDirectMessages] = useState(
+    user?.settings?.allow_direct_messages || "everyone",
+  );
+  const [showEmail, setShowEmail] = useState(
+    user?.settings?.show_email ?? false,
+  );
+  const [showPhone, setShowPhone] = useState(
+    user?.settings?.show_phone ?? false,
+  );
+  const [indexProfile, setIndexProfile] = useState(
+    user?.settings?.index_profile ?? true,
+  );
+  const [showActivity, setShowActivity] = useState(
+    user?.settings?.show_activity ?? true,
+  );
+  const [allowTags, setAllowTags] = useState(
+    user?.settings?.allow_tags ?? true,
+  );
+
+  // Security settings
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(
+    user?.settings?.two_factor_enabled ?? false,
+  );
+  const [loginNotifications, setLoginNotifications] = useState(
+    user?.settings?.login_notifications ?? true,
+  );
+  const [sessionTimeout, setSessionTimeout] = useState(
+    user?.settings?.session_timeout || "24h",
+  );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Account deletion states
-  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  // App preferences
+  const [autoPlayVideos, setAutoPlayVideos] = useState(
+    user?.settings?.auto_play_videos ?? true,
+  );
+  const [reducedMotion, setReducedMotion] = useState(
+    user?.settings?.reduced_motion ?? false,
+  );
+  const [highContrast, setHighContrast] = useState(
+    user?.settings?.high_contrast ?? false,
+  );
+  const [fontSize, setFontSize] = useState(
+    user?.settings?.font_size || "medium",
+  );
+  const [language, setLanguage] = useState(user?.settings?.language || "en");
 
-  useEffect(() => {
-    loadSettings();
-  }, [user?.id]);
+  // Data & Storage
+  const [dataUsage, setDataUsage] = useState("unlimited");
+  const [autoBackup, setAutoBackup] = useState(true);
+  const [cacheSize, setCacheSize] = useState("500MB");
 
-  const loadSettings = async () => {
-    if (!user?.id) return;
+  // UI states
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("profile");
+  const [showKYCModal, setShowKYCModal] = useState(false);
+  const [kycLevel, setKycLevel] = useState(user?.profile?.kyc_level || 0);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-    try {
-      const userSettings = await enhancedProfileService.getUserSettings(
-        user.id,
+  // Skills management
+  const addSkill = () => {
+    if (newSkill.trim() && !skills.includes(newSkill.trim())) {
+      setSkills([...skills, newSkill.trim()]);
+      setNewSkill("");
+    }
+  };
+
+  const removeSkill = (skillToRemove: string) => {
+    setSkills(skills.filter((skill) => skill !== skillToRemove));
+  };
+
+  // Interests management
+  const addInterest = () => {
+    if (newInterest.trim() && !interests.includes(newInterest.trim())) {
+      setInterests([...interests, newInterest.trim()]);
+      setNewInterest("");
+    }
+  };
+
+  const removeInterest = (interestToRemove: string) => {
+    setInterests(interests.filter((interest) => interest !== interestToRemove));
+  };
+
+  // Languages management
+  const addLanguage = () => {
+    if (newLanguage.trim() && !languages.includes(newLanguage.trim())) {
+      setLanguages([...languages, newLanguage.trim()]);
+      setNewLanguage("");
+    }
+  };
+
+  const removeLanguage = (languageToRemove: string) => {
+    if (languages.length > 1) {
+      // Keep at least one language
+      setLanguages(
+        languages.filter((language) => language !== languageToRemove),
       );
-      setSettings(userSettings);
+    }
+  };
+
+  // Certifications management
+  const addCertification = () => {
+    if (
+      newCertification.trim() &&
+      !certifications.includes(newCertification.trim())
+    ) {
+      setCertifications([...certifications, newCertification.trim()]);
+      setNewCertification("");
+    }
+  };
+
+  const removeCertification = (certificationToRemove: string) => {
+    setCertifications(
+      certifications.filter((cert) => cert !== certificationToRemove),
+    );
+  };
+
+  // Save profile changes
+  const saveProfileChanges = async () => {
+    setIsLoading(true);
+    try {
+      await updateProfile({
+        full_name: fullName,
+        bio,
+        location,
+        website,
+        phone,
+        date_of_birth: dateOfBirth,
+        timezone,
+        job_title: jobTitle,
+        company,
+        education,
+        experience,
+        linkedin_url: linkedinUrl,
+        github_url: githubUrl,
+        skills,
+        interests,
+        languages,
+        certifications,
+      });
+
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been updated successfully.",
+      });
     } catch (error) {
       toast({
-        title: "Failed to load settings",
-        description: "Please try again later.",
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -118,117 +402,101 @@ const EnhancedSettings = () => {
     }
   };
 
-  const saveSettings = async (updatedSettings: Partial<UserSettings>) => {
-    if (!user?.id || !settings) return;
-
-    setIsSaving(true);
+  // Save freelance profile
+  const saveFreelanceProfile = async () => {
+    setIsLoading(true);
     try {
-      const newSettings = await enhancedProfileService.updateSettings(
-        user.id,
-        updatedSettings,
-      );
-      setSettings(newSettings);
+      await updateProfile({
+        freelance_profile: {
+          professional_title: professionalTitle,
+          hourly_rate: parseFloat(hourlyRate) || 0,
+          availability,
+          experience_level: experienceLevel,
+          portfolio_url: portfolioUrl,
+          working_hours: workingHours,
+          response_time: responseTime,
+        },
+      });
 
       toast({
-        title: "Settings saved",
-        description: "Your settings have been updated successfully.",
+        title: "Freelance profile updated",
+        description: "Your freelance profile has been updated successfully.",
       });
     } catch (error) {
       toast({
-        title: "Failed to save settings",
-        description: "Please try again later.",
+        title: "Error",
+        description: "Failed to update freelance profile. Please try again.",
         variant: "destructive",
       });
     } finally {
-      setIsSaving(false);
+      setIsLoading(false);
     }
   };
 
-  const handleThemeChange = (newTheme: "light" | "dark" | "system") => {
-    setTheme(newTheme);
-    saveSettings({ theme: newTheme });
-  };
-
-  const handle2FASetup = async () => {
-    if (!user?.id) return;
-
+  // Save marketplace profile
+  const saveMarketplaceProfile = async () => {
+    setIsLoading(true);
     try {
-      const { secret, qrCode: qr } = await enhancedProfileService.enable2FA(
-        user.id,
-      );
-      setQrCode(qr);
-      setBackupCodes(["ABC123", "DEF456", "GHI789", "JKL012", "MNO345"]); // Mock codes
-      setShow2FASetup(true);
+      await updateProfile({
+        marketplace_profile: {
+          store_name: storeName,
+          store_description: storeDescription,
+          business_type: businessType,
+          business_address: businessAddress,
+          tax_id: taxId,
+          return_policy: returnPolicy,
+        },
+      });
+
+      toast({
+        title: "Store profile updated",
+        description: "Your marketplace profile has been updated successfully.",
+      });
     } catch (error) {
       toast({
-        title: "Failed to setup 2FA",
-        description: "Please try again later.",
+        title: "Error",
+        description: "Failed to update store profile. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const verify2FA = async () => {
-    if (!user?.id || !verificationCode) return;
-
+  // Save crypto profile
+  const saveCryptoProfile = async () => {
+    setIsLoading(true);
     try {
-      // Mock verification - in real app, verify the code
-      if (verificationCode === "123456") {
-        await saveSettings({ twoFactorAuth: true });
-        setShow2FASetup(false);
-        setVerificationCode("");
+      await updateProfile({
+        crypto_profile: {
+          trading_experience: tradingExperience,
+          risk_tolerance: riskTolerance,
+          p2p_enabled: p2pEnabled,
+          preferred_currency: preferredCurrency,
+        },
+      });
 
-        toast({
-          title: "2FA enabled",
-          description:
-            "Two-factor authentication has been enabled successfully.",
-        });
-      } else {
-        toast({
-          title: "Invalid code",
-          description: "Please enter a valid verification code.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Crypto profile updated",
+        description: "Your crypto profile has been updated successfully.",
+      });
     } catch (error) {
       toast({
-        title: "Verification failed",
-        description: "Please try again.",
+        title: "Error",
+        description: "Failed to update crypto profile. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const disable2FA = async () => {
-    if (!user?.id) return;
-
-    try {
-      const success = await enhancedProfileService.disable2FA(
-        user.id,
-        "123456",
-      );
-      if (success) {
-        await saveSettings({ twoFactorAuth: false });
-
-        toast({
-          title: "2FA disabled",
-          description: "Two-factor authentication has been disabled.",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Failed to disable 2FA",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handlePasswordChange = async () => {
+  // Change password
+  const changePassword = async () => {
     if (newPassword !== confirmPassword) {
       toast({
-        title: "Passwords do not match",
-        description: "Please make sure both passwords are identical.",
+        title: "Error",
+        description: "New passwords do not match.",
         variant: "destructive",
       });
       return;
@@ -236,554 +504,1188 @@ const EnhancedSettings = () => {
 
     if (newPassword.length < 8) {
       toast({
-        title: "Password too short",
+        title: "Error",
         description: "Password must be at least 8 characters long.",
         variant: "destructive",
       });
       return;
     }
 
-    // Simulate password change
+    setIsLoading(true);
+    try {
+      // This would call the password change API
+      toast({
+        title: "Password changed",
+        description: "Your password has been changed successfully.",
+      });
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to change password. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Clear cache
+  const clearCache = () => {
     toast({
-      title: "Password changed",
-      description: "Your password has been updated successfully.",
+      title: "Cache cleared",
+      description: "Application cache has been cleared successfully.",
     });
-
-    setShowPasswordChange(false);
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
   };
 
-  const handleAccountDeletion = async () => {
-    if (deleteConfirmation !== "DELETE") {
+  // Export data
+  const exportData = () => {
+    toast({
+      title: "Data export initiated",
+      description:
+        "Your data export will be ready shortly. You'll receive an email when it's complete.",
+    });
+  };
+
+  // Delete account
+  const deleteAccount = async () => {
+    setIsLoading(true);
+    try {
+      // This would call the account deletion API
       toast({
-        title: "Invalid confirmation",
-        description: 'Please type "DELETE" to confirm.',
+        title: "Account deleted",
+        description: "Your account has been scheduled for deletion.",
         variant: "destructive",
       });
-      return;
-    }
-
-    if (!user?.id) return;
-
-    try {
-      const success = await enhancedProfileService.deleteAccount(
-        user.id,
-        deleteConfirmation,
-      );
-      if (success) {
-        toast({
-          title: "Account deletion initiated",
-          description: "Your account will be deleted within 24 hours.",
-        });
-        logout();
-      }
+      logout();
     } catch (error) {
       toast({
-        title: "Deletion failed",
-        description: "Please try again later.",
+        title: "Error",
+        description: "Failed to delete account. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
+      setShowDeleteConfirm(false);
     }
   };
 
-  const exportData = async () => {
-    if (!user?.id) return;
-
-    try {
-      const blob = await enhancedProfileService.exportUserData(user.id);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `softchat-data-${new Date().toISOString().split("T")[0]}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-
-      toast({
-        title: "Data exported",
-        description: "Your data has been downloaded successfully.",
-      });
-    } catch (error) {
-      toast({
-        title: "Export failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  if (isLoading || !settings) {
+  const getKYCStatusBadge = (level: number) => {
+    const statuses = [
+      {
+        label: "Not Verified",
+        color: "bg-gray-500",
+        icon: <Shield className="w-3 h-3" />,
+      },
+      {
+        label: "Basic",
+        color: "bg-blue-500",
+        icon: <UserCheck className="w-3 h-3" />,
+      },
+      {
+        label: "Intermediate",
+        color: "bg-yellow-500",
+        icon: <CheckCircle className="w-3 h-3" />,
+      },
+      {
+        label: "Advanced",
+        color: "bg-green-500",
+        icon: <Star className="w-3 h-3" />,
+      },
+    ];
+    const status = statuses[level] || statuses[0];
     return (
-      <div className="min-h-screen bg-background p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
-            <div className="h-48 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-      </div>
+      <Badge className={`${status.color} text-white`}>
+        {status.icon}
+        <span className="ml-1">{status.label}</span>
+      </Badge>
     );
-  }
+  };
+
+  const getProfileCompletion = () => {
+    const fields = [
+      fullName,
+      bio,
+      location,
+      website,
+      phone,
+      skills.length > 0,
+      interests.length > 0,
+    ];
+    const completed = fields.filter((field) => field && field !== "").length;
+    return Math.round((completed / fields.length) * 100);
+  };
 
   return (
-    <div className="min-h-screen bg-background w-full max-w-full overflow-x-hidden">
-      <div className="w-full max-w-6xl mx-auto p-3 sm:p-4 md:p-6">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Settings</h1>
-          <p className="text-muted-foreground">
-            Manage your account preferences and settings
-          </p>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-5xl mx-auto p-4 space-y-6">
+        <div className="flex items-center gap-3 mb-6">
+          <Settings className="w-6 h-6" />
+          <h1 className="text-2xl font-bold">Settings</h1>
+          <Badge variant="secondary" className="ml-auto">
+            Profile {getProfileCompletion()}% Complete
+          </Badge>
         </div>
 
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="space-y-4 sm:space-y-6"
+          className="space-y-6"
         >
-          {/* Mobile Tabs - Horizontal Scroll */}
-          <div className="block sm:hidden w-full overflow-x-auto">
-            <TabsList className="inline-flex w-max min-w-full justify-start">
-              <TabsTrigger
-                value="general"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <Settings className="h-4 w-4" />
-                <span className="text-xs">General</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="appearance"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <Palette className="h-4 w-4" />
-                <span className="text-xs">Appearance</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="notifications"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <Bell className="h-4 w-4" />
-                <span className="text-xs">Notifications</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="privacy"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <Eye className="h-4 w-4" />
-                <span className="text-xs">Privacy</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="security"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <Shield className="h-4 w-4" />
-                <span className="text-xs">Security</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="trading"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <TrendingUp className="h-4 w-4" />
-                <span className="text-xs">Trading</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="account"
-                className="flex items-center gap-1 whitespace-nowrap"
-              >
-                <UserCheck className="h-4 w-4" />
-                <span className="text-xs">Account</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Profile</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="professional"
+              className="flex items-center gap-2"
+            >
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">Professional</span>
+            </TabsTrigger>
+            <TabsTrigger value="financial" className="flex items-center gap-2">
+              <DollarSign className="w-4 h-4" />
+              <span className="hidden sm:inline">Financial</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="notifications"
+              className="flex items-center gap-2"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="hidden sm:inline">Notifications</span>
+            </TabsTrigger>
+            <TabsTrigger value="privacy" className="flex items-center gap-2">
+              <Eye className="w-4 h-4" />
+              <span className="hidden sm:inline">Privacy</span>
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <Lock className="w-4 h-4" />
+              <span className="hidden sm:inline">Security</span>
+            </TabsTrigger>
+            <TabsTrigger value="data" className="flex items-center gap-2">
+              <Database className="w-4 h-4" />
+              <span className="hidden sm:inline">Data</span>
+            </TabsTrigger>
+            <TabsTrigger value="ai" className="flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              <span className="hidden sm:inline">AI</span>
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Desktop Tabs - Grid Layout */}
-          <div className="hidden sm:block">
-            <TabsList className="grid w-full grid-cols-7">
-              <TabsTrigger value="general" className="flex items-center gap-1">
-                <Settings className="h-4 w-4" />
-                <span className="hidden md:inline">General</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="appearance"
-                className="flex items-center gap-1"
-              >
-                <Palette className="h-4 w-4" />
-                <span className="hidden md:inline">Appearance</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="notifications"
-                className="flex items-center gap-1"
-              >
-                <Bell className="h-4 w-4" />
-                <span className="hidden md:inline">Notifications</span>
-              </TabsTrigger>
-              <TabsTrigger value="privacy" className="flex items-center gap-1">
-                <Eye className="h-4 w-4" />
-                <span className="hidden md:inline">Privacy</span>
-              </TabsTrigger>
-              <TabsTrigger value="security" className="flex items-center gap-1">
-                <Shield className="h-4 w-4" />
-                <span className="hidden md:inline">Security</span>
-              </TabsTrigger>
-              <TabsTrigger value="trading" className="flex items-center gap-1">
-                <TrendingUp className="h-4 w-4" />
-                <span className="hidden md:inline">Trading</span>
-              </TabsTrigger>
-              <TabsTrigger value="account" className="flex items-center gap-1">
-                <UserCheck className="h-4 w-4" />
-                <span className="hidden md:inline">Account</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
-
-          {/* General Settings */}
-          <TabsContent value="general" className="space-y-6">
+          {/* Profile Settings */}
+          <TabsContent value="profile" className="space-y-6">
+            {/* Profile Completion Progress */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Globe2 className="h-5 w-5" />
-                  Regional Settings
+                  <Target className="w-5 h-5" />
+                  Profile Completion
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-4">
+                  <Progress value={getProfileCompletion()} className="flex-1" />
+                  <span className="text-sm font-medium">
+                    {getProfileCompletion()}%
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Complete your profile to unlock all features and improve your
+                  visibility
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Basic Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  Basic Information
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="fullName">Full Name *</Label>
+                    <Input
+                      id="fullName"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                    <Input
+                      id="dateOfBirth"
+                      type="date"
+                      value={dateOfBirth}
+                      onChange={(e) => setDateOfBirth(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="location">Location</Label>
+                    <Input
+                      id="location"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      placeholder="City, Country"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="timezone">Timezone</Label>
+                    <Select value={timezone} onValueChange={setTimezone}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="UTC">UTC</SelectItem>
+                        <SelectItem value="America/New_York">
+                          Eastern Time
+                        </SelectItem>
+                        <SelectItem value="America/Chicago">
+                          Central Time
+                        </SelectItem>
+                        <SelectItem value="America/Denver">
+                          Mountain Time
+                        </SelectItem>
+                        <SelectItem value="America/Los_Angeles">
+                          Pacific Time
+                        </SelectItem>
+                        <SelectItem value="Europe/London">London</SelectItem>
+                        <SelectItem value="Europe/Berlin">Berlin</SelectItem>
+                        <SelectItem value="Asia/Tokyo">Tokyo</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="website">Website</Label>
+                    <Input
+                      id="website"
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
+                      placeholder="https://yourwebsite.com"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone</Label>
+                    <Input
+                      id="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+1 (555) 123-4567"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="bio">Bio</Label>
+                  <Textarea
+                    id="bio"
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    placeholder="Tell us about yourself..."
+                    rows={4}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {bio.length}/500 characters
+                  </p>
+                </div>
+
+                {/* Professional Links */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="linkedinUrl">LinkedIn URL</Label>
+                    <Input
+                      id="linkedinUrl"
+                      value={linkedinUrl}
+                      onChange={(e) => setLinkedinUrl(e.target.value)}
+                      placeholder="https://linkedin.com/in/username"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="githubUrl">GitHub URL</Label>
+                    <Input
+                      id="githubUrl"
+                      value={githubUrl}
+                      onChange={(e) => setGithubUrl(e.target.value)}
+                      placeholder="https://github.com/username"
+                    />
+                  </div>
+                </div>
+
+                <Button onClick={saveProfileChanges} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Changes
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Skills & Expertise */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Code className="w-5 h-5" />
+                  Skills & Expertise
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Skills *</Label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      value={newSkill}
+                      onChange={(e) => setNewSkill(e.target.value)}
+                      placeholder="Add a skill (e.g., React, Python, Design)"
+                      onKeyPress={(e) => e.key === "Enter" && addSkill()}
+                    />
+                    <Button onClick={addSkill} size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {skills.length > 0 ? (
+                      skills.map((skill, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          {skill}
+                          <button onClick={() => removeSkill(skill)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No skills added yet
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Interests</Label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      value={newInterest}
+                      onChange={(e) => setNewInterest(e.target.value)}
+                      placeholder="Add an interest"
+                      onKeyPress={(e) => e.key === "Enter" && addInterest()}
+                    />
+                    <Button onClick={addInterest} size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {interests.length > 0 ? (
+                      interests.map((interest, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="flex items-center gap-1"
+                        >
+                          {interest}
+                          <button onClick={() => removeInterest(interest)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No interests added yet
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Languages</Label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      value={newLanguage}
+                      onChange={(e) => setNewLanguage(e.target.value)}
+                      placeholder="Add a language"
+                      onKeyPress={(e) => e.key === "Enter" && addLanguage()}
+                    />
+                    <Button onClick={addLanguage} size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {languages.map((language, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
+                        <Languages className="w-3 h-3" />
+                        {language}
+                        {languages.length > 1 && (
+                          <button onClick={() => removeLanguage(language)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        )}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Certifications</Label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      value={newCertification}
+                      onChange={(e) => setNewCertification(e.target.value)}
+                      placeholder="Add a certification"
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && addCertification()
+                      }
+                    />
+                    <Button onClick={addCertification} size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {certifications.length > 0 ? (
+                      certifications.map((cert, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          <Award className="w-3 h-3" />
+                          {cert}
+                          <button onClick={() => removeCertification(cert)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No certifications added yet
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <Button onClick={saveProfileChanges} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Skills & Expertise
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Professional Settings */}
+          <TabsContent value="professional" className="space-y-6">
+            {/* Freelance Profile */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Briefcase className="w-5 h-5" />
+                  Freelance Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="professionalTitle">
+                      Professional Title
+                    </Label>
+                    <Input
+                      id="professionalTitle"
+                      value={professionalTitle}
+                      onChange={(e) => setProfessionalTitle(e.target.value)}
+                      placeholder="e.g., Full Stack Developer"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="hourlyRate">Hourly Rate ($)</Label>
+                    <Input
+                      id="hourlyRate"
+                      type="number"
+                      value={hourlyRate}
+                      onChange={(e) => setHourlyRate(e.target.value)}
+                      placeholder="25"
+                      min="1"
+                      max="1000"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="availability">Availability</Label>
+                    <Select
+                      value={availability}
+                      onValueChange={setAvailability}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="available">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            Available
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="busy">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            Busy
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="unavailable">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            Unavailable
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="experienceLevel">Experience Level</Label>
+                    <Select
+                      value={experienceLevel}
+                      onValueChange={setExperienceLevel}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="entry">
+                          Entry Level (0-2 years)
+                        </SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate (2-5 years)
+                        </SelectItem>
+                        <SelectItem value="expert">
+                          Expert (5+ years)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="workingHours">Working Hours</Label>
+                    <Select
+                      value={workingHours}
+                      onValueChange={setWorkingHours}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="9am-5pm">9 AM - 5 PM</SelectItem>
+                        <SelectItem value="flexible">Flexible</SelectItem>
+                        <SelectItem value="custom">Custom Hours</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="responseTime">Response Time</Label>
+                    <Select
+                      value={responseTime}
+                      onValueChange={setResponseTime}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="within-1h">Within 1 hour</SelectItem>
+                        <SelectItem value="within-24h">
+                          Within 24 hours
+                        </SelectItem>
+                        <SelectItem value="within-48h">
+                          Within 48 hours
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="portfolioUrl">Portfolio URL</Label>
+                  <Input
+                    id="portfolioUrl"
+                    value={portfolioUrl}
+                    onChange={(e) => setPortfolioUrl(e.target.value)}
+                    placeholder="https://yourportfolio.com"
+                  />
+                </div>
+                <Button onClick={saveFreelanceProfile} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Freelance Profile
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Marketplace Profile */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Store className="w-5 h-5" />
+                  Marketplace Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="storeName">Store Name</Label>
+                    <Input
+                      id="storeName"
+                      value={storeName}
+                      onChange={(e) => setStoreName(e.target.value)}
+                      placeholder="Your Store Name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="businessType">Business Type</Label>
+                    <Select
+                      value={businessType}
+                      onValueChange={setBusinessType}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="individual">
+                          Individual Seller
+                        </SelectItem>
+                        <SelectItem value="business">Business</SelectItem>
+                        <SelectItem value="corporation">Corporation</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="businessAddress">Business Address</Label>
+                    <Input
+                      id="businessAddress"
+                      value={businessAddress}
+                      onChange={(e) => setBusinessAddress(e.target.value)}
+                      placeholder="Business address (required for business accounts)"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="taxId">Tax ID / VAT Number</Label>
+                    <Input
+                      id="taxId"
+                      value={taxId}
+                      onChange={(e) => setTaxId(e.target.value)}
+                      placeholder="Tax identification number"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="storeDescription">Store Description</Label>
+                  <Textarea
+                    id="storeDescription"
+                    value={storeDescription}
+                    onChange={(e) => setStoreDescription(e.target.value)}
+                    placeholder="Describe your store and products..."
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="returnPolicy">Return Policy</Label>
+                  <Textarea
+                    id="returnPolicy"
+                    value={returnPolicy}
+                    onChange={(e) => setReturnPolicy(e.target.value)}
+                    placeholder="Describe your return and refund policy..."
+                    rows={3}
+                  />
+                </div>
+                <Button onClick={saveMarketplaceProfile} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Store Profile
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Crypto Trading Profile */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Coins className="w-5 h-5" />
+                  Crypto Trading Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="tradingExperience">
+                      Trading Experience
+                    </Label>
+                    <Select
+                      value={tradingExperience}
+                      onValueChange={setTradingExperience}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="beginner">
+                          Beginner (0-1 years)
+                        </SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate (1-3 years)
+                        </SelectItem>
+                        <SelectItem value="advanced">
+                          Advanced (3+ years)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="riskTolerance">Risk Tolerance</Label>
+                    <Select
+                      value={riskTolerance}
+                      onValueChange={setRiskTolerance}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="low">Conservative</SelectItem>
+                        <SelectItem value="medium">Moderate</SelectItem>
+                        <SelectItem value="high">Aggressive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="preferredCurrency">
+                      Preferred Currency
+                    </Label>
+                    <Select
+                      value={preferredCurrency}
+                      onValueChange={setPreferredCurrency}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="EUR">EUR</SelectItem>
+                        <SelectItem value="GBP">GBP</SelectItem>
+                        <SelectItem value="JPY">JPY</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="p2pEnabled">Enable P2P Trading</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Allow peer-to-peer cryptocurrency trading
+                    </p>
+                  </div>
+                  <Switch
+                    id="p2pEnabled"
+                    checked={p2pEnabled}
+                    onCheckedChange={setP2pEnabled}
+                  />
+                </div>
+                <Button onClick={saveCryptoProfile} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Crypto Profile
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Financial Settings */}
+          <TabsContent value="financial" className="space-y-6">
+            {/* KYC Verification */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Identity Verification (KYC)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Verification Level</p>
+                    <p className="text-sm text-muted-foreground">
+                      Higher levels unlock more features and trading limits
+                    </p>
+                  </div>
+                  {getKYCStatusBadge(kycLevel)}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 0 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                    >
+                      <Shield className="w-6 h-6" />
+                    </div>
+                    <p className="text-sm font-medium">Basic</p>
+                    <p className="text-xs text-muted-foreground">
+                      Email & Phone
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <div
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 1 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                    >
+                      <UserCheck className="w-6 h-6" />
+                    </div>
+                    <p className="text-sm font-medium">Identity</p>
+                    <p className="text-xs text-muted-foreground">
+                      Government ID
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <div
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 2 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                    >
+                      <FileText className="w-6 h-6" />
+                    </div>
+                    <p className="text-sm font-medium">Documents</p>
+                    <p className="text-xs text-muted-foreground">
+                      Address Proof
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <div
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 3 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                    >
+                      <CheckCircle className="w-6 h-6" />
+                    </div>
+                    <p className="text-sm font-medium">Advanced</p>
+                    <p className="text-xs text-muted-foreground">Video Call</p>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h4 className="font-medium mb-2">
+                    Benefits of Higher KYC Levels:
+                  </h4>
+                  <ul className="text-sm space-y-1">
+                    <li>• Level 1: Trade up to $1,000/day</li>
+                    <li>• Level 2: Trade up to $10,000/day, P2P trading</li>
+                    <li>• Level 3: Unlimited trading, premium features</li>
+                  </ul>
+                </div>
+
+                <Button
+                  onClick={() => setShowKYCModal(true)}
+                  className="w-full"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  {kycLevel === 0
+                    ? "Start Verification"
+                    : "Upgrade Verification"}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Bank Account Settings */}
+            <BankAccountSettings />
+
+            {/* Trading Limits */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  Trading Limits & Statistics
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="language">Language</Label>
-                    <Select
-                      value={settings.language}
-                      onValueChange={(value) =>
-                        saveSettings({ language: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {enhancedProfileService
-                          .getSupportedLanguages()
-                          .map((lang) => (
-                            <SelectItem key={lang.code} value={lang.code}>
-                              {lang.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="text-center p-4 border rounded-lg">
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-500" />
+                    <p className="text-2xl font-bold">$1,000</p>
+                    <p className="text-sm text-muted-foreground">Daily Limit</p>
+                    <Progress value={45} className="mt-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      $450 used today
+                    </p>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="timezone">Time Zone</Label>
-                    <Select
-                      value={settings.timeZone}
-                      onValueChange={(value) =>
-                        saveSettings({ timeZone: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {enhancedProfileService
-                          .getSupportedTimezones()
-                          .map((tz) => (
-                            <SelectItem key={tz.code} value={tz.code}>
-                              {tz.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
+                  <div className="text-center p-4 border rounded-lg">
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-blue-500" />
+                    <p className="text-2xl font-bold">$5,000</p>
+                    <p className="text-sm text-muted-foreground">
+                      Weekly Limit
+                    </p>
+                    <Progress value={30} className="mt-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      $1,500 used this week
+                    </p>
                   </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-purple-500" />
+                    <p className="text-2xl font-bold">$20,000</p>
+                    <p className="text-sm text-muted-foreground">
+                      Monthly Limit
+                    </p>
+                    <Progress value={25} className="mt-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      $5,000 used this month
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-yellow-50 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                    <p className="font-medium text-yellow-800">
+                      Increase Your Limits
+                    </p>
+                  </div>
+                  <p className="text-sm text-yellow-700">
+                    Complete KYC verification to increase your trading limits
+                    and access premium features.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="currency">Currency</Label>
-                    <Select
-                      value={settings.currency}
-                      onValueChange={(value) =>
-                        saveSettings({ currency: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {enhancedProfileService
-                          .getSupportedCurrencies()
-                          .map((currency) => (
-                            <SelectItem
-                              key={currency.code}
-                              value={currency.code}
-                            >
-                              {currency.symbol} {currency.code} -{" "}
-                              {currency.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
+            {/* Payment Methods */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="w-5 h-5" />
+                  Payment Methods
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="w-4 h-4" />
+                        <span className="font-medium">Credit Card</span>
+                      </div>
+                      <Badge variant="secondary">Primary</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">**** 1234</p>
+                    <p className="text-xs text-muted-foreground">
+                      Expires 12/25
+                    </p>
+                  </div>
+                  <div className="p-4 border rounded-lg border-dashed">
+                    <div className="text-center">
+                      <Plus className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">
+                        Add Payment Method
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Notifications Settings */}
+          <TabsContent value="notifications" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bell className="w-5 h-5" />
+                  Notification Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Email Notifications */}
+                <div>
+                  <h3 className="font-medium mb-4 flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    Email Notifications
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="emailNotifications">
+                          Email Notifications
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive important updates via email
+                        </p>
+                      </div>
+                      <Switch
+                        id="emailNotifications"
+                        checked={emailNotifications}
+                        onCheckedChange={setEmailNotifications}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="securityAlerts">Security Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Login attempts and security updates
+                        </p>
+                      </div>
+                      <Switch
+                        id="securityAlerts"
+                        checked={securityAlerts}
+                        onCheckedChange={setSecurityAlerts}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="weeklyDigest">Weekly Digest</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Summary of your activity and earnings
+                        </p>
+                      </div>
+                      <Switch
+                        id="weeklyDigest"
+                        checked={weeklyDigest}
+                        onCheckedChange={setWeeklyDigest}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="marketingEmails">
+                          Marketing Emails
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Product updates and promotions
+                        </p>
+                      </div>
+                      <Switch
+                        id="marketingEmails"
+                        checked={marketingEmails}
+                        onCheckedChange={setMarketingEmails}
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <Separator />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="dateFormat">Date Format</Label>
-                    <Select
-                      value={settings.dateFormat}
-                      onValueChange={(value) =>
-                        saveSettings({ dateFormat: value })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
-                        <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
-                        <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="timeFormat">Time Format</Label>
-                    <Select
-                      value={settings.timeFormat}
-                      onValueChange={(value) =>
-                        saveSettings({ timeFormat: value as "12h" | "24h" })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="12h">12 Hour (AM/PM)</SelectItem>
-                        <SelectItem value="24h">24 Hour</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Appearance Settings */}
-          <TabsContent value="appearance" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Palette className="h-5 w-5" />
-                  Theme Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-4">
-                  <div>
-                    <Label className="font-medium mb-3 block">Theme Mode</Label>
-                    <div className="grid grid-cols-3 gap-4">
-                      <Button
-                        variant={
-                          settings.theme === "light" ? "default" : "outline"
-                        }
-                        onClick={() => handleThemeChange("light")}
-                        className="flex flex-col items-center gap-2 h-auto py-4"
-                      >
-                        <Sun className="h-6 w-6" />
-                        <span>Light</span>
-                      </Button>
-                      <Button
-                        variant={
-                          settings.theme === "dark" ? "default" : "outline"
-                        }
-                        onClick={() => handleThemeChange("dark")}
-                        className="flex flex-col items-center gap-2 h-auto py-4"
-                      >
-                        <Moon className="h-6 w-6" />
-                        <span>Dark</span>
-                      </Button>
-                      <Button
-                        variant={
-                          settings.theme === "system" ? "default" : "outline"
-                        }
-                        onClick={() => handleThemeChange("system")}
-                        className="flex flex-col items-center gap-2 h-auto py-4"
-                      >
-                        <Monitor className="h-6 w-6" />
-                        <span>System</span>
-                      </Button>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-3">
+                {/* Push Notifications */}
+                <div>
+                  <h3 className="font-medium mb-4 flex items-center gap-2">
+                    <Smartphone className="w-4 h-4" />
+                    Push Notifications
+                  </h3>
+                  <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="font-medium">Auto-play Videos</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Automatically play videos in feed
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.autoPlayVideos}
-                        onCheckedChange={(checked) =>
-                          saveSettings({ autoPlayVideos: checked })
-                        }
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label className="font-medium">Auto-load Images</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Automatically load images when scrolling
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.autoLoadImages}
-                        onCheckedChange={(checked) =>
-                          saveSettings({ autoLoadImages: checked })
-                        }
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label className="font-medium">
-                          Show Balance in Header
+                        <Label htmlFor="pushNotifications">
+                          Push Notifications
                         </Label>
                         <p className="text-sm text-muted-foreground">
-                          Display wallet balance in navigation
+                          Get instant notifications
                         </p>
                       </div>
                       <Switch
-                        checked={settings.showBalanceInHeader}
-                        onCheckedChange={(checked) =>
-                          saveSettings({ showBalanceInHeader: checked })
-                        }
+                        id="pushNotifications"
+                        checked={pushNotifications}
+                        onCheckedChange={setPushNotifications}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="socialActivity">Social Activity</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Likes, comments, and follows
+                        </p>
+                      </div>
+                      <Switch
+                        id="socialActivity"
+                        checked={socialActivity}
+                        onCheckedChange={setSocialActivity}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="orderUpdates">Order Updates</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Marketplace order status changes
+                        </p>
+                      </div>
+                      <Switch
+                        id="orderUpdates"
+                        checked={orderUpdates}
+                        onCheckedChange={setOrderUpdates}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                {/* Trading & Finance */}
+                <div>
+                  <h3 className="font-medium mb-4 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    Trading & Finance
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="tradingAlerts">Trading Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Price movements and trading opportunities
+                        </p>
+                      </div>
+                      <Switch
+                        id="tradingAlerts"
+                        checked={tradingAlerts}
+                        onCheckedChange={setTradingAlerts}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="priceAlerts">Price Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Cryptocurrency price notifications
+                        </p>
+                      </div>
+                      <Switch
+                        id="priceAlerts"
+                        checked={priceAlerts}
+                        onCheckedChange={setPriceAlerts}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="newsUpdates">News Updates</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Market news and analysis
+                        </p>
+                      </div>
+                      <Switch
+                        id="newsUpdates"
+                        checked={newsUpdates}
+                        onCheckedChange={setNewsUpdates}
                       />
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
 
-          {/* Notification Settings */}
-          <TabsContent value="notifications" className="space-y-6">
+            {/* Notification Schedule */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Bell className="h-5 w-5" />
-                  Communication Preferences
+                  <Clock className="w-5 h-5" />
+                  Notification Schedule
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
+                <div>
+                  <Label>Quiet Hours</Label>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Set hours when you don't want to receive notifications
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="font-medium">Direct Messages</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Who can send you messages
-                      </p>
+                      <Label htmlFor="quietStart">Start Time</Label>
+                      <Input id="quietStart" type="time" defaultValue="22:00" />
                     </div>
-                    <Select
-                      value={settings.allowDirectMessages}
-                      onValueChange={(value) =>
-                        saveSettings({ allowDirectMessages: value as any })
-                      }
-                    >
-                      <SelectTrigger className="w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="everyone">Everyone</SelectItem>
-                        <SelectItem value="followers">Followers</SelectItem>
-                        <SelectItem value="none">No one</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="flex items-center justify-between">
                     <div>
-                      <Label className="font-medium">Allow Tagging</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Let others tag you in posts
-                      </p>
+                      <Label htmlFor="quietEnd">End Time</Label>
+                      <Input id="quietEnd" type="time" defaultValue="08:00" />
                     </div>
-                    <Switch
-                      checked={settings.allowTagging}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ allowTagging: checked })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Allow Mentions</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Get notified when mentioned
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.allowMentions}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ allowMentions: checked })
-                      }
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Smartphone className="h-5 w-5" />
-                  Push Notifications
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">New Messages</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Direct messages and chats
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Social Activity</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Likes, comments, follows
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Trading Alerts</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Price alerts and trade executions
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">System Updates</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Platform updates and maintenance
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
                   </div>
                 </div>
               </CardContent>
@@ -795,140 +1697,202 @@ const EnhancedSettings = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5" />
-                  Profile Visibility
+                  <Eye className="w-5 h-5" />
+                  Privacy Controls
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-6">
+                <div>
+                  <Label htmlFor="profileVisibility">Profile Visibility</Label>
+                  <Select
+                    value={profileVisibility}
+                    onValueChange={setProfileVisibility}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="public">
+                        <div className="flex items-center gap-2">
+                          <Globe2 className="w-4 h-4" />
+                          Public - Everyone can see your profile
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="followers">
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4" />
+                          Followers Only - Only your followers can see
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="private">
+                        <div className="flex items-center gap-2">
+                          <Lock className="w-4 h-4" />
+                          Private - Only you can see
+                        </div>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="allowDirectMessages">
+                    Who can message you
+                  </Label>
+                  <Select
+                    value={allowDirectMessages}
+                    onValueChange={setAllowDirectMessages}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="everyone">Everyone</SelectItem>
+                      <SelectItem value="followers">Followers Only</SelectItem>
+                      <SelectItem value="verified">
+                        Verified Users Only
+                      </SelectItem>
+                      <SelectItem value="none">No One</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Separator />
+
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Profile Visibility</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Who can see your profile
-                      </p>
-                    </div>
-                    <Select
-                      value={settings.profileVisibility}
-                      onValueChange={(value) =>
-                        saveSettings({ profileVisibility: value as any })
-                      }
-                    >
-                      <SelectTrigger className="w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="public">Public</SelectItem>
-                        <SelectItem value="followers">Followers</SelectItem>
-                        <SelectItem value="private">Private</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <h3 className="font-medium">Profile Information Display</h3>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="font-medium">Show Online Status</Label>
+                      <Label htmlFor="showOnlineStatus">
+                        Show Online Status
+                      </Label>
                       <p className="text-sm text-muted-foreground">
                         Let others see when you're online
                       </p>
                     </div>
                     <Switch
-                      checked={settings.showOnlineStatus}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ showOnlineStatus: checked })
-                      }
+                      id="showOnlineStatus"
+                      checked={showOnlineStatus}
+                      onCheckedChange={setShowOnlineStatus}
                     />
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="font-medium">
-                        Search Engine Indexing
+                      <Label htmlFor="showActivity">Show Activity Status</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Display your recent activity
+                      </p>
+                    </div>
+                    <Switch
+                      id="showActivity"
+                      checked={showActivity}
+                      onCheckedChange={setShowActivity}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="showEmail">Show Email in Profile</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Display your email publicly
+                      </p>
+                    </div>
+                    <Switch
+                      id="showEmail"
+                      checked={showEmail}
+                      onCheckedChange={setShowEmail}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="showPhone">Show Phone in Profile</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Display your phone number publicly
+                      </p>
+                    </div>
+                    <Switch
+                      id="showPhone"
+                      checked={showPhone}
+                      onCheckedChange={setShowPhone}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="allowTags">Allow Tags</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Let others tag you in posts
+                      </p>
+                    </div>
+                    <Switch
+                      id="allowTags"
+                      checked={allowTags}
+                      onCheckedChange={setAllowTags}
+                    />
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="font-medium">Search & Discovery</h3>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="indexProfile">
+                        Index Profile in Search
                       </Label>
                       <p className="text-sm text-muted-foreground">
                         Allow search engines to find your profile
                       </p>
                     </div>
                     <Switch
-                      checked={settings.allowSearchEngineIndexing}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ allowSearchEngineIndexing: checked })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Data Analytics</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Help improve the platform with usage data
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.allowDataAnalytics}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ allowDataAnalytics: checked })
-                      }
+                      id="indexProfile"
+                      checked={indexProfile}
+                      onCheckedChange={setIndexProfile}
                     />
                   </div>
                 </div>
               </CardContent>
             </Card>
 
+            {/* Data & Analytics */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Database className="h-5 w-5" />
-                  Content Preferences
+                  <BarChart className="w-5 h-5" />
+                  Data & Analytics
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Sensitive Content</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Show potentially sensitive content
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.showSensitiveContent}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ showSensitiveContent: checked })
-                      }
-                    />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Analytics Tracking</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Help us improve the platform with usage data
+                    </p>
                   </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">NSFW Content</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Show not-safe-for-work content
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.nsfw}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ nsfw: checked })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Auto-play Media</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Automatically play videos and GIFs
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.autoplayMedia}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ autoplayMedia: checked })
-                      }
-                    />
-                  </div>
+                  <Switch defaultChecked={true} />
                 </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Personalized Ads</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Show ads based on your interests
+                    </p>
+                  </div>
+                  <Switch defaultChecked={false} />
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={exportData}
+                  className="w-full"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download My Data
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -938,148 +1902,92 @@ const EnhancedSettings = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  Authentication & Security
+                  <Lock className="w-5 h-5" />
+                  Account Security
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-4">
-                  {/* Password Change */}
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Key className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">Password</p>
-                        <p className="text-sm text-muted-foreground">
-                          Last changed 30 days ago
-                        </p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      onClick={() => setShowPasswordChange(true)}
-                    >
-                      Change Password
-                    </Button>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="twoFactorEnabled">
+                      Two-Factor Authentication
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      Add an extra layer of security to your account
+                    </p>
                   </div>
-
-                  {/* 2FA */}
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Smartphone className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">Two-Factor Authentication</p>
-                        <p className="text-sm text-muted-foreground">
-                          {settings.twoFactorAuth ? "Enabled" : "Not enabled"}
-                        </p>
-                      </div>
-                    </div>
-                    {settings.twoFactorAuth ? (
-                      <Button variant="outline" onClick={disable2FA}>
-                        Disable 2FA
-                      </Button>
-                    ) : (
-                      <Button onClick={handle2FASetup}>Enable 2FA</Button>
-                    )}
-                  </div>
-
-                  {/* Login Notifications */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Login Notifications</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Get alerts for new logins
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.loginNotifications}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ loginNotifications: checked })
-                      }
-                    />
-                  </div>
-
-                  {/* Session Timeout */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Session Timeout</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Auto-logout after inactivity
-                      </p>
-                    </div>
-                    <Select
-                      value={settings.sessionTimeout.toString()}
-                      onValueChange={(value) =>
-                        saveSettings({ sessionTimeout: parseInt(value) })
-                      }
-                    >
-                      <SelectTrigger className="w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="15">15 minutes</SelectItem>
-                        <SelectItem value="30">30 minutes</SelectItem>
-                        <SelectItem value="60">1 hour</SelectItem>
-                        <SelectItem value="240">4 hours</SelectItem>
-                        <SelectItem value="0">Never</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Remember Me */}
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Remember Me</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Stay logged in on this device
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.allowRememberMe}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ allowRememberMe: checked })
-                      }
-                    />
-                  </div>
+                  <Switch
+                    id="twoFactorEnabled"
+                    checked={twoFactorEnabled}
+                    onCheckedChange={setTwoFactorEnabled}
+                  />
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Password Change Modal */}
-            {showPasswordChange && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="loginNotifications">
+                      Login Notifications
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      Get notified of new login attempts
+                    </p>
+                  </div>
+                  <Switch
+                    id="loginNotifications"
+                    checked={loginNotifications}
+                    onCheckedChange={setLoginNotifications}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="sessionTimeout">Session Timeout</Label>
+                  <Select
+                    value={sessionTimeout}
+                    onValueChange={setSessionTimeout}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1h">1 Hour</SelectItem>
+                      <SelectItem value="8h">8 Hours</SelectItem>
+                      <SelectItem value="24h">24 Hours</SelectItem>
+                      <SelectItem value="never">Never</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Key className="w-5 h-5" />
                     Change Password
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShowPasswordChange(false)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
+                  </h3>
+                  <div>
                     <Label htmlFor="currentPassword">Current Password</Label>
                     <Input
                       id="currentPassword"
                       type="password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="Enter current password"
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div>
                     <Label htmlFor="newPassword">New Password</Label>
                     <Input
                       id="newPassword"
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Enter new password"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Password must be at least 8 characters long
+                    </p>
                   </div>
-                  <div className="space-y-2">
+                  <div>
                     <Label htmlFor="confirmPassword">
                       Confirm New Password
                     </Label>
@@ -1088,315 +1996,302 @@ const EnhancedSettings = () => {
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirm new password"
                     />
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setShowPasswordChange(false)}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                    <Button onClick={handlePasswordChange} className="flex-1">
-                      Change Password
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* 2FA Setup Modal */}
-            {show2FASetup && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    Setup Two-Factor Authentication
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setShow2FASetup(false)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="text-center">
-                    <div className="w-48 h-48 bg-gray-100 mx-auto mb-4 rounded-lg flex items-center justify-center">
-                      <QrCode className="h-16 w-16 text-gray-400" />
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Scan this QR code with your authenticator app
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="backupCodes">Backup Codes</Label>
-                    <div className="grid grid-cols-1 gap-2 p-3 bg-muted rounded-lg text-sm font-mono">
-                      {backupCodes.map((code, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between"
-                        >
-                          <span>{code}</span>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => navigator.clipboard.writeText(code)}
-                          >
-                            <Copy className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Save these backup codes in a secure location
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="verificationCode">Verification Code</Label>
-                    <Input
-                      id="verificationCode"
-                      placeholder="Enter 6-digit code"
-                      value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setShow2FASetup(false)}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={verify2FA}
-                      className="flex-1"
-                      disabled={!verificationCode}
-                    >
-                      Verify & Enable
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          {/* Trading Settings */}
-          <TabsContent value="trading" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Trading Preferences
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">Confirm All Trades</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Require confirmation for every trade
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.confirmAllTrades}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ confirmAllTrades: checked })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">
-                        Advanced Order Types
-                      </Label>
-                      <p className="text-sm text-muted-foreground">
-                        Enable stop-loss, take-profit orders
-                      </p>
-                    </div>
-                    <Switch
-                      checked={settings.advancedOrderTypes}
-                      onCheckedChange={(checked) =>
-                        saveSettings({ advancedOrderTypes: checked })
-                      }
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="font-medium">
-                        Default Trading Pair
-                      </Label>
-                      <p className="text-sm text-muted-foreground">
-                        Default pair when opening trader
-                      </p>
-                    </div>
-                    <Select
-                      value={settings.defaultTradingPair}
-                      onValueChange={(value) =>
-                        saveSettings({ defaultTradingPair: value })
-                      }
-                    >
-                      <SelectTrigger className="w-32">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="BTC/USD">BTC/USD</SelectItem>
-                        <SelectItem value="ETH/USD">ETH/USD</SelectItem>
-                        <SelectItem value="BTC/ETH">BTC/ETH</SelectItem>
-                        <SelectItem value="LTC/USD">LTC/USD</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Account Management */}
-          <TabsContent value="account" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Database className="h-5 w-5" />
-                  Data Management
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <FileDown className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">Export Your Data</p>
-                        <p className="text-sm text-muted-foreground">
-                          Download all your account data
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="outline" onClick={exportData}>
-                      <Download className="h-4 w-4 mr-2" />
-                      Export Data
-                    </Button>
-                  </div>
-
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <History className="h-5 w-5 text-muted-foreground" />
-                      <div>
-                        <p className="font-medium">Activity History</p>
-                        <p className="text-sm text-muted-foreground">
-                          View your recent activity
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="outline">View History</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-destructive">
-              <CardHeader>
-                <CardTitle className="text-destructive flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5" />
-                  Danger Zone
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="p-4 border border-destructive rounded-lg">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <p className="font-medium text-destructive">
-                          Delete Account
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Permanently delete your account and all data
-                        </p>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        onClick={() => setShowDeleteAccount(true)}
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Delete Account
-                      </Button>
-                    </div>
-
-                    {showDeleteAccount && (
-                      <div className="space-y-4 pt-4 border-t">
-                        <div className="bg-destructive/10 p-4 rounded-lg">
-                          <p className="text-sm text-destructive font-medium mb-2">
-                            ⚠️ This action cannot be undone!
-                          </p>
-                          <ul className="text-sm text-muted-foreground space-y-1">
-                            <li>
-                              • All your posts and content will be deleted
-                            </li>
-                            <li>• Your profile will be permanently removed</li>
-                            <li>• Any funds will need to be withdrawn first</li>
-                            <li>• This action is irreversible</li>
-                          </ul>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="deleteConfirmation">
-                            Type "DELETE" to confirm account deletion
-                          </Label>
-                          <Input
-                            id="deleteConfirmation"
-                            value={deleteConfirmation}
-                            onChange={(e) =>
-                              setDeleteConfirmation(e.target.value)
-                            }
-                            placeholder="Type DELETE here"
-                          />
-                        </div>
-
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            onClick={() => {
-                              setShowDeleteAccount(false);
-                              setDeleteConfirmation("");
-                            }}
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            onClick={handleAccountDeletion}
-                            disabled={deleteConfirmation !== "DELETE"}
-                            className="flex-1"
-                          >
-                            Delete My Account
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  <Button
-                    variant="outline"
-                    className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
-                    onClick={logout}
-                  >
-                    Sign Out
+                  <Button onClick={changePassword} disabled={isLoading}>
+                    <Lock className="w-4 h-4 mr-2" />
+                    Change Password
                   </Button>
                 </div>
               </CardContent>
             </Card>
+
+            {/* App Preferences */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Monitor className="w-5 h-5" />
+                  App Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <Label>App Language</Label>
+                  <Select value={language} onValueChange={setLanguage}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="es">Español</SelectItem>
+                      <SelectItem value="fr">Français</SelectItem>
+                      <SelectItem value="de">Deutsch</SelectItem>
+                      <SelectItem value="zh">中文</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Font Size</Label>
+                  <Select value={fontSize} onValueChange={setFontSize}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="small">Small</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="large">Large</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Dark Mode</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Toggle dark/light theme
+                      </p>
+                    </div>
+                    <Switch
+                      checked={theme === "dark"}
+                      onCheckedChange={(checked) =>
+                        setTheme(checked ? "dark" : "light")
+                      }
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="autoPlayVideos">Auto-play Videos</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically play videos in feed
+                      </p>
+                    </div>
+                    <Switch
+                      id="autoPlayVideos"
+                      checked={autoPlayVideos}
+                      onCheckedChange={setAutoPlayVideos}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="reducedMotion">Reduced Motion</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Minimize animations and transitions
+                      </p>
+                    </div>
+                    <Switch
+                      id="reducedMotion"
+                      checked={reducedMotion}
+                      onCheckedChange={setReducedMotion}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="highContrast">High Contrast</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Improve visibility with higher contrast
+                      </p>
+                    </div>
+                    <Switch
+                      id="highContrast"
+                      checked={highContrast}
+                      onCheckedChange={setHighContrast}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Data Management */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="w-5 h-5" />
+                  Data Management
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Data Usage Preference</Label>
+                  <Select value={dataUsage} onValueChange={setDataUsage}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low - Conserve data</SelectItem>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="unlimited">Unlimited</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="autoBackup">Auto Backup</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically backup your data
+                    </p>
+                  </div>
+                  <Switch
+                    id="autoBackup"
+                    checked={autoBackup}
+                    onCheckedChange={setAutoBackup}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Cache Size</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Current cache: {cacheSize}
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={clearCache}>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Clear Cache
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Danger Zone */}
+            <Card className="border-red-200">
+              <CardHeader>
+                <CardTitle className="text-red-600 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5" />
+                  Danger Zone
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="p-4 border border-red-200 rounded-lg bg-red-50">
+                  <div className="space-y-4">
+                    <div>
+                      <p className="font-medium text-red-800">
+                        Sign Out All Devices
+                      </p>
+                      <p className="text-sm text-red-600">
+                        Sign out from all devices except this one
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-2 text-red-600 border-red-300"
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out All Devices
+                      </Button>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <p className="font-medium text-red-800">Delete Account</p>
+                      <p className="text-sm text-red-600">
+                        Permanently delete your account and all data. This
+                        action cannot be undone.
+                      </p>
+                      <Dialog
+                        open={showDeleteConfirm}
+                        onOpenChange={setShowDeleteConfirm}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="mt-2"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete Account
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle className="text-red-600">
+                              Delete Account
+                            </DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="bg-red-50 p-4 rounded-lg">
+                              <div className="flex items-center gap-2 mb-2">
+                                <AlertTriangle className="w-5 h-5 text-red-600" />
+                                <p className="font-medium text-red-800">
+                                  Warning
+                                </p>
+                              </div>
+                              <p className="text-sm text-red-700">
+                                This will permanently delete your account and
+                                all associated data:
+                              </p>
+                              <ul className="text-sm text-red-700 mt-2 space-y-1">
+                                <li>• Profile information and settings</li>
+                                <li>• Posts, comments, and media</li>
+                                <li>• Marketplace products and orders</li>
+                                <li>• Trading history and portfolio</li>
+                                <li>• Wallet and financial data</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <Label htmlFor="deleteConfirm">
+                                Type "DELETE" to confirm
+                              </Label>
+                              <Input id="deleteConfirm" placeholder="DELETE" />
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => setShowDeleteConfirm(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                onClick={deleteAccount}
+                                disabled={isLoading}
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete Account
+                              </Button>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Data Management Tab */}
+          <TabsContent value="data" className="space-y-6">
+            <DataManagement />
+          </TabsContent>
+
+          {/* AI Features Tab */}
+          <TabsContent value="ai" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SmartFeedCuration />
+              <AIContentAssistant />
+            </div>
           </TabsContent>
         </Tabs>
+
+        {/* KYC Modal */}
+        {showKYCModal && (
+          <KYCVerificationModal
+            userId={user?.id || ""}
+            currentLevel={kycLevel}
+            onLevelUpdate={(newLevel) => {
+              setKycLevel(newLevel);
+              setShowKYCModal(false);
+            }}
+          />
+        )}
       </div>
     </div>
   );

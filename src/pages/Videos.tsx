@@ -16,7 +16,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Badge } from "@/components/ui/badge";
 import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import { cn } from "@/utils/utils";
@@ -610,6 +616,9 @@ const Videos: React.FC = () => {
       {/* Creator Modal */}
       <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
         <DialogContent className="max-w-2xl bg-black border border-gray-800 rounded-lg p-4">
+          <VisuallyHidden>
+            <DialogTitle>Create Video</DialogTitle>
+          </VisuallyHidden>
           <EnhancedVideoCreator onClose={() => setIsCreatorOpen(false)} />
         </DialogContent>
       </Dialog>

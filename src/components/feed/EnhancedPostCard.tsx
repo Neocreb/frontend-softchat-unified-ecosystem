@@ -1,7 +1,12 @@
-
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, ExternalLink } from "lucide-react";
@@ -13,17 +18,34 @@ interface EnhancedPostCardProps {
 }
 
 const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
+  const navigate = useNavigate();
+
+  const handleUserClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/profile/${post.author.username}`);
+  };
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-4 pb-0">
         <div className="flex items-start gap-3">
-          <Avatar className="h-10 w-10">
+          <Avatar
+            className="h-10 w-10 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={handleUserClick}
+          >
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
-            <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>
+              {post.author.name.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           <div className="flex-1 space-y-1">
             <div className="flex items-center">
-              <span className="font-semibold">{post.author.name}</span>
+              <span
+                className="font-semibold cursor-pointer hover:underline"
+                onClick={handleUserClick}
+              >
+                {post.author.name}
+              </span>
               {post.author.verified && (
                 <Badge variant="outline" className="ml-1 bg-blue-500 p-0">
                   <Check className="h-3 w-3 text-white" />
@@ -31,10 +53,19 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
               )}
             </div>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <span>@{post.author.username}</span>
+              <span
+                className="cursor-pointer hover:underline"
+                onClick={handleUserClick}
+              >
+                @{post.author.username}
+              </span>
               <span>·</span>
               <span>{post.createdAt}</span>
-              {post.isAd && <span className="ml-1 text-xs text-muted-foreground">Sponsored</span>}
+              {post.isAd && (
+                <span className="ml-1 text-xs text-muted-foreground">
+                  Sponsored
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -55,9 +86,10 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
             <Button
               variant="default"
               className="w-full"
-              onClick={() => window.open(post.adUrl, '_blank')}
+              onClick={() => window.open(post.adUrl, "_blank")}
             >
-              {post.adCta || "Learn More"} <ExternalLink className="ml-2 h-4 w-4" />
+              {post.adCta || "Learn More"}{" "}
+              <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </div>
         )}
