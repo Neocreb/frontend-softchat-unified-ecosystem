@@ -216,9 +216,9 @@ export default function EnhancedTradingDashboard({
   const currentPair = getCurrentPair();
 
   return (
-    <div className="w-full space-y-4 md:space-y-6">
+    <div className="w-full mobile-space-y">
       {/* Header with Pair Selection */}
-      <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-4">
+      <div className="mobile-flex lg:items-start lg:justify-between">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4 min-w-0 flex-1">
           <div className="min-w-0">
             <h1 className="text-xl md:text-2xl font-bold truncate">
@@ -331,42 +331,42 @@ export default function EnhancedTradingDashboard({
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* Mobile optimized tab list */}
-        <div className="w-full overflow-x-auto">
+        <div className="w-full mobile-tabs">
           <div className="border-b border-gray-200">
-            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0">
+            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0 gap-1">
               <TabsTrigger
                 value="overview"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Overview
               </TabsTrigger>
               <TabsTrigger
                 value="trading"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Trading
               </TabsTrigger>
               <TabsTrigger
                 value="portfolio"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Portfolio
               </TabsTrigger>
               <TabsTrigger
                 value="watchlist"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Watchlist
               </TabsTrigger>
               <TabsTrigger
                 value="analytics"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Analytics
               </TabsTrigger>
               <TabsTrigger
                 value="alerts"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Alerts
               </TabsTrigger>
