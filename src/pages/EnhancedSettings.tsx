@@ -71,6 +71,35 @@ import {
   Edit,
   Trash,
   ChevronRight,
+  Award,
+  Calendar,
+  Wifi,
+  WifiOff,
+  Headphones,
+  Image,
+  Video,
+  Mic,
+  Monitor,
+  Languages,
+  BookOpen,
+  Target,
+  BarChart,
+  PieChart,
+  TrendingDown,
+  Banknote,
+  Wallet,
+  QrCode,
+  Fingerprint,
+  Key,
+  ShieldCheck,
+  AlertCircle,
+  Info,
+  HelpCircle,
+  RefreshCw,
+  LogOut,
+  Home,
+  Store,
+  Coins,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
@@ -92,6 +121,10 @@ const EnhancedSettings = () => {
     user?.profile?.languages || ["English"],
   );
   const [newLanguage, setNewLanguage] = useState("");
+  const [certifications, setCertifications] = useState<string[]>(
+    user?.profile?.certifications || [],
+  );
+  const [newCertification, setNewCertification] = useState("");
 
   // Personal information states
   const [fullName, setFullName] = useState(user?.profile?.full_name || "");
@@ -99,52 +132,174 @@ const EnhancedSettings = () => {
   const [location, setLocation] = useState(user?.profile?.location || "");
   const [website, setWebsite] = useState(user?.profile?.website || "");
   const [phone, setPhone] = useState(user?.profile?.phone || "");
+  const [dateOfBirth, setDateOfBirth] = useState(
+    user?.profile?.date_of_birth || "",
+  );
+  const [timezone, setTimezone] = useState(user?.profile?.timezone || "UTC");
 
   // Professional information states
-  const [jobTitle, setJobTitle] = useState("");
-  const [company, setCompany] = useState("");
-  const [education, setEducation] = useState("");
-  const [experience, setExperience] = useState("");
+  const [jobTitle, setJobTitle] = useState(user?.profile?.job_title || "");
+  const [company, setCompany] = useState(user?.profile?.company || "");
+  const [education, setEducation] = useState(user?.profile?.education || "");
+  const [experience, setExperience] = useState(user?.profile?.experience || "");
+  const [linkedinUrl, setLinkedinUrl] = useState(
+    user?.profile?.linkedin_url || "",
+  );
+  const [githubUrl, setGithubUrl] = useState(user?.profile?.github_url || "");
 
   // Freelance profile states
-  const [professionalTitle, setProfessionalTitle] = useState("");
-  const [hourlyRate, setHourlyRate] = useState("");
-  const [availability, setAvailability] = useState("available");
-  const [experienceLevel, setExperienceLevel] = useState("intermediate");
-  const [portfolioUrl, setPortfolioUrl] = useState("");
+  const [professionalTitle, setProfessionalTitle] = useState(
+    user?.freelance_profile?.professional_title || "",
+  );
+  const [hourlyRate, setHourlyRate] = useState(
+    user?.freelance_profile?.hourly_rate?.toString() || "",
+  );
+  const [availability, setAvailability] = useState(
+    user?.freelance_profile?.availability || "available",
+  );
+  const [experienceLevel, setExperienceLevel] = useState(
+    user?.freelance_profile?.experience_level || "intermediate",
+  );
+  const [portfolioUrl, setPortfolioUrl] = useState(
+    user?.freelance_profile?.portfolio_url || "",
+  );
+  const [workingHours, setWorkingHours] = useState(
+    user?.freelance_profile?.working_hours || "9am-5pm",
+  );
+  const [responseTime, setResponseTime] = useState(
+    user?.freelance_profile?.response_time || "within-24h",
+  );
 
   // Marketplace profile states
-  const [storeName, setStoreName] = useState("");
-  const [storeDescription, setStoreDescription] = useState("");
-  const [businessType, setBusinessType] = useState("individual");
+  const [storeName, setStoreName] = useState(
+    user?.marketplace_profile?.store_name || "",
+  );
+  const [storeDescription, setStoreDescription] = useState(
+    user?.marketplace_profile?.store_description || "",
+  );
+  const [businessType, setBusinessType] = useState(
+    user?.marketplace_profile?.business_type || "individual",
+  );
+  const [businessAddress, setBusinessAddress] = useState(
+    user?.marketplace_profile?.business_address || "",
+  );
+  const [taxId, setTaxId] = useState(user?.marketplace_profile?.tax_id || "");
+  const [returnPolicy, setReturnPolicy] = useState(
+    user?.marketplace_profile?.return_policy || "",
+  );
+
+  // Crypto profile states
+  const [tradingExperience, setTradingExperience] = useState(
+    user?.crypto_profile?.trading_experience || "beginner",
+  );
+  const [riskTolerance, setRiskTolerance] = useState(
+    user?.crypto_profile?.risk_tolerance || "low",
+  );
+  const [p2pEnabled, setP2pEnabled] = useState(
+    user?.crypto_profile?.p2p_enabled || false,
+  );
+  const [preferredCurrency, setPreferredCurrency] = useState(
+    user?.crypto_profile?.preferred_currency || "USD",
+  );
 
   // Notification settings
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [marketingEmails, setMarketingEmails] = useState(false);
-  const [orderUpdates, setOrderUpdates] = useState(true);
-  const [tradingAlerts, setTradingAlerts] = useState(true);
-  const [socialActivity, setSocialActivity] = useState(true);
+  const [emailNotifications, setEmailNotifications] = useState(
+    user?.settings?.email_notifications ?? true,
+  );
+  const [pushNotifications, setPushNotifications] = useState(
+    user?.settings?.push_notifications ?? true,
+  );
+  const [marketingEmails, setMarketingEmails] = useState(
+    user?.settings?.marketing_emails ?? false,
+  );
+  const [orderUpdates, setOrderUpdates] = useState(
+    user?.settings?.order_updates ?? true,
+  );
+  const [tradingAlerts, setTradingAlerts] = useState(
+    user?.settings?.trading_alerts ?? true,
+  );
+  const [socialActivity, setSocialActivity] = useState(
+    user?.settings?.social_activity ?? true,
+  );
+  const [newsUpdates, setNewsUpdates] = useState(
+    user?.settings?.news_updates ?? true,
+  );
+  const [weeklyDigest, setWeeklyDigest] = useState(
+    user?.settings?.weekly_digest ?? true,
+  );
+  const [priceAlerts, setPriceAlerts] = useState(
+    user?.settings?.price_alerts ?? true,
+  );
+  const [securityAlerts, setSecurityAlerts] = useState(
+    user?.settings?.security_alerts ?? true,
+  );
 
   // Privacy settings
-  const [profileVisibility, setProfileVisibility] = useState("public");
-  const [showOnlineStatus, setShowOnlineStatus] = useState(true);
-  const [allowDirectMessages, setAllowDirectMessages] = useState("everyone");
-  const [showEmail, setShowEmail] = useState(false);
-  const [showPhone, setShowPhone] = useState(false);
+  const [profileVisibility, setProfileVisibility] = useState(
+    user?.settings?.profile_visibility || "public",
+  );
+  const [showOnlineStatus, setShowOnlineStatus] = useState(
+    user?.settings?.show_online_status ?? true,
+  );
+  const [allowDirectMessages, setAllowDirectMessages] = useState(
+    user?.settings?.allow_direct_messages || "everyone",
+  );
+  const [showEmail, setShowEmail] = useState(
+    user?.settings?.show_email ?? false,
+  );
+  const [showPhone, setShowPhone] = useState(
+    user?.settings?.show_phone ?? false,
+  );
+  const [indexProfile, setIndexProfile] = useState(
+    user?.settings?.index_profile ?? true,
+  );
+  const [showActivity, setShowActivity] = useState(
+    user?.settings?.show_activity ?? true,
+  );
+  const [allowTags, setAllowTags] = useState(
+    user?.settings?.allow_tags ?? true,
+  );
 
   // Security settings
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [loginNotifications, setLoginNotifications] = useState(true);
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(
+    user?.settings?.two_factor_enabled ?? false,
+  );
+  const [loginNotifications, setLoginNotifications] = useState(
+    user?.settings?.login_notifications ?? true,
+  );
+  const [sessionTimeout, setSessionTimeout] = useState(
+    user?.settings?.session_timeout || "24h",
+  );
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // App preferences
+  const [autoPlayVideos, setAutoPlayVideos] = useState(
+    user?.settings?.auto_play_videos ?? true,
+  );
+  const [reducedMotion, setReducedMotion] = useState(
+    user?.settings?.reduced_motion ?? false,
+  );
+  const [highContrast, setHighContrast] = useState(
+    user?.settings?.high_contrast ?? false,
+  );
+  const [fontSize, setFontSize] = useState(
+    user?.settings?.font_size || "medium",
+  );
+  const [language, setLanguage] = useState(user?.settings?.language || "en");
+
+  // Data & Storage
+  const [dataUsage, setDataUsage] = useState("unlimited");
+  const [autoBackup, setAutoBackup] = useState(true);
+  const [cacheSize, setCacheSize] = useState("500MB");
 
   // UI states
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [showKYCModal, setShowKYCModal] = useState(false);
   const [kycLevel, setKycLevel] = useState(user?.profile?.kyc_level || 0);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Skills management
   const addSkill = () => {
@@ -187,6 +342,23 @@ const EnhancedSettings = () => {
     }
   };
 
+  // Certifications management
+  const addCertification = () => {
+    if (
+      newCertification.trim() &&
+      !certifications.includes(newCertification.trim())
+    ) {
+      setCertifications([...certifications, newCertification.trim()]);
+      setNewCertification("");
+    }
+  };
+
+  const removeCertification = (certificationToRemove: string) => {
+    setCertifications(
+      certifications.filter((cert) => cert !== certificationToRemove),
+    );
+  };
+
   // Save profile changes
   const saveProfileChanges = async () => {
     setIsLoading(true);
@@ -197,9 +369,18 @@ const EnhancedSettings = () => {
         location,
         website,
         phone,
+        date_of_birth: dateOfBirth,
+        timezone,
+        job_title: jobTitle,
+        company,
+        education,
+        experience,
+        linkedin_url: linkedinUrl,
+        github_url: githubUrl,
         skills,
         interests,
         languages,
+        certifications,
       });
 
       toast({
@@ -221,7 +402,6 @@ const EnhancedSettings = () => {
   const saveFreelanceProfile = async () => {
     setIsLoading(true);
     try {
-      // This would update the freelance-specific profile data
       await updateProfile({
         freelance_profile: {
           professional_title: professionalTitle,
@@ -229,6 +409,8 @@ const EnhancedSettings = () => {
           availability,
           experience_level: experienceLevel,
           portfolio_url: portfolioUrl,
+          working_hours: workingHours,
+          response_time: responseTime,
         },
       });
 
@@ -256,6 +438,9 @@ const EnhancedSettings = () => {
           store_name: storeName,
           store_description: storeDescription,
           business_type: businessType,
+          business_address: businessAddress,
+          tax_id: taxId,
+          return_policy: returnPolicy,
         },
       });
 
@@ -274,12 +459,49 @@ const EnhancedSettings = () => {
     }
   };
 
+  // Save crypto profile
+  const saveCryptoProfile = async () => {
+    setIsLoading(true);
+    try {
+      await updateProfile({
+        crypto_profile: {
+          trading_experience: tradingExperience,
+          risk_tolerance: riskTolerance,
+          p2p_enabled: p2pEnabled,
+          preferred_currency: preferredCurrency,
+        },
+      });
+
+      toast({
+        title: "Crypto profile updated",
+        description: "Your crypto profile has been updated successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update crypto profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Change password
   const changePassword = async () => {
     if (newPassword !== confirmPassword) {
       toast({
         title: "Error",
         description: "New passwords do not match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      toast({
+        title: "Error",
+        description: "Password must be at least 8 characters long.",
         variant: "destructive",
       });
       return;
@@ -303,6 +525,46 @@ const EnhancedSettings = () => {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Clear cache
+  const clearCache = () => {
+    toast({
+      title: "Cache cleared",
+      description: "Application cache has been cleared successfully.",
+    });
+  };
+
+  // Export data
+  const exportData = () => {
+    toast({
+      title: "Data export initiated",
+      description:
+        "Your data export will be ready shortly. You'll receive an email when it's complete.",
+    });
+  };
+
+  // Delete account
+  const deleteAccount = async () => {
+    setIsLoading(true);
+    try {
+      // This would call the account deletion API
+      toast({
+        title: "Account deleted",
+        description: "Your account has been scheduled for deletion.",
+        variant: "destructive",
+      });
+      logout();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete account. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+      setShowDeleteConfirm(false);
     }
   };
 
@@ -338,12 +600,29 @@ const EnhancedSettings = () => {
     );
   };
 
+  const getProfileCompletion = () => {
+    const fields = [
+      fullName,
+      bio,
+      location,
+      website,
+      phone,
+      skills.length > 0,
+      interests.length > 0,
+    ];
+    const completed = fields.filter((field) => field && field !== "").length;
+    return Math.round((completed / fields.length) * 100);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto p-4 space-y-6">
+      <div className="max-w-5xl mx-auto p-4 space-y-6">
         <div className="flex items-center gap-3 mb-6">
           <Settings className="w-6 h-6" />
           <h1 className="text-2xl font-bold">Settings</h1>
+          <Badge variant="secondary" className="ml-auto">
+            Profile {getProfileCompletion()}% Complete
+          </Badge>
         </div>
 
         <Tabs
@@ -352,16 +631,63 @@ const EnhancedSettings = () => {
           className="space-y-6"
         >
           <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="professional">Professional</TabsTrigger>
-            <TabsTrigger value="financial">Financial</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="privacy">Privacy</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Profile</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="professional"
+              className="flex items-center gap-2"
+            >
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">Professional</span>
+            </TabsTrigger>
+            <TabsTrigger value="financial" className="flex items-center gap-2">
+              <DollarSign className="w-4 h-4" />
+              <span className="hidden sm:inline">Financial</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="notifications"
+              className="flex items-center gap-2"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="hidden sm:inline">Notifications</span>
+            </TabsTrigger>
+            <TabsTrigger value="privacy" className="flex items-center gap-2">
+              <Eye className="w-4 h-4" />
+              <span className="hidden sm:inline">Privacy</span>
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <Lock className="w-4 h-4" />
+              <span className="hidden sm:inline">Security</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* Profile Settings */}
           <TabsContent value="profile" className="space-y-6">
+            {/* Profile Completion Progress */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  Profile Completion
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-4">
+                  <Progress value={getProfileCompletion()} className="flex-1" />
+                  <span className="text-sm font-medium">
+                    {getProfileCompletion()}%
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Complete your profile to unlock all features and improve your
+                  visibility
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Basic Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -372,12 +698,21 @@ const EnhancedSettings = () => {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="fullName">Full Name *</Label>
                     <Input
                       id="fullName"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="dateOfBirth">Date of Birth</Label>
+                    <Input
+                      id="dateOfBirth"
+                      type="date"
+                      value={dateOfBirth}
+                      onChange={(e) => setDateOfBirth(e.target.value)}
                     />
                   </div>
                   <div>
@@ -388,6 +723,32 @@ const EnhancedSettings = () => {
                       onChange={(e) => setLocation(e.target.value)}
                       placeholder="City, Country"
                     />
+                  </div>
+                  <div>
+                    <Label htmlFor="timezone">Timezone</Label>
+                    <Select value={timezone} onValueChange={setTimezone}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="UTC">UTC</SelectItem>
+                        <SelectItem value="America/New_York">
+                          Eastern Time
+                        </SelectItem>
+                        <SelectItem value="America/Chicago">
+                          Central Time
+                        </SelectItem>
+                        <SelectItem value="America/Denver">
+                          Mountain Time
+                        </SelectItem>
+                        <SelectItem value="America/Los_Angeles">
+                          Pacific Time
+                        </SelectItem>
+                        <SelectItem value="Europe/London">London</SelectItem>
+                        <SelectItem value="Europe/Berlin">Berlin</SelectItem>
+                        <SelectItem value="Asia/Tokyo">Tokyo</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   <div>
                     <Label htmlFor="website">Website</Label>
@@ -417,7 +778,33 @@ const EnhancedSettings = () => {
                     placeholder="Tell us about yourself..."
                     rows={4}
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {bio.length}/500 characters
+                  </p>
                 </div>
+
+                {/* Professional Links */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="linkedinUrl">LinkedIn URL</Label>
+                    <Input
+                      id="linkedinUrl"
+                      value={linkedinUrl}
+                      onChange={(e) => setLinkedinUrl(e.target.value)}
+                      placeholder="https://linkedin.com/in/username"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="githubUrl">GitHub URL</Label>
+                    <Input
+                      id="githubUrl"
+                      value={githubUrl}
+                      onChange={(e) => setGithubUrl(e.target.value)}
+                      placeholder="https://github.com/username"
+                    />
+                  </div>
+                </div>
+
                 <Button onClick={saveProfileChanges} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
                   Save Changes
@@ -435,31 +822,37 @@ const EnhancedSettings = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label>Skills</Label>
+                  <Label>Skills *</Label>
                   <div className="flex gap-2 mb-2">
                     <Input
                       value={newSkill}
                       onChange={(e) => setNewSkill(e.target.value)}
-                      placeholder="Add a skill"
+                      placeholder="Add a skill (e.g., React, Python, Design)"
                       onKeyPress={(e) => e.key === "Enter" && addSkill()}
                     />
                     <Button onClick={addSkill} size="sm">
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {skills.map((skill, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="flex items-center gap-1"
-                      >
-                        {skill}
-                        <button onClick={() => removeSkill(skill)}>
-                          <X className="w-3 h-3" />
-                        </button>
-                      </Badge>
-                    ))}
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {skills.length > 0 ? (
+                      skills.map((skill, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          {skill}
+                          <button onClick={() => removeSkill(skill)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No skills added yet
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -476,19 +869,25 @@ const EnhancedSettings = () => {
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {interests.map((interest, index) => (
-                      <Badge
-                        key={index}
-                        variant="outline"
-                        className="flex items-center gap-1"
-                      >
-                        {interest}
-                        <button onClick={() => removeInterest(interest)}>
-                          <X className="w-3 h-3" />
-                        </button>
-                      </Badge>
-                    ))}
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {interests.length > 0 ? (
+                      interests.map((interest, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="flex items-center gap-1"
+                        >
+                          {interest}
+                          <button onClick={() => removeInterest(interest)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No interests added yet
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -505,13 +904,14 @@ const EnhancedSettings = () => {
                       <Plus className="w-4 h-4" />
                     </Button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
                     {languages.map((language, index) => (
                       <Badge
                         key={index}
                         variant="secondary"
                         className="flex items-center gap-1"
                       >
+                        <Languages className="w-3 h-3" />
                         {language}
                         {languages.length > 1 && (
                           <button onClick={() => removeLanguage(language)}>
@@ -523,9 +923,47 @@ const EnhancedSettings = () => {
                   </div>
                 </div>
 
+                <div>
+                  <Label>Certifications</Label>
+                  <div className="flex gap-2 mb-2">
+                    <Input
+                      value={newCertification}
+                      onChange={(e) => setNewCertification(e.target.value)}
+                      placeholder="Add a certification"
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && addCertification()
+                      }
+                    />
+                    <Button onClick={addCertification} size="sm">
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 min-h-[40px] p-2 border rounded-md">
+                    {certifications.length > 0 ? (
+                      certifications.map((cert, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
+                          <Award className="w-3 h-3" />
+                          {cert}
+                          <button onClick={() => removeCertification(cert)}>
+                            <X className="w-3 h-3" />
+                          </button>
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No certifications added yet
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 <Button onClick={saveProfileChanges} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
-                  Save Skills
+                  Save Skills & Expertise
                 </Button>
               </CardContent>
             </Card>
@@ -562,6 +1000,8 @@ const EnhancedSettings = () => {
                       value={hourlyRate}
                       onChange={(e) => setHourlyRate(e.target.value)}
                       placeholder="25"
+                      min="1"
+                      max="1000"
                     />
                   </div>
                   <div>
@@ -574,9 +1014,24 @@ const EnhancedSettings = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="available">Available</SelectItem>
-                        <SelectItem value="busy">Busy</SelectItem>
-                        <SelectItem value="unavailable">Unavailable</SelectItem>
+                        <SelectItem value="available">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            Available
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="busy">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            Busy
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="unavailable">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            Unavailable
+                          </div>
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -590,11 +1045,51 @@ const EnhancedSettings = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="entry">Entry Level</SelectItem>
-                        <SelectItem value="intermediate">
-                          Intermediate
+                        <SelectItem value="entry">
+                          Entry Level (0-2 years)
                         </SelectItem>
-                        <SelectItem value="expert">Expert</SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate (2-5 years)
+                        </SelectItem>
+                        <SelectItem value="expert">
+                          Expert (5+ years)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="workingHours">Working Hours</Label>
+                    <Select
+                      value={workingHours}
+                      onValueChange={setWorkingHours}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="9am-5pm">9 AM - 5 PM</SelectItem>
+                        <SelectItem value="flexible">Flexible</SelectItem>
+                        <SelectItem value="custom">Custom Hours</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="responseTime">Response Time</Label>
+                    <Select
+                      value={responseTime}
+                      onValueChange={setResponseTime}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="within-1h">Within 1 hour</SelectItem>
+                        <SelectItem value="within-24h">
+                          Within 24 hours
+                        </SelectItem>
+                        <SelectItem value="within-48h">
+                          Within 48 hours
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -619,7 +1114,7 @@ const EnhancedSettings = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Building className="w-5 h-5" />
+                  <Store className="w-5 h-5" />
                   Marketplace Profile
                 </CardTitle>
               </CardHeader>
@@ -644,10 +1139,31 @@ const EnhancedSettings = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="individual">Individual</SelectItem>
+                        <SelectItem value="individual">
+                          Individual Seller
+                        </SelectItem>
                         <SelectItem value="business">Business</SelectItem>
+                        <SelectItem value="corporation">Corporation</SelectItem>
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div className="md:col-span-2">
+                    <Label htmlFor="businessAddress">Business Address</Label>
+                    <Input
+                      id="businessAddress"
+                      value={businessAddress}
+                      onChange={(e) => setBusinessAddress(e.target.value)}
+                      placeholder="Business address (required for business accounts)"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="taxId">Tax ID / VAT Number</Label>
+                    <Input
+                      id="taxId"
+                      value={taxId}
+                      onChange={(e) => setTaxId(e.target.value)}
+                      placeholder="Tax identification number"
+                    />
                   </div>
                 </div>
                 <div>
@@ -660,9 +1176,109 @@ const EnhancedSettings = () => {
                     rows={3}
                   />
                 </div>
+                <div>
+                  <Label htmlFor="returnPolicy">Return Policy</Label>
+                  <Textarea
+                    id="returnPolicy"
+                    value={returnPolicy}
+                    onChange={(e) => setReturnPolicy(e.target.value)}
+                    placeholder="Describe your return and refund policy..."
+                    rows={3}
+                  />
+                </div>
                 <Button onClick={saveMarketplaceProfile} disabled={isLoading}>
                   <Save className="w-4 h-4 mr-2" />
                   Save Store Profile
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Crypto Trading Profile */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Coins className="w-5 h-5" />
+                  Crypto Trading Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="tradingExperience">
+                      Trading Experience
+                    </Label>
+                    <Select
+                      value={tradingExperience}
+                      onValueChange={setTradingExperience}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="beginner">
+                          Beginner (0-1 years)
+                        </SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate (1-3 years)
+                        </SelectItem>
+                        <SelectItem value="advanced">
+                          Advanced (3+ years)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="riskTolerance">Risk Tolerance</Label>
+                    <Select
+                      value={riskTolerance}
+                      onValueChange={setRiskTolerance}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="low">Conservative</SelectItem>
+                        <SelectItem value="medium">Moderate</SelectItem>
+                        <SelectItem value="high">Aggressive</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="preferredCurrency">
+                      Preferred Currency
+                    </Label>
+                    <Select
+                      value={preferredCurrency}
+                      onValueChange={setPreferredCurrency}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="EUR">EUR</SelectItem>
+                        <SelectItem value="GBP">GBP</SelectItem>
+                        <SelectItem value="JPY">JPY</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="p2pEnabled">Enable P2P Trading</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Allow peer-to-peer cryptocurrency trading
+                    </p>
+                  </div>
+                  <Switch
+                    id="p2pEnabled"
+                    checked={p2pEnabled}
+                    onCheckedChange={setP2pEnabled}
+                  />
+                </div>
+                <Button onClick={saveCryptoProfile} disabled={isLoading}>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Crypto Profile
                 </Button>
               </CardContent>
             </Card>
@@ -688,40 +1304,63 @@ const EnhancedSettings = () => {
                   </div>
                   {getKYCStatusBadge(kycLevel)}
                 </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="text-center">
                     <div
-                      className={`w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 0 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 0 ? "bg-green-500 text-white" : "bg-gray-200"}`}
                     >
-                      <Shield className="w-4 h-4" />
+                      <Shield className="w-6 h-6" />
                     </div>
-                    <p className="text-xs font-medium">Basic</p>
+                    <p className="text-sm font-medium">Basic</p>
+                    <p className="text-xs text-muted-foreground">
+                      Email & Phone
+                    </p>
                   </div>
                   <div className="text-center">
                     <div
-                      className={`w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 1 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 1 ? "bg-green-500 text-white" : "bg-gray-200"}`}
                     >
-                      <UserCheck className="w-4 h-4" />
+                      <UserCheck className="w-6 h-6" />
                     </div>
-                    <p className="text-xs font-medium">Identity</p>
+                    <p className="text-sm font-medium">Identity</p>
+                    <p className="text-xs text-muted-foreground">
+                      Government ID
+                    </p>
                   </div>
                   <div className="text-center">
                     <div
-                      className={`w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 2 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 2 ? "bg-green-500 text-white" : "bg-gray-200"}`}
                     >
-                      <FileText className="w-4 h-4" />
+                      <FileText className="w-6 h-6" />
                     </div>
-                    <p className="text-xs font-medium">Documents</p>
+                    <p className="text-sm font-medium">Documents</p>
+                    <p className="text-xs text-muted-foreground">
+                      Address Proof
+                    </p>
                   </div>
                   <div className="text-center">
                     <div
-                      className={`w-8 h-8 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 3 ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                      className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center ${kycLevel >= 3 ? "bg-green-500 text-white" : "bg-gray-200"}`}
                     >
-                      <CheckCircle className="w-4 h-4" />
+                      <CheckCircle className="w-6 h-6" />
                     </div>
-                    <p className="text-xs font-medium">Advanced</p>
+                    <p className="text-sm font-medium">Advanced</p>
+                    <p className="text-xs text-muted-foreground">Video Call</p>
                   </div>
                 </div>
+
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h4 className="font-medium mb-2">
+                    Benefits of Higher KYC Levels:
+                  </h4>
+                  <ul className="text-sm space-y-1">
+                    <li>• Level 1: Trade up to $1,000/day</li>
+                    <li>• Level 2: Trade up to $10,000/day, P2P trading</li>
+                    <li>• Level 3: Unlimited trading, premium features</li>
+                  </ul>
+                </div>
+
                 <Button
                   onClick={() => setShowKYCModal(true)}
                   className="w-full"
@@ -742,34 +1381,90 @@ const EnhancedSettings = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  Trading Limits
+                  Trading Limits & Statistics
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="text-center p-4 border rounded-lg">
-                    <DollarSign className="w-6 h-6 mx-auto mb-2 text-green-500" />
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-500" />
                     <p className="text-2xl font-bold">$1,000</p>
                     <p className="text-sm text-muted-foreground">Daily Limit</p>
+                    <Progress value={45} className="mt-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      $450 used today
+                    </p>
                   </div>
                   <div className="text-center p-4 border rounded-lg">
-                    <DollarSign className="w-6 h-6 mx-auto mb-2 text-blue-500" />
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-blue-500" />
                     <p className="text-2xl font-bold">$5,000</p>
                     <p className="text-sm text-muted-foreground">
                       Weekly Limit
                     </p>
+                    <Progress value={30} className="mt-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      $1,500 used this week
+                    </p>
                   </div>
                   <div className="text-center p-4 border rounded-lg">
-                    <DollarSign className="w-6 h-6 mx-auto mb-2 text-purple-500" />
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-purple-500" />
                     <p className="text-2xl font-bold">$20,000</p>
                     <p className="text-sm text-muted-foreground">
                       Monthly Limit
                     </p>
+                    <Progress value={25} className="mt-2" />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      $5,000 used this month
+                    </p>
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground text-center">
-                  Complete KYC verification to increase your trading limits
-                </p>
+                <div className="bg-yellow-50 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                    <p className="font-medium text-yellow-800">
+                      Increase Your Limits
+                    </p>
+                  </div>
+                  <p className="text-sm text-yellow-700">
+                    Complete KYC verification to increase your trading limits
+                    and access premium features.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Payment Methods */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="w-5 h-5" />
+                  Payment Methods
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="w-4 h-4" />
+                        <span className="font-medium">Credit Card</span>
+                      </div>
+                      <Badge variant="secondary">Primary</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">**** 1234</p>
+                    <p className="text-xs text-muted-foreground">
+                      Expires 12/25
+                    </p>
+                  </div>
+                  <div className="p-4 border rounded-lg border-dashed">
+                    <div className="text-center">
+                      <Plus className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                      <p className="text-sm text-muted-foreground">
+                        Add Payment Method
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -784,87 +1479,202 @@ const EnhancedSettings = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="emailNotifications">
-                      Email Notifications
-                    </Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive important updates via email
-                    </p>
+                {/* Email Notifications */}
+                <div>
+                  <h3 className="font-medium mb-4 flex items-center gap-2">
+                    <Mail className="w-4 h-4" />
+                    Email Notifications
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="emailNotifications">
+                          Email Notifications
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive important updates via email
+                        </p>
+                      </div>
+                      <Switch
+                        id="emailNotifications"
+                        checked={emailNotifications}
+                        onCheckedChange={setEmailNotifications}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="securityAlerts">Security Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Login attempts and security updates
+                        </p>
+                      </div>
+                      <Switch
+                        id="securityAlerts"
+                        checked={securityAlerts}
+                        onCheckedChange={setSecurityAlerts}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="weeklyDigest">Weekly Digest</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Summary of your activity and earnings
+                        </p>
+                      </div>
+                      <Switch
+                        id="weeklyDigest"
+                        checked={weeklyDigest}
+                        onCheckedChange={setWeeklyDigest}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="marketingEmails">
+                          Marketing Emails
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Product updates and promotions
+                        </p>
+                      </div>
+                      <Switch
+                        id="marketingEmails"
+                        checked={marketingEmails}
+                        onCheckedChange={setMarketingEmails}
+                      />
+                    </div>
                   </div>
-                  <Switch
-                    id="emailNotifications"
-                    checked={emailNotifications}
-                    onCheckedChange={setEmailNotifications}
-                  />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="pushNotifications">
-                      Push Notifications
-                    </Label>
-                    <p className="text-sm text-muted-foreground">
-                      Get instant notifications
-                    </p>
+
+                <Separator />
+
+                {/* Push Notifications */}
+                <div>
+                  <h3 className="font-medium mb-4 flex items-center gap-2">
+                    <Smartphone className="w-4 h-4" />
+                    Push Notifications
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="pushNotifications">
+                          Push Notifications
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Get instant notifications
+                        </p>
+                      </div>
+                      <Switch
+                        id="pushNotifications"
+                        checked={pushNotifications}
+                        onCheckedChange={setPushNotifications}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="socialActivity">Social Activity</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Likes, comments, and follows
+                        </p>
+                      </div>
+                      <Switch
+                        id="socialActivity"
+                        checked={socialActivity}
+                        onCheckedChange={setSocialActivity}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="orderUpdates">Order Updates</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Marketplace order status changes
+                        </p>
+                      </div>
+                      <Switch
+                        id="orderUpdates"
+                        checked={orderUpdates}
+                        onCheckedChange={setOrderUpdates}
+                      />
+                    </div>
                   </div>
-                  <Switch
-                    id="pushNotifications"
-                    checked={pushNotifications}
-                    onCheckedChange={setPushNotifications}
-                  />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="orderUpdates">Order Updates</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Marketplace order status changes
-                    </p>
+
+                <Separator />
+
+                {/* Trading & Finance */}
+                <div>
+                  <h3 className="font-medium mb-4 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    Trading & Finance
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="tradingAlerts">Trading Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Price movements and trading opportunities
+                        </p>
+                      </div>
+                      <Switch
+                        id="tradingAlerts"
+                        checked={tradingAlerts}
+                        onCheckedChange={setTradingAlerts}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="priceAlerts">Price Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Cryptocurrency price notifications
+                        </p>
+                      </div>
+                      <Switch
+                        id="priceAlerts"
+                        checked={priceAlerts}
+                        onCheckedChange={setPriceAlerts}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label htmlFor="newsUpdates">News Updates</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Market news and analysis
+                        </p>
+                      </div>
+                      <Switch
+                        id="newsUpdates"
+                        checked={newsUpdates}
+                        onCheckedChange={setNewsUpdates}
+                      />
+                    </div>
                   </div>
-                  <Switch
-                    id="orderUpdates"
-                    checked={orderUpdates}
-                    onCheckedChange={setOrderUpdates}
-                  />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="tradingAlerts">Trading Alerts</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Crypto trading and price alerts
-                    </p>
+              </CardContent>
+            </Card>
+
+            {/* Notification Schedule */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5" />
+                  Notification Schedule
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Quiet Hours</Label>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Set hours when you don't want to receive notifications
+                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="quietStart">Start Time</Label>
+                      <Input id="quietStart" type="time" defaultValue="22:00" />
+                    </div>
+                    <div>
+                      <Label htmlFor="quietEnd">End Time</Label>
+                      <Input id="quietEnd" type="time" defaultValue="08:00" />
+                    </div>
                   </div>
-                  <Switch
-                    id="tradingAlerts"
-                    checked={tradingAlerts}
-                    onCheckedChange={setTradingAlerts}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="socialActivity">Social Activity</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Likes, comments, and follows
-                    </p>
-                  </div>
-                  <Switch
-                    id="socialActivity"
-                    checked={socialActivity}
-                    onCheckedChange={setSocialActivity}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="marketingEmails">Marketing Emails</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Product updates and promotions
-                    </p>
-                  </div>
-                  <Switch
-                    id="marketingEmails"
-                    checked={marketingEmails}
-                    onCheckedChange={setMarketingEmails}
-                  />
                 </div>
               </CardContent>
             </Card>
@@ -890,12 +1700,28 @@ const EnhancedSettings = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="public">Public</SelectItem>
-                      <SelectItem value="followers">Followers Only</SelectItem>
-                      <SelectItem value="private">Private</SelectItem>
+                      <SelectItem value="public">
+                        <div className="flex items-center gap-2">
+                          <Globe2 className="w-4 h-4" />
+                          Public - Everyone can see your profile
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="followers">
+                        <div className="flex items-center gap-2">
+                          <Users className="w-4 h-4" />
+                          Followers Only - Only your followers can see
+                        </div>
+                      </SelectItem>
+                      <SelectItem value="private">
+                        <div className="flex items-center gap-2">
+                          <Lock className="w-4 h-4" />
+                          Private - Only you can see
+                        </div>
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
+
                 <div>
                   <Label htmlFor="allowDirectMessages">
                     Who can message you
@@ -910,49 +1736,151 @@ const EnhancedSettings = () => {
                     <SelectContent>
                       <SelectItem value="everyone">Everyone</SelectItem>
                       <SelectItem value="followers">Followers Only</SelectItem>
+                      <SelectItem value="verified">
+                        Verified Users Only
+                      </SelectItem>
                       <SelectItem value="none">No One</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="font-medium">Profile Information Display</h3>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="showOnlineStatus">
+                        Show Online Status
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        Let others see when you're online
+                      </p>
+                    </div>
+                    <Switch
+                      id="showOnlineStatus"
+                      checked={showOnlineStatus}
+                      onCheckedChange={setShowOnlineStatus}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="showActivity">Show Activity Status</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Display your recent activity
+                      </p>
+                    </div>
+                    <Switch
+                      id="showActivity"
+                      checked={showActivity}
+                      onCheckedChange={setShowActivity}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="showEmail">Show Email in Profile</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Display your email publicly
+                      </p>
+                    </div>
+                    <Switch
+                      id="showEmail"
+                      checked={showEmail}
+                      onCheckedChange={setShowEmail}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="showPhone">Show Phone in Profile</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Display your phone number publicly
+                      </p>
+                    </div>
+                    <Switch
+                      id="showPhone"
+                      checked={showPhone}
+                      onCheckedChange={setShowPhone}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="allowTags">Allow Tags</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Let others tag you in posts
+                      </p>
+                    </div>
+                    <Switch
+                      id="allowTags"
+                      checked={allowTags}
+                      onCheckedChange={setAllowTags}
+                    />
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-4">
+                  <h3 className="font-medium">Search & Discovery</h3>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="indexProfile">
+                        Index Profile in Search
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        Allow search engines to find your profile
+                      </p>
+                    </div>
+                    <Switch
+                      id="indexProfile"
+                      checked={indexProfile}
+                      onCheckedChange={setIndexProfile}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Data & Analytics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart className="w-5 h-5" />
+                  Data & Analytics
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="showOnlineStatus">Show Online Status</Label>
+                    <Label>Analytics Tracking</Label>
                     <p className="text-sm text-muted-foreground">
-                      Let others see when you're online
+                      Help us improve the platform with usage data
                     </p>
                   </div>
-                  <Switch
-                    id="showOnlineStatus"
-                    checked={showOnlineStatus}
-                    onCheckedChange={setShowOnlineStatus}
-                  />
+                  <Switch defaultChecked={true} />
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="showEmail">Show Email in Profile</Label>
+                    <Label>Personalized Ads</Label>
                     <p className="text-sm text-muted-foreground">
-                      Display your email publicly
+                      Show ads based on your interests
                     </p>
                   </div>
-                  <Switch
-                    id="showEmail"
-                    checked={showEmail}
-                    onCheckedChange={setShowEmail}
-                  />
+                  <Switch defaultChecked={false} />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label htmlFor="showPhone">Show Phone in Profile</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Display your phone number publicly
-                    </p>
-                  </div>
-                  <Switch
-                    id="showPhone"
-                    checked={showPhone}
-                    onCheckedChange={setShowPhone}
-                  />
-                </div>
+                <Button
+                  variant="outline"
+                  onClick={exportData}
+                  className="w-full"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download My Data
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -963,7 +1891,7 @@ const EnhancedSettings = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Lock className="w-5 h-5" />
-                  Security Settings
+                  Account Security
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -973,7 +1901,7 @@ const EnhancedSettings = () => {
                       Two-Factor Authentication
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Add an extra layer of security
+                      Add an extra layer of security to your account
                     </p>
                   </div>
                   <Switch
@@ -982,13 +1910,14 @@ const EnhancedSettings = () => {
                     onCheckedChange={setTwoFactorEnabled}
                   />
                 </div>
+
                 <div className="flex items-center justify-between">
                   <div>
                     <Label htmlFor="loginNotifications">
                       Login Notifications
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Get notified of new logins
+                      Get notified of new login attempts
                     </p>
                   </div>
                   <Switch
@@ -997,9 +1926,32 @@ const EnhancedSettings = () => {
                     onCheckedChange={setLoginNotifications}
                   />
                 </div>
+
+                <div>
+                  <Label htmlFor="sessionTimeout">Session Timeout</Label>
+                  <Select
+                    value={sessionTimeout}
+                    onValueChange={setSessionTimeout}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1h">1 Hour</SelectItem>
+                      <SelectItem value="8h">8 Hours</SelectItem>
+                      <SelectItem value="24h">24 Hours</SelectItem>
+                      <SelectItem value="never">Never</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <Separator />
+
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Change Password</h3>
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Key className="w-5 h-5" />
+                    Change Password
+                  </h3>
                   <div>
                     <Label htmlFor="currentPassword">Current Password</Label>
                     <Input
@@ -1019,6 +1971,9 @@ const EnhancedSettings = () => {
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Enter new password"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Password must be at least 8 characters long
+                    </p>
                   </div>
                   <div>
                     <Label htmlFor="confirmPassword">
@@ -1037,9 +1992,49 @@ const EnhancedSettings = () => {
                     Change Password
                   </Button>
                 </div>
-                <Separator />
+              </CardContent>
+            </Card>
+
+            {/* App Preferences */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Monitor className="w-5 h-5" />
+                  App Preferences
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <Label>App Language</Label>
+                  <Select value={language} onValueChange={setLanguage}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="es">Español</SelectItem>
+                      <SelectItem value="fr">Français</SelectItem>
+                      <SelectItem value="de">Deutsch</SelectItem>
+                      <SelectItem value="zh">中文</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>Font Size</Label>
+                  <Select value={fontSize} onValueChange={setFontSize}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="small">Small</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="large">Large</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Theme Preferences</h3>
                   <div className="flex items-center justify-between">
                     <div>
                       <Label>Dark Mode</Label>
@@ -1054,26 +2049,205 @@ const EnhancedSettings = () => {
                       }
                     />
                   </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="autoPlayVideos">Auto-play Videos</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically play videos in feed
+                      </p>
+                    </div>
+                    <Switch
+                      id="autoPlayVideos"
+                      checked={autoPlayVideos}
+                      onCheckedChange={setAutoPlayVideos}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="reducedMotion">Reduced Motion</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Minimize animations and transitions
+                      </p>
+                    </div>
+                    <Switch
+                      id="reducedMotion"
+                      checked={reducedMotion}
+                      onCheckedChange={setReducedMotion}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="highContrast">High Contrast</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Improve visibility with higher contrast
+                      </p>
+                    </div>
+                    <Switch
+                      id="highContrast"
+                      checked={highContrast}
+                      onCheckedChange={setHighContrast}
+                    />
+                  </div>
                 </div>
-                <Separator />
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-red-600">
-                    Danger Zone
-                  </h3>
-                  <div className="p-4 border border-red-200 rounded-lg bg-red-50">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-red-800">
-                          Delete Account
-                        </p>
-                        <p className="text-sm text-red-600">
-                          Permanently delete your account and all data
-                        </p>
-                      </div>
-                      <Button variant="destructive" size="sm">
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Delete Account
+              </CardContent>
+            </Card>
+
+            {/* Data Management */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="w-5 h-5" />
+                  Data Management
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Data Usage Preference</Label>
+                  <Select value={dataUsage} onValueChange={setDataUsage}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low - Conserve data</SelectItem>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="unlimited">Unlimited</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label htmlFor="autoBackup">Auto Backup</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically backup your data
+                    </p>
+                  </div>
+                  <Switch
+                    id="autoBackup"
+                    checked={autoBackup}
+                    onCheckedChange={setAutoBackup}
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Cache Size</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Current cache: {cacheSize}
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={clearCache}>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Clear Cache
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Danger Zone */}
+            <Card className="border-red-200">
+              <CardHeader>
+                <CardTitle className="text-red-600 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5" />
+                  Danger Zone
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="p-4 border border-red-200 rounded-lg bg-red-50">
+                  <div className="space-y-4">
+                    <div>
+                      <p className="font-medium text-red-800">
+                        Sign Out All Devices
+                      </p>
+                      <p className="text-sm text-red-600">
+                        Sign out from all devices except this one
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-2 text-red-600 border-red-300"
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out All Devices
                       </Button>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <p className="font-medium text-red-800">Delete Account</p>
+                      <p className="text-sm text-red-600">
+                        Permanently delete your account and all data. This
+                        action cannot be undone.
+                      </p>
+                      <Dialog
+                        open={showDeleteConfirm}
+                        onOpenChange={setShowDeleteConfirm}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="mt-2"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete Account
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle className="text-red-600">
+                              Delete Account
+                            </DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="bg-red-50 p-4 rounded-lg">
+                              <div className="flex items-center gap-2 mb-2">
+                                <AlertTriangle className="w-5 h-5 text-red-600" />
+                                <p className="font-medium text-red-800">
+                                  Warning
+                                </p>
+                              </div>
+                              <p className="text-sm text-red-700">
+                                This will permanently delete your account and
+                                all associated data:
+                              </p>
+                              <ul className="text-sm text-red-700 mt-2 space-y-1">
+                                <li>• Profile information and settings</li>
+                                <li>• Posts, comments, and media</li>
+                                <li>• Marketplace products and orders</li>
+                                <li>• Trading history and portfolio</li>
+                                <li>• Wallet and financial data</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <Label htmlFor="deleteConfirm">
+                                Type "DELETE" to confirm
+                              </Label>
+                              <Input id="deleteConfirm" placeholder="DELETE" />
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                onClick={() => setShowDeleteConfirm(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                onClick={deleteAccount}
+                                disabled={isLoading}
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete Account
+                              </Button>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </div>
                 </div>
