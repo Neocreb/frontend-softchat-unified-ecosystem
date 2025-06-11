@@ -1,19 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/components/ui/use-toast';
-import { Post } from '@/components/feed/PostCard';
-import { Product } from '@/types/marketplace';
-import { ExtendedUser, UserProfile } from '@/types/user';
-import { supabase } from '@/lib/supabase/client';
-import {
-  getUserByUsername,
-  getFollowersCount,
-  getFollowingCount,
-  isFollowing as checkIsFollowing,
-  toggleFollow as toggleFollowStatus,
-  getUserPosts,
-  getUserProducts
-} from '@/services/profileService';
+import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
+import { Post } from "@/components/feed/PostCard";
+import { Product } from "@/types/marketplace";
+import { ExtendedUser, UserProfile, MockUser } from "@/types/user";
+import { profileService } from "@/services/profileService";
 
 interface UseProfileProps {
   username?: string;
@@ -22,46 +13,65 @@ interface UseProfileProps {
 export const useProfile = ({ username }: UseProfileProps = {}) => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [profileUser, setProfileUser] = useState<ExtendedUser | null>(null);
+
+  // State
+  const [profileUser, setProfileUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [services, setServices] = useState<any[]>([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
 
-  const isOwnProfile = !username || (user && profileUser && user.id === profileUser.id);
+  // Determine if this is the user's own profile
+  const isOwnProfile =
+    !username || (user && user.profile?.username === username);
 
   useEffect(() => {
     const fetchProfileData = async () => {
       setIsLoading(true);
 
       try {
-        if ((!username && user) || (username && user?.profile?.username === username)) {
-          setProfileUser(user);
-          await fetchUserData(user.id);
-          return;
+        let profile: UserProfile | null = null;
+
+        if (isOwnProfile && user?.profile) {
+          // Use current user's profile
+          profile = user.profile;
+        } else if (username) {
+          // Fetch profile by username
+          profile = await profileService.getUserByUsername(username);
+
+          if (!profile) {
+            // Generate mock user for demonstration
+            console.log(`Generating mock user for username: ${username}`);
+            const mockUser = profileService.generateMockUser(username);
+            profile = mockUser.profile!;
+
+            // Set mock data
+            setPosts(formatPosts(mockUser.mock_data.posts));
+            setProducts(formatProducts(mockUser.mock_data.products));
+            setServices(mockUser.mock_data.services);
+          }
         }
 
-        if (username) {
-          const profileData = await getUserByUsername(username);
-
-          if (profileData) {
-            const enhancedProfile = {
-              ...profileData,
-              id: profileData.user_id
-            };
-            const extendedUser = formatUserData(enhancedProfile) as ExtendedUser;
-            setProfileUser(extendedUser);
-            await fetchUserData(profileData.user_id);
-          } else {
-            createMockProfile(username);
-          }
+        if (profile) {
+          setProfileUser(profile);
+          await fetchUserData(profile.id);
         }
       } catch (error) {
         console.error("Error fetching profile data:", error);
         if (username) {
-          createMockProfile(username);
+          // Generate mock profile on error
+          const mockUser = profileService.generateMockUser(username);
+          setProfileUser(mockUser.profile!);
+          setPosts(formatPosts(mockUser.mock_data.posts));
+          setProducts(formatProducts(mockUser.mock_data.products));
+          setServices(mockUser.mock_data.services);
+
+          // Set mock follower data
+          setFollowerCount(Math.floor(Math.random() * 1000) + 100);
+          setFollowingCount(Math.floor(Math.random() * 500) + 50);
         }
       } finally {
         setIsLoading(false);
@@ -69,321 +79,279 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     };
 
     fetchProfileData();
-  }, [username, user]);
+  }, [username, user, isOwnProfile]);
 
   const fetchUserData = async (userId: string) => {
     try {
-      const followers = await getFollowersCount(userId);
-      const following = await getFollowingCount(userId);
+      // Fetch follower counts
+      const [followers, following] = await Promise.all([
+        profileService.getFollowersCount(userId),
+        profileService.getFollowingCount(userId),
+      ]);
 
       setFollowerCount(followers);
       setFollowingCount(following);
 
-      if (user && user.id !== userId) {
-        const following = await checkIsFollowing(user.id, userId);
-        setIsFollowing(following);
+      // Check if current user is following this profile
+      if (user && user.id && user.id !== userId) {
+        const followStatus = await profileService.isFollowing(user.id, userId);
+        setIsFollowing(followStatus);
       }
 
+      // Fetch user content
       try {
-        const postsData = await getUserPosts(userId);
-        const productsData = await getUserProducts(userId);
+        const [userPosts, userProducts, userServices] = await Promise.all([
+          profileService.getUserPosts(userId),
+          profileService.getUserProducts(userId),
+          profileService.getUserServices(userId),
+        ]);
 
-        if (postsData && postsData.length > 0) {
-          setPosts(formatPosts(postsData));
+        // Format and set posts
+        if (userPosts && userPosts.length > 0) {
+          setPosts(formatPosts(userPosts));
         } else {
-          createMockPosts();
+          setPosts(createMockPosts());
         }
 
-        if (productsData && productsData.length > 0) {
-          setProducts(formatProducts(productsData));
-        } else {
-          createMockProducts(userId);
+        // Format and set products
+        if (userProducts && userProducts.length > 0) {
+          setProducts(formatProducts(userProducts));
+        } else if (profileUser?.marketplace_profile) {
+          setProducts(createMockProducts());
         }
-      } catch (error) {
-        console.error("Error fetching user content:", error);
-        createMockPosts();
-        createMockProducts(userId);
+
+        // Format and set services
+        if (userServices && userServices.length > 0) {
+          setServices(formatServices(userServices));
+        } else if (profileUser?.freelance_profile) {
+          setServices(createMockServices());
+        }
+      } catch (contentError) {
+        console.error("Error fetching user content:", contentError);
+        // Set mock data on error
+        setPosts(createMockPosts());
+        if (profileUser?.marketplace_profile) {
+          setProducts(createMockProducts());
+        }
+        if (profileUser?.freelance_profile) {
+          setServices(createMockServices());
+        }
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+      // Set mock data on error
       setFollowerCount(Math.floor(Math.random() * 1000) + 100);
       setFollowingCount(Math.floor(Math.random() * 500) + 50);
-      createMockPosts();
-      createMockProducts(userId);
+      setPosts(createMockPosts());
     }
   };
 
+  // Format functions
   const formatPosts = (postsData: any[]): Post[] => {
-    return postsData.map(post => ({
+    return postsData.map((post) => ({
       id: post.id,
       content: post.content,
-      image: post.image_url,
-      createdAt: new Date(post.created_at).toLocaleDateString(),
-      likes: post.likes || 0,
-      comments: post.comments || 0,
-      shares: 0,
+      image: post.image_url || post.image,
+      createdAt: post.created_at || post.createdAt || new Date().toISOString(),
+      likes: post.likes || Math.floor(Math.random() * 50),
+      comments: post.comments || Math.floor(Math.random() * 10),
+      shares: post.shares || Math.floor(Math.random() * 5),
       author: {
-        name: post.profiles?.full_name || post.profiles?.username || 'Unknown',
-        username: post.profiles?.username || 'user',
-        avatar: post.profiles?.avatar_url || '/placeholder.svg',
-        verified: post.profiles?.is_verified || false
-      }
+        name: profileUser?.full_name || "User",
+        username: profileUser?.username || "user",
+        avatar: profileUser?.avatar_url || "/placeholder.svg",
+        verified: profileUser?.is_verified || false,
+      },
     }));
   };
 
   const formatProducts = (productsData: any[]): Product[] => {
-    return productsData.map(product => ({
+    return productsData.map((product) => ({
       id: product.id,
       name: product.name,
       description: product.description,
       price: product.price,
       discountPrice: product.discount_price,
-      image: product.image_url || '/placeholder.svg',
-      category: product.category || 'General',
+      image:
+        product.image_url ||
+        product.image ||
+        "https://source.unsplash.com/400x400/?product",
+      category: product.category || "General",
       rating: product.rating || 4.5,
       reviewCount: product.review_count || 0,
-      inStock: product.in_stock || true,
-      isNew: new Date(product.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000,
+      inStock: product.in_stock !== false,
+      isNew: product.created_at
+        ? new Date(product.created_at).getTime() >
+          Date.now() - 7 * 24 * 60 * 60 * 1000
+        : false,
       isFeatured: product.is_featured || false,
       isSponsored: product.is_sponsored || false,
-      sellerId: product.seller_id,
-      sellerName: product.profiles?.full_name || product.profiles?.username || 'User',
-      sellerAvatar: product.profiles?.avatar_url || '/placeholder.svg',
-      sellerVerified: product.profiles?.is_verified || false,
-      createdAt: product.created_at,
-      updatedAt: product.updated_at || product.created_at
+      sellerId: product.seller_id || profileUser?.id || "",
+      sellerName: profileUser?.full_name || "User",
+      sellerAvatar: profileUser?.avatar_url || "/placeholder.svg",
+      sellerVerified: profileUser?.is_verified || false,
+      createdAt: product.created_at || new Date().toISOString(),
+      updatedAt:
+        product.updated_at || product.created_at || new Date().toISOString(),
+      condition: product.condition || "new",
     }));
   };
 
-  const formatUserData = (profileData: any): ExtendedUser => {
-    const formattedUser: any = {
-      id: profileData.user_id || profileData.id,
-      email: profileData.email || '',
-      name: profileData.full_name || profileData.username || '',
-      avatar: profileData.avatar_url || '/placeholder.svg',
-      points: profileData.points || 0,
-      level: profileData.level || 'bronze',
-      role: profileData.role || 'user',
-      created_at: profileData.created_at || new Date().toISOString(),
-      user_metadata: {
-        name: profileData.full_name || profileData.username || '',
-        avatar: profileData.avatar_url || '/placeholder.svg',
+  const formatServices = (servicesData: any[]) => {
+    return servicesData.map((service) => ({
+      id: service.id,
+      title: service.title || service.service_name,
+      description: service.description,
+      category: service.category || "Development",
+      price_range: service.price_range || {
+        min: service.min_price || 50,
+        max: service.max_price || 500,
       },
-      profile: {
-        id: profileData.user_id || profileData.id,
-        username: profileData.username,
-        full_name: profileData.full_name || profileData.username || '',
-        avatar_url: profileData.avatar_url || '/placeholder.svg',
-        bio: profileData.bio || '',
-        is_verified: profileData.is_verified || false,
-        points: profileData.points || 0,
-        level: profileData.level || 'bronze',
-        role: profileData.role || 'user',
-      },
-      app_metadata: {},
-      aud: "authenticated"
-    };
-
-    return formattedUser as ExtendedUser;
+      delivery_time: service.delivery_time || 7,
+      featured: service.featured || false,
+    }));
   };
 
-  const createMockProfile = (username: string) => {
-    const mockUserId = "mock-" + Date.now();
-    const mockUser = {
-      id: mockUserId,
-      email: `${username}@example.com`,
-      name: username,
-      avatar: `https://ui-avatars.com/api/?name=${username}&background=random`,
-      points: Math.floor(Math.random() * 5000) + 500,
-      level: 'silver',
-      role: 'user',
-      created_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-      user_metadata: {
-        name: username,
-        avatar: `https://ui-avatars.com/api/?name=${username}&background=random`,
-      },
-      profile: {
-        id: mockUserId,
-        full_name: username,
-        username: username,
-        avatar_url: `https://ui-avatars.com/api/?name=${username}&background=random`,
-        bio: "This is a mock user profile for demonstration purposes.",
-        is_verified: Math.random() > 0.7,
-        points: Math.floor(Math.random() * 5000) + 500,
-        level: 'silver',
-        role: 'user',
-      },
-      app_metadata: {},
-      aud: "authenticated",
-      username: () => username // Add the missing username method
-    } as unknown as ExtendedUser;
+  // Mock data creation functions
+  const createMockPosts = (): Post[] => {
+    if (!profileUser) return [];
 
-    setProfileUser(mockUser);
-
-    setFollowerCount(Math.floor(Math.random() * 1000) + 100);
-    setFollowingCount(Math.floor(Math.random() * 500) + 50);
-
-    createMockPosts();
-    createMockProducts(mockUser.id);
-  };
-
-  const createMockPosts = () => {
-    if (!profileUser) return;
-
-    const mockPosts: Post[] = [
-      {
-        id: "mock-1",
-        author: {
-          name: profileUser.name || "User",
-          username: profileUser.profile?.username || "user",
-          avatar: profileUser.avatar || "/placeholder.svg",
-          verified: profileUser.profile?.is_verified || false,
-        },
-        content: "Just made my first crypto trade on Softchat! The platform makes it so easy to get started with cryptocurrency trading. #crypto #softchat",
-        createdAt: "10 minutes ago",
-        likes: 24,
-        comments: 3,
-        shares: 1,
-      },
-      {
-        id: "mock-2",
-        author: {
-          name: profileUser.name || "User",
-          username: profileUser.profile?.username || "user",
-          avatar: profileUser.avatar || "/placeholder.svg",
-          verified: profileUser.profile?.is_verified || false,
-        },
-        content: "Working on a new project using React and TypeScript. Loving the developer experience so far!",
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop",
-        createdAt: "2 days ago",
-        likes: 68,
-        comments: 5,
-        shares: 2,
-      },
-      {
-        id: "mock-3",
-        author: {
-          name: profileUser.name || "User",
-          username: profileUser.profile?.username || "user",
-          avatar: profileUser.avatar || "/placeholder.svg",
-          verified: profileUser.profile?.is_verified || false,
-        },
-        content: "Beautiful day for a hike! 🏞️ #outdoors #nature",
-        image: "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=2070&auto=format&fit=crop",
-        createdAt: "1 week ago",
-        likes: 142,
-        comments: 12,
-        shares: 5,
-        liked: true,
-      },
+    const postTemplates = [
+      "Just completed another successful project! Really excited about the results 🚀",
+      "Working on something amazing. Can't wait to share it with everyone! ✨",
+      "Great day at the office! Love what I do 💼",
+      "Learning new technologies is always exciting. #TechLife",
+      "Beautiful sunset today! Nature never fails to inspire 🌅",
     ];
 
-    setPosts(mockPosts);
+    return Array.from({ length: 3 }, (_, i) => ({
+      id: `mock-post-${i + 1}`,
+      author: {
+        name: profileUser.full_name || "User",
+        username: profileUser.username || "user",
+        avatar: profileUser.avatar_url || "/placeholder.svg",
+        verified: profileUser.is_verified || false,
+      },
+      content: postTemplates[i % postTemplates.length],
+      image:
+        i === 0
+          ? `https://source.unsplash.com/800x600/?technology,${i}`
+          : undefined,
+      createdAt: new Date(
+        Date.now() - (i + 1) * 24 * 60 * 60 * 1000,
+      ).toISOString(),
+      likes: Math.floor(Math.random() * 100) + 10,
+      comments: Math.floor(Math.random() * 20) + 2,
+      shares: Math.floor(Math.random() * 10),
+    }));
   };
 
-  const createMockProducts = (userId: string) => {
-    if (!profileUser) return;
+  const createMockProducts = (): Product[] => {
+    if (!profileUser) return [];
 
-    const mockProducts: Product[] = [
+    const productTemplates = [
       {
-        id: "mock-1",
         name: "Premium Wireless Headphones",
         description: "High-quality wireless headphones with noise cancellation",
         price: 199.99,
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop",
         category: "Electronics",
-        rating: 4.8,
-        reviewCount: 124,
-        inStock: true,
-        isNew: true,
-        sellerId: userId,
-        sellerName: profileUser.name || "User",
-        sellerAvatar: profileUser.avatar || "/placeholder.svg",
-        sellerVerified: profileUser.profile?.is_verified || false,
-        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString(),
+        image: "https://source.unsplash.com/400x400/?headphones",
       },
       {
-        id: "mock-2",
-        name: "Handcrafted Wooden Watch",
-        description: "Elegant wooden watch with premium leather strap",
-        price: 89.99,
-        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=2788&auto=format&fit=crop",
-        category: "Fashion",
-        rating: 4.6,
-        reviewCount: 46,
-        inStock: true,
-        sellerId: userId,
-        sellerName: profileUser.name || "User",
-        sellerAvatar: profileUser.avatar || "/placeholder.svg",
-        sellerVerified: profileUser.profile?.is_verified || false,
-        createdAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString(),
+        name: "Smart Fitness Tracker",
+        description: "Advanced fitness tracker with heart rate monitoring",
+        price: 149.99,
+        category: "Electronics",
+        image: "https://source.unsplash.com/400x400/?fitness,tracker",
       },
       {
-        id: "mock-3",
-        name: "Digital Marketing Course Bundle",
-        description: "Complete digital marketing masterclass with 50+ hours of content",
-        price: 149.00,
-        discountPrice: 99.00,
-        image: "https://images.unsplash.com/photo-1523726491678-bf852e717f6a?q=80&w=2070&auto=format&fit=crop",
-        category: "Courses",
-        rating: 4.9,
-        reviewCount: 215,
-        inStock: true,
-        isFeatured: true,
-        sellerId: userId,
-        sellerName: profileUser.name || "User",
-        sellerAvatar: profileUser.avatar || "/placeholder.svg",
-        sellerVerified: profileUser.profile?.is_verified || false,
-        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString(),
+        name: "Organic Coffee Beans",
+        description: "Premium organic coffee beans from Colombia",
+        price: 24.99,
+        category: "Food & Beverages",
+        image: "https://source.unsplash.com/400x400/?coffee,beans",
       },
     ];
 
-    setProducts(mockProducts);
+    return productTemplates.map((template, i) => ({
+      id: `mock-product-${i + 1}`,
+      ...template,
+      rating: Math.round((Math.random() * 1.5 + 3.5) * 10) / 10,
+      reviewCount: Math.floor(Math.random() * 50) + 5,
+      inStock: true,
+      isNew: i === 0,
+      isFeatured: i === 1,
+      sellerId: profileUser.id,
+      sellerName: profileUser.full_name || "User",
+      sellerAvatar: profileUser.avatar_url || "/placeholder.svg",
+      sellerVerified: profileUser.is_verified || false,
+      createdAt: new Date(
+        Date.now() - (i + 1) * 7 * 24 * 60 * 60 * 1000,
+      ).toISOString(),
+      updatedAt: new Date().toISOString(),
+      condition: "new" as const,
+    }));
   };
 
+  const createMockServices = () => {
+    if (!profileUser) return [];
+
+    return [
+      {
+        id: "mock-service-1",
+        title: "Full Stack Web Development",
+        description:
+          "Complete web application development from design to deployment",
+        category: "Development",
+        price_range: { min: 500, max: 5000 },
+        delivery_time: 14,
+        featured: true,
+      },
+      {
+        id: "mock-service-2",
+        title: "UI/UX Design Consultation",
+        description:
+          "Professional UI/UX design and user experience optimization",
+        category: "Design",
+        price_range: { min: 200, max: 1500 },
+        delivery_time: 7,
+        featured: false,
+      },
+    ];
+  };
+
+  // Action functions
   const toggleFollow = async () => {
-    if (!user) {
+    if (!user || !profileUser) {
       toast({
         title: "Authentication required",
-        description: "Please log in to follow this user",
+        description: "Please log in to follow users",
       });
       return;
     }
 
-    if (!profileUser) return;
-
     try {
-      setIsFollowing(prev => !prev);
+      const newFollowingState = !isFollowing;
+      setIsFollowing(newFollowingState);
+      setFollowerCount((prev) => (newFollowingState ? prev + 1 : prev - 1));
 
-      if (isFollowing) {
-        setFollowerCount(prev => prev - 1);
-        toast({
-          title: "Unfollowed",
-          description: `You unfollowed ${profileUser.name}`,
-        });
-      } else {
-        setFollowerCount(prev => prev + 1);
-        toast({
-          title: "Following",
-          description: `You are now following ${profileUser.name}`,
-        });
-      }
+      await profileService.toggleFollow(user.id, profileUser.id, isFollowing);
 
-      if (user.id && profileUser.id) {
-        await toggleFollowStatus(user.id, profileUser.id, isFollowing);
-      }
+      toast({
+        title: newFollowingState ? "Following" : "Unfollowed",
+        description: `You ${newFollowingState ? "are now following" : "unfollowed"} ${profileUser.full_name}`,
+      });
     } catch (error) {
       console.error("Error updating follow status:", error);
+      // Revert changes on error
+      setIsFollowing(!isFollowing);
+      setFollowerCount(followerCount);
+
       toast({
         title: "Error",
         description: "Could not update follow status",
         variant: "destructive",
       });
-      setIsFollowing(prev => !prev);
-      setFollowerCount(followerCount);
     }
   };
 
@@ -403,14 +371,8 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const { error } = await supabase
-        .from('products')
-        .delete()
-        .eq('id', productId);
-
-      if (error) throw error;
-
-      setProducts(products.filter(product => product.id !== productId));
+      // In a real implementation, this would call the API
+      setProducts(products.filter((product) => product.id !== productId));
 
       toast({
         title: "Product deleted",
@@ -426,18 +388,50 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
     }
   };
 
+  const updateProfile = async (updates: Partial<UserProfile>) => {
+    if (!profileUser || !user) return;
+
+    try {
+      const updatedProfile = await profileService.updateProfile(
+        profileUser.id,
+        updates,
+      );
+      setProfileUser(updatedProfile);
+
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been updated successfully",
+      });
+
+      return updatedProfile;
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast({
+        title: "Error",
+        description: "Could not update profile",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
   return {
+    // State
     profileUser,
     isLoading,
     isOwnProfile,
     posts,
     products,
+    services,
     isFollowing,
     followerCount,
     followingCount,
+
+    // Actions
     toggleFollow,
     handleAddToCart,
     handleAddToWishlist,
     handleDeleteProduct,
+    updateProfile,
   };
 };
