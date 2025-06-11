@@ -76,8 +76,8 @@ export class ProfileService {
       }
 
       return this.formatUserProfile(data);
-    } catch (error) {
-      console.error("Error fetching user by ID:", error);
+    } catch (error: any) {
+      console.warn("Error fetching user by ID:", error?.message || error);
       return null;
     }
   }
