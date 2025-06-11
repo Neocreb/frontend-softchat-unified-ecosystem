@@ -12,6 +12,8 @@ import {
   Award,
   Video,
   MessageCircle,
+  ShoppingCart,
+  Briefcase,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
