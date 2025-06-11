@@ -14,6 +14,7 @@ import {
   MessageCircle,
   ShoppingCart,
   Briefcase,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
