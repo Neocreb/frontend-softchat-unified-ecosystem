@@ -45,13 +45,7 @@ import {
 } from "@/services/feedService";
 
 // Mock data for stories
-const mockStories = [
-  {
-    id: "1",
-    user: { id: "1", name: "Your Story", avatar: "", username: "you" },
-    preview: null,
-    isOwn: true,
-  },
+const initialMockStories = [
   {
     id: "2",
     user: {
@@ -60,8 +54,17 @@ const mockStories = [
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alice",
       username: "alice_j",
     },
-    preview:
-      "https://images.unsplash.com/photo-1494790108755-2616c27b40f2?w=150&h=150&fit=crop&crop=face",
+    type: "image" as const,
+    media: {
+      type: "image" as const,
+      url: "https://images.unsplash.com/photo-1494790108755-2616c27b40f2?w=150&h=150&fit=crop&crop=face",
+      preview:
+        "https://images.unsplash.com/photo-1494790108755-2616c27b40f2?w=150&h=150&fit=crop&crop=face",
+    },
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+    duration: 15,
+    privacy: "public",
+    views: 45,
     hasNew: true,
   },
   {
@@ -72,8 +75,14 @@ const mockStories = [
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
       username: "mike_chen",
     },
-    preview:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    type: "text" as const,
+    textContent: "Having an amazing day! ☀️",
+    backgroundColor: "bg-gradient-to-br from-blue-400 to-purple-600",
+    textColor: "text-white",
+    timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+    duration: 10,
+    privacy: "public",
+    views: 23,
     hasNew: true,
   },
   {
@@ -84,8 +93,17 @@ const mockStories = [
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
       username: "sarah_w",
     },
-    preview:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+    type: "image" as const,
+    media: {
+      type: "image" as const,
+      url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      preview:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+    },
+    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+    duration: 15,
+    privacy: "public",
+    views: 67,
     hasNew: false,
   },
   {
@@ -96,8 +114,17 @@ const mockStories = [
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=david",
       username: "david_kim",
     },
-    preview:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    type: "video" as const,
+    media: {
+      type: "video" as const,
+      url: "https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4",
+      preview:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+    },
+    timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 minutes ago
+    duration: 20,
+    privacy: "public",
+    views: 89,
     hasNew: true,
   },
 ];
