@@ -166,8 +166,8 @@ export class ProfileService {
 
         if (error) throw error;
       }
-    } catch (error) {
-      console.error("Error toggling follow status:", error);
+    } catch (error: any) {
+      console.error("Error toggling follow status:", error?.message || error);
       throw error;
     }
   }
