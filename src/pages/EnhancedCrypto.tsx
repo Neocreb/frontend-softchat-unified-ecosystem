@@ -706,7 +706,7 @@ export default function EnhancedCrypto() {
                               {item.asset}
                             </span>
                             <span className="text-sm">
-                              {item.percentage.toFixed(1)}%
+                              {(item.percentage || 0).toFixed(1)}%
                             </span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
