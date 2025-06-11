@@ -128,18 +128,20 @@ export default function EnhancedCrypto() {
   };
 
   const getFearGreedColor = (value: number) => {
-    if (value <= 25) return "text-red-600";
-    if (value <= 45) return "text-orange-600";
-    if (value <= 55) return "text-yellow-600";
-    if (value <= 75) return "text-green-600";
+    const safeValue = value || 50;
+    if (safeValue <= 25) return "text-red-600";
+    if (safeValue <= 45) return "text-orange-600";
+    if (safeValue <= 55) return "text-yellow-600";
+    if (safeValue <= 75) return "text-green-600";
     return "text-blue-600";
   };
 
   const getFearGreedLabel = (value: number) => {
-    if (value <= 25) return "Extreme Fear";
-    if (value <= 45) return "Fear";
-    if (value <= 55) return "Neutral";
-    if (value <= 75) return "Greed";
+    const safeValue = value || 50;
+    if (safeValue <= 25) return "Extreme Fear";
+    if (safeValue <= 45) return "Fear";
+    if (safeValue <= 55) return "Neutral";
+    if (safeValue <= 75) return "Greed";
     return "Extreme Greed";
   };
 
