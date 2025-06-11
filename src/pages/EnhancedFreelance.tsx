@@ -380,7 +380,7 @@ const EnhancedFreelance: React.FC = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input
-                      placeholder="Search for jobs by skills, title, or keywords..."
+                      placeholder="Search jobs by skills, title, keywords..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10"
@@ -469,7 +469,7 @@ const EnhancedFreelance: React.FC = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input
-                      placeholder="Search for freelancers by skills, name, or expertise..."
+                      placeholder="Search freelancers by skills, name, expertise..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10"
