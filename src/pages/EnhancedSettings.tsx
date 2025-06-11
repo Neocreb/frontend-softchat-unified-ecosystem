@@ -2267,6 +2267,19 @@ const EnhancedSettings = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Data Management Tab */}
+          <TabsContent value="data" className="space-y-6">
+            <DataManagement />
+          </TabsContent>
+
+          {/* AI Features Tab */}
+          <TabsContent value="ai" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SmartFeedCuration />
+              <AIContentAssistant />
+            </div>
+          </TabsContent>
         </Tabs>
 
         {/* KYC Modal */}
