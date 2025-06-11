@@ -205,11 +205,24 @@ const Header = () => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/profile" className="flex items-center w-full">
+                <Link
+                  to="/profile"
+                  className="flex items-center w-full font-medium"
+                >
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/settings"
+                  className="flex items-center w-full font-medium"
+                >
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/wallet" className="flex items-center w-full">
                   <Wallet className="mr-2 h-4 w-4" />
@@ -217,17 +230,18 @@ const Header = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/rewards" className="flex items-center w-full">
-                  <Award className="mr-2 h-4 w-4" />
-                  <span>Rewards</span>
+                <Link to="/chat" className="flex items-center w-full">
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  <span>Messages</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/notifications" className="flex items-center w-full">
+                  <Bell className="mr-2 h-4 w-4" />
+                  <span>Notifications</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link to="/settings" className="flex items-center w-full">
-                  Settings
-                </Link>
-              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
