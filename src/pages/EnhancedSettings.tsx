@@ -105,10 +105,9 @@ import { useToast } from "@/components/ui/use-toast";
 import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
 import BankAccountSettings from "@/components/wallet/BankAccountSettings";
 import DataManagement from "@/components/data/DataManagement";
-import {
-  SmartFeedCuration,
-  AIContentAssistant,
-} from "@/components/ai/AIFeatures";
+import AIFeatures from "@/components/ai/AIFeatures";
+
+const { SmartFeedCuration, AIContentAssistant } = AIFeatures;
 
 const EnhancedSettings = () => {
   const { user, updateProfile, logout } = useAuth();
