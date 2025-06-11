@@ -579,6 +579,102 @@ export default function EnhancedCrypto() {
               </Card>
             </div>
           )}
+
+          {/* Market Stats - Moved to Bottom */}
+          {marketData && (
+            <div className="mobile-grid-2">
+              <Card>
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="p-1.5 md:p-2 bg-blue-100 rounded-lg flex-shrink-0">
+                      <BarChart3 className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs md:text-sm text-gray-600">
+                        Market Cap
+                      </div>
+                      <div className="text-lg md:text-xl font-bold truncate">
+                        {formatCurrency(marketData.globalStats.totalMarketCap)}
+                      </div>
+                      <div
+                        className={cn(
+                          "text-xs md:text-sm font-medium",
+                          getChangeColor(
+                            marketData.globalStats.marketCapChange24h,
+                          ),
+                        )}
+                      >
+                        {formatPercentage(
+                          marketData.globalStats.marketCapChange24h,
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="p-1.5 md:p-2 bg-green-100 rounded-lg flex-shrink-0">
+                      <Activity className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs md:text-sm text-gray-600">
+                        24h Volume
+                      </div>
+                      <div className="text-lg md:text-xl font-bold truncate">
+                        {formatCurrency(marketData.globalStats.totalVolume24h)}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="p-1.5 md:p-2 bg-orange-100 rounded-lg flex-shrink-0">
+                      <Target className="h-4 w-4 md:h-5 md:w-5 text-orange-600" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs md:text-sm text-gray-600">
+                        BTC Dominance
+                      </div>
+                      <div className="text-lg md:text-xl font-bold">
+                        {(marketData.globalStats.btcDominance || 0).toFixed(1)}%
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-3 md:p-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="p-1.5 md:p-2 bg-purple-100 rounded-lg flex-shrink-0">
+                      <Brain className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs md:text-sm text-gray-600">
+                        Fear & Greed
+                      </div>
+                      <div
+                        className={cn(
+                          "text-lg md:text-xl font-bold",
+                          getFearGreedColor(
+                            marketData?.fearGreedIndex?.value || 50,
+                          ),
+                        )}
+                      >
+                        {marketData?.fearGreedIndex?.value || 50}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </TabsContent>
 
         {/* Trading Tab */}
