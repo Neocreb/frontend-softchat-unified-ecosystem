@@ -341,41 +341,102 @@ const EnhancedSettings = () => {
         <Tabs
           value={activeTab}
           onValueChange={setActiveTab}
-          className="space-y-6"
+          className="space-y-4 sm:space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger value="general" className="flex items-center gap-1">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">General</span>
-            </TabsTrigger>
-            <TabsTrigger value="appearance" className="flex items-center gap-1">
-              <Palette className="h-4 w-4" />
-              <span className="hidden sm:inline">Appearance</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="notifications"
-              className="flex items-center gap-1"
-            >
-              <Bell className="h-4 w-4" />
-              <span className="hidden sm:inline">Notifications</span>
-            </TabsTrigger>
-            <TabsTrigger value="privacy" className="flex items-center gap-1">
-              <Eye className="h-4 w-4" />
-              <span className="hidden sm:inline">Privacy</span>
-            </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-1">
-              <Shield className="h-4 w-4" />
-              <span className="hidden sm:inline">Security</span>
-            </TabsTrigger>
-            <TabsTrigger value="trading" className="flex items-center gap-1">
-              <TrendingUp className="h-4 w-4" />
-              <span className="hidden sm:inline">Trading</span>
-            </TabsTrigger>
-            <TabsTrigger value="account" className="flex items-center gap-1">
-              <UserCheck className="h-4 w-4" />
-              <span className="hidden sm:inline">Account</span>
-            </TabsTrigger>
-          </TabsList>
+          {/* Mobile Tabs - Horizontal Scroll */}
+          <div className="block sm:hidden w-full overflow-x-auto">
+            <TabsList className="inline-flex w-max min-w-full justify-start">
+              <TabsTrigger
+                value="general"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <Settings className="h-4 w-4" />
+                <span className="text-xs">General</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="appearance"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <Palette className="h-4 w-4" />
+                <span className="text-xs">Appearance</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="notifications"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <Bell className="h-4 w-4" />
+                <span className="text-xs">Notifications</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="privacy"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <Eye className="h-4 w-4" />
+                <span className="text-xs">Privacy</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="security"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <Shield className="h-4 w-4" />
+                <span className="text-xs">Security</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="trading"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <TrendingUp className="h-4 w-4" />
+                <span className="text-xs">Trading</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="account"
+                className="flex items-center gap-1 whitespace-nowrap"
+              >
+                <UserCheck className="h-4 w-4" />
+                <span className="text-xs">Account</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Desktop Tabs - Grid Layout */}
+          <div className="hidden sm:block">
+            <TabsList className="grid w-full grid-cols-7">
+              <TabsTrigger value="general" className="flex items-center gap-1">
+                <Settings className="h-4 w-4" />
+                <span className="hidden md:inline">General</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="appearance"
+                className="flex items-center gap-1"
+              >
+                <Palette className="h-4 w-4" />
+                <span className="hidden md:inline">Appearance</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="notifications"
+                className="flex items-center gap-1"
+              >
+                <Bell className="h-4 w-4" />
+                <span className="hidden md:inline">Notifications</span>
+              </TabsTrigger>
+              <TabsTrigger value="privacy" className="flex items-center gap-1">
+                <Eye className="h-4 w-4" />
+                <span className="hidden md:inline">Privacy</span>
+              </TabsTrigger>
+              <TabsTrigger value="security" className="flex items-center gap-1">
+                <Shield className="h-4 w-4" />
+                <span className="hidden md:inline">Security</span>
+              </TabsTrigger>
+              <TabsTrigger value="trading" className="flex items-center gap-1">
+                <TrendingUp className="h-4 w-4" />
+                <span className="hidden md:inline">Trading</span>
+              </TabsTrigger>
+              <TabsTrigger value="account" className="flex items-center gap-1">
+                <UserCheck className="h-4 w-4" />
+                <span className="hidden md:inline">Account</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* General Settings */}
           <TabsContent value="general" className="space-y-6">
