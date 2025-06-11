@@ -347,13 +347,14 @@ export class CryptoService {
 
   async getRecentTrades(symbol: string, limit = 50): Promise<Trade[]> {
     await this.delay(200);
+    const timestamp = Date.now();
     return Array.from({ length: limit }, (_, i) => ({
-      id: `trade-${i}`,
+      id: `trade-${symbol}-${timestamp}-${i}`,
       symbol,
       price: 43250 + (Math.random() - 0.5) * 100,
       quantity: Math.random() * 5,
       quoteQuantity: 0,
-      time: new Date(Date.now() - i * 1000).toISOString(),
+      time: new Date(timestamp - i * 1000).toISOString(),
       isBuyerMaker: Math.random() > 0.5,
       isBestMatch: true,
     }));
