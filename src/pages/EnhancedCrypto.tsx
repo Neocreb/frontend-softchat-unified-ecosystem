@@ -119,7 +119,8 @@ export default function EnhancedCrypto() {
   };
 
   const formatPercentage = (value: number) => {
-    return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+    const safeValue = value || 0;
+    return `${safeValue >= 0 ? "+" : ""}${safeValue.toFixed(2)}%`;
   };
 
   const getChangeColor = (value: number) => {
