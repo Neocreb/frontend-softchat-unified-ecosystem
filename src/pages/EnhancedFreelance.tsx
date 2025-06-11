@@ -298,30 +298,30 @@ const EnhancedFreelance: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto bg-white">
       {/* Hero Section */}
-      <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+      <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             Freelance Marketplace
           </h1>
-          <p className="text-xl text-gray-600 mb-6">
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-4 sm:mb-6">
             Connect with top talent or find your next opportunity
           </p>
-          <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-600" />
-              <span>10,000+ Freelancers</span>
+          <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-3 sm:gap-6 lg:gap-8 text-xs sm:text-sm text-gray-600">
+            <div className="flex items-center gap-1 sm:gap-2 justify-center">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 flex-shrink-0" />
+              <span className="whitespace-nowrap">10,000+ Freelancers</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Briefcase className="h-5 w-5 text-green-600" />
-              <span>5,000+ Jobs Posted</span>
+            <div className="flex items-center gap-1 sm:gap-2 justify-center">
+              <Briefcase className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 flex-shrink-0" />
+              <span className="whitespace-nowrap">5,000+ Jobs Posted</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-yellow-500" />
-              <span>4.8 Average Rating</span>
+            <div className="flex items-center gap-1 sm:gap-2 justify-center">
+              <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">4.8 Average Rating</span>
             </div>
-            <div className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-purple-600" />
-              <span>$2M+ Paid Out</span>
+            <div className="flex items-center gap-1 sm:gap-2 justify-center">
+              <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 flex-shrink-0" />
+              <span className="whitespace-nowrap">$2M+ Paid Out</span>
             </div>
           </div>
         </div>
