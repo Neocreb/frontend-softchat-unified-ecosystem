@@ -385,7 +385,7 @@ const EnhancedProfile = () => {
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url(${profile.coverPhoto || "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"})`,
+                backgroundImage: `url(${profile.coverPhoto || "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"})`
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
@@ -397,9 +397,7 @@ const EnhancedProfile = () => {
                   size="sm"
                   variant="secondary"
                   className="bg-white/90 text-black hover:bg-white"
-                  onClick={() =>
-                    document.getElementById("cover-upload")?.click()
-                  }
+                  onClick={() => document.getElementById("cover-upload")?.click()}
                   disabled={uploading}
                 >
                   <Camera className="h-4 w-4 mr-1" />
@@ -422,8 +420,7 @@ const EnhancedProfile = () => {
                   if (file) {
                     toast({
                       title: "Cover Photo Updated",
-                      description:
-                        "Your cover photo has been updated successfully.",
+                      description: "Your cover photo has been updated successfully.",
                     });
                   }
                 }}
@@ -494,13 +491,9 @@ const EnhancedProfile = () => {
                         <Verified className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 fill-current" />
                       )}
                     </div>
-                    <p className="text-gray-600 text-sm sm:text-base">
-                      @{profile.username}
-                    </p>
+                    <p className="text-gray-600 text-sm sm:text-base">@{profile.username}</p>
                     {profile.title && (
-                      <p className="text-gray-700 font-medium text-sm sm:text-base">
-                        {profile.title}
-                      </p>
+                      <p className="text-gray-700 font-medium text-sm sm:text-base">{profile.title}</p>
                     )}
                   </div>
 
@@ -508,60 +501,36 @@ const EnhancedProfile = () => {
                   <div className="flex items-center gap-4 sm:gap-6 text-sm sm:text-base">
                     <div className="text-center">
                       <div className="font-bold text-lg">{profile.posts}</div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Posts
-                      </div>
+                      <div className="text-gray-600 text-xs sm:text-sm">Posts</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-bold text-lg">
-                        {formatNumber(profile.followers)}
-                      </div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Followers
-                      </div>
+                      <div className="font-bold text-lg">{formatNumber(profile.followers)}</div>
+                      <div className="text-gray-600 text-xs sm:text-sm">Followers</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-bold text-lg">
-                        {formatNumber(profile.following)}
-                      </div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Following
-                      </div>
+                      <div className="font-bold text-lg">{formatNumber(profile.following)}</div>
+                      <div className="text-gray-600 text-xs sm:text-sm">Following</div>
                     </div>
                     <div className="text-center">
                       <div className="font-bold text-lg flex items-center gap-1">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         {profile.reputation}
                       </div>
-                      <div className="text-gray-600 text-xs sm:text-sm">
-                        Rating
-                      </div>
+                      <div className="text-gray-600 text-xs sm:text-sm">Rating</div>
                     </div>
                   </div>
 
                   {/* Level and Badges */}
                   <div className="flex items-center gap-2 flex-wrap">
-                    <Badge
-                      variant="outline"
-                      className="border-yellow-400 text-yellow-600"
-                    >
+                    <Badge variant="outline" className="border-yellow-400 text-yellow-600">
                       <Star className="h-3 w-3 mr-1 fill-current" />
                       Level {profile.level}
                     </Badge>
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "border-green-400 text-green-600",
-                        kycBadge.color,
-                      )}
-                    >
+                    <Badge variant="outline" className={cn("border-green-400 text-green-600", kycBadge.color)}>
                       <Shield className="h-3 w-3 mr-1" />
                       {kycBadge.label}
                     </Badge>
-                    <Badge
-                      variant="outline"
-                      className="border-green-400 text-green-600"
-                    >
+                    <Badge variant="outline" className="border-green-400 text-green-600">
                       <div className="h-2 w-2 bg-green-500 rounded-full mr-1"></div>
                       Online
                     </Badge>
@@ -631,58 +600,11 @@ const EnhancedProfile = () => {
               </div>
             </div>
 
-            {/* Profile Info */}
+            {/* Mobile-Responsive Profile Content */}
             <div className="flex-1 space-y-3 sm:space-y-4 min-w-0">
-              {/* Username and Actions */}
-              <div className="flex flex-col gap-3 sm:gap-4">
-                <div className="flex items-center gap-2 min-w-0">
-                  <h1 className="text-xl sm:text-2xl font-light truncate">
-                    {profile.username}
-                  </h1>
-                  {profile.isVerified && (
-                    <Verified className="w-5 h-5 text-blue-500 fill-current" />
-                  )}
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {!isEditing ? (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setIsEditing(true)}
-                        className="flex items-center gap-1"
-                      >
-                        <Edit className="w-4 h-4" />
-                        Edit Profile
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setActiveTab("settings")}
-                      >
-                        <Settings className="w-4 h-4" />
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setIsEditing(false);
-                          setEditForm(profile);
-                          setEditingSection(null);
-                        }}
-                      >
-                        <X className="w-4 h-4 mr-1" />
-                        Cancel
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={handleSaveProfile}
-                        disabled={isLoading}
-                        className="bg-green-600 hover:bg-green-700"
+              {/* This section is now handled in the cover photo layout above for better mobile experience */}
+              <div className="lg:hidden">
+                {/* Content moved to cover photo section */}
                       >
                         <Save className="w-4 h-4 mr-1" />
                         {isLoading ? "Saving..." : "Save"}
