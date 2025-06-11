@@ -254,17 +254,17 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Search Bar */}
+      {/* Mobile Search Bar - Always show on all devices when search is opened */}
       {searchOpen && (
-        <div className="md:hidden p-2 border-t w-full">
+        <div className="p-2 border-t w-full bg-background">
           <form
             onSubmit={handleSearchSubmit}
             className="relative w-full max-w-full"
           >
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
-              placeholder="Search"
-              className="pl-9 bg-muted/40 border-none rounded-full w-full"
+              placeholder="Search SoftChat"
+              className="pl-9 bg-muted/40 border-none rounded-full w-full focus:bg-background"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus
