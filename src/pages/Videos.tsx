@@ -616,6 +616,9 @@ const Videos: React.FC = () => {
       {/* Creator Modal */}
       <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
         <DialogContent className="max-w-2xl bg-black border border-gray-800 rounded-lg p-4">
+          <VisuallyHidden>
+            <DialogTitle>Create Video</DialogTitle>
+          </VisuallyHidden>
           <EnhancedVideoCreator onClose={() => setIsCreatorOpen(false)} />
         </DialogContent>
       </Dialog>
