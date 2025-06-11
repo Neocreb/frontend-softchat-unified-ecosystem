@@ -176,7 +176,7 @@ const AppRoutes = () => {
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
 
         <Route path="crypto" element={<EnhancedCrypto />} />
-        <Route path="rewards" element={<Rewards />} />
+        <Route path="rewards" element={<EnhancedRewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
