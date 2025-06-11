@@ -1073,7 +1073,14 @@ const PostCard = ({
 // Main Feed Component
 export default function EnhancedFeed() {
   const [posts, setPosts] = useState(initialMockPosts);
+  const [stories, setStories] = useState(initialMockStories);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Story modal states
+  const [showStoryCreation, setShowStoryCreation] = useState(false);
+  const [showStoryViewer, setShowStoryViewer] = useState(false);
+  const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
+  const [selectedUserIndex, setSelectedUserIndex] = useState(0);
 
   const handlePostCreated = (newPost: Post) => {
     setPosts((prev) => [newPost, ...prev]);
@@ -1083,6 +1090,16 @@ export default function EnhancedFeed() {
     setPosts((prev) =>
       prev.map((post) => (post.id === updatedPost.id ? updatedPost : post)),
     );
+  };
+
+  const handleStoryCreated = (newStory: any) => {
+    setStories((prev) => [newStory, ...prev]);
+  };
+
+  const handleViewStory = (storyIndex: number, userIndex: number) => {
+    setSelectedStoryIndex(storyIndex);
+    setSelectedUserIndex(userIndex);
+    setShowStoryViewer(true);
   };
 
   // Simulate loading more posts
@@ -1098,7 +1115,11 @@ export default function EnhancedFeed() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-2xl mx-auto px-4 py-6">
         {/* Stories */}
-        <Stories />
+        <Stories
+          stories={stories}
+          onCreateStory={() => setShowStoryCreation(true)}
+          onViewStory={handleViewStory}
+        />
 
         {/* Create Post */}
         <CreatePost onPostCreated={handlePostCreated} />
@@ -1129,6 +1150,21 @@ export default function EnhancedFeed() {
           </p>
         </div>
       </div>
+
+      {/* Story Modals */}
+      <StoryCreationModal
+        isOpen={showStoryCreation}
+        onClose={() => setShowStoryCreation(false)}
+        onStoryCreated={handleStoryCreated}
+      />
+
+      <StoryViewerModal
+        isOpen={showStoryViewer}
+        onClose={() => setShowStoryViewer(false)}
+        stories={stories}
+        initialStoryIndex={selectedStoryIndex}
+        initialUserIndex={selectedUserIndex}
+      />
     </div>
   );
 }
