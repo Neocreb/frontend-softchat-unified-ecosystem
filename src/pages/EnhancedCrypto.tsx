@@ -146,14 +146,14 @@ export default function EnhancedCrypto() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-4 md:space-y-8 px-2 md:px-4">
+    <div className="mobile-container mobile-space-y">
       {/* Header */}
-      <div className="flex flex-col space-y-4 lg:flex-row lg:items-start lg:justify-between lg:space-y-0 lg:space-x-4">
+      <div className="mobile-flex lg:items-start lg:justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-2xl md:text-3xl font-bold truncate">
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold truncate">
             Crypto Platform
           </h1>
-          <p className="text-sm md:text-base text-gray-600 mt-1">
+          <p className="mobile-text text-gray-600 mt-1">
             Complete cryptocurrency trading, DeFi, and portfolio management
           </p>
         </div>
@@ -195,7 +195,7 @@ export default function EnhancedCrypto() {
 
       {/* Quick Stats Cards */}
       {marketData && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+        <div className="mobile-grid-2">
           <Card>
             <CardContent className="p-3 md:p-4">
               <div className="flex items-center gap-2 md:gap-3">
@@ -306,48 +306,48 @@ export default function EnhancedCrypto() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* Mobile optimized tab list with horizontal scroll */}
-        <div className="w-full overflow-x-auto">
+        <div className="w-full mobile-tabs">
           <div className="border-b border-gray-200">
-            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0">
+            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0 gap-1">
               <TabsTrigger
                 value="overview"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Overview
               </TabsTrigger>
               <TabsTrigger
                 value="trading"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Trading
               </TabsTrigger>
               <TabsTrigger
                 value="wallet"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Portfolio
               </TabsTrigger>
               <TabsTrigger
                 value="p2p"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 P2P
               </TabsTrigger>
               <TabsTrigger
                 value="defi"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 DeFi
               </TabsTrigger>
               <TabsTrigger
                 value="news"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 News
               </TabsTrigger>
               <TabsTrigger
                 value="education"
-                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+                className="mobile-tab data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none touch-target"
               >
                 Learn
               </TabsTrigger>
@@ -356,7 +356,7 @@ export default function EnhancedCrypto() {
         </div>
 
         {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-4 md:space-y-6 mt-4">
+        <TabsContent value="overview" className="mobile-space-y mt-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
             {/* Top Cryptocurrencies */}
             <Card className="lg:col-span-2">
