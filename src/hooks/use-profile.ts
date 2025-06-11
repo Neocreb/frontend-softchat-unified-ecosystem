@@ -384,8 +384,8 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         title: "Product deleted",
         description: "Your product has been deleted",
       });
-    } catch (error) {
-      console.error("Error deleting product:", error);
+    } catch (error: any) {
+      console.error("Error deleting product:", error?.message || error);
       toast({
         title: "Error",
         description: "Could not delete product",
