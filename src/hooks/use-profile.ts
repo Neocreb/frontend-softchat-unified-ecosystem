@@ -347,8 +347,8 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
         title: newFollowingState ? "Following" : "Unfollowed",
         description: `You ${newFollowingState ? "are now following" : "unfollowed"} ${profileUser.full_name}`,
       });
-    } catch (error) {
-      console.error("Error updating follow status:", error);
+    } catch (error: any) {
+      console.error("Error updating follow status:", error?.message || error);
       // Revert changes on error
       setIsFollowing(!isFollowing);
       setFollowerCount(followerCount);
