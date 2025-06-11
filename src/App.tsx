@@ -8,17 +8,18 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { AccessibilityProvider } from "./components/accessibility/AccessibilityFeatures";
-import { OnboardingTour } from "./components/onboarding/OnboardingTour";
-import { NotificationSystem } from "./components/notifications/NotificationSystem";
 import {
+  AccessibilityProvider,
   AccessibilityControlPanel,
   KeyboardNavigationHelper,
   ReadingGuide,
+} from "./components/accessibility/AccessibilityFeatures";
+import { OnboardingTour } from "./components/onboarding/OnboardingTour";
+import { NotificationSystem } from "./components/notifications/NotificationSystem";
+import {
   ConnectionStatus,
   PWAInstallPrompt,
-} from "./components/accessibility/AccessibilityFeatures";
-import { useMobileDetection } from "./components/mobile/MobileOptimizations";
+} from "./components/mobile/MobileOptimizations";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
