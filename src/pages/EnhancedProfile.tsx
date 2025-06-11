@@ -384,7 +384,7 @@ const EnhancedProfile = () => {
             {/* Profile Picture */}
             <div className="flex justify-center sm:justify-start">
               <div className="relative flex-shrink-0">
-                <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-white shadow-lg">
+                <Avatar className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 border-2 sm:border-4 border-white shadow-lg">
                   <AvatarImage
                     src={editForm.avatar || profile.avatar}
                     alt={profile.displayName}
