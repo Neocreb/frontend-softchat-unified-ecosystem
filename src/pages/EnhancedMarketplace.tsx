@@ -284,7 +284,7 @@ export default function EnhancedMarketplace() {
                     value={selectedCategory}
                     onValueChange={setSelectedCategory}
                   >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-32 sm:w-40 lg:w-44">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -297,7 +297,7 @@ export default function EnhancedMarketplace() {
                     </SelectContent>
                   </Select>
                   <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-32 sm:w-40 lg:w-44">
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                     <SelectContent>
