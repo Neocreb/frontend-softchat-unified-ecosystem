@@ -328,13 +328,13 @@ const Stories = ({
   };
 
   return (
-    <Card className="mb-6">
-      <CardContent className="p-4">
+    <Card className="mb-4 sm:mb-6">
+      <CardContent className="p-3 sm:p-4">
         <div className="relative">
           <Button
             variant="ghost"
             size="icon"
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md hidden sm:flex h-8 w-8"
             onClick={() => scroll("left")}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -342,18 +342,18 @@ const Stories = ({
 
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide px-8"
+            className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-0 sm:px-8"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {/* Your Story */}
             <div className="flex-shrink-0">
               <div
-                className="relative cursor-pointer group"
+                className="relative cursor-pointer group touch-target"
                 onClick={onCreateStory}
               >
                 <div
                   className={cn(
-                    "w-16 h-16 rounded-full p-0.5",
+                    "w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5",
                     userStories.length > 0
                       ? "bg-gradient-to-r from-purple-500 to-pink-500"
                       : "bg-gray-300",
@@ -369,17 +369,17 @@ const Stories = ({
                               "https://api.dicebear.com/7.x/avataaars/svg?seed=user"
                         }
                       />
-                      <AvatarFallback>
+                      <AvatarFallback className="text-xs">
                         {user?.name?.charAt(0) || "U"}
                       </AvatarFallback>
                     </Avatar>
                   </div>
                 </div>
-                <div className="absolute bottom-0 right-0 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                  <Plus className="w-3 h-3 text-white" />
+                <div className="absolute bottom-0 right-0 w-4 h-4 sm:w-5 sm:h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                  <Plus className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
                 </div>
               </div>
-              <p className="text-xs text-center mt-2 max-w-[64px] truncate">
+              <p className="text-xs text-center mt-1 sm:mt-2 max-w-[56px] sm:max-w-[64px] truncate">
                 Your Story
               </p>
             </div>
@@ -393,12 +393,12 @@ const Stories = ({
               return (
                 <div key={userId} className="flex-shrink-0">
                   <div
-                    className="relative cursor-pointer group"
+                    className="relative cursor-pointer group touch-target"
                     onClick={() => onViewStory(0, userIndex)}
                   >
                     <div
                       className={cn(
-                        "w-16 h-16 rounded-full p-0.5",
+                        "w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5",
                         hasNew
                           ? "bg-gradient-to-r from-purple-500 to-pink-500"
                           : "bg-gray-300",
@@ -407,7 +407,7 @@ const Stories = ({
                       <div className="w-full h-full bg-white rounded-full p-0.5">
                         <Avatar className="w-full h-full">
                           <AvatarImage src={getStoryPreview(userStories)} />
-                          <AvatarFallback>
+                          <AvatarFallback className="text-xs">
                             {latestStory.user.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
@@ -417,13 +417,13 @@ const Stories = ({
                     <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
                       <Badge
                         variant="secondary"
-                        className="text-xs px-1 py-0 h-4"
+                        className="text-xs px-1 py-0 h-3 sm:h-4"
                       >
                         {formatTimeAgo(latestStory.timestamp)}
                       </Badge>
                     </div>
                   </div>
-                  <p className="text-xs text-center mt-3 max-w-[64px] truncate">
+                  <p className="text-xs text-center mt-2 sm:mt-3 max-w-[56px] sm:max-w-[64px] truncate">
                     {latestStory.user.name}
                   </p>
                 </div>
@@ -434,7 +434,7 @@ const Stories = ({
           <Button
             variant="ghost"
             size="icon"
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md hidden sm:flex h-8 w-8"
             onClick={() => scroll("right")}
           >
             <ChevronRight className="h-4 w-4" />
