@@ -160,7 +160,8 @@ const AppRoutes = () => {
       >
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="create" element={<EnhancedFreelance />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<EnhancedProfile />} />
+        <Route path="profile/legacy" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="messages" element={<Messages />} />
@@ -182,7 +183,8 @@ const AppRoutes = () => {
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="settings" element={<EnhancedSettings />} />
+        <Route path="settings/legacy" element={<Settings />} />
       </Route>
 
       {/* Admin Routes */}
