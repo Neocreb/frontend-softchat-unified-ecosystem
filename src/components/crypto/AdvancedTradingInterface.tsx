@@ -451,9 +451,9 @@ const AdvancedTradingInterface: React.FC = () => {
                   <span>Total</span>
                   <span>Time</span>
                 </div>
-                {recentTrades.map((trade) => (
+                {recentTrades.map((trade, index) => (
                   <div
-                    key={trade.id}
+                    key={`${trade.id}-${index}-adv`}
                     className="grid grid-cols-4 text-sm py-1 hover:bg-gray-50 rounded px-1"
                   >
                     <span
