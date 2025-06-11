@@ -14,6 +14,13 @@ export class ProfileService {
   // Basic profile operations
   async getUserByUsername(username: string): Promise<UserProfile | null> {
     try {
+      // First check if it's a predefined mock user
+      if (mockUsers[username]) {
+        console.log(`Using predefined mock user: ${username}`);
+        return mockUsers[username].profile!;
+      }
+
+      // Try to fetch from database
       const { data, error } = await supabase
         .from("profiles")
         .select(
@@ -28,7 +35,16 @@ export class ProfileService {
         .single();
 
       if (error) {
-        console.warn("User not found in database, generating mock user");
+        console.warn(
+          "User not found in database, checking mock users or generating new mock user",
+        );
+
+        // Search in mock users by partial match
+        const mockSearchResults = searchMockUsers(username);
+        if (mockSearchResults.length > 0) {
+          return mockSearchResults[0].profile!;
+        }
+
         return null;
       }
 
