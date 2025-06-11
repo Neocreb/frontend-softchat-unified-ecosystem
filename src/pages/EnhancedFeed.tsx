@@ -529,22 +529,24 @@ const CreatePost = ({
   return (
     <>
       <Card className="mb-6">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-3 mb-4">
-            <Avatar>
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
               <AvatarImage
                 src={
                   user?.avatar ||
                   "https://api.dicebear.com/7.x/avataaars/svg?seed=user"
                 }
               />
-              <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
+              <AvatarFallback className="text-xs sm:text-sm">
+                {user?.name?.charAt(0) || "U"}
+              </AvatarFallback>
             </Avatar>
             <div
-              className="flex-1 bg-gray-100 rounded-full px-4 py-2 cursor-text"
+              className="flex-1 bg-gray-100 rounded-full px-3 sm:px-4 py-2 sm:py-3 cursor-text touch-target min-w-0"
               onClick={() => setShowFullComposer(true)}
             >
-              <span className="text-gray-500">
+              <span className="text-gray-500 text-sm sm:text-base truncate">
                 What's on your mind, {user?.name?.split(" ")[0] || "User"}?
               </span>
             </div>
