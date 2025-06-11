@@ -210,6 +210,9 @@ export function StoryViewerModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md max-h-screen h-screen p-0 bg-black">
+        <VisuallyHidden>
+          <DialogTitle>View Story</DialogTitle>
+        </VisuallyHidden>
         <div className="relative h-full flex flex-col">
           {/* Progress bars */}
           <div className="absolute top-4 left-4 right-4 z-20 flex gap-1">
