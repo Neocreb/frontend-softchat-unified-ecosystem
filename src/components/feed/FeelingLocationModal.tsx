@@ -1,36 +1,34 @@
 // src/components/feed/FeelingLocationModal.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Smile, MapPin, Search, Navigation, Clock, X } from "lucide-react";
+  Smile,
+  MapPin,
+  Search,
+  Navigation,
+  Clock,
+  X
+} from 'lucide-react';
 import {
   FEELINGS,
   ACTIVITIES,
   LOCATION_SUGGESTIONS,
-  feedService,
-} from "@/services/feedService";
-import { useToast } from "@/components/ui/use-toast";
+  feedService
+} from '@/services/feedService';
+import { useToast } from '@/components/ui/use-toast';
 
 interface FeelingLocationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onFeelingSelected: (feeling: { emoji: string; text: string }) => void;
-  onLocationSelected: (location: {
-    name: string;
-    coordinates?: { lat: number; lng: number };
-  }) => void;
-  defaultTab?: "feeling" | "location";
+  onLocationSelected: (location: { name: string; coordinates?: { lat: number; lng: number } }) => void;
+  defaultTab?: 'feeling' | 'location';
 }
 
 export function FeelingLocationModal({
@@ -38,10 +36,10 @@ export function FeelingLocationModal({
   onClose,
   onFeelingSelected,
   onLocationSelected,
-  defaultTab = "feeling",
+  defaultTab = 'feeling'
 }: FeelingLocationModalProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
-  const [locationSearch, setLocationSearch] = useState("");
+  const [locationSearch, setLocationSearch] = useState('');
   const [locationResults, setLocationResults] = useState(LOCATION_SUGGESTIONS);
   const [isSearching, setIsSearching] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
@@ -51,7 +49,7 @@ export function FeelingLocationModal({
   useEffect(() => {
     if (isOpen) {
       setActiveTab(defaultTab);
-      setLocationSearch("");
+      setLocationSearch('');
       setLocationResults(LOCATION_SUGGESTIONS);
     }
   }, [isOpen, defaultTab]);
@@ -65,7 +63,7 @@ export function FeelingLocationModal({
           const results = await feedService.searchLocations(locationSearch);
           setLocationResults(results);
         } catch (error) {
-          console.error("Location search failed:", error);
+          console.error('Location search failed:', error);
         } finally {
           setIsSearching(false);
         }
@@ -82,10 +80,7 @@ export function FeelingLocationModal({
     onClose();
   };
 
-  const handleLocationSelect = (location: {
-    name: string;
-    coordinates?: { lat: number; lng: number };
-  }) => {
+  const handleLocationSelect = (location: { name: string; coordinates?: { lat: number; lng: number } }) => {
     onLocationSelected(location);
     onClose();
   };
@@ -98,17 +93,16 @@ export function FeelingLocationModal({
         handleLocationSelect(location);
       } else {
         toast({
-          title: "Location access denied",
-          description:
-            "Please enable location access or select a location manually.",
-          variant: "destructive",
+          title: 'Location access denied',
+          description: 'Please enable location access or select a location manually.',
+          variant: 'destructive',
         });
       }
     } catch (error) {
       toast({
-        title: "Failed to get location",
-        description: "Please try again or select a location manually.",
-        variant: "destructive",
+        title: 'Failed to get location',
+        description: 'Please try again or select a location manually.',
+        variant: 'destructive',
       });
     } finally {
       setIsGettingLocation(false);
@@ -117,10 +111,15 @@ export function FeelingLocationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-[95vw] sm:max-w-md max-h-[90vh] overflow-y-auto mx-2 sm:mx-auto">
         <DialogHeader>
+          <DialogTitle className="text-lg sm:text-xl">How are you feeling?</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
+            Express your mood or share your location
+          </DialogDescription>
+        </DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            {activeTab === "feeling" ? (
+            {activeTab === 'feeling' ? (
               <>
                 <Smile className="w-5 h-5" />
                 How are you feeling?
@@ -133,18 +132,14 @@ export function FeelingLocationModal({
             )}
           </DialogTitle>
           <DialogDescription>
-            {activeTab === "feeling"
-              ? "Let your friends know what you're feeling or doing"
-              : "Add your location to this post"}
+            {activeTab === 'feeling'
+              ? 'Let your friends know what you\'re feeling or doing'
+              : 'Add your location to this post'
+            }
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs
-          value={activeTab}
-          onValueChange={(value) =>
-            setActiveTab(value as "feeling" | "location")
-          }
-        >
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'feeling' | 'location')}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="feeling" className="flex items-center gap-1">
               <Smile className="w-4 h-4" />
@@ -203,9 +198,7 @@ export function FeelingLocationModal({
               disabled={isGettingLocation}
             >
               <Navigation className="w-4 h-4 mr-2" />
-              {isGettingLocation
-                ? "Getting location..."
-                : "Use current location"}
+              {isGettingLocation ? 'Getting location...' : 'Use current location'}
             </Button>
 
             {/* Location Search */}
