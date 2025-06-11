@@ -174,7 +174,7 @@ const AppRoutes = () => {
         <Route path="marketplace/cart" element={<MarketplaceCart />} />
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
 
-        <Route path="crypto" element={<CryptoMarket />} />
+        <Route path="crypto" element={<EnhancedCrypto />} />
         <Route path="rewards" element={<Rewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
