@@ -720,8 +720,8 @@ export default function EnhancedCrypto() {
                             <div
                               className="h-2 rounded-full"
                               style={{
-                                width: `${item.percentage}%`,
-                                backgroundColor: item.color,
+                                width: `${item.percentage || 0}%`,
+                                backgroundColor: item.color || "#gray-400",
                               }}
                             ></div>
                           </div>
