@@ -1,17 +1,12 @@
 // src/components/feed/MediaUploadModal.tsx
-import { useState, useRef } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { X, Upload, Image, Video, Trash2 } from "lucide-react";
-import { MediaUpload, feedService } from "@/services/feedService";
-import { useToast } from "@/components/ui/use-toast";
+import { useState, useRef } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { X, Upload, Image, Video, Trash2 } from 'lucide-react';
+import { MediaUpload, feedService } from '@/services/feedService';
+import { useToast } from '@/components/ui/use-toast';
 
 interface MediaUploadModalProps {
   isOpen: boolean;
@@ -24,7 +19,7 @@ export function MediaUploadModal({
   isOpen,
   onClose,
   onMediaUploaded,
-  maxFiles = 10,
+  maxFiles = 10
 }: MediaUploadModalProps) {
   const [uploads, setUploads] = useState<MediaUpload[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -41,9 +36,9 @@ export function MediaUploadModal({
 
     if (fileArray.length > remainingSlots) {
       toast({
-        title: "Too many files",
+        title: 'Too many files',
         description: `You can only upload ${remainingSlots} more file(s).`,
-        variant: "destructive",
+        variant: 'destructive',
       });
       return;
     }
@@ -54,7 +49,7 @@ export function MediaUploadModal({
 
       // Simulate upload progress
       const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => {
+        setUploadProgress(prev => {
           if (prev >= 90) {
             clearInterval(progressInterval);
             return 90;
@@ -69,16 +64,16 @@ export function MediaUploadModal({
       setUploadProgress(100);
 
       setTimeout(() => {
-        setUploads((prev) => [...prev, ...mediaUploads]);
+        setUploads(prev => [...prev, ...mediaUploads]);
         setIsUploading(false);
         setUploadProgress(0);
       }, 300);
+
     } catch (error) {
       toast({
-        title: "Upload failed",
-        description:
-          error instanceof Error ? error.message : "Failed to upload files",
-        variant: "destructive",
+        title: 'Upload failed',
+        description: error instanceof Error ? error.message : 'Failed to upload files',
+        variant: 'destructive',
       });
       setIsUploading(false);
       setUploadProgress(0);
@@ -102,7 +97,7 @@ export function MediaUploadModal({
   };
 
   const removeUpload = (index: number) => {
-    setUploads((prev) => {
+    setUploads(prev => {
       const newUploads = [...prev];
       // Revoke the object URL to free memory
       if (newUploads[index].preview) {
@@ -121,7 +116,7 @@ export function MediaUploadModal({
 
   const handleCancel = () => {
     // Clean up object URLs
-    uploads.forEach((upload) => {
+    uploads.forEach(upload => {
       if (upload.preview) {
         URL.revokeObjectURL(upload.preview);
       }
@@ -131,9 +126,14 @@ export function MediaUploadModal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleCancel}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-auto">
         <DialogHeader>
+          <DialogTitle className="text-lg sm:text-xl">Upload Photos & Videos</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
+            Choose photos and videos to share with your followers
+          </DialogDescription>
+        </DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Image className="w-5 h-5" />
             Upload Photos & Videos
@@ -143,16 +143,14 @@ export function MediaUploadModal({
         {/* Upload Area */}
         <div
           className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-            isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300"
+            isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
           }`}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
         >
           <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-lg font-semibold mb-2">
-            Drag photos and videos here
-          </h3>
+          <h3 className="text-lg font-semibold mb-2">Drag photos and videos here</h3>
           <p className="text-gray-500 mb-4">or click to select files</p>
           <Button
             onClick={() => fileInputRef.current?.click()}
@@ -188,14 +186,12 @@ export function MediaUploadModal({
         {/* Uploaded Files Preview */}
         {uploads.length > 0 && (
           <div className="space-y-4">
-            <h4 className="font-semibold">
-              Selected Files ({uploads.length}/{maxFiles})
-            </h4>
+            <h4 className="font-semibold">Selected Files ({uploads.length}/{maxFiles})</h4>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {uploads.map((upload, index) => (
                 <Card key={index} className="relative group">
                   <div className="aspect-square relative overflow-hidden rounded-lg">
-                    {upload.type === "image" ? (
+                    {upload.type === 'image' ? (
                       <img
                         src={upload.preview}
                         alt="Upload preview"
@@ -226,7 +222,7 @@ export function MediaUploadModal({
 
                     {/* File type indicator */}
                     <div className="absolute bottom-2 left-2">
-                      {upload.type === "video" ? (
+                      {upload.type === 'video' ? (
                         <Badge variant="secondary" className="text-xs">
                           <Video className="w-3 h-3 mr-1" />
                           Video
@@ -264,4 +260,4 @@ export function MediaUploadModal({
 }
 
 // Add Badge import
-import { Badge } from "@/components/ui/badge";
+import { Badge } from '@/components/ui/badge';
