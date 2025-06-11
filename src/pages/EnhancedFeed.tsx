@@ -551,12 +551,12 @@ const CreatePost = ({
           </div>
 
           {showFullComposer && (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <Textarea
                 placeholder="What's on your mind?"
                 value={postText}
                 onChange={(e) => setPostText(e.target.value)}
-                className="min-h-[100px] resize-none border-none text-xl placeholder:text-gray-400"
+                className="min-h-[80px] sm:min-h-[100px] resize-none border-none text-lg sm:text-xl placeholder:text-gray-400 leading-relaxed"
                 autoFocus
               />
 
@@ -634,38 +634,41 @@ const CreatePost = ({
                 </div>
               )}
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-blue-500 hover:bg-blue-50"
+                    className="text-blue-500 hover:bg-blue-50 px-2 sm:px-3 text-xs sm:text-sm"
                     onClick={() => setShowMediaModal(true)}
                   >
-                    <Image className="w-5 h-5 mr-1" />
-                    Photo/Video
+                    <Image className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
+                    <span className="hidden xs:inline">Photo/Video</span>
+                    <span className="xs:hidden">📷</span>
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-orange-500 hover:bg-orange-50"
+                    className="text-orange-500 hover:bg-orange-50 px-2 sm:px-3 text-xs sm:text-sm"
                     onClick={() => setShowFeelingModal(true)}
                   >
-                    <Smile className="w-5 h-5 mr-1" />
-                    Feeling
+                    <Smile className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
+                    <span className="hidden xs:inline">Feeling</span>
+                    <span className="xs:hidden">😊</span>
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-red-500 hover:bg-red-50"
+                    className="text-red-500 hover:bg-red-50 px-2 sm:px-3 text-xs sm:text-sm"
                     onClick={() => setShowLocationModal(true)}
                   >
-                    <MapPin className="w-5 h-5 mr-1" />
-                    Location
+                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
+                    <span className="hidden xs:inline">Location</span>
+                    <span className="xs:hidden">📍</span>
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 justify-between sm:justify-end">
                   <select
                     value={privacy}
                     onChange={(e) =>
@@ -673,29 +676,33 @@ const CreatePost = ({
                         e.target.value as "public" | "friends" | "private",
                       )
                     }
-                    className="text-sm border rounded px-2 py-1"
+                    className="text-xs sm:text-sm border rounded px-2 py-1 bg-white"
                   >
-                    <option value="public">Public</option>
-                    <option value="friends">Friends</option>
-                    <option value="private">Private</option>
+                    <option value="public">🌍 Public</option>
+                    <option value="friends">👥 Friends</option>
+                    <option value="private">🔒 Private</option>
                   </select>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowFullComposer(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleCreatePost}
-                    disabled={
-                      (!postText.trim() && selectedMedia.length === 0) ||
-                      isSubmitting
-                    }
-                    className="bg-blue-500 hover:bg-blue-600"
-                  >
-                    {isSubmitting ? "Posting..." : "Post"}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowFullComposer(false)}
+                      className="text-xs sm:text-sm px-3"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleCreatePost}
+                      disabled={
+                        (!postText.trim() && selectedMedia.length === 0) ||
+                        isSubmitting
+                      }
+                      className="bg-blue-500 hover:bg-blue-600 text-xs sm:text-sm px-3 sm:px-4"
+                      size="sm"
+                    >
+                      {isSubmitting ? "Posting..." : "Post"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -703,31 +710,43 @@ const CreatePost = ({
 
           {!showFullComposer && (
             <>
-              <Separator className="my-4" />
-              <div className="grid grid-cols-3 gap-2">
+              <Separator className="my-3 sm:my-4" />
+              <div className="flex flex-row gap-1 sm:gap-2">
                 <Button
                   variant="ghost"
-                  className="flex items-center justify-center gap-2 py-3"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-1 sm:px-3 text-xs sm:text-sm"
                   onClick={() => setShowMediaModal(true)}
                 >
-                  <Camera className="w-5 h-5 text-green-500" />
-                  <span className="hidden sm:inline">Live Video</span>
+                  <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
+                  <span className="hidden xs:inline">Live</span>
+                  <span className="sm:hidden">📹</span>
                 </Button>
                 <Button
                   variant="ghost"
-                  className="flex items-center justify-center gap-2 py-3"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-1 sm:px-3 text-xs sm:text-sm"
                   onClick={() => setShowMediaModal(true)}
                 >
-                  <Image className="w-5 h-5 text-blue-500" />
-                  <span className="hidden sm:inline">Photo/Video</span>
+                  <Image className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 flex-shrink-0" />
+                  <span className="hidden xs:inline">Photo</span>
+                  <span className="sm:hidden">📷</span>
                 </Button>
                 <Button
                   variant="ghost"
-                  className="flex items-center justify-center gap-2 py-3"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-1 sm:px-3 text-xs sm:text-sm"
                   onClick={() => setShowFeelingModal(true)}
                 >
-                  <Smile className="w-5 h-5 text-orange-500" />
-                  <span className="hidden sm:inline">Feeling</span>
+                  <Smile className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500 flex-shrink-0" />
+                  <span className="hidden xs:inline">Feeling</span>
+                  <span className="sm:hidden">😊</span>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="flex-1 flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-1 sm:px-3 text-xs sm:text-sm"
+                  onClick={() => setShowLocationModal(true)}
+                >
+                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 flex-shrink-0" />
+                  <span className="hidden xs:inline">Location</span>
+                  <span className="sm:hidden">📍</span>
                 </Button>
               </div>
             </>
@@ -1113,7 +1132,7 @@ export default function EnhancedFeed() {
 
   return (
     <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden">
-      <div className="w-full max-w-2xl mx-auto px-2 sm:px-4 py-3 sm:py-6">
+      <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-safe-area-bottom">
         {/* Stories */}
         <Stories
           stories={stories}
