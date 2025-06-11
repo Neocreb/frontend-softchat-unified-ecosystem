@@ -911,41 +911,45 @@ const PostCard = ({
   };
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-4 sm:mb-6">
       <CardContent className="p-0">
         {/* Post Header */}
-        <div className="p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Avatar>
+        <div className="p-3 sm:p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
               <AvatarImage src={post.user.avatar} />
-              <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback className="text-xs sm:text-sm">
+                {post.user.name.charAt(0)}
+              </AvatarFallback>
             </Avatar>
-            <div>
-              <div className="flex items-center gap-1">
-                <h3 className="font-semibold text-sm">{post.user.name}</h3>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1 min-w-0">
+                <h3 className="font-semibold text-sm sm:text-base truncate">
+                  {post.user.name}
+                </h3>
                 {post.user.isVerified && (
                   <Badge
                     variant="secondary"
-                    className="h-4 w-4 p-0 rounded-full bg-blue-500"
+                    className="h-3 w-3 sm:h-4 sm:w-4 p-0 rounded-full bg-blue-500 flex-shrink-0"
                   >
                     <span className="text-white text-xs">✓</span>
                   </Badge>
                 )}
                 {post.feeling && (
-                  <span className="text-sm text-gray-600">
+                  <span className="text-xs sm:text-sm text-gray-600 truncate">
                     is feeling {post.feeling.emoji} {post.feeling.text}
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xs text-gray-500 truncate">
                 <span>{post.timestamp}</span>
                 <span>•</span>
                 {getPrivacyIcon()}
                 {post.location && (
                   <>
                     <span>•</span>
-                    <MapPin className="w-3 h-3" />
-                    <span>{post.location}</span>
+                    <MapPin className="w-3 h-3 flex-shrink-0" />
+                    <span className="truncate">{post.location}</span>
                   </>
                 )}
               </div>
@@ -958,8 +962,10 @@ const PostCard = ({
 
         {/* Post Content */}
         {post.content && (
-          <div className="px-4 pb-3">
-            <p className="text-sm leading-relaxed">{post.content}</p>
+          <div className="px-3 sm:px-4 pb-2 sm:pb-3">
+            <p className="text-sm sm:text-base leading-relaxed break-words">
+              {post.content}
+            </p>
           </div>
         )}
 
@@ -1034,47 +1040,60 @@ const PostCard = ({
         )}
 
         {/* Post Actions */}
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-4">
+        <div className="p-3 sm:p-4">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <div className="flex items-center gap-3 sm:gap-4">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleLike}
                 className={cn(
-                  "flex items-center gap-1 p-0 h-auto",
+                  "flex items-center gap-1 p-1 h-auto touch-target",
                   isLiked && "text-red-500",
                 )}
               >
-                <Heart className={cn("w-5 h-5", isLiked && "fill-current")} />
-                <span className="text-sm">{likesCount}</span>
+                <Heart
+                  className={cn(
+                    "w-4 h-4 sm:w-5 sm:h-5",
+                    isLiked && "fill-current",
+                  )}
+                />
+                <span className="text-xs sm:text-sm">{likesCount}</span>
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowComments(!showComments)}
-                className="flex items-center gap-1 p-0 h-auto"
+                className="flex items-center gap-1 p-1 h-auto touch-target"
               >
-                <MessageCircle className="w-5 h-5" />
-                <span className="text-sm">{commentsCount}</span>
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-xs sm:text-sm">{commentsCount}</span>
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className="flex items-center gap-1 p-0 h-auto"
+                className="flex items-center gap-1 p-1 h-auto touch-target"
                 onClick={handleShare}
               >
-                <Share2 className="w-5 h-5" />
-                <span className="text-sm">{sharesCount}</span>
+                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-xs sm:text-sm">{sharesCount}</span>
               </Button>
             </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={handleSave}
-              className={cn("p-0 h-auto", isSaved && "text-blue-500")}
+              className={cn(
+                "p-1 h-auto w-auto touch-target",
+                isSaved && "text-blue-500",
+              )}
             >
-              <Bookmark className={cn("w-5 h-5", isSaved && "fill-current")} />
+              <Bookmark
+                className={cn(
+                  "w-4 h-4 sm:w-5 sm:h-5",
+                  isSaved && "fill-current",
+                )}
+              />
             </Button>
           </div>
 
