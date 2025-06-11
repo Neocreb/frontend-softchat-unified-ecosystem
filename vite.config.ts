@@ -33,9 +33,8 @@ export default defineConfig({
           ],
           query: ["@tanstack/react-query"],
           supabase: ["@supabase/supabase-js"],
-          // App chunks
-          components: ["src/components"],
-          pages: ["src/pages"],
+          icons: ["lucide-react"],
+          utils: ["clsx", "tailwind-merge"],
         },
       },
     },
