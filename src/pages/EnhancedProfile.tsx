@@ -426,11 +426,13 @@ const EnhancedProfile = () => {
             </div>
 
             {/* Profile Info */}
-            <div className="flex-1 space-y-4">
+            <div className="flex-1 space-y-3 sm:space-y-4 min-w-0">
               {/* Username and Actions */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-2xl font-light">{profile.username}</h1>
+              <div className="flex flex-col gap-3 sm:gap-4">
+                <div className="flex items-center gap-2 min-w-0">
+                  <h1 className="text-xl sm:text-2xl font-light truncate">
+                    {profile.username}
+                  </h1>
                   {profile.isVerified && (
                     <Verified className="w-5 h-5 text-blue-500 fill-current" />
                   )}
