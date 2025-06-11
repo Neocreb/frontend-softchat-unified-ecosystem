@@ -201,34 +201,6 @@ export default function EnhancedCrypto() {
             Complete cryptocurrency trading and portfolio management
           </p>
         </div>
-
-        {marketData && (
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 text-sm overflow-x-auto">
-            <div className="text-center min-w-0 flex-shrink-0">
-              <div className="text-gray-600 text-xs md:text-sm">Market Cap</div>
-              <div className="font-bold text-sm md:text-base truncate">
-                {formatCurrency(marketData.globalStats.totalMarketCap)}
-              </div>
-            </div>
-            <div className="text-center min-w-0 flex-shrink-0">
-              <div className="text-gray-600 text-xs md:text-sm">
-                Fear & Greed
-              </div>
-              <div
-                className={cn(
-                  "font-bold text-sm md:text-base",
-                  getFearGreedColor(marketData?.fearGreedIndex?.value || 50),
-                )}
-              >
-                {marketData?.fearGreedIndex?.value || 50}
-                <span className="hidden sm:inline">
-                  {" "}
-                  ({getFearGreedLabel(marketData?.fearGreedIndex?.value || 50)})
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
