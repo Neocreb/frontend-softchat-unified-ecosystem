@@ -483,7 +483,7 @@ const EnhancedProfile = () => {
                       </Button>
                     </>
                   )}
-                  <Button variant="outline" size="icon" size="sm">
+                  <Button variant="outline" size="sm">
                     <MoreHorizontal className="w-4 h-4" />
                   </Button>
                 </div>

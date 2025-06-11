@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -125,7 +125,9 @@
 
   /* Smooth theme transitions */
   * {
-    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-property:
+      background-color, border-color, color, fill, stroke, opacity, box-shadow,
+      transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 200ms;
   }
@@ -254,13 +256,23 @@
 
   /* Custom xs breakpoint for very small screens */
   @media (min-width: 475px) {
-    .xs\:inline { display: inline; }
-    .xs\:hidden { display: none; }
-    .xs\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .xs\:flex-row { flex-direction: row; }
-    .xs\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .xs\:inline {
+      display: inline;
+    }
+    .xs\:hidden {
+      display: none;
+    }
+    .xs\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .xs\:flex-row {
+      flex-direction: row;
+    }
+    .xs\:text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
   }
-}
 
   .no-scrollbar {
     -ms-overflow-style: none;
@@ -406,10 +418,21 @@
 
   /* Custom xs breakpoint for very small screens */
   @media (min-width: 475px) {
-    .xs\:inline { display: inline; }
-    .xs\:hidden { display: none; }
-    .xs\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .xs\:flex-row { flex-direction: row; }
-    .xs\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .xs\:inline {
+      display: inline;
+    }
+    .xs\:hidden {
+      display: none;
+    }
+    .xs\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .xs\:flex-row {
+      flex-direction: row;
+    }
+    .xs\:text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
   }
 }
