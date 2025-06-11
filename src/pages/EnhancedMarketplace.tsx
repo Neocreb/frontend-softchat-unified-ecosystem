@@ -171,25 +171,31 @@ export default function EnhancedMarketplace() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Marketplace</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold">Marketplace</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">
             Discover amazing products from trusted sellers worldwide
           </p>
         </div>
 
         {/* Quick Stats */}
-        <div className="flex items-center gap-6 text-sm text-gray-600">
-          <div className="flex items-center gap-2">
-            <Package className="h-4 w-4" />
-            <span>{stats.totalProducts.toLocaleString()} products</span>
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm text-gray-600">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Package className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="whitespace-nowrap">
+              {stats.totalProducts.toLocaleString()} products
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            <span>{stats.totalSellers} sellers</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <span className="whitespace-nowrap">
+              {stats.totalSellers} sellers
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 text-yellow-500" />
-            <span>{stats.averageRating.toFixed(1)} avg rating</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 flex-shrink-0" />
+            <span className="whitespace-nowrap">
+              {stats.averageRating.toFixed(1)} avg rating
+            </span>
           </div>
         </div>
       </div>
@@ -409,23 +415,31 @@ export default function EnhancedMarketplace() {
 
           {/* Trust Indicators */}
           <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-center gap-8 text-sm text-blue-800">
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  <span className="font-medium">Buyer Protection</span>
+            <CardContent className="p-3 sm:p-4">
+              <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-center gap-3 sm:gap-6 lg:gap-8 text-xs sm:text-sm text-blue-800">
+                <div className="flex items-center gap-1 sm:gap-2 justify-center">
+                  <Shield className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="font-medium whitespace-nowrap">
+                    Buyer Protection
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Truck className="h-5 w-5" />
-                  <span className="font-medium">Fast Shipping</span>
+                <div className="flex items-center gap-1 sm:gap-2 justify-center">
+                  <Truck className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="font-medium whitespace-nowrap">
+                    Fast Shipping
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  <span className="font-medium">Secure Payment</span>
+                <div className="flex items-center gap-1 sm:gap-2 justify-center">
+                  <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="font-medium whitespace-nowrap">
+                    Secure Payment
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Award className="h-5 w-5" />
-                  <span className="font-medium">Verified Reviews</span>
+                <div className="flex items-center gap-1 sm:gap-2 justify-center">
+                  <Award className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="font-medium whitespace-nowrap">
+                    Verified Reviews
+                  </span>
                 </div>
               </div>
             </CardContent>
