@@ -53,27 +53,33 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="w-full max-w-full px-2 sm:px-4 flex h-16 items-center justify-between">
-        <div className="flex items-center gap-1 sm:gap-2 min-w-0">
+      <div
+        className={`w-full max-w-full flex h-14 items-center justify-between ${isMobile ? "px-3" : "px-4"}`}
+      >
+        <div className="flex items-center gap-2 min-w-0 flex-1">
           {isMobile && (
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden"
+              className="md:hidden h-8 w-8 flex-shrink-0"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Menu className="h-4 w-4" />
               )}
             </Button>
           )}
 
-          <Link to="/" className="flex items-center gap-1 sm:gap-2 min-w-0">
-            <SoftchatLogo className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />
-            <span className="font-bold text-lg sm:text-xl text-softchat-primary truncate">
+          <Link to="/" className="flex items-center gap-2 min-w-0 flex-1">
+            <SoftchatLogo
+              className={`${isMobile ? "h-6 w-6" : "h-8 w-8"} flex-shrink-0`}
+            />
+            <span
+              className={`font-bold text-softchat-primary truncate ${isMobile ? "text-lg" : "text-xl"}`}
+            >
               Softchat
             </span>
           </Link>
@@ -145,31 +151,35 @@ const Header = () => {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 min-w-0">
-          {/* Search Button - Always visible */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 sm:h-10 sm:w-10"
-            aria-label="Search"
-            onClick={() => setSearchOpen(!searchOpen)}
-          >
-            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
-          </Button>
-
-          {/* Chat Button - Always visible */}
-          <Link to="/chat">
+        <div className="flex items-center gap-1 min-w-0">
+          {/* Search Button - Mobile only */}
+          {isMobile && (
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 sm:h-10 sm:w-10"
-              aria-label="Messages"
+              className="h-8 w-8 flex-shrink-0"
+              aria-label="Search"
+              onClick={() => setSearchOpen(!searchOpen)}
             >
-              <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Search className="h-4 w-4" />
             </Button>
-          </Link>
+          )}
 
-          {/* Notifications - Always visible */}
+          {/* Chat Button - Mobile only */}
+          {isMobile && (
+            <Link to="/chat">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 flex-shrink-0"
+                aria-label="Messages"
+              >
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+
+          {/* Notifications */}
           <NotificationsDropdown />
 
           {/* Theme Toggle - Hidden on mobile to save space */}
@@ -181,9 +191,9 @@ const Header = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="relative h-7 w-7 sm:h-8 sm:w-8 rounded-full flex-shrink-0"
+                className={`relative rounded-full flex-shrink-0 ${isMobile ? "h-8 w-8" : "h-9 w-9"}`}
               >
-                <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
+                <Avatar className={isMobile ? "h-7 w-7" : "h-8 w-8"}>
                   <AvatarImage
                     src={user?.avatar || "/placeholder.svg"}
                     alt={user?.name || "@user"}
@@ -254,9 +264,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Search Bar - Always show on all devices when search is opened */}
+      {/* Mobile Search Bar */}
       {searchOpen && (
-        <div className="p-2 border-t w-full bg-background">
+        <div className="p-3 border-t w-full bg-background">
           <form
             onSubmit={handleSearchSubmit}
             className="relative w-full max-w-full"
@@ -276,14 +286,14 @@ const Header = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 top-16 z-[100] grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-4 pb-20 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
+          "fixed inset-0 top-14 z-[100] grid h-[calc(100vh-3.5rem)] grid-flow-row auto-rows-max overflow-auto p-4 pb-20 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
           mobileMenuOpen ? "block" : "hidden",
         )}
       >
         <div className="relative z-20 grid gap-4 rounded-md bg-background p-4 w-full max-w-full mx-auto">
           <Link
-            to="/"
-            className="flex items-center gap-2 text-lg font-semibold"
+            to="/feed"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             <Home className="h-5 w-5" />
@@ -291,7 +301,7 @@ const Header = () => {
           </Link>
           <Link
             to="/videos"
-            className="flex items-center gap-2 text-lg font-semibold"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             <Video className="h-5 w-5" />
@@ -299,7 +309,7 @@ const Header = () => {
           </Link>
           <Link
             to="/explore"
-            className="flex items-center gap-2 text-lg font-semibold"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             <Search className="h-5 w-5" />
@@ -307,31 +317,39 @@ const Header = () => {
           </Link>
           <Link
             to="/crypto"
-            className="flex items-center gap-2 text-lg font-semibold"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             <TrendingUp className="h-5 w-5" />
             <span>Crypto</span>
           </Link>
           <Link
+            to="/marketplace"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            <span>Marketplace</span>
+          </Link>
+          <Link
+            to="/create"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Briefcase className="h-5 w-5" />
+            <span>Freelance</span>
+          </Link>
+          <Link
             to="/wallet"
-            className="flex items-center gap-2 text-lg font-semibold"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             <Wallet className="h-5 w-5" />
             <span>Wallet</span>
           </Link>
           <Link
-            to="/chat"
-            className="flex items-center gap-2 text-lg font-semibold"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <MessageCircle className="h-5 w-5" />
-            <span>Chat</span>
-          </Link>
-          <Link
             to="/rewards"
-            className="flex items-center gap-2 text-lg font-semibold"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
             <Award className="h-5 w-5" />
