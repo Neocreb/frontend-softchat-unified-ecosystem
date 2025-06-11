@@ -117,24 +117,28 @@ const Header = () => {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 min-w-0">
           {/* Mobile Search Trigger */}
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="md:hidden h-8 w-8 sm:h-10 sm:w-10"
             aria-label="Search"
             onClick={() => setSearchOpen(!searchOpen)}
           >
-            <Search className="h-5 w-5" />
+            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
 
-          <NotificationsDropdown />
+          <div className="hidden sm:block">
+            <NotificationsDropdown />
+          </div>
 
-          <ThemeToggle />
+          <div className="hidden lg:block">
+            <ThemeToggle />
+          </div>
 
           {/* Chat Button */}
-          <Link to="/chat">
+          <Link to="/chat" className="hidden lg:block">
             <Button variant="ghost" size="icon" aria-label="Messages">
               <MessageCircle className="h-5 w-5" />
             </Button>
