@@ -248,8 +248,17 @@ interface Post {
   };
 }
 
-// Stories Component
-const Stories = () => {
+// Enhanced Stories Component
+const Stories = ({
+  stories,
+  onCreateStory,
+  onViewStory,
+}: {
+  stories: any[];
+  onCreateStory: () => void;
+  onViewStory: (storyIndex: number, userIndex: number) => void;
+}) => {
+  const { user } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -260,6 +269,62 @@ const Stories = () => {
         behavior: "smooth",
       });
     }
+  };
+
+  // Check if current user has stories
+  const userStories = stories.filter((story) => story.user.id === user?.id);
+  const otherStories = stories.filter((story) => story.user.id !== user?.id);
+
+  // Group other stories by user
+  const groupedStories = otherStories.reduce(
+    (acc, story) => {
+      const userId = story.user.id;
+      if (!acc[userId]) {
+        acc[userId] = [];
+      }
+      acc[userId].push(story);
+      return acc;
+    },
+    {} as Record<string, any[]>,
+  );
+
+  const storyUsers = Object.keys(groupedStories);
+
+  const formatTimeAgo = (timestamp: string) => {
+    const now = new Date();
+    const storyTime = new Date(timestamp);
+    const diffInHours = Math.floor(
+      (now.getTime() - storyTime.getTime()) / (1000 * 60 * 60),
+    );
+
+    if (diffInHours < 1) return "now";
+    if (diffInHours < 24) return `${diffInHours}h`;
+    return `${Math.floor(diffInHours / 24)}d`;
+  };
+
+  const getStoryPreview = (userStories: any[]) => {
+    // Get the most recent story for preview
+    const latestStory = userStories.sort(
+      (a, b) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+    )[0];
+
+    if (latestStory.type === "image" && latestStory.media) {
+      return latestStory.media.preview || latestStory.media.url;
+    } else if (latestStory.type === "video" && latestStory.media) {
+      return latestStory.media.preview;
+    }
+    return latestStory.user.avatar;
+  };
+
+  const hasUnviewedStories = (userStories: any[]) => {
+    // In a real app, you'd check if user has viewed these stories
+    return userStories.some((story) => {
+      const hoursSincePost =
+        (new Date().getTime() - new Date(story.timestamp).getTime()) /
+        (1000 * 60 * 60);
+      return hoursSincePost < 24; // Stories are "new" if posted in last 24 hours
+    });
   };
 
   return (
@@ -280,37 +345,90 @@ const Stories = () => {
             className="flex gap-4 overflow-x-auto scrollbar-hide px-8"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
-            {mockStories.map((story) => (
-              <div key={story.id} className="flex-shrink-0">
-                <div className="relative cursor-pointer group">
+            {/* Your Story */}
+            <div className="flex-shrink-0">
+              <div
+                className="relative cursor-pointer group"
+                onClick={onCreateStory}
+              >
+                <div
+                  className={cn(
+                    "w-16 h-16 rounded-full p-0.5",
+                    userStories.length > 0
+                      ? "bg-gradient-to-r from-purple-500 to-pink-500"
+                      : "bg-gray-300",
+                  )}
+                >
+                  <div className="w-full h-full bg-white rounded-full p-0.5">
+                    <Avatar className="w-full h-full">
+                      <AvatarImage
+                        src={
+                          userStories.length > 0
+                            ? getStoryPreview(userStories)
+                            : user?.avatar ||
+                              "https://api.dicebear.com/7.x/avataaars/svg?seed=user"
+                        }
+                      />
+                      <AvatarFallback>
+                        {user?.name?.charAt(0) || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                </div>
+                <div className="absolute bottom-0 right-0 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                  <Plus className="w-3 h-3 text-white" />
+                </div>
+              </div>
+              <p className="text-xs text-center mt-2 max-w-[64px] truncate">
+                Your Story
+              </p>
+            </div>
+
+            {/* Other Users' Stories */}
+            {storyUsers.map((userId, userIndex) => {
+              const userStories = groupedStories[userId];
+              const latestStory = userStories[0];
+              const hasNew = hasUnviewedStories(userStories);
+
+              return (
+                <div key={userId} className="flex-shrink-0">
                   <div
-                    className={cn(
-                      "w-16 h-16 rounded-full p-0.5",
-                      story.hasNew
-                        ? "bg-gradient-to-r from-purple-500 to-pink-500"
-                        : "bg-gray-300",
-                    )}
+                    className="relative cursor-pointer group"
+                    onClick={() => onViewStory(0, userIndex)}
                   >
-                    <div className="w-full h-full bg-white rounded-full p-0.5">
-                      <Avatar className="w-full h-full">
-                        <AvatarImage src={story.user.avatar || story.preview} />
-                        <AvatarFallback>
-                          {story.user.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
+                    <div
+                      className={cn(
+                        "w-16 h-16 rounded-full p-0.5",
+                        hasNew
+                          ? "bg-gradient-to-r from-purple-500 to-pink-500"
+                          : "bg-gray-300",
+                      )}
+                    >
+                      <div className="w-full h-full bg-white rounded-full p-0.5">
+                        <Avatar className="w-full h-full">
+                          <AvatarImage src={getStoryPreview(userStories)} />
+                          <AvatarFallback>
+                            {latestStory.user.name.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </div>
+                    </div>
+                    {/* Time indicator */}
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                      <Badge
+                        variant="secondary"
+                        className="text-xs px-1 py-0 h-4"
+                      >
+                        {formatTimeAgo(latestStory.timestamp)}
+                      </Badge>
                     </div>
                   </div>
-                  {story.isOwn && (
-                    <div className="absolute bottom-0 right-0 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                      <Plus className="w-3 h-3 text-white" />
-                    </div>
-                  )}
+                  <p className="text-xs text-center mt-3 max-w-[64px] truncate">
+                    {latestStory.user.name}
+                  </p>
                 </div>
-                <p className="text-xs text-center mt-2 max-w-[64px] truncate">
-                  {story.isOwn ? "Your Story" : story.user.name}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <Button
