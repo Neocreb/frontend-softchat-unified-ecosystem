@@ -60,7 +60,10 @@ export const useProfile = ({ username }: UseProfileProps = {}) => {
           await fetchUserData(profile.id);
         }
       } catch (error) {
-        console.error("Error fetching profile data:", error);
+        console.warn(
+          "Error fetching profile data:",
+          (error as any)?.message || error,
+        );
         if (username) {
           // Generate mock profile on error
           const mockUser = profileService.generateMockUser(username);
