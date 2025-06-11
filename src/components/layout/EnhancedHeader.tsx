@@ -94,6 +94,28 @@ const EnhancedHeader = () => {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Advanced Search */}
+          <div className="hidden md:block flex-1 max-w-md">
+            <AdvancedSearch
+              placeholder="Search everything..."
+              showFilters={false}
+              onResultSelect={(result) => {
+                // Handle navigation based on result type
+                if (result.type === "user")
+                  navigate(
+                    `/user/${result.title.toLowerCase().replace(/\s+/g, "-")}`,
+                  );
+                else if (result.type === "product")
+                  navigate(`/marketplace/product/${result.id}`);
+                else if (result.type === "service")
+                  navigate(`/freelance/service/${result.id}`);
+                else if (result.type === "post") navigate(`/post/${result.id}`);
+                else if (result.type === "crypto")
+                  navigate(`/crypto/${result.title.toLowerCase()}`);
+              }}
+            />
+          </div>
+
           <NotificationsDropdown />
 
           <Button
