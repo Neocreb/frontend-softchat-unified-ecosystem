@@ -73,7 +73,7 @@ const Header = () => {
 
           <Link to="/" className="flex items-center gap-1 sm:gap-2 min-w-0">
             <SoftchatLogo className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />
-            <span className="font-bold text-lg sm:text-xl hidden sm:inline-block text-softchat-primary truncate">
+            <span className="font-bold text-lg sm:text-xl text-softchat-primary truncate">
               Softchat
             </span>
           </Link>
@@ -146,31 +146,36 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 min-w-0">
-          {/* Mobile Search Trigger */}
+          {/* Search Button - Always visible */}
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden h-8 w-8 sm:h-10 sm:w-10"
+            className="h-8 w-8 sm:h-10 sm:w-10"
             aria-label="Search"
             onClick={() => setSearchOpen(!searchOpen)}
           >
             <Search className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
 
-          <div className="hidden sm:block">
-            <NotificationsDropdown />
-          </div>
+          {/* Chat Button - Always visible */}
+          <Link to="/chat">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 sm:h-10 sm:w-10"
+              aria-label="Messages"
+            >
+              <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+            </Button>
+          </Link>
 
+          {/* Notifications - Always visible */}
+          <NotificationsDropdown />
+
+          {/* Theme Toggle - Hidden on mobile to save space */}
           <div className="hidden lg:block">
             <ThemeToggle />
           </div>
-
-          {/* Chat Button */}
-          <Link to="/chat" className="hidden lg:block">
-            <Button variant="ghost" size="icon" aria-label="Messages">
-              <MessageCircle className="h-5 w-5" />
-            </Button>
-          </Link>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
