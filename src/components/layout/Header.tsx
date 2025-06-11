@@ -229,11 +229,11 @@ const Header = () => {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 top-16 z-[100] grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
+          "fixed inset-0 top-16 z-[100] grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-4 pb-20 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
           mobileMenuOpen ? "block" : "hidden",
         )}
       >
-        <div className="relative z-20 grid gap-6 rounded-md bg-background p-4 max-w-sm mx-auto">
+        <div className="relative z-20 grid gap-4 rounded-md bg-background p-4 w-full max-w-full mx-auto">
           <Link
             to="/"
             className="flex items-center gap-2 text-lg font-semibold"
