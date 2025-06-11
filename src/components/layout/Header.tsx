@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Search, Menu, X, User, Bell, Home, TrendingUp, Wallet, Award, Video, MessageCircle } from "lucide-react";
@@ -39,7 +38,7 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container max-w-full px-4 flex h-16 items-center justify-between">
+      <div className="w-full max-w-full px-2 sm:px-4 flex h-16 items-center justify-between"
         <div className="flex items-center gap-2">
           {isMobile && (
             <Button
