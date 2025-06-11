@@ -774,8 +774,8 @@ const EnhancedProfile = () => {
           </div>
 
           {/* Posts Tab - Instagram Style Grid */}
-          <TabsContent value="posts" className="mt-0">
-            <div className="grid grid-cols-3 gap-1 md:gap-2">
+          <TabsContent value="posts" className="mt-0 w-full max-w-full">
+            <div className="grid grid-cols-3 gap-0.5 sm:gap-1 md:gap-2 w-full">
               {mockPosts.map((post) => (
                 <div
                   key={post.id}
