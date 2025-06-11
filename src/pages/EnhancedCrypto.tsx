@@ -241,10 +241,11 @@ export default function EnhancedCrypto() {
                 <div>
                   <div className="text-sm text-gray-600">BTC Dominance</div>
                   <div className="text-xl font-bold">
-                    {marketData.globalStats.btcDominance.toFixed(1)}%
+                    {(marketData.globalStats.btcDominance || 0).toFixed(1)}%
                   </div>
                   <div className="text-sm text-gray-600">
-                    ETH: {marketData.globalStats.ethDominance.toFixed(1)}%
+                    ETH: {(marketData.globalStats.ethDominance || 0).toFixed(1)}
+                    %
                   </div>
                 </div>
               </div>
