@@ -90,30 +90,55 @@ const Header = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
+        <nav className="hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6">
           <Link
-            to="/"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            to="/feed"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
-            <Home className="h-5 w-5" />
+            <Home className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Feed</span>
+          </Link>
+          <Link
+            to="/explore"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Search className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Explore</span>
           </Link>
           <Link
             to="/videos"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
-            <Video className="h-5 w-5" />
+            <Video className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Videos</span>
+          </Link>
+          <Link
+            to="/marketplace"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Market</span>
           </Link>
           <Link
             to="/crypto"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUp className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Crypto</span>
           </Link>
           <Link
-            to="/chat"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+            to="/create"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
-            <MessageCircle className="h-5 w-5" />
+            <Briefcase className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Freelance</span>
+          </Link>
+          <Link
+            to="/rewards"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Award className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Rewards</span>
           </Link>
         </nav>
 
