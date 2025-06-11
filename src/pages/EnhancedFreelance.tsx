@@ -333,24 +333,42 @@ const EnhancedFreelance: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-4 bg-gray-100">
-          <TabsTrigger value="browse-jobs" className="flex items-center gap-2">
-            <Search className="h-4 w-4" />
-            Browse Jobs
-          </TabsTrigger>
-          <TabsTrigger value="find-talent" className="flex items-center gap-2">
-            <Users className="h-4 w-4" />
-            Find Talent
-          </TabsTrigger>
-          <TabsTrigger value="post-job" className="flex items-center gap-2">
-            <Plus className="h-4 w-4" />
-            Post Job
-          </TabsTrigger>
-          <TabsTrigger value="my-projects" className="flex items-center gap-2">
-            <Briefcase className="h-4 w-4" />
-            My Projects
-          </TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto pb-2">
+          <TabsList className="grid w-full min-w-max grid-cols-4 bg-gray-100">
+            <TabsTrigger
+              value="browse-jobs"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
+              <Search className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">Browse Jobs</span>
+              <span className="xs:hidden">Browse</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="find-talent"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
+              <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">Find Talent</span>
+              <span className="xs:hidden">Talent</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="post-job"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
+              <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">Post Job</span>
+              <span className="xs:hidden">Post</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="my-projects"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
+              <Briefcase className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">My Projects</span>
+              <span className="xs:hidden">Projects</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Browse Jobs Tab */}
         <TabsContent value="browse-jobs" className="space-y-6">
