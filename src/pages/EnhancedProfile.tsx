@@ -630,71 +630,143 @@ const EnhancedProfile = () => {
 
         {/* Enhanced Tabs with ALL Features */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full justify-center border-none bg-transparent h-auto p-0 flex-wrap">
-            <TabsTrigger
-              value="posts"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <Grid3X3 className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                Posts
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="media"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <Camera className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                Media
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="about"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <Users className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                About
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="professional"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <Briefcase className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                Work
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="financial"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <CreditCard className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                Finance
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="security"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <Shield className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                Security
-              </span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="settings"
-              className="flex items-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-4 py-3"
-            >
-              <Settings className="w-4 h-4" />
-              <span className="font-medium uppercase text-xs tracking-wider">
-                Settings
-              </span>
-            </TabsTrigger>
-          </TabsList>
+          {/* Mobile Tabs - Horizontal Scroll */}
+          <div className="block sm:hidden w-full overflow-x-auto">
+            <TabsList className="inline-flex w-max min-w-full justify-start border-none bg-transparent h-auto p-0">
+              <TabsTrigger
+                value="posts"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <Grid3X3 className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  Posts
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="media"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <Camera className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  Media
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="about"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <Users className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  About
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="professional"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <Briefcase className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  Work
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="financial"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <CreditCard className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  Finance
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="security"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <Shield className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  Security
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="settings"
+                className="flex items-center gap-1 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-3 py-3 whitespace-nowrap"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider">
+                  Settings
+                </span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Desktop Tabs - Full Width Grid */}
+          <div className="hidden sm:block w-full">
+            <TabsList className="w-full grid grid-cols-7 justify-center border-none bg-transparent h-auto p-0">
+              <TabsTrigger
+                value="posts"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <Grid3X3 className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  Posts
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="media"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <Camera className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  Media
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="about"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <Users className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  About
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="professional"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <Briefcase className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  Work
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="financial"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <CreditCard className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  Finance
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="security"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <Shield className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  Security
+                </span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="settings"
+                className="flex items-center justify-center gap-2 data-[state=active]:border-b-2 data-[state=active]:border-black data-[state=active]:bg-transparent rounded-none px-2 lg:px-4 py-3"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="font-medium uppercase text-xs tracking-wider hidden md:inline">
+                  Settings
+                </span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Posts Tab - Instagram Style Grid */}
           <TabsContent value="posts" className="mt-0">
