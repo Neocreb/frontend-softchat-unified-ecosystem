@@ -165,6 +165,7 @@ const AppRoutes = () => {
         <Route path="profile/:username" element={<EnhancedProfile />} />
         <Route path="user/:username" element={<EnhancedProfile />} />
         <Route path="profile/legacy" element={<Profile />} />
+        <Route path="demo/profiles" element={<ProfileDemo />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="messages" element={<Messages />} />
