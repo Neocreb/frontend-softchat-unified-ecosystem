@@ -122,29 +122,39 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     profileService.getUserServices(profile.id),
                   ]);
 
-                if (userPosts?.length) {
+                // Handle posts
+                if (userPosts && userPosts.length > 0) {
                   setPosts(formatPosts(userPosts));
                 } else {
                   setPosts(generateMockPosts());
                 }
 
-                if (userProducts?.length) {
+                // Handle products
+                if (userProducts && userProducts.length > 0) {
                   setProducts(formatProducts(userProducts));
-                } else {
+                } else if (profile.marketplace_profile) {
                   setProducts(generateMockProducts());
                 }
 
-                if (userServices?.length) {
+                // Handle services
+                if (userServices && userServices.length > 0) {
                   setServices(formatServices(userServices));
-                } else {
+                } else if (profile.freelance_profile) {
                   setServices(generateMockServices());
                 }
-              } catch (error) {
-                console.error("Error loading user content:", error);
+              } catch (error: any) {
+                console.warn(
+                  "Error loading user content:",
+                  error?.message || error,
+                );
                 // Set mock data on error
                 setPosts(generateMockPosts());
-                setProducts(generateMockProducts());
-                setServices(generateMockServices());
+                if (profile.marketplace_profile) {
+                  setProducts(generateMockProducts());
+                }
+                if (profile.freelance_profile) {
+                  setServices(generateMockServices());
+                }
               }
             }
           }
