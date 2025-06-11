@@ -11,6 +11,8 @@ const AppLayout = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
+      {/* Secondary Navigation for user pages (desktop only) */}
+      <SecondaryNav />
       {/* Add proper spacing for fixed header and ensure no horizontal overflow */}
       <main
         className={`w-full max-w-full overflow-x-hidden flex-1 ${isMobile ? "pt-16 pb-20 px-2" : "pt-20 pb-6 px-4"}`}
