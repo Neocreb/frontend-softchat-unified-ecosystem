@@ -1,7 +1,12 @@
-
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, ExternalLink } from "lucide-react";
@@ -19,7 +24,9 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
         <div className="flex items-start gap-3">
           <Avatar className="h-10 w-10">
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
-            <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>
+              {post.author.name.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           <div className="flex-1 space-y-1">
             <div className="flex items-center">
@@ -34,7 +41,11 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
               <span>@{post.author.username}</span>
               <span>·</span>
               <span>{post.createdAt}</span>
-              {post.isAd && <span className="ml-1 text-xs text-muted-foreground">Sponsored</span>}
+              {post.isAd && (
+                <span className="ml-1 text-xs text-muted-foreground">
+                  Sponsored
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -55,9 +66,10 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
             <Button
               variant="default"
               className="w-full"
-              onClick={() => window.open(post.adUrl, '_blank')}
+              onClick={() => window.open(post.adUrl, "_blank")}
             >
-              {post.adCta || "Learn More"} <ExternalLink className="ml-2 h-4 w-4" />
+              {post.adCta || "Learn More"}{" "}
+              <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </div>
         )}
