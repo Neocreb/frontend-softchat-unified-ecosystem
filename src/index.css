@@ -212,9 +212,55 @@
 }
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Mobile responsive utility classes */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pb-safe-area-bottom {
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  }
+
+  /* Prevent horizontal overflow on mobile */
+  .prevent-mobile-overflow {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Better touch targets for mobile */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Mobile-first responsive text */
+  .responsive-text {
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .responsive-text {
+      font-size: 1rem;
+    }
+  }
+
+  /* Custom xs breakpoint for very small screens */
+  @media (min-width: 475px) {
+    .xs\:inline { display: inline; }
+    .xs\:hidden { display: none; }
+    .xs\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .xs\:flex-row { flex-direction: row; }
+    .xs\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  }
+}
 
   .no-scrollbar {
     -ms-overflow-style: none;
