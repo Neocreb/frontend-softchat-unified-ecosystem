@@ -35,6 +35,12 @@ import {
   Lock,
   Unlock,
   Gift,
+  Wallet,
+  Settings,
+  ArrowUpDown,
+  CreditCard,
+  Banknote,
+  TrendingUpIcon,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
@@ -48,15 +54,7 @@ import {
 import EnhancedTradingDashboard from "@/components/crypto/EnhancedTradingDashboard";
 import DeFiDashboard from "@/components/crypto/DeFiDashboard";
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
-import AdvancedTradingInterface from "@/components/crypto/AdvancedTradingInterface";
 import { cn } from "@/lib/utils";
-
-// Keep existing components for compatibility
-import CryptoChart from "@/components/crypto/CryptoChart";
-import CryptoList from "@/components/crypto/CryptoList";
-import CryptoPortfolio from "@/components/crypto/CryptoPortfolio";
-import SoftPointExchange from "@/components/crypto/SoftPointExchange";
-import CryptoWalletActions from "@/components/crypto/CryptoWalletActions";
 
 export default function EnhancedCrypto() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -68,6 +66,7 @@ export default function EnhancedCrypto() {
     [],
   );
   const [selectedPair, setSelectedPair] = useState("BTCUSDT");
+  const [tradingMode, setTradingMode] = useState<"basic" | "advanced">("basic");
   const [isLoading, setIsLoading] = useState(true);
 
   const { toast } = useToast();
@@ -148,9 +147,9 @@ export default function EnhancedCrypto() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Enhanced Crypto Platform</h1>
+          <h1 className="text-3xl font-bold">Crypto Platform</h1>
           <p className="text-gray-600 mt-1">
-            Complete cryptocurrency trading, DeFi, and education platform
+            Complete cryptocurrency trading, DeFi, and portfolio management
           </p>
         </div>
 
@@ -287,17 +286,14 @@ export default function EnhancedCrypto() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="overflow-x-auto pb-2">
-          <TabsList className="min-w-max grid grid-cols-10">
+          <TabsList className="min-w-max grid grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="trading">Trading</TabsTrigger>
-            <TabsTrigger value="advanced">Pro Trading</TabsTrigger>
+            <TabsTrigger value="wallet">Portfolio & Wallet</TabsTrigger>
             <TabsTrigger value="p2p">P2P</TabsTrigger>
             <TabsTrigger value="defi">DeFi</TabsTrigger>
-            <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
             <TabsTrigger value="news">News</TabsTrigger>
             <TabsTrigger value="education">Learn</TabsTrigger>
-            <TabsTrigger value="wallet">Wallet</TabsTrigger>
-            <TabsTrigger value="legacy">Legacy</TabsTrigger>
           </TabsList>
         </div>
 
@@ -360,64 +356,66 @@ export default function EnhancedCrypto() {
               </CardContent>
             </Card>
 
-            {/* Portfolio Summary */}
-            {portfolio && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PieChart className="h-5 w-5" />
-                    Portfolio Summary
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold">
-                        {formatCurrency(portfolio.totalValue)}
-                      </div>
-                      <div
-                        className={cn(
-                          "text-lg font-medium",
-                          getChangeColor(portfolio.totalChangePercent24h),
-                        )}
-                      >
-                        {formatPercentage(portfolio.totalChangePercent24h)}{" "}
-                        (24h)
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      {portfolio.assets.slice(0, 3).map((asset) => (
-                        <div
-                          key={asset.asset}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                            <span className="font-medium">{asset.asset}</span>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-semibold">
-                              {formatCurrency(asset.usdValue)}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {asset.allocation.toFixed(1)}%
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <Button
-                      className="w-full"
-                      onClick={() => setActiveTab("portfolio")}
+            {/* Market Sentiment */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Brain className="h-5 w-5" />
+                  Market Sentiment
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <div
+                      className={cn(
+                        "text-3xl font-bold",
+                        getFearGreedColor(
+                          marketData?.fearGreedIndex.value || 50,
+                        ),
+                      )}
                     >
-                      View Full Portfolio
-                    </Button>
+                      {marketData?.fearGreedIndex.value || 50}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      Fear & Greed Index
+                    </div>
+                    <div
+                      className={cn(
+                        "text-sm font-medium",
+                        getFearGreedColor(
+                          marketData?.fearGreedIndex.value || 50,
+                        ),
+                      )}
+                    >
+                      {getFearGreedLabel(
+                        marketData?.fearGreedIndex.value || 50,
+                      )}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            )}
+
+                  {marketData && (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Volatility</span>
+                        <span className="font-medium">
+                          {marketData.globalStats.dominanceChange24h.toFixed(1)}
+                          %
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Market Volume</span>
+                        <span className="font-medium">
+                          {formatCurrency(
+                            marketData.globalStats.totalVolume24h,
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Market Movers */}
@@ -505,7 +503,7 @@ export default function EnhancedCrypto() {
             </div>
           )}
 
-          {/* Latest News */}
+          {/* Latest News Preview */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -571,17 +569,230 @@ export default function EnhancedCrypto() {
           </Card>
         </TabsContent>
 
-        {/* Trading Dashboard Tab */}
+        {/* Unified Trading Tab */}
         <TabsContent value="trading" className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold">Trading Dashboard</h2>
+              <p className="text-gray-600">
+                Professional trading interface with advanced tools
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Trading Mode:</span>
+              <Select
+                value={tradingMode}
+                onValueChange={(value: "basic" | "advanced") =>
+                  setTradingMode(value)
+                }
+              >
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="basic">Basic</SelectItem>
+                  <SelectItem value="advanced">Advanced</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
           <EnhancedTradingDashboard
             selectedPair={selectedPair}
             onPairSelect={setSelectedPair}
           />
         </TabsContent>
 
-        {/* Advanced Trading Tab */}
-        <TabsContent value="advanced" className="space-y-6">
-          <AdvancedTradingInterface />
+        {/* Portfolio & Wallet Tab - Consolidated */}
+        <TabsContent value="wallet" className="space-y-6">
+          <div className="flex items-center gap-2 mb-6">
+            <Wallet className="h-6 w-6" />
+            <h2 className="text-2xl font-bold">Portfolio & Wallet</h2>
+          </div>
+
+          {portfolio ? (
+            <div className="space-y-6">
+              {/* Portfolio Overview */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <PieChart className="h-5 w-5" />
+                      Portfolio Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-3xl font-bold">
+                            {formatCurrency(portfolio.totalValue)}
+                          </div>
+                          <div
+                            className={cn(
+                              "text-lg font-medium",
+                              getChangeColor(portfolio.totalChangePercent24h),
+                            )}
+                          >
+                            {formatPercentage(portfolio.totalChangePercent24h)}{" "}
+                            (24h)
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-gray-600">P&L (24h)</div>
+                          <div
+                            className={cn(
+                              "text-xl font-bold",
+                              getChangeColor(portfolio.totalChange24h),
+                            )}
+                          >
+                            {formatCurrency(portfolio.totalChange24h)}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        {portfolio.assets.map((asset) => (
+                          <div
+                            key={asset.asset}
+                            className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                              <div>
+                                <div className="font-medium">{asset.asset}</div>
+                                <div className="text-sm text-gray-600">
+                                  {asset.total} {asset.asset}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-semibold">
+                                {formatCurrency(asset.usdValue)}
+                              </div>
+                              <div
+                                className={cn(
+                                  "text-sm",
+                                  getChangeColor(asset.changePercent24h),
+                                )}
+                              >
+                                {formatPercentage(asset.changePercent24h)}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Asset Allocation */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <PieChart className="h-5 w-5" />
+                      Allocation
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {portfolio.allocation.map((item) => (
+                        <div key={item.asset} className="space-y-2">
+                          <div className="flex justify-between">
+                            <span className="text-sm font-medium">
+                              {item.asset}
+                            </span>
+                            <span className="text-sm">
+                              {item.percentage.toFixed(1)}%
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className="h-2 rounded-full"
+                              style={{
+                                width: `${item.percentage}%`,
+                                backgroundColor: item.color,
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Wallet Actions */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="p-3 bg-green-100 rounded-lg mx-auto w-fit mb-3">
+                      <ArrowUpDown className="h-6 w-6 text-green-600" />
+                    </div>
+                    <h3 className="font-semibold mb-2">Buy Crypto</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Purchase crypto with credit card or bank transfer
+                    </p>
+                    <Button className="w-full">Buy Now</Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="p-3 bg-blue-100 rounded-lg mx-auto w-fit mb-3">
+                      <CreditCard className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold mb-2">Deposit</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Add funds to your wallet
+                    </p>
+                    <Button variant="outline" className="w-full">
+                      Deposit
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="p-3 bg-orange-100 rounded-lg mx-auto w-fit mb-3">
+                      <Banknote className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <h3 className="font-semibold mb-2">Withdraw</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Transfer funds to external wallet
+                    </p>
+                    <Button variant="outline" className="w-full">
+                      Withdraw
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <div className="p-3 bg-purple-100 rounded-lg mx-auto w-fit mb-3">
+                      <TrendingUpIcon className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <h3 className="font-semibold mb-2">Earn</h3>
+                    <p className="text-sm text-gray-600 mb-3">
+                      Stake and earn rewards
+                    </p>
+                    <Button variant="outline" className="w-full">
+                      Start Earning
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Wallet className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No Portfolio Data</h3>
+              <p className="text-gray-600">
+                Start trading to see your portfolio here
+              </p>
+              <Button className="mt-4">Start Trading</Button>
+            </div>
+          )}
         </TabsContent>
 
         {/* P2P Marketplace Tab */}
@@ -592,134 +803,6 @@ export default function EnhancedCrypto() {
         {/* DeFi Dashboard Tab */}
         <TabsContent value="defi" className="space-y-6">
           <DeFiDashboard />
-        </TabsContent>
-
-        {/* Portfolio Tab */}
-        <TabsContent value="portfolio" className="space-y-6">
-          {portfolio ? (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <PieChart className="h-5 w-5" />
-                    Portfolio Overview
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-3xl font-bold">
-                          {formatCurrency(portfolio.totalValue)}
-                        </div>
-                        <div
-                          className={cn(
-                            "text-lg font-medium",
-                            getChangeColor(portfolio.totalChangePercent24h),
-                          )}
-                        >
-                          {formatPercentage(portfolio.totalChangePercent24h)}{" "}
-                          (24h)
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm text-gray-600">P&L (24h)</div>
-                        <div
-                          className={cn(
-                            "text-xl font-bold",
-                            getChangeColor(portfolio.totalChange24h),
-                          )}
-                        >
-                          {formatCurrency(portfolio.totalChange24h)}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      {portfolio.assets.map((asset) => (
-                        <div
-                          key={asset.asset}
-                          className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
-                        >
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="w-2 h-2 rounded-full"
-                              style={{ backgroundColor: "#F7931A" }}
-                            ></div>
-                            <div>
-                              <div className="font-medium">{asset.asset}</div>
-                              <div className="text-sm text-gray-600">
-                                {asset.total} {asset.asset}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-semibold">
-                              {formatCurrency(asset.usdValue)}
-                            </div>
-                            <div
-                              className={cn(
-                                "text-sm",
-                                getChangeColor(asset.changePercent24h),
-                              )}
-                            >
-                              {formatPercentage(asset.changePercent24h)}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Asset Allocation</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {portfolio.allocation.map((item) => (
-                      <div key={item.asset} className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm font-medium">
-                            {item.asset}
-                          </span>
-                          <span className="text-sm">
-                            {item.percentage.toFixed(1)}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div
-                            className="h-2 rounded-full"
-                            style={{
-                              width: `${item.percentage}%`,
-                              backgroundColor: item.color,
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          ) : (
-            <Card>
-              <CardContent className="p-12 text-center">
-                <PieChart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  No Portfolio Data
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Start trading to see your portfolio here
-                </p>
-                <Button onClick={() => setActiveTab("trading")}>
-                  Start Trading
-                </Button>
-              </CardContent>
-            </Card>
-          )}
         </TabsContent>
 
         {/* News Tab */}
@@ -796,111 +879,64 @@ export default function EnhancedCrypto() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BookOpen className="h-5 w-5" />
-                Crypto Education Hub
+                Crypto Education Center
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {educationContent.map((content) => (
-                  <Card
+                  <div
                     key={content.id}
-                    className="hover:shadow-md transition-shadow cursor-pointer"
+                    className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
                   >
-                    {content.thumbnail && (
-                      <img
-                        src={content.thumbnail}
-                        alt={content.title}
-                        className="w-full h-32 object-cover rounded-t-lg"
-                      />
-                    )}
-                    <CardContent className="p-4">
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            variant={
-                              content.level === "BEGINNER"
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{content.category}</Badge>
+                        <Badge
+                          variant={
+                            content.difficulty === "BEGINNER"
+                              ? "secondary"
+                              : content.difficulty === "INTERMEDIATE"
                                 ? "default"
-                                : content.level === "INTERMEDIATE"
-                                  ? "secondary"
-                                  : "destructive"
-                            }
-                          >
-                            {content.level}
-                          </Badge>
-                          <Badge variant="outline">{content.type}</Badge>
-                        </div>
+                                : "destructive"
+                          }
+                        >
+                          {content.difficulty}
+                        </Badge>
+                      </div>
 
-                        <h3 className="font-semibold line-clamp-2">
-                          {content.title}
-                        </h3>
-                        <p className="text-sm text-gray-600 line-clamp-2">
-                          {content.description}
-                        </p>
+                      <h3 className="font-semibold text-lg">{content.title}</h3>
+                      <p className="text-gray-600 line-clamp-2">
+                        {content.summary}
+                      </p>
 
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-1">
-                              <Eye className="h-4 w-4" />
-                              <span>{content.views.toLocaleString()}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                              <span>{content.rating.toFixed(1)}</span>
-                            </div>
-                          </div>
-                          {content.duration && (
-                            <div className="flex items-center gap-1">
-                              <Clock className="h-4 w-4" />
-                              <span>{content.duration}min</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-600">
-                            By {content.author}
-                          </span>
-                          <Button size="sm">
-                            {content.type === "VIDEO" ? "Watch" : "Read"}
-                          </Button>
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <span>{content.readTime} min read</span>
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span>{content.rating}</span>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+
+                      {content.tags && (
+                        <div className="flex items-center gap-1">
+                          {content.tags.slice(0, 3).map((tag) => (
+                            <Badge
+                              key={tag}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 ))}
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-
-        {/* Wallet Tab */}
-        <TabsContent value="wallet" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <CryptoWalletActions onKYCSubmit={() => {}} />
-            <SoftPointExchange />
-          </div>
-        </TabsContent>
-
-        {/* Legacy Tab - Keep existing components for backward compatibility */}
-        <TabsContent value="legacy" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-1">
-              <CryptoList
-                cryptos={cryptos}
-                selectedCryptoId={cryptos[0]?.id || ""}
-                onSelectCrypto={() => {}}
-                isLoading={isLoading}
-              />
-            </div>
-
-            <div className="lg:col-span-2">
-              {cryptos[0] && <CryptoChart crypto={cryptos[0]} />}
-            </div>
-
-            <div className="lg:col-span-1">
-              <CryptoPortfolio />
-            </div>
-          </div>
         </TabsContent>
       </Tabs>
     </div>
