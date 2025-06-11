@@ -380,10 +380,10 @@ const EnhancedProfile = () => {
       <div className="w-full max-w-5xl mx-auto">
         {/* Instagram/Facebook-Style Profile Header */}
         <div className="p-3 sm:p-4 md:p-6 lg:p-8">
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8">
             {/* Profile Picture */}
-            <div className="flex justify-center md:justify-start">
-              <div className="relative">
+            <div className="flex justify-center sm:justify-start">
+              <div className="relative flex-shrink-0">
                 <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-white shadow-lg">
                   <AvatarImage
                     src={editForm.avatar || profile.avatar}
