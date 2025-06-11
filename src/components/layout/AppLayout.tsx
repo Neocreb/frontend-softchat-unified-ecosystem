@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
+import SecondaryNav from "./SecondaryNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const AppLayout = () => {
