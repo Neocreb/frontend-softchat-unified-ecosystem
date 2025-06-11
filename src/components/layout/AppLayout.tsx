@@ -9,11 +9,13 @@ const AppLayout = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      {/* Add proper spacing for fixed header (h-16 = 4rem = 64px) + additional padding */}
+      {/* Add proper spacing for fixed header and ensure no horizontal overflow */}
       <main
-        className={`container mx-auto px-4 ${isMobile ? "pt-20 pb-24" : "pt-20 pb-6"}`}
+        className={`w-full max-w-full overflow-x-hidden ${isMobile ? "pt-16 pb-20 px-2" : "pt-20 pb-6 px-4"}`}
       >
-        <Outlet />
+        <div className="w-full max-w-full mx-auto">
+          <Outlet />
+        </div>
       </main>
       {isMobile && <FooterNav />}
     </div>
