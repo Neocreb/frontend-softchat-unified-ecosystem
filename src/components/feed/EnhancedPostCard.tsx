@@ -18,11 +18,21 @@ interface EnhancedPostCardProps {
 }
 
 const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
+  const navigate = useNavigate();
+
+  const handleUserClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/profile/${post.author.username}`);
+  };
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="p-4 pb-0">
         <div className="flex items-start gap-3">
-          <Avatar className="h-10 w-10">
+          <Avatar
+            className="h-10 w-10 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={handleUserClick}
+          >
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
             <AvatarFallback>
               {post.author.name.substring(0, 2).toUpperCase()}
@@ -30,7 +40,12 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
           </Avatar>
           <div className="flex-1 space-y-1">
             <div className="flex items-center">
-              <span className="font-semibold">{post.author.name}</span>
+              <span
+                className="font-semibold cursor-pointer hover:underline"
+                onClick={handleUserClick}
+              >
+                {post.author.name}
+              </span>
               {post.author.verified && (
                 <Badge variant="outline" className="ml-1 bg-blue-500 p-0">
                   <Check className="h-3 w-3 text-white" />
@@ -38,7 +53,12 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
               )}
             </div>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <span>@{post.author.username}</span>
+              <span
+                className="cursor-pointer hover:underline"
+                onClick={handleUserClick}
+              >
+                @{post.author.username}
+              </span>
               <span>·</span>
               <span>{post.createdAt}</span>
               {post.isAd && (
