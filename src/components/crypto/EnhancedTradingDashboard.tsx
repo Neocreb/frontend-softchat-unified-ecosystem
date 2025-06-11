@@ -517,9 +517,9 @@ export default function EnhancedTradingDashboard({
                     <span>Amount</span>
                     <span>Time</span>
                   </div>
-                  {recentTrades.slice(0, 15).map((trade) => (
+                  {recentTrades.slice(0, 15).map((trade, index) => (
                     <div
-                      key={trade.id}
+                      key={`${trade.id}-${index}-${trade.time}`}
                       className="flex justify-between text-sm"
                     >
                       <span
