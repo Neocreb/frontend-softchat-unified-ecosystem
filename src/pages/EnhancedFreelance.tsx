@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import {
   Search,
   Filter,
@@ -25,22 +25,27 @@ import {
   Clock,
   Award,
   MessageCircle,
-  Settings
-} from 'lucide-react';
-import { JobPosting, FreelancerProfile, SearchFilters, Project } from '@/types/freelance';
-import { freelanceService } from '@/services/freelanceService';
-import FreelancerProfileCard from '@/components/freelance/FreelancerProfileCard';
-import JobCard from '@/components/freelance/JobCard';
-import ProposalForm from '@/components/freelance/ProposalForm';
-import ProjectDashboard from '@/components/freelance/ProjectDashboard';
-import { useToast } from '@/components/ui/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
+  Settings,
+} from "lucide-react";
+import {
+  JobPosting,
+  FreelancerProfile,
+  SearchFilters,
+  Project,
+} from "@/types/freelance";
+import { freelanceService } from "@/services/freelanceService";
+import FreelancerProfileCard from "@/components/freelance/FreelancerProfileCard";
+import JobCard from "@/components/freelance/JobCard";
+import ProposalForm from "@/components/freelance/ProposalForm";
+import ProjectDashboard from "@/components/freelance/ProjectDashboard";
+import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const EnhancedFreelance: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('browse-jobs');
+  const [activeTab, setActiveTab] = useState("browse-jobs");
   const [jobs, setJobs] = useState<JobPosting[]>([]);
   const [freelancers, setFreelancers] = useState<FreelancerProfile[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<SearchFilters>({});
   const [categories, setCategories] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
@@ -52,19 +57,19 @@ const EnhancedFreelance: React.FC = () => {
 
   // Job posting form state
   const [jobForm, setJobForm] = useState({
-    title: '',
-    description: '',
-    category: '',
-    subcategory: '',
-    budgetType: 'fixed' as 'fixed' | 'hourly',
-    budgetAmount: '',
-    budgetMin: '',
-    budgetMax: '',
-    deadline: '',
-    duration: '',
-    experienceLevel: 'intermediate' as 'entry' | 'intermediate' | 'expert',
+    title: "",
+    description: "",
+    category: "",
+    subcategory: "",
+    budgetType: "fixed" as "fixed" | "hourly",
+    budgetAmount: "",
+    budgetMin: "",
+    budgetMax: "",
+    deadline: "",
+    duration: "",
+    experienceLevel: "intermediate" as "entry" | "intermediate" | "expert",
     skills: [] as string[],
-    skillInput: ''
+    skillInput: "",
   });
 
   useEffect(() => {
@@ -72,9 +77,9 @@ const EnhancedFreelance: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (activeTab === 'browse-jobs') {
+    if (activeTab === "browse-jobs") {
       searchJobs();
-    } else if (activeTab === 'find-talent') {
+    } else if (activeTab === "find-talent") {
       searchFreelancers();
     }
   }, [activeTab, filters, searchQuery]);
@@ -83,15 +88,15 @@ const EnhancedFreelance: React.FC = () => {
     try {
       const [categoriesData, skillsData] = await Promise.all([
         freelanceService.getCategories(),
-        freelanceService.getSkills()
+        freelanceService.getSkills(),
       ]);
       setCategories(categoriesData);
       setSkills(skillsData);
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to load initial data',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to load initial data",
+        variant: "destructive",
       });
     }
   };
@@ -101,15 +106,15 @@ const EnhancedFreelance: React.FC = () => {
     try {
       const searchFilters: SearchFilters = {
         ...filters,
-        skills: searchQuery ? [searchQuery] : filters.skills
+        skills: searchQuery ? [searchQuery] : filters.skills,
       };
       const jobsData = await freelanceService.searchJobs(searchFilters);
       setJobs(jobsData);
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to search jobs',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to search jobs",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -121,15 +126,16 @@ const EnhancedFreelance: React.FC = () => {
     try {
       const searchFilters: SearchFilters = {
         ...filters,
-        skills: searchQuery ? [searchQuery] : filters.skills
+        skills: searchQuery ? [searchQuery] : filters.skills,
       };
-      const freelancersData = await freelanceService.searchFreelancers(searchFilters);
+      const freelancersData =
+        await freelanceService.searchFreelancers(searchFilters);
       setFreelancers(freelancersData);
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to search freelancers',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to search freelancers",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -144,7 +150,7 @@ const EnhancedFreelance: React.FC = () => {
   const handleJobDetails = (job: JobPosting) => {
     // Would open a detailed job view modal
     toast({
-      title: 'Job Details',
+      title: "Job Details",
       description: `Viewing details for: ${job.title}`,
     });
   };
@@ -152,7 +158,7 @@ const EnhancedFreelance: React.FC = () => {
   const handleHireFreelancer = (freelancer: FreelancerProfile) => {
     // Would open a hire freelancer modal
     toast({
-      title: 'Hire Freelancer',
+      title: "Hire Freelancer",
       description: `Initiating hire process for: ${freelancer.name}`,
     });
   };
@@ -160,7 +166,7 @@ const EnhancedFreelance: React.FC = () => {
   const handleMessageFreelancer = (freelancer: FreelancerProfile) => {
     // Would open messaging interface
     toast({
-      title: 'Message Sent',
+      title: "Message Sent",
       description: `Opening chat with ${freelancer.name}`,
     });
   };
@@ -169,8 +175,8 @@ const EnhancedFreelance: React.FC = () => {
     try {
       await freelanceService.submitProposal(proposalData);
       toast({
-        title: 'Proposal Submitted',
-        description: 'Your proposal has been sent successfully!',
+        title: "Proposal Submitted",
+        description: "Your proposal has been sent successfully!",
       });
       setShowProposalForm(false);
       setSelectedJob(null);
@@ -184,93 +190,100 @@ const EnhancedFreelance: React.FC = () => {
 
     if (!user) {
       toast({
-        title: 'Authentication Required',
-        description: 'Please log in to post a job',
-        variant: 'destructive',
+        title: "Authentication Required",
+        description: "Please log in to post a job",
+        variant: "destructive",
       });
       return;
     }
 
     try {
-      const jobData: Omit<JobPosting, 'id' | 'postedDate' | 'applicationsCount' | 'proposals'> = {
+      const jobData: Omit<
+        JobPosting,
+        "id" | "postedDate" | "applicationsCount" | "proposals"
+      > = {
         title: jobForm.title,
         description: jobForm.description,
         category: jobForm.category,
         subcategory: jobForm.subcategory,
         budget: {
           type: jobForm.budgetType,
-          ...(jobForm.budgetType === 'fixed'
+          ...(jobForm.budgetType === "fixed"
             ? { amount: parseFloat(jobForm.budgetAmount) }
             : {
                 min: parseFloat(jobForm.budgetMin),
-                max: parseFloat(jobForm.budgetMax)
-              }
-          )
+                max: parseFloat(jobForm.budgetMax),
+              }),
         },
         deadline: jobForm.deadline,
         duration: jobForm.duration,
         experienceLevel: jobForm.experienceLevel,
         skills: jobForm.skills,
         client: {
-          id: user.id || '1',
-          name: user.name || 'Current User',
-          email: user.email || 'user@example.com',
-          avatar: user.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
-          location: 'Remote',
-          timezone: 'UTC',
+          id: user.id || "1",
+          name: user.name || "Current User",
+          email: user.email || "user@example.com",
+          avatar:
+            user.avatar ||
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+          location: "Remote",
+          timezone: "UTC",
           verified: true,
-          joinedDate: '2023-01-01',
+          joinedDate: "2023-01-01",
           totalSpent: 0,
           jobsPosted: 0,
           hireRate: 0,
           rating: 5.0,
-          paymentVerified: true
+          paymentVerified: true,
         },
-        status: 'open',
-        visibility: 'public'
+        status: "open",
+        visibility: "public",
       };
 
       await freelanceService.createJobPosting(jobData);
 
       toast({
-        title: 'Job Posted Successfully',
-        description: 'Your job has been posted and is now live!',
+        title: "Job Posted Successfully",
+        description: "Your job has been posted and is now live!",
       });
 
       // Reset form
       setJobForm({
-        title: '',
-        description: '',
-        category: '',
-        subcategory: '',
-        budgetType: 'fixed',
-        budgetAmount: '',
-        budgetMin: '',
-        budgetMax: '',
-        deadline: '',
-        duration: '',
-        experienceLevel: 'intermediate',
+        title: "",
+        description: "",
+        category: "",
+        subcategory: "",
+        budgetType: "fixed",
+        budgetAmount: "",
+        budgetMin: "",
+        budgetMax: "",
+        deadline: "",
+        duration: "",
+        experienceLevel: "intermediate",
         skills: [],
-        skillInput: ''
+        skillInput: "",
       });
 
       // Switch to browse jobs tab to see the new job
-      setActiveTab('browse-jobs');
+      setActiveTab("browse-jobs");
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to post job. Please try again.',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to post job. Please try again.",
+        variant: "destructive",
       });
     }
   };
 
   const addSkill = () => {
-    if (jobForm.skillInput.trim() && !jobForm.skills.includes(jobForm.skillInput.trim())) {
+    if (
+      jobForm.skillInput.trim() &&
+      !jobForm.skills.includes(jobForm.skillInput.trim())
+    ) {
       setJobForm({
         ...jobForm,
         skills: [...jobForm.skills, jobForm.skillInput.trim()],
-        skillInput: ''
+        skillInput: "",
       });
     }
   };
@@ -278,7 +291,7 @@ const EnhancedFreelance: React.FC = () => {
   const removeSkill = (skillToRemove: string) => {
     setJobForm({
       ...jobForm,
-      skills: jobForm.skills.filter(skill => skill !== skillToRemove)
+      skills: jobForm.skills.filter((skill) => skill !== skillToRemove),
     });
   };
 
@@ -315,25 +328,41 @@ const EnhancedFreelance: React.FC = () => {
       </div>
 
       {/* Main Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <div className="overflow-x-auto pb-2">
           <TabsList className="grid w-full min-w-max grid-cols-4 bg-gray-100">
-            <TabsTrigger value="browse-jobs" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4">
+            <TabsTrigger
+              value="browse-jobs"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
               <Search className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden xs:inline">Browse Jobs</span>
               <span className="xs:hidden">Browse</span>
             </TabsTrigger>
-            <TabsTrigger value="find-talent" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4">
+            <TabsTrigger
+              value="find-talent"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
               <Users className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden xs:inline">Find Talent</span>
               <span className="xs:hidden">Talent</span>
             </TabsTrigger>
-            <TabsTrigger value="post-job" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4">
+            <TabsTrigger
+              value="post-job"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
               <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden xs:inline">Post Job</span>
               <span className="xs:hidden">Post</span>
             </TabsTrigger>
-            <TabsTrigger value="my-projects" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4">
+            <TabsTrigger
+              value="my-projects"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-4"
+            >
               <Briefcase className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden xs:inline">My Projects</span>
               <span className="xs:hidden">Projects</span>
@@ -360,16 +389,23 @@ const EnhancedFreelance: React.FC = () => {
                 </div>
                 <div className="flex gap-2">
                   <Select
-                    value={filters.category || 'all'}
-                    onValueChange={(value) => setFilters({...filters, category: value === 'all' ? undefined : value})}
+                    value={filters.category || "all"}
+                    onValueChange={(value) =>
+                      setFilters({
+                        ...filters,
+                        category: value === "all" ? undefined : value,
+                      })
+                    }
                   >
                     <SelectTrigger className="w-32 sm:w-40 lg:w-48">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Categories</SelectItem>
-                      {categories.map(category => (
-                        <SelectItem key={category} value={category}>{category}</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -385,7 +421,7 @@ const EnhancedFreelance: React.FC = () => {
           <div className="grid gap-6">
             {isLoading ? (
               <div className="space-y-4">
-                {[1, 2, 3].map(i => (
+                {[1, 2, 3].map((i) => (
                   <Card key={i} className="animate-pulse">
                     <CardContent className="p-6">
                       <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
@@ -402,8 +438,12 @@ const EnhancedFreelance: React.FC = () => {
               <Card className="bg-white border-gray-200">
                 <CardContent className="p-12 text-center">
                   <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No Jobs Found</h3>
-                  <p className="text-gray-600">Try adjusting your search criteria or browse all categories.</p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No Jobs Found
+                  </h3>
+                  <p className="text-gray-600">
+                    Try adjusting your search criteria or browse all categories.
+                  </p>
                 </CardContent>
               </Card>
             ) : (
@@ -442,8 +482,10 @@ const EnhancedFreelance: React.FC = () => {
                       <SelectValue placeholder="Skill" />
                     </SelectTrigger>
                     <SelectContent>
-                      {skills.map(skill => (
-                        <SelectItem key={skill} value={skill}>{skill}</SelectItem>
+                      {skills.map((skill) => (
+                        <SelectItem key={skill} value={skill}>
+                          {skill}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -459,7 +501,7 @@ const EnhancedFreelance: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {isLoading ? (
               <div className="col-span-full space-y-4">
-                {[1, 2].map(i => (
+                {[1, 2].map((i) => (
                   <Card key={i} className="animate-pulse">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
@@ -479,8 +521,13 @@ const EnhancedFreelance: React.FC = () => {
                 <Card className="bg-white border-gray-200">
                   <CardContent className="p-12 text-center">
                     <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Freelancers Found</h3>
-                    <p className="text-gray-600">Try adjusting your search criteria to find the right talent.</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No Freelancers Found
+                    </h3>
+                    <p className="text-gray-600">
+                      Try adjusting your search criteria to find the right
+                      talent.
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -516,7 +563,9 @@ const EnhancedFreelance: React.FC = () => {
                       id="title"
                       placeholder="e.g., Build a React Native mobile app"
                       value={jobForm.title}
-                      onChange={(e) => setJobForm({ ...jobForm, title: e.target.value })}
+                      onChange={(e) =>
+                        setJobForm({ ...jobForm, title: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -524,14 +573,18 @@ const EnhancedFreelance: React.FC = () => {
                     <Label htmlFor="category">Category *</Label>
                     <Select
                       value={jobForm.category}
-                      onValueChange={(value) => setJobForm({ ...jobForm, category: value })}
+                      onValueChange={(value) =>
+                        setJobForm({ ...jobForm, category: value })
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map(category => (
-                          <SelectItem key={category} value={category}>{category}</SelectItem>
+                        {categories.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -546,7 +599,9 @@ const EnhancedFreelance: React.FC = () => {
                     placeholder="Describe your project in detail, including requirements, goals, and any specific preferences..."
                     rows={8}
                     value={jobForm.description}
-                    onChange={(e) => setJobForm({ ...jobForm, description: e.target.value })}
+                    onChange={(e) =>
+                      setJobForm({ ...jobForm, description: e.target.value })
+                    }
                     required
                   />
                 </div>
@@ -556,17 +611,24 @@ const EnhancedFreelance: React.FC = () => {
                   <Label>Budget *</Label>
                   <div className="space-y-4">
                     <Select
-                      value={jobForm.category}
-                      onValueChange={(value) => setJobForm({...jobForm, category: value})}
+                      value={jobForm.budgetType}
+                      onValueChange={(value) =>
+                        setJobForm({
+                          ...jobForm,
+                          budgetType: value as "fixed" | "hourly",
+                        })
+                      }
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
+                      <SelectTrigger>
+                        <SelectValue placeholder="Budget Type" />
+                      </SelectTrigger>
+                      <SelectContent>
                         <SelectItem value="fixed">Fixed Price</SelectItem>
                         <SelectItem value="hourly">Hourly Rate</SelectItem>
                       </SelectContent>
                     </Select>
 
-                    {jobForm.budgetType === 'fixed' ? (
+                    {jobForm.budgetType === "fixed" ? (
                       <div className="space-y-2">
                         <Label htmlFor="budgetAmount">Total Budget ($)</Label>
                         <Input
@@ -575,7 +637,12 @@ const EnhancedFreelance: React.FC = () => {
                           min="1"
                           placeholder="e.g., 5000"
                           value={jobForm.budgetAmount}
-                          onChange={(e) => setJobForm({ ...jobForm, budgetAmount: e.target.value })}
+                          onChange={(e) =>
+                            setJobForm({
+                              ...jobForm,
+                              budgetAmount: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
@@ -589,7 +656,12 @@ const EnhancedFreelance: React.FC = () => {
                             min="1"
                             placeholder="e.g., 50"
                             value={jobForm.budgetMin}
-                            onChange={(e) => setJobForm({ ...jobForm, budgetMin: e.target.value })}
+                            onChange={(e) =>
+                              setJobForm({
+                                ...jobForm,
+                                budgetMin: e.target.value,
+                              })
+                            }
                             required
                           />
                         </div>
@@ -601,7 +673,12 @@ const EnhancedFreelance: React.FC = () => {
                             min="1"
                             placeholder="e.g., 100"
                             value={jobForm.budgetMax}
-                            onChange={(e) => setJobForm({ ...jobForm, budgetMax: e.target.value })}
+                            onChange={(e) =>
+                              setJobForm({
+                                ...jobForm,
+                                budgetMax: e.target.value,
+                              })
+                            }
                             required
                           />
                         </div>
@@ -616,7 +693,9 @@ const EnhancedFreelance: React.FC = () => {
                     <Label htmlFor="duration">Project Duration</Label>
                     <Select
                       value={jobForm.duration}
-                      onValueChange={(value) => setJobForm({ ...jobForm, duration: value })}
+                      onValueChange={(value) =>
+                        setJobForm({ ...jobForm, duration: value })
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select duration" />
@@ -636,7 +715,9 @@ const EnhancedFreelance: React.FC = () => {
                       id="deadline"
                       type="date"
                       value={jobForm.deadline}
-                      onChange={(e) => setJobForm({ ...jobForm, deadline: e.target.value })}
+                      onChange={(e) =>
+                        setJobForm({ ...jobForm, deadline: e.target.value })
+                      }
                       required
                     />
                   </div>
@@ -644,14 +725,18 @@ const EnhancedFreelance: React.FC = () => {
                     <Label htmlFor="experienceLevel">Experience Level</Label>
                     <Select
                       value={jobForm.experienceLevel}
-                      onValueChange={(value: any) => setJobForm({ ...jobForm, experienceLevel: value })}
+                      onValueChange={(value: any) =>
+                        setJobForm({ ...jobForm, experienceLevel: value })
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="entry">Entry Level</SelectItem>
-                        <SelectItem value="intermediate">Intermediate</SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate
+                        </SelectItem>
                         <SelectItem value="expert">Expert</SelectItem>
                       </SelectContent>
                     </Select>
@@ -665,8 +750,12 @@ const EnhancedFreelance: React.FC = () => {
                     <Input
                       placeholder="Add a skill (e.g., React, Node.js)"
                       value={jobForm.skillInput}
-                      onChange={(e) => setJobForm({ ...jobForm, skillInput: e.target.value })}
-                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
+                      onChange={(e) =>
+                        setJobForm({ ...jobForm, skillInput: e.target.value })
+                      }
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && (e.preventDefault(), addSkill())
+                      }
                     />
                     <Button type="button" onClick={addSkill} variant="outline">
                       Add
@@ -686,7 +775,11 @@ const EnhancedFreelance: React.FC = () => {
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" size="lg">
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  size="lg"
+                >
                   <Plus className="h-4 w-4 mr-2" />
                   Post Job
                 </Button>
@@ -698,7 +791,7 @@ const EnhancedFreelance: React.FC = () => {
         {/* My Projects Tab */}
         <TabsContent value="my-projects">
           <ProjectDashboard
-            userId={user?.id || '1'}
+            userId={user?.id || "1"}
             userType="freelancer" // This would be determined by user role
           />
         </TabsContent>
@@ -713,7 +806,7 @@ const EnhancedFreelance: React.FC = () => {
         }}
         job={selectedJob}
         onSubmit={handleSubmitProposal}
-        freelancerId={user?.id || '1'}
+        freelancerId={user?.id || "1"}
       />
     </div>
   );
