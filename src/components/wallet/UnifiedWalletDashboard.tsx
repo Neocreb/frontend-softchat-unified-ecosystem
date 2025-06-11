@@ -94,7 +94,7 @@ const WalletDashboardContent = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-7xl mx-auto space-y-4 md:space-y-6 px-2 md:px-4">
+      <div className="mobile-container mobile-space-y">
         {/* Header Skeleton */}
         <div className="flex items-center justify-between">
           <Skeleton className="h-6 md:h-8 w-32 md:w-48" />
@@ -130,9 +130,9 @@ const WalletDashboardContent = () => {
   const earningsGrowth = getTotalEarnings(30);
 
   return (
-    <div className="w-full max-w-7xl mx-auto space-y-4 md:space-y-6 px-2 md:px-4">
+    <div className="mobile-container mobile-space-y">
       {/* Header */}
-      <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+      <div className="mobile-flex sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
             Unified Wallet
@@ -248,9 +248,9 @@ const WalletDashboardContent = () => {
         className="space-y-4 md:space-y-6"
       >
         {/* Mobile optimized tab list */}
-        <div className="w-full overflow-x-auto">
+        <div className="w-full mobile-tabs">
           <div className="border-b border-gray-200">
-            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0">
+            <TabsList className="inline-flex h-auto bg-transparent min-w-max p-0 gap-1">
               <TabsTrigger
                 value="all"
                 className="flex flex-col items-center gap-1 px-3 py-2 text-xs data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
