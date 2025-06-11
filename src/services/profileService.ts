@@ -171,11 +171,20 @@ export class ProfileService {
         .eq("user_id", userId)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.warn(
+          `Posts table query failed: ${error.message}. This is expected if the posts table doesn't exist yet.`,
+        );
+        return null;
+      }
       return data;
-    } catch (error) {
-      console.error("Error fetching user posts:", error);
-      return null;
+    } catch (error: any) {
+      console.warn(
+        `Error fetching user posts for ${userId}:`,
+        error?.message || error,
+      );
+      // Return empty array instead of null to avoid further errors
+      return [];
     }
   }
 
@@ -192,11 +201,20 @@ export class ProfileService {
         .eq("seller_id", userId)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.warn(
+          `Products table query failed: ${error.message}. This is expected if the products table doesn't exist yet.`,
+        );
+        return null;
+      }
       return data;
-    } catch (error) {
-      console.error("Error fetching user products:", error);
-      return null;
+    } catch (error: any) {
+      console.warn(
+        `Error fetching user products for ${userId}:`,
+        error?.message || error,
+      );
+      // Return empty array instead of null to avoid further errors
+      return [];
     }
   }
 
@@ -213,11 +231,20 @@ export class ProfileService {
         .eq("freelancer_id", userId)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.warn(
+          `Freelance services table query failed: ${error.message}. This is expected if the freelance_services table doesn't exist yet.`,
+        );
+        return null;
+      }
       return data;
-    } catch (error) {
-      console.error("Error fetching user services:", error);
-      return null;
+    } catch (error: any) {
+      console.warn(
+        `Error fetching user services for ${userId}:`,
+        error?.message || error,
+      );
+      // Return empty array instead of null to avoid further errors
+      return [];
     }
   }
 
