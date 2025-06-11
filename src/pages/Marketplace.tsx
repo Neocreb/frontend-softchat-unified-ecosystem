@@ -1,14 +1,38 @@
-
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import { Plus, ArrowRight, Grid, List, SlidersHorizontal, Search, Filter, Star, Eye, ShoppingCart, Heart, MapPin, Truck, Shield, CreditCard } from "lucide-react";
-import { MarketplaceProvider, useMarketplace } from "@/contexts/MarketplaceContext";
+import {
+  Plus,
+  ArrowRight,
+  Grid,
+  List,
+  SlidersHorizontal,
+  Search,
+  Filter,
+  Star,
+  Eye,
+  ShoppingCart,
+  Heart,
+  MapPin,
+  Truck,
+  Shield,
+  CreditCard,
+} from "lucide-react";
+import {
+  MarketplaceProvider,
+  useMarketplace,
+} from "@/contexts/MarketplaceContext";
 import ProductGrid from "@/components/marketplace/ProductGrid";
 import ProductFilters from "@/components/marketplace/ProductFilters";
 import FeaturedProducts from "@/components/marketplace/FeaturedProducts";
@@ -26,9 +50,9 @@ const MarketplaceContent = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [sortBy, setSortBy] = useState<string>('relevance');
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sortBy, setSortBy] = useState<string>("relevance");
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -39,17 +63,20 @@ const MarketplaceContent = () => {
     setFilter,
     sponsoredProducts,
     featuredProducts,
-    isLoading
+    isLoading,
   } = useMarketplace();
 
   // Redirect to auth if trying to access protected tabs while not authenticated
   useEffect(() => {
-    if (!isAuthenticated && (activeTab === "dashboard" || activeTab === "list")) {
+    if (
+      !isAuthenticated &&
+      (activeTab === "dashboard" || activeTab === "list")
+    ) {
       setActiveTab("browse");
       toast({
         title: "Authentication required",
         description: "Please sign in to access this feature",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
   }, [isAuthenticated, activeTab, toast]);
@@ -69,7 +96,7 @@ const MarketplaceContent = () => {
       toast({
         title: "Authentication required",
         description: "Please sign in to add items to your cart",
-        variant: "destructive"
+        variant: "destructive",
       });
       navigate("/auth");
       return;
@@ -87,7 +114,7 @@ const MarketplaceContent = () => {
       toast({
         title: "Authentication required",
         description: "Please sign in to add items to your wishlist",
-        variant: "destructive"
+        variant: "destructive",
       });
       navigate("/auth");
       return;
@@ -103,22 +130,19 @@ const MarketplaceContent = () => {
   const handleListProductSuccess = () => {
     toast({
       title: "Product Listed",
-      description: "Your product has been successfully listed on the marketplace",
+      description:
+        "Your product has been successfully listed on the marketplace",
     });
     setActiveTab("dashboard");
   };
 
   return (
-    <div className="container py-6 space-y-8">
+    <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Marketplace</h1>
       </div>
 
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="w-full"
-      >
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="overflow-x-auto pb-2">
           <TabsList className="min-w-max">
             <TabsTrigger value="browse">Browse Products</TabsTrigger>
@@ -138,8 +162,8 @@ const MarketplaceContent = () => {
           {/* Enhanced Product Detail View */}
           {selectedProduct ? (
             <div>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 onClick={() => setSelectedProduct(null)}
                 className="mb-4"
               >
@@ -169,16 +193,26 @@ const MarketplaceContent = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="relevance">Best Match</SelectItem>
-                          <SelectItem value="price_low">Price: Low to High</SelectItem>
-                          <SelectItem value="price_high">Price: High to Low</SelectItem>
-                          <SelectItem value="rating">Customer Rating</SelectItem>
+                          <SelectItem value="price_low">
+                            Price: Low to High
+                          </SelectItem>
+                          <SelectItem value="price_high">
+                            Price: High to Low
+                          </SelectItem>
+                          <SelectItem value="rating">
+                            Customer Rating
+                          </SelectItem>
                           <SelectItem value="newest">Newest First</SelectItem>
-                          <SelectItem value="bestselling">Best Selling</SelectItem>
+                          <SelectItem value="bestselling">
+                            Best Selling
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <Button
                         variant="outline"
-                        onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                        onClick={() =>
+                          setShowAdvancedFilters(!showAdvancedFilters)
+                        }
                         className="flex items-center gap-2"
                       >
                         <SlidersHorizontal className="h-4 w-4" />
@@ -186,44 +220,58 @@ const MarketplaceContent = () => {
                       </Button>
                       <div className="flex border rounded-lg">
                         <Button
-                          variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                          variant={viewMode === "grid" ? "default" : "ghost"}
                           size="sm"
-                          onClick={() => setViewMode('grid')}
+                          onClick={() => setViewMode("grid")}
                         >
                           <Grid className="h-4 w-4" />
                         </Button>
                         <Button
-                          variant={viewMode === 'list' ? 'default' : 'ghost'}
+                          variant={viewMode === "list" ? "default" : "ghost"}
                           size="sm"
-                          onClick={() => setViewMode('list')}
+                          onClick={() => setViewMode("list")}
                         >
                           <List className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Advanced Filters Panel */}
                   {showAdvancedFilters && (
                     <div className="mt-4 pt-4 border-t">
                       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Price Range</label>
+                          <label className="text-sm font-medium mb-2 block">
+                            Price Range
+                          </label>
                           <div className="flex gap-2">
                             <Input
                               placeholder="Min"
                               value={priceRange.min}
-                              onChange={(e) => setPriceRange(prev => ({ ...prev, min: e.target.value }))}
+                              onChange={(e) =>
+                                setPriceRange((prev) => ({
+                                  ...prev,
+                                  min: e.target.value,
+                                }))
+                              }
                             />
                             <Input
                               placeholder="Max"
                               value={priceRange.max}
-                              onChange={(e) => setPriceRange(prev => ({ ...prev, max: e.target.value }))}
+                              onChange={(e) =>
+                                setPriceRange((prev) => ({
+                                  ...prev,
+                                  max: e.target.value,
+                                }))
+                              }
                             />
                           </div>
                         </div>
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Rating</label>
+                          <label className="text-sm font-medium mb-2 block">
+                            Rating
+                          </label>
                           <Select>
                             <SelectTrigger>
                               <SelectValue placeholder="Any rating" />
@@ -236,7 +284,9 @@ const MarketplaceContent = () => {
                           </Select>
                         </div>
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Condition</label>
+                          <label className="text-sm font-medium mb-2 block">
+                            Condition
+                          </label>
                           <Select>
                             <SelectTrigger>
                               <SelectValue placeholder="Any condition" />
@@ -244,20 +294,30 @@ const MarketplaceContent = () => {
                             <SelectContent>
                               <SelectItem value="new">New</SelectItem>
                               <SelectItem value="used">Used</SelectItem>
-                              <SelectItem value="refurbished">Refurbished</SelectItem>
+                              <SelectItem value="refurbished">
+                                Refurbished
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         <div>
-                          <label className="text-sm font-medium mb-2 block">Shipping</label>
+                          <label className="text-sm font-medium mb-2 block">
+                            Shipping
+                          </label>
                           <Select>
                             <SelectTrigger>
                               <SelectValue placeholder="Any shipping" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="free">Free Shipping</SelectItem>
-                              <SelectItem value="fast">Fast Delivery</SelectItem>
-                              <SelectItem value="local">Local Pickup</SelectItem>
+                              <SelectItem value="free">
+                                Free Shipping
+                              </SelectItem>
+                              <SelectItem value="fast">
+                                Fast Delivery
+                              </SelectItem>
+                              <SelectItem value="local">
+                                Local Pickup
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -321,9 +381,11 @@ const MarketplaceContent = () => {
                 <main className="flex-1">
                   {isLoading ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {Array(6).fill(0).map((_, i) => (
-                        <Skeleton key={i} className="h-[320px] rounded-lg" />
-                      ))}
+                      {Array(6)
+                        .fill(0)
+                        .map((_, i) => (
+                          <Skeleton key={i} className="h-[320px] rounded-lg" />
+                        ))}
                     </div>
                   ) : (
                     <ProductGrid
@@ -343,9 +405,11 @@ const MarketplaceContent = () => {
         <TabsContent value="sponsored" className="space-y-8 pt-4">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array(6).fill(0).map((_, i) => (
-                <Skeleton key={i} className="h-[320px] rounded-lg" />
-              ))}
+              {Array(6)
+                .fill(0)
+                .map((_, i) => (
+                  <Skeleton key={i} className="h-[320px] rounded-lg" />
+                ))}
             </div>
           ) : sponsoredProducts.length > 0 ? (
             <div>
@@ -358,8 +422,12 @@ const MarketplaceContent = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-semibold mb-2">No Boosted Products</h3>
-              <p className="text-muted-foreground">There are currently no boosted products in the marketplace.</p>
+              <h3 className="text-lg font-semibold mb-2">
+                No Boosted Products
+              </h3>
+              <p className="text-muted-foreground">
+                There are currently no boosted products in the marketplace.
+              </p>
             </div>
           )}
         </TabsContent>
@@ -370,11 +438,13 @@ const MarketplaceContent = () => {
             <SellerDashboard />
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-semibold mb-2">Authentication Required</h3>
-              <p className="text-muted-foreground mb-4">Please sign in to view your seller dashboard</p>
-              <Button onClick={() => navigate('/auth')}>
-                Sign In
-              </Button>
+              <h3 className="text-lg font-semibold mb-2">
+                Authentication Required
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Please sign in to view your seller dashboard
+              </p>
+              <Button onClick={() => navigate("/auth")}>Sign In</Button>
             </div>
           )}
         </TabsContent>
@@ -385,11 +455,13 @@ const MarketplaceContent = () => {
             <ListProductForm onSuccess={handleListProductSuccess} />
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-semibold mb-2">Authentication Required</h3>
-              <p className="text-muted-foreground mb-4">Please sign in to list a product</p>
-              <Button onClick={() => navigate('/auth')}>
-                Sign In
-              </Button>
+              <h3 className="text-lg font-semibold mb-2">
+                Authentication Required
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Please sign in to list a product
+              </p>
+              <Button onClick={() => navigate("/auth")}>Sign In</Button>
             </div>
           )}
         </TabsContent>
@@ -397,16 +469,16 @@ const MarketplaceContent = () => {
         {/* Wishlist Tab */}
         <TabsContent value="wishlist" className="space-y-4 pt-4">
           {isAuthenticated ? (
-            <WishlistProducts
-              onAddToCart={handleAddToCart}
-            />
+            <WishlistProducts onAddToCart={handleAddToCart} />
           ) : (
             <div className="text-center py-12">
-              <h3 className="text-lg font-semibold mb-2">Authentication Required</h3>
-              <p className="text-muted-foreground mb-4">Please sign in to view your wishlist</p>
-              <Button onClick={() => navigate('/auth')}>
-                Sign In
-              </Button>
+              <h3 className="text-lg font-semibold mb-2">
+                Authentication Required
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Please sign in to view your wishlist
+              </p>
+              <Button onClick={() => navigate("/auth")}>Sign In</Button>
             </div>
           )}
         </TabsContent>

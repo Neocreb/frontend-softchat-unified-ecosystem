@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/feed/PostCard";
@@ -11,7 +10,7 @@ export type Post = {
   id: string;
   content: string;
   timestamp?: string; // Optional for backward compatibility
-  createdAt: string;  // Added required field
+  createdAt: string; // Added required field
   likes: number;
   comments: number;
   shares: number;
@@ -30,7 +29,8 @@ export type Post = {
 const posts: Post[] = [
   {
     id: "1",
-    content: "Just launched our new AI-powered feature! Check it out at softchat.ai/new-features",
+    content:
+      "Just launched our new AI-powered feature! Check it out at softchat.ai/new-features",
     timestamp: "2h ago",
     createdAt: "2h ago", // Added required field
     likes: 24,
@@ -46,7 +46,8 @@ const posts: Post[] = [
   },
   {
     id: "2",
-    content: "Excited to announce that we've raised $5M in seed funding to build the future of social communication! 🚀",
+    content:
+      "Excited to announce that we've raised $5M in seed funding to build the future of social communication! 🚀",
     timestamp: "5h ago",
     createdAt: "5h ago", // Added required field
     likes: 142,
@@ -61,7 +62,8 @@ const posts: Post[] = [
   },
   {
     id: "3",
-    content: "What are your favorite productivity tools for remote work? I'm looking for recommendations!",
+    content:
+      "What are your favorite productivity tools for remote work? I'm looking for recommendations!",
     timestamp: "8h ago",
     createdAt: "8h ago", // Added required field
     likes: 56,
@@ -78,7 +80,7 @@ const posts: Post[] = [
 
 const Feed = () => {
   return (
-    <div className="container max-w-6xl py-6">
+    <div className="max-w-6xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="col-span-1 hidden md:block">
           <FeedSidebar />

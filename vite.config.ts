@@ -1,6 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
@@ -15,5 +20,24 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks
+          react: ["react", "react-dom"],
+          router: ["react-router-dom"],
+          ui: [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-tabs",
+          ],
+          query: ["@tanstack/react-query"],
+          supabase: ["@supabase/supabase-js"],
+          icons: ["lucide-react"],
+          utils: ["clsx", "tailwind-merge"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000, // Increase limit to 1MB for better performance
   },
 });

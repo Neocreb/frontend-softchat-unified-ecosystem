@@ -11,9 +11,12 @@ import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
+import EnhancedFreelance from "./pages/EnhancedFreelance";
 import Profile from "./pages/Profile";
+import EnhancedProfile from "./pages/EnhancedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
+import EnhancedMarketplace from "./pages/EnhancedMarketplace";
 import MarketplaceCart from "./pages/marketplace/MarketplaceCart";
 import MarketplaceCheckout from "./pages/marketplace/MarketplaceCheckout";
 import MarketplaceList from "./pages/marketplace/MarketplaceList";
@@ -25,6 +28,7 @@ import EnhancedCrypto from "./pages/EnhancedCrypto";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import Settings from "./pages/Settings";
+import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import Videos from "./pages/Videos";
@@ -35,6 +39,7 @@ import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
+import EnhancedRewards from "./pages/EnhancedRewards";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -118,7 +123,9 @@ const AppRoutes = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-muted-foreground">Loading Softchat...</p>
-          <p className="text-xs text-muted-foreground mt-2">Initializing session</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Initializing session
+          </p>
         </div>
       </div>
     );
@@ -139,46 +146,56 @@ const AppRoutes = () => {
       />
 
       {/* Protected routes inside app layout */}
-      <Route path="/" element={
-        <ProtectedRoute>
-          <MarketplaceProvider>
-            <ChatProvider>
-              <AppLayout />
-            </ChatProvider>
-          </MarketplaceProvider>
-        </ProtectedRoute>
-      }>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <MarketplaceProvider>
+              <ChatProvider>
+                <AppLayout />
+              </ChatProvider>
+            </MarketplaceProvider>
+          </ProtectedRoute>
+        }
+      >
         <Route path="feed" element={<EnhancedFeed />} />
-        <Route path="create" element={<Create />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="create" element={<EnhancedFreelance />} />
+        <Route path="profile" element={<EnhancedProfile />} />
+        <Route path="profile/legacy" element={<Profile />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="messages" element={<Messages />} />
 
         {/* Marketplace routes */}
-        <Route path="marketplace" element={<Marketplace />} />
+        <Route path="marketplace" element={<EnhancedMarketplace />} />
         <Route path="marketplace/my" element={<MarketplaceDashboard />} />
         <Route path="marketplace/list" element={<MarketplaceList />} />
-        <Route path="marketplace/seller/:username" element={<MarketplaceSeller />} />
+        <Route
+          path="marketplace/seller/:username"
+          element={<MarketplaceSeller />}
+        />
         <Route path="marketplace/wishlist" element={<MarketplaceWishlist />} />
         <Route path="marketplace/cart" element={<MarketplaceCart />} />
         <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
 
-        <Route path="crypto" element={<CryptoMarket />} />
-        <Route path="rewards" element={<Rewards />} />
+        <Route path="crypto" element={<EnhancedCrypto />} />
+        <Route path="rewards" element={<EnhancedRewards />} />
         <Route path="videos" element={<Videos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
-        <Route path="settings" element={<Settings />} />
-
+        <Route path="settings" element={<EnhancedSettings />} />
+        <Route path="settings/legacy" element={<Settings />} />
       </Route>
 
       {/* Admin Routes */}
-      <Route path="/admin" element={
-        <AdminRoute>
-          <AppLayout />
-        </AdminRoute>
-      }>
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AppLayout />
+          </AdminRoute>
+        }
+      >
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
       </Route>

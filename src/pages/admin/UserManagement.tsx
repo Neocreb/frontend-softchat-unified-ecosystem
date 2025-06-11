@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import UserTable from "@/components/admin/UserTable";
 import UserFilters from "@/components/admin/UserFilters";
@@ -41,16 +40,19 @@ const sampleUsers: User[] = [
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>(sampleUsers);
   const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // Filtered users based on search and filters
   const filteredUsers = users.filter((user) => {
-    const searchMatch = user.name.toLowerCase().includes(search.toLowerCase()) || user.email.toLowerCase().includes(search.toLowerCase());
-    const roleMatch = roleFilter ? user.role === roleFilter : true;
-    const statusMatch = statusFilter ? user.status === statusFilter : true;
+    const searchMatch =
+      user.name.toLowerCase().includes(search.toLowerCase()) ||
+      user.email.toLowerCase().includes(search.toLowerCase());
+    const roleMatch = roleFilter === "all" ? true : user.role === roleFilter;
+    const statusMatch =
+      statusFilter === "all" ? true : user.status === statusFilter;
     return searchMatch && roleMatch && statusMatch;
   });
 
@@ -83,7 +85,7 @@ const UserManagement = () => {
   return (
     <div className="container py-6">
       <UserManagementHeader onAddUser={handleAddUser} />
-      
+
       <UserFilters
         search={search}
         roleFilter={roleFilter}
@@ -93,10 +95,7 @@ const UserManagement = () => {
         onStatusFilterChange={setStatusFilter}
       />
 
-      <UserTable 
-        users={filteredUsers} 
-        onDeleteUser={openDeleteDialog} 
-      />
+      <UserTable users={filteredUsers} onDeleteUser={openDeleteDialog} />
 
       <DeleteUserDialog
         isOpen={isDeleteDialogOpen}
