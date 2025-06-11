@@ -360,97 +360,53 @@ export default function EnhancedCrypto() {
 
         {/* Overview/Portfolio Tab */}
         <TabsContent value="overview" className="mobile-space-y mt-4">
+          {/* Portfolio Overview & Quick Actions */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-            {/* Top Cryptocurrencies */}
+            {/* Portfolio Summary */}
             <Card className="lg:col-span-2">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                  <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
-                  Top Cryptocurrencies
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6">
-                <div className="space-y-2 md:space-y-3">
-                  {cryptos.slice(0, 8).map((crypto, index) => (
-                    <div
-                      key={crypto.id}
-                      className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
-                      onClick={() =>
-                        setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
-                      }
-                    >
-                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                        <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
-                          #{index + 1}
-                        </div>
-                        <img
-                          src={crypto.image}
-                          alt={crypto.name}
-                          className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm md:text-base truncate">
-                            {crypto.name}
-                          </div>
-                          <div className="text-xs md:text-sm text-gray-600">
-                            {crypto.symbol.toUpperCase()}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="text-right min-w-0 flex-shrink-0">
-                        <div className="font-semibold text-sm md:text-base">
-                          {formatCurrency(crypto.current_price)}
-                        </div>
-                        <div
-                          className={cn(
-                            "text-xs md:text-sm",
-                            getChangeColor(crypto.price_change_percentage_24h),
-                          )}
-                        >
-                          {formatPercentage(crypto.price_change_percentage_24h)}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Portfolio Summary */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                  <Wallet className="h-4 w-4 md:h-5 md:w-5" />
-                  Portfolio
+                  <PieChart className="h-4 w-4 md:h-5 md:w-5" />
+                  My Portfolio
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {portfolio ? (
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-2xl md:text-3xl font-bold">
+                  <div className="space-y-6">
+                    <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
+                      <div className="text-3xl md:text-4xl font-bold mb-1">
                         {formatCurrency(portfolio.totalValue)}
                       </div>
                       <div
                         className={cn(
-                          "text-sm font-medium",
+                          "text-base font-medium flex items-center justify-center gap-1",
                           getChangeColor(portfolio.totalChangePercent24h),
                         )}
                       >
+                        {portfolio.totalChangePercent24h >= 0 ? (
+                          <TrendingUp className="h-4 w-4" />
+                        ) : (
+                          <TrendingDown className="h-4 w-4" />
+                        )}
                         {formatPercentage(portfolio.totalChangePercent24h)}{" "}
                         (24h)
                       </div>
+                      <p className="text-sm text-gray-600 mt-1">
+                        Total Portfolio Value
+                      </p>
                     </div>
 
-                    <div className="space-y-2">
-                      {portfolio.assets.slice(0, 5).map((asset) => (
+                    <div className="space-y-3">
+                      <h4 className="font-semibold text-sm text-gray-700">
+                        Holdings
+                      </h4>
+                      {portfolio.assets.slice(0, 6).map((asset) => (
                         <div
                           key={asset.asset}
-                          className="flex items-center justify-between p-2 rounded-lg bg-gray-50"
+                          className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
                         >
-                          <div className="flex items-center gap-2 min-w-0 flex-1">
-                            <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                          <div className="flex items-center gap-3 min-w-0 flex-1">
+                            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex-shrink-0"></div>
                             <div className="min-w-0">
                               <div className="font-medium text-sm">
                                 {asset.asset}
@@ -476,31 +432,162 @@ export default function EnhancedCrypto() {
                         </div>
                       ))}
                     </div>
-
-                    {/* Quick Actions */}
-                    <div className="grid grid-cols-2 gap-2 pt-3 border-t">
-                      <Button variant="outline" size="sm" className="text-xs">
-                        <Plus className="h-3 w-3 mr-1" />
-                        Deposit
-                      </Button>
-                      <Button variant="outline" size="sm" className="text-xs">
-                        <Minus className="h-3 w-3 mr-1" />
-                        Withdraw
-                      </Button>
-                    </div>
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <Wallet className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600">No portfolio data</p>
-                    <Button size="sm" className="mt-2">
+                  <div className="text-center py-12">
+                    <PieChart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">
+                      Start Your Crypto Journey
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Begin trading to build your portfolio
+                    </p>
+                    <Button size="lg" className="px-8">
+                      <Plus className="h-4 w-4 mr-2" />
                       Start Trading
                     </Button>
                   </div>
                 )}
               </CardContent>
             </Card>
+
+            {/* Quick Actions Cards */}
+            <div className="space-y-4">
+              {/* Deposit Card */}
+              <Card className="border-2 border-green-100 hover:border-green-200 transition-colors cursor-pointer">
+                <CardContent className="p-4">
+                  <div className="text-center space-y-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                      <ArrowUpDown className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-green-700">
+                        Deposit Crypto
+                      </h3>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Add funds to your wallet
+                      </p>
+                    </div>
+                    <Button
+                      className="w-full bg-green-600 hover:bg-green-700"
+                      size="sm"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Deposit
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Withdraw Card */}
+              <Card className="border-2 border-blue-100 hover:border-blue-200 transition-colors cursor-pointer">
+                <CardContent className="p-4">
+                  <div className="text-center space-y-3">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                      <CreditCard className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-blue-700">
+                        Withdraw Crypto
+                      </h3>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Transfer to external wallet
+                      </p>
+                    </div>
+                    <Button
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      size="sm"
+                    >
+                      <Minus className="h-4 w-4 mr-2" />
+                      Withdraw
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Buy Crypto Card */}
+              <Card className="border-2 border-purple-100 hover:border-purple-200 transition-colors cursor-pointer">
+                <CardContent className="p-4">
+                  <div className="text-center space-y-3">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+                      <DollarSign className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-purple-700">
+                        Buy Crypto
+                      </h3>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Purchase with fiat currency
+                      </p>
+                    </div>
+                    <Button
+                      className="w-full bg-purple-600 hover:bg-purple-700"
+                      size="sm"
+                    >
+                      <Banknote className="h-4 w-4 mr-2" />
+                      Buy Now
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
+
+          {/* Top Cryptocurrencies */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
+                Top Cryptocurrencies
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-3 md:px-6">
+              <div className="space-y-2 md:space-y-3">
+                {cryptos.slice(0, 8).map((crypto, index) => (
+                  <div
+                    key={crypto.id}
+                    className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() =>
+                      setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
+                    }
+                  >
+                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                      <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
+                        #{index + 1}
+                      </div>
+                      <img
+                        src={crypto.image}
+                        alt={crypto.name}
+                        className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium text-sm md:text-base truncate">
+                          {crypto.name}
+                        </div>
+                        <div className="text-xs md:text-sm text-gray-600">
+                          {crypto.symbol.toUpperCase()}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-right min-w-0 flex-shrink-0">
+                      <div className="font-semibold text-sm md:text-base">
+                        {formatCurrency(crypto.current_price)}
+                      </div>
+                      <div
+                        className={cn(
+                          "text-xs md:text-sm",
+                          getChangeColor(crypto.price_change_percentage_24h),
+                        )}
+                      >
+                        {formatPercentage(crypto.price_change_percentage_24h)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Market Movers */}
           {marketData && (
