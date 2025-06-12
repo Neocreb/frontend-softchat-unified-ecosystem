@@ -1,8 +1,7 @@
-
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -17,16 +16,18 @@ const Header = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
-    <header 
+    <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 shadow-md backdrop-blur-sm py-3' : 'bg-transparent py-5'
+        isScrolled
+          ? "bg-white/95 shadow-md backdrop-blur-sm py-3"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="container-wide flex items-center justify-between">
@@ -39,15 +40,19 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-8">
           <NavLinks />
           <Button className="btn-primary" asChild>
-            <a href="https://app.softchat.com" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://app.softchat.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Launch App
             </a>
           </Button>
         </nav>
 
         {/* Mobile Navigation Toggle */}
-        <button 
-          className="md:hidden p-2" 
+        <button
+          className="md:hidden p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle Menu"
         >
@@ -59,9 +64,16 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 px-6 animate-fade-in">
           <nav className="flex flex-col space-y-4">
-            <NavLinks mobile={true} closeMenu={() => setIsMobileMenuOpen(false)} />
+            <NavLinks
+              mobile={true}
+              closeMenu={() => setIsMobileMenuOpen(false)}
+            />
             <Button className="btn-primary w-full" asChild>
-              <a href="https://app.softchat.com" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://app.softchat.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Launch App
               </a>
             </Button>
@@ -78,17 +90,18 @@ const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
     { text: "Home", href: "/ " },
     { text: "Features", href: "#features" },
     { text: "Why Softchat", href: "#why-softchat" },
+    { text: "Blog", href: "/blog" },
     { text: "Newsletter", href: "#contact" },
   ];
 
   return (
     <>
       {links.map((link) => (
-        <a 
+        <a
           key={link.text}
           href={link.href}
           className={`${
-            mobile ? 'block py-2 text-lg' : 'text-sm font-medium'
+            mobile ? "block py-2 text-lg" : "text-sm font-medium"
           } text-gray-800 hover:text-softchat-600 transition-colors`}
           onClick={closeMenu}
         >
@@ -98,6 +111,5 @@ const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
     </>
   );
 };
-
 
 export default Header;
