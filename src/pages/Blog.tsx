@@ -23,6 +23,8 @@ import {
   Filter,
   Grid3X3,
   List,
+  ArrowLeft,
+  Home,
 } from "lucide-react";
 import { BlogPost, BlogCategory, BlogStats } from "@/types/blog";
 import { blogService } from "@/services/blogService";
@@ -134,6 +136,64 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Navigation Header */}
+      <header className="bg-white border-b sticky top-0 z-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo and Back to Landing */}
+            <div className="flex items-center gap-6">
+              <Link
+                to="/"
+                className="flex items-center gap-2 text-lg font-bold text-softchat-700 hover:text-softchat-600 transition-colors"
+              >
+                <Home className="h-5 w-5" />
+                Softchat
+              </Link>
+              <span className="text-gray-300">|</span>
+              <span className="text-gray-600 font-medium">Blog</span>
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="hidden md:flex items-center gap-6">
+              <Link
+                to="/#features"
+                className="text-gray-600 hover:text-softchat-600 transition-colors"
+              >
+                Features
+              </Link>
+              <Link
+                to="/#why-softchat"
+                className="text-gray-600 hover:text-softchat-600 transition-colors"
+              >
+                Why Softchat
+              </Link>
+              <Link to="/blog" className="text-softchat-600 font-medium">
+                Blog
+              </Link>
+              <Link
+                to="/#contact"
+                className="text-gray-600 hover:text-softchat-600 transition-colors"
+              >
+                Newsletter
+              </Link>
+              <Button asChild>
+                <Link to="/auth">Launch App</Link>
+              </Button>
+            </nav>
+
+            {/* Mobile Back Button */}
+            <div className="md:hidden">
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/" className="flex items-center gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Back
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="container mx-auto px-4">
