@@ -71,72 +71,67 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="mt-12 space-y-8">
-          <Tabs
-            defaultValue={features[0].id}
-            value={activeFeature}
-            onValueChange={setActiveFeature}
-            className="w-full"
-          >
-            {/* Tabs Navigation */}
-            <div className="mb-12">
-              <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-transparent h-auto p-0 w-full">
-                {features.map((feature) => (
-                  <TabsTrigger
-                    key={feature.id}
-                    value={feature.id}
-                    className="data-[state=active]:bg-softchat-50 data-[state=active]:text-softchat-700 data-[state=active]:shadow border border-gray-200 bg-white h-auto p-0 rounded-lg transition-all duration-200"
-                  >
-                    <div className="flex flex-col items-center text-center p-4 w-full">
-                      <div className="mb-2 text-softchat-600">
-                        {feature.icon}
-                      </div>
-                      <h3 className="text-base font-medium">{feature.title}</h3>
-                      <p className="text-sm text-gray-500 hidden md:block mt-1">
-                        {feature.tagline}
-                      </p>
-                    </div>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-
-            {/* Tabs Content */}
-            <div className="relative">
+        <div className="mt-12">
+          {/* Tabs Navigation - Fixed positioning */}
+          <div className="mb-16">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {features.map((feature) => (
-                <TabsContent
+                <button
                   key={feature.id}
-                  value={feature.id}
-                  className="mt-0 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-fade-in"
-                  forceMount={false}
+                  onClick={() => setActiveFeature(feature.id)}
+                  className={`
+                    flex flex-col items-center text-center p-4 rounded-lg border transition-all duration-200
+                    ${
+                      activeFeature === feature.id
+                        ? "bg-softchat-50 text-softchat-700 shadow-md border-softchat-200"
+                        : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+                    }
+                  `}
                 >
-                  <div className="grid md:grid-cols-2 min-h-[400px]">
-                    <div className="p-8 flex flex-col justify-center">
-                      <h3 className="text-2xl font-bold mb-2">
-                        {feature.title}
-                      </h3>
-                      <p className="text-softchat-600 font-medium mb-4">
-                        {feature.tagline}
-                      </p>
-                      <p className="text-gray-600 mb-6 leading-relaxed">
-                        {feature.description}
-                      </p>
-                      <Button className="btn-primary self-start">
-                        Learn More
-                      </Button>
-                    </div>
-                    <div className="bg-gray-100 flex items-center justify-center p-4 order-first md:order-last">
-                      <img
-                        src={feature.image}
-                        alt={feature.title}
-                        className="object-cover h-full w-full rounded-lg"
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
+                  <div className="mb-2 text-softchat-600">{feature.icon}</div>
+                  <h3 className="text-base font-medium">{feature.title}</h3>
+                  <p className="text-sm text-gray-500 hidden md:block mt-1">
+                    {feature.tagline}
+                  </p>
+                </button>
               ))}
             </div>
-          </Tabs>
+          </div>
+
+          {/* Content Display - Clear separation */}
+          <div className="relative">
+            {features.map((feature) => (
+              <div
+                key={feature.id}
+                className={`
+                  bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden transition-all duration-300
+                  ${activeFeature === feature.id ? "block animate-fade-in" : "hidden"}
+                `}
+              >
+                <div className="grid md:grid-cols-2 min-h-[400px]">
+                  <div className="p-8 flex flex-col justify-center">
+                    <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
+                    <p className="text-softchat-600 font-medium mb-4">
+                      {feature.tagline}
+                    </p>
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      {feature.description}
+                    </p>
+                    <Button className="btn-primary self-start">
+                      Learn More
+                    </Button>
+                  </div>
+                  <div className="bg-gray-100 flex items-center justify-center p-4 order-first md:order-last">
+                    <img
+                      src={feature.image}
+                      alt={feature.title}
+                      className="object-cover h-full w-full rounded-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
