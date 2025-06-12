@@ -165,6 +165,10 @@ const AppRoutes = () => {
         element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
       />
 
+      {/* Public Blog routes - accessible to everyone */}
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
+
       {/* Protected routes inside app layout */}
       <Route
         path="/"
@@ -227,10 +231,6 @@ const AppRoutes = () => {
             </div>
           }
         />
-
-        {/* Blog routes */}
-        <Route path="blog" element={<Blog />} />
-        <Route path="blog/:slug" element={<BlogPost />} />
       </Route>
 
       {/* Admin Routes */}
