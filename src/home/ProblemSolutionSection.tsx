@@ -1,12 +1,37 @@
-
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle } from "lucide-react";
 
 const ProblemSolutionSection = () => {
   const solutions = [
-    { title: "Chat in real-time", description: "Connect instantly with friends, followers, and customers" },
-    { title: "Sell anything instantly", description: "List products and accept payments in seconds" },
-    { title: "Trade crypto securely", description: "Buy, sell, and swap cryptocurrencies seamlessly" },
-    { title: "Earn rewards passively", description: "Get SoftPoints for every action you take" },
+    {
+      title: "AI-powered social experience",
+      description:
+        "Smart feed curation, content recommendations, and advanced search across everything",
+    },
+    {
+      title: "Professional analytics dashboard",
+      description:
+        "Track performance, analyze audience, set goals, and grow with data-driven insights",
+    },
+    {
+      title: "Advanced crypto trading",
+      description:
+        "AI price predictions, professional charts, portfolio tracking, and secure P2P trading",
+    },
+    {
+      title: "Gamified rewards system",
+      description:
+        "Earn achievements, compete on leaderboards, and unlock exclusive perks and benefits",
+    },
+    {
+      title: "Full accessibility support",
+      description:
+        "Screen reader compatibility, keyboard navigation, and multi-language support for everyone",
+    },
+    {
+      title: "Seamless data management",
+      description:
+        "Import/export data, integrate with other platforms, and maintain full control of your information",
+    },
   ];
 
   return (
@@ -14,17 +39,20 @@ const ProblemSolutionSection = () => {
       <div className="container-wide">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="heading-lg mb-6">
-            Juggling 5 apps to earn, chat, and sell? <span className="gradient-text">We fixed that.</span>
+            Tired of basic social apps without intelligence?{" "}
+            <span className="gradient-text">We revolutionized that.</span>
           </h2>
           <p className="body-md text-gray-600">
-            Softchat combines social networking, marketplace, crypto trading, and rewards in one powerful platform designed specifically for emerging markets.
+            Softchat delivers the most advanced social platform with AI-powered
+            features, professional analytics, comprehensive accessibility, and
+            seamless integrations - all in one intelligent ecosystem.
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {solutions.map((solution, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition-shadow"
             >
               <div className="flex items-center mb-4">
