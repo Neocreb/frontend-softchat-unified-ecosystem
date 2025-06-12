@@ -71,37 +71,44 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="mt-12">
+        <div className="mt-12 space-y-8">
           <Tabs
             defaultValue={features[0].id}
             value={activeFeature}
             onValueChange={setActiveFeature}
             className="w-full"
           >
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-transparent h-auto p-0 mb-8">
-              {features.map((feature) => (
-                <TabsTrigger
-                  key={feature.id}
-                  value={feature.id}
-                  className="data-[state=active]:bg-softchat-50 data-[state=active]:text-softchat-700 data-[state=active]:shadow border border-gray-200 bg-white h-auto p-0 rounded-lg"
-                >
-                  <div className="flex flex-col items-center text-center p-4 w-full">
-                    <div className="mb-2 text-softchat-600">{feature.icon}</div>
-                    <h3 className="text-base font-medium">{feature.title}</h3>
-                    <p className="text-sm text-gray-500 hidden md:block mt-1">
-                      {feature.tagline}
-                    </p>
-                  </div>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            {/* Tabs Navigation */}
+            <div className="mb-12">
+              <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-transparent h-auto p-0 w-full">
+                {features.map((feature) => (
+                  <TabsTrigger
+                    key={feature.id}
+                    value={feature.id}
+                    className="data-[state=active]:bg-softchat-50 data-[state=active]:text-softchat-700 data-[state=active]:shadow border border-gray-200 bg-white h-auto p-0 rounded-lg transition-all duration-200"
+                  >
+                    <div className="flex flex-col items-center text-center p-4 w-full">
+                      <div className="mb-2 text-softchat-600">
+                        {feature.icon}
+                      </div>
+                      <h3 className="text-base font-medium">{feature.title}</h3>
+                      <p className="text-sm text-gray-500 hidden md:block mt-1">
+                        {feature.tagline}
+                      </p>
+                    </div>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
 
+            {/* Tabs Content */}
             <div className="relative">
               {features.map((feature) => (
                 <TabsContent
                   key={feature.id}
                   value={feature.id}
                   className="mt-0 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-fade-in"
+                  forceMount={false}
                 >
                   <div className="grid md:grid-cols-2 min-h-[400px]">
                     <div className="p-8 flex flex-col justify-center">
@@ -111,7 +118,7 @@ const FeaturesSection = () => {
                       <p className="text-softchat-600 font-medium mb-4">
                         {feature.tagline}
                       </p>
-                      <p className="text-gray-600 mb-6">
+                      <p className="text-gray-600 mb-6 leading-relaxed">
                         {feature.description}
                       </p>
                       <Button className="btn-primary self-start">
