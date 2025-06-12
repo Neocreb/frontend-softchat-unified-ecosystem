@@ -943,97 +943,6 @@ export default function EnhancedCrypto() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Blog Feed Section */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                  <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
-                  From Our Blog
-                  <Badge variant="outline" className="ml-auto">
-                    Live Feed
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {blogPosts.map((post) => (
-                    <div
-                      key={post.id}
-                      className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
-                      onClick={() =>
-                        window.open(`/blog/${post.slug}`, "_blank")
-                      }
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge
-                            className={cn(
-                              "text-white text-xs",
-                              post.category.color,
-                            )}
-                          >
-                            {post.category.name}
-                          </Badge>
-                          {post.difficulty && (
-                            <Badge
-                              variant={
-                                post.difficulty === "BEGINNER"
-                                  ? "secondary"
-                                  : post.difficulty === "INTERMEDIATE"
-                                    ? "default"
-                                    : "destructive"
-                              }
-                              className="text-xs"
-                            >
-                              {post.difficulty}
-                            </Badge>
-                          )}
-                        </div>
-                        <h3 className="font-semibold text-sm md:text-base line-clamp-2 hover:text-blue-600 transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span className="truncate flex-1 mr-2">
-                            By {post.author.name}
-                          </span>
-                          <span className="flex-shrink-0">
-                            {new Date(post.publishedAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                        {post.relatedAssets &&
-                          post.relatedAssets.length > 0 && (
-                            <div className="flex items-center gap-1 flex-wrap">
-                              {post.relatedAssets.slice(0, 3).map((asset) => (
-                                <Badge
-                                  key={asset}
-                                  variant="outline"
-                                  className="text-xs bg-blue-50 text-blue-700 border-blue-200"
-                                >
-                                  {asset}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
-                      </div>
-                    </div>
-                  ))}
-                  <div className="pt-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                      onClick={() => window.open("/blog", "_blank")}
-                    >
-                      View All Blog Posts
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </TabsContent>
 
@@ -1163,6 +1072,97 @@ export default function EnhancedCrypto() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Blog Feed Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                  <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
+                  From Our Blog
+                  <Badge variant="outline" className="ml-auto">
+                    Live Feed
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {blogPosts.map((post) => (
+                    <div
+                      key={post.id}
+                      className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
+                      onClick={() =>
+                        window.open(`/blog/${post.slug}`, "_blank")
+                      }
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge
+                            className={cn(
+                              "text-white text-xs",
+                              post.category.color,
+                            )}
+                          >
+                            {post.category.name}
+                          </Badge>
+                          {post.difficulty && (
+                            <Badge
+                              variant={
+                                post.difficulty === "BEGINNER"
+                                  ? "secondary"
+                                  : post.difficulty === "INTERMEDIATE"
+                                    ? "default"
+                                    : "destructive"
+                              }
+                              className="text-xs"
+                            >
+                              {post.difficulty}
+                            </Badge>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-sm md:text-base line-clamp-2 hover:text-blue-600 transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span className="truncate flex-1 mr-2">
+                            By {post.author.name}
+                          </span>
+                          <span className="flex-shrink-0">
+                            {new Date(post.publishedAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {post.relatedAssets &&
+                          post.relatedAssets.length > 0 && (
+                            <div className="flex items-center gap-1 flex-wrap">
+                              {post.relatedAssets.slice(0, 3).map((asset) => (
+                                <Badge
+                                  key={asset}
+                                  variant="outline"
+                                  className="text-xs bg-blue-50 text-blue-700 border-blue-200"
+                                >
+                                  {asset}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="pt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => window.open("/blog", "_blank")}
+                    >
+                      View All Blog Posts
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
