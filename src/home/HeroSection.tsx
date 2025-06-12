@@ -12,13 +12,14 @@ const HeroSection = () => {
       <div className="container-wide relative z-10">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="heading-xl mb-6">
-            <span className="gradient-text">One App for Everything:</span>{" "}
-            Social, Crypto, Commerce, Rewards.
+            <span className="gradient-text">AI-Powered Everything:</span>{" "}
+            Social, Crypto, Commerce, Analytics & More.
           </h1>
 
           <p className="body-lg mb-10 text-gray-600">
-            Built for creators, traders, sellers, and dreamers in emerging
-            markets.
+            The most advanced social platform with AI recommendations,
+            comprehensive analytics, gamification, and full accessibility. Built
+            for creators, traders, sellers, and innovators worldwide.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md sm:max-w-none mx-auto">
