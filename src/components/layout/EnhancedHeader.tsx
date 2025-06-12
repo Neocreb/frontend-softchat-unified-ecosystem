@@ -11,6 +11,7 @@ import {
   Wallet,
   Award,
   Search,
+  BookOpen,
 } from "lucide-react";
 import { AdvancedSearch } from "../search/AdvancedSearch";
 import { cn } from "@/utils/utils";
@@ -97,6 +98,13 @@ const EnhancedHeader = () => {
           >
             <Award className="h-4 w-4" />
             <span>Achievements</span>
+          </Link>
+          <Link
+            to="/blog"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <BookOpen className="h-4 w-4" />
+            <span>Blog</span>
           </Link>
         </nav>
 

@@ -298,6 +298,167 @@
   }
 }
 
+/* Landing Page Styles */
+@layer components {
+  /* Container styles */
+  .container-wide {
+    @apply container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Typography styles */
+  .heading-xl {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight;
+  }
+
+  .heading-lg {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
+  }
+
+  .heading-md {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight;
+  }
+
+  .heading-sm {
+    @apply text-xl sm:text-2xl lg:text-3xl font-semibold;
+  }
+
+  .body-lg {
+    @apply text-lg sm:text-xl leading-relaxed;
+  }
+
+  .body-md {
+    @apply text-base sm:text-lg leading-relaxed;
+  }
+
+  .body-sm {
+    @apply text-sm sm:text-base leading-relaxed;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-white border-2 border-blue-600 text-blue-600 font-semibold hover:bg-blue-50 transition-all duration-200;
+  }
+
+  /* Gradient backgrounds */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  /* Custom colors for softchat */
+  .text-softchat-700 {
+    color: hsl(var(--softchat-700));
+  }
+
+  .bg-softchat-50 {
+    background-color: hsl(265 100% 97%);
+  }
+
+  .border-softchat-200 {
+    border-color: hsl(265 60% 85%);
+  }
+
+  .from-softchat-500\/40 {
+    --tw-gradient-from: hsl(265 100% 50% / 0.4);
+    --tw-gradient-to: hsl(265 100% 50% / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  /* Section spacing */
+  .section-spacing {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .section-spacing-sm {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Card improvements */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  /* Feature grid */
+  .feature-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12;
+  }
+
+  /* Responsive images */
+  .responsive-image {
+    @apply w-full h-auto object-cover rounded-lg shadow-lg;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar for landing page */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+  }
+
+  /* Landing page animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Hover effects for cards */
+  .hover-lift {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Softchat color utilities */
+  .text-softchat-600 {
+    color: hsl(var(--softchat-600));
+  }
+
+  .bg-softchat-600 {
+    background-color: hsl(var(--softchat-600));
+  }
+}
+
 /* Accessibility improvements for mobile */
 @media (prefers-reduced-motion: reduce) {
   .animate-in {

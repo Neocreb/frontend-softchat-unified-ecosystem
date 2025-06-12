@@ -58,6 +58,8 @@ import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import DataManagement from "./components/data/DataManagement";
 import GamificationSystem from "./components/gamification/GamificationSystem";
 import AIFeatures from "./components/ai/AIFeatures";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -162,6 +164,10 @@ const AppRoutes = () => {
         path="/auth"
         element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
       />
+
+      {/* Public Blog routes - accessible to everyone */}
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
 
       {/* Protected routes inside app layout */}
       <Route
