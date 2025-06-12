@@ -11,6 +11,7 @@ import {
   Wallet,
   Award,
   Search,
+  BookOpen,
 } from "lucide-react";
 import { AdvancedSearch } from "../search/AdvancedSearch";
 import { cn } from "@/utils/utils";
