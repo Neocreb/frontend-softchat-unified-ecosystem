@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { MessageSquare, ShoppingBag, Wallet, Gift } from "lucide-react";
+import {
+  MessageSquare,
+  ShoppingBag,
+  Wallet,
+  Gift,
+  Brain,
+  BarChart3,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -7,7 +16,7 @@ const FeaturesSection = () => {
   const features = [
     {
       id: "social",
-      icon: <MessageSquare className="h-6 w-6" />,
+      icon: <Brain className="h-6 w-6" />,
       title: "Social & AI",
       tagline: "Smart connections with AI-powered recommendations",
       description:
@@ -17,7 +26,7 @@ const FeaturesSection = () => {
     },
     {
       id: "marketplace",
-      icon: <ShoppingBag className="h-6 w-6" />,
+      icon: <BarChart3 className="h-6 w-6" />,
       title: "Marketplace & Analytics",
       tagline: "E-commerce with powerful insights",
       description:
@@ -27,7 +36,7 @@ const FeaturesSection = () => {
     },
     {
       id: "crypto",
-      icon: <Wallet className="h-6 w-6" />,
+      icon: <TrendingUp className="h-6 w-6" />,
       title: "Crypto & Trading",
       tagline: "Advanced trading with AI predictions",
       description:
@@ -37,7 +46,7 @@ const FeaturesSection = () => {
     },
     {
       id: "platform",
-      icon: <Gift className="h-6 w-6" />,
+      icon: <Zap className="h-6 w-6" />,
       title: "Platform & Rewards",
       tagline: "Gamified experience with accessibility",
       description:
