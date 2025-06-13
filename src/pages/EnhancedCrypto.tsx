@@ -658,17 +658,23 @@ export default function EnhancedCrypto() {
 
               <Card>
                 <CardContent className="p-3 md:p-4">
-                  <div className="flex items-center gap-2 md:gap-3">
-                    <div className="p-1.5 md:p-2 bg-orange-100 rounded-lg flex-shrink-0">
-                      <Target className="h-4 w-4 md:h-5 md:w-5 text-orange-600" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-xs md:text-sm text-gray-600">
-                        BTC Dominance
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl md:text-2xl font-bold">
+                        Cryptocurrency Overview
+                      </h2>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm md:text-base text-gray-600">
+                          Real-time market data and analytics
+                        </p>
+                        <div className="flex items-center gap-1 text-xs text-green-600">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span>Live</span>
+                        </div>
                       </div>
-                      <div className="text-lg md:text-xl font-bold">
-                        {(marketData.globalStats.btcDominance || 0).toFixed(1)}%
-                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Last updated: {lastUpdated.toLocaleTimeString()}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -709,9 +715,15 @@ export default function EnhancedCrypto() {
               <h2 className="text-xl md:text-2xl font-bold">
                 Trading Dashboard
               </h2>
-              <p className="text-sm md:text-base text-gray-600">
-                Professional trading interface
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm md:text-base text-gray-600">
+                  Professional trading interface
+                </p>
+                <div className="flex items-center gap-1 text-xs text-blue-600">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span>Real-time</span>
+                </div>
+              </div>
             </div>
             {currentPair && (
               <div className="flex items-center gap-3 flex-shrink-0">
