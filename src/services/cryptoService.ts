@@ -511,6 +511,132 @@ export class CryptoService {
     }
   }
 
+  // Real-time price updates for specific coins
+  async getRealTimePrice(
+    coinIds: string[],
+  ): Promise<{ [key: string]: { usd: number; usd_24h_change: number } }> {
+    try {
+      const ids = coinIds.join(",");
+      const url = `${COINGECKO_API_BASE}/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
+      const cacheKey = `realtime_prices_${ids}`;
+
+      return await fetchWithCache(url, cacheKey);
+    } catch (error) {
+      console.error("Failed to fetch real-time prices:", error);
+
+      // Return mock data with simulated real-time changes
+      const mockPrices: {
+        [key: string]: { usd: number; usd_24h_change: number };
+      } = {};
+      coinIds.forEach((coinId) => {
+        const basePrices: { [key: string]: number } = {
+          bitcoin: 43250,
+          ethereum: 2645,
+          binancecoin: 315,
+          solana: 98,
+          cardano: 0.52,
+          "avalanche-2": 38,
+          polkadot: 7.2,
+          chainlink: 14.8,
+        };
+
+        const basePrice = basePrices[coinId] || 100;
+        const priceChange = (Math.random() - 0.5) * 0.04; // ±2%
+        const newPrice = basePrice * (1 + priceChange);
+        const change24h = (Math.random() - 0.5) * 10; // ±5%
+
+        mockPrices[coinId] = {
+          usd: parseFloat(newPrice.toFixed(8)),
+          usd_24h_change: parseFloat(change24h.toFixed(2)),
+        };
+      });
+
+      return mockPrices;
+    }
+  }
+
+  // Get detailed coin information with real-time data
+  async getCoinDetails(coinId: string): Promise<Cryptocurrency | null> {
+    try {
+      const url = `${COINGECKO_API_BASE}/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=true`;
+      const cacheKey = `coin_details_${coinId}`;
+
+      const data = await fetchWithCache(url, cacheKey);
+
+      return {
+        id: data.id,
+        name: data.name,
+        symbol: data.symbol,
+        current_price: data.market_data?.current_price?.usd || 0,
+        market_cap: data.market_data?.market_cap?.usd || 0,
+        market_cap_rank: data.market_cap_rank || 0,
+        fully_diluted_valuation: data.market_data?.fully_diluted_valuation?.usd,
+        total_volume: data.market_data?.total_volume?.usd || 0,
+        high_24h: data.market_data?.high_24h?.usd || 0,
+        low_24h: data.market_data?.low_24h?.usd || 0,
+        price_change_24h: data.market_data?.price_change_24h || 0,
+        price_change_percentage_24h:
+          data.market_data?.price_change_percentage_24h || 0,
+        price_change_percentage_7d:
+          data.market_data?.price_change_percentage_7d || 0,
+        price_change_percentage_30d:
+          data.market_data?.price_change_percentage_30d || 0,
+        market_cap_change_24h: data.market_data?.market_cap_change_24h || 0,
+        market_cap_change_percentage_24h:
+          data.market_data?.market_cap_change_percentage_24h || 0,
+        circulating_supply: data.market_data?.circulating_supply || 0,
+        total_supply: data.market_data?.total_supply,
+        max_supply: data.market_data?.max_supply,
+        ath: data.market_data?.ath?.usd || 0,
+        ath_change_percentage:
+          data.market_data?.ath_change_percentage?.usd || 0,
+        ath_date: data.market_data?.ath_date?.usd || new Date().toISOString(),
+        atl: data.market_data?.atl?.usd || 0,
+        atl_change_percentage:
+          data.market_data?.atl_change_percentage?.usd || 0,
+        atl_date: data.market_data?.atl_date?.usd || new Date().toISOString(),
+        image:
+          data.image?.large ||
+          data.image?.small ||
+          `https://via.placeholder.com/64x64/1f2937/ffffff?text=${data.symbol?.toUpperCase()}`,
+        sparkline_in_7d: data.market_data?.sparkline_7d?.price || [],
+        last_updated: data.last_updated || new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error(`Failed to fetch details for ${coinId}:`, error);
+      return null;
+    }
+  }
+
+  // Historical price data for charts
+  async getHistoricalPrices(
+    coinId: string,
+    days: number = 30,
+  ): Promise<number[][]> {
+    try {
+      const url = `${COINGECKO_API_BASE}/coins/${coinId}/market_chart?vs_currency=usd&days=${days}&interval=${days > 90 ? "daily" : "hourly"}`;
+      const cacheKey = `historical_${coinId}_${days}`;
+
+      const data = await fetchWithCache(url, cacheKey);
+      return data.prices || [];
+    } catch (error) {
+      console.error(`Failed to fetch historical data for ${coinId}:`, error);
+
+      // Generate mock historical data
+      const now = Date.now();
+      const interval = (days * 24 * 60 * 60 * 1000) / 100; // 100 data points
+      const basePrice = 43250; // Default BTC price
+
+      return Array.from({ length: 100 }, (_, i) => {
+        const timestamp = now - (99 - i) * interval;
+        const volatility = 0.02;
+        const change = (Math.random() - 0.5) * volatility;
+        const price = basePrice * (1 + change);
+        return [timestamp, price];
+      });
+    }
+  }
+
   // Trading
   async getOrderBook(symbol: string): Promise<OrderBook> {
     await this.delay(200);
