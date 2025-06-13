@@ -215,8 +215,9 @@ export default function EnhancedCrypto() {
   };
 
   const getCurrentPair = () => {
+    if (!cryptos || cryptos.length === 0) return null;
     return cryptos.find(
-      (c) => c.symbol.toUpperCase() + "USDT" === selectedPair,
+      (c) => c?.symbol?.toUpperCase() + "USDT" === selectedPair,
     );
   };
 
