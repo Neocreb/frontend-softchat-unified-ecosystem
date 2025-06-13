@@ -51,9 +51,18 @@ const Explore = () => {
             <SmartContentRecommendations
               contentType="mixed"
               availableContent={[
-                ...filteredTopics,
-                ...filteredUsers,
-                ...filteredHashtags,
+                ...filteredTopics.map((topic, index) => ({
+                  ...topic,
+                  id: topic.id || `topic-${index}`,
+                })),
+                ...filteredUsers.map((user, index) => ({
+                  ...user,
+                  id: user.id || `user-${index}`,
+                })),
+                ...filteredHashtags.map((hashtag, index) => ({
+                  ...hashtag,
+                  id: hashtag.id || `hashtag-${index}`,
+                })),
               ]}
               onContentSelect={(content) => {
                 console.log("Selected content from explore:", content);
