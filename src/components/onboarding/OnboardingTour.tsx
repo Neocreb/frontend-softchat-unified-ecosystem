@@ -37,7 +37,7 @@ import {
   Shield,
   Settings,
   Camera,
-  Globe
+  Globe,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -73,7 +73,8 @@ const onboardingPaths: OnboardingPath[] = [
       {
         id: "profile",
         title: "Complete Your Profile",
-        description: "Add a photo, bio, and skills to make a great first impression",
+        description:
+          "Add a photo, bio, and skills to make a great first impression",
         target: "[data-tour='profile-setup']",
         position: "bottom",
         icon: <Users className="w-4 h-4" />,
@@ -81,7 +82,8 @@ const onboardingPaths: OnboardingPath[] = [
       {
         id: "create-post",
         title: "Create Your First Post",
-        description: "Share your thoughts, photos, or videos with the community",
+        description:
+          "Share your thoughts, photos, or videos with the community",
         target: "[data-tour='create-post']",
         position: "bottom",
         icon: <Camera className="w-4 h-4" />,
@@ -89,7 +91,8 @@ const onboardingPaths: OnboardingPath[] = [
       {
         id: "engage",
         title: "Engage with Others",
-        description: "Like, comment, and follow other creators to build connections",
+        description:
+          "Like, comment, and follow other creators to build connections",
         target: "[data-tour='feed']",
         position: "right",
         icon: <MessageSquare className="w-4 h-4" />,
@@ -219,7 +222,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
   useEffect(() => {
     // Check if user has completed onboarding
-    const hasCompletedOnboarding = localStorage.getItem('onboarding-completed');
+    const hasCompletedOnboarding = localStorage.getItem("onboarding-completed");
     const userOnboardingData = localStorage.getItem(`onboarding-${user?.id}`);
 
     if (!hasCompletedOnboarding && user && !forcePath) {
@@ -234,7 +237,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
     }
 
     if (forcePath) {
-      const path = onboardingPaths.find(p => p.id === forcePath);
+      const path = onboardingPaths.find((p) => p.id === forcePath);
       if (path) {
         setSelectedPath(path);
         setShowPathSelection(false);
@@ -254,7 +257,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
     const step = selectedPath.steps[currentStep];
     if (step) {
-      setCompletedSteps(prev => [...prev, step.id]);
+      setCompletedSteps((prev) => [...prev, step.id]);
 
       // Execute step action if available
       if (step.action) {
@@ -277,14 +280,17 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
   const skipTour = () => {
     setIsOpen(false);
-    localStorage.setItem('onboarding-completed', 'true');
+    localStorage.setItem("onboarding-completed", "true");
     if (onComplete) onComplete();
   };
 
   const completeTour = () => {
     setIsOpen(false);
-    localStorage.setItem('onboarding-completed', 'true');
-    localStorage.setItem(`onboarding-${user?.id}`, JSON.stringify(completedSteps));
+    localStorage.setItem("onboarding-completed", "true");
+    localStorage.setItem(
+      `onboarding-${user?.id}`,
+      JSON.stringify(completedSteps),
+    );
 
     toast({
       title: "🎉 Onboarding Complete!",
@@ -301,43 +307,46 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
     setCompletedSteps([]);
   };
 
-  // Debug trigger for testing (will be removed in production)
-  const debugTrigger = (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => {
-        localStorage.removeItem('onboarding-completed');
-        setIsOpen(true);
-        setShowPathSelection(true);
-        setSelectedPath(null);
-        setCurrentStep(0);
-      }}
-      className="fixed bottom-4 left-4 z-50 bg-yellow-100 border-yellow-400 text-yellow-800 hover:bg-yellow-200 text-xs"
-      style={{ display: process.env.NODE_ENV === 'development' ? 'block' : 'none' }}
-    >
-      🎯 Test Onboarding
-    </Button>
-  );
+  if (!isOpen) {
+    // Debug trigger for testing (only show in development)
+    if (process.env.NODE_ENV === "development") {
+      return (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            localStorage.removeItem("onboarding-completed");
+            setIsOpen(true);
+            setShowPathSelection(true);
+            setSelectedPath(null);
+            setCurrentStep(0);
+          }}
+          className="fixed bottom-4 left-4 z-50 bg-yellow-100 border-yellow-400 text-yellow-800 hover:bg-yellow-200 text-xs"
+        >
+          🎯 Test Onboarding
+        </Button>
+      );
+    }
+    return null;
+  }
 
   return (
-    <>
-      {debugTrigger}
-      {isOpen && (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="w-[95vw] sm:w-[90vw] max-w-2xl h-auto max-h-[90vh] overflow-y-auto m-2 sm:m-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-2 top-2 h-6 w-6 sm:h-8 sm:w-8"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="h-3 w-3 sm:h-4 sm:w-4" />
-            </Button>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent className="w-[95vw] sm:w-[90vw] max-w-2xl h-auto max-h-[90vh] overflow-y-auto mx-2 sm:mx-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-2 top-2 h-6 w-6 sm:h-8 sm:w-8 z-10"
+          onClick={() => setIsOpen(false)}
+        >
+          <X className="h-3 w-3 sm:h-4 sm:w-4" />
+        </Button>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg md:text-xl">
             <Lightbulb className="w-4 h-4 md:w-5 md:h-5 text-yellow-500" />
-            {showPathSelection ? "Welcome to Softchat!" : `${selectedPath?.title} Guide`}
+            {showPathSelection
+              ? "Welcome to Softchat!"
+              : `${selectedPath?.title} Guide`}
           </DialogTitle>
         </DialogHeader>
 
@@ -358,13 +367,17 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
                 >
                   <CardContent className="p-3 md:p-4">
                     <div className="flex items-start gap-2 md:gap-3">
-                      <div className={`p-1.5 md:p-2 rounded-lg ${path.color} text-white flex-shrink-0`}>
+                      <div
+                        className={`p-1.5 md:p-2 rounded-lg ${path.color} text-white flex-shrink-0`}
+                      >
                         {React.cloneElement(path.icon as React.ReactElement, {
-                          className: "w-4 h-4 md:w-6 md:h-6"
+                          className: "w-4 h-4 md:w-6 md:h-6",
                         })}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold mb-1 text-sm md:text-base truncate">{path.title}</h3>
+                        <h3 className="font-semibold mb-1 text-sm md:text-base truncate">
+                          {path.title}
+                        </h3>
                         <p className="text-xs md:text-sm text-muted-foreground mb-2 line-clamp-2">
                           {path.description}
                         </p>
@@ -384,10 +397,18 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
             </div>
 
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:justify-between">
-              <Button variant="outline" onClick={skipTour} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={skipTour}
+                className="w-full sm:w-auto"
+              >
                 Skip for now
               </Button>
-              <Button variant="outline" onClick={() => setIsOpen(false)} className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+                className="w-full sm:w-auto"
+              >
                 I'll explore on my own
               </Button>
             </div>
@@ -397,18 +418,32 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
             {/* Progress */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>Step {currentStep + 1} of {selectedPath.steps.length}</span>
-                <span>{Math.round(((currentStep + 1) / selectedPath.steps.length) * 100)}% Complete</span>
+                <span>
+                  Step {currentStep + 1} of {selectedPath.steps.length}
+                </span>
+                <span>
+                  {Math.round(
+                    ((currentStep + 1) / selectedPath.steps.length) * 100,
+                  )}
+                  % Complete
+                </span>
               </div>
-              <Progress value={((currentStep + 1) / selectedPath.steps.length) * 100} />
+              <Progress
+                value={((currentStep + 1) / selectedPath.steps.length) * 100}
+              />
             </div>
 
             {/* Current Step */}
             <div className="text-center space-y-3 md:space-y-4">
-              <div className={`inline-flex p-2 md:p-3 rounded-full ${selectedPath.color} text-white`}>
-                {React.cloneElement(selectedPath.steps[currentStep]?.icon as React.ReactElement, {
-                  className: "w-5 h-5 md:w-6 md:h-6"
-                })}
+              <div
+                className={`inline-flex p-2 md:p-3 rounded-full ${selectedPath.color} text-white`}
+              >
+                {React.cloneElement(
+                  selectedPath.steps[currentStep]?.icon as React.ReactElement,
+                  {
+                    className: "w-5 h-5 md:w-6 md:h-6",
+                  },
+                )}
               </div>
 
               <div>
@@ -427,7 +462,8 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
                   <span className="text-sm font-medium">Quick Tip</span>
                 </div>
                 <p className="text-xs md:text-sm text-muted-foreground">
-                  Look for the highlighted elements on the page to complete this step.
+                  Look for the highlighted elements on the page to complete this
+                  step.
                 </p>
               </div>
             </div>
@@ -435,22 +471,37 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
             {/* Navigation */}
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
               <div className="flex gap-2 flex-wrap">
-                <Button variant="outline" onClick={restartTour} className="flex-1 sm:flex-none text-sm">
+                <Button
+                  variant="outline"
+                  onClick={restartTour}
+                  className="flex-1 sm:flex-none text-sm"
+                >
                   <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Change Path
                 </Button>
                 {currentStep > 0 && (
-                  <Button variant="outline" onClick={prevStep} className="flex-1 sm:flex-none text-sm">
+                  <Button
+                    variant="outline"
+                    onClick={prevStep}
+                    className="flex-1 sm:flex-none text-sm"
+                  >
                     Previous
                   </Button>
                 )}
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" onClick={skipTour} className="flex-1 sm:flex-none text-sm">
+                <Button
+                  variant="outline"
+                  onClick={skipTour}
+                  className="flex-1 sm:flex-none text-sm"
+                >
                   Skip
                 </Button>
-                <Button onClick={nextStep} className="flex-1 sm:flex-none text-sm">
+                <Button
+                  onClick={nextStep}
+                  className="flex-1 sm:flex-none text-sm"
+                >
                   {currentStep === selectedPath.steps.length - 1 ? (
                     <>
                       Complete
@@ -491,15 +542,19 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    const shownFeatures = JSON.parse(localStorage.getItem('shown-features') || '[]');
+    const shownFeatures = JSON.parse(
+      localStorage.getItem("shown-features") || "[]",
+    );
     setHasShown(shownFeatures.includes(feature));
   }, [feature]);
 
   const markAsShown = () => {
-    const shownFeatures = JSON.parse(localStorage.getItem('shown-features') || '[]');
+    const shownFeatures = JSON.parse(
+      localStorage.getItem("shown-features") || "[]",
+    );
     if (!shownFeatures.includes(feature)) {
       shownFeatures.push(feature);
-      localStorage.setItem('shown-features', JSON.stringify(shownFeatures));
+      localStorage.setItem("shown-features", JSON.stringify(shownFeatures));
     }
     setHasShown(true);
   };
@@ -542,8 +597,12 @@ export const ProgressiveDisclosure: React.FC<ProgressiveDisclosureProps> = ({
   useEffect(() => {
     // Determine user level based on activity, features used, etc.
     const calculateUserLevel = () => {
-      const completedActions = parseInt(localStorage.getItem('completed-actions') || '0');
-      const featuresUsed = JSON.parse(localStorage.getItem('features-used') || '[]').length;
+      const completedActions = parseInt(
+        localStorage.getItem("completed-actions") || "0",
+      );
+      const featuresUsed = JSON.parse(
+        localStorage.getItem("features-used") || "[]",
+      ).length;
 
       if (completedActions > 50 && featuresUsed > 15) return "advanced";
       if (completedActions > 20 && featuresUsed > 8) return "intermediate";
