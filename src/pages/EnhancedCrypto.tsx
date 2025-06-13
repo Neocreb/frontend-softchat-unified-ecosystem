@@ -131,7 +131,10 @@ export default function EnhancedCrypto() {
 
   const updateRealTimeData = async () => {
     try {
-      const [newOrderBook, newTrades] = await Promise.all([
+      const [
+        newOrderBook,
+        newTrades,
+      ] = await Promise.all([
         cryptoService.getOrderBook(selectedPair),
         cryptoService.getRecentTrades(selectedPair, 5),
       ]);
@@ -150,31 +153,31 @@ export default function EnhancedCrypto() {
       if (cryptos.length === 0) return;
 
       // Get coin IDs for price updates
-      const coinIds = cryptos.slice(0, 20).map((crypto) => crypto.id);
+      const coinIds = cryptos.slice(0, 20).map(crypto => crypto.id);
       const priceUpdates = await cryptoService.getRealTimePrice(coinIds);
 
       // Update crypto prices
-      setCryptos((prevCryptos) =>
-        prevCryptos.map((crypto) => {
+      setCryptos(prevCryptos =>
+        prevCryptos.map(crypto => {
           const priceData = priceUpdates[crypto.id];
           if (priceData) {
             return {
               ...crypto,
               current_price: priceData.usd,
               price_change_percentage_24h: priceData.usd_24h_change,
-              last_updated: new Date().toISOString(),
+              last_updated: new Date().toISOString()
             };
           }
           return crypto;
-        }),
+        })
       );
 
       // Update market data less frequently
-      if (Math.random() < 0.3) {
-        // 30% chance to update market data
+      if (Math.random() < 0.3) { // 30% chance to update market data
         const newMarketData = await cryptoService.getMarketData();
         setMarketData(newMarketData);
       }
+
     } catch (error) {
       console.error("Failed to update prices:", error);
     }
@@ -659,24 +662,24 @@ export default function EnhancedCrypto() {
 
               <Card>
                 <CardContent className="p-3 md:p-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                      <h2 className="text-xl md:text-2xl font-bold">
-                        Cryptocurrency Overview
-                      </h2>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm md:text-base text-gray-600">
-                          Real-time market data and analytics
-                        </p>
-                        <div className="flex items-center gap-1 text-xs text-green-600">
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                          <span>Live</span>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Last updated: {lastUpdated.toLocaleTimeString()}
-                      </p>
-                    </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-xl md:text-2xl font-bold">
+                Cryptocurrency Overview
+              </h2>
+              <div className="flex items-center gap-2">
+                <p className="text-sm md:text-base text-gray-600">
+                  Real-time market data and analytics
+                </p>
+                <div className="flex items-center gap-1 text-xs text-green-600">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span>Live</span>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                Last updated: {lastUpdated.toLocaleTimeString()}
+              </p>
+            </div>
                   </div>
                 </CardContent>
               </Card>
@@ -760,13 +763,13 @@ export default function EnhancedCrypto() {
             onContentSelect={(content) => {
               if (content.symbol) {
                 // Crypto selected - find the matching crypto and update current pair
-                const selectedCrypto = cryptos.find((c) => c.id === content.id);
+                const selectedCrypto = cryptos.find(c => c.id === content.id);
                 if (selectedCrypto) {
-                  setSelectedPair(selectedCrypto.symbol.toUpperCase() + "USDT");
+                  setSelectedPair(selectedCrypto.symbol.toUpperCase() + 'USDT');
                 }
               } else {
                 // News article selected
-                console.log("Selected news:", content);
+                console.log('Selected news:', content);
               }
             }}
             maxItems={3}
@@ -1025,6 +1028,7 @@ export default function EnhancedCrypto() {
                 </div>
               </CardContent>
             </Card>
+
           </div>
         </TabsContent>
 
@@ -1164,9 +1168,7 @@ export default function EnhancedCrypto() {
                 <CardTitle className="flex items-center gap-2 text-base md:text-lg">
                   <BookOpen className="h-4 w-4 md:h-5 md:w-5" />
                   From Our Blog
-                  <Badge variant="outline" className="ml-auto">
-                    Live Feed
-                  </Badge>
+                  <Badge variant="outline" className="ml-auto">Live Feed</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -1175,17 +1177,12 @@ export default function EnhancedCrypto() {
                     <div
                       key={post.id}
                       className="border rounded-lg p-3 md:p-4 hover:shadow-md transition-shadow cursor-pointer"
-                      onClick={() =>
-                        window.open(`/blog/${post.slug}`, "_blank")
-                      }
+                      onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
                     >
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-2">
                           <Badge
-                            className={cn(
-                              "text-white text-xs",
-                              post.category.color,
-                            )}
+                            className={cn("text-white text-xs", post.category.color)}
                           >
                             {post.category.name}
                           </Badge>
@@ -1198,49 +1195,23 @@ export default function EnhancedCrypto() {
                                     ? "default"
                                     : "destructive"
                               }
-                              className="text-xs"
-                            >
-                              {post.difficulty}
-                            </Badge>
-                          )}
+                        <div className="flex-1 text-right">
+                          <RealTimePriceDisplay
+                            price={crypto.current_price}
+                            change24h={crypto.price_change_percentage_24h}
+                            symbol={crypto.symbol}
+                            showSymbol={false}
+                            size="sm"
+                            className="justify-end"
+                          />
                         </div>
-                        <h3 className="font-semibold text-sm md:text-base line-clamp-2 hover:text-blue-600 transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-xs md:text-sm text-gray-600 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span className="truncate flex-1 mr-2">
-                            By {post.author.name}
-                          </span>
-                          <span className="flex-shrink-0">
-                            {new Date(post.publishedAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                        {post.relatedAssets &&
-                          post.relatedAssets.length > 0 && (
-                            <div className="flex items-center gap-1 flex-wrap">
-                              {post.relatedAssets.slice(0, 3).map((asset) => (
-                                <Badge
-                                  key={asset}
-                                  variant="outline"
-                                  className="text-xs bg-blue-50 text-blue-700 border-blue-200"
-                                >
-                                  {asset}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
-                      </div>
-                    </div>
                   ))}
                   <div className="pt-2">
                     <Button
                       variant="outline"
                       size="sm"
                       className="w-full"
-                      onClick={() => window.open("/blog", "_blank")}
+                      onClick={() => window.open('/blog', '_blank')}
                     >
                       View All Blog Posts
                     </Button>
