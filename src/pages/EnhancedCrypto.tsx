@@ -506,17 +506,14 @@ export default function EnhancedCrypto() {
                     </div>
 
                     <div className="text-right min-w-0 flex-shrink-0">
-                      <div className="font-semibold text-sm md:text-base">
-                        {formatCurrency(crypto.current_price)}
-                      </div>
-                      <div
-                        className={cn(
-                          "text-xs md:text-sm",
-                          getChangeColor(crypto.price_change_percentage_24h),
-                        )}
-                      >
-                        {formatPercentage(crypto.price_change_percentage_24h)}
-                      </div>
+                      <RealTimePriceDisplay
+                        price={crypto.current_price}
+                        change24h={crypto.price_change_percentage_24h}
+                        symbol={crypto.symbol}
+                        showSymbol={false}
+                        size="sm"
+                        className="justify-end"
+                      />
                     </div>
                   </div>
                 ))}
