@@ -308,10 +308,10 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="w-[95vw] max-w-2xl h-auto max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Lightbulb className="w-5 h-5 text-yellow-500" />
+          <DialogTitle className="flex items-center gap-2 text-lg md:text-xl">
+            <Lightbulb className="w-4 h-4 md:w-5 md:h-5 text-yellow-500" />
             {showPathSelection
               ? "Welcome to Softchat!"
               : `${selectedPath?.title} Guide`}
@@ -326,26 +326,30 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               {onboardingPaths.map((path) => (
                 <Card
                   key={path.id}
                   className="cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => selectPath(path)}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
+                  <CardContent className="p-3 md:p-4">
+                    <div className="flex items-start gap-2 md:gap-3">
                       <div
-                        className={`p-2 rounded-lg ${path.color} text-white`}
+                        className={`p-1.5 md:p-2 rounded-lg ${path.color} text-white flex-shrink-0`}
                       >
-                        {path.icon}
+                        {React.cloneElement(path.icon as React.ReactElement, {
+                          className: "w-4 h-4 md:w-6 md:h-6",
+                        })}
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold mb-1">{path.title}</h3>
-                        <p className="text-sm text-muted-foreground mb-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold mb-1 text-sm md:text-base truncate">
+                          {path.title}
+                        </h3>
+                        <p className="text-xs md:text-sm text-muted-foreground mb-2 line-clamp-2">
                           {path.description}
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 md:gap-2 flex-wrap">
                           <Badge variant="outline" className="text-xs">
                             {path.steps.length} steps
                           </Badge>
@@ -360,11 +364,19 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
               ))}
             </div>
 
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={skipTour}>
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:justify-between">
+              <Button
+                variant="outline"
+                onClick={skipTour}
+                className="w-full sm:w-auto"
+              >
                 Skip for now
               </Button>
-              <Button variant="outline" onClick={() => setIsOpen(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setIsOpen(false)}
+                className="w-full sm:w-auto"
+              >
                 I'll explore on my own
               </Button>
             </div>
@@ -390,29 +402,34 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
             </div>
 
             {/* Current Step */}
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-3 md:space-y-4">
               <div
-                className={`inline-flex p-3 rounded-full ${selectedPath.color} text-white`}
+                className={`inline-flex p-2 md:p-3 rounded-full ${selectedPath.color} text-white`}
               >
-                {selectedPath.steps[currentStep]?.icon}
+                {React.cloneElement(
+                  selectedPath.steps[currentStep]?.icon as React.ReactElement,
+                  {
+                    className: "w-5 h-5 md:w-6 md:h-6",
+                  },
+                )}
               </div>
 
               <div>
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-lg md:text-xl font-semibold mb-2">
                   {selectedPath.steps[currentStep]?.title}
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-sm md:text-base text-muted-foreground">
                   {selectedPath.steps[currentStep]?.description}
                 </p>
               </div>
 
               {/* Visual Guide */}
-              <div className="bg-muted rounded-lg p-4">
+              <div className="bg-muted rounded-lg p-3 md:p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Play className="w-4 h-4 text-primary" />
                   <span className="text-sm font-medium">Quick Tip</span>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Look for the highlighted elements on the page to complete this
                   step.
                 </p>
