@@ -38,11 +38,17 @@ import { FeelingLocationModal } from "@/components/feed/FeelingLocationModal";
 import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
 import { EnhancedStoryCreation } from "@/components/feed/EnhancedStoryCreation";
 import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
+import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
 import {
   MediaUpload,
   PostCreationData,
   feedService,
 } from "@/services/feedService";
+import {
+  liveStreamingService,
+  LiveStream,
+} from "@/services/liveStreamingService";
 
 // Mock data for stories
 const initialMockStories = [
@@ -1115,12 +1121,28 @@ export default function EnhancedFeed() {
   const [posts, setPosts] = useState(initialMockPosts);
   const [stories, setStories] = useState(initialMockStories);
   const [isLoading, setIsLoading] = useState(false);
+  const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
+  const [selectedLiveStream, setSelectedLiveStream] =
+    useState<LiveStream | null>(null);
 
   // Story modal states
   const [showStoryCreation, setShowStoryCreation] = useState(false);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
   const [selectedUserIndex, setSelectedUserIndex] = useState(0);
+
+  // Load live streams
+  useEffect(() => {
+    const loadLiveStreams = async () => {
+      try {
+        const streams = await liveStreamingService.getLiveStreams();
+        setLiveStreams(streams.slice(0, 3)); // Show top 3 live streams
+      } catch (error) {
+        console.error("Error loading live streams:", error);
+      }
+    };
+    loadLiveStreams();
+  }, []);
 
   const handlePostCreated = (newPost: Post) => {
     setPosts((prev) => [newPost, ...prev]);
@@ -1164,14 +1186,94 @@ export default function EnhancedFeed() {
         {/* Create Post */}
         <CreatePost onPostCreated={handlePostCreated} />
 
+        {/* Live Streams Section */}
+        {liveStreams.length > 0 && (
+          <Card className="mb-6">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold flex items-center gap-2">
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                  Live Now
+                </h3>
+                <Button variant="ghost" size="sm">
+                  View All
+                </Button>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                {liveStreams.map((stream) => (
+                  <div
+                    key={stream.id}
+                    className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() => setSelectedLiveStream(stream)}
+                  >
+                    <div className="relative">
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src={stream.streamerAvatar} />
+                        <AvatarFallback>
+                          {stream.streamerName.charAt(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm truncate">
+                        {stream.title}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        {stream.streamerName}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="secondary" className="text-xs">
+                          {stream.category}
+                        </Badge>
+                        <span className="text-xs text-gray-500">
+                          {stream.viewerCount} viewers
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* AI Content Recommendations */}
+        <SmartContentRecommendations
+          contentType="posts"
+          availableContent={posts}
+          onContentSelect={(post) => {
+            // Scroll to selected post or handle selection
+            console.log("Selected recommended post:", post);
+          }}
+          maxItems={4}
+          className="mb-6"
+          layout="grid"
+        />
+
         {/* Posts Feed */}
         <div className="space-y-6">
-          {posts.map((post) => (
-            <PostCard
-              key={post.id}
-              post={post}
-              onPostUpdate={handlePostUpdate}
-            />
+          {posts.map((post, index) => (
+            <div key={post.id}>
+              <PostCard post={post} onPostUpdate={handlePostUpdate} />
+
+              {/* Insert AI recommendations between posts occasionally */}
+              {index === 2 && (
+                <SmartContentRecommendations
+                  contentType="mixed"
+                  availableContent={[...posts, ...stories]}
+                  onContentSelect={(content) => {
+                    console.log("Selected mixed content:", content);
+                  }}
+                  maxItems={3}
+                  className="my-6"
+                  layout="carousel"
+                  showReasons={true}
+                />
+              )}
+            </div>
           ))}
         </div>
 
@@ -1197,6 +1299,30 @@ export default function EnhancedFeed() {
         onClose={() => setShowStoryCreation(false)}
         onStoryCreated={handleStoryCreated}
       />
+
+      {/* Live Stream Modal */}
+      {selectedLiveStream && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-6xl max-h-[90vh] overflow-hidden">
+            <div className="flex justify-end mb-4">
+              <Button
+                onClick={() => setSelectedLiveStream(null)}
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-white/20"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <LiveStreamPlayer
+              stream={selectedLiveStream}
+              autoplay={true}
+              showChat={true}
+              className="rounded-lg overflow-hidden"
+            />
+          </div>
+        </div>
+      )}
 
       <StoryViewerModal
         isOpen={showStoryViewer}
