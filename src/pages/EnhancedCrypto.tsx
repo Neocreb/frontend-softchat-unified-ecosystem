@@ -138,7 +138,9 @@ export default function EnhancedCrypto() {
       ]);
 
       setOrderBook(newOrderBook);
-      setRecentTrades((prev) => [...newTrades, ...prev].slice(0, 20));
+      setRecentTrades((prev) =>
+        [...(newTrades || []), ...(prev || [])].slice(0, 20),
+      );
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Failed to update real-time data:", error);
