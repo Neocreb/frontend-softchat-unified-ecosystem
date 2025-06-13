@@ -850,20 +850,22 @@ export default function EnhancedCrypto() {
                             key={index}
                             className="flex justify-between text-xs"
                           >
-                            <RealTimePriceDisplay
-                              price={crypto.current_price}
-                              change24h={crypto.price_change_percentage_24h}
-                              symbol={crypto.symbol}
-                              showSymbol={false}
-                              size="md"
-                              className="justify-end"
-                            />
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    Loading...
-                  </div>
-                )}
+                            <span className="text-gray-600">
+                              {trade.timestamp}
+                            </span>
+                            <span
+                              className={
+                                trade.side === "buy"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }
+                            >
+                              ${trade.price.toFixed(2)}
+                            </span>
+                            <span>{trade.amount.toFixed(4)}</span>
+                          </div>
+                        ))}
+                      </div>
               </CardContent>
             </Card>
 
