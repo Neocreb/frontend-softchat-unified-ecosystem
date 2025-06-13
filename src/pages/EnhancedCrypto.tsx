@@ -444,35 +444,41 @@ export default function EnhancedCrypto() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 md:space-y-3">
-                      {marketData.topMovers?.gainers
-                        ?.slice(0, 4)
-                        .map((crypto) => (
-                          <div
-                            key={crypto.id}
-                            className="flex items-center justify-between"
-                          >
-                            <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                              <img
-                                src={crypto.image}
-                                alt={crypto.name}
-                                className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
-                              />
-                              <span className="font-medium text-sm md:text-base truncate">
-                                {crypto.symbol.toUpperCase()}
-                              </span>
-                            </div>
-                            <div className="text-right flex-shrink-0">
-                              <div className="font-semibold text-sm md:text-base">
-                                {formatCurrency(crypto.current_price)}
+                      {marketData.topMovers?.gainers?.length > 0 ? (
+                        marketData.topMovers.gainers
+                          .slice(0, 4)
+                          .map((crypto) => (
+                            <div
+                              key={crypto.id}
+                              className="flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                                <img
+                                  src={crypto.image}
+                                  alt={crypto.name}
+                                  className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
+                                />
+                                <span className="font-medium text-sm md:text-base truncate">
+                                  {crypto.symbol?.toUpperCase() || "N/A"}
+                                </span>
                               </div>
-                              <div className="text-green-600 text-xs md:text-sm font-medium">
-                                {formatPercentage(
-                                  crypto.price_change_percentage_24h,
-                                )}
+                              <div className="text-right flex-shrink-0">
+                                <div className="font-semibold text-sm md:text-base">
+                                  {formatCurrency(crypto.current_price || 0)}
+                                </div>
+                                <div className="text-green-600 text-xs md:text-sm font-medium">
+                                  {formatPercentage(
+                                    crypto.price_change_percentage_24h || 0,
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))
+                      ) : (
+                        <div className="text-center text-gray-500 py-4">
+                          <p className="text-sm">No gainers data available</p>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -486,35 +492,41 @@ export default function EnhancedCrypto() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 md:space-y-3">
-                      {marketData.topMovers?.losers
-                        ?.slice(0, 4)
-                        .map((crypto) => (
-                          <div
-                            key={crypto.id}
-                            className="flex items-center justify-between"
-                          >
-                            <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                              <img
-                                src={crypto.image}
-                                alt={crypto.name}
-                                className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
-                              />
-                              <span className="font-medium text-sm md:text-base truncate">
-                                {crypto.symbol.toUpperCase()}
-                              </span>
-                            </div>
-                            <div className="text-right flex-shrink-0">
-                              <div className="font-semibold text-sm md:text-base">
-                                {formatCurrency(crypto.current_price)}
+                      {marketData.topMovers?.losers?.length > 0 ? (
+                        marketData.topMovers.losers
+                          .slice(0, 4)
+                          .map((crypto) => (
+                            <div
+                              key={crypto.id}
+                              className="flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                                <img
+                                  src={crypto.image}
+                                  alt={crypto.name}
+                                  className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
+                                />
+                                <span className="font-medium text-sm md:text-base truncate">
+                                  {crypto.symbol?.toUpperCase() || "N/A"}
+                                </span>
                               </div>
-                              <div className="text-red-600 text-xs md:text-sm font-medium">
-                                {formatPercentage(
-                                  crypto.price_change_percentage_24h,
-                                )}
+                              <div className="text-right flex-shrink-0">
+                                <div className="font-semibold text-sm md:text-base">
+                                  {formatCurrency(crypto.current_price || 0)}
+                                </div>
+                                <div className="text-red-600 text-xs md:text-sm font-medium">
+                                  {formatPercentage(
+                                    crypto.price_change_percentage_24h || 0,
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))
+                      ) : (
+                        <div className="text-center text-gray-500 py-4">
+                          <p className="text-sm">No losers data available</p>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
