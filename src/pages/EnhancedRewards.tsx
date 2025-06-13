@@ -1249,11 +1249,16 @@ export default function EnhancedRewards() {
                     5-7 business days
                   </div>
                 </div>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Partnerships Tab */}
-        <TabsContent value="partnerships" className="space-y-4 md:space-y-6 mt-4">
+        <TabsContent
+          value="partnerships"
+          className="space-y-4 md:space-y-6 mt-4"
+        >
           <PartnershipSystem />
         </TabsContent>
 
