@@ -697,11 +697,14 @@ export default function EnhancedCrypto() {
           {/* AI Trading Recommendations */}
           <SmartContentRecommendations
             contentType="mixed"
-            availableContent={[...cryptocurrencies, ...news]}
+            availableContent={[...cryptos, ...news]}
             onContentSelect={(content) => {
               if (content.symbol) {
-                // Crypto selected
-                setCurrentPair(content);
+                // Crypto selected - find the matching crypto and update current pair
+                const selectedCrypto = cryptos.find((c) => c.id === content.id);
+                if (selectedCrypto) {
+                  setSelectedPair(selectedCrypto.symbol.toUpperCase() + "USDT");
+                }
               } else {
                 // News article selected
                 console.log("Selected news:", content);
