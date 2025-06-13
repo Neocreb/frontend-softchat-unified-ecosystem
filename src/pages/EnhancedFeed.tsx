@@ -1192,7 +1192,7 @@ export default function EnhancedFeed() {
       </div>
 
       {/* Story Modals */}
-      <StoryCreationModal
+      <EnhancedStoryCreation
         isOpen={showStoryCreation}
         onClose={() => setShowStoryCreation(false)}
         onStoryCreated={handleStoryCreated}
