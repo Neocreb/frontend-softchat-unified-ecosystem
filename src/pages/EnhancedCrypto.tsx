@@ -275,6 +275,14 @@ export default function EnhancedCrypto() {
     });
   };
 
+  // Safe number formatting function
+  const safeToFixed = (value: any, decimals: number = 2): string => {
+    if (typeof value !== "number" || isNaN(value)) {
+      return "0." + "0".repeat(decimals);
+    }
+    return value.toFixed(decimals);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden">
       <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-safe-area-bottom">
@@ -351,14 +359,14 @@ export default function EnhancedCrypto() {
                         </p>
                         <p className="text-lg md:text-xl font-bold">
                           {formatCurrency(
-                            marketData.globalStats.totalMarketCap,
+                            marketData.globalStats?.totalMarketCap || 0,
                           )}
                         </p>
                         <p className="text-xs text-green-600">
                           +
-                          {marketData.globalStats.marketCapChange24h?.toFixed(
-                            2,
-                          ) || "0.00"}
+                          {safeToFixed(
+                            marketData.globalStats?.marketCapChange24h,
+                          )}
                           %
                         </p>
                       </div>
@@ -376,11 +384,11 @@ export default function EnhancedCrypto() {
                         </p>
                         <p className="text-lg md:text-xl font-bold">
                           {formatCurrency(
-                            marketData.globalStats.totalVolume24h,
+                            marketData.globalStats?.totalVolume24h || 0,
                           )}
                         </p>
                         <p className="text-xs text-gray-500">
-                          {marketData.globalStats.markets} markets
+                          {marketData.globalStats?.markets || 0} markets
                         </p>
                       </div>
                       <Activity className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
@@ -396,14 +404,12 @@ export default function EnhancedCrypto() {
                           BTC Dominance
                         </p>
                         <p className="text-lg md:text-xl font-bold">
-                          {marketData.globalStats.btcDominance?.toFixed(1) ||
-                            "0.0"}
+                          {safeToFixed(marketData.globalStats?.btcDominance, 1)}
                           %
                         </p>
                         <p className="text-xs text-gray-500">
                           ETH{" "}
-                          {marketData.globalStats.ethDominance?.toFixed(1) ||
-                            "0.0"}
+                          {safeToFixed(marketData.globalStats?.ethDominance, 1)}
                           %
                         </p>
                       </div>
@@ -420,7 +426,7 @@ export default function EnhancedCrypto() {
                           Fear & Greed
                         </p>
                         <p className="text-lg md:text-xl font-bold">
-                          {marketData.fearGreedIndex}
+                          {marketData.fearGreedIndex || 65}
                         </p>
                         <p className="text-xs text-yellow-600">Greed</p>
                       </div>
@@ -471,8 +477,8 @@ export default function EnhancedCrypto() {
 
                         <div className="text-right min-w-0 flex-shrink-0">
                           <RealTimePriceDisplay
-                            price={crypto.current_price}
-                            change24h={crypto.price_change_percentage_24h}
+                            price={crypto.current_price || 0}
+                            change24h={crypto.price_change_percentage_24h || 0}
                             symbol={crypto.symbol}
                             showSymbol={false}
                             size="sm"
@@ -616,8 +622,8 @@ export default function EnhancedCrypto() {
                   </Badge>
                   <div className="text-right">
                     <RealTimePriceDisplay
-                      price={currentPair.current_price}
-                      change24h={currentPair.price_change_percentage_24h}
+                      price={currentPair.current_price || 0}
+                      change24h={currentPair.price_change_percentage_24h || 0}
                       symbol={currentPair.symbol}
                       showSymbol={false}
                       size="lg"
@@ -631,7 +637,7 @@ export default function EnhancedCrypto() {
             {/* AI Trading Recommendations */}
             <SmartContentRecommendations
               contentType="mixed"
-              availableContent={[...cryptos, ...news]}
+              availableContent={[...(cryptos || []), ...(news || [])]}
               onContentSelect={(content) => {
                 if (content.symbol) {
                   // Crypto selected - find the matching crypto and update current pair
@@ -678,10 +684,10 @@ export default function EnhancedCrypto() {
                                 className="flex justify-between text-xs"
                               >
                                 <span className="text-red-600 font-mono">
-                                  {ask?.price?.toFixed(2) || "0.00"}
+                                  {safeToFixed(ask?.price)}
                                 </span>
                                 <span className="font-mono">
-                                  {ask?.quantity?.toFixed(4) || "0.0000"}
+                                  {safeToFixed(ask?.quantity, 4)}
                                 </span>
                               </div>
                             ))
@@ -715,10 +721,10 @@ export default function EnhancedCrypto() {
                                 className="flex justify-between text-xs"
                               >
                                 <span className="text-green-600 font-mono">
-                                  {bid?.price?.toFixed(2) || "0.00"}
+                                  {safeToFixed(bid?.price)}
                                 </span>
                                 <span className="font-mono">
-                                  {bid?.quantity?.toFixed(4) || "0.0000"}
+                                  {safeToFixed(bid?.quantity, 4)}
                                 </span>
                               </div>
                             ))
@@ -752,11 +758,9 @@ export default function EnhancedCrypto() {
                                       : "text-red-600"
                                   }
                                 >
-                                  ${trade?.price?.toFixed(2) || "0.00"}
+                                  ${safeToFixed(trade?.price)}
                                 </span>
-                                <span>
-                                  {trade?.amount?.toFixed(4) || "0.0000"}
-                                </span>
+                                <span>{safeToFixed(trade?.amount, 4)}</span>
                               </div>
                             ))
                           ) : (
@@ -817,9 +821,7 @@ export default function EnhancedCrypto() {
                           type="number"
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
-                          placeholder={
-                            currentPair?.current_price?.toFixed(2) || "0.00"
-                          }
+                          placeholder={safeToFixed(currentPair?.current_price)}
                         />
                       </div>
 
@@ -876,10 +878,7 @@ export default function EnhancedCrypto() {
                           type="number"
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
-                          placeholder="0.00"
-                          placeholder={
-                            currentPair?.current_price?.toFixed(2) || "0.00"
-                          }
+                          placeholder={safeToFixed(currentPair?.current_price)}
                         />
                       </div>
 
@@ -934,15 +933,15 @@ export default function EnhancedCrypto() {
                           Total Balance
                         </h3>
                         <p className="text-2xl font-bold">
-                          {formatCurrency(portfolio.totalBalance)}
+                          {formatCurrency(portfolio.totalBalance || 0)}
                         </p>
                         <p
                           className={cn(
                             "text-sm",
-                            getChangeColor(portfolio.totalPnL),
+                            getChangeColor(portfolio.totalPnL || 0),
                           )}
                         >
-                          {formatPercentage(portfolio.totalPnL)}
+                          {formatPercentage(portfolio.totalPnL || 0)}
                         </p>
                       </div>
                     </div>
@@ -960,7 +959,7 @@ export default function EnhancedCrypto() {
                           Available Balance
                         </h3>
                         <p className="text-2xl font-bold">
-                          {formatCurrency(portfolio.availableBalance)}
+                          {formatCurrency(portfolio.availableBalance || 0)}
                         </p>
                         <p className="text-sm text-gray-600">Ready to trade</p>
                       </div>
@@ -979,7 +978,7 @@ export default function EnhancedCrypto() {
                           In Orders
                         </h3>
                         <p className="text-2xl font-bold">
-                          {formatCurrency(portfolio.inOrders)}
+                          {formatCurrency(portfolio.inOrders || 0)}
                         </p>
                         <p className="text-sm text-gray-600">
                           Locked in trades
