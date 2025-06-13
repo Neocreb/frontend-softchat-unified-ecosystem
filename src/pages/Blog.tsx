@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { BlogPost, BlogCategory, BlogStats } from "@/types/blog";
 import { blogService } from "@/services/blogService";
+import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { cn } from "@/lib/utils";
 
 export default function Blog() {
