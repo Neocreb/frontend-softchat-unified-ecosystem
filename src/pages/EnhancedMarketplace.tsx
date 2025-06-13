@@ -446,6 +446,19 @@ export default function EnhancedMarketplace() {
             </CardContent>
           </Card>
 
+          {/* AI Product Recommendations */}
+          <SmartContentRecommendations
+            contentType="products"
+            availableContent={products}
+            onContentSelect={(product) => {
+              handleViewProduct(product.id);
+            }}
+            maxItems={4}
+            className="mb-6"
+            layout="grid"
+            showReasons={true}
+          />
+
           {/* Products Grid/List */}
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
