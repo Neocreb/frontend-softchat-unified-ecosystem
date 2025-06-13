@@ -42,7 +42,7 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
 
   try {
     // Add delay to prevent rate limiting
-    await new Promise((resolve) => setTimeout(resolve, REQUEST_DELAY));
+    await new Promise(resolve => setTimeout(resolve, REQUEST_DELAY));
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -54,7 +54,7 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
     // Cache the result
     API_CACHE.set(cacheKey, {
       data,
-      timestamp: Date.now(),
+      timestamp: Date.now()
     });
 
     return data;
@@ -72,7 +72,7 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
 
 // Transform CoinGecko data to our format
 const transformCoinGeckoData = (coinGeckoData: any[]): Cryptocurrency[] => {
-  return coinGeckoData.map((coin) => ({
+  return coinGeckoData.map(coin => ({
     id: coin.id,
     name: coin.name,
     symbol: coin.symbol,
@@ -85,13 +85,10 @@ const transformCoinGeckoData = (coinGeckoData: any[]): Cryptocurrency[] => {
     low_24h: coin.low_24h || coin.current_price,
     price_change_24h: coin.price_change_24h || 0,
     price_change_percentage_24h: coin.price_change_percentage_24h || 0,
-    price_change_percentage_7d:
-      coin.price_change_percentage_7d_in_currency || 0,
-    price_change_percentage_30d:
-      coin.price_change_percentage_30d_in_currency || 0,
+    price_change_percentage_7d: coin.price_change_percentage_7d_in_currency || 0,
+    price_change_percentage_30d: coin.price_change_percentage_30d_in_currency || 0,
     market_cap_change_24h: coin.market_cap_change_24h || 0,
-    market_cap_change_percentage_24h:
-      coin.market_cap_change_percentage_24h || 0,
+    market_cap_change_percentage_24h: coin.market_cap_change_percentage_24h || 0,
     circulating_supply: coin.circulating_supply || 0,
     total_supply: coin.total_supply,
     max_supply: coin.max_supply,
@@ -101,11 +98,9 @@ const transformCoinGeckoData = (coinGeckoData: any[]): Cryptocurrency[] => {
     atl: coin.atl || coin.current_price,
     atl_change_percentage: coin.atl_change_percentage || 0,
     atl_date: coin.atl_date || new Date().toISOString(),
-    image:
-      coin.image ||
-      `https://via.placeholder.com/64x64/1f2937/ffffff?text=${coin.symbol?.toUpperCase()}`,
+    image: coin.image || `https://via.placeholder.com/64x64/1f2937/ffffff?text=${coin.symbol?.toUpperCase()}`,
     sparkline_in_7d: coin.sparkline_in_7d?.price || [],
-    last_updated: coin.last_updated || new Date().toISOString(),
+    last_updated: coin.last_updated || new Date().toISOString()
   }));
 };
 
@@ -381,6 +376,7 @@ export class CryptoService {
 
       const data = await fetchWithCache(url, cacheKey);
       return transformCoinGeckoData(data);
+
     } catch (error) {
       console.error("Failed to fetch real-time crypto data:", error);
 
@@ -392,24 +388,21 @@ export class CryptoService {
 
   // Simulate real-time price changes for fallback data
   private simulateRealTimePrices(cryptos: Cryptocurrency[]): Cryptocurrency[] {
-    return cryptos.map((crypto) => {
+    return cryptos.map(crypto => {
       // Add small random price fluctuations (±2%)
       const priceChange = (Math.random() - 0.5) * 0.04;
       const newPrice = crypto.current_price * (1 + priceChange);
       const price_change_24h = newPrice - crypto.current_price;
-      const price_change_percentage_24h =
-        (price_change_24h / crypto.current_price) * 100;
+      const price_change_percentage_24h = (price_change_24h / crypto.current_price) * 100;
 
       return {
         ...crypto,
         current_price: parseFloat(newPrice.toFixed(8)),
         price_change_24h: parseFloat(price_change_24h.toFixed(8)),
-        price_change_percentage_24h: parseFloat(
-          price_change_percentage_24h.toFixed(2),
-        ),
+        price_change_percentage_24h: parseFloat(price_change_percentage_24h.toFixed(2)),
         high_24h: Math.max(crypto.high_24h, newPrice),
         low_24h: Math.min(crypto.low_24h, newPrice),
-        last_updated: new Date().toISOString(),
+        last_updated: new Date().toISOString()
       };
     });
   }
@@ -420,30 +413,83 @@ export class CryptoService {
   }
 
   async getMarketData(): Promise<MarketData> {
-    await this.delay(400);
-    return {
-      globalStats: {
-        totalMarketCap: 1750000000000,
-        totalVolume24h: 85000000000,
-        marketCapChange24h: 2.4,
-        btcDominance: 48.5,
-        ethDominance: 18.2,
-        activeCoins: 8924,
-        markets: 25687,
-      },
-      topMovers: {
-        gainers: mockCryptocurrencies
-          .filter((c) => c.price_change_percentage_24h > 0)
-          .slice(0, 5),
-        losers: mockCryptocurrencies
-          .filter((c) => c.price_change_percentage_24h < 0)
-          .slice(0, 5),
-      },
-      fearGreedIndex: {
-        value: 75,
-        classification: "Greed",
-        timestamp: new Date().toISOString(),
-      },
+    try {
+      // Get global market data from CoinGecko
+      const globalUrl = `${COINGECKO_API_BASE}/global`;
+      const globalData = await fetchWithCache(globalUrl, 'global_market_data');
+
+      // Get trending coins for top movers
+      const trendingUrl = `${COINGECKO_API_BASE}/search/trending`;
+      const trendingData = await fetchWithCache(trendingUrl, 'trending_coins');
+
+      // Get current top cryptocurrencies for gainers/losers
+      const topCryptos = await this.getCryptocurrencies(50);
+
+      const global = globalData.data;
+
+      return {
+        globalStats: {
+          totalMarketCap: global.total_market_cap?.usd || 1750000000000,
+          totalVolume24h: global.total_volume?.usd || 85000000000,
+          marketCapChange24h: global.market_cap_change_percentage_24h_usd || 0,
+          btcDominance: global.market_cap_percentage?.btc || 48.5,
+          ethDominance: global.market_cap_percentage?.eth || 18.2,
+          activeCoins: global.active_cryptocurrencies || 8924,
+          markets: global.markets || 25687,
+        },
+        topMovers: {
+          gainers: topCryptos
+            .filter((c) => c.price_change_percentage_24h > 0)
+            .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+            .slice(0, 5),
+          losers: topCryptos
+            .filter((c) => c.price_change_percentage_24h < 0)
+            .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
+            .slice(0, 5),
+        },
+        trending: trendingData.coins?.slice(0, 5).map((coin: any) => ({
+          id: coin.item.id,
+          name: coin.item.name,
+          symbol: coin.item.symbol,
+          current_price: 0, // Trending API doesn't include price
+          market_cap_rank: coin.item.market_cap_rank,
+          image: coin.item.thumb,
+          price_change_percentage_24h: 0,
+        })) || topCryptos.slice(10, 15),
+        fearGreedIndex: Math.floor(Math.random() * 100), // Fear & Greed Index not available in free API
+        lastUpdated: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error("Failed to fetch real-time market data:", error);
+
+      // Fallback to mock data with simulated updates
+      const fallbackCryptos = this.simulateRealTimePrices(mockCryptocurrencies);
+      return {
+        globalStats: {
+          totalMarketCap: 1750000000000 * (0.98 + Math.random() * 0.04), // ±2% variation
+          totalVolume24h: 85000000000 * (0.9 + Math.random() * 0.2), // ±10% variation
+          marketCapChange24h: (Math.random() - 0.5) * 10, // ±5% change
+          btcDominance: 48.5 + (Math.random() - 0.5) * 2, // ±1% variation
+          ethDominance: 18.2 + (Math.random() - 0.5) * 2, // ±1% variation
+          activeCoins: 8924,
+          markets: 25687,
+        },
+        topMovers: {
+          gainers: fallbackCryptos
+            .filter((c) => c.price_change_percentage_24h > 0)
+            .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+            .slice(0, 5),
+          losers: fallbackCryptos
+            .filter((c) => c.price_change_percentage_24h < 0)
+            .sort((a, b) => a.price_change_percentage_24h - b.price_change_percentage_24h)
+            .slice(0, 5),
+        },
+        trending: fallbackCryptos.slice(10, 15),
+        fearGreedIndex: 65,
+        lastUpdated: new Date().toISOString(),
+      };
+    }
+  }
       trending: mockCryptocurrencies.slice(0, 10),
     };
   }
