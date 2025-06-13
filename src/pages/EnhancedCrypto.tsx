@@ -854,28 +854,16 @@ export default function EnhancedCrypto() {
                             className="flex justify-between text-xs"
                           >
                             <span
-                              className={cn(
-                                "font-mono",
-                                trade.isBuyerMaker
-                                  ? "text-red-600"
-                                  : "text-green-600",
-                              )}
-                            >
-                              {trade.price.toFixed(2)}
-                            </span>
-                            <span className="font-mono">
-                              {trade.quantity.toFixed(4)}
-                            </span>
-                            <span className="text-gray-500">
-                              {new Date(trade.time).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                        <div className="flex-1 text-right">
+                          <RealTimePriceDisplay
+                            price={crypto.current_price}
+                            change24h={crypto.price_change_percentage_24h}
+                            symbol={crypto.symbol}
+                            showSymbol={false}
+                            size="md"
+                            className="justify-end"
+                          />
+                        </div>
                   </div>
                 ) : (
                   <div className="text-center py-8 text-gray-500">
