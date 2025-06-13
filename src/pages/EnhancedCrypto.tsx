@@ -47,6 +47,7 @@ import {
 } from "@/types/crypto";
 import { BlogPost } from "@/types/blog";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import RealTimePriceDisplay from "@/components/crypto/RealTimePriceDisplay";
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import { cn } from "@/lib/utils";
 
