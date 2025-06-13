@@ -1257,6 +1257,11 @@ export default function EnhancedRewards() {
           <PartnershipSystem />
         </TabsContent>
 
+        {/* Partnerships Tab */}
+        <TabsContent value="partnerships" className="space-y-4 md:space-y-6 mt-4">
+          <PartnershipSystem />
+        </TabsContent>
+
         {/* History Tab */}
         <TabsContent value="history" className="space-y-4 md:space-y-6 mt-4">
           <Card>
