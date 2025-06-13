@@ -68,14 +68,22 @@ export default function EnhancedCrypto() {
   const [price, setPrice] = useState("");
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
 
   const { toast } = useToast();
 
   useEffect(() => {
     loadCryptoData();
-    const interval = setInterval(updateRealTimeData, 3000);
+    // Set up real-time updates every 30 seconds
+    const interval = setInterval(updateRealTimeData, 30000);
     return () => clearInterval(interval);
   }, [selectedPair]);
+
+  // More frequent updates for price display (every 10 seconds)
+  useEffect(() => {
+    const priceUpdateInterval = setInterval(updatePricesOnly, 10000);
+    return () => clearInterval(priceUpdateInterval);
+  }, [cryptos]);
 
   const loadCryptoData = async () => {
     setIsLoading(true);
@@ -126,10 +134,48 @@ export default function EnhancedCrypto() {
         cryptoService.getOrderBook(selectedPair),
         cryptoService.getRecentTrades(selectedPair, 5),
       ]);
+
       setOrderBook(newOrderBook);
-      setRecentTrades((prev) => [...newTrades, ...prev].slice(0, 15));
+      setRecentTrades((prev) => [...newTrades, ...prev].slice(0, 20));
+      setLastUpdated(new Date());
     } catch (error) {
       console.error("Failed to update real-time data:", error);
+    }
+  };
+
+  // Update only cryptocurrency prices for more frequent updates
+  const updatePricesOnly = async () => {
+    try {
+      if (cryptos.length === 0) return;
+
+      // Get coin IDs for price updates
+      const coinIds = cryptos.slice(0, 20).map((crypto) => crypto.id);
+      const priceUpdates = await cryptoService.getRealTimePrice(coinIds);
+
+      // Update crypto prices
+      setCryptos((prevCryptos) =>
+        prevCryptos.map((crypto) => {
+          const priceData = priceUpdates[crypto.id];
+          if (priceData) {
+            return {
+              ...crypto,
+              current_price: priceData.usd,
+              price_change_percentage_24h: priceData.usd_24h_change,
+              last_updated: new Date().toISOString(),
+            };
+          }
+          return crypto;
+        }),
+      );
+
+      // Update market data less frequently
+      if (Math.random() < 0.3) {
+        // 30% chance to update market data
+        const newMarketData = await cryptoService.getMarketData();
+        setMarketData(newMarketData);
+      }
+    } catch (error) {
+      console.error("Failed to update prices:", error);
     }
   };
 
