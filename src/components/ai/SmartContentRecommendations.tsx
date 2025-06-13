@@ -243,14 +243,17 @@ export function SmartContentRecommendations({
         >
           {recommendations.map((content, index) => (
             <div
-              key={content.id}
+              key={`${content.id}-${index}-${contentType}`}
               className={cn(
                 "group cursor-pointer transition-all duration-200 hover:scale-105",
                 layout === "carousel" && "flex-shrink-0 w-80",
               )}
               onClick={() => handleContentClick(content)}
             >
-              <Card className="h-full border-0 shadow-sm hover:shadow-md transition-shadow">
+              <Card
+                key={`card-${content.id}-${index}`}
+                className="h-full border-0 shadow-sm hover:shadow-md transition-shadow"
+              >
                 <div className="relative">
                   {/* Content Image/Thumbnail */}
                   <div className="aspect-video bg-gradient-to-br from-purple-100 to-blue-100 rounded-t-lg overflow-hidden">

@@ -144,13 +144,18 @@ class AIRecommendationService {
     if (!preferences) {
       // Return trending posts for new users
       return availablePosts
+        .map((post, index) => ({
+          ...post,
+          id: post.id || `post-${index}-${Date.now()}`,
+        }))
         .sort((a, b) => b.likes + b.comments - (a.likes + a.comments))
         .slice(0, 10);
     }
 
     const scoredPosts = availablePosts
-      .map((post) => ({
+      .map((post, index) => ({
         ...post,
+        id: post.id || `post-${index}-${Date.now()}`, // Ensure unique ID
         aiScore: this.calculateRelevanceScore(post, preferences),
       }))
       .sort((a, b) => b.aiScore - a.aiScore)
@@ -166,12 +171,19 @@ class AIRecommendationService {
   ): Promise<Video[]> {
     const preferences = this.userPreferences.get(userId);
     if (!preferences) {
-      return availableVideos.sort((a, b) => b.views - a.views).slice(0, 10);
+      return availableVideos
+        .map((video, index) => ({
+          ...video,
+          id: video.id || `video-${index}-${Date.now()}`,
+        }))
+        .sort((a, b) => b.views - a.views)
+        .slice(0, 10);
     }
 
     const scoredVideos = availableVideos
-      .map((video) => ({
+      .map((video, index) => ({
         ...video,
+        id: video.id || `video-${index}-${Date.now()}`, // Ensure unique ID
         aiScore: this.calculateRelevanceScore(video, preferences),
       }))
       .sort((a, b) => b.aiScore - a.aiScore)
@@ -187,12 +199,19 @@ class AIRecommendationService {
   ): Promise<any[]> {
     const preferences = this.userPreferences.get(userId);
     if (!preferences) {
-      return availableProducts.sort((a, b) => b.rating - a.rating).slice(0, 8);
+      return availableProducts
+        .map((product, index) => ({
+          ...product,
+          id: product.id || `product-${index}-${Date.now()}`,
+        }))
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 8);
     }
 
     const scoredProducts = availableProducts
-      .map((product) => ({
+      .map((product, index) => ({
         ...product,
+        id: product.id || `product-${index}-${Date.now()}`, // Ensure unique ID
         aiScore: this.calculateRelevanceScore(product, preferences),
       }))
       .sort((a, b) => b.aiScore - a.aiScore)
@@ -324,8 +343,9 @@ class AIRecommendationService {
 
     // Experienced user - personalized feed
     const personalizedContent = availableContent
-      .map((content) => ({
+      .map((content, index) => ({
         ...content,
+        id: content.id || `generated-${index}-${Date.now()}`, // Ensure unique ID
         aiScore: this.calculateRelevanceScore(content, preferences),
         reason: this.getRecommendationReason(content, preferences),
       }))
@@ -357,6 +377,10 @@ class AIRecommendationService {
     categories.forEach((category) => {
       const categoryContent = availableContent
         .filter((c) => c.category === category)
+        .map((content, index) => ({
+          ...content,
+          id: content.id || `new-user-${category}-${index}-${Date.now()}`,
+        }))
         .sort((a, b) => b.likes + b.comments - (a.likes + a.comments))
         .slice(0, 2);
 
