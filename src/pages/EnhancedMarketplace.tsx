@@ -47,6 +47,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useMarketplace } from "@/hooks/use-marketplace";
 import { useToast } from "@/components/ui/use-toast";
 import EnhancedProductCard from "@/components/marketplace/EnhancedProductCard";
+import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import EnhancedCheckoutFlow from "@/components/marketplace/EnhancedCheckoutFlow";
 import OrderManagement from "@/components/marketplace/OrderManagement";
 import SellerDashboard from "@/components/marketplace/SellerDashboard";
