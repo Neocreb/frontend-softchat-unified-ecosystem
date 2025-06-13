@@ -59,7 +59,9 @@ export default function EnhancedCrypto() {
   const [orderBook, setOrderBook] = useState<OrderBook | null>(null);
   const [recentTrades, setRecentTrades] = useState<Trade[]>([]);
   const [news, setNews] = useState<News[]>([]);
-  const [educationContent, setEducationContent] = useState<EducationContent[]>([]);
+  const [educationContent, setEducationContent] = useState<EducationContent[]>(
+    [],
+  );
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [selectedPair, setSelectedPair] = useState("BTCUSDT");
   const [orderType, setOrderType] = useState("limit");
@@ -130,16 +132,15 @@ export default function EnhancedCrypto() {
 
   const updateRealTimeData = async () => {
     try {
-      const [
-        newOrderBook,
-        newTrades,
-      ] = await Promise.all([
+      const [newOrderBook, newTrades] = await Promise.all([
         cryptoService.getOrderBook(selectedPair),
         cryptoService.getRecentTrades(selectedPair, 5),
       ]);
 
       setOrderBook(newOrderBook);
-      setRecentTrades((prev) => [...(newTrades || []), ...(prev || [])].slice(0, 20));
+      setRecentTrades((prev) =>
+        [...(newTrades || []), ...(prev || [])].slice(0, 20),
+      );
       setLastUpdated(new Date());
     } catch (error) {
       console.error("Failed to update real-time data:", error);
@@ -156,35 +157,35 @@ export default function EnhancedCrypto() {
       const priceUpdates = await cryptoService.getRealTimePrice(coinIds);
 
       // Update crypto prices
-      setCryptos(prevCryptos =>
-        prevCryptos.map(crypto => {
+      setCryptos((prevCryptos) =>
+        prevCryptos.map((crypto) => {
           const priceData = priceUpdates[crypto.id];
           if (priceData) {
             return {
               ...crypto,
               current_price: priceData.usd,
               price_change_percentage_24h: priceData.usd_24h_change,
-              last_updated: new Date().toISOString()
+              last_updated: new Date().toISOString(),
             };
           }
           return crypto;
-        })
+        }),
       );
 
       // Update market data less frequently
-      if (Math.random() < 0.3) { // 30% chance to update market data
+      if (Math.random() < 0.3) {
+        // 30% chance to update market data
         const newMarketData = await cryptoService.getMarketData();
         setMarketData(newMarketData);
       }
-
     } catch (error) {
       console.error("Failed to update prices:", error);
     }
   };
 
   const formatCurrency = (value: number) => {
-    if (typeof value !== 'number' || isNaN(value)) {
-      return '$0.00';
+    if (typeof value !== "number" || isNaN(value)) {
+      return "$0.00";
     }
 
     if (value >= 1000000000) {
@@ -203,8 +204,8 @@ export default function EnhancedCrypto() {
   };
 
   const formatPercentage = (value: number) => {
-    if (typeof value !== 'number' || isNaN(value)) {
-      return '0.00%';
+    if (typeof value !== "number" || isNaN(value)) {
+      return "0.00%";
     }
     return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
   };
@@ -304,10 +305,16 @@ export default function EnhancedCrypto() {
                           Market Cap
                         </p>
                         <p className="text-lg md:text-xl font-bold">
-                          {formatCurrency(marketData.globalStats.totalMarketCap)}
+                          {formatCurrency(
+                            marketData.globalStats.totalMarketCap,
+                          )}
                         </p>
                         <p className="text-xs text-green-600">
-                          +{marketData.globalStats.marketCapChange24h?.toFixed(2) || '0.00'}%
+                          +
+                          {marketData.globalStats.marketCapChange24h?.toFixed(
+                            2,
+                          ) || "0.00"}
+                          %
                         </p>
                       </div>
                       <BarChart3 className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
@@ -323,7 +330,9 @@ export default function EnhancedCrypto() {
                           24h Volume
                         </p>
                         <p className="text-lg md:text-xl font-bold">
-                          {formatCurrency(marketData.globalStats.totalVolume24h)}
+                          {formatCurrency(
+                            marketData.globalStats.totalVolume24h,
+                          )}
                         </p>
                         <p className="text-xs text-gray-500">
                           {marketData.globalStats.markets} markets
@@ -342,10 +351,15 @@ export default function EnhancedCrypto() {
                           BTC Dominance
                         </p>
                         <p className="text-lg md:text-xl font-bold">
-                          {marketData.globalStats.btcDominance?.toFixed(1) || '0.0'}%
+                          {marketData.globalStats.btcDominance?.toFixed(1) ||
+                            "0.0"}
+                          %
                         </p>
                         <p className="text-xs text-gray-500">
-                          ETH {marketData.globalStats.ethDominance?.toFixed(1) || '0.0'}%
+                          ETH{" "}
+                          {marketData.globalStats.ethDominance?.toFixed(1) ||
+                            "0.0"}
+                          %
                         </p>
                       </div>
                       <PieChart className="h-6 w-6 md:h-8 md:w-8 text-orange-500" />
@@ -382,45 +396,47 @@ export default function EnhancedCrypto() {
               </CardHeader>
               <CardContent className="px-3 md:px-6">
                 <div className="space-y-2 md:space-y-3">
-                  {cryptos && cryptos.length > 0 ? cryptos.slice(0, 8).map((crypto, index) => (
-                    <div
-                      key={crypto.id}
-                      className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                      onClick={() =>
-                        setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
-                      }
-                    >
-                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                        <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
-                          #{index + 1}
-                        </div>
-                        <img
-                          src={crypto.image}
-                          alt={crypto.name}
-                          className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm md:text-base truncate">
-                            {crypto.name}
+                  {cryptos && cryptos.length > 0 ? (
+                    cryptos.slice(0, 8).map((crypto, index) => (
+                      <div
+                        key={crypto.id}
+                        className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                        onClick={() =>
+                          setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
+                        }
+                      >
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                          <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
+                            #{index + 1}
                           </div>
-                          <div className="text-xs md:text-sm text-gray-600">
-                            {crypto.symbol.toUpperCase()}
+                          <img
+                            src={crypto.image}
+                            alt={crypto.name}
+                            className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium text-sm md:text-base truncate">
+                              {crypto.name}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-600">
+                              {crypto.symbol.toUpperCase()}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="text-right min-w-0 flex-shrink-0">
-                        <RealTimePriceDisplay
-                          price={crypto.current_price}
-                          change24h={crypto.price_change_percentage_24h}
-                          symbol={crypto.symbol}
-                          showSymbol={false}
-                          size="sm"
-                          className="justify-end"
-                        />
+                        <div className="text-right min-w-0 flex-shrink-0">
+                          <RealTimePriceDisplay
+                            price={crypto.current_price}
+                            change24h={crypto.price_change_percentage_24h}
+                            symbol={crypto.symbol}
+                            showSymbol={false}
+                            size="sm"
+                            className="justify-end"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )) : (
+                    ))
+                  ) : (
                     <div className="text-center text-gray-500 py-8">
                       <p>Loading cryptocurrencies...</p>
                     </div>
@@ -441,33 +457,37 @@ export default function EnhancedCrypto() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 md:space-y-3">
-                      {marketData.topMovers?.gainers?.length > 0 ? marketData.topMovers.gainers.slice(0, 4).map((crypto) => (
-                        <div
-                          key={crypto.id}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                            <img
-                              src={crypto.image}
-                              alt={crypto.name}
-                              className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
-                            />
-                            <span className="font-medium text-sm md:text-base truncate">
-                              {crypto.symbol?.toUpperCase() || 'N/A'}
-                            </span>
-                          </div>
-                          <div className="text-right flex-shrink-0">
-                            <div className="font-semibold text-sm md:text-base">
-                              {formatCurrency(crypto.current_price || 0)}
+                      {marketData.topMovers?.gainers?.length > 0 ? (
+                        marketData.topMovers.gainers
+                          .slice(0, 4)
+                          .map((crypto) => (
+                            <div
+                              key={crypto.id}
+                              className="flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                                <img
+                                  src={crypto.image}
+                                  alt={crypto.name}
+                                  className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
+                                />
+                                <span className="font-medium text-sm md:text-base truncate">
+                                  {crypto.symbol?.toUpperCase() || "N/A"}
+                                </span>
+                              </div>
+                              <div className="text-right flex-shrink-0">
+                                <div className="font-semibold text-sm md:text-base">
+                                  {formatCurrency(crypto.current_price || 0)}
+                                </div>
+                                <div className="text-green-600 text-xs md:text-sm font-medium">
+                                  {formatPercentage(
+                                    crypto.price_change_percentage_24h || 0,
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-green-600 text-xs md:text-sm font-medium">
-                              {formatPercentage(
-                                crypto.price_change_percentage_24h || 0,
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )) : (
+                          ))
+                      ) : (
                         <div className="text-center text-gray-500 py-4">
                           <p className="text-sm">No gainers data available</p>
                         </div>
@@ -485,33 +505,37 @@ export default function EnhancedCrypto() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2 md:space-y-3">
-                      {marketData.topMovers?.losers?.length > 0 ? marketData.topMovers.losers.slice(0, 4).map((crypto) => (
-                        <div
-                          key={crypto.id}
-                          className="flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                            <img
-                              src={crypto.image}
-                              alt={crypto.name}
-                              className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
-                            />
-                            <span className="font-medium text-sm md:text-base truncate">
-                              {crypto.symbol?.toUpperCase() || 'N/A'}
-                            </span>
-                          </div>
-                          <div className="text-right flex-shrink-0">
-                            <div className="font-semibold text-sm md:text-base">
-                              {formatCurrency(crypto.current_price || 0)}
+                      {marketData.topMovers?.losers?.length > 0 ? (
+                        marketData.topMovers.losers
+                          .slice(0, 4)
+                          .map((crypto) => (
+                            <div
+                              key={crypto.id}
+                              className="flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                                <img
+                                  src={crypto.image}
+                                  alt={crypto.name}
+                                  className="w-5 h-5 md:w-6 md:h-6 rounded-full flex-shrink-0"
+                                />
+                                <span className="font-medium text-sm md:text-base truncate">
+                                  {crypto.symbol?.toUpperCase() || "N/A"}
+                                </span>
+                              </div>
+                              <div className="text-right flex-shrink-0">
+                                <div className="font-semibold text-sm md:text-base">
+                                  {formatCurrency(crypto.current_price || 0)}
+                                </div>
+                                <div className="text-red-600 text-xs md:text-sm font-medium">
+                                  {formatPercentage(
+                                    crypto.price_change_percentage_24h || 0,
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            <div className="text-red-600 text-xs md:text-sm font-medium">
-                              {formatPercentage(
-                                crypto.price_change_percentage_24h || 0,
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )) : (
+                          ))
+                      ) : (
                         <div className="text-center text-gray-500 py-4">
                           <p className="text-sm">No losers data available</p>
                         </div>
@@ -566,13 +590,17 @@ export default function EnhancedCrypto() {
               onContentSelect={(content) => {
                 if (content.symbol) {
                   // Crypto selected - find the matching crypto and update current pair
-                  const selectedCrypto = cryptos.find(c => c.id === content.id);
+                  const selectedCrypto = cryptos.find(
+                    (c) => c.id === content.id,
+                  );
                   if (selectedCrypto) {
-                    setSelectedPair(selectedCrypto.symbol.toUpperCase() + 'USDT');
+                    setSelectedPair(
+                      selectedCrypto.symbol.toUpperCase() + "USDT",
+                    );
                   }
                 } else {
                   // News article selected
-                  console.log('Selected news:', content);
+                  console.log("Selected news:", content);
                 }
               }}
               maxItems={3}
@@ -598,19 +626,21 @@ export default function EnhancedCrypto() {
                           Asks
                         </div>
                         <div className="space-y-1">
-                          {orderBook.asks?.length > 0 ? orderBook.asks.slice(0, 5).map((ask, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between text-xs"
-                            >
-                              <span className="text-red-600 font-mono">
-                                {ask?.price?.toFixed(2) || '0.00'}
-                              </span>
-                              <span className="font-mono">
-                                {ask?.quantity?.toFixed(4) || '0.0000'}
-                              </span>
-                            </div>
-                          )) : (
+                          {orderBook.asks?.length > 0 ? (
+                            orderBook.asks.slice(0, 5).map((ask, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between text-xs"
+                              >
+                                <span className="text-red-600 font-mono">
+                                  {ask?.price?.toFixed(2) || "0.00"}
+                                </span>
+                                <span className="font-mono">
+                                  {ask?.quantity?.toFixed(4) || "0.0000"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
                             <div className="text-center text-gray-500 text-xs py-2">
                               No asks available
                             </div>
@@ -633,19 +663,21 @@ export default function EnhancedCrypto() {
                           Bids
                         </div>
                         <div className="space-y-1">
-                          {orderBook.bids?.length > 0 ? orderBook.bids.slice(0, 5).map((bid, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between text-xs"
-                            >
-                              <span className="text-green-600 font-mono">
-                                {bid?.price?.toFixed(2) || '0.00'}
-                              </span>
-                              <span className="font-mono">
-                                {bid?.quantity?.toFixed(4) || '0.0000'}
-                              </span>
-                            </div>
-                          )) : (
+                          {orderBook.bids?.length > 0 ? (
+                            orderBook.bids.slice(0, 5).map((bid, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between text-xs"
+                              >
+                                <span className="text-green-600 font-mono">
+                                  {bid?.price?.toFixed(2) || "0.00"}
+                                </span>
+                                <span className="font-mono">
+                                  {bid?.quantity?.toFixed(4) || "0.0000"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
                             <div className="text-center text-gray-500 text-xs py-2">
                               No bids available
                             </div>
@@ -657,15 +689,32 @@ export default function EnhancedCrypto() {
                       <div className="pt-3 border-t">
                         <div className="text-xs font-medium text-gray-600 mb-2">
                           Recent Trades
-                        <Input
-                          type="number"
-                          value={price}
-                          onChange={(e) => setPrice(e.target.value)}
-                          placeholder={currentPair?.current_price?.toFixed(2) || "0.00"}
-                        />
-                              <span>{trade?.amount?.toFixed(4) || '0.0000'}</span>
-                            </div>
-                          )) : (
+                        </div>
+                        <div className="space-y-1 max-h-32 overflow-y-auto">
+                          {recentTrades && recentTrades.length > 0 ? (
+                            recentTrades.slice(0, 8).map((trade, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between text-xs"
+                              >
+                                <span className="text-gray-600">
+                                  {trade?.timestamp || "N/A"}
+                                </span>
+                                <span
+                                  className={
+                                    trade?.side === "buy"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }
+                                >
+                                  ${trade?.price?.toFixed(2) || "0.00"}
+                                </span>
+                                <span>
+                                  {trade?.amount?.toFixed(4) || "0.0000"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
                             <div className="text-center text-gray-500 text-xs py-2">
                               No recent trades
                             </div>
@@ -723,7 +772,9 @@ export default function EnhancedCrypto() {
                           type="number"
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
-                          placeholder={currentPair?.current_price?.toFixed(2) || "0.00"}
+                          placeholder={
+                            currentPair?.current_price?.toFixed(2) || "0.00"
+                          }
                         />
                       </div>
 
@@ -864,9 +915,7 @@ export default function EnhancedCrypto() {
                         <p className="text-2xl font-bold">
                           {formatCurrency(portfolio.availableBalance)}
                         </p>
-                        <p className="text-sm text-gray-600">
-                          Ready to trade
-                        </p>
+                        <p className="text-sm text-gray-600">Ready to trade</p>
                       </div>
                     </div>
                   </CardContent>
@@ -900,9 +949,7 @@ export default function EnhancedCrypto() {
           <TabsContent value="learn" className="mobile-space-y mt-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h2 className="text-xl md:text-2xl font-bold">
-                  Learn & News
-                </h2>
+                <h2 className="text-xl md:text-2xl font-bold">Learn & News</h2>
                 <p className="text-sm md:text-base text-gray-600">
                   Educational content and latest news
                 </p>
@@ -911,54 +958,68 @@ export default function EnhancedCrypto() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {/* News Articles */}
-              {news && news.length > 0 ? news.slice(0, 6).map((article) => (
-                <Card key={article.id} className="cursor-pointer hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <Badge variant="outline" className="text-xs">
-                        {article.category}
-                      </Badge>
-                      <h3 className="font-semibold text-sm line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 line-clamp-3">
-                        {article.summary}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{article.source}</span>
-                        <span>{new Date(article.publishedAt).toLocaleDateString()}</span>
+              {news && news.length > 0 ? (
+                news.slice(0, 6).map((article) => (
+                  <Card
+                    key={article.id}
+                    className="cursor-pointer hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <Badge variant="outline" className="text-xs">
+                          {article.category}
+                        </Badge>
+                        <h3 className="font-semibold text-sm line-clamp-2">
+                          {article.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 line-clamp-3">
+                          {article.summary}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span>{article.source}</span>
+                          <span>
+                            {new Date(article.publishedAt).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )) : (
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
                 <div className="col-span-full text-center text-gray-500 py-8">
                   <p>Loading news articles...</p>
                 </div>
               )}
 
               {/* Blog Posts */}
-              {blogPosts && blogPosts.length > 0 ? blogPosts.slice(0, 6).map((post) => (
-                <Card key={post.id} className="cursor-pointer hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <Badge variant="outline" className="text-xs">
-                        {post.category}
-                      </Badge>
-                      <h3 className="font-semibold text-sm line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{post.author?.name || 'Unknown Author'}</span>
-                        <span>{new Date(post.publishedAt).toLocaleDateString()}</span>
+              {blogPosts && blogPosts.length > 0 ? (
+                blogPosts.slice(0, 6).map((post) => (
+                  <Card
+                    key={post.id}
+                    className="cursor-pointer hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <Badge variant="outline" className="text-xs">
+                          {post.category}
+                        </Badge>
+                        <h3 className="font-semibold text-sm line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span>{post.author?.name || "Unknown Author"}</span>
+                          <span>
+                            {new Date(post.publishedAt).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )) : (
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
                 <div className="col-span-full text-center text-gray-500 py-8">
                   <p>Loading blog posts...</p>
                 </div>
