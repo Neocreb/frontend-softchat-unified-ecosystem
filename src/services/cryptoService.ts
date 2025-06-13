@@ -37,11 +37,27 @@ let apiFailureCount = 0;
 const MAX_API_FAILURES = 3;
 let apiDisabled = false;
 
+// Function to reset API status (useful for testing or manual recovery)
+export const resetApiStatus = () => {
+  apiFailureCount = 0;
+  apiDisabled = false;
+  console.log("API status reset - real API calls re-enabled");
+};
+
+// Function to get current API status
+export const getApiStatus = () => ({
+  failureCount: apiFailureCount,
+  isDisabled: apiDisabled,
+  maxFailures: MAX_API_FAILURES,
+});
+
 // Helper function to make API requests with caching and rate limiting
 const fetchWithCache = async (url: string, cacheKey: string) => {
   // If API is disabled due to repeated failures, return null immediately
   if (apiDisabled) {
-    console.log("API disabled due to repeated failures, using fallback data");
+    console.log(
+      "📊 CryptoService: Using simulated market data (API temporarily unavailable)",
+    );
     return null;
   }
 
@@ -80,7 +96,10 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
 
     return data;
   } catch (error) {
-    console.log(`API request failed for ${url}:`, error.message);
+    console.log(
+      `🌐 CryptoService: API request failed for ${url}:`,
+      error.message,
+    );
 
     // Increment failure count
     apiFailureCount++;
@@ -88,14 +107,14 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
     // Disable API if too many failures
     if (apiFailureCount >= MAX_API_FAILURES) {
       apiDisabled = true;
-      console.log(
-        "API disabled due to repeated failures, switching to fallback mode",
+      console.warn(
+        `🚨 CryptoService: API disabled after ${MAX_API_FAILURES} failures. Switching to simulation mode for better user experience.`,
       );
     }
 
     // Return cached data if available, even if expired
     if (cached) {
-      console.log("Using cached data due to API failure");
+      console.log("📋 CryptoService: Using cached data due to API failure");
       return cached.data;
     }
 
@@ -582,7 +601,7 @@ export class CryptoService {
       // If API returned null or invalid data, use mock data
       throw new Error("API returned null or invalid data");
     } catch (error) {
-      console.log("Using simulated price data due to API unavailability");
+      console.log("💰 CryptoService: Using simulated real-time price data");
 
       // Return mock data with simulated real-time changes
       const mockPrices: {
