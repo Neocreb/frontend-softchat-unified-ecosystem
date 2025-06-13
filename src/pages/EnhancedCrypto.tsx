@@ -853,17 +853,14 @@ export default function EnhancedCrypto() {
                             key={index}
                             className="flex justify-between text-xs"
                           >
-                            <span
-                        <div className="flex-1 text-right">
-                          <RealTimePriceDisplay
-                            price={crypto.current_price}
-                            change24h={crypto.price_change_percentage_24h}
-                            symbol={crypto.symbol}
-                            showSymbol={false}
-                            size="md"
-                            className="justify-end"
-                          />
-                        </div>
+                            <RealTimePriceDisplay
+                              price={crypto.current_price}
+                              change24h={crypto.price_change_percentage_24h}
+                              symbol={crypto.symbol}
+                              showSymbol={false}
+                              size="md"
+                              className="justify-end"
+                            />
                   </div>
                 ) : (
                   <div className="text-center py-8 text-gray-500">
