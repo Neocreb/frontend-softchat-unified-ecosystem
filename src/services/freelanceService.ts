@@ -423,20 +423,6 @@ export const freelanceService = {
       rating: freelancer?.rating || 4.8,
       successRate: freelancer?.successRate || 95,
     };
-  },
-  async getFreelanceStats(userId: string): Promise<FreelanceStats> {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const freelancer = mockFreelancers.find((f) => f.id === userId);
-    if (!freelancer) throw new Error("Freelancer not found");
-
-    return {
-      totalEarnings: freelancer.totalEarned,
-      activeProjects: mockProjects.filter(
-        (p) => p.freelancer.id === userId && p.status === "active",
-      ).length,
-      completedProjects: freelancer.completedJobs,
-      clientSatisfaction: freelancer.rating,
-      onTimeDelivery: 95.5,
       repeatClients: 67,
     };
   },

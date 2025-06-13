@@ -38,13 +38,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/utils/utils";
-import { LiveStreamCreator } from "@/components/livestream/LiveStreamCreator";
-import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
-import {
-  liveStreamingService,
-  LiveStream,
-} from "@/services/liveStreamingService";
 
 interface VideoData {
   id: string;
@@ -519,21 +513,21 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
       {/* Content Container */}
       <div className="absolute inset-0 flex">
         {/* Left side - content */}
-        <div className="flex-1 flex flex-col justify-end p-4 pb-24 space-y-3">
+        <div className="flex-1 flex flex-col justify-end p-3 sm:p-4 pb-20 sm:pb-24 space-y-2 sm:space-y-3 max-w-[calc(100%-5rem)] sm:max-w-[calc(100%-6rem)]">
           {/* User info */}
-          <div className="flex items-center gap-3">
-            <Avatar className="w-10 h-10 border-2 border-white/20">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Avatar className="w-8 h-8 sm:w-10 sm:h-10 border-2 border-white/20 flex-shrink-0">
               <AvatarImage src={video.user.avatar} />
               <AvatarFallback>{video.user.displayName[0]}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-white font-semibold text-sm truncate">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="text-white font-semibold text-xs sm:text-sm truncate">
                   @{video.user.username}
                 </span>
                 {video.user.verified && (
-                  <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <div className="w-2 h-2 bg-white rounded-full" />
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
                   </div>
                 )}
               </div>
@@ -544,20 +538,20 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             <Button
               size="sm"
               variant="outline"
-              className="bg-white/20 border-white/30 text-white hover:bg-white/30 text-xs px-3 py-1 h-7 flex-shrink-0"
+              className="bg-white/20 border-white/30 text-white hover:bg-white/30 text-xs px-2 sm:px-3 py-1 h-6 sm:h-7 flex-shrink-0"
             >
               Follow
             </Button>
           </div>
 
           {/* Description */}
-          <div className="text-white text-sm space-y-2">
-            <p className="leading-relaxed">
+          <div className="text-white text-xs sm:text-sm space-y-1 sm:space-y-2">
+            <p className="leading-relaxed line-clamp-3 sm:line-clamp-none">
               {showMore ? description : truncatedDescription}
               {description.length > 100 && (
                 <button
                   onClick={() => setShowMore(!showMore)}
-                  className="text-white/70 ml-1 underline"
+                  className="text-white/70 ml-1 underline hidden sm:inline"
                 >
                   {showMore ? "less" : "more"}
                 </button>
@@ -566,44 +560,49 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
 
             {/* Hashtags */}
             <div className="flex flex-wrap gap-1">
-              {video.hashtags.map((tag) => (
-                <span key={tag} className="text-blue-300 text-sm">
+              {video.hashtags.slice(0, 3).map((tag) => (
+                <span key={tag} className="text-blue-300 text-xs">
                   #{tag}
                 </span>
               ))}
+              {video.hashtags.length > 3 && (
+                <span className="text-blue-300/70 text-xs">
+                  +{video.hashtags.length - 3}
+                </span>
+              )}
             </div>
           </div>
 
           {/* Music info */}
-          <div className="flex items-center gap-2 text-white/80 text-xs bg-black/20 rounded-full px-3 py-1 self-start">
-            <Music className="w-3 h-3" />
-            <span className="truncate max-w-48">
+          <div className="flex items-center gap-2 text-white/80 text-xs bg-black/20 rounded-full px-2 sm:px-3 py-1 self-start max-w-full">
+            <Music className="w-3 h-3 flex-shrink-0" />
+            <span className="truncate max-w-32 sm:max-w-48">
               {video.music.title} - {video.music.artist}
             </span>
           </div>
         </div>
 
         {/* Right side - actions */}
-        <div className="flex flex-col items-center justify-end gap-4 p-4 pb-24">
+        <div className="flex flex-col items-center justify-end gap-3 sm:gap-4 p-3 sm:p-4 pb-20 sm:pb-24 w-16 sm:w-20">
           {/* Like */}
           <div className="flex flex-col items-center gap-1">
             <Button
               size="icon"
               variant="ghost"
               className={cn(
-                "w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none",
+                "w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none",
                 isLiked && "bg-red-500/80 hover:bg-red-500",
               )}
               onClick={() => setIsLiked(!isLiked)}
             >
               <Heart
                 className={cn(
-                  "w-5 h-5",
+                  "w-4 h-4 sm:w-5 sm:h-5",
                   isLiked ? "fill-white text-white" : "text-white",
                 )}
               />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-xs font-medium text-center">
               {formatNumber(video.stats.likes + (isLiked ? 1 : 0))}
             </span>
           </div>
@@ -613,11 +612,11 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             <Button
               size="icon"
               variant="ghost"
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
             >
-              <MessageCircle className="w-5 h-5 text-white" />
+              <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-xs font-medium text-center">
               {formatNumber(video.stats.comments)}
             </span>
           </div>
@@ -627,11 +626,11 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             <Button
               size="icon"
               variant="ghost"
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
             >
-              <Share className="w-5 h-5 text-white" />
+              <Share className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-xs font-medium text-center">
               {formatNumber(video.stats.shares)}
             </span>
           </div>
@@ -640,18 +639,18 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
           <Button
             size="icon"
             variant="ghost"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
           >
-            <Bookmark className="w-5 h-5 text-white" />
+            <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </Button>
 
           {/* More */}
           <Button
             size="icon"
             variant="ghost"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
           >
-            <MoreHorizontal className="w-5 h-5 text-white" />
+            <MoreHorizontal className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </Button>
         </div>
       </div>
@@ -662,25 +661,27 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
 const EnhancedVideos: React.FC = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"videos" | "live">("videos");
+  const [showRecommendations, setShowRecommendations] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    const scrollTop = containerRef.current?.scrollTop || 0;
+    const videoHeight = window.innerHeight;
+    const newIndex = Math.round(scrollTop / videoHeight);
+
+    if (
+      newIndex !== currentVideoIndex &&
+      newIndex >= 0 &&
+      newIndex < mockVideos.length
+    ) {
+      setCurrentVideoIndex(newIndex);
+    }
+  };
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-
-    const handleScroll = () => {
-      const scrollTop = container.scrollTop;
-      const videoHeight = window.innerHeight;
-      const newIndex = Math.round(scrollTop / videoHeight);
-
-      if (
-        newIndex !== currentVideoIndex &&
-        newIndex >= 0 &&
-        newIndex < mockVideos.length
-      ) {
-        setCurrentVideoIndex(newIndex);
-      }
-    };
 
     container.addEventListener("scroll", handleScroll, { passive: true });
     return () => container.removeEventListener("scroll", handleScroll);
@@ -702,7 +703,7 @@ const EnhancedVideos: React.FC = () => {
           <button
             onClick={() => setActiveTab("videos")}
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-all",
+              "px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all",
               activeTab === "videos"
                 ? "bg-white text-black"
                 : "text-gray-300 hover:text-white",
@@ -714,7 +715,7 @@ const EnhancedVideos: React.FC = () => {
           <button
             onClick={() => setActiveTab("live")}
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-all",
+              "px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all",
               activeTab === "live"
                 ? "bg-red-500 text-white"
                 : "text-gray-300 hover:text-white",
@@ -724,14 +725,25 @@ const EnhancedVideos: React.FC = () => {
             Live
           </button>
         </div>
+
+        {/* AI Recommendations Toggle - Desktop only */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowRecommendations(!showRecommendations)}
+          className="ml-4 text-white hover:bg-white/20 hidden sm:flex"
+        >
+          <Sparkles className="h-4 w-4 mr-2" />
+          AI Recommendations
+        </Button>
       </div>
 
       {/* Videos Tab */}
       {activeTab === "videos" && (
         <>
           <div
+            ref={containerRef}
             className="flex-1 overflow-y-auto snap-y snap-mandatory scrollbar-hide"
-            onScroll={handleScroll}
           >
             {mockVideos.map((video, index) => (
               <VideoCard
@@ -742,112 +754,68 @@ const EnhancedVideos: React.FC = () => {
             ))}
           </div>
 
-          {/* AI Video Recommendations */}
-          <div className="absolute top-20 right-4 w-80 max-h-96 overflow-hidden z-10">
-            <SmartContentRecommendations
-              contentType="videos"
-              availableContent={mockVideos}
-              onContentSelect={(video) => {
-                const index = mockVideos.findIndex((v) => v.id === video.id);
-                if (index !== -1) {
-                  setCurrentVideoIndex(index);
-                }
-              }}
-              maxItems={3}
-              className="bg-black/70 backdrop-blur-sm border border-gray-700"
-              layout="list"
-              showReasons={false}
-            />
-          </div>
+          {/* AI Video Recommendations - Only show on desktop and when toggled */}
+          {showRecommendations && (
+            <div className="absolute top-20 right-4 w-72 max-h-96 overflow-hidden z-10 hidden sm:block">
+              <SmartContentRecommendations
+                contentType="videos"
+                availableContent={mockVideos}
+                onContentSelect={(video) => {
+                  const index = mockVideos.findIndex((v) => v.id === video.id);
+                  if (index !== -1) {
+                    setCurrentVideoIndex(index);
+                    if (containerRef.current) {
+                      containerRef.current.scrollTo({
+                        top: index * window.innerHeight,
+                        behavior: "smooth",
+                      });
+                    }
+                  }
+                }}
+                maxItems={3}
+                className="bg-black/80 backdrop-blur-sm border border-gray-700 rounded-lg"
+                layout="list"
+                showReasons={false}
+              />
+            </div>
+          )}
         </>
       )}
 
       {/* Live Streams Tab */}
       {activeTab === "live" && (
         <div className="flex-1 overflow-y-auto">
-          {liveStreams.length === 0 ? (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <VideoIcon className="h-8 w-8 text-gray-400" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">No Live Streams</h3>
-                <p className="text-gray-400 mb-6">Be the first to go live!</p>
-                <Button
-                  onClick={() => setIsLiveStreamOpen(true)}
-                  className="bg-red-500 hover:bg-red-600"
-                >
-                  Start Live Stream
-                </Button>
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <VideoIcon className="h-8 w-8 text-gray-400" />
               </div>
+              <h3 className="text-xl font-semibold mb-2">No Live Streams</h3>
+              <p className="text-gray-400 mb-6">Be the first to go live!</p>
+              <Button
+                onClick={() => setIsCreatorOpen(true)}
+                className="bg-red-500 hover:bg-red-600"
+              >
+                Start Live Stream
+              </Button>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4 p-4">
-              {liveStreams.map((stream) => (
-                <LiveStreamPlayer
-                  key={stream.id}
-                  stream={stream}
-                  autoplay={false}
-                  showChat={true}
-                  className="rounded-lg overflow-hidden"
-                />
-              ))}
-            </div>
-          )}
+          </div>
         </div>
       )}
 
-      {/* Create Buttons */}
-      <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-2">
-        {activeTab === "live" && (
-          <Button
-            onClick={() => setIsLiveStreamOpen(true)}
-            className="bg-red-500 hover:bg-red-600 text-white rounded-full w-14 h-14 shadow-2xl"
-          >
-            <VideoIcon className="h-6 w-6" />
-          </Button>
-        )}
+      {/* Create Button */}
+      <div className="fixed bottom-20 sm:bottom-8 right-4 z-50">
         <Button
           onClick={() => setIsCreatorOpen(true)}
-          className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-14 h-14 shadow-2xl"
+          className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-12 h-12 sm:w-14 sm:h-14 shadow-2xl"
         >
-          <Plus className="h-6 w-6" />
+          <Plus className="h-5 w-5 sm:h-6 sm:w-6" />
         </Button>
       </div>
 
       {/* Video Creator Modal */}
       {isCreatorOpen && (
         <VideoCreator onClose={() => setIsCreatorOpen(false)} />
-      )}
-
-      {/* Live Stream Creator Modal */}
-      {isLiveStreamOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-end mb-4">
-              <Button
-                onClick={() => setIsLiveStreamOpen(false)}
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-white/20"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            <LiveStreamCreator
-              onStreamStart={(stream) => {
-                setLiveStreams((prev) => [stream, ...prev]);
-                setIsLiveStreamOpen(false);
-                setActiveTab("live");
-              }}
-              onStreamEnd={() => {
-                // Refresh live streams
-                liveStreamingService.getLiveStreams().then(setLiveStreams);
-              }}
-              className="bg-white text-black rounded-lg"
-            />
-          </div>
-        </div>
       )}
     </div>
   );
