@@ -151,7 +151,7 @@ export default function EnhancedCrypto() {
       if (cryptos.length === 0) return;
 
       // Get coin IDs for price updates
-      const coinIds = cryptos.slice(0, 20).map((crypto) => crypto.id);
+      const coinIds = cryptos?.slice(0, 20).map((crypto) => crypto.id) || [];
       const priceUpdates = await cryptoService.getRealTimePrice(coinIds);
 
       // Update crypto prices
@@ -393,7 +393,7 @@ export default function EnhancedCrypto() {
               </CardHeader>
               <CardContent className="px-3 md:px-6">
                 <div className="space-y-2 md:space-y-3">
-                  {cryptos.slice(0, 8).map((crypto, index) => (
+                  {cryptos?.slice(0, 8).map((crypto, index) => (
                     <div
                       key={crypto.id}
                       className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
@@ -950,7 +950,7 @@ export default function EnhancedCrypto() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {/* News Articles */}
-              {news.slice(0, 6).map((article) => (
+              {news?.slice(0, 6).map((article) => (
                 <Card
                   key={article.id}
                   className="cursor-pointer hover:shadow-lg transition-shadow"
@@ -978,7 +978,7 @@ export default function EnhancedCrypto() {
               ))}
 
               {/* Blog Posts */}
-              {blogPosts.slice(0, 6).map((post) => (
+              {blogPosts?.slice(0, 6).map((post) => (
                 <Card
                   key={post.id}
                   className="cursor-pointer hover:shadow-lg transition-shadow"
