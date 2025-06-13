@@ -38,6 +38,13 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/utils/utils";
+import { LiveStreamCreator } from "@/components/livestream/LiveStreamCreator";
+import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
+import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import {
+  liveStreamingService,
+  LiveStream,
+} from "@/services/liveStreamingService";
 
 interface VideoData {
   id: string;
@@ -680,37 +687,167 @@ const EnhancedVideos: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="flex flex-col h-screen bg-black text-white overflow-hidden">
       <Helmet>
-        <title>Videos | Softchat</title>
+        <title>Videos - SoftChat</title>
+        <meta
+          name="description"
+          content="Discover and create amazing short videos on SoftChat"
+        />
       </Helmet>
 
-      {/* Video Feed Container */}
-      <div
-        ref={containerRef}
-        className="h-screen overflow-y-auto snap-y snap-mandatory scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        {mockVideos.map((video, index) => (
-          <VideoCard
-            key={video.id}
-            video={video}
-            isActive={index === currentVideoIndex}
-          />
-        ))}
+      {/* Top Navigation Tabs */}
+      <div className="flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm border-b border-gray-800">
+        <div className="flex items-center bg-gray-800 rounded-full p-1">
+          <button
+            onClick={() => setActiveTab("videos")}
+            className={cn(
+              "px-4 py-2 rounded-full text-sm font-medium transition-all",
+              activeTab === "videos"
+                ? "bg-white text-black"
+                : "text-gray-300 hover:text-white",
+            )}
+          >
+            <VideoIcon className="h-4 w-4 inline mr-2" />
+            Videos
+          </button>
+          <button
+            onClick={() => setActiveTab("live")}
+            className={cn(
+              "px-4 py-2 rounded-full text-sm font-medium transition-all",
+              activeTab === "live"
+                ? "bg-red-500 text-white"
+                : "text-gray-300 hover:text-white",
+            )}
+          >
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse inline mr-2"></div>
+            Live
+          </button>
+        </div>
       </div>
 
-      {/* Create Button */}
-      <Button
-        onClick={() => setIsCreatorOpen(true)}
-        className="fixed bottom-20 right-4 z-50 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-14 h-14 shadow-2xl"
-      >
-        <Plus className="h-6 w-6" />
-      </Button>
+      {/* Videos Tab */}
+      {activeTab === "videos" && (
+        <>
+          <div
+            className="flex-1 overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+            onScroll={handleScroll}
+          >
+            {mockVideos.map((video, index) => (
+              <VideoCard
+                key={video.id}
+                video={video}
+                isActive={index === currentVideoIndex}
+              />
+            ))}
+          </div>
 
-      {/* Creator Modal */}
+          {/* AI Video Recommendations */}
+          <div className="absolute top-20 right-4 w-80 max-h-96 overflow-hidden z-10">
+            <SmartContentRecommendations
+              contentType="videos"
+              availableContent={mockVideos}
+              onContentSelect={(video) => {
+                const index = mockVideos.findIndex((v) => v.id === video.id);
+                if (index !== -1) {
+                  setCurrentVideoIndex(index);
+                }
+              }}
+              maxItems={3}
+              className="bg-black/70 backdrop-blur-sm border border-gray-700"
+              layout="list"
+              showReasons={false}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Live Streams Tab */}
+      {activeTab === "live" && (
+        <div className="flex-1 overflow-y-auto">
+          {liveStreams.length === 0 ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <VideoIcon className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">No Live Streams</h3>
+                <p className="text-gray-400 mb-6">Be the first to go live!</p>
+                <Button
+                  onClick={() => setIsLiveStreamOpen(true)}
+                  className="bg-red-500 hover:bg-red-600"
+                >
+                  Start Live Stream
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 p-4">
+              {liveStreams.map((stream) => (
+                <LiveStreamPlayer
+                  key={stream.id}
+                  stream={stream}
+                  autoplay={false}
+                  showChat={true}
+                  className="rounded-lg overflow-hidden"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Create Buttons */}
+      <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-2">
+        {activeTab === "live" && (
+          <Button
+            onClick={() => setIsLiveStreamOpen(true)}
+            className="bg-red-500 hover:bg-red-600 text-white rounded-full w-14 h-14 shadow-2xl"
+          >
+            <VideoIcon className="h-6 w-6" />
+          </Button>
+        )}
+        <Button
+          onClick={() => setIsCreatorOpen(true)}
+          className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-14 h-14 shadow-2xl"
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
+      </div>
+
+      {/* Video Creator Modal */}
       {isCreatorOpen && (
         <VideoCreator onClose={() => setIsCreatorOpen(false)} />
+      )}
+
+      {/* Live Stream Creator Modal */}
+      {isLiveStreamOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-end mb-4">
+              <Button
+                onClick={() => setIsLiveStreamOpen(false)}
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-white/20"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <LiveStreamCreator
+              onStreamStart={(stream) => {
+                setLiveStreams((prev) => [stream, ...prev]);
+                setIsLiveStreamOpen(false);
+                setActiveTab("live");
+              }}
+              onStreamEnd={() => {
+                // Refresh live streams
+                liveStreamingService.getLiveStreams().then(setLiveStreams);
+              }}
+              className="bg-white text-black rounded-lg"
+            />
+          </div>
+        </div>
       )}
     </div>
   );
