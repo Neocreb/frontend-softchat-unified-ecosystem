@@ -694,6 +694,25 @@ export default function EnhancedCrypto() {
             )}
           </div>
 
+          {/* AI Trading Recommendations */}
+          <SmartContentRecommendations
+            contentType="mixed"
+            availableContent={[...cryptocurrencies, ...news]}
+            onContentSelect={(content) => {
+              if (content.symbol) {
+                // Crypto selected
+                setCurrentPair(content);
+              } else {
+                // News article selected
+                console.log("Selected news:", content);
+              }
+            }}
+            maxItems={3}
+            className="mb-6"
+            layout="carousel"
+            showReasons={true}
+          />
+
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
             {/* Order Book */}
             <Card>

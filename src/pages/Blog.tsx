@@ -321,6 +321,20 @@ export default function Blog() {
           </p>
         </div>
 
+        {/* AI Recommended Articles */}
+        <SmartContentRecommendations
+          contentType="blogs"
+          availableContent={posts}
+          onContentSelect={(post) => {
+            // Navigate to the selected post
+            window.location.href = `/blog/${post.slug}`;
+          }}
+          maxItems={4}
+          className="mb-8"
+          layout="grid"
+          showReasons={true}
+        />
+
         {/* Blog Posts */}
         {filteredPosts.length === 0 ? (
           <div className="text-center py-12">
