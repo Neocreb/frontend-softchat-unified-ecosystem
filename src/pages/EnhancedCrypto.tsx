@@ -866,8 +866,14 @@ export default function EnhancedCrypto() {
                           </div>
                         ))}
                       </div>
-              </CardContent>
-            </Card>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      Loading trades...
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
 
             {/* Trading Panel */}
             <Card className="xl:col-span-2">
