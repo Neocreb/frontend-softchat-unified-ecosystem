@@ -44,7 +44,7 @@ import Settings from "./pages/Settings";
 import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
-import Videos from "./pages/Videos";
+import EnhancedVideos from "./pages/EnhancedVideos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
 import LandingPage from "./pages/Landing";
@@ -207,7 +207,7 @@ const AppRoutes = () => {
 
         <Route path="crypto" element={<EnhancedCrypto />} />
         <Route path="rewards" element={<EnhancedRewards />} />
-        <Route path="videos" element={<Videos />} />
+        <Route path="videos" element={<EnhancedVideos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<EnhancedSettings />} />
