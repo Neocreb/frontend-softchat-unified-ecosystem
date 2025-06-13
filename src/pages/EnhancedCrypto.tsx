@@ -92,16 +92,8 @@ export default function EnhancedCrypto() {
   const loadCryptoData = async () => {
     setIsLoading(true);
     try {
-      const [
-        cryptosData,
-        marketDataResult,
-        portfolioData,
-        orderBookData,
-        tradesData,
-        newsData,
-        educationData,
-        blogPostsData,
-      ] = await Promise.all([
+      // Load data with individual error handling to prevent total failure
+      const results = await Promise.allSettled([
         cryptoService.getCryptocurrencies(20),
         cryptoService.getMarketData(),
         cryptoService.getPortfolio(),
@@ -112,21 +104,43 @@ export default function EnhancedCrypto() {
         blogService.getBlogPosts({ limit: 6 }),
       ]);
 
-      setCryptos(cryptosData);
-      setMarketData(marketDataResult);
-      setPortfolio(portfolioData);
-      setOrderBook(orderBookData);
-      setRecentTrades(tradesData);
-      setNews(newsData);
-      setEducationContent(educationData);
-      setBlogPosts(blogPostsData.posts);
+      // Handle each result individually
+      if (results[0].status === "fulfilled") setCryptos(results[0].value || []);
+      if (results[1].status === "fulfilled") setMarketData(results[1].value);
+      if (results[2].status === "fulfilled") setPortfolio(results[2].value);
+      if (results[3].status === "fulfilled") setOrderBook(results[3].value);
+      if (results[4].status === "fulfilled")
+        setRecentTrades(results[4].value || []);
+      if (results[5].status === "fulfilled") setNews(results[5].value || []);
+      if (results[6].status === "fulfilled")
+        setEducationContent(results[6].value || []);
+      if (results[7].status === "fulfilled")
+        setBlogPosts(results[7].value?.posts || []);
+
       setLastUpdated(new Date());
+
+      // Show warning if some services failed
+      const failedServices = results.filter(
+        (r) => r.status === "rejected",
+      ).length;
+      if (failedServices > 0) {
+        console.log(
+          `${failedServices} services failed to load, using cached/mock data`,
+        );
+        toast({
+          title: "Partial data loaded",
+          description:
+            "Some services are unavailable. Using cached data where possible.",
+          variant: "default",
+        });
+      }
     } catch (error) {
       console.error("Failed to load crypto data:", error);
       toast({
-        title: "Error loading data",
-        description: "Failed to load cryptocurrency data. Please try again.",
-        variant: "destructive",
+        title: "Loading error",
+        description:
+          "Some data services are unavailable. The app will use simulated data.",
+        variant: "default",
       });
     } finally {
       setIsLoading(false);
