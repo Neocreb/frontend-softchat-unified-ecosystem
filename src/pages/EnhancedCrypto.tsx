@@ -663,9 +663,6 @@ export default function EnhancedCrypto() {
                           onChange={(e) => setPrice(e.target.value)}
                           placeholder={currentPair?.current_price?.toFixed(2) || "0.00"}
                         />
-                              >
-                                ${trade?.price?.toFixed(2) || '0.00'}
-                              </span>
                               <span>{trade?.amount?.toFixed(4) || '0.0000'}</span>
                             </div>
                           )) : (
