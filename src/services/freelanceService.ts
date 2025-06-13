@@ -397,6 +397,33 @@ export const freelanceService = {
   },
 
   // Stats and analytics
+  async getFreelanceStats(freelancerId: string): Promise<FreelanceStats> {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    const freelancer = mockFreelancers.find((f) => f.id === freelancerId);
+    const userProjects = mockProjects.filter(
+      (p) => p.freelancer.id === freelancerId,
+    );
+
+    const totalEarnings = userProjects.reduce(
+      (sum, project) => sum + project.budget.paid,
+      0,
+    );
+    const activeProjects = userProjects.filter(
+      (p) => p.status === "active",
+    ).length;
+    const completedProjects = userProjects.filter(
+      (p) => p.status === "completed",
+    ).length;
+
+    return {
+      totalEarnings,
+      activeProjects,
+      completedProjects,
+      totalProjects: userProjects.length,
+      rating: freelancer?.rating || 4.8,
+      successRate: freelancer?.successRate || 95,
+    };
+  },
   async getFreelanceStats(userId: string): Promise<FreelanceStats> {
     await new Promise((resolve) => setTimeout(resolve, 300));
     const freelancer = mockFreelancers.find((f) => f.id === userId);
