@@ -877,7 +877,9 @@ export default function EnhancedCrypto() {
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
                           placeholder="0.00"
-                          defaultValue={currentPair?.current_price.toFixed(2)}
+                          placeholder={
+                            currentPair?.current_price?.toFixed(2) || "0.00"
+                          }
                         />
                       </div>
 
