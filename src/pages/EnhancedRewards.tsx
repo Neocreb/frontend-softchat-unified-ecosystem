@@ -61,6 +61,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
+import { PartnershipSystem } from "@/components/rewards/PartnershipSystem";
 
 // Types for SoftPoints system
 interface Activity {
@@ -1248,9 +1249,12 @@ export default function EnhancedRewards() {
                     5-7 business days
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+          </div>
+        </TabsContent>
+
+        {/* Partnerships Tab */}
+        <TabsContent value="partnerships" className="space-y-4 md:space-y-6 mt-4">
+          <PartnershipSystem />
         </TabsContent>
 
         {/* History Tab */}
