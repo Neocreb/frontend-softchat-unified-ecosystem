@@ -150,7 +150,7 @@ export default function EnhancedCrypto() {
   // Update only cryptocurrency prices for more frequent updates
   const updatePricesOnly = async () => {
     try {
-      if (cryptos.length === 0) return;
+      if (!cryptos || cryptos.length === 0) return;
 
       // Get coin IDs for price updates
       const coinIds = cryptos?.slice(0, 20).map((crypto) => crypto.id) || [];
