@@ -437,33 +437,48 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
             </div>
 
             {/* Navigation */}
-            <div className="flex justify-between">
-              <div className="space-x-2">
-                <Button variant="outline" onClick={restartTour}>
-                  <ArrowLeft className="w-4 h-4 mr-2" />
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+              <div className="flex gap-2 flex-wrap">
+                <Button
+                  variant="outline"
+                  onClick={restartTour}
+                  className="flex-1 sm:flex-none text-sm"
+                >
+                  <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                   Change Path
                 </Button>
                 {currentStep > 0 && (
-                  <Button variant="outline" onClick={prevStep}>
+                  <Button
+                    variant="outline"
+                    onClick={prevStep}
+                    className="flex-1 sm:flex-none text-sm"
+                  >
                     Previous
                   </Button>
                 )}
               </div>
 
-              <div className="space-x-2">
-                <Button variant="outline" onClick={skipTour}>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={skipTour}
+                  className="flex-1 sm:flex-none text-sm"
+                >
                   Skip
                 </Button>
-                <Button onClick={nextStep}>
+                <Button
+                  onClick={nextStep}
+                  className="flex-1 sm:flex-none text-sm"
+                >
                   {currentStep === selectedPath.steps.length - 1 ? (
                     <>
                       Complete
-                      <CheckCircle className="w-4 h-4 ml-2" />
+                      <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                     </>
                   ) : (
                     <>
                       Next
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
                     </>
                   )}
                 </Button>
