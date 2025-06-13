@@ -47,18 +47,16 @@ const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
       const [projectsData, statsData] = await Promise.all([
         freelanceService.getProjects(userId, userType),
         userType === "freelancer"
-          ? freelanceService.getFreelanceStats(userId)
+          ? freelanceService.getFreelanceStats(userId).catch(() => null)
           : null,
       ]);
 
-      setProjects(projectsData);
+      setProjects(projectsData || []);
       if (statsData) setStats(statsData);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load dashboard data",
-        variant: "destructive",
-      });
+      console.error("Dashboard loading error:", error);
+      setProjects([]);
+      // Don't show error toast immediately, just set empty state
     } finally {
       setIsLoading(false);
     }

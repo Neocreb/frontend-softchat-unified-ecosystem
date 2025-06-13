@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { BlogPost, BlogCategory, BlogStats } from "@/types/blog";
 import { blogService } from "@/services/blogService";
+import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { cn } from "@/lib/utils";
 
 export default function Blog() {
@@ -319,6 +320,20 @@ export default function Blog() {
             {searchQuery && ` for "${searchQuery}"`}
           </p>
         </div>
+
+        {/* AI Recommended Articles */}
+        <SmartContentRecommendations
+          contentType="blogs"
+          availableContent={posts}
+          onContentSelect={(post) => {
+            // Navigate to the selected post
+            window.location.href = `/blog/${post.slug}`;
+          }}
+          maxItems={4}
+          className="mb-8"
+          layout="grid"
+          showReasons={true}
+        />
 
         {/* Blog Posts */}
         {filteredPosts.length === 0 ? (

@@ -61,6 +61,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
+import { PartnershipSystem } from "@/components/rewards/PartnershipSystem";
 
 // Types for SoftPoints system
 interface Activity {
@@ -595,6 +596,12 @@ export default function EnhancedRewards() {
                 className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
               >
                 Convert
+              </TabsTrigger>
+              <TabsTrigger
+                value="partnerships"
+                className="whitespace-nowrap px-3 py-2 text-sm data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
+              >
+                Partnerships
               </TabsTrigger>
               <TabsTrigger
                 value="history"
@@ -1251,6 +1258,14 @@ export default function EnhancedRewards() {
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Partnerships Tab */}
+        <TabsContent
+          value="partnerships"
+          className="space-y-4 md:space-y-6 mt-4"
+        >
+          <PartnershipSystem />
         </TabsContent>
 
         {/* History Tab */}

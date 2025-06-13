@@ -251,13 +251,24 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
       try {
         let profile: UserProfile | null = null;
+        console.log("Loading profile for:", {
+          targetUsername,
+          isOwnProfile,
+          userProfile: user?.profile,
+        });
 
         if (isOwnProfile && user?.profile) {
           profile = user.profile;
+          console.log("Using own profile:", profile);
         } else if (targetUsername) {
           profile = await profileService.getUserByUsername(targetUsername);
+          console.log("Fetched profile:", profile);
 
           if (!profile) {
+            console.log(
+              "No profile found, generating mock user for:",
+              targetUsername,
+            );
             const mockUser = profileService.generateMockUser(targetUsername);
             profile = mockUser.profile!;
             setPosts(mockUser.mock_data.posts);

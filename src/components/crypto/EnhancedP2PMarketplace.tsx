@@ -255,23 +255,23 @@ export default function EnhancedP2PMarketplace() {
 
       {/* Trust Indicators */}
       <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-center gap-8 text-sm">
-            <div className="flex items-center gap-2 text-blue-800">
-              <Shield className="h-4 w-4" />
-              <span className="font-medium">Escrow Protection</span>
+        <CardContent className="p-3 md:p-4">
+          <div className="grid grid-cols-2 md:flex md:items-center md:justify-center gap-3 md:gap-8 text-xs md:text-sm">
+            <div className="flex items-center gap-1 md:gap-2 text-blue-800">
+              <Shield className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <span className="font-medium truncate">Escrow Protection</span>
             </div>
-            <div className="flex items-center gap-2 text-green-800">
-              <Award className="h-4 w-4" />
-              <span className="font-medium">Verified Traders</span>
+            <div className="flex items-center gap-1 md:gap-2 text-green-800">
+              <Award className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <span className="font-medium truncate">Verified Traders</span>
             </div>
-            <div className="flex items-center gap-2 text-purple-800">
-              <Clock className="h-4 w-4" />
-              <span className="font-medium">24/7 Support</span>
+            <div className="flex items-center gap-1 md:gap-2 text-purple-800">
+              <Clock className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <span className="font-medium truncate">24/7 Support</span>
             </div>
-            <div className="flex items-center gap-2 text-orange-800">
-              <Users className="h-4 w-4" />
-              <span className="font-medium">Active Community</span>
+            <div className="flex items-center gap-1 md:gap-2 text-orange-800">
+              <Users className="h-3 w-3 md:h-4 md:w-4 flex-shrink-0" />
+              <span className="font-medium truncate">Active Community</span>
             </div>
           </div>
         </CardContent>

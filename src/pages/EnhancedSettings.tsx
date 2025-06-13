@@ -635,43 +635,61 @@ const EnhancedSettings = () => {
           className="space-y-6"
         >
           <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
-            <TabsTrigger value="profile" className="flex items-center gap-2">
+            <TabsTrigger
+              value="profile"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
+            >
               <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">Profile</span>
+              <span className="text-xs md:text-sm">Profile</span>
             </TabsTrigger>
             <TabsTrigger
               value="professional"
-              className="flex items-center gap-2"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
             >
               <Briefcase className="w-4 h-4" />
-              <span className="hidden sm:inline">Professional</span>
+              <span className="text-xs md:text-sm">Work</span>
             </TabsTrigger>
-            <TabsTrigger value="financial" className="flex items-center gap-2">
+            <TabsTrigger
+              value="financial"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
+            >
               <DollarSign className="w-4 h-4" />
-              <span className="hidden sm:inline">Financial</span>
+              <span className="text-xs md:text-sm">Money</span>
             </TabsTrigger>
             <TabsTrigger
               value="notifications"
-              className="flex items-center gap-2"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
             >
               <Bell className="w-4 h-4" />
-              <span className="hidden sm:inline">Notifications</span>
+              <span className="text-xs md:text-sm">Alerts</span>
             </TabsTrigger>
-            <TabsTrigger value="privacy" className="flex items-center gap-2">
+            <TabsTrigger
+              value="privacy"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
+            >
               <Eye className="w-4 h-4" />
-              <span className="hidden sm:inline">Privacy</span>
+              <span className="text-xs md:text-sm">Privacy</span>
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
+            <TabsTrigger
+              value="security"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
+            >
               <Lock className="w-4 h-4" />
-              <span className="hidden sm:inline">Security</span>
+              <span className="text-xs md:text-sm">Security</span>
             </TabsTrigger>
-            <TabsTrigger value="data" className="flex items-center gap-2">
+            <TabsTrigger
+              value="data"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
+            >
               <Database className="w-4 h-4" />
-              <span className="hidden sm:inline">Data</span>
+              <span className="text-xs md:text-sm">Data</span>
             </TabsTrigger>
-            <TabsTrigger value="ai" className="flex items-center gap-2">
+            <TabsTrigger
+              value="ai"
+              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
+            >
               <Zap className="w-4 h-4" />
-              <span className="hidden sm:inline">AI</span>
+              <span className="text-xs md:text-sm">AI</span>
             </TabsTrigger>
           </TabsList>
 

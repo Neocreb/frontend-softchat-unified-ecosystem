@@ -5,7 +5,8 @@ import SuggestedUsers from "@/components/profile/SuggestedUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useExplore } from "@/hooks/use-explore";
-import { Users, TrendingUp, Hash, Globe } from "lucide-react";
+import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import { Users, TrendingUp, Hash, Globe, Sparkles } from "lucide-react";
 
 const Explore = () => {
   const {
@@ -46,6 +47,31 @@ const Explore = () => {
           </TabsList>
 
           <TabsContent value="discover" className="space-y-6 mt-6">
+            {/* AI Powered Recommendations */}
+            <SmartContentRecommendations
+              contentType="mixed"
+              availableContent={[
+                ...filteredTopics.map((topic, index) => ({
+                  ...topic,
+                  id: topic.id || `topic-${index}`,
+                })),
+                ...filteredUsers.map((user, index) => ({
+                  ...user,
+                  id: user.id || `user-${index}`,
+                })),
+                ...filteredHashtags.map((hashtag, index) => ({
+                  ...hashtag,
+                  id: hashtag.id || `hashtag-${index}`,
+                })),
+              ]}
+              onContentSelect={(content) => {
+                console.log("Selected content from explore:", content);
+              }}
+              maxItems={6}
+              className="mb-6"
+              layout="grid"
+            />
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
                 <SuggestedUsers
