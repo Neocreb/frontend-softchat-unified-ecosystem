@@ -23,6 +23,92 @@ import {
   CopyTradingProvider,
 } from "@/types/crypto";
 
+// CoinGecko API configuration
+const COINGECKO_API_BASE = "https://api.coingecko.com/api/v3";
+const BACKUP_API_BASE = "https://api.coinlore.net/api";
+
+// Rate limiting and caching
+const API_CACHE = new Map();
+const CACHE_DURATION = 30000; // 30 seconds
+const REQUEST_DELAY = 100; // 100ms between requests to avoid rate limiting
+
+// Helper function to make API requests with caching and rate limiting
+const fetchWithCache = async (url: string, cacheKey: string) => {
+  // Check cache first
+  const cached = API_CACHE.get(cacheKey);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+
+  try {
+    // Add delay to prevent rate limiting
+    await new Promise((resolve) => setTimeout(resolve, REQUEST_DELAY));
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Cache the result
+    API_CACHE.set(cacheKey, {
+      data,
+      timestamp: Date.now(),
+    });
+
+    return data;
+  } catch (error) {
+    console.error(`API request failed for ${url}:`, error);
+
+    // Return cached data if available, even if expired
+    if (cached) {
+      return cached.data;
+    }
+
+    throw error;
+  }
+};
+
+// Transform CoinGecko data to our format
+const transformCoinGeckoData = (coinGeckoData: any[]): Cryptocurrency[] => {
+  return coinGeckoData.map((coin) => ({
+    id: coin.id,
+    name: coin.name,
+    symbol: coin.symbol,
+    current_price: coin.current_price || 0,
+    market_cap: coin.market_cap || 0,
+    market_cap_rank: coin.market_cap_rank || 0,
+    fully_diluted_valuation: coin.fully_diluted_valuation,
+    total_volume: coin.total_volume || 0,
+    high_24h: coin.high_24h || coin.current_price,
+    low_24h: coin.low_24h || coin.current_price,
+    price_change_24h: coin.price_change_24h || 0,
+    price_change_percentage_24h: coin.price_change_percentage_24h || 0,
+    price_change_percentage_7d:
+      coin.price_change_percentage_7d_in_currency || 0,
+    price_change_percentage_30d:
+      coin.price_change_percentage_30d_in_currency || 0,
+    market_cap_change_24h: coin.market_cap_change_24h || 0,
+    market_cap_change_percentage_24h:
+      coin.market_cap_change_percentage_24h || 0,
+    circulating_supply: coin.circulating_supply || 0,
+    total_supply: coin.total_supply,
+    max_supply: coin.max_supply,
+    ath: coin.ath || coin.current_price,
+    ath_change_percentage: coin.ath_change_percentage || 0,
+    ath_date: coin.ath_date || new Date().toISOString(),
+    atl: coin.atl || coin.current_price,
+    atl_change_percentage: coin.atl_change_percentage || 0,
+    atl_date: coin.atl_date || new Date().toISOString(),
+    image:
+      coin.image ||
+      `https://via.placeholder.com/64x64/1f2937/ffffff?text=${coin.symbol?.toUpperCase()}`,
+    sparkline_in_7d: coin.sparkline_in_7d?.price || [],
+    last_updated: coin.last_updated || new Date().toISOString(),
+  }));
+};
+
 // Mock data for development
 export const mockCryptocurrencies: Cryptocurrency[] = [
   {
