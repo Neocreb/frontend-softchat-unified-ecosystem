@@ -341,6 +341,7 @@ export default function EnhancedCrypto() {
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span>Live</span>
                   </div>
+                  <ApiStatusIndicator />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
                   Last updated: {lastUpdated.toLocaleTimeString()}
