@@ -393,45 +393,51 @@ export default function EnhancedCrypto() {
               </CardHeader>
               <CardContent className="px-3 md:px-6">
                 <div className="space-y-2 md:space-y-3">
-                  {cryptos?.slice(0, 8).map((crypto, index) => (
-                    <div
-                      key={crypto.id}
-                      className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                      onClick={() =>
-                        setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
-                      }
-                    >
-                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                        <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
-                          #{index + 1}
-                        </div>
-                        <img
-                          src={crypto.image}
-                          alt={crypto.name}
-                          className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <div className="font-medium text-sm md:text-base truncate">
-                            {crypto.name}
+                  {cryptos && cryptos.length > 0 ? (
+                    cryptos.slice(0, 8).map((crypto, index) => (
+                      <div
+                        key={crypto.id}
+                        className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                        onClick={() =>
+                          setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
+                        }
+                      >
+                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                          <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
+                            #{index + 1}
                           </div>
-                          <div className="text-xs md:text-sm text-gray-600">
-                            {crypto.symbol.toUpperCase()}
+                          <img
+                            src={crypto.image}
+                            alt={crypto.name}
+                            className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="font-medium text-sm md:text-base truncate">
+                              {crypto.name}
+                            </div>
+                            <div className="text-xs md:text-sm text-gray-600">
+                              {crypto.symbol.toUpperCase()}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="text-right min-w-0 flex-shrink-0">
-                        <RealTimePriceDisplay
-                          price={crypto.current_price}
-                          change24h={crypto.price_change_percentage_24h}
-                          symbol={crypto.symbol}
-                          showSymbol={false}
-                          size="sm"
-                          className="justify-end"
-                        />
+                        <div className="text-right min-w-0 flex-shrink-0">
+                          <RealTimePriceDisplay
+                            price={crypto.current_price}
+                            change24h={crypto.price_change_percentage_24h}
+                            symbol={crypto.symbol}
+                            showSymbol={false}
+                            size="sm"
+                            className="justify-end"
+                          />
+                        </div>
                       </div>
+                    ))
+                  ) : (
+                    <div className="text-center text-gray-500 py-8">
+                      <p>Loading cryptocurrencies...</p>
                     </div>
-                  ))}
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -950,60 +956,72 @@ export default function EnhancedCrypto() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {/* News Articles */}
-              {news?.slice(0, 6).map((article) => (
-                <Card
-                  key={article.id}
-                  className="cursor-pointer hover:shadow-lg transition-shadow"
-                >
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <Badge variant="outline" className="text-xs">
-                        {article.category}
-                      </Badge>
-                      <h3 className="font-semibold text-sm line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 line-clamp-3">
-                        {article.summary}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{article.source}</span>
-                        <span>
-                          {new Date(article.publishedAt).toLocaleDateString()}
-                        </span>
+              {news && news.length > 0 ? (
+                news.slice(0, 6).map((article) => (
+                  <Card
+                    key={article.id}
+                    className="cursor-pointer hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <Badge variant="outline" className="text-xs">
+                          {article.category}
+                        </Badge>
+                        <h3 className="font-semibold text-sm line-clamp-2">
+                          {article.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 line-clamp-3">
+                          {article.summary}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span>{article.source}</span>
+                          <span>
+                            {new Date(article.publishedAt).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full text-center text-gray-500 py-8">
+                  <p>Loading news articles...</p>
+                </div>
+              )}
 
               {/* Blog Posts */}
-              {blogPosts?.slice(0, 6).map((post) => (
-                <Card
-                  key={post.id}
-                  className="cursor-pointer hover:shadow-lg transition-shadow"
-                >
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <Badge variant="outline" className="text-xs">
-                        {post.category}
-                      </Badge>
-                      <h3 className="font-semibold text-sm line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <span>{post.author.name}</span>
-                        <span>
-                          {new Date(post.publishedAt).toLocaleDateString()}
-                        </span>
+              {blogPosts && blogPosts.length > 0 ? (
+                blogPosts.slice(0, 6).map((post) => (
+                  <Card
+                    key={post.id}
+                    className="cursor-pointer hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        <Badge variant="outline" className="text-xs">
+                          {post.category}
+                        </Badge>
+                        <h3 className="font-semibold text-sm line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span>{post.author?.name || "Unknown Author"}</span>
+                          <span>
+                            {new Date(post.publishedAt).toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full text-center text-gray-500 py-8">
+                  <p>Loading blog posts...</p>
+                </div>
+              )}
             </div>
           </TabsContent>
 
