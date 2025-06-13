@@ -595,10 +595,10 @@ export default function EnhancedCrypto() {
                               className="flex justify-between text-xs"
                             >
                               <span className="text-red-600 font-mono">
-                                {ask.price.toFixed(2)}
+                                {ask?.price?.toFixed(2) || "0.00"}
                               </span>
                               <span className="font-mono">
-                                {ask.quantity.toFixed(4)}
+                                {ask?.quantity?.toFixed(4) || "0.0000"}
                               </span>
                             </div>
                           ))}
@@ -626,10 +626,10 @@ export default function EnhancedCrypto() {
                               className="flex justify-between text-xs"
                             >
                               <span className="text-green-600 font-mono">
-                                {bid.price.toFixed(2)}
+                                {bid?.price?.toFixed(2) || "0.00"}
                               </span>
                               <span className="font-mono">
-                                {bid.quantity.toFixed(4)}
+                                {bid?.quantity?.toFixed(4) || "0.0000"}
                               </span>
                             </div>
                           ))}
@@ -648,18 +648,20 @@ export default function EnhancedCrypto() {
                               className="flex justify-between text-xs"
                             >
                               <span className="text-gray-600">
-                                {trade.timestamp}
+                                {trade?.timestamp || "N/A"}
                               </span>
                               <span
                                 className={
-                                  trade.side === "buy"
+                                  trade?.side === "buy"
                                     ? "text-green-600"
                                     : "text-red-600"
                                 }
                               >
-                                ${trade.price.toFixed(2)}
+                                ${trade?.price?.toFixed(2) || "0.00"}
                               </span>
-                              <span>{trade.amount.toFixed(4)}</span>
+                              <span>
+                                {trade?.amount?.toFixed(4) || "0.0000"}
+                              </span>
                             </div>
                           ))}
                         </div>
