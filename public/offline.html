@@ -5,112 +5,359 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Offline - Softchat</title>
     <style>
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      :root {
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --background: #0f172a;
+        --surface: #1e293b;
+        --on-surface: #f8fafc;
+        --on-surface-variant: #94a3b8;
+        --error: #ef4444;
+      }
+
+      * {
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+        background: linear-gradient(135deg, var(--background) 0%, #1e293b 100%);
+        color: var(--on-surface);
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-        color: white;
-        text-align: center;
+        padding: 20px;
       }
+
       .container {
         max-width: 400px;
-        padding: 2rem;
+        width: 100%;
+        text-align: center;
+        background: var(--surface);
+        border-radius: 16px;
+        padding: 40px 30px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
-      .logo {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-      }
+
       .icon {
-        font-size: 4rem;
-        margin-bottom: 1rem;
-      }
-      h1 {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-        font-weight: 600;
-      }
-      p {
-        opacity: 0.9;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-      }
-      .retry-btn {
-        background: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .retry-btn:hover {
-        background: rgba(255, 255, 255, 0.3);
-      }
-      .features {
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-      }
-      .feature {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 24px;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--primary-dark) 100%
+        );
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        margin: 0.5rem 0;
-        font-size: 0.9rem;
-        opacity: 0.8;
+        justify-content: center;
+        animation: pulse 2s infinite;
+      }
+
+      .icon svg {
+        width: 40px;
+        height: 40px;
+        color: white;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      p {
+        color: var(--on-surface-variant);
+        line-height: 1.6;
+        margin-bottom: 32px;
+        font-size: 16px;
+      }
+
+      .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--primary-dark) 100%
+        );
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--on-surface);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .status {
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .status.offline {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--error);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+
+      .status.online {
+        background: rgba(34, 197, 94, 0.1);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+      }
+
+      .loading {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: currentColor;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .features {
+        margin-top: 32px;
+        text-align: left;
+      }
+
+      .features h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: var(--on-surface);
+      }
+
+      .feature-list {
+        list-style: none;
+        space-y: 8px;
+      }
+
+      .feature-list li {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: var(--on-surface-variant);
+        margin-bottom: 8px;
+      }
+
+      .feature-list li::before {
+        content: "✓";
+        color: #22c55e;
+        font-weight: bold;
+        margin-right: 12px;
+        font-size: 16px;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 30px 20px;
+          margin: 10px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        .icon {
+          width: 60px;
+          height: 60px;
+        }
+
+        .icon svg {
+          width: 30px;
+          height: 30px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="logo">Softchat</div>
-      <div class="icon">📡</div>
+      <div class="icon">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      </div>
+
       <h1>You're Offline</h1>
       <p>
-        Don't worry! You can still browse your cached content and some features
-        are available offline.
+        Don't worry! You can still browse your cached content and we'll sync
+        everything when you're back online.
       </p>
 
-      <button class="retry-btn" onclick="window.location.reload()">
-        Try Again
-      </button>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="checkConnection()">
+          <span class="loading" id="loading" style="display: none"></span>
+          <span id="retry-text">Try Again</span>
+        </button>
+        <a href="/" class="btn btn-secondary">Go to Homepage</a>
+      </div>
+
+      <div class="status offline" id="status">
+        You are currently offline. Check your internet connection.
+      </div>
 
       <div class="features">
-        <div class="feature">
-          <span>✓</span>
-          <span>View cached posts and profiles</span>
-        </div>
-        <div class="feature">
-          <span>✓</span>
-          <span>Access saved content</span>
-        </div>
-        <div class="feature">
-          <span>✓</span>
-          <span>Use offline features</span>
-        </div>
+        <h3>Available Offline:</h3>
+        <ul class="feature-list">
+          <li>View cached posts and content</li>
+          <li>Browse your profile and messages</li>
+          <li>Access saved items and bookmarks</li>
+          <li>Use calculator and tools</li>
+        </ul>
       </div>
     </div>
 
     <script>
-      // Auto-retry when connection is restored
-      window.addEventListener("online", function () {
-        window.location.reload();
-      });
+      let isChecking = false;
 
-      // Check if we're back online every 5 seconds
-      setInterval(function () {
+      function updateOnlineStatus() {
+        const status = document.getElementById("status");
         if (navigator.onLine) {
-          window.location.reload();
+          status.className = "status online";
+          status.textContent = "You are back online! Syncing data...";
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } else {
+          status.className = "status offline";
+          status.textContent =
+            "You are currently offline. Check your internet connection.";
         }
-      }, 5000);
+      }
+
+      function checkConnection() {
+        if (isChecking) return;
+
+        isChecking = true;
+        const loading = document.getElementById("loading");
+        const retryText = document.getElementById("retry-text");
+
+        loading.style.display = "inline-block";
+        retryText.textContent = "Checking...";
+
+        // Try to fetch a small resource to test connectivity
+        fetch("/", {
+          method: "HEAD",
+          cache: "no-cache",
+          timeout: 5000,
+        })
+          .then((response) => {
+            if (response.ok) {
+              updateOnlineStatus();
+            } else {
+              throw new Error("Network response was not ok");
+            }
+          })
+          .catch(() => {
+            // Still offline
+            setTimeout(() => {
+              loading.style.display = "none";
+              retryText.textContent = "Try Again";
+              isChecking = false;
+            }, 1000);
+          });
+      }
+
+      // Listen for online/offline events
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
+
+      // Check connection on page load
+      document.addEventListener("DOMContentLoaded", updateOnlineStatus);
+
+      // Auto-retry connection every 30 seconds
+      setInterval(() => {
+        if (!navigator.onLine && !isChecking) {
+          checkConnection();
+        }
+      }, 30000);
+
+      // Show installation prompt if app is not installed
+      let deferredPrompt;
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        // Show install button
+        const installBtn = document.createElement("button");
+        installBtn.className = "btn btn-secondary";
+        installBtn.innerHTML = "📱 Install App";
+        installBtn.onclick = () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === "accepted") {
+              console.log("User accepted the install prompt");
+            }
+            deferredPrompt = null;
+            installBtn.remove();
+          });
+        };
+
+        document.querySelector(".actions").appendChild(installBtn);
+      });
     </script>
   </body>
 </html>
