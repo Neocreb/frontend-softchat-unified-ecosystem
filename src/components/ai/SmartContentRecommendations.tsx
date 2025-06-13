@@ -172,7 +172,10 @@ export function SmartContentRecommendations({
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: maxItems }).map((_, i) => (
-              <div key={i} className="animate-pulse">
+              <div
+                key={`loading-skeleton-${i}-${Date.now()}`}
+                className="animate-pulse"
+              >
                 <div className="bg-gray-200 rounded-lg h-40 mb-3"></div>
                 <div className="space-y-2">
                   <div className="h-4 bg-gray-200 rounded w-3/4"></div>
