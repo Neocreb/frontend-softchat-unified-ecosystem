@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Video page optimizations */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile video content constraints */
+  @media (max-width: 640px) {
+    .video-content-safe {
+      max-width: calc(100vw - 80px); /* Reserve space for action buttons */
+    }
+
+    .video-actions-safe {
+      width: 64px; /* Fixed width for action buttons */
+    }
+
+    /* Prevent text overflow in video descriptions */
+    .video-text-safe {
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+
+    /* Ensure proper touch targets on mobile */
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  /* Fix viewport height on mobile browsers */
+  .h-screen-mobile {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
