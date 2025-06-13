@@ -613,19 +613,25 @@ export default function EnhancedCrypto() {
                           Asks
                         </div>
                         <div className="space-y-1">
-                          {orderBook.asks?.slice(0, 5).map((ask, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between text-xs"
-                            >
-                              <span className="text-red-600 font-mono">
-                                {ask?.price?.toFixed(2) || "0.00"}
-                              </span>
-                              <span className="font-mono">
-                                {ask?.quantity?.toFixed(4) || "0.0000"}
-                              </span>
+                          {orderBook.asks?.length > 0 ? (
+                            orderBook.asks.slice(0, 5).map((ask, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between text-xs"
+                              >
+                                <span className="text-red-600 font-mono">
+                                  {ask?.price?.toFixed(2) || "0.00"}
+                                </span>
+                                <span className="font-mono">
+                                  {ask?.quantity?.toFixed(4) || "0.0000"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-center text-gray-500 text-xs py-2">
+                              No asks available
                             </div>
-                          ))}
+                          )}
                         </div>
                       </div>
 
@@ -644,19 +650,25 @@ export default function EnhancedCrypto() {
                           Bids
                         </div>
                         <div className="space-y-1">
-                          {orderBook.bids?.slice(0, 5).map((bid, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between text-xs"
-                            >
-                              <span className="text-green-600 font-mono">
-                                {bid?.price?.toFixed(2) || "0.00"}
-                              </span>
-                              <span className="font-mono">
-                                {bid?.quantity?.toFixed(4) || "0.0000"}
-                              </span>
+                          {orderBook.bids?.length > 0 ? (
+                            orderBook.bids.slice(0, 5).map((bid, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between text-xs"
+                              >
+                                <span className="text-green-600 font-mono">
+                                  {bid?.price?.toFixed(2) || "0.00"}
+                                </span>
+                                <span className="font-mono">
+                                  {bid?.quantity?.toFixed(4) || "0.0000"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-center text-gray-500 text-xs py-2">
+                              No bids available
                             </div>
-                          ))}
+                          )}
                         </div>
                       </div>
 
@@ -666,28 +678,34 @@ export default function EnhancedCrypto() {
                           Recent Trades
                         </div>
                         <div className="space-y-1 max-h-32 overflow-y-auto">
-                          {recentTrades?.slice(0, 8).map((trade, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between text-xs"
-                            >
-                              <span className="text-gray-600">
-                                {trade?.timestamp || "N/A"}
-                              </span>
-                              <span
-                                className={
-                                  trade?.side === "buy"
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                }
+                          {recentTrades?.length > 0 ? (
+                            recentTrades.slice(0, 8).map((trade, index) => (
+                              <div
+                                key={index}
+                                className="flex justify-between text-xs"
                               >
-                                ${trade?.price?.toFixed(2) || "0.00"}
-                              </span>
-                              <span>
-                                {trade?.amount?.toFixed(4) || "0.0000"}
-                              </span>
+                                <span className="text-gray-600">
+                                  {trade?.timestamp || "N/A"}
+                                </span>
+                                <span
+                                  className={
+                                    trade?.side === "buy"
+                                      ? "text-green-600"
+                                      : "text-red-600"
+                                  }
+                                >
+                                  ${trade?.price?.toFixed(2) || "0.00"}
+                                </span>
+                                <span>
+                                  {trade?.amount?.toFixed(4) || "0.0000"}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-center text-gray-500 text-xs py-2">
+                              No recent trades
                             </div>
-                          ))}
+                          )}
                         </div>
                       </div>
                     </div>
