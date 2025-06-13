@@ -599,7 +599,7 @@ export default function EnhancedCrypto() {
                           Asks
                         </div>
                         <div className="space-y-1">
-                          {orderBook.asks.slice(0, 5).map((ask, index) => (
+                          {orderBook.asks?.slice(0, 5).map((ask, index) => (
                             <div
                               key={index}
                               className="flex justify-between text-xs"
@@ -630,7 +630,7 @@ export default function EnhancedCrypto() {
                           Bids
                         </div>
                         <div className="space-y-1">
-                          {orderBook.bids.slice(0, 5).map((bid, index) => (
+                          {orderBook.bids?.slice(0, 5).map((bid, index) => (
                             <div
                               key={index}
                               className="flex justify-between text-xs"
@@ -652,7 +652,7 @@ export default function EnhancedCrypto() {
                           Recent Trades
                         </div>
                         <div className="space-y-1 max-h-32 overflow-y-auto">
-                          {recentTrades.slice(0, 8).map((trade, index) => (
+                          {recentTrades?.slice(0, 8).map((trade, index) => (
                             <div
                               key={index}
                               className="flex justify-between text-xs"
