@@ -198,6 +198,9 @@ export default function EnhancedCrypto() {
   };
 
   const formatPercentage = (value: number) => {
+    if (typeof value !== "number" || isNaN(value)) {
+      return "0.00%";
+    }
     return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
   };
 
@@ -301,7 +304,9 @@ export default function EnhancedCrypto() {
                         </p>
                         <p className="text-xs text-green-600">
                           +
-                          {marketData.globalStats.marketCapChange24h.toFixed(2)}
+                          {marketData.globalStats.marketCapChange24h?.toFixed(
+                            2,
+                          ) || "0.00"}
                           %
                         </p>
                       </div>
@@ -339,10 +344,15 @@ export default function EnhancedCrypto() {
                           BTC Dominance
                         </p>
                         <p className="text-lg md:text-xl font-bold">
-                          {marketData.globalStats.btcDominance.toFixed(1)}%
+                          {marketData.globalStats.btcDominance?.toFixed(1) ||
+                            "0.0"}
+                          %
                         </p>
                         <p className="text-xs text-gray-500">
-                          ETH {marketData.globalStats.ethDominance.toFixed(1)}%
+                          ETH{" "}
+                          {marketData.globalStats.ethDominance?.toFixed(1) ||
+                            "0.0"}
+                          %
                         </p>
                       </div>
                       <PieChart className="h-6 w-6 md:h-8 md:w-8 text-orange-500" />
@@ -718,7 +728,9 @@ export default function EnhancedCrypto() {
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
                           placeholder="0.00"
-                          defaultValue={currentPair?.current_price.toFixed(2)}
+                          defaultValue={
+                            currentPair?.current_price?.toFixed(2) || ""
+                          }
                         />
                       </div>
 
