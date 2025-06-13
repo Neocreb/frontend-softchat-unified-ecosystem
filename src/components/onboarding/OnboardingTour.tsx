@@ -226,7 +226,10 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
     const userOnboardingData = localStorage.getItem(`onboarding-${user?.id}`);
 
     if (!hasCompletedOnboarding && user && !forcePath) {
-      setTimeout(() => setIsOpen(true), 1000); // Show after 1 second
+      // Show onboarding on both desktop and mobile
+      const isMobile = window.innerWidth < 768;
+      const delay = isMobile ? 1500 : 1000; // Slightly longer delay on mobile
+      setTimeout(() => setIsOpen(true), delay);
     }
 
     if (userOnboardingData) {
