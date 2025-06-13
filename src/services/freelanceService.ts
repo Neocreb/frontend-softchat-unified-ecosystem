@@ -422,7 +422,6 @@ export const freelanceService = {
       totalProjects: userProjects.length,
       rating: freelancer?.rating || 4.8,
       successRate: freelancer?.successRate || 95,
-    };
       repeatClients: 67,
     };
   },
