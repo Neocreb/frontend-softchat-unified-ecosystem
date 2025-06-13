@@ -780,96 +780,95 @@ export default function EnhancedCrypto() {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base md:text-lg">
-                  Order Book & Trades
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-3 md:px-6">
-                {orderBook ? (
-                  <div className="space-y-3">
-                    {/* Asks */}
-                    <div>
-                      <div className="text-xs font-medium text-gray-600 mb-1">
-                        Asks
-                      </div>
-                      <div className="space-y-1">
-                        {orderBook.asks.slice(0, 5).map((ask, index) => (
-                          <div
-                            key={index}
-                            className="flex justify-between text-xs"
-                          >
-                            <span className="text-red-600 font-mono">
-                              {ask.price.toFixed(2)}
-                            </span>
-                            <span className="font-mono">
-                              {ask.quantity.toFixed(4)}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Current Price */}
-                    {currentPair && (
-                      <div className="text-center py-2 border-y">
-                        <div className="text-base font-bold">
-                          {formatCurrency(currentPair.current_price)}
+                {/* Order Book */}
+                <CardContent className="px-3 md:px-6">
+                  {orderBook ? (
+                    <div className="space-y-4">
+                      {/* Asks */}
+                      <div>
+                        <div className="text-xs font-medium text-gray-600 mb-1">
+                          Asks
+                        </div>
+                        <div className="space-y-1">
+                          {orderBook.asks.slice(0, 5).map((ask, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between text-xs"
+                            >
+                              <span className="text-red-600 font-mono">
+                                {ask.price.toFixed(2)}
+                              </span>
+                              <span className="font-mono">
+                                {ask.quantity.toFixed(4)}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    )}
 
-                    {/* Bids */}
-                    <div>
-                      <div className="text-xs font-medium text-gray-600 mb-1">
-                        Bids
-                      </div>
-                      <div className="space-y-1">
-                        {orderBook.bids.slice(0, 5).map((bid, index) => (
-                          <div
-                            key={index}
-                            className="flex justify-between text-xs"
-                          >
-                            <span className="text-green-600 font-mono">
-                              {bid.price.toFixed(2)}
-                            </span>
-                            <span className="font-mono">
-                              {bid.quantity.toFixed(4)}
-                            </span>
+                      {/* Current Price */}
+                      {currentPair && (
+                        <div className="text-center py-2 border-y">
+                          <div className="text-base font-bold">
+                            {formatCurrency(currentPair.current_price)}
                           </div>
-                        ))}
-                      </div>
-                    </div>
+                        </div>
+                      )}
 
-                    {/* Recent Trades */}
-                    <div className="pt-3 border-t">
-                      <div className="text-xs font-medium text-gray-600 mb-2">
-                        Recent Trades
-                      </div>
-                      <div className="space-y-1 max-h-32 overflow-y-auto">
-                        {recentTrades.slice(0, 8).map((trade, index) => (
-                          <div
-                            key={index}
-                            className="flex justify-between text-xs"
-                          >
-                            <span className="text-gray-600">
-                              {trade.timestamp}
-                            </span>
-                            <span
-                              className={
-                                trade.side === "buy"
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                              }
+                      {/* Bids */}
+                      <div>
+                        <div className="text-xs font-medium text-gray-600 mb-1">
+                          Bids
+                        </div>
+                        <div className="space-y-1">
+                          {orderBook.bids.slice(0, 5).map((bid, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between text-xs"
                             >
-                              ${trade.price.toFixed(2)}
-                            </span>
-                            <span>{trade.amount.toFixed(4)}</span>
-                          </div>
-                        ))}
+                              <span className="text-green-600 font-mono">
+                                {bid.price.toFixed(2)}
+                              </span>
+                              <span className="font-mono">
+                                {bid.quantity.toFixed(4)}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Recent Trades */}
+                      <div className="pt-3 border-t">
+                        <div className="text-xs font-medium text-gray-600 mb-2">
+                          Recent Trades
+                        </div>
+                        <div className="space-y-1 max-h-32 overflow-y-auto">
+                          {recentTrades.slice(0, 8).map((trade, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between text-xs"
+                            >
+                              <span className="text-gray-600">
+                                {trade.timestamp}
+                              </span>
+                              <span
+                                className={
+                                  trade.side === "buy"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                }
+                              >
+                                ${trade.price.toFixed(2)}
+                              </span>
+                              <span>{trade.amount.toFixed(4)}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ) : (
                     <div className="text-center py-8 text-gray-500">
-                      Loading trades...
+                      Loading order book...
                     </div>
                   )}
                 </CardContent>
