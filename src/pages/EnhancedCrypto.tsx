@@ -784,6 +784,14 @@ export default function EnhancedCrypto() {
                 </Card>
               </TabsContent>
 
+              {/* P2P Tab */}
+              <TabsContent
+                value="p2p"
+                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
+              >
+                <EnhancedP2PMarketplace />
+              </TabsContent>
+
               {/* Portfolio Tab */}
               <TabsContent
                 value="portfolio"
