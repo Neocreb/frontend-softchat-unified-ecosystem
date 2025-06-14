@@ -300,16 +300,6 @@ const EnhancedSettings = () => {
   const [autoBackup, setAutoBackup] = useState(true);
   const [cacheSize, setCacheSize] = useState("245MB");
 
-  // Modal states
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [showKYCModal, setShowKYCModal] = useState(false);
-  const [kycLevel, setKycLevel] = useState("unverified");
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Active tab state
-  const [activeTab, setActiveTab] = useState("profile");
-  const [cacheSize, setCacheSize] = useState("500MB");
-
   // UI states
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
