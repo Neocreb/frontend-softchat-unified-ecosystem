@@ -49,385 +49,123 @@ interface VideoData {
     avatar: string;
     verified: boolean;
   };
+  title: string;
   description: string;
-  music: {
-    title: string;
-    artist: string;
-  };
-  stats: {
-    likes: number;
-    comments: number;
-    shares: number;
-    views: string;
-  };
-  hashtags: string[];
   videoUrl: string;
   thumbnail: string;
   duration: number;
+  stats: {
+    views: number;
+    likes: number;
+    comments: number;
+    shares: number;
+  };
+  hashtags: string[];
+  music: {
+    title: string;
+    artist: string;
+    url: string;
+  };
+  timestamp: string;
 }
 
 const mockVideos: VideoData[] = [
   {
     id: "1",
     user: {
-      id: "1",
-      username: "crypto_king",
-      displayName: "Crypto King",
-      avatar: "https://i.pravatar.cc/150?img=1",
+      id: "user1",
+      username: "creative_creator",
+      displayName: "Creative Creator",
+      avatar: "/placeholder.svg?height=40&width=40",
       verified: true,
     },
+    title: "Amazing sunset timelapse",
     description:
-      "Bitcoin to the moon! 🚀 Who else is holding? #crypto #bitcoin #hodl",
-    music: { title: "Crypto Anthem", artist: "Digital Dreams" },
-    stats: { likes: 15400, comments: 892, shares: 445, views: "2.1M" },
-    hashtags: ["crypto", "bitcoin", "hodl", "moon"],
-    videoUrl:
-      "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-    thumbnail:
-      "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400",
+      "Captured this beautiful sunset from my balcony. The colors were absolutely incredible! 🌅 #sunset #timelapse #nature",
+    videoUrl: "/placeholder-video.mp4",
+    thumbnail: "/placeholder.svg?height=600&width=400",
     duration: 30,
+    stats: {
+      views: 125400,
+      likes: 8900,
+      comments: 234,
+      shares: 67,
+    },
+    hashtags: ["sunset", "timelapse", "nature", "beautiful", "sky"],
+    music: {
+      title: "Calm Vibes",
+      artist: "Peaceful Sounds",
+      url: "/music/calm-vibes.mp3",
+    },
+    timestamp: "2024-01-15T10:30:00Z",
   },
   {
     id: "2",
     user: {
-      id: "2",
-      username: "tech_trader",
-      displayName: "Tech Trader",
-      avatar: "https://i.pravatar.cc/150?img=2",
+      id: "user2",
+      username: "dance_moves",
+      displayName: "Dance Master",
+      avatar: "/placeholder.svg?height=40&width=40",
       verified: false,
     },
+    title: "Quick dance tutorial",
     description:
-      "Day trading tips that actually work! Follow for more 💰 #trading #stocks",
-    music: { title: "Success Vibes", artist: "Motivation Mix" },
-    stats: { likes: 8900, comments: 567, shares: 234, views: "890K" },
-    hashtags: ["trading", "stocks", "daytrading", "money"],
-    videoUrl:
-      "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-    thumbnail:
-      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400",
+      "Learn this easy dance move in just 30 seconds! Perfect for beginners 💃 #dance #tutorial #learn",
+    videoUrl: "/placeholder-video.mp4",
+    thumbnail: "/placeholder.svg?height=600&width=400",
     duration: 45,
+    stats: {
+      views: 89200,
+      likes: 6700,
+      comments: 156,
+      shares: 89,
+    },
+    hashtags: ["dance", "tutorial", "learn", "moves", "easy"],
+    music: {
+      title: "Upbeat Dance",
+      artist: "DJ Mix",
+      url: "/music/upbeat-dance.mp3",
+    },
+    timestamp: "2024-01-14T15:45:00Z",
+  },
+  {
+    id: "3",
+    user: {
+      id: "user3",
+      username: "cooking_pro",
+      displayName: "Chef Pro",
+      avatar: "/placeholder.svg?height=40&width=40",
+      verified: true,
+    },
+    title: "60-second pasta recipe",
+    description:
+      "Quick and delicious pasta recipe that anyone can make! 🍝 #cooking #recipe #pasta #quick",
+    videoUrl: "/placeholder-video.mp4",
+    thumbnail: "/placeholder.svg?height=600&width=400",
+    duration: 60,
+    stats: {
+      views: 156800,
+      likes: 12300,
+      comments: 445,
+      shares: 234,
+    },
+    hashtags: ["cooking", "recipe", "pasta", "quick", "easy"],
+    music: {
+      title: "Kitchen Beats",
+      artist: "Cooking Sounds",
+      url: "/music/kitchen-beats.mp3",
+    },
+    timestamp: "2024-01-13T12:20:00Z",
   },
 ];
 
-const VideoCreator: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [mode, setMode] = useState<"photo" | "video" | "text">("video");
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordingTime, setRecordingTime] = useState(0);
-  const [selectedFilter, setSelectedFilter] = useState("original");
-  const [selectedSpeed, setSelectedSpeed] = useState(1);
-  const [showEffects, setShowEffects] = useState(false);
-  const [showSounds, setShowSounds] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
-
-  const filters = [
-    { id: "original", name: "Original" },
-    { id: "vintage", name: "Vintage" },
-    { id: "cool", name: "Cool" },
-    { id: "warm", name: "Warm" },
-    { id: "dramatic", name: "Dramatic" },
-  ];
-
-  const speeds = [0.5, 1, 1.5, 2];
-  const effects = ["None", "Blur", "Glow", "Rainbow", "Sparkle"];
-  const sounds = ["Original", "Trending Mix", "Electronic", "Hip Hop", "Pop"];
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isRecording) {
-      interval = setInterval(() => {
-        setRecordingTime((prev) => prev + 1);
-      }, 1000);
-    } else {
-      setRecordingTime(0);
-    }
-    return () => clearInterval(interval);
-  }, [isRecording]);
-
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user" },
-        audio: true,
-      });
-      setMediaStream(stream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
-      console.error("Error accessing camera:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (mode === "video") {
-      startCamera();
-    }
-    return () => {
-      if (mediaStream) {
-        mediaStream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, [mode]);
-
-  const toggleRecording = () => {
-    setIsRecording(!isRecording);
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  return (
-    <div className="relative h-screen bg-black snap-start overflow-hidden w-full">
-      {/* Video Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-black/50">
-        <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-          <div className="text-center p-4 sm:p-8 max-w-full">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <VideoIcon className="h-8 w-8 sm:h-10 sm:w-10 text-white/60" />
-            </div>
-            <p className="text-white/80 text-base sm:text-lg mb-2">Video Preview</p>
-            <p className="text-white/60 text-sm break-words px-2">
-              {video.title || "Sample Video Content"}
-            </p>
-          </div>
-        </div>
-      </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          className="text-white hover:bg-white/20"
-        >
-          <X className="h-6 w-6" />
-        </Button>
-        <h1 className="text-lg font-semibold">Create</h1>
-        <div className="w-10" />
-      </div>
-
-      {/* Mode Selector */}
-      <div className="flex justify-center gap-2 px-4 mb-4">
-        {[
-          { id: "photo", icon: Camera, label: "Photo" },
-          { id: "video", icon: VideoIcon, label: "Video" },
-          { id: "text", icon: Type, label: "Text" },
-        ].map(({ id, icon: Icon, label }) => (
-          <Button
-            key={id}
-            variant={mode === id ? "default" : "outline"}
-            className={cn(
-              "flex-1 max-w-28 h-12 flex flex-col items-center gap-1",
-              mode === id
-                ? "bg-blue-500 text-white border-blue-500"
-                : "bg-white/10 text-white border-white/20 hover:bg-white/20",
-            )}
-            onClick={() => setMode(id as any)}
-          >
-            <Icon className="h-4 w-4" />
-            <span className="text-xs">{label}</span>
-          </Button>
-        ))}
-      </div>
-
-      {/* Camera Preview */}
-      <div className="flex-1 relative bg-gray-900 mx-4 rounded-2xl overflow-hidden">
-        {mode === "video" && (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-            style={{
-              filter:
-                selectedFilter === "vintage"
-                  ? "sepia(0.8)"
-                  : selectedFilter === "cool"
-                    ? "hue-rotate(240deg)"
-                    : selectedFilter === "warm"
-                      ? "hue-rotate(30deg)"
-                      : selectedFilter === "dramatic"
-                        ? "contrast(1.5) saturate(1.3)"
-                        : "none",
-            }}
-          />
-        )}
-
-        {mode === "photo" && (
-          <div className="w-full h-full bg-gray-800 flex items-center justify-center">
-            <Camera className="h-16 w-16 text-gray-400" />
-          </div>
-        )}
-
-        {mode === "text" && (
-          <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-            <input
-              type="text"
-              placeholder="Type your text..."
-              className="bg-transparent text-white text-2xl font-bold text-center outline-none placeholder-white/70 w-full px-4"
-            />
-          </div>
-        )}
-
-        {/* Recording Timer */}
-        {isRecording && (
-          <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-            ● {formatTime(recordingTime)}
-          </div>
-        )}
-
-        {/* Flip Camera Button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-4 right-4 text-white bg-black/30 hover:bg-black/50 rounded-full"
-        >
-          <Zap className="h-5 w-5" />
-        </Button>
-      </div>
-
-      {/* Controls */}
-      <div className="p-4 space-y-4">
-        {/* Filter Row */}
-        <div className="flex gap-2 overflow-x-auto">
-          {filters.map((filter) => (
-            <Button
-              key={filter.id}
-              variant={selectedFilter === filter.id ? "default" : "outline"}
-              size="sm"
-              className={cn(
-                "whitespace-nowrap",
-                selectedFilter === filter.id
-                  ? "bg-blue-500 text-white"
-                  : "text-white border-white/20 bg-white/10 hover:bg-white/20",
-              )}
-              onClick={() => setSelectedFilter(filter.id)}
-            >
-              {filter.name}
-            </Button>
-          ))}
-        </div>
-
-        {/* Speed Control */}
-        <div className="flex items-center gap-2">
-          <span className="text-white text-sm font-medium w-12">Speed</span>
-          <div className="flex gap-1">
-            {speeds.map((speed) => (
-              <Button
-                key={speed}
-                variant={selectedSpeed === speed ? "default" : "outline"}
-                size="sm"
-                className={cn(
-                  "w-12 h-8",
-                  selectedSpeed === speed
-                    ? "bg-blue-500 text-white"
-                    : "text-white border-white/20 bg-white/10",
-                )}
-                onClick={() => setSelectedSpeed(speed)}
-              >
-                {speed}x
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Action Buttons Row */}
-        <div className="flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white bg-white/10 hover:bg-white/20 rounded-full w-12 h-12"
-            onClick={() => setShowEffects(!showEffects)}
-          >
-            <Sparkles className="h-6 w-6" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white bg-white/10 hover:bg-white/20 rounded-full w-12 h-12"
-          >
-            <Mic className="h-6 w-6" />
-          </Button>
-
-          {/* Record Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "w-16 h-16 rounded-full border-4 border-white flex items-center justify-center",
-              isRecording ? "bg-red-500" : "bg-white",
-            )}
-            onClick={toggleRecording}
-          >
-            <div
-              className={cn(
-                "w-6 h-6 rounded-full",
-                isRecording ? "bg-white" : "bg-red-500",
-              )}
-            />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white bg-white/10 hover:bg-white/20 rounded-full w-12 h-12"
-          >
-            <Timer className="h-6 w-6" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white bg-white/10 hover:bg-white/20 rounded-full w-12 h-12"
-            onClick={() => setShowSounds(!showSounds)}
-          >
-            <Music2 className="h-6 w-6" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Effects Panel */}
-      {showEffects && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/90 p-4 rounded-t-2xl">
-          <h3 className="text-white font-semibold mb-3">Effects</h3>
-          <div className="grid grid-cols-5 gap-2">
-            {effects.map((effect) => (
-              <Button
-                key={effect}
-                variant="outline"
-                className="text-white border-white/20 bg-white/10 hover:bg-white/20 text-xs"
-              >
-                {effect}
-              </Button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Sounds Panel */}
-      {showSounds && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/90 p-4 rounded-t-2xl">
-          <h3 className="text-white font-semibold mb-3">Sounds</h3>
-          <div className="space-y-2">
-            {sounds.map((sound) => (
-              <Button
-                key={sound}
-                variant="outline"
-                className="w-full text-white border-white/20 bg-white/10 hover:bg-white/20 text-left justify-start"
-              >
-                <Music className="h-4 w-4 mr-2" />
-                {sound}
-              </Button>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+const formatNumber = (num: number): string => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M";
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K";
+  }
+  return num.toString();
 };
 
 const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
@@ -435,28 +173,32 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
   isActive,
 }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showMore, setShowMore] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showMore, setShowMore] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {
-      if (isActive && isPlaying) {
-        videoRef.current.play().catch(console.error);
+      if (isActive) {
+        videoRef.current.play();
+        setIsPlaying(true);
       } else {
         videoRef.current.pause();
+        setIsPlaying(false);
       }
     }
-  }, [isActive, isPlaying]);
-
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-    return num.toString();
-  };
+  }, [isActive]);
 
   const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+    }
     setIsPlaying(!isPlaying);
   };
 
@@ -506,7 +248,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
           variant="secondary"
           className="bg-black/40 text-white border-none text-xs"
         >
-          {video.stats.views} views
+          {formatNumber(video.stats.views)} views
         </Badge>
         <Button
           variant="ghost"
@@ -558,7 +300,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
 
           {/* Description */}
           <div className="text-white text-xs sm:text-sm space-y-1 sm:space-y-2">
-            <p className="leading-relaxed line-clamp-3 sm:line-clamp-none">
+            <p className="leading-relaxed line-clamp-3 sm:line-clamp-none break-words">
               {showMore ? description : truncatedDescription}
               {description.length > 100 && (
                 <button
@@ -595,7 +337,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
         </div>
 
         {/* Right side - actions */}
-        <div className="flex flex-col items-center justify-end gap-3 sm:gap-4 p-3 sm:p-4 pb-20 sm:pb-24 w-16 sm:w-20">
+        <div className="flex flex-col items-center justify-end gap-3 sm:gap-4 p-2 sm:p-4 pb-24 sm:pb-28 w-14 sm:w-20">
           {/* Like */}
           <div className="flex flex-col items-center gap-1">
             <Button
@@ -652,6 +394,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             size="icon"
             variant="ghost"
             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            onClick={() => setIsBookmarked(!isBookmarked)}
           >
             <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </Button>
@@ -670,34 +413,171 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
   );
 };
 
+const VideoCreator: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const [mode, setMode] = useState<"photo" | "video" | "text">("video");
+  const [isRecording, setIsRecording] = useState(false);
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isRecording) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  return (
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="w-full h-full max-w-none p-0 bg-black text-white border-none">
+        <VisuallyHidden>
+          <DialogTitle>Create Content</DialogTitle>
+        </VisuallyHidden>
+
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-800">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="text-white hover:bg-white/20"
+          >
+            <X className="h-6 w-6" />
+          </Button>
+          <h1 className="text-lg font-semibold">Create</h1>
+          <div className="w-10" />
+        </div>
+
+        {/* Mode Selector */}
+        <div className="flex justify-center gap-2 px-4 mb-4">
+          {[
+            { id: "photo", icon: Camera, label: "Photo" },
+            { id: "video", icon: VideoIcon, label: "Video" },
+            { id: "text", icon: Type, label: "Text" },
+          ].map(({ id, icon: Icon, label }) => (
+            <Button
+              key={id}
+              variant={mode === id ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setMode(id as any)}
+              className="flex items-center gap-2"
+            >
+              <Icon className="h-4 w-4" />
+              {label}
+            </Button>
+          ))}
+        </div>
+
+        {/* Camera/Video Interface */}
+        <div className="flex-1 bg-gray-900 relative">
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="text-center">
+              <Camera className="h-24 w-24 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-400">Camera preview would appear here</p>
+            </div>
+          </div>
+
+          {/* Recording Controls */}
+          {mode === "video" && (
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:bg-white/20"
+                >
+                  <Upload className="h-6 w-6" />
+                </Button>
+
+                <Button
+                  size="icon"
+                  onClick={() => setIsRecording(!isRecording)}
+                  className={cn(
+                    "w-16 h-16 rounded-full border-4 border-white",
+                    isRecording
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-transparent hover:bg-white/20",
+                  )}
+                >
+                  {isRecording ? (
+                    <div className="w-6 h-6 bg-white rounded-sm" />
+                  ) : (
+                    <div className="w-8 h-8 bg-red-500 rounded-full" />
+                  )}
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-white hover:bg-white/20"
+                >
+                  <Zap className="h-6 w-6" />
+                </Button>
+              </div>
+
+              {isRecording && (
+                <div className="text-center mt-4">
+                  <div className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    REC {formatTime(timer)}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Effects and Tools */}
+        <div className="p-4 border-t border-gray-800">
+          <div className="flex justify-center gap-4">
+            <Button variant="ghost" size="sm" className="text-white">
+              <Palette className="h-4 w-4 mr-2" />
+              Filters
+            </Button>
+            <Button variant="ghost" size="sm" className="text-white">
+              <Music2 className="h-4 w-4 mr-2" />
+              Music
+            </Button>
+            <Button variant="ghost" size="sm" className="text-white">
+              <Timer className="h-4 w-4 mr-2" />
+              Timer
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const EnhancedVideos: React.FC = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"videos" | "live">("videos");
+  const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [showRecommendations, setShowRecommendations] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = () => {
-    const scrollTop = containerRef.current?.scrollTop || 0;
-    const videoHeight = window.innerHeight;
-    const newIndex = Math.round(scrollTop / videoHeight);
-
-    if (
-      newIndex !== currentVideoIndex &&
-      newIndex >= 0 &&
-      newIndex < mockVideos.length
-    ) {
-      setCurrentVideoIndex(newIndex);
-    }
-  };
-
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const scrollTop = containerRef.current.scrollTop;
+        const videoHeight = window.innerHeight;
+        const newIndex = Math.round(scrollTop / videoHeight);
+        setCurrentVideoIndex(newIndex);
+      }
+    };
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, [currentVideoIndex]);
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", handleScroll);
+      return () => container.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
 
   return (
     <div className="h-screen bg-black text-white relative overflow-hidden w-full max-w-full">
