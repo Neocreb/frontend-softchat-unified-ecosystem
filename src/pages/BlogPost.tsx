@@ -39,7 +39,7 @@ export default function BlogPostPage() {
     try {
       const [postData, allPosts] = await Promise.all([
         blogService.getBlogPost(postSlug),
-        blogService.getBlogPosts(),
+        blogService.getBlogPosts({}),
       ]);
 
       if (postData) {
