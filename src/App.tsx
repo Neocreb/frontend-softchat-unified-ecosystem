@@ -7,7 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import SafeThemeProvider from "./contexts/SafeThemeProvider";
+import ReactDiagnostic from "./components/debug/ReactDiagnostic";
 import {
   AccessibilityProvider,
   AccessibilityControlPanel,
@@ -272,7 +273,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
+        <SafeThemeProvider>
           <AuthProvider>
             <AccessibilityProvider>
               <TooltipProvider>
@@ -291,10 +292,13 @@ const App = () => {
                 {/* Toasters */}
                 <Toaster />
                 <Sonner />
+
+                {/* React Diagnostic (development only) */}
+                {process.env.NODE_ENV === "development" && <ReactDiagnostic />}
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>
-        </ThemeProvider>
+        </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
