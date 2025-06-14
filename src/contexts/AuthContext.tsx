@@ -12,7 +12,11 @@ type AuthContextType = {
   error: Error | null;
   login: (email: string, password: string) => Promise<{ error?: Error }>;
   logout: () => Promise<void>;
-  signup: (email: string, password: string, name: string) => Promise<{ error?: Error }>;
+  signup: (
+    email: string,
+    password: string,
+    name: string,
+  ) => Promise<{ error?: Error }>;
   isAdmin: () => boolean;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 };
@@ -25,17 +29,19 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   error: null,
   login: async () => ({ error: undefined }),
-  logout: async () => { },
+  logout: async () => {},
   signup: async () => ({ error: undefined }),
   isAdmin: () => false,
-  updateProfile: async () => { },
+  updateProfile: async () => {},
 });
 
 // Custom hook to use the auth context
 export const useAuth = () => useContext(AuthContext);
 
 // Authentication provider component
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   // Define state hooks inside the component function body
   const [user, setUser] = useState<ExtendedUser | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -48,26 +54,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     return {
       ...rawUser,
-      name: rawUser.user_metadata?.name || rawUser.user_metadata?.full_name || 'User',
-      username: rawUser.user_metadata?.username || 'unknown', // Ensure username is included
-      avatar: rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(rawUser.user_metadata?.name || 'User')}&background=random`,
+      name:
+        rawUser.user_metadata?.name ||
+        rawUser.user_metadata?.full_name ||
+        "User",
+      username: rawUser.user_metadata?.username || "unknown", // Ensure username is included
+      avatar:
+        rawUser.user_metadata?.avatar ||
+        rawUser.user_metadata?.avatar_url ||
+        `https://ui-avatars.com/api/?name=${encodeURIComponent(rawUser.user_metadata?.name || "User")}&background=random`,
       points: rawUser.user_metadata?.points || 0,
-      level: rawUser.user_metadata?.level || 'bronze',
-      role: rawUser.user_metadata?.role || 'user',
+      level: rawUser.user_metadata?.level || "bronze",
+      role: rawUser.user_metadata?.role || "user",
       profile: {
         id: rawUser.id,
         username: rawUser.user_metadata?.username,
-        full_name: rawUser.user_metadata?.name || rawUser.user_metadata?.full_name,
-        avatar_url: rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url,
+        full_name:
+          rawUser.user_metadata?.name || rawUser.user_metadata?.full_name,
+        avatar_url:
+          rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url,
         bio: rawUser.user_metadata?.bio,
         points: rawUser.user_metadata?.points || 0,
-        level: rawUser.user_metadata?.level || 'bronze',
-        role: rawUser.user_metadata?.role || 'user',
+        level: rawUser.user_metadata?.level || "bronze",
+        role: rawUser.user_metadata?.role || "user",
         is_verified: rawUser.user_metadata?.is_verified || false,
         bank_account_name: rawUser.user_metadata?.bank_account_name,
         bank_account_number: rawUser.user_metadata?.bank_account_number,
         bank_name: rawUser.user_metadata?.bank_name,
-      }
+      },
     };
   };
 
@@ -80,7 +94,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("AuthProvider: Checking for existing session");
 
         // Get the current session
-        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+        const {
+          data: { session: currentSession },
+          error: sessionError,
+        } = await supabase.auth.getSession();
 
         if (sessionError) {
           throw sessionError;
@@ -107,15 +124,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     initializeAuth();
 
     // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, newSession) => {
-        console.log("AuthProvider: Auth state changed", event, newSession ? "session exists" : "no session");
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+      console.log(
+        "AuthProvider: Auth state changed",
+        event,
+        newSession ? "session exists" : "no session",
+      );
 
-        setSession(newSession);
-        setUser(enhanceUserData(newSession?.user || null));
-        setIsLoading(false);
-      }
-    );
+      setSession(newSession);
+      setUser(enhanceUserData(newSession?.user || null));
+      setIsLoading(false);
+    });
 
     // Cleanup subscription on unmount
     return () => {
@@ -129,10 +150,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
 
     try {
-      const { data, error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { data, error: loginError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
       if (loginError) {
         console.error("AuthProvider: Login error", loginError);
@@ -228,7 +250,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       const { error } = await supabase.auth.updateUser({
-        data: profileData
+        data: profileData,
       });
 
       if (error) {
@@ -236,7 +258,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       // Update local user state with new profile data
-      setUser(prev => {
+      setUser((prev) => {
         if (!prev) return null;
 
         // Create a new user object with updated metadata and profile
@@ -244,7 +266,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           ...prev,
           user_metadata: {
             ...prev.user_metadata,
-            ...profileData
+            ...profileData,
           },
           name: profileData.full_name || prev.name,
           avatar: profileData.avatar_url || prev.avatar,
@@ -257,13 +279,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             ...prev.profile!,
             ...profileData,
             // Explicitly ensure id is not overwritten
-            id: prev.profile?.id || prev.id
-          }
+            id: prev.profile?.id || prev.id,
+          },
         };
 
         return updatedUser;
       });
-
     } catch (error) {
       console.error("Error updating profile:", error);
       throw error;
@@ -297,13 +318,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     isLoading,
     hasUser: !!user,
     hasSession: !!session,
-    hasError: !!error
+    hasError: !!error,
   });
 
   // Render the provider
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
