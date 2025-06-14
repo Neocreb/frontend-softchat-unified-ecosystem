@@ -75,41 +75,11 @@ if (!rootElement) {
 // Create root element
 const root = createRoot(rootElement);
 
-// Test if React is working before rendering
-try {
-  console.log("Testing React context availability...");
-  const testElement = React.createElement("div", null, "Test");
-  if (!testElement) {
-    throw new Error("React.createElement not working");
-  }
-
-  console.log("React context test passed, rendering app...");
-
-  // Render app with minimal providers first
-  root.render(
-    <ErrorBoundary>
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
-    </ErrorBoundary>,
-  );
-} catch (error) {
-  console.error("Critical React error during initialization:", error);
-
-  // Fallback rendering without any providers
-  const fallbackElement = document.createElement("div");
-  fallbackElement.innerHTML = `
-    <div style="padding: 20px; text-align: center; font-family: system-ui;">
-      <h1>Application Error</h1>
-      <p>There was an error initializing the React application.</p>
-      <p>Error: ${error instanceof Error ? error.message : "Unknown error"}</p>
-      <button onclick="window.location.reload()">Reload Page</button>
-    </div>
-  `;
-
-  const rootElement = document.getElementById("root");
-  if (rootElement) {
-    rootElement.innerHTML = "";
-    rootElement.appendChild(fallbackElement);
-  }
-}
+// Render app with providers and error boundary
+root.render(
+  <ErrorBoundary>
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
+  </ErrorBoundary>,
+);

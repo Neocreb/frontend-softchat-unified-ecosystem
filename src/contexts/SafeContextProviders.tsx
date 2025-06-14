@@ -1,43 +1,19 @@
 import React from "react";
 
-// Safe wrapper for React context providers that handles initialization errors
+// Simple wrapper for React context providers
 export function withSafeContext<T extends { children: React.ReactNode }>(
   Component: React.ComponentType<T>,
   fallbackComponent?: React.ComponentType<T>,
 ) {
   return function SafeWrapper(props: T) {
-    const [hasError, setHasError] = React.useState(false);
-    const [isReactReady, setIsReactReady] = React.useState(false);
-
-    // Check if React context is properly initialized
-    React.useEffect(() => {
-      try {
-        // Test if React hooks are working
-        const testState = React.useState(true);
-        if (testState && testState[0] !== undefined) {
-          setIsReactReady(true);
-        }
-      } catch (error) {
-        console.error("React context not ready:", error);
-        setHasError(true);
-      }
-    }, []);
-
-    // If there's an error or React isn't ready, use fallback
-    if (hasError || !isReactReady) {
-      if (fallbackComponent) {
-        const FallbackComponent = fallbackComponent;
-        return <FallbackComponent {...props} />;
-      }
-      // Simple passthrough if no fallback provided
-      return <>{props.children}</>;
-    }
-
     try {
       return <Component {...props} />;
     } catch (error) {
       console.error("Context provider error:", error);
-      setHasError(true);
+      if (fallbackComponent) {
+        const FallbackComponent = fallbackComponent;
+        return <FallbackComponent {...props} />;
+      }
       return <>{props.children}</>;
     }
   };
