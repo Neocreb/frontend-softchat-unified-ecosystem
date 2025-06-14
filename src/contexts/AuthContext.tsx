@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import * as React from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
@@ -22,7 +22,7 @@ type AuthContextType = {
 };
 
 // Create the auth context with default values
-const AuthContext = createContext<AuthContextType>({
+const AuthContext = React.createContext<AuthContextType>({
   isAuthenticated: false,
   isLoading: true,
   user: null,
@@ -36,7 +36,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // Custom hook to use the auth context
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => React.useContext(AuthContext);
 
 // Authentication provider component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -49,68 +49,72 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [error, setError] = React.useState<Error | null>(null);
 
   // Transform user data to include convenience properties
-  const enhanceUserData = (rawUser: User | null): ExtendedUser | null => {
-    if (!rawUser) return null;
+  const enhanceUserData = React.useCallback(
+    (rawUser: User | null): ExtendedUser | null => {
+      if (!rawUser) return null;
 
-    try {
-      return {
-        ...rawUser,
-        name:
-          rawUser.user_metadata?.name ||
-          rawUser.user_metadata?.full_name ||
-          "User",
-        username: rawUser.user_metadata?.username || "unknown",
-        avatar:
-          rawUser.user_metadata?.avatar ||
-          rawUser.user_metadata?.avatar_url ||
-          `https://ui-avatars.com/api/?name=${encodeURIComponent(rawUser.user_metadata?.name || "User")}&background=random`,
-        points: rawUser.user_metadata?.points || 0,
-        level: rawUser.user_metadata?.level || "bronze",
-        role: rawUser.user_metadata?.role || "user",
-        profile: {
-          id: rawUser.id,
-          username: rawUser.user_metadata?.username,
-          full_name:
-            rawUser.user_metadata?.name || rawUser.user_metadata?.full_name,
-          avatar_url:
-            rawUser.user_metadata?.avatar || rawUser.user_metadata?.avatar_url,
-          bio: rawUser.user_metadata?.bio,
+      try {
+        return {
+          ...rawUser,
+          name:
+            rawUser.user_metadata?.name ||
+            rawUser.user_metadata?.full_name ||
+            "User",
+          username: rawUser.user_metadata?.username || "unknown",
+          avatar:
+            rawUser.user_metadata?.avatar ||
+            rawUser.user_metadata?.avatar_url ||
+            `https://ui-avatars.com/api/?name=${encodeURIComponent(rawUser.user_metadata?.name || "User")}&background=random`,
           points: rawUser.user_metadata?.points || 0,
           level: rawUser.user_metadata?.level || "bronze",
           role: rawUser.user_metadata?.role || "user",
-          is_verified: rawUser.user_metadata?.is_verified || false,
-          bank_account_name: rawUser.user_metadata?.bank_account_name,
-          bank_account_number: rawUser.user_metadata?.bank_account_number,
-          bank_name: rawUser.user_metadata?.bank_name,
-        },
-      };
-    } catch (error) {
-      console.warn("Failed to enhance user data:", error);
-      return {
-        ...rawUser,
-        name: "User",
-        username: "unknown",
-        avatar: `https://ui-avatars.com/api/?name=User&background=random`,
-        points: 0,
-        level: "bronze",
-        role: "user",
-        profile: {
-          id: rawUser.id,
+          profile: {
+            id: rawUser.id,
+            username: rawUser.user_metadata?.username,
+            full_name:
+              rawUser.user_metadata?.name || rawUser.user_metadata?.full_name,
+            avatar_url:
+              rawUser.user_metadata?.avatar ||
+              rawUser.user_metadata?.avatar_url,
+            bio: rawUser.user_metadata?.bio,
+            points: rawUser.user_metadata?.points || 0,
+            level: rawUser.user_metadata?.level || "bronze",
+            role: rawUser.user_metadata?.role || "user",
+            is_verified: rawUser.user_metadata?.is_verified || false,
+            bank_account_name: rawUser.user_metadata?.bank_account_name,
+            bank_account_number: rawUser.user_metadata?.bank_account_number,
+            bank_name: rawUser.user_metadata?.bank_name,
+          },
+        };
+      } catch (error) {
+        console.warn("Failed to enhance user data:", error);
+        return {
+          ...rawUser,
+          name: "User",
           username: "unknown",
-          full_name: "User",
-          avatar_url: null,
-          bio: null,
+          avatar: `https://ui-avatars.com/api/?name=User&background=random`,
           points: 0,
           level: "bronze",
           role: "user",
-          is_verified: false,
-          bank_account_name: null,
-          bank_account_number: null,
-          bank_name: null,
-        },
-      };
-    }
-  };
+          profile: {
+            id: rawUser.id,
+            username: "unknown",
+            full_name: "User",
+            avatar_url: null,
+            bio: null,
+            points: 0,
+            level: "bronze",
+            role: "user",
+            is_verified: false,
+            bank_account_name: null,
+            bank_account_number: null,
+            bank_name: null,
+          },
+        };
+      }
+    },
+    [],
+  );
 
   // Check for an existing session on component mount
   React.useEffect(() => {
@@ -165,40 +169,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [enhanceUserData]);
 
   // Login function
-  const login = async (
-    email: string,
-    password: string,
-  ): Promise<{ error?: Error }> => {
-    try {
-      setIsLoading(true);
-      setError(null);
+  const login = React.useCallback(
+    async (email: string, password: string): Promise<{ error?: Error }> => {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
 
-      if (error) {
-        setError(error);
-        return { error };
+        if (error) {
+          setError(error);
+          return { error };
+        }
+
+        console.log("Login successful:", data.user?.id);
+        return {};
+      } catch (error) {
+        const authError = error as Error;
+        setError(authError);
+        return { error: authError };
+      } finally {
+        setIsLoading(false);
       }
-
-      console.log("Login successful:", data.user?.id);
-      return {};
-    } catch (error) {
-      const authError = error as Error;
-      setError(authError);
-      return { error: authError };
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [],
+  );
 
   // Logout function
-  const logout = async (): Promise<void> => {
+  const logout = React.useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.signOut();
@@ -217,100 +221,119 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Signup function
-  const signup = async (
-    email: string,
-    password: string,
-    name: string,
-  ): Promise<{ error?: Error }> => {
-    try {
-      setIsLoading(true);
-      setError(null);
+  const signup = React.useCallback(
+    async (
+      email: string,
+      password: string,
+      name: string,
+    ): Promise<{ error?: Error }> => {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-            full_name: name,
-            username: email.split("@")[0],
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name,
+              full_name: name,
+              username: email.split("@")[0],
+            },
           },
-        },
-      });
+        });
 
-      if (error) {
-        setError(error);
-        return { error };
+        if (error) {
+          setError(error);
+          return { error };
+        }
+
+        console.log("Signup successful:", data.user?.id);
+        return {};
+      } catch (error) {
+        const authError = error as Error;
+        setError(authError);
+        return { error: authError };
+      } finally {
+        setIsLoading(false);
       }
-
-      console.log("Signup successful:", data.user?.id);
-      return {};
-    } catch (error) {
-      const authError = error as Error;
-      setError(authError);
-      return { error: authError };
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [],
+  );
 
   // Check if user is admin
-  const isAdmin = (): boolean => {
+  const isAdmin = React.useCallback((): boolean => {
     return user?.role === "admin" || user?.profile?.role === "admin";
-  };
+  }, [user]);
 
   // Update user profile
-  const updateProfile = async (data: Partial<UserProfile>): Promise<void> => {
-    try {
-      if (!user) {
-        throw new Error("No user logged in");
-      }
+  const updateProfile = React.useCallback(
+    async (data: Partial<UserProfile>): Promise<void> => {
+      try {
+        if (!user) {
+          throw new Error("No user logged in");
+        }
 
-      const { error } = await supabase.auth.updateUser({
-        data: {
-          ...user.user_metadata,
-          ...data,
-        },
-      });
+        const { error } = await supabase.auth.updateUser({
+          data: {
+            ...user.user_metadata,
+            ...data,
+          },
+        });
 
-      if (error) {
+        if (error) {
+          throw error;
+        }
+
+        // Update local user state
+        setUser((prev) =>
+          prev
+            ? {
+                ...prev,
+                ...data,
+                profile: {
+                  ...prev.profile,
+                  ...data,
+                },
+              }
+            : null,
+        );
+      } catch (error) {
+        console.error("Profile update error:", error);
         throw error;
       }
+    },
+    [user],
+  );
 
-      // Update local user state
-      setUser((prev) =>
-        prev
-          ? {
-              ...prev,
-              ...data,
-              profile: {
-                ...prev.profile,
-                ...data,
-              },
-            }
-          : null,
-      );
-    } catch (error) {
-      console.error("Profile update error:", error);
-      throw error;
-    }
-  };
-
-  const contextValue: AuthContextType = {
-    isAuthenticated: !!session && !!user,
-    isLoading,
-    user,
-    session,
-    error,
-    login,
-    logout,
-    signup,
-    isAdmin,
-    updateProfile,
-  };
+  const contextValue: AuthContextType = React.useMemo(
+    () => ({
+      isAuthenticated: !!session && !!user,
+      isLoading,
+      user,
+      session,
+      error,
+      login,
+      logout,
+      signup,
+      isAdmin,
+      updateProfile,
+    }),
+    [
+      session,
+      user,
+      isLoading,
+      error,
+      login,
+      logout,
+      signup,
+      isAdmin,
+      updateProfile,
+    ],
+  );
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
