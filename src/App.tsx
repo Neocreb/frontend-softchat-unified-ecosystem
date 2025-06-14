@@ -48,6 +48,7 @@ import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
+import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
