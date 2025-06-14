@@ -261,80 +261,82 @@ export function PartnershipSystem() {
   return (
     <div className="space-y-6">
       {/* Partnership Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Total Referrals
                 </p>
-                <p className="text-2xl font-bold leading-tight">
+                <p className="text-2xl font-bold leading-none">
                   {referralData.totalReferrals}
                 </p>
-                <p className="text-xs text-green-600 mt-1">+12% this month</p>
+                <p className="text-xs text-green-600">+12% this month</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500 flex-shrink-0" />
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Total Earnings
                 </p>
-                <p className="text-2xl font-bold leading-tight">
-                  ${referralData.totalEarnings}
+                <p className="text-2xl font-bold leading-none">
+                  ${referralData.totalEarnings.toLocaleString()}
                 </p>
-                <p className="text-xs text-green-600 mt-1 break-words">
+                <p className="text-xs text-green-600 truncate">
                   +${referralData.monthlyEarnings} this month
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-500 flex-shrink-0" />
+              <DollarSign className="h-6 w-6 sm:h-8 sm:w-8 text-green-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Conversion Rate
                 </p>
-                <p className="text-2xl font-bold leading-tight">
+                <p className="text-2xl font-bold leading-none">
                   {referralData.conversionRate}%
                 </p>
-                <p className="text-xs text-green-600 mt-1">Above average</p>
+                <p className="text-xs text-green-600">Above average</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-500 flex-shrink-0" />
+              <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-orange-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Partnership Tier
                 </p>
-                <Badge
-                  className={cn(
-                    "text-sm font-medium mt-1",
-                    getTierColor(referralData.tier),
-                  )}
-                >
-                  {referralData.tier}
-                </Badge>
-                <p className="text-xs text-muted-foreground mt-2 break-words">
-                  {referralData.tierProgress}% to next tier
-                </p>
+                <div className="flex flex-col gap-1">
+                  <Badge
+                    className={cn(
+                      "text-xs font-medium w-fit",
+                      getTierColor(referralData.tier),
+                    )}
+                  >
+                    {referralData.tier}
+                  </Badge>
+                  <p className="text-xs text-muted-foreground">
+                    {referralData.tierProgress}% to next
+                  </p>
+                </div>
               </div>
-              <Crown className="h-8 w-8 text-yellow-500 flex-shrink-0" />
+              <Crown className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
@@ -372,22 +374,46 @@ export function PartnershipSystem() {
                   </span>
                 </div>
                 <Progress value={referralData.tierProgress} className="h-3" />
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Current Benefits</p>
-                    <ul className="mt-1 space-y-1">
-                      <li>• 20% commission rate</li>
-                      <li>• Weekly payouts</li>
-                      <li>• Priority support</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Next Tier Benefits</p>
-                    <ul className="mt-1 space-y-1">
-                      <li>• 30% commission rate</li>
-                      <li>• Daily payouts</li>
-                      <li>• Exclusive content</li>
-                    </ul>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <p className="text-muted-foreground font-medium">
+                        Current Benefits
+                      </p>
+                      <ul className="space-y-1 text-xs leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5">•</span>
+                          <span>20% commission rate</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5">•</span>
+                          <span>Weekly payouts</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5">•</span>
+                          <span>Priority support</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-muted-foreground font-medium">
+                        Next Tier Benefits
+                      </p>
+                      <ul className="space-y-1 text-xs leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>30% commission rate</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>Daily payouts</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>Exclusive content</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -406,12 +432,12 @@ export function PartnershipSystem() {
                   {activities.slice(0, 5).map((activity) => (
                     <div
                       key={activity.id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
+                      className="flex items-start justify-between p-3 border rounded-lg gap-3"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
                         <div
                           className={cn(
-                            "w-2 h-2 rounded-full",
+                            "w-2 h-2 rounded-full mt-2 flex-shrink-0",
                             activity.status === "completed"
                               ? "bg-green-500"
                               : activity.status === "pending"
@@ -419,27 +445,31 @@ export function PartnershipSystem() {
                                 : "bg-red-500",
                           )}
                         />
-                        <div>
-                          <p className="font-medium text-sm">{activity.user}</p>
-                          <p className="text-xs text-muted-foreground capitalize">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-sm truncate">
+                            {activity.user}
+                          </p>
+                          <p className="text-xs text-muted-foreground capitalize break-words">
                             {activity.type} • {activity.date}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-medium text-green-600">
+                      <div className="text-right flex-shrink-0 space-y-1">
+                        <p className="font-medium text-green-600 text-sm">
                           +${activity.amount}
                         </p>
-                        <Badge
-                          variant={
-                            activity.status === "completed"
-                              ? "default"
-                              : "secondary"
-                          }
-                          className="text-xs"
-                        >
-                          {activity.status}
-                        </Badge>
+                        <div>
+                          <Badge
+                            variant={
+                              activity.status === "completed"
+                                ? "default"
+                                : "secondary"
+                            }
+                            className="text-xs"
+                          >
+                            {activity.status}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   ))}

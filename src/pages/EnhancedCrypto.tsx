@@ -50,6 +50,7 @@ import { SmartContentRecommendations } from "@/components/ai/SmartContentRecomme
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
 import CryptoDetailModal from "@/components/crypto/CryptoDetailModal";
+import BlogRSSFeed from "@/components/crypto/BlogRSSFeed";
 import { cn } from "@/lib/utils";
 
 export default function EnhancedCrypto() {
@@ -891,74 +892,85 @@ export default function EnhancedCrypto() {
                 <div>
                   <h2 className="text-lg sm:text-xl font-bold">Learn & News</h2>
                   <p className="text-sm text-muted-foreground">
-                    Educational content and latest cryptocurrency news
+                    Educational content, blog articles, and latest
+                    cryptocurrency news
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {/* News Articles */}
-                  {news && news.length > 0 ? (
-                    news.slice(0, 6).map((article) => (
-                      <Card
-                        key={article.id}
-                        className="cursor-pointer hover:shadow-lg transition-shadow"
-                      >
-                        <CardContent className="p-4">
-                          <div className="space-y-3">
-                            <Badge variant="outline" className="text-xs">
-                              News
-                            </Badge>
-                            <h3 className="font-semibold text-sm line-clamp-2">
-                              {article.title}
-                            </h3>
-                            <p className="text-xs text-muted-foreground line-clamp-3">
-                              {article.summary}
-                            </p>
-                            <div className="flex items-center justify-between text-xs text-muted-foreground">
-                              <span>{article.source}</span>
-                              <span>
-                                {new Date(
-                                  article.publishedAt,
-                                ).toLocaleDateString()}
-                              </span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
-                  ) : (
-                    <div className="col-span-full text-center text-muted-foreground py-8">
-                      <p>Loading news articles...</p>
-                    </div>
-                  )}
+                {/* Blog RSS Feed Section */}
+                <BlogRSSFeed limit={6} showHeader={true} className="mb-8" />
 
-                  {/* Education Content */}
-                  {educationContent && educationContent.length > 0
-                    ? educationContent.slice(0, 3).map((content) => (
+                {/* News & Education Section */}
+                <div className="space-y-4">
+                  <h3 className="text-base sm:text-lg font-semibold">
+                    News & Market Updates
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {/* News Articles */}
+                    {news && news.length > 0 ? (
+                      news.slice(0, 6).map((article) => (
                         <Card
-                          key={content.id}
+                          key={article.id}
                           className="cursor-pointer hover:shadow-lg transition-shadow"
                         >
                           <CardContent className="p-4">
                             <div className="space-y-3">
                               <Badge variant="outline" className="text-xs">
-                                Education
+                                News
                               </Badge>
                               <h3 className="font-semibold text-sm line-clamp-2">
-                                {content.title}
+                                {article.title}
                               </h3>
                               <p className="text-xs text-muted-foreground line-clamp-3">
-                                {content.description}
+                                {article.summary}
                               </p>
                               <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                <span>{content.author}</span>
-                                <span>{content.duration} min read</span>
+                                <span>{article.source}</span>
+                                <span>
+                                  {new Date(
+                                    article.publishedAt,
+                                  ).toLocaleDateString()}
+                                </span>
                               </div>
                             </div>
                           </CardContent>
                         </Card>
                       ))
-                    : null}
+                    ) : (
+                      <div className="col-span-full text-center text-muted-foreground py-8">
+                        <p>Loading news articles...</p>
+                      </div>
+                    )}
+
+                    {/* Education Content */}
+                    {educationContent && educationContent.length > 0
+                      ? educationContent.slice(0, 3).map((content) => (
+                          <Card
+                            key={content.id}
+                            className="cursor-pointer hover:shadow-lg transition-shadow"
+                          >
+                            <CardContent className="p-4">
+                              <div className="space-y-3">
+                                <Badge variant="outline" className="text-xs">
+                                  Education
+                                </Badge>
+                                <h3 className="font-semibold text-sm line-clamp-2">
+                                  {content.title}
+                                </h3>
+                                <p className="text-xs text-muted-foreground line-clamp-3">
+                                  {content.description}
+                                </p>
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                  <span>{content.author}</span>
+                                  <span>{content.duration} min read</span>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))
+                      : null}
+                  </div>
                 </div>
               </TabsContent>
             </Tabs>

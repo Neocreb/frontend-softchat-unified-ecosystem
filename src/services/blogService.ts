@@ -313,8 +313,8 @@ The improvements will make DeFi applications faster and cheaper to use...
 ];
 
 class BlogService {
-  // Get all blog posts with optional filtering
-  async getBlogPosts(
+  // Get all blog posts with optional filtering (simple version)
+  async getBlogPostsSimple(
     category?: string,
     tags?: string[],
     difficulty?: string,
@@ -433,6 +433,129 @@ class BlogService {
         post.tags.some((tag) => tag.toLowerCase().includes(lowercaseQuery)) ||
         post.content.toLowerCase().includes(lowercaseQuery),
     );
+  }
+
+  // Get blog posts with pagination and filtering for main blog page
+  async getBlogPosts(filters?: {
+    category?: string;
+    tags?: string[];
+    difficulty?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<{ posts: BlogPost[]; total: number; hasMore: boolean }> {
+    let filteredPosts = [...mockBlogPosts];
+
+    if (filters?.category) {
+      filteredPosts = filteredPosts.filter(
+        (post) => post.category.slug === filters.category,
+      );
+    }
+
+    if (filters?.tags && filters.tags.length > 0) {
+      filteredPosts = filteredPosts.filter((post) =>
+        filters.tags!.some((tag) =>
+          post.tags.some((postTag) =>
+            postTag.toLowerCase().includes(tag.toLowerCase()),
+          ),
+        ),
+      );
+    }
+
+    if (filters?.difficulty) {
+      filteredPosts = filteredPosts.filter(
+        (post) => post.difficulty === filters.difficulty,
+      );
+    }
+
+    // Sort by published date (newest first)
+    filteredPosts.sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    );
+
+    const total = filteredPosts.length;
+    const offset = filters?.offset || 0;
+    const limit = filters?.limit || filteredPosts.length;
+
+    const paginatedPosts = filteredPosts.slice(offset, offset + limit);
+    const hasMore = offset + limit < total;
+
+    return {
+      posts: paginatedPosts,
+      total,
+      hasMore,
+    };
+  }
+
+  // Generate RSS feed XML for crypto learning
+  async generateRSSFeed(): Promise<string> {
+    const posts = await this.getCryptoLearningPosts(20);
+    const lastBuildDate = new Date().toUTCString();
+
+    const rssItems = posts
+      .map((post) => {
+        const pubDate = new Date(post.publishedAt).toUTCString();
+        const categories = [post.category.name, ...post.tags].join(", ");
+
+        return `
+    <item>
+      <title><![CDATA[${post.title}]]></title>
+      <link>https://softchat.com/blog/${post.slug}</link>
+      <guid isPermaLink="true">https://softchat.com/blog/${post.slug}</guid>
+      <description><![CDATA[${post.excerpt}]]></description>
+      <content:encoded><![CDATA[${post.content}]]></content:encoded>
+      <pubDate>${pubDate}</pubDate>
+      <author><![CDATA[${post.author.name}]]></author>
+      <category><![CDATA[${categories}]]></category>
+      <difficulty>${post.difficulty}</difficulty>
+      <readingTime>${post.readingTime}</readingTime>
+      ${post.relatedAssets?.map((asset) => `<relatedAsset>${asset}</relatedAsset>`).join("\n      ") || ""}
+    </item>`;
+      })
+      .join("\n");
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SoftChat Crypto Learning Blog</title>
+    <link>https://softchat.com/blog</link>
+    <description>Educational content about cryptocurrency, blockchain technology, and trading strategies from SoftChat</description>
+    <language>en-us</language>
+    <lastBuildDate>${lastBuildDate}</lastBuildDate>
+    <atom:link href="https://softchat.com/api/blog/rss" rel="self" type="application/rss+xml"/>
+    <generator>SoftChat Blog System</generator>
+    <managingEditor>team@softchat.com (SoftChat Team)</managingEditor>
+    <webMaster>tech@softchat.com (SoftChat Tech)</webMaster>
+    <copyright>Copyright ${new Date().getFullYear()} SoftChat. All rights reserved.</copyright>
+    <category>Cryptocurrency</category>
+    <category>Blockchain</category>
+    <category>Trading</category>
+    <category>Education</category>
+    <ttl>60</ttl>
+    ${rssItems}
+  </channel>
+</rss>`;
+  }
+
+  // Get featured blog posts for crypto learning section
+  async getFeaturedCryptoContent(limit: number = 6): Promise<BlogPost[]> {
+    // Prioritize posts with high engagement and crypto-related content
+    const cryptoPosts = await this.getCryptoLearningPosts();
+
+    // Sort by a combination of likes, views, and recency
+    return cryptoPosts
+      .sort((a, b) => {
+        const scoreA =
+          a.likes * 2 +
+          a.views * 0.1 +
+          new Date(a.publishedAt).getTime() / 1000000000;
+        const scoreB =
+          b.likes * 2 +
+          b.views * 0.1 +
+          new Date(b.publishedAt).getTime() / 1000000000;
+        return scoreB - scoreA;
+      })
+      .slice(0, limit);
   }
 }
 

@@ -571,6 +571,138 @@ export class CryptoService {
       };
     });
   }
+
+  // P2P Marketplace methods
+  async getP2POffers(filters?: {
+    asset?: string;
+    fiatCurrency?: string;
+    type?: string;
+    paymentMethod?: string;
+    minAmount?: number;
+    maxAmount?: number;
+  }) {
+    try {
+      // Mock P2P offers data
+      const mockOffers = [
+        {
+          id: "1",
+          type: "SELL",
+          asset: "BTC",
+          fiatCurrency: "USD",
+          price: 43250.5,
+          minAmount: 100,
+          maxAmount: 5000,
+          totalAmount: 10000,
+          availableAmount: 8500,
+          paymentMethods: [
+            { id: "bank", name: "Bank Transfer", icon: "Building" },
+            { id: "paypal", name: "PayPal", icon: "CreditCard" },
+          ],
+          terms: "Fast and secure transaction. Payment within 15 minutes.",
+          trader: {
+            id: "trader1",
+            username: "CryptoKing",
+            completedTrades: 127,
+            successRate: 98.5,
+            avgResponseTime: "2 min",
+            isVerified: true,
+            rating: 4.9,
+          },
+          createdAt: "2024-01-15T10:00:00Z",
+          status: "ACTIVE",
+        },
+        {
+          id: "2",
+          type: "BUY",
+          asset: "ETH",
+          fiatCurrency: "EUR",
+          price: 2650.75,
+          minAmount: 50,
+          maxAmount: 2000,
+          totalAmount: 5000,
+          availableAmount: 5000,
+          paymentMethods: [
+            { id: "wise", name: "Wise", icon: "Globe" },
+            { id: "revolut", name: "Revolut", icon: "Smartphone" },
+          ],
+          terms: "Instant payment required. Excellent rates.",
+          trader: {
+            id: "trader2",
+            username: "EthTrader",
+            completedTrades: 89,
+            successRate: 97.2,
+            avgResponseTime: "5 min",
+            isVerified: true,
+            rating: 4.7,
+          },
+          createdAt: "2024-01-15T09:30:00Z",
+          status: "ACTIVE",
+        },
+      ];
+
+      let filteredOffers = mockOffers;
+
+      if (filters?.asset) {
+        filteredOffers = filteredOffers.filter(
+          (offer) => offer.asset === filters.asset,
+        );
+      }
+      if (filters?.fiatCurrency) {
+        filteredOffers = filteredOffers.filter(
+          (offer) => offer.fiatCurrency === filters.fiatCurrency,
+        );
+      }
+      if (filters?.type) {
+        filteredOffers = filteredOffers.filter(
+          (offer) => offer.type === filters.type,
+        );
+      }
+
+      return filteredOffers;
+    } catch (error) {
+      console.error("Error loading P2P offers:", error);
+      throw new Error("Failed to load P2P offers");
+    }
+  }
+
+  async createP2POffer(offerData: any) {
+    try {
+      // Mock creation - in real app would call API
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return {
+        id: Date.now().toString(),
+        ...offerData,
+        status: "ACTIVE",
+        createdAt: new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error("Error creating P2P offer:", error);
+      throw new Error("Failed to create P2P offer");
+    }
+  }
+
+  async getP2PTrades(userId?: string) {
+    try {
+      // Mock user trades
+      return [
+        {
+          id: "trade1",
+          offerId: "1",
+          type: "SELL",
+          asset: "BTC",
+          amount: 0.1,
+          fiatAmount: 4325,
+          fiatCurrency: "USD",
+          status: "COMPLETED",
+          createdAt: "2024-01-14T15:30:00Z",
+          completedAt: "2024-01-14T15:45:00Z",
+        },
+      ];
+    } catch (error) {
+      console.error("Error loading P2P trades:", error);
+      throw new Error("Failed to load P2P trades");
+    }
+  }
 }
 
 // Export singleton instance

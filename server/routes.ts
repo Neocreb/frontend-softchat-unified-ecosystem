@@ -9,6 +9,236 @@ import {
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Blog RSS Feed endpoint
+  app.get("/api/blog/rss", async (req, res) => {
+    try {
+      // Mock RSS feed XML for crypto learning blog
+      const currentDate = new Date().toUTCString();
+
+      const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SoftChat Crypto Learning Blog</title>
+    <link>https://softchat.com/blog</link>
+    <description>Educational content about cryptocurrency, blockchain technology, and trading strategies from SoftChat</description>
+    <language>en-us</language>
+    <lastBuildDate>${currentDate}</lastBuildDate>
+    <atom:link href="https://softchat.com/api/blog/rss" rel="self" type="application/rss+xml"/>
+    <generator>SoftChat Blog System</generator>
+    <managingEditor>team@softchat.com (SoftChat Team)</managingEditor>
+    <webMaster>tech@softchat.com (SoftChat Tech)</webMaster>
+    <copyright>Copyright ${new Date().getFullYear()} SoftChat. All rights reserved.</copyright>
+    <category>Cryptocurrency</category>
+    <category>Blockchain</category>
+    <category>Trading</category>
+    <category>Education</category>
+    <ttl>60</ttl>
+
+    <item>
+      <title><![CDATA[Understanding Bitcoin: A Beginner's Guide to Digital Gold]]></title>
+      <link>https://softchat.com/blog/understanding-bitcoin-beginners-guide</link>
+      <guid isPermaLink="true">https://softchat.com/blog/understanding-bitcoin-beginners-guide</guid>
+      <description><![CDATA[Learn the fundamentals of Bitcoin, how it works, and why it's considered digital gold in the cryptocurrency world.]]></description>
+      <pubDate>Mon, 15 Jan 2024 10:00:00 GMT</pubDate>
+      <author><![CDATA[Sarah Chen]]></author>
+      <category><![CDATA[Crypto Education, Bitcoin, Cryptocurrency, Blockchain, Beginner]]></category>
+      <difficulty>BEGINNER</difficulty>
+      <readingTime>8</readingTime>
+      <relatedAsset>BTC</relatedAsset>
+    </item>
+
+    <item>
+      <title><![CDATA[Advanced Trading Patterns: Mastering Technical Analysis]]></title>
+      <link>https://softchat.com/blog/advanced-trading-patterns-technical-analysis</link>
+      <guid isPermaLink="true">https://softchat.com/blog/advanced-trading-patterns-technical-analysis</guid>
+      <description><![CDATA[Dive deep into advanced technical analysis patterns that professional traders use to identify market opportunities.]]></description>
+      <pubDate>Fri, 12 Jan 2024 14:30:00 GMT</pubDate>
+      <author><![CDATA[Marcus Rodriguez]]></author>
+      <category><![CDATA[Trading Strategies, Trading, Technical Analysis, Chart Patterns, Advanced]]></category>
+      <difficulty>ADVANCED</difficulty>
+      <readingTime>12</readingTime>
+      <relatedAsset>BTC</relatedAsset>
+      <relatedAsset>ETH</relatedAsset>
+      <relatedAsset>ADA</relatedAsset>
+    </item>
+
+    <item>
+      <title><![CDATA[DeFi Yield Farming: Opportunities and Risks]]></title>
+      <link>https://softchat.com/blog/defi-yield-farming-opportunities-risks</link>
+      <guid isPermaLink="true">https://softchat.com/blog/defi-yield-farming-opportunities-risks</guid>
+      <description><![CDATA[Explore the world of decentralized finance yield farming, understanding both the potential rewards and associated risks.]]></description>
+      <pubDate>Wed, 10 Jan 2024 09:15:00 GMT</pubDate>
+      <author><![CDATA[Emma Thompson]]></author>
+      <category><![CDATA[DeFi Insights, DeFi, Yield Farming, Passive Income, Risk Management]]></category>
+      <difficulty>INTERMEDIATE</difficulty>
+      <readingTime>10</readingTime>
+      <relatedAsset>ETH</relatedAsset>
+      <relatedAsset>UNI</relatedAsset>
+      <relatedAsset>AAVE</relatedAsset>
+    </item>
+
+    <item>
+      <title><![CDATA[Ethereum 2.0: The Future of Smart Contracts]]></title>
+      <link>https://softchat.com/blog/ethereum-2-future-smart-contracts</link>
+      <guid isPermaLink="true">https://softchat.com/blog/ethereum-2-future-smart-contracts</guid>
+      <description><![CDATA[Explore the improvements and benefits that Ethereum 2.0 brings to the smart contract ecosystem.]]></description>
+      <pubDate>Thu, 03 Jan 2024 13:30:00 GMT</pubDate>
+      <author><![CDATA[Sarah Chen]]></author>
+      <category><![CDATA[Crypto Education, Ethereum, Smart Contracts, Blockchain, Technology]]></category>
+      <difficulty>INTERMEDIATE</difficulty>
+      <readingTime>11</readingTime>
+      <relatedAsset>ETH</relatedAsset>
+    </item>
+
+    <item>
+      <title><![CDATA[Platform Update: New AI-Powered Trading Features]]></title>
+      <link>https://softchat.com/blog/platform-update-ai-powered-trading-features</link>
+      <guid isPermaLink="true">https://softchat.com/blog/platform-update-ai-powered-trading-features</guid>
+      <description><![CDATA[Discover our latest AI-powered trading features designed to help you make smarter investment decisions.]]></description>
+      <pubDate>Fri, 05 Jan 2024 11:20:00 GMT</pubDate>
+      <author><![CDATA[Alex Johnson]]></author>
+      <category><![CDATA[Platform Updates, Platform Update, AI, Trading, New Features]]></category>
+      <difficulty>BEGINNER</difficulty>
+      <readingTime>6</readingTime>
+    </item>
+  </channel>
+</rss>`;
+
+      res.set({
+        "Content-Type": "application/rss+xml; charset=utf-8",
+        "Cache-Control": "public, max-age=3600", // Cache for 1 hour
+      });
+
+      res.send(rssXml);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to generate RSS feed" });
+    }
+  });
+
+  // Blog API endpoints for frontend consumption
+  app.get("/api/blog/posts", async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 10;
+      const category = req.query.category as string;
+      const difficulty = req.query.difficulty as string;
+
+      // Mock blog posts data
+      const mockBlogPosts = [
+        {
+          id: "1",
+          title: "Understanding Bitcoin: A Beginner's Guide to Digital Gold",
+          slug: "understanding-bitcoin-beginners-guide",
+          excerpt:
+            "Learn the fundamentals of Bitcoin, how it works, and why it's considered digital gold in the cryptocurrency world.",
+          author: {
+            id: "1",
+            name: "Sarah Chen",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&q=80&w=150",
+            bio: "Crypto educator and blockchain enthusiast with 5+ years of experience",
+          },
+          publishedAt: "2024-01-15T10:00:00Z",
+          tags: ["Bitcoin", "Cryptocurrency", "Blockchain", "Beginner"],
+          category: {
+            id: "1",
+            name: "Crypto Education",
+            slug: "crypto-education",
+            color: "bg-blue-500",
+          },
+          featuredImage:
+            "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&q=80&w=800",
+          readingTime: 8,
+          likes: 245,
+          views: 1520,
+          difficulty: "BEGINNER",
+          relatedAssets: ["BTC"],
+        },
+        {
+          id: "2",
+          title: "Advanced Trading Patterns: Mastering Technical Analysis",
+          slug: "advanced-trading-patterns-technical-analysis",
+          excerpt:
+            "Dive deep into advanced technical analysis patterns that professional traders use to identify market opportunities.",
+          author: {
+            id: "2",
+            name: "Marcus Rodriguez",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150",
+            bio: "Professional trader with 10+ years of experience in crypto markets",
+          },
+          publishedAt: "2024-01-12T14:30:00Z",
+          tags: ["Trading", "Technical Analysis", "Chart Patterns", "Advanced"],
+          category: {
+            id: "2",
+            name: "Trading Strategies",
+            slug: "trading-strategies",
+            color: "bg-green-500",
+          },
+          featuredImage:
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=800",
+          readingTime: 12,
+          likes: 189,
+          views: 987,
+          difficulty: "ADVANCED",
+          relatedAssets: ["BTC", "ETH", "ADA"],
+        },
+        {
+          id: "3",
+          title: "DeFi Yield Farming: Opportunities and Risks",
+          slug: "defi-yield-farming-opportunities-risks",
+          excerpt:
+            "Explore the world of decentralized finance yield farming, understanding both the potential rewards and associated risks.",
+          author: {
+            id: "3",
+            name: "Emma Thompson",
+            avatar:
+              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150",
+            bio: "DeFi researcher and protocol analyst",
+          },
+          publishedAt: "2024-01-10T09:15:00Z",
+          tags: ["DeFi", "Yield Farming", "Passive Income", "Risk Management"],
+          category: {
+            id: "3",
+            name: "DeFi Insights",
+            slug: "defi-insights",
+            color: "bg-purple-500",
+          },
+          featuredImage:
+            "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=800",
+          readingTime: 10,
+          likes: 167,
+          views: 756,
+          difficulty: "INTERMEDIATE",
+          relatedAssets: ["ETH", "UNI", "AAVE"],
+        },
+      ];
+
+      let filteredPosts = mockBlogPosts;
+
+      if (category) {
+        filteredPosts = filteredPosts.filter(
+          (post) => post.category.slug === category,
+        );
+      }
+
+      if (difficulty) {
+        filteredPosts = filteredPosts.filter(
+          (post) => post.difficulty === difficulty,
+        );
+      }
+
+      const posts = filteredPosts.slice(0, limit);
+
+      res.json({
+        posts,
+        total: filteredPosts.length,
+        hasMore: filteredPosts.length > limit,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch blog posts" });
+    }
+  });
+
   // Auth routes
   app.post("/api/auth/signup", async (req, res) => {
     try {
