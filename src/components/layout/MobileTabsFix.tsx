@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Component to add styles for better mobile tab handling
 const MobileTabsFix: React.FC = () => {
-  return (
-    <style jsx global>{`
+  useEffect(() => {
+    // Add global styles for mobile tab fixes
+    const styleElement = document.createElement("style");
+    styleElement.textContent = `
       /* Ensure tab icons and text are fully visible on mobile */
       @media (max-width: 768px) {
         [role="tablist"] {
@@ -13,39 +15,37 @@ const MobileTabsFix: React.FC = () => {
 
         [role="tab"] {
           flex-shrink: 0;
-          min-width: 70px;
+          min-width: 70px !important;
           white-space: nowrap;
         }
 
-        /* Fix for tab content being cut off */
-        .tab-trigger-content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 4px;
-          padding: 8px 12px;
-          min-height: 60px;
-          justify-content: center;
+        /* Fix video page layout */
+        .video-page-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 10;
         }
 
-        /* Ensure tab icons are fully visible */
-        .tab-icon {
-          width: 16px;
-          height: 16px;
-          flex-shrink: 0;
-        }
-
-        /* Ensure tab text is fully visible */
-        .tab-text {
-          font-size: 10px;
-          line-height: 1;
-          text-align: center;
-          white-space: nowrap;
-          overflow: visible;
+        /* Ensure mobile navigation doesn't interfere with videos */
+        .video-full-screen {
+          padding-bottom: 80px;
         }
       }
-    `}</style>
-  );
+    `;
+
+    document.head.appendChild(styleElement);
+
+    return () => {
+      if (document.head.contains(styleElement)) {
+        document.head.removeChild(styleElement);
+      }
+    };
+  }, []);
+
+  return null;
 };
 
 export default MobileTabsFix;
