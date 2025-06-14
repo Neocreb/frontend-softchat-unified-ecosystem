@@ -27,24 +27,61 @@ const Explore = () => {
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         <Tabs defaultValue="discover" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="discover" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">Discover</span>
-            </TabsTrigger>
-            <TabsTrigger value="trending" className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              <span className="hidden sm:inline">Trending</span>
-            </TabsTrigger>
-            <TabsTrigger value="hashtags" className="flex items-center gap-2">
-              <Hash className="w-4 h-4" />
-              <span className="hidden sm:inline">Hashtags</span>
-            </TabsTrigger>
-            <TabsTrigger value="explore" className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              <span className="hidden sm:inline">Explore</span>
-            </TabsTrigger>
-          </TabsList>
+          {/* Mobile-friendly tabs */}
+          <div className="sm:hidden">
+            <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
+              <TabsTrigger
+                value="discover"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              >
+                <Users className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Discover</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="trending"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              >
+                <TrendingUp className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Trending</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="hashtags"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              >
+                <Hash className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Tags</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="explore"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              >
+                <Globe className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Explore</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Desktop tabs */}
+          <div className="hidden sm:block">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="discover" className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                <span>Discover</span>
+              </TabsTrigger>
+              <TabsTrigger value="trending" className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4" />
+                <span>Trending</span>
+              </TabsTrigger>
+              <TabsTrigger value="hashtags" className="flex items-center gap-2">
+                <Hash className="w-4 h-4" />
+                <span>Hashtags</span>
+              </TabsTrigger>
+              <TabsTrigger value="explore" className="flex items-center gap-2">
+                <Globe className="w-4 h-4" />
+                <span>Explore</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="discover" className="space-y-6 mt-6">
             {/* AI Powered Recommendations */}
