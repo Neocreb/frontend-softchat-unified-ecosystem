@@ -525,7 +525,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
       {/* Content Container */}
       <div className="absolute inset-0 flex">
         {/* Left side - content */}
-        <div className="flex-1 flex flex-col justify-end p-3 sm:p-4 pb-20 sm:pb-24 space-y-2 sm:space-y-3 max-w-[calc(100%-5rem)] sm:max-w-[calc(100%-6rem)]">
+        <div className="flex-1 flex flex-col justify-end p-3 sm:p-4 pb-24 sm:pb-28 space-y-2 sm:space-y-3 max-w-[calc(100%-4rem)] sm:max-w-[calc(100%-6rem)]">
           {/* User info */}
           <div className="flex items-center gap-2 sm:gap-3">
             <Avatar className="w-8 h-8 sm:w-10 sm:h-10 border-2 border-white/20 flex-shrink-0">
