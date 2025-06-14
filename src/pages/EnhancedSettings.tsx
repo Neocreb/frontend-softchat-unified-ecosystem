@@ -2068,17 +2068,12 @@ const EnhancedSettings = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label>Dark Mode</Label>
+                      <Label>Theme</Label>
                       <p className="text-sm text-muted-foreground">
-                        Toggle dark/light theme
+                        Choose your preferred theme (Light, Dark, or System)
                       </p>
                     </div>
-                    <Switch
-                      checked={theme === "dark"}
-                      onCheckedChange={(checked) =>
-                        setTheme(checked ? "dark" : "light")
-                      }
-                    />
+                    <ThemeToggle />
                   </div>
 
                   <div className="flex items-center justify-between">
