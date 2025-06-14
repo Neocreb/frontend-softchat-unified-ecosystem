@@ -432,12 +432,12 @@ export function PartnershipSystem() {
                   {activities.slice(0, 5).map((activity) => (
                     <div
                       key={activity.id}
-                      className="flex items-center justify-between p-3 border rounded-lg"
+                      className="flex items-start justify-between p-3 border rounded-lg gap-3"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
                         <div
                           className={cn(
-                            "w-2 h-2 rounded-full",
+                            "w-2 h-2 rounded-full mt-2 flex-shrink-0",
                             activity.status === "completed"
                               ? "bg-green-500"
                               : activity.status === "pending"
@@ -445,27 +445,31 @@ export function PartnershipSystem() {
                                 : "bg-red-500",
                           )}
                         />
-                        <div>
-                          <p className="font-medium text-sm">{activity.user}</p>
-                          <p className="text-xs text-muted-foreground capitalize">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium text-sm truncate">
+                            {activity.user}
+                          </p>
+                          <p className="text-xs text-muted-foreground capitalize break-words">
                             {activity.type} • {activity.date}
                           </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-medium text-green-600">
+                      <div className="text-right flex-shrink-0 space-y-1">
+                        <p className="font-medium text-green-600 text-sm">
                           +${activity.amount}
                         </p>
-                        <Badge
-                          variant={
-                            activity.status === "completed"
-                              ? "default"
-                              : "secondary"
-                          }
-                          className="text-xs"
-                        >
-                          {activity.status}
-                        </Badge>
+                        <div>
+                          <Badge
+                            variant={
+                              activity.status === "completed"
+                                ? "default"
+                                : "secondary"
+                            }
+                            className="text-xs"
+                          >
+                            {activity.status}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   ))}
