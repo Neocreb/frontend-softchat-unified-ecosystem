@@ -1,23 +1,24 @@
-
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const NewsletterSection = () => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
-      toast.success("You've been added to our waitlist! We'll be in touch soon.");
-      setEmail('');
-      setName('');
+      toast.success(
+        "You've been added to our waitlist! We'll be in touch soon.",
+      );
+      setEmail("");
+      setName("");
       setIsSubmitting(false);
     }, 1000);
   };
@@ -32,11 +33,16 @@ const NewsletterSection = () => {
                 Join the Waitlist
               </h2>
               <p className="text-softchat-100 max-w-lg mx-auto">
-                Be among the first to experience the future of social, commerce, and crypto on Softchat. Early users will receive exclusive perks and rewards.
+                Be among the first to experience the future of social, commerce,
+                and crypto on Softchat. Early users will receive exclusive perks
+                and rewards.
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 max-w-md mx-auto"
+            >
               <div>
                 <Input
                   type="text"
@@ -57,12 +63,12 @@ const NewsletterSection = () => {
                   className="w-full bg-white/90 border-0 focus:ring-2 focus:ring-white"
                 />
               </div>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-white text-softchat-700 hover:bg-softchat-50"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Submitting...' : 'Notify Me'}
+                {isSubmitting ? "Submitting..." : "Notify Me"}
               </Button>
               <p className="text-xs text-center text-softchat-100 mt-4">
                 We respect your privacy. Unsubscribe at any time.
