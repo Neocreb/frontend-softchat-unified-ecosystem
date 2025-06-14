@@ -648,7 +648,7 @@ export function PartnershipSystem() {
 
         {/* Partnerships Tab */}
         <TabsContent value="partnerships" className="space-y-6">
-          <div className="flex justify-between items-center">
+          <div className={'grid grid-cols-1 lg:grid-cols-2 gap-6"'}>
             <h3 className="text-lg font-semibold">Partnership Programs</h3>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
