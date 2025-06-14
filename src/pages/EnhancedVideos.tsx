@@ -688,12 +688,12 @@ const EnhancedVideos: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white overflow-hidden">
+    <div className="h-screen bg-black text-white relative overflow-hidden w-full max-w-full">
       <Helmet>
-        <title>Videos - SoftChat</title>
+        <title>Videos - Softchat</title>
         <meta
           name="description"
-          content="Discover and create amazing short videos on SoftChat"
+          content="Watch and create engaging videos on Softchat"
         />
       </Helmet>
 
