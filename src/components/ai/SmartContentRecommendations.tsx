@@ -290,10 +290,10 @@ export function SmartContentRecommendations({
                   )}
                 </div>
 
-                <CardContent className="p-4">
-                  <div className="space-y-3">
+                <CardContent className="p-4 h-auto">
+                  <div className="space-y-3 min-h-0">
                     {/* Title */}
-                    <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-purple-600 transition-colors">
+                    <h3 className="font-semibold text-sm leading-tight line-clamp-2 group-hover:text-purple-600 transition-colors break-words">
                       {content.title}
                     </h3>
 
