@@ -338,11 +338,7 @@ export default function EnhancedCrypto() {
                   <p className="text-sm md:text-base text-gray-600">
                     Real-time market data and analytics
                   </p>
-                  <div className="flex items-center gap-1 text-xs text-green-600">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span>Live</span>
-                  </div>
-                  <ApiStatusIndicator />
+                  <ApiStatusIndicator showDetails={true} />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
                   Last updated: {lastUpdated.toLocaleTimeString()}
