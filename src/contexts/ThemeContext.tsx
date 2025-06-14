@@ -23,16 +23,19 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Initialize theme state with fallback
+  // Initialize theme state with fallback and error handling
   const [theme, setTheme] = useState<Theme>(() => {
     try {
       // Get saved theme from localStorage or default to system
-      if (typeof window !== "undefined") {
+      if (typeof window !== "undefined" && window.localStorage) {
         const savedTheme = localStorage.getItem("theme") as Theme;
-        return savedTheme || "system";
+        if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
+          return savedTheme;
+        }
       }
       return "system";
-    } catch {
+    } catch (error) {
+      console.warn("Failed to read theme from localStorage:", error);
       return "system";
     }
   });
