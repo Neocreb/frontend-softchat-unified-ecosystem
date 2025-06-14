@@ -8,10 +8,9 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-import {
-  SafeThemeProvider,
-  SafeAuthProvider,
-} from "./contexts/SafeContextProviders";
+import { SafeThemeProvider, SafeAuthProvider } from "./contexts/SafeContextProviders";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import SafeThemeProvider as OriginalSafeThemeProvider from "./contexts/SafeThemeProvider";
 import ReactDiagnostic from "./components/debug/ReactDiagnostic";
 import MinimalTest from "./components/debug/MinimalTest";
 import ReactContextTest from "./components/debug/ReactContextTest";
@@ -77,23 +76,13 @@ const queryClient = new QueryClient({
   },
 });
 
-// Fallback auth hook for testing
-const useFallbackAuth = () => {
-  return {
-    isAuthenticated: true, // For testing purposes
-    isLoading: false,
-    isAdmin: () => false,
-  };
-};
-
 // Protected route component - now properly typed
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  // Use fallback auth for now
-  const { isAuthenticated, isLoading } = useFallbackAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -123,7 +112,7 @@ interface AdminRouteProps {
 }
 
 const AdminRoute = ({ children }: AdminRouteProps) => {
-  const { isAuthenticated, isLoading, isAdmin } = useFallbackAuth();
+  const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
   if (isLoading) {
     return (
@@ -149,7 +138,7 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
 
 // App routes component that uses auth context
 const AppRoutes = () => {
-  const { isAuthenticated, isLoading } = useFallbackAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   // If still loading auth state, show splash screen
   if (isLoading) {
@@ -285,8 +274,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <SafeThemeProvider>
-          <SafeAuthProvider>
+        <OriginalSafeThemeProvider>
+          <AuthProvider>
             <AccessibilityProvider>
               <TooltipProvider>
                 <AppRoutes />
@@ -309,8 +298,8 @@ const App = () => {
                 {process.env.NODE_ENV === "development" && <ReactContextTest />}
               </TooltipProvider>
             </AccessibilityProvider>
-          </SafeAuthProvider>
-        </SafeThemeProvider>
+          </AuthProvider>
+        </OriginalSafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
