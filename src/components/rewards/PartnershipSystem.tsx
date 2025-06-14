@@ -691,20 +691,24 @@ export function PartnershipSystem() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium mb-1">Requirements</p>
+                    <p className="text-sm font-medium mb-2">Requirements</p>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       {partnership.requirements.map((req, index) => (
-                        <li key={index}>• {req}</li>
+                        <li key={index} className="break-words leading-relaxed">
+                          • {req}
+                        </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-1">Benefits</p>
+                    <p className="text-sm font-medium mb-2">Benefits</p>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       {partnership.benefits.map((benefit, index) => (
-                        <li key={index}>• {benefit}</li>
+                        <li key={index} className="break-words leading-relaxed">
+                          • {benefit}
+                        </li>
                       ))}
                     </ul>
                   </div>
