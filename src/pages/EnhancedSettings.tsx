@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -2067,17 +2068,12 @@ const EnhancedSettings = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label>Dark Mode</Label>
+                      <Label>Theme</Label>
                       <p className="text-sm text-muted-foreground">
-                        Toggle dark/light theme
+                        Choose your preferred theme (Light, Dark, or System)
                       </p>
                     </div>
-                    <Switch
-                      checked={theme === "dark"}
-                      onCheckedChange={(checked) =>
-                        setTheme(checked ? "dark" : "light")
-                      }
-                    />
+                    <ThemeToggle />
                   </div>
 
                   <div className="flex items-center justify-between">
