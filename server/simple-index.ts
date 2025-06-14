@@ -1,5 +1,6 @@
 import express from "express";
 import { createServer } from "http";
+import { registerRoutes } from "./routes";
 
 console.log("Starting TypeScript server...");
 
@@ -7,13 +8,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Register API routes
+registerRoutes(app);
+
 // Simple test route
 app.get("/", (req, res) => {
-  res.send("TypeScript server is working!");
-});
-
-app.get("/api/test", (req, res) => {
-  res.json({ message: "API is working!" });
+  res.send("TypeScript server with routes is working!");
 });
 
 const server = createServer(app);
