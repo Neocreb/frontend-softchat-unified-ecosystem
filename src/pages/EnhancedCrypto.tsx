@@ -47,6 +47,7 @@ import {
 } from "@/types/crypto";
 import { BlogPost } from "@/types/blog";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
 import CryptoDetailModal from "@/components/crypto/CryptoDetailModal";
 import { cn } from "@/lib/utils";
@@ -266,7 +267,7 @@ export default function EnhancedCrypto() {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto p-1">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-auto p-1">
                 <TabsTrigger
                   value="overview"
                   className="text-xs sm:text-sm py-2 px-2 sm:px-4"
@@ -278,6 +279,12 @@ export default function EnhancedCrypto() {
                   className="text-xs sm:text-sm py-2 px-2 sm:px-4"
                 >
                   Trading
+                </TabsTrigger>
+                <TabsTrigger
+                  value="p2p"
+                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
+                >
+                  P2P
                 </TabsTrigger>
                 <TabsTrigger
                   value="portfolio"
@@ -775,6 +782,14 @@ export default function EnhancedCrypto() {
                     </div>
                   </CardContent>
                 </Card>
+              </TabsContent>
+
+              {/* P2P Tab */}
+              <TabsContent
+                value="p2p"
+                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
+              >
+                <EnhancedP2PMarketplace />
               </TabsContent>
 
               {/* Portfolio Tab */}

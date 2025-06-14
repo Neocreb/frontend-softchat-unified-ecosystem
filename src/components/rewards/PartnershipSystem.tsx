@@ -264,71 +264,77 @@ export function PartnershipSystem() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Referrals</p>
-                <p className="text-2xl font-bold">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
+                  Total Referrals
+                </p>
+                <p className="text-2xl font-bold leading-tight">
                   {referralData.totalReferrals}
                 </p>
-                <p className="text-xs text-green-600">+12% this month</p>
+                <p className="text-xs text-green-600 mt-1">+12% this month</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500" />
+              <Users className="h-8 w-8 text-blue-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Earnings</p>
-                <p className="text-2xl font-bold">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
+                  Total Earnings
+                </p>
+                <p className="text-2xl font-bold leading-tight">
                   ${referralData.totalEarnings}
                 </p>
-                <p className="text-xs text-green-600">
+                <p className="text-xs text-green-600 mt-1 break-words">
                   +${referralData.monthlyEarnings} this month
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-500" />
+              <DollarSign className="h-8 w-8 text-green-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Conversion Rate</p>
-                <p className="text-2xl font-bold">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
+                  Conversion Rate
+                </p>
+                <p className="text-2xl font-bold leading-tight">
                   {referralData.conversionRate}%
                 </p>
-                <p className="text-xs text-green-600">Above average</p>
+                <p className="text-xs text-green-600 mt-1">Above average</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-500" />
+              <TrendingUp className="h-8 w-8 text-orange-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
                   Partnership Tier
                 </p>
                 <Badge
                   className={cn(
-                    "text-sm font-medium",
+                    "text-sm font-medium mt-1",
                     getTierColor(referralData.tier),
                   )}
                 >
                   {referralData.tier}
                 </Badge>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-2 break-words">
                   {referralData.tierProgress}% to next tier
                 </p>
               </div>
-              <Crown className="h-8 w-8 text-yellow-500" />
+              <Crown className="h-8 w-8 text-yellow-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -642,7 +648,7 @@ export function PartnershipSystem() {
 
         {/* Partnerships Tab */}
         <TabsContent value="partnerships" className="space-y-6">
-          <div className="flex justify-between items-center">
+          <div className={'grid grid-cols-1 lg:grid-cols-2 gap-6"'}>
             <h3 className="text-lg font-semibold">Partnership Programs</h3>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
@@ -654,11 +660,13 @@ export function PartnershipSystem() {
             {partnerships.map((partnership) => (
               <Card key={partnership.id}>
                 <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{partnership.icon}</span>
-                      <div>
-                        <CardTitle className="text-base">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <span className="text-2xl flex-shrink-0">
+                        {partnership.icon}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <CardTitle className="text-base leading-tight truncate">
                           {partnership.name}
                         </CardTitle>
                         <Badge
@@ -667,36 +675,40 @@ export function PartnershipSystem() {
                               ? "default"
                               : "secondary"
                           }
-                          className="text-xs"
+                          className="text-xs mt-1"
                         >
                           {partnership.status}
                         </Badge>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-green-600">
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-lg font-bold text-green-600 leading-tight">
                         {partnership.commission}%
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground mt-1">
                         commission
                       </p>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-4">
                   <div>
-                    <p className="text-sm font-medium mb-1">Requirements</p>
+                    <p className="text-sm font-medium mb-2">Requirements</p>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       {partnership.requirements.map((req, index) => (
-                        <li key={index}>• {req}</li>
+                        <li key={index} className="break-words leading-relaxed">
+                          • {req}
+                        </li>
                       ))}
                     </ul>
                   </div>
                   <div>
-                    <p className="text-sm font-medium mb-1">Benefits</p>
+                    <p className="text-sm font-medium mb-2">Benefits</p>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       {partnership.benefits.map((benefit, index) => (
-                        <li key={index}>• {benefit}</li>
+                        <li key={index} className="break-words leading-relaxed">
+                          • {benefit}
+                        </li>
                       ))}
                     </ul>
                   </div>
