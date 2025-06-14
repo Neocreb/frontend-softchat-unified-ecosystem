@@ -644,63 +644,81 @@ const EnhancedSettings = () => {
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Users className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Profile</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Profile
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="professional"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Briefcase className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Work</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Work
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="appearance"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Palette className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Appearance</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Appearance
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="financial"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <DollarSign className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Money</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Money
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="notifications"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Bell className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Alerts</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Alerts
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="privacy"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Eye className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Privacy</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Privacy
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="security"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Lock className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Security</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Security
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="data"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Database className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">Data</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Data
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="ai"
                   className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
                 >
                   <Zap className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-[10px] leading-tight whitespace-nowrap">AI</span>
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    AI
+                  </span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -2217,13 +2235,6 @@ const EnhancedSettings = () => {
             </Card>
 
             {/* App Preferences */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Monitor className="w-5 h-5" />
-
-            </Card>
-
             {/* Data Management */}
             <Card>
               <CardHeader>
