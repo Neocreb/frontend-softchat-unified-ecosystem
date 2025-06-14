@@ -28,7 +28,6 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
-import Profile from "./pages/Profile";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
@@ -43,7 +42,6 @@ import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
-import Settings from "./pages/Settings";
 import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
@@ -190,7 +188,6 @@ const AppRoutes = () => {
         <Route path="profile" element={<EnhancedProfile />} />
         <Route path="profile/:username" element={<EnhancedProfile />} />
         <Route path="user/:username" element={<EnhancedProfile />} />
-        <Route path="profile/legacy" element={<Profile />} />
         <Route path="demo/profiles" element={<ProfileDemo />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
@@ -214,7 +211,6 @@ const AppRoutes = () => {
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<EnhancedSettings />} />
-        <Route path="settings/legacy" element={<Settings />} />
         <Route path="analytics" element={<AnalyticsDashboard />} />
         <Route path="data" element={<DataManagement />} />
         <Route path="achievements" element={<GamificationSystem />} />
