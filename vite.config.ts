@@ -16,6 +16,10 @@ export default defineConfig({
       "@shared": path.resolve(__dirname, "shared"),
       "@assets": path.resolve(__dirname, "attached_assets"),
     },
+    dedupe: ["react", "react-dom"],
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-router-dom"],
   },
   build: {
     outDir: "dist",
@@ -23,8 +27,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor chunks
-          react: ["react", "react-dom"],
+          // Vendor chunks - remove react manual chunking to avoid issues
           router: ["react-router-dom"],
           ui: [
             "@radix-ui/react-dialog",
