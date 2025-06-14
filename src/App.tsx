@@ -8,8 +8,6 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import OriginalSafeThemeProvider from "./contexts/SafeThemeProvider";
 
 import {
   AccessibilityProvider,
