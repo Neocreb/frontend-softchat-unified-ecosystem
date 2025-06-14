@@ -9,9 +9,9 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import {
-  FallbackThemeProvider,
-  FallbackAuthProvider,
-} from "./contexts/FallbackProviders";
+  SafeThemeProvider,
+  SafeAuthProvider,
+} from "./contexts/SafeContextProviders";
 import ReactDiagnostic from "./components/debug/ReactDiagnostic";
 import MinimalTest from "./components/debug/MinimalTest";
 import ReactContextTest from "./components/debug/ReactContextTest";
@@ -285,8 +285,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <FallbackThemeProvider>
-          <FallbackAuthProvider>
+        <SafeThemeProvider>
+          <SafeAuthProvider>
             <AccessibilityProvider>
               <TooltipProvider>
                 <AppRoutes />
@@ -309,8 +309,8 @@ const App = () => {
                 {process.env.NODE_ENV === "development" && <ReactContextTest />}
               </TooltipProvider>
             </AccessibilityProvider>
-          </FallbackAuthProvider>
-        </FallbackThemeProvider>
+          </SafeAuthProvider>
+        </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
