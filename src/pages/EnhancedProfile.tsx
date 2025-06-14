@@ -1138,7 +1138,41 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
                   >
                     <Users className="w-4 h-4 flex-shrink-0" />
-                    <span className="hidden sm:inline">About</span>
+                    <span className="text-[10px] leading-tight">About</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              {/* Desktop tabs */}
+              <div className="hidden sm:block">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger
+                    value="posts"
+                    className="flex items-center gap-2"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    <span>Posts</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="media"
+                    className="flex items-center gap-2"
+                  >
+                    <Camera className="h-4 w-4" />
+                    <span>Media</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="activity"
+                    className="flex items-center gap-2"
+                  >
+                    <TrendingUp className="h-4 w-4" />
+                    <span>Activity</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="about"
+                    className="flex items-center gap-2"
+                  >
+                    <Users className="h-4 w-4" />
+                    <span>About</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
