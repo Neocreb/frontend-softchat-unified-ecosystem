@@ -54,7 +54,7 @@ export default function Blog() {
     setIsLoading(true);
     try {
       const [postsData, categoriesData, statsData] = await Promise.all([
-        blogService.getBlogPosts(),
+        blogService.getBlogPosts({}),
         blogService.getCategories(),
         blogService.getBlogStats(),
       ]);
