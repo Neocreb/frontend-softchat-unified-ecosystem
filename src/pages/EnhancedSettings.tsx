@@ -1099,6 +1099,115 @@ const EnhancedSettings = () => {
             </Card>
           </TabsContent>
 
+          {/* Appearance Settings */}
+          <TabsContent value="appearance" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Palette className="w-5 h-5" />
+                  Appearance & Display
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Theme</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Choose your preferred theme (Light, Dark, or System)
+                      </p>
+                    </div>
+                    <ThemeToggle />
+                  </div>
+
+                  <Separator />
+
+                  <div>
+                    <Label>Font Size</Label>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Adjust text size for better readability
+                    </p>
+                    <Select value={fontSize} onValueChange={setFontSize}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="small">Small</SelectItem>
+                        <SelectItem value="medium">Medium (Default)</SelectItem>
+                        <SelectItem value="large">Large</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <Separator />
+
+                  <div>
+                    <Label>Language</Label>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Select your preferred language
+                    </p>
+                    <Select value={language} onValueChange={setLanguage}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">🇺🇸 English</SelectItem>
+                        <SelectItem value="es">🇪🇸 Español</SelectItem>
+                        <SelectItem value="fr">🇫🇷 Français</SelectItem>
+                        <SelectItem value="de">🇩🇪 Deutsch</SelectItem>
+                        <SelectItem value="zh">🇨🇳 中文</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <Separator />
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="autoPlayVideos">Auto-play Videos</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Automatically play videos in feed
+                      </p>
+                    </div>
+                    <Switch
+                      id="autoPlayVideos"
+                      checked={autoPlayVideos}
+                      onCheckedChange={setAutoPlayVideos}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="reducedMotion">Reduced Motion</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Minimize animations and transitions
+                      </p>
+                    </div>
+                    <Switch
+                      id="reducedMotion"
+                      checked={reducedMotion}
+                      onCheckedChange={setReducedMotion}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="highContrast">High Contrast</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Improve visibility with higher contrast
+                      </p>
+                    </div>
+                    <Switch
+                      id="highContrast"
+                      checked={highContrast}
+                      onCheckedChange={setHighContrast}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Professional Settings */}
           <TabsContent value="professional" className="space-y-6">
             {/* Freelance Profile */}
