@@ -1,22 +1,15 @@
 import {
   Cryptocurrency,
   TradingPair,
-  OrderBook,
-  Trade,
-  Order,
   Portfolio,
-  P2POffer,
-  P2PTrade,
-  StakingProduct,
-  StakingPosition,
-  DeFiPosition,
-  LaunchpadProject,
-  MarketData,
-  News,
-  Alert,
-  WatchlistItem,
   Transaction,
+  MarketData,
+  TradingSignal,
+  News,
   EducationContent,
+  DeFiProtocol,
+  NFTCollection,
+  StakingOption,
   Achievement,
   SocialTradingPost,
   ChartData,
@@ -32,16 +25,19 @@ const API_CACHE = new Map();
 const CACHE_DURATION = 30000; // 30 seconds
 const REQUEST_DELAY = 100; // 100ms between requests to avoid rate limiting
 
-// API failure tracking to completely disable API calls when they consistently fail
+// API failure tracking with automatic recovery
 let apiFailureCount = 0;
-const MAX_API_FAILURES = 3;
+const MAX_API_FAILURES = 5; // Increased tolerance
 let apiDisabled = false;
+let lastApiAttempt = 0;
+const API_RETRY_INTERVAL = 60000; // Retry every minute
 
 // Function to reset API status (useful for testing or manual recovery)
 export const resetApiStatus = () => {
   apiFailureCount = 0;
   apiDisabled = false;
-  console.log("API status reset - real API calls re-enabled");
+  lastApiAttempt = 0;
+  console.log("📊 CryptoService: API status reset - real API calls re-enabled");
 };
 
 // Function to get current API status
@@ -49,14 +45,23 @@ export const getApiStatus = () => ({
   failureCount: apiFailureCount,
   isDisabled: apiDisabled,
   maxFailures: MAX_API_FAILURES,
+  lastAttempt: lastApiAttempt,
+  nextRetry: lastApiAttempt + API_RETRY_INTERVAL,
 });
 
-// Helper function to make API requests with caching and rate limiting
+// Helper function to make API requests with improved error handling
 const fetchWithCache = async (url: string, cacheKey: string) => {
+  // Auto-recovery: try to re-enable API after interval
+  if (apiDisabled && Date.now() - lastApiAttempt > API_RETRY_INTERVAL) {
+    console.log("📊 CryptoService: Attempting API recovery...");
+    apiDisabled = false;
+    apiFailureCount = Math.max(0, apiFailureCount - 1); // Reduce failure count
+  }
+
   // If API is disabled due to repeated failures, return null immediately
   if (apiDisabled) {
     console.log(
-      "📊 CryptoService: Using simulated market data (API temporarily unavailable)",
+      "📊 CryptoService: Using simulated data (API temporarily unavailable)",
     );
     return null;
   }
@@ -71,22 +76,34 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
     // Add delay to prevent rate limiting
     await new Promise((resolve) => setTimeout(resolve, REQUEST_DELAY));
 
+    lastApiAttempt = Date.now();
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
     const response = await fetch(url, {
       method: "GET",
       headers: {
         Accept: "application/json",
+        "User-Agent": "SoftChat/1.0",
       },
       mode: "cors",
+      signal: controller.signal,
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
     const data = await response.json();
 
     // Reset failure count on successful request
-    apiFailureCount = 0;
+    if (apiFailureCount > 0) {
+      console.log("📊 CryptoService: API connection restored");
+      apiFailureCount = 0;
+    }
 
     // Cache the result
     API_CACHE.set(cacheKey, {
@@ -108,7 +125,7 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
     if (apiFailureCount >= MAX_API_FAILURES) {
       apiDisabled = true;
       console.warn(
-        `🚨 CryptoService: API disabled after ${MAX_API_FAILURES} failures. Switching to simulation mode for better user experience.`,
+        `🚨 CryptoService: API disabled after ${MAX_API_FAILURES} failures. Using simulation mode. Will retry in ${API_RETRY_INTERVAL / 1000}s.`,
       );
     }
 
@@ -118,29 +135,33 @@ const fetchWithCache = async (url: string, cacheKey: string) => {
       return cached.data;
     }
 
-    // Don't throw error to prevent cascading failures
+    // Return null to trigger fallback
     return null;
   }
 };
 
-// Transform CoinGecko data to our format
-const transformCoinGeckoData = (coinGeckoData: any[]): Cryptocurrency[] => {
-  return coinGeckoData.map((coin) => ({
+// Helper function to add delay
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Transform CoinGecko API data to our format
+const transformCoinGeckoData = (data: any[]): Cryptocurrency[] => {
+  return data.map((coin) => ({
     id: coin.id,
+    symbol: coin.symbol.toUpperCase(),
     name: coin.name,
-    symbol: coin.symbol,
+    image: coin.image,
     current_price: coin.current_price || 0,
     market_cap: coin.market_cap || 0,
-    market_cap_rank: coin.market_cap_rank || 0,
+    market_cap_rank: coin.market_cap_rank || 999,
     fully_diluted_valuation: coin.fully_diluted_valuation,
     total_volume: coin.total_volume || 0,
-    high_24h: coin.high_24h || coin.current_price,
-    low_24h: coin.low_24h || coin.current_price,
+    high_24h: coin.high_24h || coin.current_price || 0,
+    low_24h: coin.low_24h || coin.current_price || 0,
     price_change_24h: coin.price_change_24h || 0,
     price_change_percentage_24h: coin.price_change_percentage_24h || 0,
-    price_change_percentage_7d:
+    price_change_percentage_7d_in_currency:
       coin.price_change_percentage_7d_in_currency || 0,
-    price_change_percentage_30d:
+    price_change_percentage_30d_in_currency:
       coin.price_change_percentage_30d_in_currency || 0,
     market_cap_change_24h: coin.market_cap_change_24h || 0,
     market_cap_change_percentage_24h:
@@ -148,194 +169,178 @@ const transformCoinGeckoData = (coinGeckoData: any[]): Cryptocurrency[] => {
     circulating_supply: coin.circulating_supply || 0,
     total_supply: coin.total_supply,
     max_supply: coin.max_supply,
-    ath: coin.ath || coin.current_price,
+    ath: coin.ath || coin.current_price || 0,
     ath_change_percentage: coin.ath_change_percentage || 0,
     ath_date: coin.ath_date || new Date().toISOString(),
-    atl: coin.atl || coin.current_price,
+    atl: coin.atl || coin.current_price || 0,
     atl_change_percentage: coin.atl_change_percentage || 0,
     atl_date: coin.atl_date || new Date().toISOString(),
-    image:
-      coin.image ||
-      `https://via.placeholder.com/64x64/1f2937/ffffff?text=${coin.symbol?.toUpperCase()}`,
-    sparkline_in_7d: coin.sparkline_in_7d?.price || [],
+    roi: coin.roi,
     last_updated: coin.last_updated || new Date().toISOString(),
+    sparkline_in_7d: coin.sparkline_in_7d || { price: [] },
   }));
 };
 
-// Mock data for development
+// Mock data for fallback
 export const mockCryptocurrencies: Cryptocurrency[] = [
   {
     id: "bitcoin",
+    symbol: "BTC",
     name: "Bitcoin",
-    symbol: "btc",
-    current_price: 43250.5,
-    market_cap: 846789123456,
+    image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
+    current_price: 43250.67,
+    market_cap: 846750000000,
     market_cap_rank: 1,
-    total_volume: 25847123456,
-    high_24h: 43950.75,
-    low_24h: 42150.25,
-    price_change_24h: 1234.25,
-    price_change_percentage_24h: 2.94,
-    price_change_percentage_7d: 8.45,
-    price_change_percentage_30d: 15.32,
-    market_cap_change_24h: 25847123456,
-    market_cap_change_percentage_24h: 2.94,
-    circulating_supply: 19578431,
-    total_supply: 19578431,
+    fully_diluted_valuation: 908500000000,
+    total_volume: 18500000000,
+    high_24h: 43890.12,
+    low_24h: 42180.45,
+    price_change_24h: 1070.22,
+    price_change_percentage_24h: 2.54,
+    price_change_percentage_7d_in_currency: 8.42,
+    price_change_percentage_30d_in_currency: 15.67,
+    market_cap_change_24h: 21600000000,
+    market_cap_change_percentage_24h: 2.61,
+    circulating_supply: 19590000,
+    total_supply: 21000000,
     max_supply: 21000000,
-    ath: 69045,
-    ath_change_percentage: -37.4,
+    ath: 69045.0,
+    ath_change_percentage: -37.35,
     ath_date: "2021-11-10T14:24:11.849Z",
     atl: 67.81,
-    atl_change_percentage: 63653.2,
+    atl_change_percentage: 63654.78,
     atl_date: "2013-07-06T00:00:00.000Z",
-    image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
-    sparkline_in_7d: [41000, 41500, 42000, 42500, 43000, 43250],
+    roi: null,
     last_updated: new Date().toISOString(),
+    sparkline_in_7d: {
+      price: [40123, 40567, 41234, 42100, 42890, 43250, 43567],
+    },
   },
   {
     id: "ethereum",
+    symbol: "ETH",
     name: "Ethereum",
-    symbol: "eth",
-    current_price: 2645.89,
-    market_cap: 318234567890,
+    image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
+    current_price: 2587.34,
+    market_cap: 310950000000,
     market_cap_rank: 2,
-    total_volume: 15234567890,
-    high_24h: 2689.45,
-    low_24h: 2598.32,
-    price_change_24h: -32.56,
-    price_change_percentage_24h: -1.22,
-    price_change_percentage_7d: 5.67,
-    price_change_percentage_30d: 12.45,
-    market_cap_change_24h: -3912345678,
-    market_cap_change_percentage_24h: -1.22,
-    circulating_supply: 120291451,
-    total_supply: 120291451,
+    fully_diluted_valuation: null,
+    total_volume: 12400000000,
+    high_24h: 2612.89,
+    low_24h: 2534.12,
+    price_change_24h: 53.22,
+    price_change_percentage_24h: 2.1,
+    price_change_percentage_7d_in_currency: 6.78,
+    price_change_percentage_30d_in_currency: 12.34,
+    market_cap_change_24h: 6400000000,
+    market_cap_change_percentage_24h: 2.1,
+    circulating_supply: 120280000,
+    total_supply: 120280000,
+    max_supply: null,
     ath: 4878.26,
-    ath_change_percentage: -45.8,
+    ath_change_percentage: -46.95,
     ath_date: "2021-11-10T14:24:19.604Z",
     atl: 0.432979,
-    atl_change_percentage: 610942.1,
+    atl_change_percentage: 597142.1,
     atl_date: "2015-10-20T00:00:00.000Z",
-    image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
-    sparkline_in_7d: [2500, 2550, 2600, 2620, 2640, 2645],
+    roi: {
+      times: 97.34,
+      currency: "usd",
+      percentage: 9734.21,
+    },
     last_updated: new Date().toISOString(),
+    sparkline_in_7d: {
+      price: [2456, 2489, 2512, 2545, 2567, 2587, 2590],
+    },
   },
   {
-    id: "solana",
-    name: "Solana",
-    symbol: "sol",
-    current_price: 98.45,
-    market_cap: 42567890123,
-    market_cap_rank: 5,
-    total_volume: 2345678901,
-    high_24h: 102.34,
-    low_24h: 96.78,
-    price_change_24h: 5.67,
-    price_change_percentage_24h: 6.12,
-    price_change_percentage_7d: 14.23,
-    price_change_percentage_30d: 22.89,
-    market_cap_change_24h: 2456789012,
-    market_cap_change_percentage_24h: 6.12,
-    circulating_supply: 432567890,
-    total_supply: 567890123,
-    ath: 259.96,
-    ath_change_percentage: -62.1,
-    ath_date: "2021-11-06T21:54:35.825Z",
-    atl: 0.500801,
-    atl_change_percentage: 19556.8,
-    atl_date: "2020-05-11T19:35:23.449Z",
-    image: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
-    sparkline_in_7d: [90, 92, 95, 97, 99, 98.45],
+    id: "binancecoin",
+    symbol: "BNB",
+    name: "BNB",
+    image:
+      "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
+    current_price: 312.45,
+    market_cap: 46890000000,
+    market_cap_rank: 3,
+    fully_diluted_valuation: 46890000000,
+    total_volume: 1890000000,
+    high_24h: 318.67,
+    low_24h: 308.12,
+    price_change_24h: 4.33,
+    price_change_percentage_24h: 1.41,
+    price_change_percentage_7d_in_currency: 3.45,
+    price_change_percentage_30d_in_currency: 8.92,
+    market_cap_change_24h: 650000000,
+    market_cap_change_percentage_24h: 1.41,
+    circulating_supply: 150030000,
+    total_supply: 150030000,
+    max_supply: 200000000,
+    ath: 686.31,
+    ath_change_percentage: -54.45,
+    ath_date: "2021-05-10T07:24:17.097Z",
+    atl: 0.0398177,
+    atl_change_percentage: 784145.2,
+    atl_date: "2017-10-19T00:00:00.000Z",
+    roi: null,
     last_updated: new Date().toISOString(),
+    sparkline_in_7d: {
+      price: [301, 305, 309, 312, 315, 312, 314],
+    },
   },
 ];
 
 export const mockTradingPairs: TradingPair[] = [
   {
-    symbol: "BTCUSDT",
+    id: "BTC/USDT",
     baseAsset: "BTC",
     quoteAsset: "USDT",
-    price: 43250.5,
-    priceChange: 1234.25,
-    priceChangePercent: 2.94,
-    volume: 12345.67,
-    quoteVolume: 534567890.12,
-    openPrice: 42016.25,
-    highPrice: 43950.75,
-    lowPrice: 42150.25,
-    bidPrice: 43249.5,
-    askPrice: 43251.5,
-    spread: 2.0,
-    lastUpdateId: 1234567890,
-    lastUpdated: new Date().toISOString(),
+    price: 43250.67,
+    change24h: 2.54,
+    volume24h: 1850000000,
+    high24h: 43890.12,
+    low24h: 42180.45,
   },
   {
-    symbol: "ETHUSDT",
+    id: "ETH/USDT",
     baseAsset: "ETH",
     quoteAsset: "USDT",
-    price: 2645.89,
-    priceChange: -32.56,
-    priceChangePercent: -1.22,
-    volume: 45678.9,
-    quoteVolume: 120891234.56,
-    openPrice: 2678.45,
-    highPrice: 2689.45,
-    lowPrice: 2598.32,
-    bidPrice: 2645.0,
-    askPrice: 2646.0,
-    spread: 1.0,
-    lastUpdateId: 1234567891,
-    lastUpdated: new Date().toISOString(),
+    price: 2587.34,
+    change24h: 2.1,
+    volume24h: 1240000000,
+    high24h: 2612.89,
+    low24h: 2534.12,
   },
 ];
 
-export const mockP2POffers: P2POffer[] = [
-  {
-    id: "offer-1",
-    userId: "user-1",
-    type: "SELL",
-    asset: "BTC",
-    fiatCurrency: "USD",
-    price: 43300,
-    minAmount: 1000,
-    maxAmount: 50000,
-    totalAmount: 100000,
-    availableAmount: 75000,
-    paymentMethods: [
-      {
-        id: "bank-transfer",
-        name: "Bank Transfer",
-        type: "BANK_TRANSFER",
-        processingTime: "15-30 minutes",
-        isActive: true,
-      },
-    ],
-    terms: "Fast and reliable trader. Payment within 15 minutes required.",
-    status: "ACTIVE",
-    user: {
-      id: "user-1",
-      username: "CryptoPro123",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
-      isVerified: true,
-      kycLevel: 3,
-      rating: 4.9,
-      totalTrades: 1247,
-      completionRate: 99.2,
-      avgReleaseTime: 12,
-      isOnline: true,
-      languages: ["EN", "ES"],
-      timezone: "UTC-5",
+export const mockPortfolio: Portfolio = {
+  totalValue: 125670.45,
+  totalChange24h: 3240.78,
+  totalChangePercent24h: 2.64,
+  assets: [
+    {
+      id: "bitcoin",
+      symbol: "BTC",
+      name: "Bitcoin",
+      amount: 2.5,
+      value: 108126.68,
+      change24h: 2675.55,
+      changePercent24h: 2.54,
+      allocation: 86.1,
     },
-    completionRate: 99.2,
-    avgReleaseTime: 12,
-    totalTrades: 1247,
-    createdAt: "2024-01-15T10:30:00Z",
-    updatedAt: "2024-01-15T10:30:00Z",
-  },
-];
+    {
+      id: "ethereum",
+      symbol: "ETH",
+      name: "Ethereum",
+      amount: 6.8,
+      value: 17593.51,
+      change24h: 361.9,
+      changePercent24h: 2.1,
+      allocation: 14.0,
+    },
+  ],
+};
 
-export const mockStakingProducts: StakingProduct[] = [
+export const mockStakingOptions: StakingOption[] = [
   {
     id: "eth-staking-1",
     asset: "ETH",
@@ -421,7 +426,7 @@ export const mockEducationContent: EducationContent[] = [
 
 // Service class
 export class CryptoService {
-  // Market data
+  // Market data with improved error handling
   async getCryptocurrencies(
     limit = 100,
     sortBy = "market_cap_desc",
@@ -436,25 +441,36 @@ export class CryptoService {
 
       // If API returned valid data, transform and return it
       if (data && Array.isArray(data) && data.length > 0) {
+        console.log("📊 CryptoService: Using live market data");
         return transformCoinGeckoData(data);
       }
 
-      // If API returned null or invalid data, use fallback
-      throw new Error("API returned null or invalid data");
+      // If API failed or returned invalid data, use fallback
+      console.log("📊 CryptoService: Using simulated market data");
+      return this.getFallbackCryptocurrencies(limit);
     } catch (error) {
-      console.error("Failed to fetch real-time crypto data:", error);
-
-      // Fallback to mock data with real-time price simulation
-      const mockData = mockCryptocurrencies.slice(0, limit);
-      return this.simulateRealTimePrices(mockData);
+      console.log(
+        "📊 CryptoService: Error in getCryptocurrencies:",
+        error.message,
+      );
+      return this.getFallbackCryptocurrencies(limit);
     }
+  }
+
+  // Fallback method that returns mock data with realistic variations
+  private getFallbackCryptocurrencies(limit: number): Cryptocurrency[] {
+    const mockData = mockCryptocurrencies.slice(
+      0,
+      Math.min(limit, mockCryptocurrencies.length),
+    );
+    return this.simulateRealTimePrices(mockData);
   }
 
   // Simulate real-time price changes for fallback data
   private simulateRealTimePrices(cryptos: Cryptocurrency[]): Cryptocurrency[] {
     return cryptos.map((crypto) => {
-      // Add small random price fluctuations (±2%)
-      const priceChange = (Math.random() - 0.5) * 0.04;
+      // Add small random price fluctuations (±3%)
+      const priceChange = (Math.random() - 0.5) * 0.06;
       const newPrice = crypto.current_price * (1 + priceChange);
       const price_change_24h = newPrice - crypto.current_price;
       const price_change_percentage_24h =
@@ -475,7 +491,7 @@ export class CryptoService {
   }
 
   async getTradingPairs(): Promise<TradingPair[]> {
-    await this.delay(300);
+    await delay(300);
     return mockTradingPairs;
   }
 
@@ -495,6 +511,7 @@ export class CryptoService {
       // Check if we got valid global data
       if (globalData && globalData.data) {
         const global = globalData.data;
+        console.log("📊 CryptoService: Using live global market data");
 
         return {
           globalStats: {
@@ -538,666 +555,85 @@ export class CryptoService {
         };
       }
 
-      // If no valid data, throw error to use fallback
-      throw new Error("No valid market data from API");
+      // If no valid data, use fallback
+      return this.getFallbackMarketData(topCryptos);
     } catch (error) {
-      console.error("Failed to fetch real-time market data:", error);
-
-      // Fallback to mock data with simulated updates
-      const fallbackCryptos = this.simulateRealTimePrices(mockCryptocurrencies);
-      return {
-        globalStats: {
-          totalMarketCap: 1750000000000 * (0.98 + Math.random() * 0.04), // ±2% variation
-          totalVolume24h: 85000000000 * (0.9 + Math.random() * 0.2), // ±10% variation
-          marketCapChange24h: (Math.random() - 0.5) * 10, // ±5% change
-          btcDominance: 48.5 + (Math.random() - 0.5) * 2, // ±1% variation
-          ethDominance: 18.2 + (Math.random() - 0.5) * 2, // ±1% variation
-          activeCoins: 8924,
-          markets: 25687,
-        },
-        topMovers: {
-          gainers: fallbackCryptos
-            .filter((c) => c.price_change_percentage_24h > 0)
-            .sort(
-              (a, b) =>
-                b.price_change_percentage_24h - a.price_change_percentage_24h,
-            )
-            .slice(0, 5),
-          losers: fallbackCryptos
-            .filter((c) => c.price_change_percentage_24h < 0)
-            .sort(
-              (a, b) =>
-                a.price_change_percentage_24h - b.price_change_percentage_24h,
-            )
-            .slice(0, 5),
-        },
-        trending: fallbackCryptos.slice(10, 15),
-        fearGreedIndex: 65,
-        lastUpdated: new Date().toISOString(),
-      };
+      console.log("📊 CryptoService: Error in getMarketData:", error.message);
+      // Always return fallback data instead of throwing
+      const fallbackCryptos = this.getFallbackCryptocurrencies(50);
+      return this.getFallbackMarketData(fallbackCryptos);
     }
   }
 
-  // Real-time price updates for specific coins
-  async getRealTimePrice(
-    coinIds: string[],
-  ): Promise<{ [key: string]: { usd: number; usd_24h_change: number } }> {
-    if (!coinIds || coinIds.length === 0) {
-      return {};
-    }
+  // Fallback market data with realistic simulated values
+  private getFallbackMarketData(cryptos: Cryptocurrency[]): MarketData {
+    console.log("📊 CryptoService: Using simulated global market data");
 
-    try {
-      const ids = coinIds.join(",");
-      const url = `${COINGECKO_API_BASE}/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
-      const cacheKey = `realtime_prices_${ids}`;
-
-      const data = await fetchWithCache(url, cacheKey);
-
-      // If API returned valid data, return it
-      if (data && typeof data === "object" && Object.keys(data).length > 0) {
-        return data;
-      }
-
-      // If API returned null or invalid data, use mock data
-      throw new Error("API returned null or invalid data");
-    } catch (error) {
-      console.log("💰 CryptoService: Using simulated real-time price data");
-
-      // Return mock data with simulated real-time changes
-      const mockPrices: {
-        [key: string]: { usd: number; usd_24h_change: number };
-      } = {};
-      coinIds.forEach((coinId) => {
-        const basePrices: { [key: string]: number } = {
-          bitcoin: 43250,
-          ethereum: 2645,
-          binancecoin: 315,
-          solana: 98,
-          cardano: 0.52,
-          "avalanche-2": 38,
-          polkadot: 7.2,
-          chainlink: 14.8,
-        };
-
-        const basePrice = basePrices[coinId] || 100;
-        const priceChange = (Math.random() - 0.5) * 0.04; // ±2%
-        const newPrice = basePrice * (1 + priceChange);
-        const change24h = (Math.random() - 0.5) * 10; // ±5%
-
-        mockPrices[coinId] = {
-          usd: parseFloat(newPrice.toFixed(8)),
-          usd_24h_change: parseFloat(change24h.toFixed(2)),
-        };
-      });
-
-      return mockPrices;
-    }
-  }
-
-  // Get detailed coin information with real-time data
-  async getCoinDetails(coinId: string): Promise<Cryptocurrency | null> {
-    try {
-      const url = `${COINGECKO_API_BASE}/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=true`;
-      const cacheKey = `coin_details_${coinId}`;
-
-      const data = await fetchWithCache(url, cacheKey);
-
-      // If API returned valid data, transform and return it
-      if (data && data.id && data.market_data) {
-        return {
-          id: data.id,
-          name: data.name,
-          symbol: data.symbol,
-          current_price: data.market_data?.current_price?.usd || 0,
-          market_cap: data.market_data?.market_cap?.usd || 0,
-          market_cap_rank: data.market_cap_rank || 0,
-          fully_diluted_valuation:
-            data.market_data?.fully_diluted_valuation?.usd,
-          total_volume: data.market_data?.total_volume?.usd || 0,
-          high_24h: data.market_data?.high_24h?.usd || 0,
-          low_24h: data.market_data?.low_24h?.usd || 0,
-          price_change_24h: data.market_data?.price_change_24h || 0,
-          price_change_percentage_24h:
-            data.market_data?.price_change_percentage_24h || 0,
-          price_change_percentage_7d:
-            data.market_data?.price_change_percentage_7d || 0,
-          price_change_percentage_30d:
-            data.market_data?.price_change_percentage_30d || 0,
-          market_cap_change_24h: data.market_data?.market_cap_change_24h || 0,
-          market_cap_change_percentage_24h:
-            data.market_data?.market_cap_change_percentage_24h || 0,
-          circulating_supply: data.market_data?.circulating_supply || 0,
-          total_supply: data.market_data?.total_supply,
-          max_supply: data.market_data?.max_supply,
-          ath: data.market_data?.ath?.usd || 0,
-          ath_change_percentage:
-            data.market_data?.ath_change_percentage?.usd || 0,
-          ath_date: data.market_data?.ath_date?.usd || new Date().toISOString(),
-          atl: data.market_data?.atl?.usd || 0,
-          atl_change_percentage:
-            data.market_data?.atl_change_percentage?.usd || 0,
-          atl_date: data.market_data?.atl_date?.usd || new Date().toISOString(),
-          image:
-            data.image?.large ||
-            data.image?.small ||
-            `https://via.placeholder.com/64x64/1f2937/ffffff?text=${data.symbol?.toUpperCase()}`,
-          sparkline_in_7d: data.market_data?.sparkline_7d?.price || [],
-          last_updated: data.last_updated || new Date().toISOString(),
-        };
-      }
-
-      // If API returned null or invalid data, return null
-      throw new Error("API returned null or invalid data");
-    } catch (error) {
-      console.error(`Failed to fetch details for ${coinId}:`, error);
-      return null;
-    }
-  }
-
-  // Historical price data for charts
-  async getHistoricalPrices(
-    coinId: string,
-    days: number = 30,
-  ): Promise<number[][]> {
-    try {
-      const url = `${COINGECKO_API_BASE}/coins/${coinId}/market_chart?vs_currency=usd&days=${days}&interval=${days > 90 ? "daily" : "hourly"}`;
-      const cacheKey = `historical_${coinId}_${days}`;
-
-      const data = await fetchWithCache(url, cacheKey);
-
-      // If API returned valid data with prices array, return it
-      if (
-        data &&
-        data.prices &&
-        Array.isArray(data.prices) &&
-        data.prices.length > 0
-      ) {
-        return data.prices;
-      }
-
-      // If API returned null or invalid data, use fallback
-      throw new Error("API returned null or invalid data");
-    } catch (error) {
-      console.error(`Failed to fetch historical data for ${coinId}:`, error);
-
-      // Generate mock historical data
-      const now = Date.now();
-      const interval = (days * 24 * 60 * 60 * 1000) / 100; // 100 data points
-      const basePrice = 43250; // Default BTC price
-
-      return Array.from({ length: 100 }, (_, i) => {
-        const timestamp = now - (99 - i) * interval;
-        const volatility = 0.02;
-        const change = (Math.random() - 0.5) * volatility;
-        const price = basePrice * (1 + change);
-        return [timestamp, price];
-      });
-    }
-  }
-
-  // Trading
-  async getOrderBook(symbol: string): Promise<OrderBook> {
-    await this.delay(200);
     return {
-      symbol,
-      bids: Array.from({ length: 20 }, (_, i) => ({
-        price: 43250 - i * 0.5,
-        quantity: Math.random() * 10,
-        total: (43250 - i * 0.5) * Math.random() * 10,
-      })),
-      asks: Array.from({ length: 20 }, (_, i) => ({
-        price: 43251 + i * 0.5,
-        quantity: Math.random() * 10,
-        total: (43251 + i * 0.5) * Math.random() * 10,
-      })),
-      lastUpdateId: Date.now(),
-      timestamp: new Date().toISOString(),
+      globalStats: {
+        totalMarketCap: 1750000000000 * (0.98 + Math.random() * 0.04), // ±2% variation
+        totalVolume24h: 85000000000 * (0.9 + Math.random() * 0.2), // ±10% variation
+        marketCapChange24h: (Math.random() - 0.5) * 10, // ±5% change
+        btcDominance: 48.5 + (Math.random() - 0.5) * 2, // ±1% variation
+        ethDominance: 18.2 + (Math.random() - 0.5) * 2, // ±1% variation
+        activeCoins: 8924,
+        markets: 25687,
+      },
+      topMovers: {
+        gainers: cryptos
+          .filter((c) => c.price_change_percentage_24h > 0)
+          .sort(
+            (a, b) =>
+              b.price_change_percentage_24h - a.price_change_percentage_24h,
+          )
+          .slice(0, 5),
+        losers: cryptos
+          .filter((c) => c.price_change_percentage_24h < 0)
+          .sort(
+            (a, b) =>
+              a.price_change_percentage_24h - b.price_change_percentage_24h,
+          )
+          .slice(0, 5),
+      },
+      trending: cryptos.slice(0, 5),
+      fearGreedIndex: Math.floor(Math.random() * 100),
+      lastUpdated: new Date().toISOString(),
     };
   }
 
-  async getRecentTrades(symbol: string, limit = 50): Promise<Trade[]> {
-    await this.delay(200);
-    const timestamp = Date.now();
-    return Array.from({ length: limit }, (_, i) => ({
-      id: `trade-${symbol}-${timestamp}-${i}`,
-      symbol,
-      price: 43250 + (Math.random() - 0.5) * 100,
-      quantity: Math.random() * 5,
-      quoteQuantity: 0,
-      time: new Date(timestamp - i * 1000).toISOString(),
-      isBuyerMaker: Math.random() > 0.5,
-      isBestMatch: true,
-    }));
-  }
-
-  async placeOrder(
-    order: Omit<Order, "id" | "timestamp" | "updateTime" | "fills">,
-  ): Promise<Order> {
-    await this.delay(800);
-
-    const newOrder: Order = {
-      ...order,
-      id: `order-${Date.now()}`,
-      originalQuantity: order.quantity,
-      executedQuantity: 0,
-      cummulativeQuoteQty: 0,
-      status: "NEW",
-      fills: [],
-      timestamp: new Date().toISOString(),
-      updateTime: new Date().toISOString(),
-    };
-
-    return newOrder;
-  }
-
-  async cancelOrder(orderId: string): Promise<void> {
-    await this.delay(500);
-    console.log(`Order ${orderId} cancelled`);
-  }
-
-  async getOpenOrders(symbol?: string): Promise<Order[]> {
-    await this.delay(300);
-    return []; // Mock empty orders for now
-  }
-
-  async getOrderHistory(symbol?: string, limit = 50): Promise<Order[]> {
-    await this.delay(400);
-    return []; // Mock empty history for now
-  }
-
-  // Portfolio
   async getPortfolio(): Promise<Portfolio> {
-    await this.delay(600);
-
-    const assets = [
-      {
-        asset: "BTC",
-        free: 0.15,
-        locked: 0.05,
-        total: 0.2,
-        btcValue: 0.2,
-        usdValue: 8650,
-        price: 43250,
-        change24h: 1234.25,
-        changePercent24h: 2.94,
-        allocation: 45.5,
-      },
-      {
-        asset: "ETH",
-        free: 2.5,
-        locked: 0.5,
-        total: 3.0,
-        btcValue: 0.184,
-        usdValue: 7937.67,
-        price: 2645.89,
-        change24h: -32.56,
-        changePercent24h: -1.22,
-        allocation: 41.8,
-      },
-      {
-        asset: "USDT",
-        free: 2412.45,
-        locked: 0,
-        total: 2412.45,
-        btcValue: 0.056,
-        usdValue: 2412.45,
-        price: 1.0,
-        change24h: 0,
-        changePercent24h: 0,
-        allocation: 12.7,
-      },
-    ];
-
-    const totalValue = assets.reduce((sum, asset) => sum + asset.usdValue, 0);
-    const totalChange24h = assets.reduce(
-      (sum, asset) => sum + asset.change24h * asset.total,
-      0,
-    );
-
-    return {
-      totalValue,
-      totalChange24h,
-      totalChangePercent24h: (totalChange24h / totalValue) * 100,
-      assets,
-      allocation: assets.map((asset) => ({
-        asset: asset.asset,
-        percentage: asset.allocation,
-        value: asset.usdValue,
-        color: this.getAssetColor(asset.asset),
-      })),
-    };
+    await delay(500);
+    return mockPortfolio;
   }
 
-  // P2P Trading
-  async getP2POffers(filters?: any): Promise<P2POffer[]> {
-    await this.delay(800);
-
-    // Generate more mock offers
-    return Array.from({ length: 12 }, (_, i) => ({
-      ...mockP2POffers[0],
-      id: `offer-${i + 1}`,
-      price: 43200 + Math.random() * 200,
-      user: {
-        ...mockP2POffers[0].user,
-        id: `user-${i + 1}`,
-        username: `Trader${i + 1}`,
-        rating: 4 + Math.random(),
-        totalTrades: Math.floor(Math.random() * 2000),
-        completionRate: 90 + Math.random() * 10,
-        avgReleaseTime: 5 + Math.random() * 30,
-      },
-    }));
+  async getStakingOptions(): Promise<StakingOption[]> {
+    await delay(300);
+    return mockStakingOptions;
   }
 
-  async createP2POffer(
-    offer: Omit<P2POffer, "id" | "userId" | "user" | "createdAt" | "updatedAt">,
-  ): Promise<P2POffer> {
-    await this.delay(1000);
-
-    const newOffer: P2POffer = {
-      ...offer,
-      id: `offer-${Date.now()}`,
-      userId: "current-user",
-      user: {
-        id: "current-user",
-        username: "CurrentUser",
-        isVerified: true,
-        kycLevel: 2,
-        rating: 4.8,
-        totalTrades: 156,
-        completionRate: 98.5,
-        avgReleaseTime: 15,
-        isOnline: true,
-      },
-      completionRate: 98.5,
-      avgReleaseTime: 15,
-      totalTrades: 156,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    return newOffer;
+  async getCryptocurrencyById(id: string): Promise<Cryptocurrency | null> {
+    await delay(200);
+    return mockCryptocurrencies.find((crypto) => crypto.id === id) || null;
   }
 
-  // Staking
-  async getStakingProducts(): Promise<StakingProduct[]> {
-    await this.delay(400);
-    return mockStakingProducts;
+  async getNews(limit = 10): Promise<News[]> {
+    await delay(400);
+    return mockNews.slice(0, limit);
   }
 
-  async getStakingPositions(): Promise<StakingPosition[]> {
-    await this.delay(500);
-    return [
-      {
-        id: "position-1",
-        productId: "eth-staking-1",
-        asset: "ETH",
-        amount: 5.0,
-        rewardAsset: "ETH",
-        apy: 4.5,
-        dailyReward: 0.00061644,
-        totalRewards: 0.125,
-        startDate: "2024-01-01T00:00:00Z",
-        status: "ACTIVE",
-        autoRenew: true,
-      },
-    ];
+  async getEducationContent(limit = 10): Promise<EducationContent[]> {
+    await delay(300);
+    return mockEducationContent.slice(0, limit);
   }
 
-  async stakeAsset(
-    productId: string,
-    amount: number,
-  ): Promise<StakingPosition> {
-    await this.delay(1200);
-
-    const product = mockStakingProducts.find((p) => p.id === productId);
-    if (!product) throw new Error("Staking product not found");
-
-    return {
-      id: `position-${Date.now()}`,
-      productId,
-      asset: product.asset,
-      amount,
-      rewardAsset: product.rewardAsset,
-      apy: product.apy,
-      dailyReward: (amount * product.apy) / 100 / 365,
-      totalRewards: 0,
-      startDate: new Date().toISOString(),
-      endDate:
-        product.type === "LOCKED"
-          ? new Date(
-              Date.now() + (product.duration || 0) * 24 * 60 * 60 * 1000,
-            ).toISOString()
-          : undefined,
-      status: "ACTIVE",
-      autoRenew: false,
-    };
-  }
-
-  // News and Education
-  async getNews(limit = 20, offset = 0): Promise<News[]> {
-    await this.delay(400);
-    return mockNews.slice(offset, offset + limit);
-  }
-
-  async getEducationContent(
-    category?: string,
-    level?: string,
-  ): Promise<EducationContent[]> {
-    await this.delay(500);
-    return mockEducationContent;
-  }
-
-  // Watchlist and Alerts
-  async getWatchlist(): Promise<WatchlistItem[]> {
-    await this.delay(300);
-    return [
-      {
-        id: "watch-1",
-        asset: "BTC",
-        addedAt: "2024-01-10T10:00:00Z",
-        alerts: [],
-        notes: "Watching for breakout above $45k",
-      },
-    ];
-  }
-
-  async addToWatchlist(asset: string, notes?: string): Promise<WatchlistItem> {
-    await this.delay(400);
-    return {
-      id: `watch-${Date.now()}`,
-      asset,
-      addedAt: new Date().toISOString(),
-      alerts: [],
-      notes,
-    };
-  }
-
-  async removeFromWatchlist(itemId: string): Promise<void> {
-    await this.delay(300);
-    console.log(`Removed ${itemId} from watchlist`);
-  }
-
-  async createAlert(
-    alert: Omit<Alert, "id" | "createdAt" | "isTriggered" | "triggeredAt">,
-  ): Promise<Alert> {
-    await this.delay(500);
-    return {
-      ...alert,
-      id: `alert-${Date.now()}`,
-      isTriggered: false,
-      createdAt: new Date().toISOString(),
-    };
-  }
-
-  // Chart data
-  async getChartData(
-    symbol: string,
-    timeframe: string,
-    limit = 100,
-  ): Promise<ChartData> {
-    await this.delay(600);
-
-    const basePrice = symbol === "BTCUSDT" ? 43250 : 2645;
-    const now = Date.now();
-    const interval = this.getIntervalMs(timeframe);
-
-    return {
-      symbol,
-      timeframe,
-      data: Array.from({ length: limit }, (_, i) => {
-        const timestamp = now - (limit - i) * interval;
-        const volatility = 0.02;
-        const change = (Math.random() - 0.5) * volatility;
-        const price = basePrice * (1 + change);
-
-        return {
-          timestamp,
-          open: price * (1 + (Math.random() - 0.5) * 0.01),
-          high: price * (1 + Math.random() * 0.01),
-          low: price * (1 - Math.random() * 0.01),
-          close: price,
-        };
-      }),
-      volume: Array.from({ length: limit }, (_, i) => ({
-        timestamp: now - (limit - i) * interval,
-        volume: Math.random() * 1000,
-        buyVolume: Math.random() * 500,
-        sellVolume: Math.random() * 500,
-      })),
-    };
-  }
-
-  // Transactions
-  async getTransactions(limit = 50, offset = 0): Promise<Transaction[]> {
-    await this.delay(400);
-    return [
-      {
-        id: "tx-1",
-        type: "TRADE",
-        asset: "BTC",
-        amount: 0.05,
-        fee: 0.0001,
-        feeAsset: "BTC",
-        status: "CONFIRMED",
-        timestamp: "2024-01-15T10:30:00Z",
-        updatedAt: "2024-01-15T10:30:00Z",
-      },
-    ];
-  }
-
-  // Copy Trading
-  async getCopyTradingProviders(): Promise<CopyTradingProvider[]> {
-    await this.delay(600);
-    return [
-      {
-        id: "provider-1",
-        username: "CryptoMaster",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=provider1",
-        description:
-          "Professional trader with 5+ years experience in crypto markets.",
-        verified: true,
-        rating: 4.8,
-        followers: 2456,
-        copiers: 189,
-        aum: 1250000,
-        performance: {
-          totalReturn: 156.7,
-          monthlyReturn: 12.4,
-          sharpeRatio: 2.1,
-          maxDrawdown: -15.2,
-          winRate: 68.5,
-        },
-        assets: ["BTC", "ETH", "SOL"],
-        riskScore: 6,
-        minCopyAmount: 1000,
-        fees: {
-          management: 2.0,
-          performance: 20.0,
-        },
-        isOpen: true,
-      },
-    ];
-  }
-
-  // Social Trading
-  async getSocialTradingPosts(
-    limit = 20,
-    offset = 0,
-  ): Promise<SocialTradingPost[]> {
-    await this.delay(500);
-    return [
-      {
-        id: "post-1",
-        userId: "user-1",
-        user: {
-          id: "user-1",
-          username: "TradingGuru",
-          avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=guru",
-          isVerified: true,
-          kycLevel: 3,
-          rating: 4.9,
-          totalTrades: 567,
-          completionRate: 99.1,
-          avgReleaseTime: 8,
-          isOnline: true,
-        },
-        type: "ANALYSIS",
-        content:
-          "Bitcoin is showing strong support at $43k. Looking for a breakout above $45k for continuation to $50k. 📈 #BTC #TechnicalAnalysis",
-        trades: [
-          {
-            symbol: "BTCUSDT",
-            side: "BUY",
-            price: 43250,
-            quantity: 0.1,
-            pnl: 125.5,
-            pnlPercent: 2.9,
-          },
-        ],
-        likes: 234,
-        comments: 56,
-        shares: 12,
-        isLiked: false,
-        isFollowing: false,
-        tags: ["BTC", "TechnicalAnalysis"],
-        timestamp: "2024-01-15T14:30:00Z",
-      },
-    ];
-  }
-
-  // Utility methods
+  // Add delay helper method
   private async delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-
-  private getAssetColor(asset: string): string {
-    const colors: Record<string, string> = {
-      BTC: "#F7931A",
-      ETH: "#627EEA",
-      USDT: "#26A17B",
-      BNB: "#F3BA2F",
-      ADA: "#0033AD",
-      SOL: "#9945FF",
-      DOT: "#E6007A",
-      AVAX: "#E84142",
-    };
-    return colors[asset] || "#6B7280";
-  }
-
-  private getIntervalMs(timeframe: string): number {
-    const intervals: Record<string, number> = {
-      "1m": 60 * 1000,
-      "5m": 5 * 60 * 1000,
-      "15m": 15 * 60 * 1000,
-      "1h": 60 * 60 * 1000,
-      "4h": 4 * 60 * 60 * 1000,
-      "1d": 24 * 60 * 60 * 1000,
-      "1w": 7 * 24 * 60 * 60 * 1000,
-    };
-    return intervals[timeframe] || intervals["1h"];
-  }
 }
 
+// Export singleton instance
 export const cryptoService = new CryptoService();
-export default cryptoService;
+
+// Export API status functions for monitoring
+export { getApiStatus, resetApiStatus };
