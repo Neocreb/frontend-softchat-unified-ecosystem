@@ -264,15 +264,17 @@ export function PartnershipSystem() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Referrals</p>
-                <p className="text-2xl font-bold">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
+                  Total Referrals
+                </p>
+                <p className="text-2xl font-bold leading-tight">
                   {referralData.totalReferrals}
                 </p>
-                <p className="text-xs text-green-600">+12% this month</p>
+                <p className="text-xs text-green-600 mt-1">+12% this month</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500" />
+              <Users className="h-8 w-8 text-blue-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
