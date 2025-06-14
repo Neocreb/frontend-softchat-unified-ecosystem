@@ -446,7 +446,7 @@ const Videos: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <div className="fixed inset-0 bg-black text-white overflow-hidden">
+    <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
         <title>Videos | Softchat</title>
       </Helmet>
@@ -455,7 +455,11 @@ const Videos: React.FC = () => {
       <div
         ref={containerRef}
         className="h-full w-full overflow-y-auto snap-y snap-mandatory"
-        style={{ scrollBehavior: "smooth" }}
+        style={{
+          scrollBehavior: "smooth",
+          paddingTop: 0,
+          paddingBottom: "80px", // Account for mobile navigation
+        }}
       >
         {mockVideos.map((video, index) => (
           <VideoCard
