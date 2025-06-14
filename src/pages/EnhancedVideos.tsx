@@ -181,9 +181,21 @@ const VideoCreator: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black z-50 flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 text-white">
+    <div className="relative h-screen bg-black snap-start overflow-hidden w-full">
+      {/* Video Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 to-black/50">
+        <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+          <div className="text-center p-4 sm:p-8 max-w-full">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <VideoIcon className="h-8 w-8 sm:h-10 sm:w-10 text-white/60" />
+            </div>
+            <p className="text-white/80 text-base sm:text-lg mb-2">Video Preview</p>
+            <p className="text-white/60 text-sm break-words px-2">
+              {video.title || "Sample Video Content"}
+            </p>
+          </div>
+        </div>
+      </div>
         <Button
           variant="ghost"
           size="icon"
