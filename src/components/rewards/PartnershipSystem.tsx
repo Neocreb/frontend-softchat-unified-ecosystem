@@ -300,39 +300,41 @@ export function PartnershipSystem() {
 
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Conversion Rate</p>
-                <p className="text-2xl font-bold">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
+                  Conversion Rate
+                </p>
+                <p className="text-2xl font-bold leading-tight">
                   {referralData.conversionRate}%
                 </p>
-                <p className="text-xs text-green-600">Above average</p>
+                <p className="text-xs text-green-600 mt-1">Above average</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-500" />
+              <TrendingUp className="h-8 w-8 text-orange-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
                   Partnership Tier
                 </p>
                 <Badge
                   className={cn(
-                    "text-sm font-medium",
+                    "text-sm font-medium mt-1",
                     getTierColor(referralData.tier),
                   )}
                 >
                   {referralData.tier}
                 </Badge>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-2 break-words">
                   {referralData.tierProgress}% to next tier
                 </p>
               </div>
-              <Crown className="h-8 w-8 text-yellow-500" />
+              <Crown className="h-8 w-8 text-yellow-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
