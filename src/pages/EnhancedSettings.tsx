@@ -635,64 +635,129 @@ const EnhancedSettings = () => {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
-            <TabsTrigger
-              value="profile"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Users className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Profile</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="professional"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Briefcase className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Work</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="financial"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <DollarSign className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Money</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="notifications"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Bell className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Alerts</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="privacy"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Eye className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Privacy</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="security"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Lock className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Security</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="data"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Database className="w-4 h-4" />
-              <span className="text-xs md:text-sm">Data</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="ai"
-              className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-xs md:text-sm"
-            >
-              <Zap className="w-4 h-4" />
-              <span className="text-xs md:text-sm">AI</span>
-            </TabsTrigger>
-          </TabsList>
+          {/* Mobile tabs with horizontal scroll */}
+          <div className="lg:hidden">
+            <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px]">
+              <TabsTrigger
+                value="profile"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Users className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Profile</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="professional"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Briefcase className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Work</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="financial"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <DollarSign className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Money</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="notifications"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Bell className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Alerts</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="privacy"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Eye className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Privacy</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="security"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Lock className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Security</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="data"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Database className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">Data</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="ai"
+                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2"
+              >
+                <Zap className="w-4 h-4 flex-shrink-0" />
+                <span className="text-[10px] leading-tight">AI</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Desktop tabs with grid layout */}
+          <div className="hidden lg:block">
+            <TabsList className="grid w-full grid-cols-8">
+              <TabsTrigger
+                value="profile"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Users className="w-4 h-4" />
+                <span>Profile</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="professional"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Briefcase className="w-4 h-4" />
+                <span>Work</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="financial"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <DollarSign className="w-4 h-4" />
+                <span>Money</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="notifications"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Bell className="w-4 h-4" />
+                <span>Alerts</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="privacy"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Eye className="w-4 h-4" />
+                <span>Privacy</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="security"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Lock className="w-4 h-4" />
+                <span>Security</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="data"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Database className="w-4 h-4" />
+                <span>Data</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="ai"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Zap className="w-4 h-4" />
+                <span>AI</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Profile Settings */}
           <TabsContent value="profile" className="space-y-6">
