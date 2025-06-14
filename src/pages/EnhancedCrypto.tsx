@@ -266,7 +266,7 @@ export default function EnhancedCrypto() {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto p-1">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-auto p-1">
                 <TabsTrigger
                   value="overview"
                   className="text-xs sm:text-sm py-2 px-2 sm:px-4"
@@ -278,6 +278,12 @@ export default function EnhancedCrypto() {
                   className="text-xs sm:text-sm py-2 px-2 sm:px-4"
                 >
                   Trading
+                </TabsTrigger>
+                <TabsTrigger
+                  value="p2p"
+                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
+                >
+                  P2P
                 </TabsTrigger>
                 <TabsTrigger
                   value="portfolio"
