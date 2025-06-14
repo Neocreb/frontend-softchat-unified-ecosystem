@@ -904,11 +904,27 @@ export default function EnhancedCrypto() {
                       <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
                       Latest from SoftChat Blog
                     </h3>
-                    <Button variant="outline" size="sm" asChild>
-                      <a href="/blog" target="_blank" rel="noopener noreferrer">
-                        View All Articles
-                      </a>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button variant="ghost" size="sm" asChild>
+                        <a
+                          href="/api/blog/rss"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs"
+                        >
+                          📡 RSS Feed
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <a
+                          href="/blog"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View All Articles
+                        </a>
+                      </Button>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
