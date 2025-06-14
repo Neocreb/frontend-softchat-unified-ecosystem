@@ -1109,34 +1109,35 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
               onValueChange={setActiveTab}
               className="space-y-4 md:space-y-6"
             >
-              <div className="mobile-tabs">
-                <TabsList className="grid w-full grid-cols-4 mobile-grid-4">
+              {/* Mobile-friendly tabs */}
+              <div className="sm:hidden">
+                <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
                   <TabsTrigger
                     value="posts"
-                    className="mobile-tab touch-target"
+                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
                   >
-                    <MessageSquare className="h-4 w-4 mr-1" />
-                    <span className="hidden sm:inline">Posts</span>
+                    <MessageSquare className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-[10px] leading-tight">Posts</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="media"
-                    className="mobile-tab touch-target"
+                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
                   >
-                    <Camera className="h-4 w-4 mr-1" />
-                    <span className="hidden sm:inline">Media</span>
+                    <Camera className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-[10px] leading-tight">Media</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="activity"
-                    className="mobile-tab touch-target"
+                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
                   >
-                    <TrendingUp className="h-4 w-4 mr-1" />
-                    <span className="hidden sm:inline">Activity</span>
+                    <TrendingUp className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-[10px] leading-tight">Activity</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="about"
-                    className="mobile-tab touch-target"
+                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
                   >
-                    <Users className="h-4 w-4 mr-1" />
+                    <Users className="w-4 h-4 flex-shrink-0" />
                     <span className="hidden sm:inline">About</span>
                   </TabsTrigger>
                 </TabsList>
