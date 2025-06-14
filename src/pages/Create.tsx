@@ -317,12 +317,53 @@ const Create = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="browse-jobs">Browse Jobs</TabsTrigger>
-          <TabsTrigger value="find-talent">Find Talent</TabsTrigger>
-          <TabsTrigger value="post-job">Post a Job</TabsTrigger>
-          <TabsTrigger value="my-projects">My Projects</TabsTrigger>
-        </TabsList>
+        {/* Mobile-friendly tabs */}
+        <div className="sm:hidden">
+          <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
+            <TabsTrigger
+              value="browse-jobs"
+              className="flex flex-col items-center gap-1 text-xs min-w-[75px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <span className="text-[10px] leading-tight text-center">
+                Browse Jobs
+              </span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="find-talent"
+              className="flex flex-col items-center gap-1 text-xs min-w-[75px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <span className="text-[10px] leading-tight text-center">
+                Find Talent
+              </span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="post-job"
+              className="flex flex-col items-center gap-1 text-xs min-w-[75px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <span className="text-[10px] leading-tight text-center">
+                Post Job
+              </span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="my-projects"
+              className="flex flex-col items-center gap-1 text-xs min-w-[75px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <span className="text-[10px] leading-tight text-center">
+                My Projects
+              </span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        {/* Desktop tabs */}
+        <div className="hidden sm:block">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="browse-jobs">Browse Jobs</TabsTrigger>
+            <TabsTrigger value="find-talent">Find Talent</TabsTrigger>
+            <TabsTrigger value="post-job">Post a Job</TabsTrigger>
+            <TabsTrigger value="my-projects">My Projects</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="browse-jobs" className="space-y-6">
           <Card className="bg-card border-border">
