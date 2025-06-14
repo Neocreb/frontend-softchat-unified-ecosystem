@@ -313,8 +313,8 @@ The improvements will make DeFi applications faster and cheaper to use...
 ];
 
 class BlogService {
-  // Get all blog posts with optional filtering
-  async getBlogPosts(
+  // Get all blog posts with optional filtering (simple version)
+  async getBlogPostsSimple(
     category?: string,
     tags?: string[],
     difficulty?: string,
