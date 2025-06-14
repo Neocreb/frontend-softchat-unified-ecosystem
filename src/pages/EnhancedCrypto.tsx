@@ -50,6 +50,7 @@ import { SmartContentRecommendations } from "@/components/ai/SmartContentRecomme
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
 import CryptoDetailModal from "@/components/crypto/CryptoDetailModal";
+import BlogRSSFeed from "@/components/crypto/BlogRSSFeed";
 import { cn } from "@/lib/utils";
 
 export default function EnhancedCrypto() {
