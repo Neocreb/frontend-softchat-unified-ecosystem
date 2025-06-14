@@ -48,6 +48,52 @@
     line-height: 1.5;
   }
 
+  /* Mobile-friendly tabs */
+  .mobile-tabs-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mobile-tabs-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mobile-tabs-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-tab-item {
+    min-width: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Enhanced touch targets for mobile */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Responsive grid fallback for tabs */
+  .responsive-tabs-grid {
+    display: grid;
+    gap: 4px;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  }
+
+  @media (max-width: 640px) {
+    .responsive-tabs-grid {
+      grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+      gap: 2px;
+    }
+  }
+
   /* Mobile video content constraints */
   @media (max-width: 640px) {
     .video-content-safe {
