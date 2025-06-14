@@ -634,6 +634,3 @@ export class CryptoService {
 
 // Export singleton instance
 export const cryptoService = new CryptoService();
-
-// Export API status functions for monitoring
-export { getApiStatus, resetApiStatus };
