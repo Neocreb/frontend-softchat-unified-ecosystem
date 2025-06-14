@@ -7,7 +7,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import SafeThemeProvider from "./contexts/SafeThemeProvider";
+import ReactDiagnostic from "./components/debug/ReactDiagnostic";
 import {
   AccessibilityProvider,
   AccessibilityControlPanel,
@@ -20,6 +21,7 @@ import {
   ConnectionStatus,
   PWAInstallPrompt,
 } from "./components/mobile/MobileOptimizations";
+import MobileLayoutChecker from "./components/layout/MobileLayoutChecker";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -271,7 +273,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
+        <SafeThemeProvider>
           <AuthProvider>
             <AccessibilityProvider>
               <TooltipProvider>
@@ -285,14 +287,18 @@ const App = () => {
                 <ReadingGuide />
                 <ConnectionStatus />
                 <PWAInstallPrompt />
+                <MobileLayoutChecker />
 
                 {/* Toasters */}
                 <Toaster />
                 <Sonner />
+
+                {/* React Diagnostic (development only) */}
+                {process.env.NODE_ENV === "development" && <ReactDiagnostic />}
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>
-        </ThemeProvider>
+        </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
