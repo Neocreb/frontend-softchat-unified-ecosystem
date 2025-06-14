@@ -9,6 +9,7 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import ReactDiagnostic from "./components/debug/ReactDiagnostic";
+import MinimalTest from "./components/debug/MinimalTest";
 import {
   AccessibilityProvider,
   AccessibilityControlPanel,
@@ -294,7 +295,12 @@ const App = () => {
                 <Sonner />
 
                 {/* React Diagnostic (development only) */}
-                {process.env.NODE_ENV === "development" && <ReactDiagnostic />}
+                {process.env.NODE_ENV === "development" && (
+                  <>
+                    <ReactDiagnostic />
+                    <MinimalTest />
+                  </>
+                )}
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>
