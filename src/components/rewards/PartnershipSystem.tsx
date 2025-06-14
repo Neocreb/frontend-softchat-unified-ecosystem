@@ -372,22 +372,46 @@ export function PartnershipSystem() {
                   </span>
                 </div>
                 <Progress value={referralData.tierProgress} className="h-3" />
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Current Benefits</p>
-                    <ul className="mt-1 space-y-1">
-                      <li>• 20% commission rate</li>
-                      <li>• Weekly payouts</li>
-                      <li>• Priority support</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Next Tier Benefits</p>
-                    <ul className="mt-1 space-y-1">
-                      <li>• 30% commission rate</li>
-                      <li>• Daily payouts</li>
-                      <li>• Exclusive content</li>
-                    </ul>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <p className="text-muted-foreground font-medium">
+                        Current Benefits
+                      </p>
+                      <ul className="space-y-1 text-xs leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5">•</span>
+                          <span>20% commission rate</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5">•</span>
+                          <span>Weekly payouts</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 mt-0.5">•</span>
+                          <span>Priority support</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-muted-foreground font-medium">
+                        Next Tier Benefits
+                      </p>
+                      <ul className="space-y-1 text-xs leading-relaxed">
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>30% commission rate</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>Daily payouts</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-blue-500 mt-0.5">•</span>
+                          <span>Exclusive content</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </CardContent>
