@@ -261,80 +261,82 @@ export function PartnershipSystem() {
   return (
     <div className="space-y-6">
       {/* Partnership Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Total Referrals
                 </p>
-                <p className="text-2xl font-bold leading-tight">
+                <p className="text-2xl font-bold leading-none">
                   {referralData.totalReferrals}
                 </p>
-                <p className="text-xs text-green-600 mt-1">+12% this month</p>
+                <p className="text-xs text-green-600">+12% this month</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500 flex-shrink-0" />
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Total Earnings
                 </p>
-                <p className="text-2xl font-bold leading-tight">
-                  ${referralData.totalEarnings}
+                <p className="text-2xl font-bold leading-none">
+                  ${referralData.totalEarnings.toLocaleString()}
                 </p>
-                <p className="text-xs text-green-600 mt-1 break-words">
+                <p className="text-xs text-green-600 truncate">
                   +${referralData.monthlyEarnings} this month
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-500 flex-shrink-0" />
+              <DollarSign className="h-6 w-6 sm:h-8 sm:w-8 text-green-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Conversion Rate
                 </p>
-                <p className="text-2xl font-bold leading-tight">
+                <p className="text-2xl font-bold leading-none">
                   {referralData.conversionRate}%
                 </p>
-                <p className="text-xs text-green-600 mt-1">Above average</p>
+                <p className="text-xs text-green-600">Above average</p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-500 flex-shrink-0" />
+              <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-orange-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-muted-foreground mb-1 truncate">
+        <Card className="h-auto">
+          <CardContent className="p-4 h-full">
+            <div className="flex items-start justify-between gap-3 h-full">
+              <div className="flex-1 min-w-0 space-y-2">
+                <p className="text-sm text-muted-foreground truncate">
                   Partnership Tier
                 </p>
-                <Badge
-                  className={cn(
-                    "text-sm font-medium mt-1",
-                    getTierColor(referralData.tier),
-                  )}
-                >
-                  {referralData.tier}
-                </Badge>
-                <p className="text-xs text-muted-foreground mt-2 break-words">
-                  {referralData.tierProgress}% to next tier
-                </p>
+                <div className="flex flex-col gap-1">
+                  <Badge
+                    className={cn(
+                      "text-xs font-medium w-fit",
+                      getTierColor(referralData.tier),
+                    )}
+                  >
+                    {referralData.tier}
+                  </Badge>
+                  <p className="text-xs text-muted-foreground">
+                    {referralData.tierProgress}% to next
+                  </p>
+                </div>
               </div>
-              <Crown className="h-8 w-8 text-yellow-500 flex-shrink-0" />
+              <Crown className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500 flex-shrink-0 mt-1" />
             </div>
           </CardContent>
         </Card>
