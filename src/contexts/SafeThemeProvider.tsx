@@ -31,19 +31,10 @@ class SafeThemeProvider extends Component<
     if (this.state.hasError) {
       // Fallback to default theme without context
       document.documentElement.classList.add("light");
-
       return <div className="theme-fallback">{this.props.children}</div>;
     }
 
-    try {
-      return <ThemeProvider>{this.props.children}</ThemeProvider>;
-    } catch (error) {
-      console.error("Error rendering ThemeProvider:", error);
-
-      // Fallback rendering without theme context
-      document.documentElement.classList.add("light");
-      return <div className="theme-fallback">{this.props.children}</div>;
-    }
+    return <ThemeProvider>{this.props.children}</ThemeProvider>;
   }
 }
 

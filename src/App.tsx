@@ -8,8 +8,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-import ReactDiagnostic from "./components/debug/ReactDiagnostic";
-import MinimalTest from "./components/debug/MinimalTest";
+
 import {
   AccessibilityProvider,
   AccessibilityControlPanel,
@@ -46,9 +45,10 @@ import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import EnhancedVideos from "./pages/EnhancedVideos";
+import ImprovedVideos from "./pages/ImprovedVideos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
-import LandingPage from "./pages/Landing";
+import TestComponent from "./pages/TestComponent";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
@@ -157,7 +157,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Root path redirects based on auth state */}
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
 
       {/* Auth route - redirects to feed if already authenticated */}
@@ -207,7 +207,7 @@ const AppRoutes = () => {
 
         <Route path="crypto" element={<EnhancedCrypto />} />
         <Route path="rewards" element={<EnhancedRewards />} />
-        <Route path="videos" element={<EnhancedVideos />} />
+        <Route path="videos" element={<ImprovedVideos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<EnhancedSettings />} />
@@ -289,14 +289,6 @@ const App = () => {
                 {/* Toasters */}
                 <Toaster />
                 <Sonner />
-
-                {/* React Diagnostic (development only) */}
-                {process.env.NODE_ENV === "development" && (
-                  <>
-                    <ReactDiagnostic />
-                    <MinimalTest />
-                  </>
-                )}
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>

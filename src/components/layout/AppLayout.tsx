@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
@@ -7,6 +7,20 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const AppLayout = () => {
   const isMobile = useIsMobile();
+  const location = useLocation();
+
+  // Video pages should have full-screen experience
+  const isVideoPage = location.pathname === "/videos";
+
+  if (isVideoPage) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Outlet />
+        {/* Footer navigation for videos with special styling */}
+        {isMobile && <FooterNav />}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">

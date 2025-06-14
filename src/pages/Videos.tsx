@@ -247,46 +247,46 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
       </video>
 
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
 
       {/* Content overlay */}
       <div className="absolute inset-0 flex">
         {/* Left side - user info and description */}
-        <div className="flex-1 flex flex-col justify-end p-4 pb-20 md:pb-4">
-          <div className="space-y-3">
+        <div className="flex-1 flex flex-col justify-end p-3 md:p-4 pb-28 md:pb-4">
+          <div className="space-y-2 md:space-y-3">
             {/* User info */}
-            <div className="flex items-center gap-3">
-              <Avatar className="w-12 h-12 border-2 border-white/20">
+            <div className="flex items-center gap-2 md:gap-3">
+              <Avatar className="w-10 h-10 md:w-12 md:h-12 border-2 border-white/20">
                 <AvatarImage src={video.user.avatar} />
                 <AvatarFallback>{video.user.displayName[0]}</AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-white font-semibold text-sm truncate">
+                <div className="flex items-center gap-1 md:gap-2">
+                  <span className="text-white font-semibold text-xs md:text-sm truncate">
                     @{video.user.username}
                   </span>
                   {video.user.verified && (
-                    <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <div className="w-2 h-2 bg-white rounded-full" />
+                    <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
                     </div>
                   )}
                 </div>
-                <div className="text-white/80 text-xs">
+                <div className="text-white/80 text-[10px] md:text-xs">
                   {video.user.displayName}
                 </div>
               </div>
               <Button
                 size="sm"
                 variant="outline"
-                className="bg-white/20 border-white/30 text-white hover:bg-white/30 text-xs px-3 py-1 h-auto"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30 text-[10px] md:text-xs px-2 md:px-3 py-1 h-6 md:h-auto"
               >
                 Follow
               </Button>
             </div>
 
             {/* Description */}
-            <div className="text-white text-sm">
-              <p className="leading-relaxed">
+            <div className="text-white text-xs md:text-sm">
+              <p className="leading-relaxed line-clamp-2 md:line-clamp-3">
                 {showMore ? description : truncatedDescription}
                 {description.length > 100 && (
                   <button
@@ -299,9 +299,9 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
               </p>
 
               {/* Hashtags */}
-              <div className="flex flex-wrap gap-1 mt-2">
-                {video.hashtags.map((tag) => (
-                  <span key={tag} className="text-blue-300 text-sm">
+              <div className="flex flex-wrap gap-1 mt-1 md:mt-2">
+                {video.hashtags.slice(0, 3).map((tag) => (
+                  <span key={tag} className="text-blue-300 text-xs md:text-sm">
                     #{tag}
                   </span>
                 ))}
@@ -309,8 +309,8 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             </div>
 
             {/* Music info */}
-            <div className="flex items-center gap-2 text-white/80 text-xs">
-              <Music className="w-3 h-3" />
+            <div className="flex items-center gap-1 md:gap-2 text-white/80 text-[10px] md:text-xs">
+              <Music className="w-3 h-3 flex-shrink-0" />
               <span className="truncate">
                 {video.music.title} - {video.music.artist}
               </span>
@@ -319,26 +319,26 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
         </div>
 
         {/* Right side - action buttons */}
-        <div className="flex flex-col items-center justify-end gap-6 p-4 pb-20 md:pb-8">
+        <div className="flex flex-col items-center justify-end gap-4 md:gap-6 p-2 md:p-4 pb-28 md:pb-8">
           {/* Like button */}
           <div className="flex flex-col items-center gap-1">
             <Button
               size="icon"
               variant="ghost"
               className={cn(
-                "w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none",
+                "w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none",
                 isLiked && "bg-red-500/80 hover:bg-red-500",
               )}
               onClick={() => setIsLiked(!isLiked)}
             >
               <Heart
                 className={cn(
-                  "w-6 h-6",
+                  "w-5 h-5 md:w-6 md:h-6",
                   isLiked ? "fill-white text-white" : "text-white",
                 )}
               />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-[10px] md:text-xs font-medium">
               {formatNumber(video.stats.likes + (isLiked ? 1 : 0))}
             </span>
           </div>
@@ -348,11 +348,11 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             <Button
               size="icon"
               variant="ghost"
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
             >
-              <MessageCircle className="w-6 h-6 text-white" />
+              <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-[10px] md:text-xs font-medium">
               {formatNumber(video.stats.comments)}
             </span>
           </div>
@@ -362,11 +362,11 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
             <Button
               size="icon"
               variant="ghost"
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
             >
-              <Share className="w-6 h-6 text-white" />
+              <Share className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-[10px] md:text-xs font-medium">
               {formatNumber(video.stats.shares)}
             </span>
           </div>
@@ -375,18 +375,18 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
           <Button
             size="icon"
             variant="ghost"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
           >
-            <Bookmark className="w-6 h-6 text-white" />
+            <Bookmark className="w-5 h-5 md:w-6 md:h-6 text-white" />
           </Button>
 
           {/* More options */}
           <Button
             size="icon"
             variant="ghost"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
           >
-            <MoreHorizontal className="w-6 h-6 text-white" />
+            <MoreHorizontal className="w-5 h-5 md:w-6 md:h-6 text-white" />
           </Button>
         </div>
       </div>
@@ -395,13 +395,13 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
       <Button
         size="icon"
         variant="ghost"
-        className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
+        className="absolute top-4 right-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
         onClick={() => setIsMuted(!isMuted)}
       >
         {isMuted ? (
-          <VolumeX className="w-5 h-5 text-white" />
+          <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
         ) : (
-          <Volume2 className="w-5 h-5 text-white" />
+          <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
         )}
       </Button>
 
@@ -409,7 +409,7 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
       <div className="absolute top-4 left-4">
         <Badge
           variant="secondary"
-          className="bg-black/40 text-white border-none"
+          className="bg-black/40 text-white border-none text-[10px] md:text-xs px-2 py-1"
         >
           {video.stats.views} views
         </Badge>
@@ -446,172 +446,37 @@ const Videos: React.FC = () => {
   }, [currentVideoIndex]);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
         <title>Videos | Softchat</title>
       </Helmet>
 
-      {/* Videos uses the main app header, no need for separate header */}
-
-      {/* Main Content */}
-      <div className="relative">
-        {/* Desktop Sidebar */}
-        <div className="hidden md:block fixed left-0 top-0 h-full w-16 bg-black/50 z-40">
-          <div className="flex flex-col items-center pt-20 space-y-6">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-gray-800"
-            >
-              <Home className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-gray-800"
-            >
-              <Search className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-gray-800"
-            >
-              <Heart className="h-6 w-6" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-gray-800"
-            >
-              <User className="h-6 w-6" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Video Feed */}
-        <div className="md:ml-16 -mt-20 md:-mt-20 pb-20 md:pb-0">
-          <div className="max-w-md mx-auto">
-            {mockVideos.map((video, index) => (
-              <div
-                key={video.id}
-                className="relative h-screen w-full snap-start flex items-center justify-center"
-              >
-                {/* Video */}
-                <video
-                  src={video.videoUrl}
-                  poster={video.thumbnail}
-                  className="absolute top-0 left-0 w-full h-full object-cover"
-                  muted
-                  loop
-                  autoPlay
-                />
-
-                {/* Overlays */}
-                <div className="absolute top-0 left-0 w-full h-full bg-black/30"></div>
-
-                {/* Video Info */}
-                <div className="absolute bottom-3 md:bottom-4 left-3 md:left-4 right-16 md:right-20 z-30">
-                  <div className="text-white">
-                    <div className="flex items-center space-x-2 md:space-x-3 mb-2">
-                      <img
-                        src={video.user.avatar}
-                        alt={video.user.displayName}
-                        className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-xs md:text-sm truncate">
-                          {video.user.displayName}
-                        </h3>
-                        <p className="text-xs text-gray-300 truncate">
-                          @{video.user.username}
-                        </p>
-                      </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-white border-white hover:bg-white hover:text-black text-xs px-2 md:px-3 py-1 h-7 md:h-8"
-                      >
-                        Follow
-                      </Button>
-                    </div>
-                    <p className="text-xs md:text-sm mb-2 line-clamp-2">
-                      {video.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1">
-                      {video.hashtags.slice(0, 3).map((tag, tagIndex) => (
-                        <span key={tagIndex} className="text-xs text-blue-300">
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Video Actions */}
-                <div className="absolute right-3 md:right-4 bottom-24 md:bottom-20 flex flex-col space-y-3 md:space-y-4 z-30">
-                  <div className="flex flex-col items-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
-                    >
-                      <Heart className="h-5 w-5 md:h-6 md:w-6" />
-                    </Button>
-                    <span className="text-white text-xs mt-1">
-                      {video.stats.likes}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
-                    >
-                      <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />
-                    </Button>
-                    <span className="text-white text-xs mt-1">
-                      {video.stats.comments}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
-                    >
-                      <Share className="h-5 w-5 md:h-6 md:w-6" />
-                    </Button>
-                    <span className="text-white text-xs mt-1">
-                      {video.stats.shares}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-white hover:bg-gray-800/50 bg-black/30 rounded-full h-10 w-10 md:h-12 md:w-12"
-                    >
-                      <MoreHorizontal className="h-5 w-5 md:h-6 md:w-6" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Create Button */}
-        <Button
-          onClick={() => setIsCreatorOpen(true)}
-          className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-12 h-12 md:w-16 md:h-16 shadow-lg"
-        >
-          <Plus className="h-6 w-6 md:h-8 md:w-8" />
-        </Button>
+      {/* Full-screen video container */}
+      <div
+        ref={containerRef}
+        className="h-full w-full overflow-y-auto snap-y snap-mandatory"
+        style={{
+          scrollBehavior: "smooth",
+          paddingTop: 0,
+          paddingBottom: "80px", // Account for mobile navigation
+        }}
+      >
+        {mockVideos.map((video, index) => (
+          <VideoCard
+            key={video.id}
+            video={video}
+            isActive={index === currentVideoIndex}
+          />
+        ))}
       </div>
+
+      {/* Create Button */}
+      <Button
+        onClick={() => setIsCreatorOpen(true)}
+        className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-12 h-12 md:w-16 md:h-16 shadow-lg"
+      >
+        <Plus className="h-6 w-6 md:h-8 md:w-8" />
+      </Button>
 
       {/* Creator Modal */}
       <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>

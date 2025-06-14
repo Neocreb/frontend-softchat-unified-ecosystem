@@ -4,6 +4,11 @@ import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
 import "./index.css";
 
+// Ensure React is properly available globally
+if (typeof window !== "undefined") {
+  (window as any).React = React;
+}
+
 // Error boundary component
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -72,11 +77,9 @@ const root = createRoot(rootElement);
 
 // Render app with providers and error boundary
 root.render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
-    </ErrorBoundary>
-  </React.StrictMode>,
+  <ErrorBoundary>
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
+  </ErrorBoundary>,
 );
