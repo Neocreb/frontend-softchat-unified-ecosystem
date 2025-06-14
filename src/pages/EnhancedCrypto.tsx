@@ -48,6 +48,7 @@ import {
 import { BlogPost } from "@/types/blog";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
+import CryptoDetailModal from "@/components/crypto/CryptoDetailModal";
 import RealTimePriceDisplay from "@/components/crypto/RealTimePriceDisplay";
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
@@ -71,7 +72,9 @@ export default function EnhancedCrypto() {
   const [price, setPrice] = useState("");
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [selectedCrypto, setSelectedCrypto] = useState<Cryptocurrency | null>(null);
+  const [isCryptoDetailOpen, setIsCryptoDetailOpen] = useState(false);
 
   const { toast } = useToast();
 
@@ -438,61 +441,68 @@ export default function EnhancedCrypto() {
 
             {/* Top Cryptocurrencies */}
             <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                  <TrendingUp className="h-4 w-4 md:h-5 md:w-5" />
+              <CardHeader>
+                <CardTitle className="text-base md:text-lg">
                   Top Cryptocurrencies
                 </CardTitle>
               </CardHeader>
-              <CardContent className="px-3 md:px-6">
-                <div className="space-y-2 md:space-y-3">
-                  {cryptos && cryptos.length > 0 ? (
-                    cryptos.slice(0, 8).map((crypto, index) => (
-                      <div
-                        key={crypto.id}
-                        className="flex items-center justify-between p-2 md:p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-                        onClick={() =>
-                          setSelectedPair(crypto.symbol.toUpperCase() + "USDT")
-                        }
-                      >
-                        <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                          <div className="w-4 md:w-6 text-xs md:text-sm font-medium text-gray-500 flex-shrink-0">
-                            #{index + 1}
-                          </div>
-                          <img
-                            src={crypto.image}
-                            alt={crypto.name}
-                            className="w-6 h-6 md:w-8 md:h-8 rounded-full flex-shrink-0"
-                          />
-                          <div className="min-w-0 flex-1">
-                            <div className="font-medium text-sm md:text-base truncate">
+              <CardContent className="p-2 sm:p-4">
+                <div className="space-y-1 sm:space-y-2">
+                  {cryptos.slice(0, 10).map((crypto) => (
+                    <div
+                      key={crypto.id}
+                      onClick={() => {
+                        setSelectedCrypto(crypto);
+                        setIsCryptoDetailOpen(true);
+                      }}
+                      className="flex items-center justify-between p-2 sm:p-3 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer touch-manipulation mobile-focus"
+                    >
+                      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                        <img
+                          src={crypto.image}
+                          alt={crypto.name}
+                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            <p className="font-medium text-xs sm:text-sm md:text-base truncate">
                               {crypto.name}
-                            </div>
-                            <div className="text-xs md:text-sm text-gray-600">
-                              {crypto.symbol.toUpperCase()}
-                            </div>
+                            </p>
+                            <span className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded flex-shrink-0">
+                              {crypto.symbol}
+                            </span>
                           </div>
-                        </div>
-
-                        <div className="text-right min-w-0 flex-shrink-0">
-                          <RealTimePriceDisplay
-                            price={crypto.current_price || 0}
-                            change24h={crypto.price_change_percentage_24h || 0}
-                            symbol={crypto.symbol}
-                            showSymbol={false}
-                            size="sm"
-                            className="justify-end"
-                          />
+                          <p className="text-xs text-gray-500 hidden sm:block">
+                            Rank #{crypto.market_cap_rank}
+                          </p>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-center text-gray-500 py-8">
-                      <p>Loading cryptocurrencies...</p>
+                      <div className="text-right flex-shrink-0 min-w-0">
+                        <p className="font-medium text-xs sm:text-sm md:text-base text-responsive">
+                          {formatCurrency(crypto.current_price)}
+                        </p>
+                        <div
+                          className={`text-xs flex items-center gap-1 justify-end ${
+                            crypto.price_change_percentage_24h >= 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {crypto.price_change_percentage_24h >= 0 ? (
+                            <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 flex-shrink-0" />
+                          ) : (
+                            <TrendingDown className="h-2.5 w-2.5 sm:h-3 sm:w-3 flex-shrink-0" />
+                          )}
+                          <span className="truncate">
+                            {Math.abs(crypto.price_change_percentage_24h).toFixed(2)}%
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  )}
+                  ))}
                 </div>
               </CardContent>
+            </Card>
             </Card>
 
             {/* Market Movers */}

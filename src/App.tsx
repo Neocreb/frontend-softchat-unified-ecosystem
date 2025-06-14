@@ -20,6 +20,7 @@ import {
   ConnectionStatus,
   PWAInstallPrompt,
 } from "./components/mobile/MobileOptimizations";
+import MobileLayoutChecker from "./components/layout/MobileLayoutChecker";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -285,6 +286,7 @@ const App = () => {
                 <ReadingGuide />
                 <ConnectionStatus />
                 <PWAInstallPrompt />
+                <MobileLayoutChecker />
 
                 {/* Toasters */}
                 <Toaster />
