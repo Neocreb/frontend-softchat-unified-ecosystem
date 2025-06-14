@@ -660,11 +660,13 @@ export function PartnershipSystem() {
             {partnerships.map((partnership) => (
               <Card key={partnership.id}>
                 <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{partnership.icon}</span>
-                      <div>
-                        <CardTitle className="text-base">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0 flex-1">
+                      <span className="text-2xl flex-shrink-0">
+                        {partnership.icon}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <CardTitle className="text-base leading-tight truncate">
                           {partnership.name}
                         </CardTitle>
                         <Badge
@@ -673,17 +675,17 @@ export function PartnershipSystem() {
                               ? "default"
                               : "secondary"
                           }
-                          className="text-xs"
+                          className="text-xs mt-1"
                         >
                           {partnership.status}
                         </Badge>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-green-600">
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-lg font-bold text-green-600 leading-tight">
                         {partnership.commission}%
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground mt-1">
                         commission
                       </p>
                     </div>
