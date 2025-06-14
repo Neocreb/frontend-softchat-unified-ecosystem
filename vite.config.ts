@@ -19,7 +19,17 @@ export default defineConfig({
     dedupe: ["react", "react-dom"],
   },
   optimizeDeps: {
-    include: ["react", "react-dom", "react-router-dom"],
+    include: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+    ],
+    force: true,
+  },
+  esbuild: {
+    jsxInject: `import React from 'react'`,
   },
   build: {
     outDir: "dist",
