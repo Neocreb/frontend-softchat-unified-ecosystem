@@ -16,172 +16,7 @@ import {
   CopyTradingProvider,
 } from "@/types/crypto";
 
-// CoinGecko API configuration
-const COINGECKO_API_BASE = "https://api.coingecko.com/api/v3";
-const BACKUP_API_BASE = "https://api.coinlore.net/api";
-
-// Rate limiting and caching
-const API_CACHE = new Map();
-const CACHE_DURATION = 30000; // 30 seconds
-const REQUEST_DELAY = 100; // 100ms between requests to avoid rate limiting
-
-// API failure tracking with automatic recovery
-let apiFailureCount = 0;
-const MAX_API_FAILURES = 5; // Increased tolerance
-let apiDisabled = false;
-let lastApiAttempt = 0;
-const API_RETRY_INTERVAL = 60000; // Retry every minute
-
-// Function to reset API status (useful for testing or manual recovery)
-export const resetApiStatus = () => {
-  apiFailureCount = 0;
-  apiDisabled = false;
-  lastApiAttempt = 0;
-  console.log("📊 CryptoService: API status reset - real API calls re-enabled");
-};
-
-// Function to get current API status
-export const getApiStatus = () => ({
-  failureCount: apiFailureCount,
-  isDisabled: apiDisabled,
-  maxFailures: MAX_API_FAILURES,
-  lastAttempt: lastApiAttempt,
-  nextRetry: lastApiAttempt + API_RETRY_INTERVAL,
-});
-
-// Helper function to make API requests with improved error handling
-const fetchWithCache = async (url: string, cacheKey: string) => {
-  // Auto-recovery: try to re-enable API after interval
-  if (apiDisabled && Date.now() - lastApiAttempt > API_RETRY_INTERVAL) {
-    console.log("📊 CryptoService: Attempting API recovery...");
-    apiDisabled = false;
-    apiFailureCount = Math.max(0, apiFailureCount - 1); // Reduce failure count
-  }
-
-  // If API is disabled due to repeated failures, return null immediately
-  if (apiDisabled) {
-    console.log(
-      "📊 CryptoService: Using simulated data (API temporarily unavailable)",
-    );
-    return null;
-  }
-
-  // Check cache first
-  const cached = API_CACHE.get(cacheKey);
-  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
-    return cached.data;
-  }
-
-  try {
-    // Add delay to prevent rate limiting
-    await new Promise((resolve) => setTimeout(resolve, REQUEST_DELAY));
-
-    lastApiAttempt = Date.now();
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "User-Agent": "SoftChat/1.0",
-      },
-      mode: "cors",
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    // Reset failure count on successful request
-    if (apiFailureCount > 0) {
-      console.log("📊 CryptoService: API connection restored");
-      apiFailureCount = 0;
-    }
-
-    // Cache the result
-    API_CACHE.set(cacheKey, {
-      data,
-      timestamp: Date.now(),
-    });
-
-    return data;
-  } catch (error) {
-    console.log(
-      `🌐 CryptoService: API request failed for ${url}:`,
-      error.message,
-    );
-
-    // Increment failure count
-    apiFailureCount++;
-
-    // Disable API if too many failures
-    if (apiFailureCount >= MAX_API_FAILURES) {
-      apiDisabled = true;
-      console.warn(
-        `🚨 CryptoService: API disabled after ${MAX_API_FAILURES} failures. Using simulation mode. Will retry in ${API_RETRY_INTERVAL / 1000}s.`,
-      );
-    }
-
-    // Return cached data if available, even if expired
-    if (cached) {
-      console.log("📋 CryptoService: Using cached data due to API failure");
-      return cached.data;
-    }
-
-    // Return null to trigger fallback
-    return null;
-  }
-};
-
-// Helper function to add delay
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// Transform CoinGecko API data to our format
-const transformCoinGeckoData = (data: any[]): Cryptocurrency[] => {
-  return data.map((coin) => ({
-    id: coin.id,
-    symbol: coin.symbol.toUpperCase(),
-    name: coin.name,
-    image: coin.image,
-    current_price: coin.current_price || 0,
-    market_cap: coin.market_cap || 0,
-    market_cap_rank: coin.market_cap_rank || 999,
-    fully_diluted_valuation: coin.fully_diluted_valuation,
-    total_volume: coin.total_volume || 0,
-    high_24h: coin.high_24h || coin.current_price || 0,
-    low_24h: coin.low_24h || coin.current_price || 0,
-    price_change_24h: coin.price_change_24h || 0,
-    price_change_percentage_24h: coin.price_change_percentage_24h || 0,
-    price_change_percentage_7d_in_currency:
-      coin.price_change_percentage_7d_in_currency || 0,
-    price_change_percentage_30d_in_currency:
-      coin.price_change_percentage_30d_in_currency || 0,
-    market_cap_change_24h: coin.market_cap_change_24h || 0,
-    market_cap_change_percentage_24h:
-      coin.market_cap_change_percentage_24h || 0,
-    circulating_supply: coin.circulating_supply || 0,
-    total_supply: coin.total_supply,
-    max_supply: coin.max_supply,
-    ath: coin.ath || coin.current_price || 0,
-    ath_change_percentage: coin.ath_change_percentage || 0,
-    ath_date: coin.ath_date || new Date().toISOString(),
-    atl: coin.atl || coin.current_price || 0,
-    atl_change_percentage: coin.atl_change_percentage || 0,
-    atl_date: coin.atl_date || new Date().toISOString(),
-    roi: coin.roi,
-    last_updated: coin.last_updated || new Date().toISOString(),
-    sparkline_in_7d: coin.sparkline_in_7d || { price: [] },
-  }));
-};
-
-// Mock data for fallback
+// Mock data for realistic crypto experience
 export const mockCryptocurrencies: Cryptocurrency[] = [
   {
     id: "bitcoin",
@@ -287,6 +122,72 @@ export const mockCryptocurrencies: Cryptocurrency[] = [
       price: [301, 305, 309, 312, 315, 312, 314],
     },
   },
+  {
+    id: "cardano",
+    symbol: "ADA",
+    name: "Cardano",
+    image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
+    current_price: 0.52,
+    market_cap: 18420000000,
+    market_cap_rank: 4,
+    fully_diluted_valuation: 23400000000,
+    total_volume: 890000000,
+    high_24h: 0.538,
+    low_24h: 0.501,
+    price_change_24h: 0.018,
+    price_change_percentage_24h: 3.59,
+    price_change_percentage_7d_in_currency: 7.23,
+    price_change_percentage_30d_in_currency: 14.67,
+    market_cap_change_24h: 640000000,
+    market_cap_change_percentage_24h: 3.59,
+    circulating_supply: 35410000000,
+    total_supply: 45000000000,
+    max_supply: 45000000000,
+    ath: 3.09,
+    ath_change_percentage: -83.17,
+    ath_date: "2021-09-02T06:00:10.474Z",
+    atl: 0.01925275,
+    atl_change_percentage: 2601.77,
+    atl_date: "2020-03-13T02:22:55.391Z",
+    roi: null,
+    last_updated: new Date().toISOString(),
+    sparkline_in_7d: {
+      price: [0.485, 0.492, 0.501, 0.515, 0.523, 0.52, 0.525],
+    },
+  },
+  {
+    id: "solana",
+    symbol: "SOL",
+    name: "Solana",
+    image: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+    current_price: 98.45,
+    market_cap: 42890000000,
+    market_cap_rank: 5,
+    fully_diluted_valuation: 55670000000,
+    total_volume: 2340000000,
+    high_24h: 102.34,
+    low_24h: 96.12,
+    price_change_24h: 2.33,
+    price_change_percentage_24h: 2.42,
+    price_change_percentage_7d_in_currency: 9.67,
+    price_change_percentage_30d_in_currency: 18.94,
+    market_cap_change_24h: 1020000000,
+    market_cap_change_percentage_24h: 2.42,
+    circulating_supply: 435670000,
+    total_supply: 565450000,
+    max_supply: null,
+    ath: 259.96,
+    ath_change_percentage: -62.12,
+    ath_date: "2021-11-06T21:54:35.825Z",
+    atl: 0.500801,
+    atl_change_percentage: 19556.89,
+    atl_date: "2020-05-11T19:35:23.449Z",
+    roi: null,
+    last_updated: new Date().toISOString(),
+    sparkline_in_7d: {
+      price: [89.45, 91.23, 94.67, 96.12, 98.45, 100.23, 99.78],
+    },
+  },
 ];
 
 export const mockTradingPairs: TradingPair[] = [
@@ -309,6 +210,36 @@ export const mockTradingPairs: TradingPair[] = [
     volume24h: 1240000000,
     high24h: 2612.89,
     low24h: 2534.12,
+  },
+  {
+    id: "BNB/USDT",
+    baseAsset: "BNB",
+    quoteAsset: "USDT",
+    price: 312.45,
+    change24h: 1.41,
+    volume24h: 189000000,
+    high24h: 318.67,
+    low24h: 308.12,
+  },
+  {
+    id: "ADA/USDT",
+    baseAsset: "ADA",
+    quoteAsset: "USDT",
+    price: 0.52,
+    change24h: 3.59,
+    volume24h: 89000000,
+    high24h: 0.538,
+    low24h: 0.501,
+  },
+  {
+    id: "SOL/USDT",
+    baseAsset: "SOL",
+    quoteAsset: "USDT",
+    price: 98.45,
+    change24h: 2.42,
+    volume24h: 234000000,
+    high24h: 102.34,
+    low24h: 96.12,
   },
 ];
 
@@ -375,7 +306,7 @@ export const mockNews: News[] = [
     id: "news-1",
     title: "Bitcoin Reaches New All-Time High Above $43,000",
     summary:
-      "Bitcoin surges to new heights as institutional adoption continues to grow.",
+      "Bitcoin surges to new heights as institutional adoption continues to grow across major financial institutions worldwide.",
     author: "CryptoNews Team",
     source: "CryptoDaily",
     image: "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=500",
@@ -388,7 +319,7 @@ export const mockNews: News[] = [
     id: "news-2",
     title: "Ethereum Layer 2 Solutions See Massive Growth",
     summary:
-      "Layer 2 scaling solutions for Ethereum are experiencing unprecedented adoption.",
+      "Layer 2 scaling solutions for Ethereum are experiencing unprecedented adoption as transaction costs continue to decrease.",
     author: "DeFi Analyst",
     source: "BlockchainWeekly",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500",
@@ -397,6 +328,19 @@ export const mockNews: News[] = [
     publishedAt: "2024-01-15T12:00:00Z",
     relatedAssets: ["ETH"],
   },
+  {
+    id: "news-3",
+    title: "Solana Network Processes Record Transaction Volume",
+    summary:
+      "The Solana blockchain has achieved a new milestone with over 3,000 TPS sustained throughout the day.",
+    author: "Blockchain Reporter",
+    source: "SolanaNews",
+    image: "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=500",
+    tags: ["Solana", "Performance", "TPS"],
+    sentiment: "POSITIVE",
+    publishedAt: "2024-01-15T10:15:00Z",
+    relatedAssets: ["SOL"],
+  },
 ];
 
 export const mockEducationContent: EducationContent[] = [
@@ -404,8 +348,9 @@ export const mockEducationContent: EducationContent[] = [
     id: "edu-1",
     title: "Introduction to Cryptocurrency Trading",
     description:
-      "Learn the basics of crypto trading, from market analysis to risk management.",
-    content: "Complete course content here...",
+      "Learn the basics of crypto trading, from market analysis to risk management strategies.",
+    content:
+      "Complete course content covering fundamentals of cryptocurrency trading...",
     type: "COURSE",
     level: "BEGINNER",
     category: "Trading",
@@ -422,55 +367,66 @@ export const mockEducationContent: EducationContent[] = [
     publishedAt: "2024-01-10T10:00:00Z",
     updatedAt: "2024-01-10T10:00:00Z",
   },
+  {
+    id: "edu-2",
+    title: "Understanding DeFi Protocols",
+    description:
+      "Deep dive into decentralized finance protocols and how they work.",
+    content: "Comprehensive guide to DeFi protocols...",
+    type: "ARTICLE",
+    level: "INTERMEDIATE",
+    category: "DeFi",
+    tags: ["defi", "protocols", "yield"],
+    duration: 25,
+    thumbnail:
+      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=300",
+    author: "DeFi Expert",
+    rating: 4.6,
+    views: 8934,
+    likes: 567,
+    isBookmarked: false,
+    progress: 0,
+    publishedAt: "2024-01-08T15:30:00Z",
+    updatedAt: "2024-01-08T15:30:00Z",
+  },
 ];
 
-// Service class
+// Mock order book data
+const generateOrderBook = () => ({
+  bids: Array.from({ length: 10 }, (_, i) => ({
+    price: 43200 - i * 10,
+    amount: Math.random() * 5,
+    total: 0,
+  })),
+  asks: Array.from({ length: 10 }, (_, i) => ({
+    price: 43260 + i * 10,
+    amount: Math.random() * 5,
+    total: 0,
+  })),
+});
+
+// Mock recent trades
+const generateRecentTrades = (count: number) =>
+  Array.from({ length: count }, (_, i) => ({
+    id: `trade-${i}`,
+    price: 43200 + (Math.random() - 0.5) * 100,
+    amount: Math.random() * 2,
+    timestamp: new Date(Date.now() - i * 60000).toISOString(),
+    side: Math.random() > 0.5 ? "buy" : "sell",
+  }));
+
+// Simplified service class with only mock data
 export class CryptoService {
-  // Market data with improved error handling
-  async getCryptocurrencies(
-    limit = 100,
-    sortBy = "market_cap_desc",
-  ): Promise<Cryptocurrency[]> {
-    try {
-      const cacheKey = `cryptocurrencies_${limit}_${sortBy}`;
-
-      // Try CoinGecko API first
-      const url = `${COINGECKO_API_BASE}/coins/markets?vs_currency=usd&order=${sortBy}&per_page=${Math.min(limit, 250)}&page=1&sparkline=true&price_change_percentage=7d,30d&locale=en`;
-
-      const data = await fetchWithCache(url, cacheKey);
-
-      // If API returned valid data, transform and return it
-      if (data && Array.isArray(data) && data.length > 0) {
-        console.log("📊 CryptoService: Using live market data");
-        return transformCoinGeckoData(data);
-      }
-
-      // If API failed or returned invalid data, use fallback
-      console.log("📊 CryptoService: Using simulated market data");
-      return this.getFallbackCryptocurrencies(limit);
-    } catch (error) {
-      console.log(
-        "📊 CryptoService: Error in getCryptocurrencies:",
-        error.message,
-      );
-      return this.getFallbackCryptocurrencies(limit);
-    }
+  // Add realistic delays to simulate loading
+  private async delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  // Fallback method that returns mock data with realistic variations
-  private getFallbackCryptocurrencies(limit: number): Cryptocurrency[] {
-    const mockData = mockCryptocurrencies.slice(
-      0,
-      Math.min(limit, mockCryptocurrencies.length),
-    );
-    return this.simulateRealTimePrices(mockData);
-  }
-
-  // Simulate real-time price changes for fallback data
+  // Simulate price fluctuations for real-time feel
   private simulateRealTimePrices(cryptos: Cryptocurrency[]): Cryptocurrency[] {
     return cryptos.map((crypto) => {
-      // Add small random price fluctuations (±3%)
-      const priceChange = (Math.random() - 0.5) * 0.06;
+      // Add small random price fluctuations (±2%)
+      const priceChange = (Math.random() - 0.5) * 0.04;
       const newPrice = crypto.current_price * (1 + priceChange);
       const price_change_24h = newPrice - crypto.current_price;
       const price_change_percentage_24h =
@@ -490,84 +446,25 @@ export class CryptoService {
     });
   }
 
-  async getTradingPairs(): Promise<TradingPair[]> {
-    await delay(300);
-    return mockTradingPairs;
+  async getCryptocurrencies(
+    limit = 100,
+    sortBy = "market_cap_desc",
+  ): Promise<Cryptocurrency[]> {
+    await this.delay(200); // Simulate network delay
+    console.log("📊 CryptoService: Returning simulated cryptocurrency data");
+
+    const data = mockCryptocurrencies.slice(
+      0,
+      Math.min(limit, mockCryptocurrencies.length),
+    );
+    return this.simulateRealTimePrices(data);
   }
 
   async getMarketData(): Promise<MarketData> {
-    try {
-      // Get global market data from CoinGecko
-      const globalUrl = `${COINGECKO_API_BASE}/global`;
-      const globalData = await fetchWithCache(globalUrl, "global_market_data");
+    await this.delay(300);
+    console.log("📊 CryptoService: Returning simulated market data");
 
-      // Get trending coins for top movers
-      const trendingUrl = `${COINGECKO_API_BASE}/search/trending`;
-      const trendingData = await fetchWithCache(trendingUrl, "trending_coins");
-
-      // Get current top cryptocurrencies for gainers/losers
-      const topCryptos = await this.getCryptocurrencies(50);
-
-      // Check if we got valid global data
-      if (globalData && globalData.data) {
-        const global = globalData.data;
-        console.log("📊 CryptoService: Using live global market data");
-
-        return {
-          globalStats: {
-            totalMarketCap: global.total_market_cap?.usd || 1750000000000,
-            totalVolume24h: global.total_volume?.usd || 85000000000,
-            marketCapChange24h:
-              global.market_cap_change_percentage_24h_usd || 0,
-            btcDominance: global.market_cap_percentage?.btc || 48.5,
-            ethDominance: global.market_cap_percentage?.eth || 18.2,
-            activeCoins: global.active_cryptocurrencies || 8924,
-            markets: global.markets || 25687,
-          },
-          topMovers: {
-            gainers: topCryptos
-              .filter((c) => c.price_change_percentage_24h > 0)
-              .sort(
-                (a, b) =>
-                  b.price_change_percentage_24h - a.price_change_percentage_24h,
-              )
-              .slice(0, 5),
-            losers: topCryptos
-              .filter((c) => c.price_change_percentage_24h < 0)
-              .sort(
-                (a, b) =>
-                  a.price_change_percentage_24h - b.price_change_percentage_24h,
-              )
-              .slice(0, 5),
-          },
-          trending:
-            trendingData?.coins?.slice(0, 5).map((coin: any) => ({
-              id: coin.item.id,
-              name: coin.item.name,
-              symbol: coin.item.symbol,
-              current_price: 0, // Trending API doesn't include price
-              market_cap_rank: coin.item.market_cap_rank,
-              image: coin.item.thumb,
-              price_change_percentage_24h: 0,
-            })) || topCryptos.slice(10, 15),
-          fearGreedIndex: Math.floor(Math.random() * 100), // Fear & Greed Index not available in free API
-          lastUpdated: new Date().toISOString(),
-        };
-      }
-
-      // If no valid data, use fallback
-      return this.getFallbackMarketData(topCryptos);
-    } catch (error) {
-      console.log("📊 CryptoService: Error in getMarketData:", error.message);
-      // Always return fallback data instead of throwing
-      const fallbackCryptos = this.getFallbackCryptocurrencies(50);
-      return this.getFallbackMarketData(fallbackCryptos);
-    }
-  }
-
-  // Fallback market data with realistic simulated values
-  private getFallbackMarketData(cryptos: Cryptocurrency[]): MarketData {
-    console.log("📊 CryptoService: Using simulated global market data");
+    const cryptos = this.simulateRealTimePrices(mockCryptocurrencies);
 
     return {
       globalStats: {
@@ -601,36 +498,93 @@ export class CryptoService {
     };
   }
 
+  async getTradingPairs(): Promise<TradingPair[]> {
+    await this.delay(150);
+    return mockTradingPairs;
+  }
+
   async getPortfolio(): Promise<Portfolio> {
-    await delay(500);
+    await this.delay(250);
     return mockPortfolio;
   }
 
   async getStakingOptions(): Promise<StakingOption[]> {
-    await delay(300);
+    await this.delay(200);
     return mockStakingOptions;
   }
 
   async getCryptocurrencyById(id: string): Promise<Cryptocurrency | null> {
-    await delay(200);
-    return mockCryptocurrencies.find((crypto) => crypto.id === id) || null;
+    await this.delay(100);
+    const crypto = mockCryptocurrencies.find((c) => c.id === id);
+    if (!crypto) return null;
+
+    // Return with simulated price updates
+    return this.simulateRealTimePrices([crypto])[0];
   }
 
   async getNews(limit = 10): Promise<News[]> {
-    await delay(400);
+    await this.delay(300);
     return mockNews.slice(0, limit);
   }
 
   async getEducationContent(limit = 10): Promise<EducationContent[]> {
-    await delay(300);
+    await this.delay(250);
     return mockEducationContent.slice(0, limit);
   }
 
-  // Add delay helper method
-  private async delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  async getOrderBook(pair: string) {
+    await this.delay(100);
+    return generateOrderBook();
+  }
+
+  async getRecentTrades(pair: string, limit = 20) {
+    await this.delay(100);
+    return generateRecentTrades(limit);
+  }
+
+  // Chart data for trading interface
+  async getChartData(pair: string, interval: string): Promise<ChartData[]> {
+    await this.delay(200);
+
+    // Generate realistic OHLCV data
+    const now = Date.now();
+    const intervalMs = 60000; // 1 minute intervals
+
+    return Array.from({ length: 100 }, (_, i) => {
+      const timestamp = now - (100 - i) * intervalMs;
+      const basePrice = 43200 + Math.sin(i / 10) * 500; // Base wave pattern
+      const volatility = 100; // Price volatility
+
+      const open = basePrice + (Math.random() - 0.5) * volatility;
+      const close = open + (Math.random() - 0.5) * volatility * 0.5;
+      const high = Math.max(open, close) + Math.random() * volatility * 0.3;
+      const low = Math.min(open, close) - Math.random() * volatility * 0.3;
+      const volume = Math.random() * 1000000;
+
+      return {
+        timestamp,
+        open: parseFloat(open.toFixed(2)),
+        high: parseFloat(high.toFixed(2)),
+        low: parseFloat(low.toFixed(2)),
+        close: parseFloat(close.toFixed(2)),
+        volume: parseFloat(volume.toFixed(2)),
+      };
+    });
   }
 }
 
 // Export singleton instance
 export const cryptoService = new CryptoService();
+
+// Status functions (now always return "healthy" since we're using mock data)
+export const getApiStatus = () => ({
+  failureCount: 0,
+  isDisabled: false,
+  maxFailures: 0,
+  lastAttempt: Date.now(),
+  nextRetry: 0,
+});
+
+export const resetApiStatus = () => {
+  console.log("📊 CryptoService: Using mock data only - no API to reset");
+};
