@@ -891,74 +891,208 @@ export default function EnhancedCrypto() {
                 <div>
                   <h2 className="text-lg sm:text-xl font-bold">Learn & News</h2>
                   <p className="text-sm text-muted-foreground">
-                    Educational content and latest cryptocurrency news
+                    Educational content, blog articles, and latest
+                    cryptocurrency news
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                  {/* News Articles */}
-                  {news && news.length > 0 ? (
-                    news.slice(0, 6).map((article) => (
-                      <Card
-                        key={article.id}
-                        className="cursor-pointer hover:shadow-lg transition-shadow"
-                      >
-                        <CardContent className="p-4">
-                          <div className="space-y-3">
-                            <Badge variant="outline" className="text-xs">
-                              News
-                            </Badge>
-                            <h3 className="font-semibold text-sm line-clamp-2">
-                              {article.title}
-                            </h3>
-                            <p className="text-xs text-muted-foreground line-clamp-3">
-                              {article.summary}
-                            </p>
-                            <div className="flex items-center justify-between text-xs text-muted-foreground">
-                              <span>{article.source}</span>
-                              <span>
-                                {new Date(
-                                  article.publishedAt,
-                                ).toLocaleDateString()}
-                              </span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))
-                  ) : (
-                    <div className="col-span-full text-center text-muted-foreground py-8">
-                      <p>Loading news articles...</p>
-                    </div>
-                  )}
+                {/* Blog Posts Section */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
+                      <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
+                      Latest from SoftChat Blog
+                    </h3>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="/blog" target="_blank" rel="noopener noreferrer">
+                        View All Articles
+                      </a>
+                    </Button>
+                  </div>
 
-                  {/* Education Content */}
-                  {educationContent && educationContent.length > 0
-                    ? educationContent.slice(0, 3).map((content) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {blogPosts && blogPosts.length > 0 ? (
+                      blogPosts.slice(0, 6).map((post) => (
                         <Card
-                          key={content.id}
-                          className="cursor-pointer hover:shadow-lg transition-shadow"
+                          key={post.id}
+                          className="cursor-pointer hover:shadow-lg transition-shadow group"
+                          onClick={() =>
+                            window.open(`/blog/${post.slug}`, "_blank")
+                          }
                         >
+                          {post.featuredImage && (
+                            <div className="relative h-32 sm:h-40 overflow-hidden rounded-t-lg">
+                              <img
+                                src={post.featuredImage}
+                                alt={post.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                              />
+                              <div className="absolute top-2 right-2">
+                                <Badge
+                                  className={cn(
+                                    "text-white text-xs",
+                                    post.category.color,
+                                  )}
+                                >
+                                  {post.category.name}
+                                </Badge>
+                              </div>
+                              {post.difficulty && (
+                                <div className="absolute top-2 left-2">
+                                  <Badge
+                                    variant="secondary"
+                                    className={cn(
+                                      "text-xs",
+                                      post.difficulty === "BEGINNER" &&
+                                        "bg-green-100 text-green-800",
+                                      post.difficulty === "INTERMEDIATE" &&
+                                        "bg-yellow-100 text-yellow-800",
+                                      post.difficulty === "ADVANCED" &&
+                                        "bg-red-100 text-red-800",
+                                    )}
+                                  >
+                                    {post.difficulty}
+                                  </Badge>
+                                </div>
+                              )}
+                            </div>
+                          )}
                           <CardContent className="p-4">
                             <div className="space-y-3">
-                              <Badge variant="outline" className="text-xs">
-                                Education
-                              </Badge>
-                              <h3 className="font-semibold text-sm line-clamp-2">
-                                {content.title}
-                              </h3>
-                              <p className="text-xs text-muted-foreground line-clamp-3">
-                                {content.description}
-                              </p>
-                              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                <span>{content.author}</span>
-                                <span>{content.duration} min read</span>
+                              <div className="space-y-2">
+                                <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                  {post.title}
+                                </h3>
+                                <p className="text-xs text-muted-foreground line-clamp-2">
+                                  {post.excerpt}
+                                </p>
+                              </div>
+
+                              {/* Tags */}
+                              <div className="flex flex-wrap gap-1">
+                                {post.tags.slice(0, 3).map((tag) => (
+                                  <Badge
+                                    key={tag}
+                                    variant="outline"
+                                    className="text-xs"
+                                  >
+                                    {tag}
+                                  </Badge>
+                                ))}
+                                {post.tags.length > 3 && (
+                                  <Badge variant="outline" className="text-xs">
+                                    +{post.tags.length - 3}
+                                  </Badge>
+                                )}
+                              </div>
+
+                              <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-2">
+                                <div className="flex items-center gap-2">
+                                  <img
+                                    src={post.author.avatar}
+                                    alt={post.author.name}
+                                    className="w-4 h-4 rounded-full"
+                                  />
+                                  <span className="truncate">
+                                    {post.author.name}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-3 flex-shrink-0">
+                                  <div className="flex items-center gap-1">
+                                    <Clock className="h-3 w-3" />
+                                    <span>{post.readingTime}m</span>
+                                  </div>
+                                  <span>
+                                    {new Date(
+                                      post.publishedAt,
+                                    ).toLocaleDateString()}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </CardContent>
                         </Card>
                       ))
-                    : null}
+                    ) : (
+                      <div className="col-span-full text-center text-muted-foreground py-8">
+                        <BookOpen className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                        <p>Loading blog articles...</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* News & Education Section */}
+                <div className="space-y-4">
+                  <h3 className="text-base sm:text-lg font-semibold">
+                    News & Market Updates
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {/* News Articles */}
+                    {news && news.length > 0 ? (
+                      news.slice(0, 6).map((article) => (
+                        <Card
+                          key={article.id}
+                          className="cursor-pointer hover:shadow-lg transition-shadow"
+                        >
+                          <CardContent className="p-4">
+                            <div className="space-y-3">
+                              <Badge variant="outline" className="text-xs">
+                                News
+                              </Badge>
+                              <h3 className="font-semibold text-sm line-clamp-2">
+                                {article.title}
+                              </h3>
+                              <p className="text-xs text-muted-foreground line-clamp-3">
+                                {article.summary}
+                              </p>
+                              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                <span>{article.source}</span>
+                                <span>
+                                  {new Date(
+                                    article.publishedAt,
+                                  ).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))
+                    ) : (
+                      <div className="col-span-full text-center text-muted-foreground py-8">
+                        <p>Loading news articles...</p>
+                      </div>
+                    )}
+
+                    {/* Education Content */}
+                    {educationContent && educationContent.length > 0
+                      ? educationContent.slice(0, 3).map((content) => (
+                          <Card
+                            key={content.id}
+                            className="cursor-pointer hover:shadow-lg transition-shadow"
+                          >
+                            <CardContent className="p-4">
+                              <div className="space-y-3">
+                                <Badge variant="outline" className="text-xs">
+                                  Education
+                                </Badge>
+                                <h3 className="font-semibold text-sm line-clamp-2">
+                                  {content.title}
+                                </h3>
+                                <p className="text-xs text-muted-foreground line-clamp-3">
+                                  {content.description}
+                                </p>
+                                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                  <span>{content.author}</span>
+                                  <span>{content.duration} min read</span>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))
+                      : null}
+                  </div>
                 </div>
               </TabsContent>
             </Tabs>
