@@ -299,8 +299,8 @@ export function SmartContentRecommendations({
 
                     {/* Author/Creator */}
                     {(content.author || content.creator) && (
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
+                      <div className="flex items-center gap-2 overflow-hidden">
+                        <Avatar className="h-6 w-6 flex-shrink-0">
                           <AvatarImage
                             src={(content.author || content.creator)?.avatar}
                           />
@@ -310,7 +310,7 @@ export function SmartContentRecommendations({
                             ).charAt(0)}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-xs text-gray-600">
+                        <span className="text-xs text-gray-600 truncate">
                           {(content.author || content.creator)?.name}
                         </span>
                       </div>
