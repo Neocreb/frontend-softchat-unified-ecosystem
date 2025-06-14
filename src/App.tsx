@@ -269,7 +269,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <OriginalSafeThemeProvider>
+        <SafeThemeProvider>
           <AuthProvider>
             <AccessibilityProvider>
               <TooltipProvider>
@@ -291,7 +291,7 @@ const App = () => {
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>
-        </OriginalSafeThemeProvider>
+        </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );
