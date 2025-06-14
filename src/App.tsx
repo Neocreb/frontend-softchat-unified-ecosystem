@@ -10,9 +10,7 @@ import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import OriginalSafeThemeProvider from "./contexts/SafeThemeProvider";
-import ReactDiagnostic from "./components/debug/ReactDiagnostic";
-import MinimalTest from "./components/debug/MinimalTest";
-import ReactContextTest from "./components/debug/ReactContextTest";
+
 import {
   AccessibilityProvider,
   AccessibilityControlPanel,
@@ -292,9 +290,6 @@ const App = () => {
                 {/* Toasters */}
                 <Toaster />
                 <Sonner />
-
-                {/* React Context Test (development only) */}
-                {process.env.NODE_ENV === "development" && <ReactContextTest />}
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>
