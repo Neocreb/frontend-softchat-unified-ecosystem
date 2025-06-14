@@ -281,17 +281,19 @@ export function PartnershipSystem() {
 
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Earnings</p>
-                <p className="text-2xl font-bold">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-muted-foreground mb-1 truncate">
+                  Total Earnings
+                </p>
+                <p className="text-2xl font-bold leading-tight">
                   ${referralData.totalEarnings}
                 </p>
-                <p className="text-xs text-green-600">
+                <p className="text-xs text-green-600 mt-1 break-words">
                   +${referralData.monthlyEarnings} this month
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-500" />
+              <DollarSign className="h-8 w-8 text-green-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
