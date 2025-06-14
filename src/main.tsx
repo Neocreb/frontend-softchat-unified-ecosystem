@@ -72,11 +72,9 @@ const root = createRoot(rootElement);
 
 // Render app with providers and error boundary
 root.render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <HelmetProvider>
-        <App />
-      </HelmetProvider>
-    </ErrorBoundary>
-  </React.StrictMode>,
+  <ErrorBoundary>
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
+  </ErrorBoundary>,
 );

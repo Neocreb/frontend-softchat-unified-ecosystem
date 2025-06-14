@@ -289,14 +289,6 @@ const App = () => {
                 {/* Toasters */}
                 <Toaster />
                 <Sonner />
-
-                {/* React Diagnostic (development only) */}
-                {process.env.NODE_ENV === "development" && (
-                  <>
-                    <ReactDiagnostic />
-                    <MinimalTest />
-                  </>
-                )}
               </TooltipProvider>
             </AccessibilityProvider>
           </AuthProvider>
