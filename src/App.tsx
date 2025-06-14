@@ -48,7 +48,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import EnhancedVideos from "./pages/EnhancedVideos";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
-import LandingPage from "./pages/Landing";
+import SimpleLanding from "./pages/SimpleLanding";
 import Notifications from "./pages/Notifications";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
@@ -157,7 +157,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Root path redirects based on auth state */}
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<SimpleLanding />} />
       <Route path="/home" element={<Home />} />
 
       {/* Auth route - redirects to feed if already authenticated */}
