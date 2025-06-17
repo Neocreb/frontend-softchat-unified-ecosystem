@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Heart,
@@ -13,6 +13,26 @@ import {
   Search,
   User,
   Home,
+  Sparkles,
+  Award,
+  Target,
+  Eye,
+  Users,
+  ChevronUp,
+  ChevronDown,
+  Settings,
+  Filter,
+  TrendingUp,
+  Maximize,
+  Minimize,
+  Play,
+  Pause,
+  X,
+  Clock,
+  Hash,
+  Globe,
+  Star,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,8 +44,16 @@ import {
 } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
+import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
+import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
+import InteractiveFeatures from "@/components/video/InteractiveFeatures";
+import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { cn } from "@/utils/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useVideoPlayback } from "@/hooks/use-video-playback";
 
 interface VideoData {
   id: string;
@@ -35,22 +63,38 @@ interface VideoData {
     displayName: string;
     avatar: string;
     verified: boolean;
+    followerCount?: number;
   };
   description: string;
   music: {
     title: string;
     artist: string;
+    id?: string;
+    duration?: number;
   };
   stats: {
     likes: number;
     comments: number;
     shares: number;
     views: string;
+    saves?: number;
   };
   hashtags: string[];
   videoUrl: string;
   thumbnail: string;
   duration: number;
+  timestamp?: string;
+  category?: string;
+  isLiveStream?: boolean;
+  allowDuets?: boolean;
+  allowComments?: boolean;
+  hasCaption?: boolean;
+  isSponsored?: boolean;
+  challenge?: {
+    id: string;
+    title: string;
+    hashtag: string;
+  };
 }
 
 const mockVideos: VideoData[] = [
@@ -62,25 +106,39 @@ const mockVideos: VideoData[] = [
       displayName: "Crypto King",
       avatar: "https://i.pravatar.cc/150?img=1",
       verified: true,
+      followerCount: 234567,
     },
     description:
-      "Bitcoin to the moon! 🚀 Who else is holding? #crypto #bitcoin #hodl",
+      "Bitcoin to the moon! 🚀 Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
     music: {
       title: "Crypto Anthem",
       artist: "Digital Dreams",
+      id: "crypto-anthem-1",
+      duration: 30,
     },
     stats: {
       likes: 15400,
       comments: 892,
       shares: 445,
       views: "2.1M",
+      saves: 3240,
     },
-    hashtags: ["crypto", "bitcoin", "hodl", "moon"],
+    hashtags: ["crypto", "bitcoin", "hodl", "moon", "ai"],
     videoUrl:
       "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
     thumbnail:
       "https://images.unsplash.com/photo-1640340434855-6084b1f4901c?w=400",
     duration: 30,
+    timestamp: "2h",
+    category: "Finance & Crypto",
+    allowDuets: true,
+    allowComments: true,
+    hasCaption: true,
+    challenge: {
+      id: "crypto-prediction-2024",
+      title: "Crypto Prediction Challenge",
+      hashtag: "CryptoPrediction2024",
+    },
   },
   {
     id: "2",
@@ -90,25 +148,35 @@ const mockVideos: VideoData[] = [
       displayName: "Tech Trader",
       avatar: "https://i.pravatar.cc/150?img=2",
       verified: false,
+      followerCount: 89456,
     },
     description:
-      "Day trading tips that actually work! Follow for more 💰 #trading #stocks #daytrading",
+      "Day trading tips that actually work! Follow for more 💰 Using AI to predict market movements #trading #stocks #daytrading #ai",
     music: {
       title: "Success Vibes",
       artist: "Motivation Mix",
+      id: "success-vibes-1",
+      duration: 45,
     },
     stats: {
       likes: 8900,
       comments: 567,
       shares: 234,
       views: "890K",
+      saves: 1890,
     },
-    hashtags: ["trading", "stocks", "daytrading", "money"],
+    hashtags: ["trading", "stocks", "daytrading", "money", "ai"],
     videoUrl:
       "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
     thumbnail:
       "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400",
     duration: 45,
+    timestamp: "5h",
+    category: "Finance & Trading",
+    allowDuets: true,
+    allowComments: true,
+    hasCaption: false,
+    isSponsored: true,
   },
   {
     id: "3",
@@ -196,24 +264,56 @@ const mockVideos: VideoData[] = [
   },
 ];
 
-const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
-  video,
-  isActive,
-}) => {
+const VideoCard: React.FC<{
+  video: VideoData;
+  isActive: boolean;
+  showControls?: boolean;
+}> = ({ video, isActive, showControls = true }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showMore, setShowMore] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(isActive);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const isMobile = useIsMobile();
+  const { safePlay, safePause, togglePlayback } = useVideoPlayback();
 
   useEffect(() => {
-    if (videoRef.current) {
-      if (isActive) {
-        videoRef.current.play().catch(console.error);
-      } else {
-        videoRef.current.pause();
+    const video = videoRef.current;
+    if (!video) return;
+
+    let isComponentMounted = true;
+
+    const handleVideoPlayback = async () => {
+      if (!isComponentMounted) return;
+
+      try {
+        if (isActive && isPlaying) {
+          await safePlay(video);
+        } else {
+          safePause(video);
+        }
+      } catch (error) {
+        // Errors are already handled in the hook
       }
-    }
-  }, [isActive]);
+    };
+
+    handleVideoPlayback();
+
+    return () => {
+      isComponentMounted = false;
+      if (video) {
+        safePause(video);
+      }
+    };
+  }, [isActive, isPlaying, safePlay, safePause]);
+
+  const togglePlay = useCallback(async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    await togglePlayback(video, isPlaying, setIsPlaying);
+  }, [isPlaying, togglePlayback]);
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
@@ -242,9 +342,44 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
         playsInline
         preload="metadata"
         poster={video.thumbnail}
+        onClick={togglePlay}
       >
         <source src={video.videoUrl} type="video/mp4" />
       </video>
+
+      {/* Challenge Banner */}
+      {video.challenge && showControls && (
+        <div className="absolute top-4 left-4 right-16 z-30">
+          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-sm border border-purple-500/30 rounded-lg p-2">
+            <div className="flex items-center gap-2">
+              <Target className="w-3 h-3 text-purple-400" />
+              <span className="text-white text-xs font-medium">
+                {video.challenge.title}
+              </span>
+              <Badge
+                variant="secondary"
+                className="bg-purple-500/20 text-purple-400 text-xs"
+              >
+                #{video.challenge.hashtag}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Play/Pause indicator */}
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+          <Button
+            size="icon"
+            variant="ghost"
+            className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 hover:bg-white/30 border-none backdrop-blur-sm"
+            onClick={togglePlay}
+          >
+            <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
+          </Button>
+        </div>
+      )}
 
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
@@ -270,9 +405,22 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
                       <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
                     </div>
                   )}
+                  {video.isLiveStream && (
+                    <Badge
+                      variant="secondary"
+                      className="bg-red-500/20 text-red-400 text-xs animate-pulse"
+                    >
+                      LIVE
+                    </Badge>
+                  )}
                 </div>
                 <div className="text-white/80 text-[10px] md:text-xs">
                   {video.user.displayName}
+                  {video.user.followerCount && (
+                    <span className="ml-1">
+                      • {formatNumber(video.user.followerCount)} followers
+                    </span>
+                  )}
                 </div>
               </div>
               <Button
@@ -314,80 +462,54 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
               <span className="truncate">
                 {video.music.title} - {video.music.artist}
               </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white/60 text-xs p-0 h-auto hover:text-white ml-2"
+              >
+                Use Sound
+              </Button>
+            </div>
+
+            {/* Video metadata */}
+            <div className="flex items-center gap-3 text-white/60 text-[10px] md:text-xs mt-1">
+              {video.timestamp && <span>{video.timestamp}</span>}
+              {video.category && (
+                <Badge
+                  variant="secondary"
+                  className="bg-black/40 text-white text-[10px]"
+                >
+                  {video.category}
+                </Badge>
+              )}
+              {video.hasCaption && (
+                <Badge
+                  variant="secondary"
+                  className="bg-blue-500/20 text-blue-400 text-[10px]"
+                >
+                  CC
+                </Badge>
+              )}
+              {video.isSponsored && (
+                <Badge
+                  variant="secondary"
+                  className="bg-yellow-500/20 text-yellow-400 text-[10px]"
+                >
+                  Sponsored
+                </Badge>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Right side - action buttons */}
-        <div className="flex flex-col items-center justify-end gap-4 md:gap-6 p-2 md:p-4 pb-28 md:pb-8">
-          {/* Like button */}
-          <div className="flex flex-col items-center gap-1">
-            <Button
-              size="icon"
-              variant="ghost"
-              className={cn(
-                "w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none",
-                isLiked && "bg-red-500/80 hover:bg-red-500",
-              )}
-              onClick={() => setIsLiked(!isLiked)}
-            >
-              <Heart
-                className={cn(
-                  "w-5 h-5 md:w-6 md:h-6",
-                  isLiked ? "fill-white text-white" : "text-white",
-                )}
-              />
-            </Button>
-            <span className="text-white text-[10px] md:text-xs font-medium">
-              {formatNumber(video.stats.likes + (isLiked ? 1 : 0))}
-            </span>
-          </div>
-
-          {/* Comment button */}
-          <div className="flex flex-col items-center gap-1">
-            <Button
-              size="icon"
-              variant="ghost"
-              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
-            >
-              <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-white" />
-            </Button>
-            <span className="text-white text-[10px] md:text-xs font-medium">
-              {formatNumber(video.stats.comments)}
-            </span>
-          </div>
-
-          {/* Share button */}
-          <div className="flex flex-col items-center gap-1">
-            <Button
-              size="icon"
-              variant="ghost"
-              className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
-            >
-              <Share className="w-5 h-5 md:w-6 md:h-6 text-white" />
-            </Button>
-            <span className="text-white text-[10px] md:text-xs font-medium">
-              {formatNumber(video.stats.shares)}
-            </span>
-          </div>
-
-          {/* Bookmark button */}
-          <Button
-            size="icon"
-            variant="ghost"
-            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
-          >
-            <Bookmark className="w-5 h-5 md:w-6 md:h-6 text-white" />
-          </Button>
-
-          {/* More options */}
-          <Button
-            size="icon"
-            variant="ghost"
-            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 hover:bg-white/30 border-none"
-          >
-            <MoreHorizontal className="w-5 h-5 md:w-6 md:h-6 text-white" />
-          </Button>
+        {/* Right side - Enhanced Interactive Features */}
+        <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-28 md:pb-8">
+          <InteractiveFeatures
+            videoId={video.id}
+            isLiveStream={video.isLiveStream}
+            allowDuets={video.allowDuets}
+            allowComments={video.allowComments}
+          />
         </div>
       </div>
 
@@ -420,8 +542,28 @@ const VideoCard: React.FC<{ video: VideoData; isActive: boolean }> = ({
 
 const Videos: React.FC = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [videos, setVideos] = useState<VideoData[]>(mockVideos);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
+  const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
+  const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
+  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchOverlay, setShowSearchOverlay] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
+
+  // Auto-hide controls after inactivity
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (showControls) {
+      timeout = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showControls]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -435,7 +577,7 @@ const Videos: React.FC = () => {
       if (
         newIndex !== currentVideoIndex &&
         newIndex >= 0 &&
-        newIndex < mockVideos.length
+        newIndex < videos.length
       ) {
         setCurrentVideoIndex(newIndex);
       }
@@ -443,13 +585,124 @@ const Videos: React.FC = () => {
 
     container.addEventListener("scroll", handleScroll, { passive: true });
     return () => container.removeEventListener("scroll", handleScroll);
-  }, [currentVideoIndex]);
+  }, [currentVideoIndex, videos.length]);
+
+  const handleVideoCreated = (videoFile: File, metadata: any) => {
+    // Create new video entry
+    const newVideo: VideoData = {
+      id: `new-${Date.now()}`,
+      user: {
+        id: "current-user",
+        username: "you",
+        displayName: "You",
+        avatar: "https://i.pravatar.cc/150?u=current",
+        verified: false,
+        followerCount: 0,
+      },
+      description: "My new creation! 🎥✨",
+      music: metadata.sound || {
+        title: "Original Sound",
+        artist: "You",
+        id: "original",
+        duration: metadata.duration || 30,
+      },
+      stats: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        views: "0",
+        saves: 0,
+      },
+      hashtags: ["NewVideo", "Creative", "Original"],
+      videoUrl: URL.createObjectURL(videoFile),
+      thumbnail:
+        "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=400",
+      duration: metadata.duration || 30,
+      timestamp: "now",
+      category: "Entertainment",
+      allowDuets: true,
+      allowComments: true,
+      hasCaption: false,
+    };
+
+    setVideos((prev) => [newVideo, ...prev]);
+    setIsAdvancedRecorderOpen(false);
+    setCurrentVideoIndex(0);
+  };
+
+  const handleHashtagSelect = (hashtag: string) => {
+    setSearchQuery(`#${hashtag}`);
+    setIsDiscoveryOpen(false);
+    // Filter videos by hashtag logic here
+  };
+
+  const handleSoundSelect = (soundId: string) => {
+    setIsDiscoveryOpen(false);
+    setIsAdvancedRecorderOpen(true);
+    // Pre-select sound in recorder
+  };
+
+  const handleChallengeSelect = (challengeId: string) => {
+    setIsDiscoveryOpen(false);
+    setIsAdvancedRecorderOpen(true);
+    // Pre-configure challenge in recorder
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.();
+      setIsFullscreen(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
         <title>Videos | Softchat</title>
+        <meta
+          name="description"
+          content="Discover, create, and share amazing videos with advanced tools"
+        />
       </Helmet>
+
+      {/* Enhanced Header */}
+      {showControls && !isFullscreen && (
+        <div className="absolute top-0 left-0 right-0 z-40 bg-gradient-to-b from-black/80 to-transparent">
+          <div className="flex items-center justify-between p-4">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSearchOverlay(true)}
+                className="text-white hover:bg-white/20"
+              >
+                <Search className="w-5 h-5" />
+              </Button>
+              <Badge variant="secondary" className="bg-black/40 text-white">
+                {currentVideoIndex + 1} / {videos.length}
+              </Badge>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleFullscreen}
+                className="text-white hover:bg-white/20"
+              >
+                {isFullscreen ? (
+                  <Minimize className="w-5 h-5" />
+                ) : (
+                  <Maximize className="w-5 h-5" />
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Full-screen video container */}
       <div
@@ -458,33 +711,133 @@ const Videos: React.FC = () => {
         style={{
           scrollBehavior: "smooth",
           paddingTop: 0,
-          paddingBottom: "80px", // Account for mobile navigation
+          paddingBottom: isMobile ? "80px" : "20px",
         }}
+        onClick={() => setShowControls(!showControls)}
       >
-        {mockVideos.map((video, index) => (
+        {videos.map((video, index) => (
           <VideoCard
             key={video.id}
             video={video}
             isActive={index === currentVideoIndex}
+            showControls={showControls}
           />
         ))}
       </div>
 
-      {/* Create Button */}
-      <Button
-        onClick={() => setIsCreatorOpen(true)}
-        className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-12 h-12 md:w-16 md:h-16 shadow-lg"
-      >
-        <Plus className="h-6 w-6 md:h-8 md:w-8" />
-      </Button>
+      {/* Enhanced Create Button Group */}
+      <div className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 flex flex-col gap-3">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsDashboardOpen(true)}
+          className="w-12 h-12 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30"
+          title="Creator Dashboard"
+        >
+          <Award className="w-6 h-6" />
+        </Button>
 
-      {/* Creator Modal */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsDiscoveryOpen(true)}
+          className="w-12 h-12 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30"
+          title="Discover Content"
+        >
+          <Sparkles className="w-6 h-6" />
+        </Button>
+
+        <Button
+          onClick={() => setIsAdvancedRecorderOpen(true)}
+          className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-14 h-14 shadow-lg transition-all duration-200 hover:scale-110"
+          title="Create Video"
+        >
+          <Plus className="h-7 w-7" />
+        </Button>
+      </div>
+
+      {/* Search Overlay */}
+      {showSearchOverlay && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
+          <div className="w-full max-w-md mx-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search videos, creators, sounds..."
+                className="pl-10 pr-12 py-3 bg-gray-900 border-gray-700 text-white text-lg"
+                autoFocus
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSearchOverlay(false)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {searchQuery && (
+              <Card className="mt-4 bg-gray-900 border-gray-700">
+                <CardContent className="p-4">
+                  <p className="text-gray-400 text-sm">
+                    Search results for "{searchQuery}"
+                  </p>
+                  <div className="mt-2 text-white">
+                    <p className="text-sm">
+                      No results found. Try a different search term.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Creator Modal - Original */}
       <Dialog open={isCreatorOpen} onOpenChange={setIsCreatorOpen}>
         <DialogContent className="max-w-2xl bg-black border border-gray-800 rounded-lg p-4">
           <VisuallyHidden>
             <DialogTitle>Create Video</DialogTitle>
           </VisuallyHidden>
           <EnhancedVideoCreator onClose={() => setIsCreatorOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Advanced Video Recorder */}
+      {isAdvancedRecorderOpen && (
+        <AdvancedVideoRecorder
+          onClose={() => setIsAdvancedRecorderOpen(false)}
+          onVideoCreated={handleVideoCreated}
+        />
+      )}
+
+      {/* Content Discovery Engine */}
+      <Dialog open={isDiscoveryOpen} onOpenChange={setIsDiscoveryOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[90vh] bg-black border-gray-800 p-0">
+          <VisuallyHidden>
+            <DialogTitle>Content Discovery</DialogTitle>
+          </VisuallyHidden>
+          <ContentDiscoveryEngine
+            onHashtagSelect={handleHashtagSelect}
+            onSoundSelect={handleSoundSelect}
+            onChallengeSelect={handleChallengeSelect}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Creator Dashboard */}
+      <Dialog open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] bg-gray-900 border-gray-700 p-0">
+          <VisuallyHidden>
+            <DialogTitle>Creator Dashboard</DialogTitle>
+          </VisuallyHidden>
+          <div className="h-full overflow-auto p-6">
+            <CreatorDashboard />
+          </div>
         </DialogContent>
       </Dialog>
     </div>

@@ -15,6 +15,7 @@ import {
   ShoppingCart,
   Briefcase,
   Settings,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
@@ -98,6 +99,19 @@ const Header = () => {
           </form>
         </div>
 
+        {/* Creator Studio Quick Link */}
+        <div className="hidden lg:flex items-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/creator-studio")}
+            className="text-sm font-medium"
+          >
+            <BarChart3 className="w-4 h-4 mr-2" />
+            Creator Studio
+          </Button>
+        </div>
+
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6">
           <Link
@@ -148,6 +162,13 @@ const Header = () => {
           >
             <Award className="h-4 w-4 lg:h-5 lg:w-5" />
             <span className="text-sm hidden lg:inline">Rewards</span>
+          </Link>
+          <Link
+            to="/creator-studio"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <BarChart3 className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Creator Studio</span>
           </Link>
         </nav>
 
