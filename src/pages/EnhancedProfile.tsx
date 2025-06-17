@@ -579,8 +579,8 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </div>
 
                 {/* Bio */}
-                <div className="mt-6">
-                  <p className="text-sm whitespace-pre-line">
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm whitespace-pre-line leading-relaxed">
                     {mockProfile.bio}
                   </p>
                   {mockProfile.website && (
@@ -588,41 +588,47 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       href={mockProfile.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-blue-600 hover:underline mt-2"
+                      className="inline-flex items-center gap-1 text-blue-600 hover:underline mt-2 text-xs sm:text-sm"
                     >
-                      <Globe className="h-4 w-4" />
-                      {mockProfile.website.replace("https://", "")}
+                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                      <span className="truncate">
+                        {mockProfile.website.replace("https://", "")}
+                      </span>
                     </a>
                   )}
                 </div>
 
                 {/* Stats */}
-                <div className="flex flex-wrap gap-6 mt-6 py-4 border-t">
+                <div className="grid grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6 py-3 sm:py-4 border-t">
                   <div className="text-center">
-                    <div className="text-xl font-bold">{mockProfile.posts}</div>
-                    <div className="text-sm text-muted-foreground">Posts</div>
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
+                      {mockProfile.posts}
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                      Posts
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl font-bold">
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
                       {followerCount.toLocaleString()}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Followers
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl font-bold">
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
                       {followingCount.toLocaleString()}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Following
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl font-bold">
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
                       {mockProfile.engagement}%
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Engagement
                     </div>
                   </div>
