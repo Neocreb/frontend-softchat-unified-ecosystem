@@ -478,31 +478,36 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     </div>
 
                     {/* Name and Basic Info */}
-                    <div className="flex-1 space-y-2 mt-4 sm:mt-0 sm:mb-2">
+                    <div className="flex-1 space-y-1 sm:space-y-2 mt-3 sm:mt-4 lg:mt-0 sm:mb-2">
                       <div className="flex items-center gap-2">
-                        <h1 className="text-xl sm:text-2xl font-bold">
+                        <h1 className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
                           {mockProfile.displayName}
                         </h1>
                         {mockProfile.verified && (
-                          <Verified className="h-5 w-5 text-blue-500 fill-current" />
+                          <Verified className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 fill-current flex-shrink-0" />
                         )}
                       </div>
-                      <p className="text-muted-foreground">
+                      <p className="text-sm sm:text-base text-muted-foreground">
                         @{mockProfile.username}
                       </p>
-                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
-                          {mockProfile.location}
+                          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          <span className="truncate">
+                            {mockProfile.location}
+                          </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          Joined {mockProfile.joinDate}
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          <span className="whitespace-nowrap">
+                            Joined {mockProfile.joinDate}
+                          </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Eye className="h-4 w-4" />
-                          {mockProfile.profileViews.toLocaleString()} profile
-                          views
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          <span className="whitespace-nowrap">
+                            {mockProfile.profileViews.toLocaleString()} views
+                          </span>
                         </div>
                       </div>
                     </div>
