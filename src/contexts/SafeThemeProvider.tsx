@@ -17,9 +17,14 @@ const FallbackThemeProvider: React.FC<{ children: ReactNode }> = ({
   // Apply fallback theme to DOM
   React.useEffect(() => {
     try {
-      if (typeof document !== "undefined") {
-        document.documentElement.classList.add("light");
-        document.documentElement.classList.remove("dark");
+      if (typeof window !== "undefined" && typeof document !== "undefined") {
+        const root = document.documentElement;
+        root.classList.add("light");
+        root.classList.remove("dark");
+
+        // Ensure CSS variables are set for light theme
+        root.style.setProperty("--background", "0 0% 100%");
+        root.style.setProperty("--foreground", "222.2 84% 4.9%");
       }
     } catch (error) {
       console.warn("Failed to apply fallback theme:", error);
@@ -28,8 +33,11 @@ const FallbackThemeProvider: React.FC<{ children: ReactNode }> = ({
 
   const contextValue = {
     theme,
-    setTheme: () => {
-      console.warn("Theme switching disabled in fallback mode");
+    setTheme: (newTheme: "light" | "dark" | "system") => {
+      console.warn(
+        "Theme switching disabled in fallback mode. Attempted to set:",
+        newTheme,
+      );
     },
     isDark,
   };
