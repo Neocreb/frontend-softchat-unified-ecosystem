@@ -26,11 +26,15 @@ import {
   Briefcase,
   MapPin,
   Globe,
+  BarChart3,
+  Video,
+  Sparkles,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { UserProfile } from "@/types/user";
 import { Product } from "@/types/marketplace";
+import CreatorDashboard from "@/components/video/CreatorDashboard";
 
 interface EnhancedProfileContentProps {
   profile: UserProfile;
