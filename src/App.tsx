@@ -46,6 +46,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
+import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
 import LandingPage from "./pages/LandingPage";
