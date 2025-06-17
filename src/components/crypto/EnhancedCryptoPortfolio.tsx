@@ -201,7 +201,7 @@ const mockTransactions: Transaction[] = [
   },
 ];
 
-export default function EnhancedCryptoPortfolio() {
+function EnhancedCryptoPortfolioContent() {
   const [portfolioAssets, setPortfolioAssets] =
     useState<PortfolioAsset[]>(mockPortfolioAssets);
   const [performanceData, setPerformanceData] =
