@@ -371,7 +371,7 @@ export const EnhancedProfileContent: React.FC<EnhancedProfileContentProps> = ({
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="posts" className="flex items-center gap-2">
             <MessageSquare className="w-4 h-4" />
             <span className="hidden sm:inline">Posts</span>
@@ -408,6 +408,12 @@ export const EnhancedProfileContent: React.FC<EnhancedProfileContentProps> = ({
               </Badge>
             )}
           </TabsTrigger>
+          {isOwnProfile && (
+            <TabsTrigger value="creator" className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              <span className="hidden sm:inline">Creator</span>
+            </TabsTrigger>
+          )}
           <TabsTrigger value="activity" className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
             <span className="hidden sm:inline">Activity</span>
@@ -503,6 +509,29 @@ export const EnhancedProfileContent: React.FC<EnhancedProfileContentProps> = ({
             </Card>
           )}
         </TabsContent>
+
+        {isOwnProfile && (
+          <TabsContent value="creator" className="space-y-4 mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="w-5 h-5" />
+                  Creator Dashboard
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Track your content performance, earnings, and grow your
+                  audience
+                </p>
+              </CardHeader>
+              <CardContent className="p-0">
+                <CreatorDashboard
+                  isOwnProfile={isOwnProfile}
+                  userId={profile.id}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
 
         <TabsContent value="activity" className="space-y-4 mt-6">
           {activities.length > 0 ? (
