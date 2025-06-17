@@ -1115,26 +1115,26 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   </div>
 
                   {/* Performance Metrics */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
                     <Card>
-                      <CardContent className="p-4">
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
                               Total Views
                             </p>
-                            <p className="text-2xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
                               {mockProfile.creatorStats.totalViews.toLocaleString()}
                             </p>
                           </div>
-                          <Eye className="h-8 w-8 text-blue-500" />
+                          <Eye className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0" />
                         </div>
-                        <div className="flex items-center gap-1 mt-2 text-sm">
-                          <TrendingUp className="h-3 w-3 text-green-500" />
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
+                          <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3 text-green-500" />
                           <span className="text-green-500">
                             +{mockProfile.creatorStats.subscriberGrowth}%
                           </span>
-                          <span className="text-muted-foreground">
+                          <span className="text-muted-foreground hidden sm:inline">
                             this month
                           </span>
                         </div>
