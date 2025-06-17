@@ -15,6 +15,7 @@ const ThemeContext = React.createContext<ThemeContextType | undefined>(
 export const useTheme = () => {
   const context = React.useContext(ThemeContext);
   if (!context) {
+    console.error("useTheme called without ThemeProvider context");
     throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
@@ -26,8 +27,9 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme state with safer initialization
-  const [theme, setTheme] = React.useState<Theme>("system");
+  const [theme, setTheme] = React.useState<Theme>("light"); // Default to light instead of system
   const [isDark, setIsDark] = React.useState(false);
+  const [isInitialized, setIsInitialized] = React.useState(false);
 
   // Initialize theme from localStorage on mount
   React.useEffect(() => {
@@ -36,10 +38,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         const savedTheme = localStorage.getItem("theme") as Theme;
         if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
           setTheme(savedTheme);
+        } else {
+          // Default to light theme if no saved theme
+          setTheme("light");
         }
       }
+      setIsInitialized(true);
     } catch (error) {
       console.warn("Failed to read theme from localStorage:", error);
+      setTheme("light"); // Fallback to light theme
+      setIsInitialized(true);
     }
   }, []);
 
@@ -117,11 +125,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [theme]);
 
-  const contextValue: ThemeContextType = {
-    theme,
-    setTheme,
-    isDark,
-  };
+  const contextValue: ThemeContextType = React.useMemo(
+    () => ({
+      theme,
+      setTheme,
+      isDark,
+    }),
+    [theme, isDark],
+  );
+
+  // Don't render children until theme is initialized to prevent context issues
+  if (!isInitialized) {
+    return <div className="theme-loading">{children}</div>;
+  }
 
   return (
     <ThemeContext.Provider value={contextValue}>

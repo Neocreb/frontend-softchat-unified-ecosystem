@@ -27,7 +27,7 @@ import { Loader2, CreditCard, AlertCircle } from "lucide-react";
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
-  walletBalance: WalletBalance;
+  walletBalance: WalletBalance | null;
   onSuccess: () => void;
 }
 
@@ -77,6 +77,7 @@ const WithdrawModal = ({
   };
 
   const getAvailableBalance = () => {
+    if (!walletBalance) return 0;
     if (source === "total") return walletBalance.total;
     return walletBalance[source];
   };
@@ -181,6 +182,30 @@ const WithdrawModal = ({
   );
   const sourceInfo = getSourceInfo();
   const availableBalance = getAvailableBalance();
+
+  // Don't render the modal content if walletBalance is null
+  if (!walletBalance) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="p-2 rounded-full bg-red-100">
+                <CreditCard className="h-5 w-5 text-red-600" />
+              </div>
+              Withdraw Funds
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center justify-center py-8">
+            <div className="flex items-center gap-2 text-gray-500">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Loading wallet data...
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

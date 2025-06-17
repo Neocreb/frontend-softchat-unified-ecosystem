@@ -43,10 +43,15 @@ import {
   Eye,
   ThumbsUp,
   Flag,
+  Lock,
+  Activity,
+  TrendingUp as TrendingUpIcon,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
 import { P2POffer, P2PTrade, UserProfile } from "@/types/crypto";
+import P2PEscrowSystem from "./P2PEscrowSystem";
+import P2PDisputeResolution from "./P2PDisputeResolution";
 import { cn } from "@/lib/utils";
 
 export default function EnhancedP2PMarketplace() {
@@ -64,6 +69,11 @@ export default function EnhancedP2PMarketplace() {
   const [showCreateOffer, setShowCreateOffer] = useState(false);
   const [showOfferDetails, setShowOfferDetails] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState<P2POffer | null>(null);
+  const [showEscrowSystem, setShowEscrowSystem] = useState(false);
+  const [showDisputeResolution, setShowDisputeResolution] = useState(false);
+  const [selectedTrade, setSelectedTrade] = useState<any>(null);
+  const [selectedDispute, setSelectedDispute] = useState<any>(null);
+  const [orderMatchingActive, setOrderMatchingActive] = useState(true);
 
   // Create offer form state
   const [newOffer, setNewOffer] = useState({
@@ -277,10 +287,11 @@ export default function EnhancedP2PMarketplace() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
           <TabsTrigger value="my-trades">My Trades</TabsTrigger>
           <TabsTrigger value="my-offers">My Offers</TabsTrigger>
+          <TabsTrigger value="order-matching">Order Matching</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
 
@@ -524,9 +535,96 @@ export default function EnhancedP2PMarketplace() {
                                 ? "bg-green-600 hover:bg-green-700"
                                 : "bg-red-600 hover:bg-red-700",
                             )}
+                            onClick={() => {
+                              // Simulate starting escrow trade
+                              const mockTrade = {
+                                id: `trade-${Date.now()}`,
+                                buyerId:
+                                  offer.type === "SELL"
+                                    ? "currentUser"
+                                    : offer.userId,
+                                sellerId:
+                                  offer.type === "SELL"
+                                    ? offer.userId
+                                    : "currentUser",
+                                asset: offer.asset,
+                                amount: 0.1,
+                                fiatAmount: offer.price * 0.1,
+                                fiatCurrency: offer.fiatCurrency,
+                                price: offer.price,
+                                paymentMethod:
+                                  offer.paymentMethods[0]?.name ||
+                                  "Bank Transfer",
+                                status: "INITIATED",
+                                escrowStatus: "PENDING",
+                                timeRemaining: 30,
+                                autoReleaseTime: new Date(
+                                  Date.now() + 30 * 60000,
+                                ).toISOString(),
+                                buyer:
+                                  offer.type === "SELL"
+                                    ? {
+                                        id: "currentUser",
+                                        username: "You",
+                                        avatar: "",
+                                        rating: 4.8,
+                                        completedTrades: 15,
+                                      }
+                                    : offer.user,
+                                seller:
+                                  offer.type === "SELL"
+                                    ? offer.user
+                                    : {
+                                        id: "currentUser",
+                                        username: "You",
+                                        avatar: "",
+                                        rating: 4.8,
+                                        completedTrades: 15,
+                                      },
+                                steps: [
+                                  {
+                                    id: "1",
+                                    title: "Escrow Initialized",
+                                    description:
+                                      "Trade created and escrow started",
+                                    status: "COMPLETED",
+                                    completedAt: new Date().toISOString(),
+                                  },
+                                  {
+                                    id: "2",
+                                    title: "Payment Required",
+                                    description: "Buyer needs to make payment",
+                                    status: "IN_PROGRESS",
+                                    estimatedTime: 15,
+                                  },
+                                  {
+                                    id: "3",
+                                    title: "Payment Confirmation",
+                                    description:
+                                      "Seller confirms payment received",
+                                    status: "PENDING",
+                                    estimatedTime: 5,
+                                  },
+                                  {
+                                    id: "4",
+                                    title: "Asset Release",
+                                    description:
+                                      "Cryptocurrency released to buyer",
+                                    status: "PENDING",
+                                    estimatedTime: 2,
+                                  },
+                                ],
+                                createdAt: new Date().toISOString(),
+                                updatedAt: new Date().toISOString(),
+                              };
+                              setSelectedTrade(mockTrade);
+                              setShowEscrowSystem(true);
+                            }}
                           >
-                            {offer.type === "SELL" ? "Buy" : "Sell"}{" "}
-                            {offer.asset}
+                            <Lock className="h-4 w-4 mr-2" />
+                            {offer.type === "SELL"
+                              ? "Buy with Escrow"
+                              : "Sell with Escrow"}
                           </Button>
 
                           <Button variant="outline" size="sm">
@@ -600,6 +698,183 @@ export default function EnhancedP2PMarketplace() {
                   Create Offer
                 </Button>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Order Matching Tab */}
+        <TabsContent value="order-matching" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-5 w-5" />
+                  Smart Order Matching
+                </CardTitle>
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant={orderMatchingActive ? "default" : "secondary"}
+                  >
+                    {orderMatchingActive ? "Active" : "Inactive"}
+                  </Badge>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setOrderMatchingActive(!orderMatchingActive)}
+                  >
+                    {orderMatchingActive ? "Disable" : "Enable"}
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Matching Statistics */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUpIcon className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm font-medium text-blue-800">
+                      Matches Found
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-900">47</div>
+                  <div className="text-xs text-blue-600">Last 24 hours</div>
+                </div>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span className="text-sm font-medium text-green-800">
+                      Success Rate
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-green-900">92.3%</div>
+                  <div className="text-xs text-green-600">Match completion</div>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock className="h-4 w-4 text-purple-600" />
+                    <span className="text-sm font-medium text-purple-800">
+                      Avg Match Time
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-purple-900">3.2m</div>
+                  <div className="text-xs text-purple-600">Average time</div>
+                </div>
+              </div>
+
+              {/* Matching Algorithm Settings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">
+                    Matching Preferences
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        Price Tolerance
+                      </label>
+                      <Select defaultValue="1">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="0.5">��0.5%</SelectItem>
+                          <SelectItem value="1">±1%</SelectItem>
+                          <SelectItem value="2">±2%</SelectItem>
+                          <SelectItem value="5">±5%</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        Min Trader Rating
+                      </label>
+                      <Select defaultValue="4">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="3">3.0+</SelectItem>
+                          <SelectItem value="4">4.0+</SelectItem>
+                          <SelectItem value="4.5">4.5+</SelectItem>
+                          <SelectItem value="4.8">4.8+</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        Auto-Accept
+                      </label>
+                      <Select defaultValue="manual">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="manual">Manual Review</SelectItem>
+                          <SelectItem value="auto">Auto Accept</SelectItem>
+                          <SelectItem value="conditions">
+                            With Conditions
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">
+                        Priority Asset
+                      </label>
+                      <Select defaultValue="btc">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="btc">Bitcoin (BTC)</SelectItem>
+                          <SelectItem value="eth">Ethereum (ETH)</SelectItem>
+                          <SelectItem value="usdt">Tether (USDT)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Recent Matches */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Recent Matches</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[1, 2, 3].map((i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <div>
+                            <div className="font-medium">
+                              BTC/USD Match #{i}
+                            </div>
+                            <div className="text-sm text-gray-600">
+                              0.1 BTC at $43,250 • {5 - i} min ago
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-green-600">
+                            Matched
+                          </Badge>
+                          <Button variant="outline" size="sm">
+                            View Trade
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </CardContent>
           </Card>
         </TabsContent>
@@ -1059,6 +1334,98 @@ export default function EnhancedP2PMarketplace() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Escrow System Modal */}
+      {selectedTrade && (
+        <P2PEscrowSystem
+          trade={selectedTrade}
+          currentUserId="currentUser"
+          isOpen={showEscrowSystem}
+          onClose={() => {
+            setShowEscrowSystem(false);
+            setSelectedTrade(null);
+          }}
+          onAction={(action, data) => {
+            console.log("Escrow action:", action, data);
+            if (action === "open_dispute") {
+              setShowEscrowSystem(false);
+              const mockDispute = {
+                id: `dispute-${Date.now()}`,
+                tradeId: selectedTrade.id,
+                complainantId: "currentUser",
+                respondentId:
+                  selectedTrade.sellerId === "currentUser"
+                    ? selectedTrade.buyerId
+                    : selectedTrade.sellerId,
+                reason: "Payment Issue",
+                category: "PAYMENT_ISSUE",
+                status: "OPEN",
+                priority: "MEDIUM",
+                description: "Payment was made but not confirmed by seller",
+                evidence: [],
+                messages: [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                deadlineAt: new Date(
+                  Date.now() + 48 * 60 * 60 * 1000,
+                ).toISOString(),
+                trade: {
+                  asset: selectedTrade.asset,
+                  amount: selectedTrade.amount,
+                  fiatAmount: selectedTrade.fiatAmount,
+                  fiatCurrency: selectedTrade.fiatCurrency,
+                  paymentMethod: selectedTrade.paymentMethod,
+                },
+                complainant: selectedTrade.buyer,
+                respondent: selectedTrade.seller,
+              };
+              setSelectedDispute(mockDispute);
+              setShowDisputeResolution(true);
+            }
+            toast({
+              title: "Action Processed",
+              description: `${action.replace("_", " ")} has been processed.`,
+            });
+          }}
+        />
+      )}
+
+      {/* Dispute Resolution Modal */}
+      {selectedDispute && (
+        <P2PDisputeResolution
+          dispute={selectedDispute}
+          currentUserId="currentUser"
+          isOpen={showDisputeResolution}
+          onClose={() => {
+            setShowDisputeResolution(false);
+            setSelectedDispute(null);
+          }}
+          onSubmitEvidence={(evidence) => {
+            console.log("Evidence submitted:", evidence);
+            toast({
+              title: "Evidence Submitted",
+              description: "Your evidence has been uploaded successfully.",
+            });
+          }}
+          onSendMessage={(message) => {
+            console.log("Message sent:", message);
+          }}
+          onAcceptResolution={() => {
+            toast({
+              title: "Resolution Accepted",
+              description: "You have accepted the dispute resolution.",
+            });
+            setShowDisputeResolution(false);
+            setSelectedDispute(null);
+          }}
+          onAppealResolution={() => {
+            toast({
+              title: "Appeal Submitted",
+              description: "Your appeal has been submitted for review.",
+            });
+          }}
+        />
+      )}
     </div>
   );
 }
