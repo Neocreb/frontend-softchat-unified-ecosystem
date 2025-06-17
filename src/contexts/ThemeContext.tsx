@@ -125,11 +125,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [theme]);
 
-  const contextValue: ThemeContextType = {
-    theme,
-    setTheme,
-    isDark,
-  };
+  const contextValue: ThemeContextType = React.useMemo(
+    () => ({
+      theme,
+      setTheme,
+      isDark,
+    }),
+    [theme, isDark],
+  );
+
+  // Don't render children until theme is initialized to prevent context issues
+  if (!isInitialized) {
+    return <div className="theme-loading">{children}</div>;
+  }
 
   return (
     <ThemeContext.Provider value={contextValue}>
