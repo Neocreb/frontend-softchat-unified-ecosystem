@@ -514,41 +514,64 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2 mt-4 sm:mt-0">
+                  <div className="flex items-center gap-1 sm:gap-2 mt-3 sm:mt-4 lg:mt-0">
                     {isOwnProfile ? (
                       <>
                         <Button
                           variant="outline"
+                          size="sm"
                           onClick={() => setShowEditModal(true)}
+                          className="text-xs sm:text-sm"
                         >
-                          <Edit className="h-4 w-4 mr-2" />
-                          Edit Profile
+                          <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Edit Profile</span>
+                          <span className="sm:hidden">Edit</span>
                         </Button>
-                        <Button variant="outline" size="icon">
-                          <Share2 className="h-4 w-4" />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="px-2 sm:px-3"
+                        >
+                          <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       </>
                     ) : (
                       <>
-                        <Button onClick={handleFollow} className="px-6">
+                        <Button
+                          onClick={handleFollow}
+                          size="sm"
+                          className="px-3 sm:px-6 text-xs sm:text-sm"
+                        >
                           {isFollowing ? (
                             <>
-                              <Check className="h-4 w-4 mr-2" />
-                              Following
+                              <Check className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                              <span className="hidden sm:inline">
+                                Following
+                              </span>
+                              <span className="sm:hidden">✓</span>
                             </>
                           ) : (
                             <>
-                              <UserPlus className="h-4 w-4 mr-2" />
+                              <UserPlus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                               Follow
                             </>
                           )}
                         </Button>
-                        <Button variant="outline">
-                          <MessageCircle className="h-4 w-4 mr-2" />
-                          Message
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs sm:text-sm"
+                        >
+                          <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Message</span>
+                          <span className="sm:hidden">Chat</span>
                         </Button>
-                        <Button variant="outline" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="px-2 sm:px-3"
+                        >
+                          <MoreHorizontal className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       </>
                     )}
