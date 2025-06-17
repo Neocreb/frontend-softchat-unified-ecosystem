@@ -215,31 +215,7 @@ function EnhancedCryptoPortfolioContent() {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Add fallback handling for wallet context
-  const fallbackWalletBalance = {
-    total: 0,
-    ecommerce: 0,
-    crypto: 0,
-    rewards: 0,
-    freelance: 0,
-  };
-
-  let walletBalance = fallbackWalletBalance;
-  let refreshWallet: () => Promise<void> = async () => {
-    console.warn("Wallet refresh disabled - no WalletProvider available");
-  };
-
-  try {
-    const walletContext = useWalletContext();
-    walletBalance = walletContext.walletBalance || fallbackWalletBalance;
-    refreshWallet = walletContext.refreshWallet;
-  } catch (error) {
-    console.warn(
-      "EnhancedCryptoPortfolio: Wallet context not available, using fallback",
-      error,
-    );
-    // Use fallback values defined above
-  }
+  const { walletBalance, refreshWallet } = useWalletContext();
 
   const { toast } = useToast();
 
