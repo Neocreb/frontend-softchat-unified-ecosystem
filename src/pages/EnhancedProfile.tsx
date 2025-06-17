@@ -698,14 +698,14 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {mockMedia.length}
                     </Badge>
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="creator-studio"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                  <button
+                    onClick={() => navigate("/creator-studio")}
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:border-blue-500 hover:text-blue-600 bg-transparent horizontal-tab-item min-w-0 transition-colors"
                   >
                     <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span className="hidden sm:inline">Creator Studio</span>
                     <span className="sm:hidden">Studio</span>
-                  </TabsTrigger>
+                  </button>
                   <TabsTrigger
                     value="activity"
                     className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
