@@ -27,8 +27,9 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme state with safer initialization
-  const [theme, setTheme] = React.useState<Theme>("system");
+  const [theme, setTheme] = React.useState<Theme>("light"); // Default to light instead of system
   const [isDark, setIsDark] = React.useState(false);
+  const [isInitialized, setIsInitialized] = React.useState(false);
 
   // Initialize theme from localStorage on mount
   React.useEffect(() => {
@@ -37,10 +38,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         const savedTheme = localStorage.getItem("theme") as Theme;
         if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
           setTheme(savedTheme);
+        } else {
+          // Default to light theme if no saved theme
+          setTheme("light");
         }
       }
+      setIsInitialized(true);
     } catch (error) {
       console.warn("Failed to read theme from localStorage:", error);
+      setTheme("light"); // Fallback to light theme
+      setIsInitialized(true);
     }
   }, []);
 
