@@ -27,7 +27,7 @@ import { Loader2, CreditCard, AlertCircle } from "lucide-react";
 interface WithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
-  walletBalance: WalletBalance;
+  walletBalance: WalletBalance | null;
   onSuccess: () => void;
 }
 
