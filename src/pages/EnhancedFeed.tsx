@@ -1177,6 +1177,11 @@ export default function EnhancedFeed() {
   return (
     <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden">
       <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-safe-area-bottom">
+        {/* Enhanced Profile Access - Temporary for demo */}
+        <div className="mb-6">
+          <ProfileDirectAccess />
+        </div>
+
         {/* Stories */}
         <Stories
           stories={stories}
