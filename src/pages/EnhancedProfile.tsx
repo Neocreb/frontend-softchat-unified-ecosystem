@@ -429,7 +429,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
             <div className="relative">
               {/* Banner */}
               <div
-                className="h-32 sm:h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative bg-cover bg-center"
+                className="h-28 sm:h-40 lg:h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative bg-cover bg-center"
                 style={{ backgroundImage: `url(${mockProfile.banner})` }}
               >
                 <div className="absolute inset-0 bg-black/20" />
@@ -437,11 +437,12 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   <Button
                     variant="secondary"
                     size="sm"
-                    className="absolute top-4 right-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border-white/20"
+                    className="absolute top-2 right-2 sm:top-4 sm:right-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs sm:text-sm"
                     onClick={() => setIsEditingCover(true)}
                   >
-                    <Camera className="h-4 w-4 mr-2" />
-                    Edit Cover
+                    <Camera className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Edit Cover</span>
+                    <span className="sm:hidden">Edit</span>
                   </Button>
                 )}
               </div>
