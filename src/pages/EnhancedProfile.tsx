@@ -448,17 +448,17 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
               </div>
 
               {/* Profile Info */}
-              <CardContent className="relative pt-0">
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-12 sm:-mt-16">
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+              <CardContent className="relative pt-0 px-3 sm:px-6">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-10 sm:-mt-12 lg:-mt-16">
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
                     {/* Avatar */}
                     <div className="relative">
-                      <Avatar className="h-24 w-24 sm:h-32 sm:w-32 border-4 border-white shadow-lg">
+                      <Avatar className="h-20 w-20 sm:h-28 sm:w-28 lg:h-32 lg:w-32 border-3 sm:border-4 border-white shadow-lg">
                         <AvatarImage
                           src={mockProfile.avatar}
                           alt={mockProfile.displayName}
                         />
-                        <AvatarFallback className="text-xl sm:text-2xl font-bold">
+                        <AvatarFallback className="text-lg sm:text-xl lg:text-2xl font-bold">
                           {mockProfile.displayName
                             .split(" ")
                             .map((n) => n[0])
@@ -469,10 +469,10 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         <Button
                           variant="secondary"
                           size="sm"
-                          className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0"
+                          className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 h-6 w-6 sm:h-8 sm:w-8 rounded-full p-0"
                           onClick={() => setIsEditingAvatar(true)}
                         >
-                          <Camera className="h-4 w-4" />
+                          <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                       )}
                     </div>
