@@ -47,6 +47,7 @@ import UserManagement from "./pages/admin/UserManagement";
 import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
+import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
 import Explore from "./pages/Explore";
 import LandingPage from "./pages/LandingPage";
@@ -217,6 +218,7 @@ const AppRoutes = () => {
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<EnhancedSettings />} />
         <Route path="analytics" element={<AnalyticsDashboard />} />
+        <Route path="creator-studio" element={<CreatorStudio />} />
         <Route path="data" element={<DataManagement />} />
         <Route path="achievements" element={<GamificationSystem />} />
         <Route
