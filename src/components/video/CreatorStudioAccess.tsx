@@ -6,6 +6,7 @@ import {
   DollarSign,
   Users,
   Eye,
+  Heart,
   Zap,
   Star,
   Crown,
