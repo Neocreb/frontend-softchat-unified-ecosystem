@@ -613,7 +613,55 @@ const StoryFeatures: React.FC<StoryFeaturesProps> = ({
                     alt="Captured"
                     className="w-full h-full object-cover"
                   />
-                  {/* Overlay elements would be rendered here */}
+
+                  {/* Text overlays */}
+                  {textOverlays.map((overlay) => (
+                    <div
+                      key={overlay.id}
+                      className="absolute"
+                      style={{
+                        left: `${overlay.x}%`,
+                        top: `${overlay.y}%`,
+                        transform: "translate(-50%, -50%)",
+                        color: overlay.color,
+                        fontSize: `${overlay.fontSize}px`,
+                        fontFamily: overlay.font,
+                        backgroundColor: overlay.backgroundColor,
+                        padding: overlay.backgroundColor ? "4px 8px" : "0",
+                        borderRadius: overlay.backgroundColor ? "4px" : "0",
+                      }}
+                    >
+                      {overlay.text}
+                    </div>
+                  ))}
+
+                  {/* Stickers */}
+                  {stickers.map((sticker) => (
+                    <div
+                      key={sticker.id}
+                      className="absolute"
+                      style={{
+                        left: `${sticker.x}%`,
+                        top: `${sticker.y}%`,
+                        transform: `translate(-50%, -50%) scale(${sticker.scale}) rotate(${sticker.rotation}deg)`,
+                      }}
+                    >
+                      {sticker.type === "emoji" && (
+                        <span className="text-4xl">{sticker.data.emoji}</span>
+                      )}
+                      {sticker.type === "location" && (
+                        <div className="bg-black/60 text-white px-2 py-1 rounded text-sm">
+                          📍 {sticker.data.location}
+                        </div>
+                      )}
+                      {sticker.type === "music" && (
+                        <div className="bg-black/60 text-white px-2 py-1 rounded text-sm flex items-center gap-1">
+                          <Music className="w-3 h-3" />
+                          {sticker.data.title}
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
