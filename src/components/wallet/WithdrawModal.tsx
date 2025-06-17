@@ -77,6 +77,7 @@ const WithdrawModal = ({
   };
 
   const getAvailableBalance = () => {
+    if (!walletBalance) return 0;
     if (source === "total") return walletBalance.total;
     return walletBalance[source];
   };
