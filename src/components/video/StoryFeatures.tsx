@@ -310,6 +310,32 @@ const StoryFeatures: React.FC<StoryFeaturesProps> = ({
     };
   }, [showViewer, isPlaying, currentStoryIndex]);
 
+  // Handle video playback state changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlaybackChange = async () => {
+      try {
+        if (isPlaying && showViewer) {
+          if (video.paused) {
+            await video.play();
+          }
+        } else {
+          if (!video.paused) {
+            video.pause();
+          }
+        }
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Story video playback error:", error);
+        }
+      }
+    };
+
+    handlePlaybackChange();
+  }, [isPlaying, showViewer, currentStoryIndex]);
+
   const initializeCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -820,11 +846,20 @@ const StoryFeatures: React.FC<StoryFeaturesProps> = ({
                   <video
                     ref={videoRef}
                     src={currentStory.content.url}
-                    autoPlay
                     muted={isMuted}
                     loop
                     playsInline
                     className="w-full h-full object-cover"
+                    onLoadedData={() => {
+                      // Auto-play when video is loaded
+                      if (videoRef.current && isPlaying) {
+                        videoRef.current.play().catch((error) => {
+                          if (error.name !== "AbortError") {
+                            console.error("Story video play error:", error);
+                          }
+                        });
+                      }
+                    }}
                   />
                 )}
 

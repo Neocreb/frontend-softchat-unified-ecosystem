@@ -264,6 +264,17 @@ const LiveStreamingInterface: React.FC<LiveStreamingInterfaceProps> = ({
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+
+        // Handle video element load to prevent playback issues
+        videoRef.current.onloadedmetadata = () => {
+          if (videoRef.current && isStreamActive) {
+            videoRef.current.play().catch((error) => {
+              if (error.name !== "AbortError") {
+                console.error("Stream video play error:", error);
+              }
+            });
+          }
+        };
       }
     } catch (error) {
       console.error("Failed to initialize stream:", error);

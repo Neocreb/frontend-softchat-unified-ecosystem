@@ -715,14 +715,44 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = playbackSpeed;
-      if (isActive && isPlaying) {
-        videoRef.current.play().catch(console.error);
-      } else {
-        videoRef.current.pause();
+    const video = videoRef.current;
+    if (!video) return;
+
+    let isComponentMounted = true;
+
+    const handleVideoPlayback = async () => {
+      try {
+        // Set playback speed first
+        video.playbackRate = playbackSpeed;
+
+        if (isActive && isPlaying && isComponentMounted) {
+          // Check if video is already playing to avoid unnecessary play() calls
+          if (video.paused || video.ended) {
+            await video.play();
+          }
+        } else {
+          // Only pause if video is currently playing
+          if (!video.paused && isComponentMounted) {
+            video.pause();
+          }
+        }
+      } catch (error) {
+        // Ignore AbortError which happens when play() is interrupted
+        if (error.name !== "AbortError") {
+          console.error("Video playback error:", error);
+        }
       }
-    }
+    };
+
+    handleVideoPlayback();
+
+    return () => {
+      isComponentMounted = false;
+      // Cleanup: pause video when component unmounts or dependencies change
+      if (video && !video.paused) {
+        video.pause();
+      }
+    };
   }, [isActive, isPlaying, playbackSpeed]);
 
   const formatNumber = (num: number): string => {
@@ -735,8 +765,23 @@ const VideoCard: React.FC<VideoCardProps> = ({
     return num.toString();
   };
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+  const togglePlay = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    try {
+      if (isPlaying) {
+        video.pause();
+        setIsPlaying(false);
+      } else {
+        await video.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        console.error("Toggle play error:", error);
+      }
+    }
   };
 
   const description = video.description;

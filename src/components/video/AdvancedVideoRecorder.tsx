@@ -322,9 +322,13 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
       streamRef.current = stream;
 
       if (videoRef.current) {
+        // Ensure video element is ready before setting source
         videoRef.current.srcObject = stream;
-        // Apply current filter
-        applyFilter();
+
+        // Wait for stream to be ready before applying filters
+        videoRef.current.onloadedmetadata = () => {
+          applyFilter();
+        };
       }
     } catch (error) {
       console.error("Camera initialization error:", error);
