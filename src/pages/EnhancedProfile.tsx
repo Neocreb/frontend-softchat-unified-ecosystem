@@ -924,52 +924,56 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
                 {/* Enhanced Media Tab */}
                 <TabsContent value="media" className="space-y-6 mt-0">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg font-semibold">Media</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Photos and videos
-                      </p>
-                    </div>
+                  <div className="flex flex-col gap-3 sm:gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h3 className="text-base sm:text-lg font-semibold">
+                          Media
+                        </h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          Photos and videos
+                        </p>
+                      </div>
 
-                    <div className="flex items-center gap-3">
-                      {/* Filter Controls */}
-                      <Select
-                        value={mediaFilter}
-                        onValueChange={setMediaFilter}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All</SelectItem>
-                          <SelectItem value="images">Images</SelectItem>
-                          <SelectItem value="videos">Videos</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        {/* Filter Controls */}
+                        <Select
+                          value={mediaFilter}
+                          onValueChange={setMediaFilter}
+                        >
+                          <SelectTrigger className="w-24 sm:w-32 h-8 sm:h-10 text-xs sm:text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All</SelectItem>
+                            <SelectItem value="images">Images</SelectItem>
+                            <SelectItem value="videos">Videos</SelectItem>
+                          </SelectContent>
+                        </Select>
 
-                      {/* View Mode Toggle */}
-                      <div className="flex border rounded-lg p-1">
-                        <Button
-                          variant={
-                            mediaViewMode === "grid" ? "default" : "ghost"
-                          }
-                          size="sm"
-                          onClick={() => setMediaViewMode("grid")}
-                          className="h-8 w-8 p-0"
-                        >
-                          <Grid3X3 className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant={
-                            mediaViewMode === "list" ? "default" : "ghost"
-                          }
-                          size="sm"
-                          onClick={() => setMediaViewMode("list")}
-                          className="h-8 w-8 p-0"
-                        >
-                          <List className="h-4 w-4" />
-                        </Button>
+                        {/* View Mode Toggle */}
+                        <div className="flex border rounded-lg p-0.5 sm:p-1">
+                          <Button
+                            variant={
+                              mediaViewMode === "grid" ? "default" : "ghost"
+                            }
+                            size="sm"
+                            onClick={() => setMediaViewMode("grid")}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
+                          >
+                            <Grid3X3 className="h-3 w-3 sm:h-4 sm:w-4" />
+                          </Button>
+                          <Button
+                            variant={
+                              mediaViewMode === "list" ? "default" : "ghost"
+                            }
+                            size="sm"
+                            onClick={() => setMediaViewMode("list")}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
+                          >
+                            <List className="h-3 w-3 sm:h-4 sm:w-4" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
