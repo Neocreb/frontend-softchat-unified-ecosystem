@@ -730,7 +730,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
               </div>
 
               {/* Tab Contents */}
-              <div className="p-4 sm:p-6">
+              <div className="p-3 sm:p-4 lg:p-6">
                 {/* Posts Tab */}
                 <TabsContent value="posts" className="space-y-6 mt-0">
                   <div className="flex items-center justify-between">
