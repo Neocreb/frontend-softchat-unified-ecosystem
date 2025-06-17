@@ -210,7 +210,9 @@ const AppRoutes = () => {
 
         <Route path="crypto" element={<EnhancedCrypto />} />
         <Route path="rewards" element={<EnhancedRewards />} />
-        <Route path="videos" element={<ImprovedVideos />} />
+        <Route path="videos" element={<EnhancedVideosV2 />} />
+        <Route path="videos-improved" element={<ImprovedVideos />} />
+        <Route path="videos-enhanced" element={<EnhancedVideos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
         <Route path="settings" element={<EnhancedSettings />} />
