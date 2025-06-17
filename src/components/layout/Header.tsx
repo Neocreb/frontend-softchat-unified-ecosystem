@@ -15,6 +15,7 @@ import {
   ShoppingCart,
   Briefcase,
   Settings,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
@@ -96,6 +97,19 @@ const Header = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </form>
+        </div>
+
+        {/* Creator Studio Quick Link */}
+        <div className="hidden lg:flex items-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/creator-studio")}
+            className="text-sm font-medium"
+          >
+            <BarChart3 className="w-4 h-4 mr-2" />
+            Creator Studio
+          </Button>
         </div>
 
         {/* Desktop Navigation */}
