@@ -50,7 +50,7 @@ import {
   Minus,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useWalletContext } from "@/contexts/WalletContext";
+import { useWalletContext, WalletProvider } from "@/contexts/WalletContext";
 import DepositModal from "@/components/wallet/DepositModal";
 import WithdrawModal from "@/components/wallet/WithdrawModal";
 import { cn } from "@/lib/utils";
