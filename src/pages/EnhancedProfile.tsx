@@ -661,56 +661,69 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   </TabsTrigger>
                   <TabsTrigger
                     value="products"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Store className="h-4 w-4 flex-shrink-0" />
+                    <Store className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Products</span>
-                    <Badge variant="secondary" className="ml-1 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
                       {products.length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="services"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Code className="h-4 w-4 flex-shrink-0" />
+                    <Code className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Services</span>
-                    <Badge variant="secondary" className="ml-1 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
                       {services.length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="media"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Camera className="h-4 w-4 flex-shrink-0" />
+                    <Camera className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Media</span>
-                    <Badge variant="secondary" className="ml-1 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
                       {mockMedia.length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="creator-studio"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <BarChart3 className="h-4 w-4 flex-shrink-0" />
-                    <span>Creator Studio</span>
+                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="hidden sm:inline">Creator Studio</span>
+                    <span className="sm:hidden">Studio</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="activity"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Activity className="h-4 w-4 flex-shrink-0" />
+                    <Activity className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Activity</span>
-                    <Badge variant="secondary" className="ml-1 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
                       {mockActivity.length}
                     </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="about"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Users className="h-4 w-4 flex-shrink-0" />
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>About</span>
                   </TabsTrigger>
                 </TabsList>
