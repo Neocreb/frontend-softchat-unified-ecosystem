@@ -40,7 +40,6 @@ import { EnhancedStoryCreation } from "@/components/feed/EnhancedStoryCreation";
 import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
-import ProfileDirectAccess from "@/components/profile/ProfileDirectAccess";
 import {
   MediaUpload,
   PostCreationData,
