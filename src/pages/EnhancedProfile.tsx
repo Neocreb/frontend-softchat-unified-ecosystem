@@ -644,15 +644,18 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <div className="relative border-b">
-                <TabsList className="flex w-full overflow-x-auto gap-0 p-0 h-auto bg-transparent whitespace-nowrap scrollbar-hide">
+              <div className="relative border-b overflow-hidden">
+                <TabsList className="flex w-full overflow-x-auto gap-0 p-0 h-auto bg-transparent whitespace-nowrap scrollbar-hide horizontal-tabs-scroll">
                   <TabsTrigger
                     value="posts"
-                    className="flex items-center gap-2 px-3 sm:px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <MessageSquare className="h-4 w-4 flex-shrink-0" />
+                    <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Posts</span>
-                    <Badge variant="secondary" className="ml-1 text-xs">
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
                       {mockPosts.length}
                     </Badge>
                   </TabsTrigger>
