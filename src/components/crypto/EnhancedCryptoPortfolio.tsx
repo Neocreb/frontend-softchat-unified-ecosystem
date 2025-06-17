@@ -981,3 +981,11 @@ function EnhancedCryptoPortfolioContent() {
     </div>
   );
 }
+
+export default function EnhancedCryptoPortfolio() {
+  return (
+    <WalletProvider>
+      <EnhancedCryptoPortfolioContent />
+    </WalletProvider>
+  );
+}
