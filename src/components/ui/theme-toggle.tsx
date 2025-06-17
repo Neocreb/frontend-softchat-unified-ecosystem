@@ -11,8 +11,12 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 export const ThemeToggle: React.FC = () => {
   // Add fallback handling for theme context
-  let theme: string = "light";
-  let setTheme: (theme: string) => void = () => {};
+  const [fallbackTheme, setFallbackTheme] = React.useState<
+    "light" | "dark" | "system"
+  >("light");
+
+  let theme: string = fallbackTheme;
+  let setTheme: (theme: "light" | "dark" | "system") => void = setFallbackTheme;
   let isDark: boolean = false;
 
   try {
@@ -26,6 +30,7 @@ export const ThemeToggle: React.FC = () => {
       error,
     );
     // Use fallback values defined above
+    isDark = fallbackTheme === "dark";
   }
 
   return (
