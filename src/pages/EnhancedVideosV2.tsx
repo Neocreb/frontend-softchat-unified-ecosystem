@@ -54,6 +54,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useVideoPlayback } from "@/hooks/use-video-playback";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
@@ -713,6 +714,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
+  const { safePlay, safePause, togglePlayback } = useVideoPlayback();
 
   useEffect(() => {
     const video = videoRef.current;
@@ -721,26 +723,19 @@ const VideoCard: React.FC<VideoCardProps> = ({
     let isComponentMounted = true;
 
     const handleVideoPlayback = async () => {
+      if (!isComponentMounted) return;
+
       try {
         // Set playback speed first
         video.playbackRate = playbackSpeed;
 
-        if (isActive && isPlaying && isComponentMounted) {
-          // Check if video is already playing to avoid unnecessary play() calls
-          if (video.paused || video.ended) {
-            await video.play();
-          }
+        if (isActive && isPlaying) {
+          await safePlay(video);
         } else {
-          // Only pause if video is currently playing
-          if (!video.paused && isComponentMounted) {
-            video.pause();
-          }
+          safePause(video);
         }
       } catch (error) {
-        // Ignore AbortError which happens when play() is interrupted
-        if (error.name !== "AbortError") {
-          console.error("Video playback error:", error);
-        }
+        // Errors are already handled in the hook
       }
     };
 
@@ -748,12 +743,11 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
     return () => {
       isComponentMounted = false;
-      // Cleanup: pause video when component unmounts or dependencies change
-      if (video && !video.paused) {
-        video.pause();
+      if (video) {
+        safePause(video);
       }
     };
-  }, [isActive, isPlaying, playbackSpeed]);
+  }, [isActive, isPlaying, playbackSpeed, safePlay, safePause]);
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
@@ -765,24 +759,12 @@ const VideoCard: React.FC<VideoCardProps> = ({
     return num.toString();
   };
 
-  const togglePlay = async () => {
+  const togglePlay = useCallback(async () => {
     const video = videoRef.current;
     if (!video) return;
 
-    try {
-      if (isPlaying) {
-        video.pause();
-        setIsPlaying(false);
-      } else {
-        await video.play();
-        setIsPlaying(true);
-      }
-    } catch (error) {
-      if (error.name !== "AbortError") {
-        console.error("Toggle play error:", error);
-      }
-    }
-  };
+    await togglePlayback(video, isPlaying, setIsPlaying);
+  }, [isPlaying, togglePlayback]);
 
   const description = video.description;
   const truncatedDescription =
