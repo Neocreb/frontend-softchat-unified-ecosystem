@@ -980,11 +980,11 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
                   {filteredMedia.length > 0 ? (
                     mediaViewMode === "grid" ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
                         {filteredMedia.map((item) => (
                           <div
                             key={item.id}
-                            className="relative aspect-square rounded-lg overflow-hidden group cursor-pointer"
+                            className="relative aspect-square rounded-md sm:rounded-lg overflow-hidden group cursor-pointer"
                           >
                             <img
                               src={item.url}
@@ -992,26 +992,26 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                               className="w-full h-full object-cover transition-transform group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <div className="text-white text-center">
-                                <div className="flex items-center justify-center gap-2 mb-1">
+                              <div className="text-white text-center px-2">
+                                <div className="flex items-center justify-center gap-1 sm:gap-2 mb-1">
                                   {item.type === "video" ? (
                                     <>
-                                      <Play className="h-4 w-4" />
-                                      <span className="text-sm">
+                                      <Play className="h-3 w-3 sm:h-4 sm:w-4" />
+                                      <span className="text-xs sm:text-sm">
                                         {item.duration}
                                       </span>
                                     </>
                                   ) : (
-                                    <ImageIcon className="h-4 w-4" />
+                                    <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                                   )}
                                 </div>
-                                <div className="flex items-center gap-3 text-xs">
-                                  <span className="flex items-center gap-1">
-                                    <Heart className="h-3 w-3" />
+                                <div className="flex items-center gap-2 sm:gap-3 text-xs">
+                                  <span className="flex items-center gap-0.5 sm:gap-1">
+                                    <Heart className="h-2 w-2 sm:h-3 sm:w-3" />
                                     {item.likes}
                                   </span>
-                                  <span className="flex items-center gap-1">
-                                    <Eye className="h-3 w-3" />
+                                  <span className="flex items-center gap-0.5 sm:gap-1">
+                                    <Eye className="h-2 w-2 sm:h-3 sm:w-3" />
                                     {item.views}
                                   </span>
                                 </div>
@@ -1021,7 +1021,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                               variant={
                                 item.type === "video" ? "default" : "secondary"
                               }
-                              className="absolute top-2 left-2 text-xs"
+                              className="absolute top-1 left-1 sm:top-2 sm:left-2 text-xs h-5 px-1.5"
                             >
                               {item.type === "video" ? "Video" : "Image"}
                             </Badge>
