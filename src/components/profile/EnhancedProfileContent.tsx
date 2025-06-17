@@ -35,6 +35,7 @@ import { cn } from "@/lib/utils";
 import { UserProfile } from "@/types/user";
 import { Product } from "@/types/marketplace";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
+import CreatorStudioAccess from "@/components/video/CreatorStudioAccess";
 
 interface EnhancedProfileContentProps {
   profile: UserProfile;
@@ -512,15 +513,31 @@ export const EnhancedProfileContent: React.FC<EnhancedProfileContentProps> = ({
 
         {isOwnProfile && (
           <TabsContent value="creator" className="space-y-4 mt-6">
+            {/* Creator Studio Quick Access */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5" />
-                  Creator Dashboard
+                  Creator Hub
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Track your content performance, earnings, and grow your
-                  audience
+                  Quick overview and access to your creator tools
+                </p>
+              </CardHeader>
+              <CardContent>
+                <CreatorStudioAccess />
+              </CardContent>
+            </Card>
+
+            {/* Detailed Dashboard */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5" />
+                  Detailed Analytics
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Comprehensive performance metrics and insights
                 </p>
               </CardHeader>
               <CardContent className="p-0">
