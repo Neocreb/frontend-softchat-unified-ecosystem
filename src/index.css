@@ -48,6 +48,26 @@
     line-height: 1.5;
   }
 
+  /* Enhanced horizontal scrolling tabs */
+  .horizontal-tabs-scroll {
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .horizontal-tabs-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .horizontal-tab-item {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   /* Mobile-friendly tabs */
   .mobile-tabs-container {
     position: relative;

@@ -9,6 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
 import {
   ArrowLeft,
@@ -45,6 +53,18 @@ import {
   Code,
   Coins,
   DollarSign,
+  Video,
+  Grid3X3,
+  List,
+  Filter,
+  BarChart3,
+  Target,
+  Lightbulb,
+  Calendar as CalendarIcon,
+  Activity,
+  Trophy,
+  Zap,
+  Play,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -81,10 +101,14 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   const [isEditingAvatar, setIsEditingAvatar] = useState(false);
   const [coverPhotoUrl, setCoverPhotoUrl] = useState("");
 
+  // New state for enhanced features
+  const [mediaFilter, setMediaFilter] = useState("all");
+  const [mediaViewMode, setMediaViewMode] = useState("grid");
+
   const isOwnProfile =
     !targetUsername || (user && user.profile?.username === targetUsername);
 
-  // Create enhanced mock profile from original structure
+  // Enhanced mock profile data
   const createMockProfile = (profile: UserProfile) => ({
     id: profile.id,
     username: profile.username,
@@ -97,257 +121,255 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     banner:
       profile.banner_url ||
-      "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80",
-    location: profile.location || "San Francisco, CA",
-    website: profile.website || "https://johndoe.dev",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
-    company: "Tech Innovations Inc.",
-    education: "Stanford University",
+      "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+    location: "San Francisco, CA",
+    website: "https://johndoe.dev",
+    joinDate: "January 2020",
+    verified: true,
+    followers: 2847,
+    following: 892,
+    posts: 156,
+    engagement: 94,
+    profileViews: 15620,
     jobTitle: "Senior Full Stack Developer",
-    joinedDate: new Date(profile.join_date || "2021-01-15"),
-    followers: followerCount,
-    following: followingCount,
-    posts: profile.posts_count || 189,
-    verified: profile.is_verified || true,
-    level: profile.level || "Gold",
-    reputation: profile.reputation || 4.8,
-    completedTasks: 87,
-    totalTasks: 100,
-    isOnline: profile.is_online || true,
-    lastSeen: new Date(profile.last_active || new Date()),
-    skills: profile.skills || [
-      "JavaScript",
+    company: "TechCorp Inc.",
+    education: "Stanford University",
+    relationshipStatus: "Single",
+    languages: ["English", "Spanish", "French"],
+    skills: [
       "React",
+      "TypeScript",
       "Node.js",
       "Python",
-      "AI/ML",
-      "TypeScript",
-      "GraphQL",
       "AWS",
+      "Docker",
+      "GraphQL",
+      "PostgreSQL",
+      "MongoDB",
+      "React Native",
     ],
-    achievements: profile.achievements || [
-      {
-        name: "Early Adopter",
-        icon: "🚀",
-        description: "Joined in the first month",
-        date: "2021-01-15",
-      },
-      {
-        name: "Top Contributor",
-        icon: "⭐",
-        description: "100+ helpful posts",
-        date: "2023-06-15",
-      },
-      {
-        name: "Community Leader",
-        icon: "👑",
-        description: "Helped 500+ users",
-        date: "2023-12-01",
-      },
-      {
-        name: "Coding Streak",
-        icon: "🔥",
-        description: "30-day coding streak",
-        date: "2024-01-01",
-      },
+    interests: ["Technology", "Travel", "Photography", "Coffee", "Hiking"],
+    achievements: [
+      { title: "Top Contributor", date: "2024", icon: Trophy },
+      { title: "Verified Creator", date: "2023", icon: Verified },
+      { title: "Early Adopter", date: "2020", icon: Star },
     ],
-    socialStats: {
-      totalLikes: 24560,
-      totalShares: 5670,
-      totalComments: 8900,
-      profileViews: profile.profile_views || 123400,
+    creatorStats: {
+      totalViews: 125000,
+      totalLikes: 8940,
+      totalShares: 1230,
+      engagementRate: 7.8,
+      subscriberGrowth: 12.5,
+      avgViewDuration: "3:42",
     },
-    relationshipStatus: "Single",
-    languages: profile.languages || ["English", "Spanish", "French"],
-    interests: profile.interests || [
-      "Technology",
-      "Photography",
-      "Travel",
-      "Music",
-      "Gaming",
-    ],
   });
 
-  // Mock posts data from original
-  const createMockPosts = (mockProfile: any) => [
+  // Enhanced mock data
+  const mockPosts = [
     {
-      id: "1",
+      id: 1,
       content:
-        "Just shipped a new feature! Really excited about the possibilities 🚀\n\nThis update includes:\n✨ Dark mode improvements\n🔥 Performance optimizations\n🎨 New UI components\n📱 Better mobile experience",
-      images: [
-        "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      ],
-      createdAt: new Date("2024-01-15T10:30:00Z"),
-      likes: 124,
+        "Just shipped a new feature! 🚀 Excited to see how users engage with it. Building in public is such a rewarding experience.",
+      timestamp: "2 hours ago",
+      likes: 24,
+      comments: 8,
+      shares: 3,
+      image:
+        "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80",
+    },
+    {
+      id: 2,
+      content:
+        "Coffee and code - the perfect combination for a productive morning ☕💻",
+      timestamp: "1 day ago",
+      likes: 42,
+      comments: 12,
+      shares: 5,
+    },
+    {
+      id: 3,
+      content:
+        "Attending the tech conference today! Looking forward to networking and learning about the latest trends in AI and web development.",
+      timestamp: "3 days ago",
+      likes: 67,
       comments: 23,
-      shares: 12,
-      type: "post",
-    },
-    {
-      id: "2",
-      content:
-        "Working on something amazing with the team. Can't wait to share it with everyone! 🎯\n\nBeen focusing on:\n🎨 User experience improvements\n⚡ Performance optimizations\n🛡️ Security enhancements\n\n#TechLife #Innovation #BuildingTheFuture",
-      images: [
-        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      ],
-      createdAt: new Date("2024-01-14T15:45:00Z"),
-      likes: 189,
-      comments: 35,
-      shares: 18,
-      type: "post",
-    },
-    {
-      id: "3",
-      content:
-        "Attended an amazing tech conference today! 🎤 Learned so much about AI and machine learning trends for 2024. The future is incredibly bright! 🌟\n\nKey takeaways:\n🤖 AI integration in everyday apps\n📊 Better data visualization\n🔮 Predictive analytics improvements",
-      images: [],
-      createdAt: new Date("2024-01-13T18:20:00Z"),
-      likes: 267,
-      comments: 41,
-      shares: 25,
-      type: "post",
+      shares: 8,
     },
   ];
 
-  // Mock media data from original
-  const createMockMedia = () => [
+  const mockMedia = [
     {
-      id: "1",
-      url: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+      id: 1,
       type: "image",
+      url: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80",
+      title: "New Feature Launch",
+      description: "Screenshot of our latest feature",
+      date: "2 hours ago",
+      likes: 24,
+      views: 156,
     },
     {
-      id: "2",
-      url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-      type: "image",
+      id: 2,
+      type: "video",
+      url: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80",
+      title: "Coding Tutorial",
+      description: "How to build a React component",
+      date: "1 day ago",
+      likes: 67,
+      views: 892,
+      duration: "5:23",
     },
     {
-      id: "3",
-      url: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+      id: 3,
       type: "image",
+      url: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80",
+      title: "Workspace Setup",
+      description: "My current development setup",
+      date: "3 days ago",
+      likes: 89,
+      views: 234,
     },
     {
-      id: "4",
-      url: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-      type: "image",
-    },
-    {
-      id: "5",
-      url: "https://images.unsplash.com/photo-1518085250350-d8e8c328c70e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-      type: "image",
-    },
-    {
-      id: "6",
-      url: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
-      type: "image",
+      id: 4,
+      type: "video",
+      url: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1074&q=80",
+      title: "Conference Talk",
+      description: "Speaking about modern web development",
+      date: "1 week ago",
+      likes: 156,
+      views: 1240,
+      duration: "25:14",
     },
   ];
 
-  // Load profile data
+  const mockActivity = [
+    {
+      id: 1,
+      type: "post",
+      action: "Published a new post",
+      content: "Just shipped a new feature!",
+      timestamp: "2 hours ago",
+      engagement: { likes: 24, comments: 8, shares: 3 },
+    },
+    {
+      id: 2,
+      type: "video",
+      action: "Uploaded a video",
+      content: "Coding Tutorial: React Components",
+      timestamp: "1 day ago",
+      engagement: { likes: 67, views: 892, duration: "5:23" },
+    },
+    {
+      id: 3,
+      type: "achievement",
+      action: "Earned an achievement",
+      content: "Top Contributor Badge",
+      timestamp: "3 days ago",
+      icon: Trophy,
+    },
+    {
+      id: 4,
+      type: "follow",
+      action: "Gained 25 new followers",
+      content: "Profile growth milestone",
+      timestamp: "1 week ago",
+      engagement: { followers: 25 },
+    },
+  ];
+
+  const filteredMedia = mockMedia.filter((item) => {
+    if (mediaFilter === "all") return true;
+    if (mediaFilter === "images") return item.type === "image";
+    if (mediaFilter === "videos") return item.type === "video";
+    return true;
+  });
+
+  // Mock profile data
+  const mockProfile = profileUser
+    ? createMockProfile(profileUser)
+    : {
+        id: "1",
+        username: "johndoe",
+        displayName: "John Doe",
+        bio: "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n🌟 Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
+        avatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        banner:
+          "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+        location: "San Francisco, CA",
+        website: "https://johndoe.dev",
+        joinDate: "January 2020",
+        verified: true,
+        followers: 2847,
+        following: 892,
+        posts: 156,
+        engagement: 94,
+        profileViews: 15620,
+        jobTitle: "Senior Full Stack Developer",
+        company: "TechCorp Inc.",
+        education: "Stanford University",
+        relationshipStatus: "Single",
+        languages: ["English", "Spanish", "French"],
+        skills: [
+          "React",
+          "TypeScript",
+          "Node.js",
+          "Python",
+          "AWS",
+          "Docker",
+          "GraphQL",
+          "PostgreSQL",
+          "MongoDB",
+          "React Native",
+        ],
+        interests: ["Technology", "Travel", "Photography", "Coffee", "Hiking"],
+        achievements: [
+          { title: "Top Contributor", date: "2024", icon: Trophy },
+          { title: "Verified Creator", date: "2023", icon: Verified },
+          { title: "Early Adopter", date: "2020", icon: Star },
+        ],
+        creatorStats: {
+          totalViews: 125000,
+          totalLikes: 8940,
+          totalShares: 1230,
+          engagementRate: 7.8,
+          subscriberGrowth: 12.5,
+          avgViewDuration: "3:42",
+        },
+      };
+
   useEffect(() => {
-    const loadProfileData = async () => {
+    const loadProfile = async () => {
       setIsLoading(true);
-
       try {
-        let profile: UserProfile | null = null;
-        console.log("Loading profile for:", {
-          targetUsername,
-          isOwnProfile,
-          userProfile: user?.profile,
-        });
-
         if (isOwnProfile && user?.profile) {
-          profile = user.profile;
-          console.log("Using own profile:", profile);
+          setProfileUser(user.profile);
+          setFollowerCount(Math.floor(Math.random() * 1000) + 100);
+          setFollowingCount(Math.floor(Math.random() * 500) + 50);
+          setPosts(mockPosts);
+          setProducts([]);
+          setServices([]);
         } else if (targetUsername) {
-          profile = await profileService.getUserByUsername(targetUsername);
-          console.log("Fetched profile:", profile);
-
-          if (!profile) {
-            console.log(
-              "No profile found, generating mock user for:",
-              targetUsername,
-            );
-            const mockUser = profileService.generateMockUser(targetUsername);
-            profile = mockUser.profile!;
-            setPosts(mockUser.mock_data.posts);
-            setProducts(mockUser.mock_data.products);
-            setServices(mockUser.mock_data.services);
-          }
-        }
-
-        if (profile) {
-          setProfileUser(profile);
-
-          if (profile.id) {
-            const [followers, following] = await Promise.all([
-              profileService.getFollowersCount(profile.id),
-              profileService.getFollowingCount(profile.id),
+          const profile = await profileService.getProfile(targetUsername);
+          if (profile) {
+            setProfileUser(profile);
+            const [userPosts, userProducts, userServices] = await Promise.all([
+              profileService.getUserPosts(profile.id),
+              profileService.getUserProducts(profile.id),
+              profileService.getUserServices(profile.id),
             ]);
-
-            setFollowerCount(followers);
-            setFollowingCount(following);
-
-            if (user && user.id && !isOwnProfile) {
-              const followingStatus = await profileService.isFollowing(
-                user.id,
-                profile.id,
-              );
-              setIsFollowing(followingStatus);
-            }
-
-            // Load content if not already loaded
-            if (!posts.length) {
-              try {
-                const [userPosts, userProducts, userServices] =
-                  await Promise.all([
-                    profileService.getUserPosts(profile.id),
-                    profileService.getUserProducts(profile.id),
-                    profileService.getUserServices(profile.id),
-                  ]);
-
-                setPosts(
-                  userPosts?.length
-                    ? formatPosts(userPosts)
-                    : createMockPosts(createMockProfile(profile)),
-                );
-                setProducts(
-                  userProducts?.length
-                    ? formatProducts(userProducts)
-                    : generateMockProducts(),
-                );
-                setServices(
-                  userServices?.length
-                    ? formatServices(userServices)
-                    : generateMockServices(),
-                );
-              } catch (error: any) {
-                console.warn(
-                  "Error loading user content:",
-                  error?.message || error,
-                );
-                setPosts(createMockPosts(createMockProfile(profile)));
-                if (profile.marketplace_profile)
-                  setProducts(generateMockProducts());
-                if (profile.freelance_profile)
-                  setServices(generateMockServices());
-              }
-            }
+            setPosts(userPosts?.length ? userPosts : mockPosts);
+            setProducts(userProducts?.length ? userProducts : []);
+            setServices(userServices?.length ? userServices : []);
+            setFollowerCount(Math.floor(Math.random() * 1000) + 100);
+            setFollowingCount(Math.floor(Math.random() * 500) + 50);
           }
-        } else {
-          toast({
-            title: "Profile not found",
-            description: "The requested profile could not be found.",
-            variant: "destructive",
-          });
-          navigate("/feed");
         }
-      } catch (error: any) {
-        console.error("Error loading profile:", error?.message || error);
+      } catch (error) {
+        console.error("Error loading profile:", error);
         toast({
-          title: "Error loading profile",
-          description: "Failed to load the profile. Please try again.",
+          title: "Error",
+          description: "Failed to load profile",
           variant: "destructive",
         });
       } finally {
@@ -355,1039 +377,1216 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
       }
     };
 
-    loadProfileData();
-  }, [targetUsername, isOwnProfile, user]);
-
-  // Event handlers from original
-  const handleCoverPhotoUpload = () => {
-    toast({
-      title: "Cover Photo Updated",
-      description: "Your cover photo has been updated successfully.",
-    });
-    setIsEditingCover(false);
-  };
-
-  const handleAvatarUpload = () => {
-    toast({
-      title: "Profile Picture Updated",
-      description: "Your profile picture has been updated successfully.",
-    });
-    setIsEditingAvatar(false);
-  };
+    loadProfile();
+  }, [targetUsername, isOwnProfile, user, toast]);
 
   const handleFollow = async () => {
-    if (!user || !profileUser) {
-      toast({
-        title: "Authentication required",
-        description: "Please log in to follow users.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      await profileService.toggleFollow(user.id, profileUser.id, isFollowing);
-      setIsFollowing(!isFollowing);
-      setFollowerCount((prev) => (isFollowing ? prev - 1 : prev + 1));
-
-      toast({
-        title: isFollowing ? "Unfollowed" : "Following",
-        description: `You ${isFollowing ? "unfollowed" : "are now following"} ${profileUser.full_name}`,
-      });
-    } catch (error: any) {
-      console.error("Error toggling follow:", error?.message || error);
-      toast({
-        title: "Error",
-        description: "Failed to update follow status. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleMessage = () => {
-    if (!profileUser) return;
-    navigate(`/chat?user=${profileUser.username}`);
+    setIsFollowing(!isFollowing);
+    setFollowerCount((prev) => (isFollowing ? prev - 1 : prev + 1));
     toast({
-      title: "Opening chat",
-      description: `Starting conversation with ${profileUser.full_name}`,
+      title: isFollowing ? "Unfollowed" : "Following",
+      description: `You are ${isFollowing ? "no longer" : "now"} following ${mockProfile.displayName}`,
     });
   };
 
-  const handleShare = async () => {
-    if (!profileUser) return;
-    const profileUrl = `${window.location.origin}/profile/${profileUser.username}`;
-
-    try {
-      await navigator.clipboard.writeText(profileUrl);
-      toast({
-        title: "Profile link copied",
-        description: "The profile link has been copied to your clipboard.",
-      });
-    } catch {
-      toast({
-        title: "Share profile",
-        description: `Share this profile: ${profileUrl}`,
-      });
-    }
-  };
-
-  // Helper functions
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
-
-  // Mock data generators
-  const formatPosts = (postsData: any[]) => {
-    return postsData.map((post) => ({
-      id: post.id,
-      content: post.content,
-      images: post.image_url ? [post.image_url] : [],
-      createdAt: new Date(post.created_at),
-      likes: post.likes || Math.floor(Math.random() * 50),
-      comments: post.comments || Math.floor(Math.random() * 10),
-      shares: Math.floor(Math.random() * 5),
-    }));
-  };
-
-  const formatProducts = (productsData: any[]): Product[] => {
-    return productsData.map((product) => ({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      discountPrice: product.discount_price,
-      image:
-        product.image_url || "https://source.unsplash.com/400x400/?product",
-      category: product.category || "General",
-      rating: product.rating || 4.5,
-      reviewCount: product.review_count || 0,
-      inStock: product.in_stock !== false,
-      isNew:
-        new Date(product.created_at).getTime() >
-        Date.now() - 7 * 24 * 60 * 60 * 1000,
-      isFeatured: product.is_featured || false,
-      sellerId: product.seller_id,
-      sellerName: profileUser?.full_name || "User",
-      sellerAvatar: profileUser?.avatar_url || "",
-      sellerVerified: profileUser?.is_verified || false,
-      createdAt: product.created_at,
-      updatedAt: product.updated_at || product.created_at,
-      condition: product.condition || "new",
-    }));
-  };
-
-  const formatServices = (servicesData: any[]) => {
-    return servicesData.map((service) => ({
-      id: service.id,
-      title: service.title,
-      description: service.description,
-      category: service.category || "Development",
-      price_range: {
-        min: service.min_price || 50,
-        max: service.max_price || 500,
-      },
-      delivery_time: service.delivery_time || 7,
-      featured: service.featured || false,
-    }));
-  };
-
-  const generateMockProducts = (): Product[] => {
-    if (!profileUser?.marketplace_profile) return [];
-
-    const templates = [
-      {
-        name: "Premium Wireless Headphones",
-        price: 199.99,
-        category: "Electronics",
-      },
-      { name: "Smart Fitness Tracker", price: 149.99, category: "Electronics" },
-      {
-        name: "Organic Coffee Beans",
-        price: 24.99,
-        category: "Food & Beverages",
-      },
-    ];
-
-    return templates.map((template, i) => ({
-      id: `mock-product-${i + 1}`,
-      ...template,
-      description: `High-quality ${template.name.toLowerCase()} with excellent features`,
-      image: `https://source.unsplash.com/400x400/?${template.category.toLowerCase()}`,
-      rating: Math.round((Math.random() * 1.5 + 3.5) * 10) / 10,
-      reviewCount: Math.floor(Math.random() * 50) + 5,
-      inStock: true,
-      isNew: i === 0,
-      isFeatured: i === 1,
-      sellerId: profileUser.id,
-      sellerName: profileUser.full_name || "User",
-      sellerAvatar: profileUser.avatar_url || "",
-      sellerVerified: profileUser.is_verified || false,
-      createdAt: new Date(
-        Date.now() - (i + 1) * 7 * 24 * 60 * 60 * 1000,
-      ).toISOString(),
-      updatedAt: new Date().toISOString(),
-      condition: "new" as const,
-    }));
-  };
-
-  const generateMockServices = () => {
-    if (!profileUser?.freelance_profile) return [];
-
-    return [
-      {
-        id: "mock-service-1",
-        title: "Full Stack Web Development",
-        description:
-          "Complete web application development from design to deployment",
-        category: "Development",
-        price_range: { min: 500, max: 5000 },
-        delivery_time: 14,
-        featured: true,
-      },
-    ];
-  };
-
-  // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="relative">
-          <Skeleton className="h-64 w-full rounded-b-lg" />
-          <div className="px-6 -mt-16 relative">
-            <div className="flex items-end gap-4">
-              <Skeleton className="w-32 h-32 rounded-full border-4 border-white" />
+      <div className="min-h-screen bg-gray-50">
+        <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+          <div className="space-y-4">
+            <Skeleton className="h-48 w-full rounded-lg" />
+            <div className="flex gap-4">
+              <Skeleton className="h-20 w-20 rounded-full" />
               <div className="flex-1 space-y-2">
-                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-6 w-48" />
                 <Skeleton className="h-4 w-32" />
-                <div className="flex gap-4">
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-16" />
-                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="px-6 mt-8 space-y-4">
-          <Skeleton className="h-12 w-full" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Skeleton className="h-32" />
-            <Skeleton className="h-32" />
-            <Skeleton className="h-32" />
+            <Skeleton className="h-96 w-full" />
           </div>
         </div>
       </div>
     );
   }
-
-  // Error state
-  if (!profileUser) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-6 text-center">
-            <h2 className="text-xl font-semibold mb-2">Profile not found</h2>
-            <p className="text-muted-foreground mb-4">
-              The requested profile could not be found.
-            </p>
-            <Button onClick={() => navigate("/feed")}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Go Back
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Create mock profile for all the original functionality
-  const mockProfile = createMockProfile(profileUser);
-  const mockPosts = createMockPosts(mockProfile);
-  const mockMedia = createMockMedia();
 
   return (
-    <div className="min-h-screen bg-background mobile-container">
-      {/* Navigation Header for other profiles */}
-      {!isOwnProfile && (
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b px-4 py-2">
-          <div className="flex items-center justify-between max-w-7xl mx-auto">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
-              <div>
-                <h1 className="font-semibold">{profileUser.full_name}</h1>
-                <p className="text-sm text-muted-foreground">
-                  @{profileUser.username}
-                </p>
-              </div>
-            </div>
-            <Button variant="ghost" size="icon">
-              <MoreHorizontal className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      )}
+    <div className="min-h-screen bg-gray-50">
+      <div className="w-full max-w-4xl mx-auto px-2 sm:px-4 lg:px-6 py-2 sm:py-4 lg:py-6">
+        <div className="space-y-4 sm:space-y-6">
+          {/* Back Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 mb-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back
+          </Button>
 
-      {/* Enhanced Facebook-Style Cover Photo Section from Original */}
-      <div className="relative">
-        {/* Cover Photo */}
-        <div className="relative h-48 sm:h-56 md:h-72 lg:h-80 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 overflow-hidden rounded-b-lg">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url(${coverPhotoUrl || mockProfile.banner})`,
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
-
-          {/* Cover Photo Actions */}
-          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 flex gap-2">
-            {isOwnProfile && (
-              <Button
-                size="sm"
-                variant="secondary"
-                className="bg-white/90 text-black hover:bg-white"
-                onClick={() => setIsEditingCover(true)}
+          {/* Profile Header */}
+          <Card className="overflow-hidden">
+            <div className="relative">
+              {/* Banner */}
+              <div
+                className="h-28 sm:h-40 lg:h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative bg-cover bg-center"
+                style={{ backgroundImage: `url(${mockProfile.banner})` }}
               >
-                <Camera className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">Edit Cover</span>
-              </Button>
-            )}
-            <Button
-              size="sm"
-              variant="secondary"
-              className="bg-white/90 text-black hover:bg-white"
-              onClick={handleShare}
-            >
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Edit Cover Photo Modal */}
-          {isEditingCover && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
-              <Card className="w-full max-w-md">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Upload className="h-5 w-5" />
-                    Update Cover Photo
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex flex-col gap-3">
-                    <Button className="w-full">
-                      <Upload className="h-4 w-4 mr-2" />
-                      Upload Photo
-                    </Button>
-                    <Button variant="outline" className="w-full">
-                      <ImageIcon className="h-4 w-4 mr-2" />
-                      Choose from Gallery
-                    </Button>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button onClick={handleCoverPhotoUpload} className="flex-1">
-                      <Check className="h-4 w-4 mr-2" />
-                      Save
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setIsEditingCover(false)}
-                      className="flex-1"
-                    >
-                      <X className="h-4 w-4 mr-2" />
-                      Cancel
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-        </div>
-
-        {/* Profile Information Section */}
-        <div className="px-3 sm:px-4 md:px-6">
-          <div className="relative">
-            {/* Profile Avatar */}
-            <div className="relative -mt-12 sm:-mt-16 md:-mt-20 mb-4">
-              <div className="relative inline-block">
-                <Avatar className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-36 lg:w-36 border-4 border-white shadow-xl">
-                  <AvatarImage
-                    src={mockProfile.avatar}
-                    alt={mockProfile.displayName}
-                    className="object-cover"
-                  />
-                  <AvatarFallback className="text-xl sm:text-2xl font-bold">
-                    {mockProfile.displayName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-
-                {/* Online Status Indicator */}
-                {mockProfile.isOnline && (
-                  <div className="absolute bottom-2 right-2 h-4 w-4 sm:h-5 sm:w-5 bg-green-500 border-2 border-white rounded-full"></div>
-                )}
-
-                {/* Avatar Edit Button */}
+                <div className="absolute inset-0 bg-black/20" />
                 {isOwnProfile && (
                   <Button
-                    size="icon"
                     variant="secondary"
-                    className="absolute bottom-0 right-0 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-white shadow-md hover:bg-gray-50"
-                    onClick={() => setIsEditingAvatar(true)}
+                    size="sm"
+                    className="absolute top-2 right-2 sm:top-4 sm:right-4 backdrop-blur-sm bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs sm:text-sm"
+                    onClick={() => setIsEditingCover(true)}
                   >
-                    <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <Camera className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Edit Cover</span>
+                    <span className="sm:hidden">Edit</span>
                   </Button>
                 )}
               </div>
-            </div>
 
-            {/* Profile Info */}
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
-              <div className="space-y-3">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
-                      {mockProfile.displayName}
-                    </h1>
-                    {mockProfile.verified && (
-                      <Verified className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 fill-current" />
+              {/* Profile Info */}
+              <CardContent className="relative pt-0 px-3 sm:px-6">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-10 sm:-mt-12 lg:-mt-16">
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
+                    {/* Avatar */}
+                    <div className="relative">
+                      <Avatar className="h-20 w-20 sm:h-28 sm:w-28 lg:h-32 lg:w-32 border-3 sm:border-4 border-white shadow-lg">
+                        <AvatarImage
+                          src={mockProfile.avatar}
+                          alt={mockProfile.displayName}
+                        />
+                        <AvatarFallback className="text-lg sm:text-xl lg:text-2xl font-bold">
+                          {mockProfile.displayName
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      {isOwnProfile && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 h-6 w-6 sm:h-8 sm:w-8 rounded-full p-0"
+                          onClick={() => setIsEditingAvatar(true)}
+                        >
+                          <Camera className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </Button>
+                      )}
+                    </div>
+
+                    {/* Name and Basic Info */}
+                    <div className="flex-1 space-y-1 sm:space-y-2 mt-3 sm:mt-4 lg:mt-0 sm:mb-2">
+                      <div className="flex items-center gap-2">
+                        <h1 className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
+                          {mockProfile.displayName}
+                        </h1>
+                        {mockProfile.verified && (
+                          <Verified className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 fill-current flex-shrink-0" />
+                        )}
+                      </div>
+                      <p className="text-sm sm:text-base text-muted-foreground">
+                        @{mockProfile.username}
+                      </p>
+                      <div className="flex flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          <span className="truncate">
+                            {mockProfile.location}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          <span className="whitespace-nowrap">
+                            Joined {mockProfile.joinDate}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          <span className="whitespace-nowrap">
+                            {mockProfile.profileViews.toLocaleString()} views
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-1 sm:gap-2 mt-3 sm:mt-4 lg:mt-0">
+                    {isOwnProfile ? (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowEditModal(true)}
+                          className="text-xs sm:text-sm"
+                        >
+                          <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Edit Profile</span>
+                          <span className="sm:hidden">Edit</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="px-2 sm:px-3"
+                        >
+                          <Share2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          onClick={handleFollow}
+                          size="sm"
+                          className="px-3 sm:px-6 text-xs sm:text-sm"
+                        >
+                          {isFollowing ? (
+                            <>
+                              <Check className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                              <span className="hidden sm:inline">
+                                Following
+                              </span>
+                              <span className="sm:hidden">✓</span>
+                            </>
+                          ) : (
+                            <>
+                              <UserPlus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                              Follow
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs sm:text-sm"
+                        >
+                          <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Message</span>
+                          <span className="sm:hidden">Chat</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="px-2 sm:px-3"
+                        >
+                          <MoreHorizontal className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </Button>
+                      </>
                     )}
                   </div>
-                  <p className="text-gray-600 text-sm sm:text-base">
-                    @{mockProfile.username}
+                </div>
+
+                {/* Bio */}
+                <div className="mt-4 sm:mt-6">
+                  <p className="text-xs sm:text-sm whitespace-pre-line leading-relaxed">
+                    {mockProfile.bio}
                   </p>
-                  {mockProfile.jobTitle && (
-                    <p className="text-gray-700 font-medium text-sm sm:text-base">
-                      {mockProfile.jobTitle}
-                    </p>
+                  {mockProfile.website && (
+                    <a
+                      href={mockProfile.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-blue-600 hover:underline mt-2 text-xs sm:text-sm"
+                    >
+                      <Globe className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                      <span className="truncate">
+                        {mockProfile.website.replace("https://", "")}
+                      </span>
+                    </a>
                   )}
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 sm:gap-6 text-sm sm:text-base">
+                <div className="grid grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6 py-3 sm:py-4 border-t">
                   <div className="text-center">
-                    <div className="font-bold text-lg">{mockProfile.posts}</div>
-                    <div className="text-gray-600 text-xs sm:text-sm">
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
+                      {mockProfile.posts}
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Posts
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-lg">
-                      {formatNumber(mockProfile.followers)}
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
+                      {followerCount.toLocaleString()}
                     </div>
-                    <div className="text-gray-600 text-xs sm:text-sm">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Followers
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-lg">
-                      {mockProfile.following}
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
+                      {followingCount.toLocaleString()}
                     </div>
-                    <div className="text-gray-600 text-xs sm:text-sm">
+                    <div className="text-xs sm:text-sm text-muted-foreground">
                       Following
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="font-bold text-lg flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      {mockProfile.reputation}
+                    <div className="text-base sm:text-lg lg:text-xl font-bold">
+                      {mockProfile.engagement}%
                     </div>
-                    <div className="text-gray-600 text-xs sm:text-sm">
-                      Rating
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                      Engagement
                     </div>
                   </div>
                 </div>
-
-                {/* Level and Badges */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Badge
-                    variant="outline"
-                    className="border-yellow-400 text-yellow-600"
-                  >
-                    <Star className="h-3 w-3 mr-1 fill-current" />
-                    {mockProfile.level}
-                  </Badge>
-                  <Badge
-                    variant="outline"
-                    className="border-green-400 text-green-600"
-                  >
-                    <Shield className="h-3 w-3 mr-1" />
-                    Verified
-                  </Badge>
-                  {mockProfile.isOnline && (
-                    <Badge
-                      variant="outline"
-                      className="border-green-400 text-green-600"
-                    >
-                      <div className="h-2 w-2 bg-green-500 rounded-full mr-1"></div>
-                      Online
-                    </Badge>
-                  )}
-                  {/* Role badges */}
-                  {profileUser.marketplace_profile && (
-                    <Badge
-                      variant="outline"
-                      className="border-green-400 text-green-600 text-xs"
-                    >
-                      <Store className="w-3 h-3 mr-1" />
-                      Seller
-                    </Badge>
-                  )}
-                  {profileUser.freelance_profile && (
-                    <Badge
-                      variant="outline"
-                      className="border-blue-400 text-blue-600 text-xs"
-                    >
-                      <Code className="w-3 h-3 mr-1" />
-                      Freelancer
-                    </Badge>
-                  )}
-                  {profileUser.crypto_profile && (
-                    <Badge
-                      variant="outline"
-                      className="border-orange-400 text-orange-600 text-xs"
-                    >
-                      <Coins className="w-3 h-3 mr-1" />
-                      Trader
-                    </Badge>
-                  )}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-2 sm:gap-3">
-                {!isOwnProfile ? (
-                  <>
-                    <Button
-                      className="flex-1 sm:flex-none"
-                      onClick={handleFollow}
-                    >
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      {isFollowing ? "Following" : "Follow"}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="flex-1 sm:flex-none"
-                      onClick={handleMessage}
-                    >
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Message
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    variant="outline"
-                    onClick={() => setShowEditModal(true)}
-                  >
-                    <Edit className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Edit Profile</span>
-                  </Button>
-                )}
-                <Button variant="outline" size="icon" onClick={handleShare}>
-                  <Share2 className="h-4 w-4" />
-                </Button>
-              </div>
+              </CardContent>
             </div>
-          </div>
-        </div>
-      </div>
+          </Card>
 
-      {/* Main Content */}
-      <div className="px-3 sm:px-4 md:px-6 pb-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
-          {/* Enhanced Sidebar from Original */}
-          <div className="lg:col-span-1 space-y-4 order-2 lg:order-1">
-            {/* Bio and Info Card */}
-            <Card>
-              <CardContent className="p-4 sm:p-6 space-y-4">
-                <div>
-                  <h3 className="font-semibold text-lg mb-2">About</h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
-                    {mockProfile.bio}
-                  </p>
-                </div>
-
-                <div className="space-y-3 text-sm">
-                  {mockProfile.location && (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <MapPin className="w-4 h-4 flex-shrink-0" />
-                      <span>{mockProfile.location}</span>
-                    </div>
-                  )}
-
-                  {mockProfile.company && (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Briefcase className="w-4 h-4 flex-shrink-0" />
-                      <span>{mockProfile.company}</span>
-                    </div>
-                  )}
-
-                  {mockProfile.education && (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <GraduationCap className="w-4 h-4 flex-shrink-0" />
-                      <span>{mockProfile.education}</span>
-                    </div>
-                  )}
-
-                  {mockProfile.website && (
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Globe className="w-4 h-4 flex-shrink-0" />
-                      <a
-                        href={mockProfile.website}
-                        className="text-blue-500 hover:underline break-all"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {mockProfile.website}
-                      </a>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Calendar className="w-4 h-4 flex-shrink-0" />
-                    <span>
-                      Joined {formatDistanceToNow(mockProfile.joinedDate)} ago
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Enhanced Stats Card from Original */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Activity Stats</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-xl font-bold text-blue-600">
-                      {(mockProfile.socialStats.totalLikes / 1000).toFixed(1)}K
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Total Likes
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold text-green-600">
-                      {(mockProfile.socialStats.profileViews / 1000).toFixed(0)}
-                      K
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Profile Views
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold text-purple-600">
-                      {(mockProfile.socialStats.totalShares / 1000).toFixed(1)}K
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Total Shares
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold text-orange-600">
-                      {(mockProfile.socialStats.totalComments / 1000).toFixed(
-                        1,
-                      )}
-                      K
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      Comments
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>Profile Completion</span>
-                    <span>
-                      {Math.round(
-                        (mockProfile.completedTasks / mockProfile.totalTasks) *
-                          100,
-                      )}
-                      %
-                    </span>
-                  </div>
-                  <Progress
-                    value={
-                      (mockProfile.completedTasks / mockProfile.totalTasks) *
-                      100
-                    }
-                    className="h-2"
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Enhanced Skills Card from Original */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Skills & Expertise</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {mockProfile.skills.map((skill, index) => (
-                    <Badge key={index} variant="secondary" className="text-xs">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Enhanced Achievements Card from Original */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Achievements</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {mockProfile.achievements.map((achievement, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors"
-                  >
-                    <div className="text-2xl">{achievement.icon}</div>
-                    <div className="flex-1">
-                      <div className="font-medium text-sm">
-                        {achievement.name}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {achievement.description}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(achievement.date))} ago
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Languages Card from Original */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Languages</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {mockProfile.languages.map((language, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {language}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Interests Card from Original */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Interests</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {mockProfile.interests.map((interest, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {interest}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Main Content from Original */}
-          <div className="lg:col-span-3 order-1 lg:order-2">
+          {/* Enhanced Horizontal Scrolling Tabs */}
+          <Card>
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
-              className="space-y-4 md:space-y-6"
+              className="w-full"
             >
-              {/* Mobile-friendly tabs */}
-              <div className="sm:hidden">
-                <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
+              <div className="relative border-b overflow-hidden">
+                <TabsList className="flex w-full overflow-x-auto gap-0 p-0 h-auto bg-transparent whitespace-nowrap scrollbar-hide horizontal-tabs-scroll">
                   <TabsTrigger
                     value="posts"
-                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <MessageSquare className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-[10px] leading-tight">Posts</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="media"
-                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-                  >
-                    <Camera className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-[10px] leading-tight">Media</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="activity"
-                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-                  >
-                    <TrendingUp className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-[10px] leading-tight">Activity</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="about"
-                    className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-                  >
-                    <Users className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-[10px] leading-tight">About</span>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-
-              {/* Desktop tabs */}
-              <div className="hidden sm:block">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger
-                    value="posts"
-                    className="flex items-center gap-2"
-                  >
-                    <MessageSquare className="h-4 w-4" />
+                    <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Posts</span>
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
+                      {mockPosts.length}
+                    </Badge>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="products"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                  >
+                    <Store className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span>Products</span>
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
+                      {products.length}
+                    </Badge>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="services"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                  >
+                    <Code className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span>Services</span>
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
+                      {services.length}
+                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="media"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Camera className="h-4 w-4" />
+                    <Camera className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Media</span>
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
+                      {mockMedia.length}
+                    </Badge>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="creator-studio"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                  >
+                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="hidden sm:inline">Creator Studio</span>
+                    <span className="sm:hidden">Studio</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="activity"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <TrendingUp className="h-4 w-4" />
+                    <Activity className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>Activity</span>
+                    <Badge
+                      variant="secondary"
+                      className="ml-1 text-xs h-4 px-1"
+                    >
+                      {mockActivity.length}
+                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="about"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
                   >
-                    <Users className="h-4 w-4" />
+                    <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span>About</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
 
-              <TabsContent value="posts" className="space-y-4">
-                {mockPosts.map((post) => (
-                  <Card
-                    key={post.id}
-                    className="hover:shadow-md transition-shadow"
-                  >
-                    <CardContent className="p-4 sm:p-6">
-                      <div className="flex items-start gap-3">
-                        <Avatar className="h-10 w-10 flex-shrink-0">
-                          <AvatarImage
-                            src={mockProfile.avatar}
-                            alt={mockProfile.displayName}
-                          />
-                          <AvatarFallback>
-                            {mockProfile.displayName
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2 flex-wrap">
-                            <span className="font-semibold">
-                              {mockProfile.displayName}
-                            </span>
-                            {mockProfile.verified && (
-                              <Verified
-                                className="h-4 w-4 text-blue-500 flex-shrink-0"
-                                fill="currentColor"
+              {/* Tab Contents */}
+              <div className="p-3 sm:p-4 lg:p-6">
+                {/* Posts Tab */}
+                <TabsContent value="posts" className="space-y-6 mt-0">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">Posts</h3>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span>{mockPosts.length} posts</span>
+                      <span>•</span>
+                      <span>
+                        {mockPosts.reduce((sum, post) => sum + post.likes, 0)}{" "}
+                        total likes
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {mockPosts.map((post) => (
+                      <Card
+                        key={post.id}
+                        className="hover:shadow-md transition-shadow"
+                      >
+                        <CardContent className="p-4 sm:p-6">
+                          <div className="flex items-start gap-3">
+                            <Avatar className="h-10 w-10 flex-shrink-0">
+                              <AvatarImage
+                                src={mockProfile.avatar}
+                                alt={mockProfile.displayName}
                               />
-                            )}
-                            <span className="text-muted-foreground text-sm break-all">
-                              @{mockProfile.username}
-                            </span>
-                            <span className="text-muted-foreground text-sm">
-                              •
-                            </span>
-                            <span className="text-muted-foreground text-sm">
-                              {formatDistanceToNow(post.createdAt)} ago
-                            </span>
-                          </div>
-                          <p className="text-sm mb-3 whitespace-pre-line leading-relaxed">
-                            {post.content}
-                          </p>
-                          {post.images.length > 0 && (
-                            <div className="mb-4">
-                              <img
-                                src={post.images[0]}
-                                alt="Post content"
-                                className="rounded-lg max-w-full h-auto border"
-                              />
+                              <AvatarFallback>
+                                {mockProfile.displayName
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 space-y-3">
+                              <div>
+                                <div className="flex items-center gap-2 text-sm">
+                                  <span className="font-medium">
+                                    {mockProfile.displayName}
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    @{mockProfile.username}
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    •
+                                  </span>
+                                  <span className="text-muted-foreground">
+                                    {post.timestamp}
+                                  </span>
+                                </div>
+                                <p className="mt-2">{post.content}</p>
+                              </div>
+
+                              {post.image && (
+                                <div className="rounded-lg overflow-hidden">
+                                  <img
+                                    src={post.image}
+                                    alt="Post image"
+                                    className="w-full h-auto max-h-96 object-cover"
+                                  />
+                                </div>
+                              )}
+
+                              <div className="flex items-center gap-6 pt-2 text-sm text-muted-foreground">
+                                <button className="flex items-center gap-2 hover:text-red-500 transition-colors">
+                                  <Heart className="h-4 w-4" />
+                                  {post.likes}
+                                </button>
+                                <button className="flex items-center gap-2 hover:text-blue-500 transition-colors">
+                                  <MessageSquare className="h-4 w-4" />
+                                  {post.comments}
+                                </button>
+                                <button className="flex items-center gap-2 hover:text-green-500 transition-colors">
+                                  <Share2 className="h-4 w-4" />
+                                  {post.shares}
+                                </button>
+                              </div>
                             </div>
-                          )}
-                          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                            <button className="flex items-center gap-1 hover:text-red-500 transition-colors touch-target">
-                              <Heart className="h-4 w-4" />
-                              <span>{post.likes}</span>
-                            </button>
-                            <button className="flex items-center gap-1 hover:text-blue-500 transition-colors touch-target">
-                              <MessageSquare className="h-4 w-4" />
-                              <span>{post.comments}</span>
-                            </button>
-                            <button className="flex items-center gap-1 hover:text-green-500 transition-colors touch-target">
-                              <Share2 className="h-4 w-4" />
-                              <span>{post.shares}</span>
-                            </button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                {/* Products Tab */}
+                <TabsContent value="products" className="space-y-6 mt-0">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">Products</h3>
+                    {isOwnProfile && (
+                      <Button size="sm">
+                        <Store className="h-4 w-4 mr-2" />
+                        Add Product
+                      </Button>
+                    )}
+                  </div>
+
+                  {products.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {products.map((product) => (
+                        <Card
+                          key={product.id}
+                          className="hover:shadow-md transition-shadow"
+                        >
+                          <div className="aspect-square bg-gray-100 rounded-t-lg"></div>
+                          <CardContent className="p-4">
+                            <h4 className="font-medium">{product.title}</h4>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {product.description}
+                            </p>
+                            <div className="flex items-center justify-between mt-3">
+                              <span className="font-bold text-lg">
+                                ${product.price}
+                              </span>
+                              <Button size="sm">View</Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Store className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                      <h4 className="text-lg font-medium mb-2">
+                        No products yet
+                      </h4>
+                      <p className="text-muted-foreground">
+                        {isOwnProfile
+                          ? "Start selling your products to your audience"
+                          : "This user hasn't listed any products yet"}
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                {/* Services Tab */}
+                <TabsContent value="services" className="space-y-6 mt-0">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold">Services</h3>
+                    {isOwnProfile && (
+                      <Button size="sm">
+                        <Code className="h-4 w-4 mr-2" />
+                        Add Service
+                      </Button>
+                    )}
+                  </div>
+
+                  {services.length > 0 ? (
+                    <div className="space-y-4">
+                      {services.map((service) => (
+                        <Card
+                          key={service.id}
+                          className="hover:shadow-md transition-shadow"
+                        >
+                          <CardContent className="p-6">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h4 className="font-medium">{service.title}</h4>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                  {service.description}
+                                </p>
+                                <div className="flex items-center gap-4 mt-3">
+                                  <span className="font-bold text-lg">
+                                    ${service.price}
+                                  </span>
+                                  <Badge variant="secondary">
+                                    {service.category}
+                                  </Badge>
+                                </div>
+                              </div>
+                              <Button size="sm">View Details</Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <Code className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                      <h4 className="text-lg font-medium mb-2">
+                        No services yet
+                      </h4>
+                      <p className="text-muted-foreground">
+                        {isOwnProfile
+                          ? "Offer your skills and services to potential clients"
+                          : "This user hasn't listed any services yet"}
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                {/* Enhanced Media Tab */}
+                <TabsContent value="media" className="space-y-6 mt-0">
+                  <div className="flex flex-col gap-3 sm:gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h3 className="text-base sm:text-lg font-semibold">
+                          Media
+                        </h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground">
+                          Photos and videos
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        {/* Filter Controls */}
+                        <Select
+                          value={mediaFilter}
+                          onValueChange={setMediaFilter}
+                        >
+                          <SelectTrigger className="w-24 sm:w-32 h-8 sm:h-10 text-xs sm:text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">All</SelectItem>
+                            <SelectItem value="images">Images</SelectItem>
+                            <SelectItem value="videos">Videos</SelectItem>
+                          </SelectContent>
+                        </Select>
+
+                        {/* View Mode Toggle */}
+                        <div className="flex border rounded-lg p-0.5 sm:p-1">
+                          <Button
+                            variant={
+                              mediaViewMode === "grid" ? "default" : "ghost"
+                            }
+                            size="sm"
+                            onClick={() => setMediaViewMode("grid")}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
+                          >
+                            <Grid3X3 className="h-3 w-3 sm:h-4 sm:w-4" />
+                          </Button>
+                          <Button
+                            variant={
+                              mediaViewMode === "list" ? "default" : "ghost"
+                            }
+                            size="sm"
+                            onClick={() => setMediaViewMode("list")}
+                            className="h-6 w-6 sm:h-8 sm:w-8 p-0"
+                          >
+                            <List className="h-3 w-3 sm:h-4 sm:w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {filteredMedia.length > 0 ? (
+                    mediaViewMode === "grid" ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
+                        {filteredMedia.map((item) => (
+                          <div
+                            key={item.id}
+                            className="relative aspect-square rounded-md sm:rounded-lg overflow-hidden group cursor-pointer"
+                          >
+                            <img
+                              src={item.url}
+                              alt={item.title}
+                              className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <div className="text-white text-center px-2">
+                                <div className="flex items-center justify-center gap-1 sm:gap-2 mb-1">
+                                  {item.type === "video" ? (
+                                    <>
+                                      <Play className="h-3 w-3 sm:h-4 sm:w-4" />
+                                      <span className="text-xs sm:text-sm">
+                                        {item.duration}
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <ImageIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-2 sm:gap-3 text-xs">
+                                  <span className="flex items-center gap-0.5 sm:gap-1">
+                                    <Heart className="h-2 w-2 sm:h-3 sm:w-3" />
+                                    {item.likes}
+                                  </span>
+                                  <span className="flex items-center gap-0.5 sm:gap-1">
+                                    <Eye className="h-2 w-2 sm:h-3 sm:w-3" />
+                                    {item.views}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <Badge
+                              variant={
+                                item.type === "video" ? "default" : "secondary"
+                              }
+                              className="absolute top-1 left-1 sm:top-2 sm:left-2 text-xs h-5 px-1.5"
+                            >
+                              {item.type === "video" ? "Video" : "Image"}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {filteredMedia.map((item) => (
+                          <Card
+                            key={item.id}
+                            className="hover:shadow-md transition-shadow"
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start gap-4">
+                                <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                                  <img
+                                    src={item.url}
+                                    alt={item.title}
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="font-medium truncate">
+                                        {item.title}
+                                      </h4>
+                                      <p className="text-sm text-muted-foreground mt-1">
+                                        {item.description}
+                                      </p>
+                                      <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                                        <span>{item.date}</span>
+                                        <span className="flex items-center gap-1">
+                                          <Heart className="h-3 w-3" />
+                                          {item.likes}
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                          <Eye className="h-3 w-3" />
+                                          {item.views}
+                                        </span>
+                                        {item.type === "video" && (
+                                          <span className="flex items-center gap-1">
+                                            <Clock className="h-3 w-3" />
+                                            {item.duration}
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                    <Badge
+                                      variant={
+                                        item.type === "video"
+                                          ? "default"
+                                          : "secondary"
+                                      }
+                                    >
+                                      {item.type === "video"
+                                        ? "Video"
+                                        : "Image"}
+                                    </Badge>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )
+                  ) : (
+                    <div className="text-center py-12">
+                      <Camera className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                      <h4 className="text-lg font-medium mb-2">
+                        No media found
+                      </h4>
+                      <p className="text-muted-foreground">
+                        {mediaFilter === "all"
+                          ? "No photos or videos have been shared yet"
+                          : `No ${mediaFilter} found`}
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+
+                {/* Creator Studio Tab */}
+                <TabsContent value="creator-studio" className="space-y-6 mt-0">
+                  <div>
+                    <h3 className="text-lg font-semibold">Creator Studio</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Analytics, insights, and growth recommendations
+                    </p>
+                  </div>
+
+                  {/* Performance Metrics */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+                    <Card>
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              Total Views
+                            </p>
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
+                              {mockProfile.creatorStats.totalViews.toLocaleString()}
+                            </p>
+                          </div>
+                          <Eye className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0" />
+                        </div>
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
+                          <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3 text-green-500" />
+                          <span className="text-green-500">
+                            +{mockProfile.creatorStats.subscriberGrowth}%
+                          </span>
+                          <span className="text-muted-foreground hidden sm:inline">
+                            this month
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              Total Likes
+                            </p>
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
+                              {mockProfile.creatorStats.totalLikes.toLocaleString()}
+                            </p>
+                          </div>
+                          <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-red-500 flex-shrink-0" />
+                        </div>
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
+                          <span className="text-green-500">+15.3%</span>
+                          <span className="text-muted-foreground hidden sm:inline">
+                            this week
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              Engagement Rate
+                            </p>
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold">
+                              {mockProfile.creatorStats.engagementRate}%
+                            </p>
+                          </div>
+                          <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500 flex-shrink-0" />
+                        </div>
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
+                          <span className="text-green-500">Above avg</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              Avg. Duration
+                            </p>
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold">
+                              {mockProfile.creatorStats.avgViewDuration}
+                            </p>
+                          </div>
+                          <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500 flex-shrink-0" />
+                        </div>
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
+                          <span className="text-green-500">+8.2%</span>
+                          <span className="text-muted-foreground hidden sm:inline">
+                            vs last month
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Growth Tips */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Lightbulb className="h-5 w-5 text-yellow-500" />
+                        Growth Tips
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                          <Target className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Post consistently</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Your audience engages most on Tuesdays and Thursdays
+                            at 2-4 PM
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                          <MessageSquare className="h-4 w-4 text-green-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Engage with comments</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Posts with creator responses get 40% more engagement
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                          <Video className="h-4 w-4 text-purple-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">
+                            Create more video content
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Your videos perform 3x better than image posts
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Best Performing Content */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Top Performing Content</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {mockPosts.slice(0, 3).map((post, index) => (
+                          <div
+                            key={post.id}
+                            className="flex items-center gap-3 p-3 rounded-lg border"
+                          >
+                            <div className="w-8 h-8 rounded bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                              #{index + 1}
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium truncate">
+                                {post.content}
+                              </p>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
+                                <span>{post.likes} likes</span>
+                                <span>{post.comments} comments</span>
+                                <span>{post.shares} shares</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Enhanced Activity Tab */}
+                <TabsContent value="activity" className="space-y-6 mt-0">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold">
+                        Activity Overview
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Recent activity and performance insights
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Activity Summary */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {mockPosts.length}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Posts This Month
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <div className="text-2xl font-bold text-green-600">
+                          {mockPosts.reduce((sum, post) => sum + post.likes, 0)}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Total Likes
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4 text-center">
+                        <div className="text-2xl font-bold text-purple-600">
+                          {mockProfile.profileViews.toLocaleString()}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Profile Views
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Timeline */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Recent Activity</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        {mockActivity.map((activity, index) => (
+                          <div
+                            key={activity.id}
+                            className="flex items-start gap-4"
+                          >
+                            <div className="relative">
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                                {activity.type === "post" && (
+                                  <MessageSquare className="h-4 w-4 text-white" />
+                                )}
+                                {activity.type === "video" && (
+                                  <Video className="h-4 w-4 text-white" />
+                                )}
+                                {activity.type === "achievement" && (
+                                  <Trophy className="h-4 w-4 text-white" />
+                                )}
+                                {activity.type === "follow" && (
+                                  <Users className="h-4 w-4 text-white" />
+                                )}
+                              </div>
+                              {index < mockActivity.length - 1 && (
+                                <div className="absolute top-10 left-1/2 transform -translate-x-1/2 w-0.5 h-6 bg-gray-200"></div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between">
+                                <div>
+                                  <p className="font-medium">
+                                    {activity.action}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground mt-1">
+                                    {activity.content}
+                                  </p>
+                                  {activity.engagement && (
+                                    <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                                      {activity.engagement.likes && (
+                                        <span>
+                                          {activity.engagement.likes} likes
+                                        </span>
+                                      )}
+                                      {activity.engagement.views && (
+                                        <span>
+                                          {activity.engagement.views} views
+                                        </span>
+                                      )}
+                                      {activity.engagement.followers && (
+                                        <span>
+                                          +{activity.engagement.followers}{" "}
+                                          followers
+                                        </span>
+                                      )}
+                                      {activity.engagement.duration && (
+                                        <span>
+                                          {activity.engagement.duration}
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                                <span className="text-xs text-muted-foreground whitespace-nowrap ml-4">
+                                  {activity.timestamp}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                {/* Enhanced About Tab */}
+                <TabsContent value="about" className="space-y-6 mt-0">
+                  <div>
+                    <h3 className="text-lg font-semibold">
+                      About {mockProfile.displayName}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Personal and professional information
+                    </p>
+                  </div>
+
+                  {/* Personal Information */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Personal Information</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center gap-3">
+                          <MapPin className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <div className="text-sm font-medium">Location</div>
+                            <div className="text-sm text-muted-foreground">
+                              {mockProfile.location}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Globe className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <div className="text-sm font-medium">Website</div>
+                            <a
+                              href={mockProfile.website}
+                              className="text-sm text-blue-600 hover:underline"
+                            >
+                              {mockProfile.website?.replace("https://", "")}
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <div className="text-sm font-medium">Joined</div>
+                            <div className="text-sm text-muted-foreground">
+                              {mockProfile.joinDate}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                          <div>
+                            <div className="text-sm font-medium">
+                              Profile Views
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {mockProfile.profileViews.toLocaleString()}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
-              </TabsContent>
 
-              <TabsContent value="media" className="space-y-4">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 gap-2 sm:gap-4">
-                  {mockMedia.map((media) => (
-                    <div
-                      key={media.id}
-                      className="aspect-square rounded-lg overflow-hidden bg-muted hover:scale-105 transition-transform cursor-pointer"
-                    >
-                      <img
-                        src={media.url}
-                        alt="Media content"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="activity" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recent Activity</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Heart className="h-5 w-5 text-red-500 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm">
-                          Liked a post by{" "}
-                          <span className="font-medium">@tech_guru</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          2 hours ago
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Users className="h-5 w-5 text-blue-500 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm">
-                          Started following{" "}
-                          <span className="font-medium">@design_pro</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          4 hours ago
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <MessageSquare className="h-5 w-5 text-green-500 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm">
-                          Commented on a post about AI trends
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          6 hours ago
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Award className="h-5 w-5 text-purple-500 flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm">
-                          Earned the "Community Leader" achievement
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          1 day ago
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="about" className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Detailed Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div>
-                      <h4 className="font-medium mb-3">Contact Information</h4>
-                      <div className="space-y-3 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                          <Mail className="h-4 w-4 flex-shrink-0" />
-                          <span className="break-all">{mockProfile.email}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-4 w-4 flex-shrink-0" />
-                          <span>{mockProfile.phone}</span>
+                  {/* Skills & Expertise */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Skills & Expertise</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <h4 className="text-sm font-medium mb-3">
+                          Technical Skills
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {mockProfile.skills.map((skill) => (
+                            <Badge key={skill} variant="secondary">
+                              {skill}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
-                    </div>
 
-                    <div>
-                      <h4 className="font-medium mb-3">
-                        Professional Background
-                      </h4>
-                      <div className="space-y-3 text-sm text-muted-foreground">
-                        <div className="flex items-start gap-2">
-                          <Briefcase className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <div className="font-medium text-foreground">
-                              {mockProfile.jobTitle}
-                            </div>
-                            <div>{mockProfile.company}</div>
+                      <Separator />
+
+                      <div>
+                        <h4 className="text-sm font-medium mb-3">Interests</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {mockProfile.interests.map((interest) => (
+                            <Badge key={interest} variant="outline">
+                              {interest}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      <div>
+                        <h4 className="text-sm font-medium mb-3">Languages</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {mockProfile.languages.map((language) => (
+                            <Badge key={language} variant="outline">
+                              {language}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Professional Information */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Professional</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <Briefcase className="h-4 w-4 flex-shrink-0 mt-0.5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">
+                            {mockProfile.jobTitle}
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            {mockProfile.company}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <GraduationCap className="h-4 w-4 flex-shrink-0" />
-                          <span>Computer Science, {mockProfile.education}</span>
-                        </div>
                       </div>
-                    </div>
 
-                    <div>
-                      <h4 className="font-medium mb-3">Personal Information</h4>
-                      <div className="space-y-3 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                          <Users className="h-4 w-4 flex-shrink-0" />
-                          <span>
-                            Relationship Status:{" "}
-                            {mockProfile.relationshipStatus}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Globe className="h-4 w-4 flex-shrink-0" />
-                          <span>
-                            Languages: {mockProfile.languages.join(", ")}
-                          </span>
+                      <div className="flex items-start gap-3">
+                        <GraduationCap className="h-4 w-4 flex-shrink-0 mt-0.5 text-muted-foreground" />
+                        <div>
+                          <div className="font-medium">Education</div>
+                          <div className="text-sm text-muted-foreground">
+                            Computer Science, {mockProfile.education}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+                    </CardContent>
+                  </Card>
+
+                  {/* Achievements & Badges */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Achievements & Badges</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {mockProfile.achievements.map((achievement) => (
+                          <div
+                            key={achievement.title}
+                            className="flex items-center gap-3 p-4 rounded-lg border bg-gradient-to-r from-blue-50 to-purple-50"
+                          >
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                              <achievement.icon className="h-5 w-5 text-white" />
+                            </div>
+                            <div>
+                              <div className="font-medium">
+                                {achievement.title}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {achievement.date}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </div>
             </Tabs>
-          </div>
+          </Card>
         </div>
       </div>
 
