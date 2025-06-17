@@ -411,8 +411,8 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
-        <div className="space-y-6">
+      <div className="w-full max-w-4xl mx-auto px-2 sm:px-4 lg:px-6 py-2 sm:py-4 lg:py-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Back Button */}
           <Button
             variant="ghost"
