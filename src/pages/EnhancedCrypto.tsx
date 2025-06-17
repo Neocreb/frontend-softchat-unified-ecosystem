@@ -48,6 +48,7 @@ import {
 import { BlogPost } from "@/types/blog";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
+import EnhancedCryptoPortfolio from "@/components/crypto/EnhancedCryptoPortfolio";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
 import CryptoDetailModal from "@/components/crypto/CryptoDetailModal";
 import BlogRSSFeed from "@/components/crypto/BlogRSSFeed";
@@ -798,90 +799,7 @@ export default function EnhancedCrypto() {
                 value="portfolio"
                 className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
               >
-                <div>
-                  <h2 className="text-lg sm:text-xl font-bold">
-                    Portfolio Overview
-                  </h2>
-                  <p className="text-sm text-muted-foreground">
-                    Track your cryptocurrency investments
-                  </p>
-                </div>
-
-                {portfolio && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="text-center space-y-2">
-                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                            <Wallet className="h-6 w-6 text-blue-600" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-blue-700">
-                              Total Value
-                            </h3>
-                            <p className="text-xl sm:text-2xl font-bold">
-                              {formatCurrency(portfolio.totalValue || 0)}
-                            </p>
-                            <p
-                              className={cn(
-                                "text-sm",
-                                getChangeColor(
-                                  portfolio.totalChangePercent24h || 0,
-                                ),
-                              )}
-                            >
-                              {formatPercentage(
-                                portfolio.totalChangePercent24h || 0,
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="text-center space-y-2">
-                          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                            <Plus className="h-6 w-6 text-green-600" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-green-700">
-                              24h Change
-                            </h3>
-                            <p className="text-xl sm:text-2xl font-bold">
-                              {formatCurrency(portfolio.totalChange24h || 0)}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              Today's gain/loss
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="text-center space-y-2">
-                          <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
-                            <Target className="h-6 w-6 text-purple-600" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold text-purple-700">
-                              Assets
-                            </h3>
-                            <p className="text-xl sm:text-2xl font-bold">
-                              {portfolio.assets?.length || 0}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              Different coins
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
+                <EnhancedCryptoPortfolio />
               </TabsContent>
 
               {/* Learn Tab */}
