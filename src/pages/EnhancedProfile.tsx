@@ -659,32 +659,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {mockPosts.length}
                     </Badge>
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="products"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
-                  >
-                    <Store className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Products</span>
-                    <Badge
-                      variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
-                    >
-                      {products.length}
-                    </Badge>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="services"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
-                  >
-                    <Code className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Services</span>
-                    <Badge
-                      variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
-                    >
-                      {services.length}
-                    </Badge>
-                  </TabsTrigger>
+
                   <TabsTrigger
                     value="media"
                     className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
@@ -698,14 +673,14 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {mockMedia.length}
                     </Badge>
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="creator-studio"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                  <button
+                    onClick={() => navigate("/creator-studio")}
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:border-blue-500 hover:text-blue-600 bg-transparent horizontal-tab-item min-w-0 transition-colors"
                   >
                     <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span className="hidden sm:inline">Creator Studio</span>
                     <span className="sm:hidden">Studio</span>
-                  </TabsTrigger>
+                  </button>
                   <TabsTrigger
                     value="activity"
                     className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
@@ -814,112 +789,6 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       </Card>
                     ))}
                   </div>
-                </TabsContent>
-
-                {/* Products Tab */}
-                <TabsContent value="products" className="space-y-6 mt-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">Products</h3>
-                    {isOwnProfile && (
-                      <Button size="sm">
-                        <Store className="h-4 w-4 mr-2" />
-                        Add Product
-                      </Button>
-                    )}
-                  </div>
-
-                  {products.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {products.map((product) => (
-                        <Card
-                          key={product.id}
-                          className="hover:shadow-md transition-shadow"
-                        >
-                          <div className="aspect-square bg-gray-100 rounded-t-lg"></div>
-                          <CardContent className="p-4">
-                            <h4 className="font-medium">{product.title}</h4>
-                            <p className="text-sm text-muted-foreground mt-1">
-                              {product.description}
-                            </p>
-                            <div className="flex items-center justify-between mt-3">
-                              <span className="font-bold text-lg">
-                                ${product.price}
-                              </span>
-                              <Button size="sm">View</Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <Store className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                      <h4 className="text-lg font-medium mb-2">
-                        No products yet
-                      </h4>
-                      <p className="text-muted-foreground">
-                        {isOwnProfile
-                          ? "Start selling your products to your audience"
-                          : "This user hasn't listed any products yet"}
-                      </p>
-                    </div>
-                  )}
-                </TabsContent>
-
-                {/* Services Tab */}
-                <TabsContent value="services" className="space-y-6 mt-0">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">Services</h3>
-                    {isOwnProfile && (
-                      <Button size="sm">
-                        <Code className="h-4 w-4 mr-2" />
-                        Add Service
-                      </Button>
-                    )}
-                  </div>
-
-                  {services.length > 0 ? (
-                    <div className="space-y-4">
-                      {services.map((service) => (
-                        <Card
-                          key={service.id}
-                          className="hover:shadow-md transition-shadow"
-                        >
-                          <CardContent className="p-6">
-                            <div className="flex items-start justify-between">
-                              <div className="flex-1">
-                                <h4 className="font-medium">{service.title}</h4>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                  {service.description}
-                                </p>
-                                <div className="flex items-center gap-4 mt-3">
-                                  <span className="font-bold text-lg">
-                                    ${service.price}
-                                  </span>
-                                  <Badge variant="secondary">
-                                    {service.category}
-                                  </Badge>
-                                </div>
-                              </div>
-                              <Button size="sm">View Details</Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12">
-                      <Code className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                      <h4 className="text-lg font-medium mb-2">
-                        No services yet
-                      </h4>
-                      <p className="text-muted-foreground">
-                        {isOwnProfile
-                          ? "Offer your skills and services to potential clients"
-                          : "This user hasn't listed any services yet"}
-                      </p>
-                    </div>
-                  )}
                 </TabsContent>
 
                 {/* Enhanced Media Tab */}
@@ -1103,188 +972,6 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       </p>
                     </div>
                   )}
-                </TabsContent>
-
-                {/* Creator Studio Tab */}
-                <TabsContent value="creator-studio" className="space-y-6 mt-0">
-                  <div>
-                    <h3 className="text-lg font-semibold">Creator Studio</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Analytics, insights, and growth recommendations
-                    </p>
-                  </div>
-
-                  {/* Performance Metrics */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                              Total Views
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
-                              {mockProfile.creatorStats.totalViews.toLocaleString()}
-                            </p>
-                          </div>
-                          <Eye className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500 flex-shrink-0" />
-                        </div>
-                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
-                          <TrendingUp className="h-2 w-2 sm:h-3 sm:w-3 text-green-500" />
-                          <span className="text-green-500">
-                            +{mockProfile.creatorStats.subscriberGrowth}%
-                          </span>
-                          <span className="text-muted-foreground hidden sm:inline">
-                            this month
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                              Total Likes
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
-                              {mockProfile.creatorStats.totalLikes.toLocaleString()}
-                            </p>
-                          </div>
-                          <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-red-500 flex-shrink-0" />
-                        </div>
-                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
-                          <span className="text-green-500">+15.3%</span>
-                          <span className="text-muted-foreground hidden sm:inline">
-                            this week
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                              Engagement Rate
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold">
-                              {mockProfile.creatorStats.engagementRate}%
-                            </p>
-                          </div>
-                          <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500 flex-shrink-0" />
-                        </div>
-                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
-                          <span className="text-green-500">Above avg</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                              Avg. Duration
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold">
-                              {mockProfile.creatorStats.avgViewDuration}
-                            </p>
-                          </div>
-                          <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500 flex-shrink-0" />
-                        </div>
-                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
-                          <span className="text-green-500">+8.2%</span>
-                          <span className="text-muted-foreground hidden sm:inline">
-                            vs last month
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-
-                  {/* Growth Tips */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Lightbulb className="h-5 w-5 text-yellow-500" />
-                        Growth Tips
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                          <Target className="h-4 w-4 text-blue-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Post consistently</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Your audience engages most on Tuesdays and Thursdays
-                            at 2-4 PM
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                          <MessageSquare className="h-4 w-4 text-green-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Engage with comments</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Posts with creator responses get 40% more engagement
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
-                          <Video className="h-4 w-4 text-purple-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">
-                            Create more video content
-                          </h4>
-                          <p className="text-sm text-muted-foreground">
-                            Your videos perform 3x better than image posts
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Best Performing Content */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Top Performing Content</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        {mockPosts.slice(0, 3).map((post, index) => (
-                          <div
-                            key={post.id}
-                            className="flex items-center gap-3 p-3 rounded-lg border"
-                          >
-                            <div className="w-8 h-8 rounded bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
-                              #{index + 1}
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium truncate">
-                                {post.content}
-                              </p>
-                              <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
-                                <span>{post.likes} likes</span>
-                                <span>{post.comments} comments</span>
-                                <span>{post.shares} shares</span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
                 </TabsContent>
 
                 {/* Enhanced Activity Tab */}
