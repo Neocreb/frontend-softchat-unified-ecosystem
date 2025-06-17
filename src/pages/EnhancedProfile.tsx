@@ -1142,21 +1142,21 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     </Card>
 
                     <Card>
-                      <CardContent className="p-4">
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
                               Total Likes
                             </p>
-                            <p className="text-2xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold truncate">
                               {mockProfile.creatorStats.totalLikes.toLocaleString()}
                             </p>
                           </div>
-                          <Heart className="h-8 w-8 text-red-500" />
+                          <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-red-500 flex-shrink-0" />
                         </div>
-                        <div className="flex items-center gap-1 mt-2 text-sm">
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
                           <span className="text-green-500">+15.3%</span>
-                          <span className="text-muted-foreground">
+                          <span className="text-muted-foreground hidden sm:inline">
                             this week
                           </span>
                         </div>
@@ -1164,40 +1164,40 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     </Card>
 
                     <Card>
-                      <CardContent className="p-4">
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
                               Engagement Rate
                             </p>
-                            <p className="text-2xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold">
                               {mockProfile.creatorStats.engagementRate}%
                             </p>
                           </div>
-                          <Zap className="h-8 w-8 text-yellow-500" />
+                          <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-yellow-500 flex-shrink-0" />
                         </div>
-                        <div className="flex items-center gap-1 mt-2 text-sm">
-                          <span className="text-green-500">Above average</span>
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
+                          <span className="text-green-500">Above avg</span>
                         </div>
                       </CardContent>
                     </Card>
 
                     <Card>
-                      <CardContent className="p-4">
+                      <CardContent className="p-3 sm:p-4">
                         <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm text-muted-foreground">
-                              Avg. View Duration
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              Avg. Duration
                             </p>
-                            <p className="text-2xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold">
                               {mockProfile.creatorStats.avgViewDuration}
                             </p>
                           </div>
-                          <Clock className="h-8 w-8 text-purple-500" />
+                          <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500 flex-shrink-0" />
                         </div>
-                        <div className="flex items-center gap-1 mt-2 text-sm">
+                        <div className="flex items-center gap-1 mt-1 sm:mt-2 text-xs sm:text-sm">
                           <span className="text-green-500">+8.2%</span>
-                          <span className="text-muted-foreground">
+                          <span className="text-muted-foreground hidden sm:inline">
                             vs last month
                           </span>
                         </div>
