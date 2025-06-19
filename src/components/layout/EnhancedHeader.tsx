@@ -12,6 +12,7 @@ import {
   Award,
   Search,
   BookOpen,
+  Calendar,
 } from "lucide-react";
 import { AdvancedSearch } from "../search/AdvancedSearch";
 import { cn } from "@/utils/utils";
@@ -84,6 +85,13 @@ const EnhancedHeader = () => {
           >
             <Wallet className="h-4 w-4" />
             <span>Wallet</span>
+          </Link>
+          <Link
+            to="/events"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Calendar className="h-4 w-4" />
+            <span>Events</span>
           </Link>
           <Link
             to="/rewards"

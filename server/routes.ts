@@ -503,6 +503,426 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Community Events API endpoints
+  app.get("/api/events", async (req, res) => {
+    try {
+      const {
+        type,
+        category,
+        status,
+        featured,
+        limit = 50,
+        offset = 0,
+      } = req.query;
+
+      // Mock events data
+      const mockEvents = [
+        {
+          id: "1",
+          title: "Live Crypto Trading Session: DeFi Strategies",
+          description:
+            "Join expert traders as we analyze DeFi opportunities in real-time. Learn advanced trading strategies and see live portfolio management.",
+          type: "trading",
+          hostId: "1",
+          host: {
+            id: "1",
+            name: "Alex Rivera",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+            verified: true,
+          },
+          startTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours from now
+          endTime: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+          duration: 120,
+          participants: 234,
+          maxParticipants: 500,
+          isLive: true,
+          isPremium: true,
+          tags: ["DeFi", "Trading", "Crypto", "Live"],
+          thumbnail:
+            "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400",
+          category: "Finance",
+          status: "live",
+          rewards: {
+            type: "crypto",
+            amount: 50,
+            description: "50 SOFT tokens for active participants",
+          },
+          featured: true,
+        },
+        {
+          id: "2",
+          title: "Flash Marketplace Sale: Tech Gadgets",
+          description:
+            "Limited-time group buying event with exclusive discounts. Bid together, save together!",
+          type: "marketplace",
+          hostId: "2",
+          host: {
+            id: "2",
+            name: "TechDeals Store",
+            avatar:
+              "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100",
+            verified: true,
+          },
+          startTime: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
+          endTime: new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString(),
+          duration: 60,
+          participants: 89,
+          maxParticipants: 200,
+          isLive: false,
+          isPremium: false,
+          tags: ["Shopping", "Deals", "Tech", "Flash Sale"],
+          thumbnail:
+            "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400",
+          category: "Shopping",
+          status: "scheduled",
+          rewards: {
+            type: "discount",
+            amount: 25,
+            description: "Up to 25% group discount",
+          },
+        },
+        {
+          id: "3",
+          title: "AI Art Creation Workshop",
+          description:
+            "Learn to create stunning AI art with industry experts. Interactive session with live demonstrations.",
+          type: "workshop",
+          hostId: "3",
+          host: {
+            id: "3",
+            name: "Sarah Chen",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+            verified: true,
+          },
+          startTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+          endTime: new Date(Date.now() + 25.5 * 60 * 60 * 1000).toISOString(),
+          duration: 90,
+          participants: 156,
+          maxParticipants: 300,
+          isLive: false,
+          isPremium: false,
+          tags: ["AI", "Art", "Workshop", "Creative"],
+          thumbnail:
+            "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400",
+          category: "Creative",
+          status: "scheduled",
+          requirements: [
+            "Basic Photoshop knowledge",
+            "Stable internet connection",
+          ],
+        },
+      ];
+
+      let filteredEvents = mockEvents;
+
+      // Apply filters
+      if (type) {
+        filteredEvents = filteredEvents.filter((event) => event.type === type);
+      }
+      if (category) {
+        filteredEvents = filteredEvents.filter(
+          (event) => event.category === category,
+        );
+      }
+      if (status) {
+        filteredEvents = filteredEvents.filter(
+          (event) => event.status === status,
+        );
+      }
+      if (featured === "true") {
+        filteredEvents = filteredEvents.filter((event) => event.featured);
+      }
+
+      const total = filteredEvents.length;
+      const events = filteredEvents.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+
+      res.json({
+        events,
+        total,
+        hasMore: total > Number(offset) + Number(limit),
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch events" });
+    }
+  });
+
+  app.get("/api/events/:id", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+
+      // Mock single event response
+      const mockEvent = {
+        id: eventId,
+        title: "Live Crypto Trading Session: DeFi Strategies",
+        description:
+          "Join expert traders as we analyze DeFi opportunities in real-time.",
+        type: "trading",
+        hostId: "1",
+        host: {
+          id: "1",
+          name: "Alex Rivera",
+          avatar:
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          verified: true,
+        },
+        startTime: new Date().toISOString(),
+        endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+        duration: 120,
+        participants: 234,
+        maxParticipants: 500,
+        isLive: true,
+        isPremium: true,
+        tags: ["DeFi", "Trading", "Crypto", "Live"],
+        thumbnail:
+          "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400",
+        category: "Finance",
+        status: "live",
+      };
+
+      res.json(mockEvent);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch event" });
+    }
+  });
+
+  app.post("/api/events", async (req, res) => {
+    try {
+      const eventData = req.body;
+
+      // Mock creation response
+      const newEvent = {
+        id: `event_${Date.now()}`,
+        ...eventData,
+        hostId: "current-user-id",
+        host: {
+          id: "current-user-id",
+          name: "Current User",
+          avatar:
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          verified: false,
+        },
+        participants: 0,
+        isLive: false,
+        status: "scheduled",
+        createdAt: new Date().toISOString(),
+      };
+
+      res.json(newEvent);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create event" });
+    }
+  });
+
+  app.post("/api/events/:id/join", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+
+      res.json({
+        success: true,
+        participantId: `participant_${Date.now()}`,
+        message: "Successfully joined the event",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to join event" });
+    }
+  });
+
+  app.post("/api/events/:id/leave", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+
+      res.json({
+        success: true,
+        message: "Successfully left the event",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to leave event" });
+    }
+  });
+
+  app.get("/api/events/:id/participants", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+
+      // Mock participants data
+      const mockParticipants = [
+        {
+          id: "1",
+          eventId,
+          userId: "1",
+          user: {
+            id: "1",
+            name: "Alex Rivera",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+            verified: true,
+          },
+          role: "host",
+          joinedAt: new Date().toISOString(),
+          isActive: true,
+          permissions: {
+            canSpeak: true,
+            canShare: true,
+            canModerate: true,
+          },
+          status: {
+            isVideoOn: true,
+            isAudioOn: true,
+            handRaised: false,
+            isScreenSharing: false,
+          },
+        },
+        {
+          id: "2",
+          eventId,
+          userId: "2",
+          user: {
+            id: "2",
+            name: "Sarah Chen",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+            verified: true,
+          },
+          role: "speaker",
+          joinedAt: new Date(Date.now() - 300000).toISOString(),
+          isActive: true,
+          permissions: {
+            canSpeak: true,
+            canShare: false,
+            canModerate: false,
+          },
+          status: {
+            isVideoOn: true,
+            isAudioOn: true,
+            handRaised: false,
+            isScreenSharing: false,
+          },
+        },
+      ];
+
+      res.json(mockParticipants);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch participants" });
+    }
+  });
+
+  app.get("/api/events/:id/messages", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+      const { limit = 50, offset = 0 } = req.query;
+
+      // Mock messages data
+      const mockMessages = [
+        {
+          id: "1",
+          eventId,
+          userId: "1",
+          userName: "Alex Rivera",
+          userAvatar:
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          message:
+            "Welcome everyone! Let's start with today's DeFi strategies.",
+          timestamp: new Date(Date.now() - 300000).toISOString(),
+          type: "message",
+        },
+        {
+          id: "2",
+          eventId,
+          userId: "2",
+          userName: "Sarah Chen",
+          userAvatar:
+            "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+          message:
+            "Great presentation! The yield farming section was very insightful.",
+          timestamp: new Date(Date.now() - 240000).toISOString(),
+          type: "message",
+        },
+      ];
+
+      const messages = mockMessages.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/events/:id/messages", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+      const { message, type = "message" } = req.body;
+
+      const newMessage = {
+        id: `msg_${Date.now()}`,
+        eventId,
+        userId: "current-user-id",
+        userName: "Current User",
+        userAvatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+        message,
+        timestamp: new Date().toISOString(),
+        type,
+      };
+
+      res.json(newMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  });
+
+  app.get("/api/events/:id/stats", async (req, res) => {
+    try {
+      const eventId = req.params.id;
+
+      // Mock stats data
+      const mockStats = {
+        eventId,
+        currentViewers: 234,
+        totalJoined: 567,
+        messagesCount: 89,
+        reactionsCount: 456,
+        engagementRate: 78.5,
+        averageWatchTime: 45.2,
+        revenueGenerated: 1250,
+      };
+
+      res.json(mockStats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch event stats" });
+    }
+  });
+
+  app.get("/api/events/trending", async (req, res) => {
+    try {
+      const { limit = 10 } = req.query;
+
+      // Mock trending events (same as regular events but sorted by popularity)
+      const trendingEvents = [
+        {
+          id: "1",
+          title: "Live Crypto Trading Session: DeFi Strategies",
+          type: "trading",
+          host: { name: "Alex Rivera", verified: true },
+          participants: 234,
+          isLive: true,
+          thumbnail:
+            "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400",
+        },
+      ];
+
+      res.json(trendingEvents.slice(0, Number(limit)));
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch trending events" });
+    }
+  });
+
   // Wallet API endpoints
   app.get("/api/wallet", async (req, res) => {
     try {
