@@ -8,7 +8,6 @@ import {
   Wallet,
   Plus,
   Zap,
-  Calendar,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
@@ -28,12 +27,6 @@ const FooterNav = () => {
       label: "Explore",
       href: "/explore",
       active: location.pathname === "/explore",
-    },
-    {
-      icon: Calendar,
-      label: "Events",
-      href: "/events",
-      active: location.pathname === "/events",
     },
     {
       icon: Plus,
@@ -66,7 +59,7 @@ const FooterNav = () => {
 
   return (
     <div className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb">
-      <div className="grid grid-cols-7 h-14 sm:h-16 px-1 w-full max-w-full">
+      <div className="grid grid-cols-6 h-14 sm:h-16 px-1 w-full max-w-full">
         {navItems.map((item) => (
           <Link key={item.href} to={item.href} className="w-full min-w-0">
             <Button
