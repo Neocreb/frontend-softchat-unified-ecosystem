@@ -16,19 +16,33 @@ export const useCommunityEvents = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const loadEvents = useCallback(async (filters?: any) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await communityEventsService.getEvents(filters);
-      setEvents(response.events);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load events");
-      console.error("Error loading events:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const loadEvents = useCallback(
+    async (filters?: any) => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await communityEventsService.getEvents(filters);
+        setEvents(response.events);
+      } catch (err) {
+        const message =
+          err instanceof Error ? err.message : "Failed to load events";
+        setError(message);
+        console.error("Error loading events:", err);
+
+        // Don't show error toast for fallback data usage
+        if (!message.includes("API not available")) {
+          toast({
+            title: "Error",
+            description: message,
+            variant: "destructive",
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast],
+  );
 
   const createEvent = useCallback(
     async (eventData: Partial<LiveEvent>) => {
@@ -344,6 +358,11 @@ export const useEventAnalytics = (eventId?: string, hostId?: string) => {
   const [loading, setLoading] = useState(true);
 
   const loadAnalytics = useCallback(async () => {
+    if (!eventId && !hostId) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       if (eventId) {
@@ -355,7 +374,8 @@ export const useEventAnalytics = (eventId?: string, hostId?: string) => {
         setAnalytics(hostAnalytics);
       }
     } catch (err) {
-      console.error("Error loading analytics:", err);
+      console.warn("Analytics not available:", err);
+      // Don't throw error, just log it
     } finally {
       setLoading(false);
     }
