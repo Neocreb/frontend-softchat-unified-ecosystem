@@ -32,7 +32,7 @@ import {
   Trophy,
   Play,
   Plus,
-  Live,
+  Radio,
   MessageSquare,
   Share2,
   Bookmark,
@@ -364,7 +364,7 @@ const LiveCommunityEvents = () => {
         {/* Live Indicator */}
         {event.isLive && (
           <Badge className="absolute top-3 right-3 bg-red-500 text-white animate-pulse">
-            <Live className="w-3 h-3 mr-1" />
+            <Radio className="w-3 h-3 mr-1" />
             LIVE
           </Badge>
         )}
