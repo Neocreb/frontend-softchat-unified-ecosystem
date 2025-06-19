@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 import {
   Video,
   VideoOff,
@@ -236,23 +237,27 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
       case "trading":
         return (
           <div className="space-y-2">
-            <Button variant="outline" size="sm" className="w-full">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Share Portfolio
-            </Button>
+            <Link to="/crypto">
+              <Button variant="outline" size="sm" className="w-full">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Open Crypto Trading
+              </Button>
+            </Link>
             <Button variant="outline" size="sm" className="w-full">
               <DollarSign className="w-4 h-4 mr-2" />
-              Price Alerts
+              Share Portfolio
             </Button>
           </div>
         );
       case "marketplace":
         return (
           <div className="space-y-2">
-            <Button variant="outline" size="sm" className="w-full">
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              Show Products
-            </Button>
+            <Link to="/marketplace">
+              <Button variant="outline" size="sm" className="w-full">
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Open Marketplace
+              </Button>
+            </Link>
             <Button variant="outline" size="sm" className="w-full">
               <Gift className="w-4 h-4 mr-2" />
               Flash Deals
@@ -266,10 +271,12 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
               <Monitor className="w-4 h-4 mr-2" />
               Screen Share
             </Button>
-            <Button variant="outline" size="sm" className="w-full">
-              <Award className="w-4 h-4 mr-2" />
-              Issue Certificates
-            </Button>
+            <Link to="/creator-studio">
+              <Button variant="outline" size="sm" className="w-full">
+                <Award className="w-4 h-4 mr-2" />
+                Creator Studio
+              </Button>
+            </Link>
           </div>
         );
       default:
