@@ -66,29 +66,14 @@ const CommunityEvents = () => {
   };
 
   const handleCategoryClick = (type: string) => {
-    switch (type) {
-      case "trading":
-        navigate("/crypto");
-        break;
-      case "marketplace":
-        navigate("/marketplace");
-        break;
-      case "workshop":
-        navigate("/creator-studio");
-        break;
-      case "freelance":
-        navigate("/create");
-        break;
-      case "challenge":
-        navigate("/rewards");
-        break;
-      case "social":
-        // Stay on events page but filter to social events
-        searchEvents("", { type: "social" });
-        break;
-      default:
-        break;
-    }
+    // Filter events by the selected category type
+    searchEvents("", { type });
+
+    // Show success message
+    toast({
+      title: `Filtered to ${type.charAt(0).toUpperCase() + type.slice(1)} Events`,
+      description: `Showing all ${type} events in the community`,
+    });
   };
 
   const liveEvent = events.find((e) => e.id === selectedEvent);
