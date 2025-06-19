@@ -284,7 +284,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
         <div className="flex items-center gap-3">
           <Badge className="bg-red-500 animate-pulse">
             <Eye className="w-3 h-3 mr-1" />
-            Radio,
+            LIVE
           </Badge>
           <h1 className="font-semibold text-lg">{eventTitle}</h1>
           <Badge variant="outline" className="text-white border-gray-600">
