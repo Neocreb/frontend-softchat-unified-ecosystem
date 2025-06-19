@@ -107,6 +107,108 @@ export interface EventStats {
 class CommunityEventsService {
   private baseUrl = "/api/events";
 
+  // Mock data fallback
+  private getMockEvents(): LiveEvent[] {
+    return [
+      {
+        id: "1",
+        title: "Live Crypto Trading Session: DeFi Strategies",
+        description:
+          "Join expert traders as we analyze DeFi opportunities in real-time. Learn advanced trading strategies and see live portfolio management.",
+        type: "trading",
+        hostId: "1",
+        host: {
+          id: "1",
+          name: "Alex Rivera",
+          avatar:
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          verified: true,
+        },
+        startTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+        endTime: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+        duration: 120,
+        participants: 234,
+        maxParticipants: 500,
+        isLive: true,
+        isPremium: true,
+        tags: ["DeFi", "Trading", "Crypto", "Live"],
+        thumbnail:
+          "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400",
+        category: "Finance",
+        status: "live",
+        rewards: {
+          type: "crypto",
+          amount: 50,
+          description: "50 SOFT tokens for active participants",
+        },
+        featured: true,
+      },
+      {
+        id: "2",
+        title: "Flash Marketplace Sale: Tech Gadgets",
+        description:
+          "Limited-time group buying event with exclusive discounts. Bid together, save together!",
+        type: "marketplace",
+        hostId: "2",
+        host: {
+          id: "2",
+          name: "TechDeals Store",
+          avatar:
+            "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=100",
+          verified: true,
+        },
+        startTime: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
+        endTime: new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString(),
+        duration: 60,
+        participants: 89,
+        maxParticipants: 200,
+        isLive: false,
+        isPremium: false,
+        tags: ["Shopping", "Deals", "Tech", "Flash Sale"],
+        thumbnail:
+          "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400",
+        category: "Shopping",
+        status: "scheduled",
+        rewards: {
+          type: "discount",
+          amount: 25,
+          description: "Up to 25% group discount",
+        },
+      },
+      {
+        id: "3",
+        title: "AI Art Creation Workshop",
+        description:
+          "Learn to create stunning AI art with industry experts. Interactive session with live demonstrations.",
+        type: "workshop",
+        hostId: "3",
+        host: {
+          id: "3",
+          name: "Sarah Chen",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+          verified: true,
+        },
+        startTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        endTime: new Date(Date.now() + 25.5 * 60 * 60 * 1000).toISOString(),
+        duration: 90,
+        participants: 156,
+        maxParticipants: 300,
+        isLive: false,
+        isPremium: false,
+        tags: ["AI", "Art", "Workshop", "Creative"],
+        thumbnail:
+          "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400",
+        category: "Creative",
+        status: "scheduled",
+        requirements: [
+          "Basic Photoshop knowledge",
+          "Stable internet connection",
+        ],
+      },
+    ];
+  }
+
   // Event Management
   async getEvents(filters?: {
     type?: string;
@@ -118,6 +220,7 @@ class CommunityEventsService {
     offset?: number;
   }): Promise<{ events: LiveEvent[]; total: number; hasMore: boolean }> {
     try {
+      // Try to fetch from API first
       const params = new URLSearchParams();
       if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
@@ -132,8 +235,43 @@ class CommunityEventsService {
 
       return await response.json();
     } catch (error) {
-      console.error("Error fetching events:", error);
-      throw error;
+      console.warn("API not available, using mock data:", error);
+
+      // Fallback to mock data
+      let mockEvents = this.getMockEvents();
+
+      // Apply filters to mock data
+      if (filters) {
+        if (filters.type) {
+          mockEvents = mockEvents.filter(
+            (event) => event.type === filters.type,
+          );
+        }
+        if (filters.category) {
+          mockEvents = mockEvents.filter(
+            (event) => event.category === filters.category,
+          );
+        }
+        if (filters.status) {
+          mockEvents = mockEvents.filter(
+            (event) => event.status === filters.status,
+          );
+        }
+        if (filters.featured) {
+          mockEvents = mockEvents.filter((event) => event.featured);
+        }
+      }
+
+      const limit = filters?.limit || 50;
+      const offset = filters?.offset || 0;
+      const total = mockEvents.length;
+      const events = mockEvents.slice(offset, offset + limit);
+
+      return {
+        events,
+        total,
+        hasMore: total > offset + limit,
+      };
     }
   }
 
@@ -144,8 +282,17 @@ class CommunityEventsService {
 
       return await response.json();
     } catch (error) {
-      console.error("Error fetching event:", error);
-      throw error;
+      console.warn("API not available, using mock data:", error);
+
+      // Fallback to mock data
+      const mockEvents = this.getMockEvents();
+      const event = mockEvents.find((e) => e.id === eventId);
+
+      if (!event) {
+        throw new Error("Event not found");
+      }
+
+      return event;
     }
   }
 
@@ -369,8 +516,22 @@ class CommunityEventsService {
 
       return await response.json();
     } catch (error) {
-      console.error("Error fetching host analytics:", error);
-      throw error;
+      console.warn("API not available, using mock analytics data:", error);
+
+      // Fallback to mock analytics data
+      const mockEvents = this.getMockEvents();
+      const hostEvents = mockEvents.filter((event) => event.hostId === hostId);
+
+      return {
+        totalEvents: hostEvents.length,
+        totalViewers: hostEvents.reduce(
+          (sum, event) => sum + event.participants,
+          0,
+        ),
+        averageEngagement: 75.8,
+        revenue: 1250,
+        topEvents: hostEvents.slice(0, 3),
+      };
     }
   }
 
