@@ -40,6 +40,7 @@ import { EnhancedStoryCreation } from "@/components/feed/EnhancedStoryCreation";
 import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
+import EventsBannerCard from "@/components/feed/EventsBannerCard";
 import {
   MediaUpload,
   PostCreationData,
@@ -1185,6 +1186,9 @@ export default function EnhancedFeed() {
 
         {/* Create Post */}
         <CreatePost onPostCreated={handlePostCreated} />
+
+        {/* Events Banner - New Feature Promotion */}
+        <EventsBannerCard />
 
         {/* Live Streams Section */}
         {liveStreams.length > 0 && (
