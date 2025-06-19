@@ -574,15 +574,31 @@ const LiveCommunityEvents = () => {
 
       {/* Filter Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3 md:grid-cols-7">
-          <TabsTrigger value="featured">Featured</TabsTrigger>
-          <TabsTrigger value="live">Live Now</TabsTrigger>
-          <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-          <TabsTrigger value="trading">Trading</TabsTrigger>
-          <TabsTrigger value="marketplace">Shopping</TabsTrigger>
-          <TabsTrigger value="workshop">Workshops</TabsTrigger>
-          <TabsTrigger value="saved">Saved</TabsTrigger>
-        </TabsList>
+        <div className="w-full overflow-x-auto">
+          <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-full md:w-full">
+            <TabsTrigger value="featured" className="whitespace-nowrap">
+              Featured
+            </TabsTrigger>
+            <TabsTrigger value="live" className="whitespace-nowrap">
+              Live Now
+            </TabsTrigger>
+            <TabsTrigger value="upcoming" className="whitespace-nowrap">
+              Upcoming
+            </TabsTrigger>
+            <TabsTrigger value="trading" className="whitespace-nowrap">
+              Trading
+            </TabsTrigger>
+            <TabsTrigger value="marketplace" className="whitespace-nowrap">
+              Shopping
+            </TabsTrigger>
+            <TabsTrigger value="workshop" className="whitespace-nowrap">
+              Workshops
+            </TabsTrigger>
+            <TabsTrigger value="saved" className="whitespace-nowrap">
+              Saved
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Event Grid */}
         {[
