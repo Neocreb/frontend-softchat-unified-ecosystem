@@ -19,6 +19,7 @@ import {
   useEventAnalytics,
 } from "@/hooks/use-community-events";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { formatNumber } from "@/utils/formatters";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -53,6 +54,7 @@ const CommunityEvents = () => {
   const { user } = useAuth();
   const { analytics } = useEventAnalytics(undefined, user?.id);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
