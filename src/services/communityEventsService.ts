@@ -271,54 +271,40 @@ class CommunityEventsService {
   }
 
   async createEvent(eventData: Partial<LiveEvent>): Promise<LiveEvent> {
-    try {
-      const response = await fetch(this.baseUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventData),
-      });
+    // Use mock event creation since API is not available
+    console.log("Creating mock event:", eventData.title);
 
-      if (!response.ok) throw new Error("Failed to create event");
+    const newEvent: LiveEvent = {
+      id: `event_${Date.now()}`,
+      title: eventData.title || "New Event",
+      description: eventData.description || "",
+      type: eventData.type || "social",
+      hostId: "current-user",
+      host: {
+        id: "current-user",
+        name: "Current User",
+        avatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+        verified: false,
+      },
+      startTime: eventData.startTime || new Date().toISOString(),
+      endTime:
+        eventData.endTime ||
+        new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+      duration: eventData.duration || 60,
+      participants: 0,
+      maxParticipants: eventData.maxParticipants || 100,
+      isLive: false,
+      isPremium: eventData.isPremium || false,
+      tags: eventData.tags || [],
+      thumbnail:
+        eventData.thumbnail ||
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400",
+      category: eventData.category || "Social",
+      status: "scheduled",
+    };
 
-      return await response.json();
-    } catch (error) {
-      console.warn("API not available, simulating event creation:", error);
-
-      // Fallback to mock event creation
-      const newEvent: LiveEvent = {
-        id: `event_${Date.now()}`,
-        title: eventData.title || "New Event",
-        description: eventData.description || "",
-        type: eventData.type || "social",
-        hostId: "current-user",
-        host: {
-          id: "current-user",
-          name: "Current User",
-          avatar:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
-          verified: false,
-        },
-        startTime: eventData.startTime || new Date().toISOString(),
-        endTime:
-          eventData.endTime ||
-          new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-        duration: eventData.duration || 60,
-        participants: 0,
-        maxParticipants: eventData.maxParticipants || 100,
-        isLive: false,
-        isPremium: eventData.isPremium || false,
-        tags: eventData.tags || [],
-        thumbnail:
-          eventData.thumbnail ||
-          "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400",
-        category: eventData.category || "Social",
-        status: "scheduled",
-      };
-
-      return newEvent;
-    }
+    return newEvent;
   }
 
   async updateEvent(
