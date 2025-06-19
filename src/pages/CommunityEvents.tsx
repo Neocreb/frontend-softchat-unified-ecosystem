@@ -396,67 +396,59 @@ const CommunityEvents = () => {
             </div>
           </div>
 
-          {/* Related Platform Features */}
+          {/* Event Types Overview */}
           <div className="mt-12">
             <h2 className="text-2xl font-bold mb-6">
-              Explore Connected Features
+              What You Can Do in Events
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <Link to="/crypto">
-                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                      <TrendingUp className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-medium">Crypto Trading</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Trade during live events
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
+              <Card className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">Trading Events</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Live crypto trading with experts
+                  </p>
+                </CardContent>
+              </Card>
 
-              <Link to="/marketplace">
-                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                      <DollarSign className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-medium">Marketplace</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Shop flash sales & deals
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
+              <Card className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <DollarSign className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">Shopping Events</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Group buying & flash sales
+                  </p>
+                </CardContent>
+              </Card>
 
-              <Link to="/rewards">
-                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                      <Award className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-medium">Rewards</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Earn from events
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
+              <Card className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Award className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">Challenge Events</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Community competitions with rewards
+                  </p>
+                </CardContent>
+              </Card>
 
-              <Link to="/creator-studio">
-                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
-                      <BarChart3 className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-medium">Creator Studio</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Host workshops
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
+              <Card className="hover:shadow-md transition-shadow">
+                <CardContent className="p-4 text-center">
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <BarChart3 className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="font-medium">Workshop Events</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Learn new skills with creators
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
