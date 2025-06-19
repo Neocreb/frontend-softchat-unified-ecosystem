@@ -408,8 +408,72 @@ const CommunityEvents = () => {
             </div>
           </div>
 
-          {/* Event Categories Quick Access */}
+          {/* Related Platform Features */}
           <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-6">
+              Explore Connected Features
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+              <Link to="/crypto">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                      <TrendingUp className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-medium">Crypto Trading</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Trade during live events
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link to="/marketplace">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                      <DollarSign className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-medium">Marketplace</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Shop flash sales & deals
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link to="/rewards">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                      <Award className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-medium">Rewards</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Earn from events
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link to="/creator-studio">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer group">
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
+                      <BarChart3 className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-medium">Creator Studio</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Host workshops
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
+          </div>
+
+          {/* Event Categories Quick Access */}
+          <div className="mt-8">
             <h2 className="text-2xl font-bold mb-6">Browse by Category</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {[
