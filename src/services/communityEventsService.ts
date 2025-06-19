@@ -219,60 +219,41 @@ class CommunityEventsService {
     limit?: number;
     offset?: number;
   }): Promise<{ events: LiveEvent[]; total: number; hasMore: boolean }> {
-    try {
-      // Try to fetch from API first
-      const params = new URLSearchParams();
-      if (filters) {
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value !== undefined) {
-            params.append(key, value.toString());
-          }
-        });
+    // Use mock data directly since API is not available
+    console.log("Using mock data for events");
+
+    let mockEvents = this.getMockEvents();
+
+    // Apply filters to mock data
+    if (filters) {
+      if (filters.type) {
+        mockEvents = mockEvents.filter((event) => event.type === filters.type);
       }
-
-      const response = await fetch(`${this.baseUrl}?${params}`);
-      if (!response.ok) throw new Error("Failed to fetch events");
-
-      return await response.json();
-    } catch (error) {
-      console.warn("API not available, using mock data:", error);
-
-      // Fallback to mock data
-      let mockEvents = this.getMockEvents();
-
-      // Apply filters to mock data
-      if (filters) {
-        if (filters.type) {
-          mockEvents = mockEvents.filter(
-            (event) => event.type === filters.type,
-          );
-        }
-        if (filters.category) {
-          mockEvents = mockEvents.filter(
-            (event) => event.category === filters.category,
-          );
-        }
-        if (filters.status) {
-          mockEvents = mockEvents.filter(
-            (event) => event.status === filters.status,
-          );
-        }
-        if (filters.featured) {
-          mockEvents = mockEvents.filter((event) => event.featured);
-        }
+      if (filters.category) {
+        mockEvents = mockEvents.filter(
+          (event) => event.category === filters.category,
+        );
       }
-
-      const limit = filters?.limit || 50;
-      const offset = filters?.offset || 0;
-      const total = mockEvents.length;
-      const events = mockEvents.slice(offset, offset + limit);
-
-      return {
-        events,
-        total,
-        hasMore: total > offset + limit,
-      };
+      if (filters.status) {
+        mockEvents = mockEvents.filter(
+          (event) => event.status === filters.status,
+        );
+      }
+      if (filters.featured) {
+        mockEvents = mockEvents.filter((event) => event.featured);
+      }
     }
+
+    const limit = filters?.limit || 50;
+    const offset = filters?.offset || 0;
+    const total = mockEvents.length;
+    const events = mockEvents.slice(offset, offset + limit);
+
+    return {
+      events,
+      total,
+      hasMore: total > offset + limit,
+    };
   }
 
   async getEvent(eventId: string): Promise<LiveEvent> {
@@ -556,31 +537,22 @@ class CommunityEventsService {
     revenue: number;
     topEvents: LiveEvent[];
   }> {
-    try {
-      const response = await fetch(
-        `${this.baseUrl}/analytics/host/${hostId}?period=${period}`,
-      );
-      if (!response.ok) throw new Error("Failed to fetch host analytics");
+    // Use mock analytics data directly since API is not available
+    console.log("Using mock analytics data for host:", hostId);
 
-      return await response.json();
-    } catch (error) {
-      console.warn("API not available, using mock analytics data:", error);
+    const mockEvents = this.getMockEvents();
+    const hostEvents = mockEvents.filter((event) => event.hostId === hostId);
 
-      // Fallback to mock analytics data
-      const mockEvents = this.getMockEvents();
-      const hostEvents = mockEvents.filter((event) => event.hostId === hostId);
-
-      return {
-        totalEvents: hostEvents.length,
-        totalViewers: hostEvents.reduce(
-          (sum, event) => sum + event.participants,
-          0,
-        ),
-        averageEngagement: 75.8,
-        revenue: 1250,
-        topEvents: hostEvents.slice(0, 3),
-      };
-    }
+    return {
+      totalEvents: hostEvents.length,
+      totalViewers: hostEvents.reduce(
+        (sum, event) => sum + event.participants,
+        0,
+      ),
+      averageEngagement: 75.8,
+      revenue: 1250,
+      topEvents: hostEvents.slice(0, 3),
+    };
   }
 
   // Real-time Features
