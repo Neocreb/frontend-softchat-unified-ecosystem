@@ -20,6 +20,7 @@ import {
 } from "@/hooks/use-community-events";
 import { useAuth } from "@/contexts/AuthContext";
 import { formatNumber } from "@/utils/formatters";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Search,
   Calendar,
