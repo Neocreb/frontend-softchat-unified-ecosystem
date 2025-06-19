@@ -64,6 +64,7 @@ import GamificationSystem from "./components/gamification/GamificationSystem";
 import AIFeatures from "./components/ai/AIFeatures";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import CommunityEvents from "./pages/CommunityEvents";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -216,6 +217,7 @@ const AppRoutes = () => {
         <Route path="videos-enhanced" element={<EnhancedVideos />} />
         <Route path="chat" element={<Chat />} />
         <Route path="explore" element={<Explore />} />
+        <Route path="events" element={<CommunityEvents />} />
         <Route path="settings" element={<EnhancedSettings />} />
         <Route path="analytics" element={<AnalyticsDashboard />} />
         <Route path="creator-studio" element={<CreatorStudio />} />
