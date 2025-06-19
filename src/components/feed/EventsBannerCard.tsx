@@ -43,15 +43,15 @@ const EventsBannerCard = () => {
             <div className="flex items-center gap-4 mb-3 text-xs">
               <div className="flex items-center gap-1 text-green-600">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>3 Live Now</span>
+                <span>Trading Live</span>
               </div>
               <div className="flex items-center gap-1 text-blue-600">
                 <Users className="w-3 h-3" />
-                <span>500+ Participants</span>
+                <span>Marketplace Sales</span>
               </div>
               <div className="flex items-center gap-1 text-orange-600">
                 <TrendingUp className="w-3 h-3" />
-                <span>Earn Rewards</span>
+                <span>Workshop Rewards</span>
               </div>
             </div>
 
