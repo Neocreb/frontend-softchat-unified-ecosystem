@@ -51,6 +51,7 @@ const CommunityEvents = () => {
   const { events, loading, searchEvents, createEvent } = useCommunityEvents();
   const { user } = useAuth();
   const { analytics } = useEventAnalytics(undefined, user?.id);
+  const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +62,32 @@ const CommunityEvents = () => {
 
   const handleJoinLiveEvent = (eventId: string) => {
     setSelectedEvent(eventId);
+  };
+
+  const handleCategoryClick = (type: string) => {
+    switch (type) {
+      case "trading":
+        navigate("/crypto");
+        break;
+      case "marketplace":
+        navigate("/marketplace");
+        break;
+      case "workshop":
+        navigate("/creator-studio");
+        break;
+      case "freelance":
+        navigate("/create");
+        break;
+      case "challenge":
+        navigate("/rewards");
+        break;
+      case "social":
+        // Stay on events page but filter to social events
+        searchEvents("", { type: "social" });
+        break;
+      default:
+        break;
+    }
   };
 
   const liveEvent = events.find((e) => e.id === selectedEvent);
@@ -426,6 +453,7 @@ const CommunityEvents = () => {
                 <Card
                   key={category.type}
                   className="hover:shadow-md transition-shadow cursor-pointer group"
+                  onClick={() => handleCategoryClick(category.type)}
                 >
                   <CardContent className="p-4 text-center">
                     <div
