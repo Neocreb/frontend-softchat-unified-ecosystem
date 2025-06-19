@@ -257,24 +257,17 @@ class CommunityEventsService {
   }
 
   async getEvent(eventId: string): Promise<LiveEvent> {
-    try {
-      const response = await fetch(`${this.baseUrl}/${eventId}`);
-      if (!response.ok) throw new Error("Failed to fetch event");
+    // Use mock data directly since API is not available
+    console.log("Using mock data for event:", eventId);
 
-      return await response.json();
-    } catch (error) {
-      console.warn("API not available, using mock data:", error);
+    const mockEvents = this.getMockEvents();
+    const event = mockEvents.find((e) => e.id === eventId);
 
-      // Fallback to mock data
-      const mockEvents = this.getMockEvents();
-      const event = mockEvents.find((e) => e.id === eventId);
-
-      if (!event) {
-        throw new Error("Event not found");
-      }
-
-      return event;
+    if (!event) {
+      throw new Error("Event not found");
     }
+
+    return event;
   }
 
   async createEvent(eventData: Partial<LiveEvent>): Promise<LiveEvent> {
