@@ -199,7 +199,7 @@ const AppRoutes = () => {
         <Route path="demo/profiles" element={<ProfileDemo />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
-        <Route path="messages" element={<Messages />} />
+        <Route path="messages" element={<Navigate to="/chat" replace />} />
 
         {/* Marketplace routes */}
         <Route path="marketplace" element={<EnhancedMarketplace />} />

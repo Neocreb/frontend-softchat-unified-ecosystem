@@ -78,6 +78,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import AnalyticsDashboard from "@/components/analytics/AnalyticsDashboard";
 
 interface AnalyticsMetric {
   label: string;
@@ -476,7 +477,7 @@ const CreatorStudio: React.FC = () => {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7 lg:w-auto lg:grid-cols-7">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <Eye className="w-4 h-4" />
               <span className="hidden sm:inline">Overview</span>
@@ -492,6 +493,10 @@ const CreatorStudio: React.FC = () => {
             <TabsTrigger value="revenue" className="flex items-center gap-2">
               <DollarSign className="w-4 h-4" />
               <span className="hidden sm:inline">Revenue</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              <span className="hidden sm:inline">Analytics</span>
             </TabsTrigger>
             <TabsTrigger value="insights" className="flex items-center gap-2">
               <Brain className="w-4 h-4" />
@@ -940,6 +945,13 @@ const CreatorStudio: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics" className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-1">
+              <AnalyticsDashboard />
             </div>
           </TabsContent>
 
