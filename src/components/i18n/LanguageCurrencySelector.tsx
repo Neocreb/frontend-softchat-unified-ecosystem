@@ -532,7 +532,32 @@ export const I18nSettingsModal: React.FC<{
 
 // Regional Payment Methods Display
 export const RegionalPaymentMethods: React.FC = () => {
-  const { availablePaymentMethods, currentCurrency } = useI18n();
+  // Add error boundary for I18n context
+  let availablePaymentMethods, currentCurrency;
+  try {
+    const i18nContext = useI18n();
+    availablePaymentMethods = i18nContext.availablePaymentMethods;
+    currentCurrency = i18nContext.currentCurrency;
+  } catch (error) {
+    console.warn("I18n context not available:", error);
+    return (
+      <div className="text-center py-4">
+        <p className="text-sm text-muted-foreground">
+          Language settings not available
+        </p>
+      </div>
+    );
+  }
+
+  if (!currentCurrency) {
+    return (
+      <div className="text-center py-4">
+        <p className="text-sm text-muted-foreground">
+          Loading payment methods...
+        </p>
+      </div>
+    );
+  }
 
   const getPaymentMethodIcon = (type: string) => {
     switch (type) {
