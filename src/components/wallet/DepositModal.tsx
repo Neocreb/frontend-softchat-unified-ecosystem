@@ -41,13 +41,18 @@ interface DepositModalProps {
 
 const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
   const [amount, setAmount] = useState("");
-  const [method, setMethod] = useState<"card" | "bank" | "crypto">("card");
+  const [method, setMethod] = useState<
+    "card" | "bank" | "crypto" | "mobile" | "ewallet"
+  >("card");
   const [source, setSource] = useState<
     "ecommerce" | "crypto" | "rewards" | "freelance"
   >("ecommerce");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { currentCurrency, availablePaymentMethods, formatCurrency } =
+    useI18n();
 
   const paymentMethods = [
     {
