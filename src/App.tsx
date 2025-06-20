@@ -8,7 +8,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-import { I18nProvider } from "./contexts/I18nContext";
+// import { I18nProvider } from "./contexts/I18nContext"; // Temporarily disabled
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
