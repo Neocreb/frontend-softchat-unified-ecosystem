@@ -9,6 +9,7 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
+import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
   AccessibilityProvider,
