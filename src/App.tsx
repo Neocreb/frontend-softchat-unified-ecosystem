@@ -284,8 +284,9 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <SafeThemeProvider>
-          <I18nProvider>
-            <AuthProvider>
+          <ErrorBoundary fallback={<div>Loading application...</div>}>
+            <I18nProvider>
+              <AuthProvider>
               <AccessibilityProvider>
                 <TooltipProvider>
                   <AppRoutes />
