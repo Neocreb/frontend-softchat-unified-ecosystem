@@ -271,12 +271,27 @@ const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
+                  to="/ai-assistant"
+                  className="flex items-center w-full font-medium"
+                >
+                  <Bot className="mr-2 h-4 w-4" />
+                  <span>AI Assistant</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
                   to="/settings"
                   className="flex items-center w-full font-medium"
                 >
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Settings</span>
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <div className="flex items-center w-full font-medium lg:hidden">
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>Language & Region</span>
+                </div>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
