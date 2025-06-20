@@ -21,7 +21,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { walletService } from "@/services/walletService";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Plus, CreditCard, Wallet, Bitcoin } from "lucide-react";
+import { useI18n } from "@/contexts/I18nContext";
+import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector";
+import {
+  Loader2,
+  Plus,
+  CreditCard,
+  Wallet,
+  Bitcoin,
+  Building,
+  Smartphone,
+} from "lucide-react";
 
 interface DepositModalProps {
   isOpen: boolean;
