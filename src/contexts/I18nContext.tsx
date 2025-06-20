@@ -54,6 +54,7 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(
     SUPPORTED_LANGUAGES[0],
   );
