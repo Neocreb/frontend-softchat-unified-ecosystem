@@ -446,15 +446,15 @@ export const AnalyticsDashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Analytics Dashboard</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl sm:text-2xl font-bold">Analytics Dashboard</h2>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Track your performance and insights
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger className="w-32">
               <SelectValue />
@@ -467,27 +467,70 @@ export const AnalyticsDashboard: React.FC = () => {
             </SelectContent>
           </Select>
 
-          <Button variant="outline" onClick={exportData}>
+          <Button
+            variant="outline"
+            onClick={exportData}
+            size="sm"
+            className="hidden sm:flex"
+          >
             <Download className="w-4 h-4 mr-2" />
             Export
           </Button>
+          <Button
+            variant="outline"
+            onClick={exportData}
+            size="sm"
+            className="sm:hidden"
+          >
+            <Download className="w-4 h-4" />
+          </Button>
 
-          <Button variant="outline" onClick={refreshData} disabled={loading}>
+          <Button
+            variant="outline"
+            onClick={refreshData}
+            disabled={loading}
+            size="sm"
+            className="hidden sm:flex"
+          >
             <RefreshCw
               className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`}
             />
             Refresh
           </Button>
+          <Button
+            variant="outline"
+            onClick={refreshData}
+            disabled={loading}
+            size="sm"
+            className="sm:hidden"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </Button>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="engagement">Engagement</TabsTrigger>
-          <TabsTrigger value="audience">Audience</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="goals">Goals</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-5 lg:w-auto">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Overview</span>
+            <span className="sm:hidden">📊</span>
+          </TabsTrigger>
+          <TabsTrigger value="engagement" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Engagement</span>
+            <span className="sm:hidden">❤️</span>
+          </TabsTrigger>
+          <TabsTrigger value="audience" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Audience</span>
+            <span className="sm:hidden">👥</span>
+          </TabsTrigger>
+          <TabsTrigger value="performance" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Performance</span>
+            <span className="sm:hidden">🚀</span>
+          </TabsTrigger>
+          <TabsTrigger value="goals" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Goals</span>
+            <span className="sm:hidden">🎯</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}

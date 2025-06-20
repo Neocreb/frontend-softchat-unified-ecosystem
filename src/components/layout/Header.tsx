@@ -16,6 +16,8 @@ import {
   Briefcase,
   Settings,
   BarChart3,
+  Bot,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
@@ -170,6 +172,13 @@ const Header = () => {
             <BarChart3 className="h-4 w-4 lg:h-5 lg:w-5" />
             <span className="text-sm hidden lg:inline">Creator Studio</span>
           </Link>
+          <Link
+            to="/ai-assistant"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Bot className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden xl:inline">AI Assistant</span>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-1 min-w-0">
@@ -199,6 +208,12 @@ const Header = () => {
               </Button>
             </Link>
           )}
+
+          {/* Language and Currency Selectors - Desktop only - Temporarily disabled */}
+          {/* <div className="hidden lg:flex items-center gap-1">
+            <QuickLanguageSelector />
+            <QuickCurrencySelector />
+          </div> */}
 
           {/* Notifications */}
           <NotificationsDropdown />
@@ -252,6 +267,15 @@ const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
+                  to="/ai-assistant"
+                  className="flex items-center w-full font-medium"
+                >
+                  <Bot className="mr-2 h-4 w-4" />
+                  <span>AI Assistant</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
                   to="/settings"
                   className="flex items-center w-full font-medium"
                 >
@@ -259,6 +283,13 @@ const Header = () => {
                   <span>Settings</span>
                 </Link>
               </DropdownMenuItem>
+              {/* Temporarily disabled - Language & Region */}
+              {/* <DropdownMenuItem asChild>
+                <div className="flex items-center w-full font-medium lg:hidden">
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>Language & Region</span>
+                </div>
+              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/wallet" className="flex items-center w-full">
@@ -375,6 +406,22 @@ const Header = () => {
           >
             <Award className="h-5 w-5" />
             <span>Rewards</span>
+          </Link>
+          <Link
+            to="/ai-assistant"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Bot className="h-5 w-5" />
+            <span>AI Assistant</span>
+          </Link>
+          <Link
+            to="/creator-studio"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <BarChart3 className="h-5 w-5" />
+            <span>Creator Studio</span>
           </Link>
         </div>
       </div>

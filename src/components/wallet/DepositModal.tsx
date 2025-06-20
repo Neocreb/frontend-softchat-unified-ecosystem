@@ -21,7 +21,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { walletService } from "@/services/walletService";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Plus, CreditCard, Wallet, Bitcoin } from "lucide-react";
+// import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
+// import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
+import {
+  Loader2,
+  Plus,
+  CreditCard,
+  Wallet,
+  Bitcoin,
+  Building,
+  Smartphone,
+} from "lucide-react";
 
 interface DepositModalProps {
   isOpen: boolean;
@@ -31,13 +41,17 @@ interface DepositModalProps {
 
 const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
   const [amount, setAmount] = useState("");
-  const [method, setMethod] = useState<"card" | "bank" | "crypto">("card");
+  const [method, setMethod] = useState<
+    "card" | "bank" | "crypto" | "mobile" | "ewallet"
+  >("card");
   const [source, setSource] = useState<
     "ecommerce" | "crypto" | "rewards" | "freelance"
   >("ecommerce");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  // const { currentCurrency, availablePaymentMethods, formatCurrency } = useI18n(); // Temporarily disabled
 
   const paymentMethods = [
     {

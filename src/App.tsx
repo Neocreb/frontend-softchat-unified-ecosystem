@@ -8,6 +8,8 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
+// import { I18nProvider } from "./contexts/I18nContext"; // Temporarily disabled
+import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
   AccessibilityProvider,
@@ -53,7 +55,6 @@ import Explore from "./pages/Explore";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
 import Notifications from "./pages/Notifications";
-import Messages from "./pages/Messages";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
@@ -62,6 +63,7 @@ import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import DataManagement from "./components/data/DataManagement";
 import GamificationSystem from "./components/gamification/GamificationSystem";
 import AIFeatures from "./components/ai/AIFeatures";
+import AIPersonalAssistantDashboard from "./components/ai/AIPersonalAssistant";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import CommunityEvents from "./pages/CommunityEvents";
@@ -196,7 +198,7 @@ const AppRoutes = () => {
         <Route path="demo/profiles" element={<ProfileDemo />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
-        <Route path="messages" element={<Messages />} />
+        <Route path="messages" element={<Navigate to="/chat" replace />} />
 
         {/* Marketplace routes */}
         <Route path="marketplace" element={<EnhancedMarketplace />} />
@@ -223,6 +225,7 @@ const AppRoutes = () => {
         <Route path="creator-studio" element={<CreatorStudio />} />
         <Route path="data" element={<DataManagement />} />
         <Route path="achievements" element={<GamificationSystem />} />
+        <Route path="ai-assistant" element={<AIPersonalAssistantDashboard />} />
         <Route
           path="ai"
           element={
@@ -280,27 +283,31 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <SafeThemeProvider>
-          <AuthProvider>
-            <AccessibilityProvider>
-              <TooltipProvider>
-                <AppRoutes />
+          <ErrorBoundary fallback={<div>Loading application...</div>}>
+            {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
+            <AuthProvider>
+              <AccessibilityProvider>
+                <TooltipProvider>
+                  <AppRoutes />
 
-                {/* Global Components */}
-                <OnboardingTour />
-                <NotificationSystem />
-                <AccessibilityControlPanel />
-                <KeyboardNavigationHelper />
-                <ReadingGuide />
-                <ConnectionStatus />
-                <PWAInstallPrompt />
-                <MobileLayoutChecker />
+                  {/* Global Components */}
+                  <OnboardingTour />
+                  <NotificationSystem />
+                  <AccessibilityControlPanel />
+                  <KeyboardNavigationHelper />
+                  <ReadingGuide />
+                  <ConnectionStatus />
+                  <PWAInstallPrompt />
+                  <MobileLayoutChecker />
 
-                {/* Toasters */}
-                <Toaster />
-                <Sonner />
-              </TooltipProvider>
-            </AccessibilityProvider>
-          </AuthProvider>
+                  {/* Toasters */}
+                  <Toaster />
+                  <Sonner />
+                </TooltipProvider>
+              </AccessibilityProvider>
+            </AuthProvider>
+            {/* </I18nProvider> Temporarily disabled */}
+          </ErrorBoundary>
         </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>

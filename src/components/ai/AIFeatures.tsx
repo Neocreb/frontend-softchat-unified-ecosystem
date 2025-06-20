@@ -65,6 +65,7 @@ import {
   X,
   Settings,
   HelpCircle,
+  Shield,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -817,9 +818,13 @@ export const AutoContentModeration: React.FC = () => {
   );
 };
 
+// AI Personal Assistant from separate component
+import AIPersonalAssistantDashboard from "./AIPersonalAssistant";
+
 export default {
   SmartFeedCuration,
   AIContentAssistant,
   SmartPricePrediction,
   AutoContentModeration,
+  AIPersonalAssistant: AIPersonalAssistantDashboard,
 };

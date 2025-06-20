@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
+// import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { I18nSettingsModal, RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -722,13 +724,22 @@ const EnhancedSettings = () => {
                     AI
                   </span>
                 </TabsTrigger>
+                <TabsTrigger
+                  value="i18n"
+                  className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
+                >
+                  <Languages className="w-4 h-4 flex-shrink-0" />
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Language
+                  </span>
+                </TabsTrigger>
               </TabsList>
             </div>
           </div>
 
           {/* Desktop tabs with grid layout */}
           <div className="hidden lg:block">
-            <TabsList className="grid w-full grid-cols-9">
+            <TabsList className="grid w-full grid-cols-10">
               <TabsTrigger
                 value="profile"
                 className="flex flex-row items-center gap-2 text-sm"
@@ -791,6 +802,13 @@ const EnhancedSettings = () => {
               >
                 <Zap className="w-4 h-4" />
                 <span>AI</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="i18n"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Languages className="w-4 h-4" />
+                <span>Language</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -2408,6 +2426,46 @@ const EnhancedSettings = () => {
               <SmartFeedCuration />
               <AIContentAssistant />
             </div>
+          </TabsContent>
+
+          {/* Internationalization Tab - Temporarily disabled */}
+          <TabsContent value="i18n" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Languages className="w-5 h-5" />
+                  Language & Regional Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">
+                    Language settings temporarily unavailable. Please check back
+                    later.
+                  </p>
+                </div>
+                {/* <I18nSettingsModal
+                  trigger={
+                    <Button variant="outline" className="w-full">
+                      <Globe2 className="w-4 h-4 mr-2" />
+                      Configure Language & Region
+                    </Button>
+                  }
+                /> */}
+              </CardContent>
+            </Card>
+
+            {/* <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="w-5 h-5" />
+                  Regional Payment Methods
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RegionalPaymentMethods />
+              </CardContent>
+            </Card> */}
           </TabsContent>
         </Tabs>
 
