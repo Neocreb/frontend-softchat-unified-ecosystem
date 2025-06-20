@@ -2428,7 +2428,7 @@ const EnhancedSettings = () => {
             </div>
           </TabsContent>
 
-          {/* Internationalization Tab */}
+          {/* Internationalization Tab - Temporarily disabled */}
           <TabsContent value="i18n" className="space-y-6">
             <Card>
               <CardHeader>
@@ -2438,18 +2438,24 @@ const EnhancedSettings = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <I18nSettingsModal
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">
+                    Language settings temporarily unavailable. Please check back
+                    later.
+                  </p>
+                </div>
+                {/* <I18nSettingsModal
                   trigger={
                     <Button variant="outline" className="w-full">
                       <Globe2 className="w-4 h-4 mr-2" />
                       Configure Language & Region
                     </Button>
                   }
-                />
+                /> */}
               </CardContent>
             </Card>
 
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CreditCard className="w-5 h-5" />
@@ -2459,7 +2465,7 @@ const EnhancedSettings = () => {
               <CardContent>
                 <RegionalPaymentMethods />
               </CardContent>
-            </Card>
+            </Card> */}
           </TabsContent>
         </Tabs>
 
