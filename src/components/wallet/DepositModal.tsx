@@ -51,8 +51,7 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const { currentCurrency, availablePaymentMethods, formatCurrency } =
-    useI18n();
+  // const { currentCurrency, availablePaymentMethods, formatCurrency } = useI18n(); // Temporarily disabled
 
   const paymentMethods = [
     {
