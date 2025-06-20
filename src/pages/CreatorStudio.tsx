@@ -516,8 +516,9 @@ const CreatorStudio: React.FC = () => {
               <TabsTrigger
                 value="analytics"
                 className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+                aria-label="Analytics dashboard"
               >
-                <Activity className="w-4 h-4" />
+                <Activity className="w-4 h-4" aria-hidden="true" />
                 <span className="hidden sm:inline">Analytics</span>
               </TabsTrigger>
               <TabsTrigger
@@ -978,7 +979,12 @@ const CreatorStudio: React.FC = () => {
           </TabsContent>
 
           {/* Analytics Tab */}
-          <TabsContent value="analytics" className="space-y-6">
+          <TabsContent
+            value="analytics"
+            className="space-y-6"
+            role="tabpanel"
+            aria-labelledby="analytics-tab"
+          >
             <div className="bg-white dark:bg-gray-800 rounded-lg p-1">
               <AnalyticsDashboard />
             </div>
