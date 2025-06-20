@@ -806,6 +806,13 @@ const EnhancedSettings = () => {
                 <Zap className="w-4 h-4" />
                 <span>AI</span>
               </TabsTrigger>
+              <TabsTrigger
+                value="i18n"
+                className="flex flex-row items-center gap-2 text-sm"
+              >
+                <Languages className="w-4 h-4" />
+                <span>Language</span>
+              </TabsTrigger>
             </TabsList>
           </div>
 
