@@ -225,6 +225,7 @@ const AppRoutes = () => {
         <Route path="creator-studio" element={<CreatorStudio />} />
         <Route path="data" element={<DataManagement />} />
         <Route path="achievements" element={<GamificationSystem />} />
+        <Route path="ai-assistant" element={<AIPersonalAssistantDashboard />} />
         <Route
           path="ai"
           element={
