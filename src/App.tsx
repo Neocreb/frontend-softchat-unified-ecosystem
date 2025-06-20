@@ -285,7 +285,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <SafeThemeProvider>
           <ErrorBoundary fallback={<div>Loading application...</div>}>
-            <I18nProvider>
+            {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
               <AuthProvider>
                 <AccessibilityProvider>
                   <TooltipProvider>
