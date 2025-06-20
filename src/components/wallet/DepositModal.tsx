@@ -21,8 +21,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { walletService } from "@/services/walletService";
 import { useToast } from "@/components/ui/use-toast";
-import { useI18n } from "@/contexts/I18nContext";
-import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector";
+// import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
+// import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
 import {
   Loader2,
   Plus,
