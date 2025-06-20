@@ -55,7 +55,6 @@ import Explore from "./pages/Explore";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
 import Notifications from "./pages/Notifications";
-import Messages from "./pages/Messages";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
