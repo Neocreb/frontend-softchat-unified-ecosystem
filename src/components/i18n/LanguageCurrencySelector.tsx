@@ -202,6 +202,15 @@ export const QuickCurrencySelector: React.FC = () => {
 export const I18nSettingsModal: React.FC<{
   trigger?: React.ReactNode;
 }> = ({ trigger }) => {
+  // Add error boundary for I18n context
+  let i18nData;
+  try {
+    i18nData = useI18n();
+  } catch (error) {
+    console.warn("I18n context not available:", error);
+    return null;
+  }
+
   const {
     currentLanguage,
     currentCurrency,
@@ -215,7 +224,11 @@ export const I18nSettingsModal: React.FC<{
     setCurrency,
     setRegion,
     t,
-  } = useI18n();
+  } = i18nData;
+
+  if (!currentLanguage || !supportedLanguages) {
+    return null;
+  }
 
   const [open, setOpen] = useState(false);
 
