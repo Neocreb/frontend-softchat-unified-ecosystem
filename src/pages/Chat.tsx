@@ -92,9 +92,9 @@ const Chat = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Conversations List */}
-        <Card className="md:col-span-1">
+        <Card className="lg:col-span-1">
           <CardHeader className="pb-3">
             <div className="flex justify-between items-center mb-2">
               <CardTitle>Messages</CardTitle>
@@ -138,7 +138,7 @@ const Chat = () => {
             </Tabs>
           </CardHeader>
           <CardContent className="p-0">
-            <ScrollArea className="h-[500px]">
+            <ScrollArea className="h-[300px] sm:h-[400px] lg:h-[500px]">
               {filteredConversations.length > 0 ? (
                 filteredConversations.map((conv) => (
                   <div
@@ -185,7 +185,7 @@ const Chat = () => {
         </Card>
 
         {/* Chat Area */}
-        <Card className="md:col-span-2">
+        <Card className="lg:col-span-2">
           {selectedChat ? (
             <>
               <CardHeader className="pb-3">
@@ -228,7 +228,7 @@ const Chat = () => {
                 </div>
               </CardHeader>
               <CardContent className="p-0">
-                <ScrollArea className="h-[400px] px-4">
+                <ScrollArea className="h-[250px] sm:h-[350px] lg:h-[400px] px-4">
                   <div className="flex flex-col gap-4 py-4">
                     {messages[selectedChat.id] &&
                     messages[selectedChat.id].length > 0 ? (
