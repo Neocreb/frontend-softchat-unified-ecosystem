@@ -2430,6 +2430,40 @@ const EnhancedSettings = () => {
               <AIContentAssistant />
             </div>
           </TabsContent>
+
+          {/* Internationalization Tab */}
+          <TabsContent value="i18n" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Languages className="w-5 h-5" />
+                  Language & Regional Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <I18nSettingsModal
+                  trigger={
+                    <Button variant="outline" className="w-full">
+                      <Globe2 className="w-4 h-4 mr-2" />
+                      Configure Language & Region
+                    </Button>
+                  }
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="w-5 h-5" />
+                  Regional Payment Methods
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RegionalPaymentMethods />
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* KYC Modal */}
