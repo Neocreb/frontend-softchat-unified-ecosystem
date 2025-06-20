@@ -281,27 +281,29 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <SafeThemeProvider>
-          <AuthProvider>
-            <AccessibilityProvider>
-              <TooltipProvider>
-                <AppRoutes />
+          <I18nProvider>
+            <AuthProvider>
+              <AccessibilityProvider>
+                <TooltipProvider>
+                  <AppRoutes />
 
-                {/* Global Components */}
-                <OnboardingTour />
-                <NotificationSystem />
-                <AccessibilityControlPanel />
-                <KeyboardNavigationHelper />
-                <ReadingGuide />
-                <ConnectionStatus />
-                <PWAInstallPrompt />
-                <MobileLayoutChecker />
+                  {/* Global Components */}
+                  <OnboardingTour />
+                  <NotificationSystem />
+                  <AccessibilityControlPanel />
+                  <KeyboardNavigationHelper />
+                  <ReadingGuide />
+                  <ConnectionStatus />
+                  <PWAInstallPrompt />
+                  <MobileLayoutChecker />
 
-                {/* Toasters */}
-                <Toaster />
-                <Sonner />
-              </TooltipProvider>
-            </AccessibilityProvider>
-          </AuthProvider>
+                  {/* Toasters */}
+                  <Toaster />
+                  <Sonner />
+                </TooltipProvider>
+              </AccessibilityProvider>
+            </AuthProvider>
+          </I18nProvider>
         </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
