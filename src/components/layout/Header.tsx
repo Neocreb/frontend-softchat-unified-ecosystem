@@ -176,6 +176,13 @@ const Header = () => {
             <BarChart3 className="h-4 w-4 lg:h-5 lg:w-5" />
             <span className="text-sm hidden lg:inline">Creator Studio</span>
           </Link>
+          <Link
+            to="/ai-assistant"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Bot className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden xl:inline">AI Assistant</span>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-1 min-w-0">
