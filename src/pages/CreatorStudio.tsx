@@ -427,27 +427,27 @@ const CreatorStudio: React.FC = () => {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 sm:h-16 gap-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                   <BarChart3 className="w-5 h-5 text-white" />
                 </div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
                   Creator Studio
                 </h1>
               </div>
               <Badge
                 variant="secondary"
-                className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
+                className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 text-xs sm:text-sm"
               >
                 Pro Analytics
               </Badge>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <Select value={timeRange} onValueChange={setTimeRange}>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-28 sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -457,13 +457,19 @@ const CreatorStudio: React.FC = () => {
                   <SelectItem value="1y">Last year</SelectItem>
                 </SelectContent>
               </Select>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="hidden sm:flex">
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="sm:hidden">
+                <Download className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" size="sm" className="hidden sm:flex">
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh
+              </Button>
+              <Button variant="outline" size="sm" className="sm:hidden">
+                <RefreshCw className="w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -477,36 +483,59 @@ const CreatorStudio: React.FC = () => {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-7 lg:w-auto lg:grid-cols-7">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <Eye className="w-4 h-4" />
-              <span className="hidden sm:inline">Overview</span>
-            </TabsTrigger>
-            <TabsTrigger value="content" className="flex items-center gap-2">
-              <Video className="w-4 h-4" />
-              <span className="hidden sm:inline">Content</span>
-            </TabsTrigger>
-            <TabsTrigger value="audience" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">Audience</span>
-            </TabsTrigger>
-            <TabsTrigger value="revenue" className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4" />
-              <span className="hidden sm:inline">Revenue</span>
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <Activity className="w-4 h-4" />
-              <span className="hidden sm:inline">Analytics</span>
-            </TabsTrigger>
-            <TabsTrigger value="insights" className="flex items-center gap-2">
-              <Brain className="w-4 h-4" />
-              <span className="hidden sm:inline">AI Insights</span>
-            </TabsTrigger>
-            <TabsTrigger value="compare" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              <span className="hidden sm:inline">Compare</span>
-            </TabsTrigger>
-          </TabsList>
+          <div className="w-full overflow-x-auto">
+            <TabsList className="grid w-full grid-cols-7 lg:w-auto lg:grid-cols-7 min-w-fit">
+              <TabsTrigger
+                value="overview"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Eye className="w-4 h-4" />
+                <span className="hidden sm:inline">Overview</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="content"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Video className="w-4 h-4" />
+                <span className="hidden sm:inline">Content</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="audience"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">Audience</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="revenue"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <DollarSign className="w-4 h-4" />
+                <span className="hidden sm:inline">Revenue</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="analytics"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Activity className="w-4 h-4" />
+                <span className="hidden sm:inline">Analytics</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="insights"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <Brain className="w-4 h-4" />
+                <span className="hidden sm:inline">AI Insights</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="compare"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline">Compare</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
