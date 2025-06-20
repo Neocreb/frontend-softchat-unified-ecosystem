@@ -187,11 +187,16 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
 
     // Cultural
     culturalNotes,
-    dateFormat: i18nService.getLocalizedDateFormat(),
+    dateFormat: hasError ? "MM/DD/YYYY" : i18nService.getLocalizedDateFormat(),
 
     // Loading
     isLoading,
   };
+
+  // Don't render children if there's a critical error
+  if (hasError && isLoading) {
+    return <div>Loading language settings...</div>;
+  }
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 };
