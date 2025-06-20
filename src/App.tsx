@@ -287,27 +287,28 @@ const App = () => {
           <ErrorBoundary fallback={<div>Loading application...</div>}>
             <I18nProvider>
               <AuthProvider>
-              <AccessibilityProvider>
-                <TooltipProvider>
-                  <AppRoutes />
+                <AccessibilityProvider>
+                  <TooltipProvider>
+                    <AppRoutes />
 
-                  {/* Global Components */}
-                  <OnboardingTour />
-                  <NotificationSystem />
-                  <AccessibilityControlPanel />
-                  <KeyboardNavigationHelper />
-                  <ReadingGuide />
-                  <ConnectionStatus />
-                  <PWAInstallPrompt />
-                  <MobileLayoutChecker />
+                    {/* Global Components */}
+                    <OnboardingTour />
+                    <NotificationSystem />
+                    <AccessibilityControlPanel />
+                    <KeyboardNavigationHelper />
+                    <ReadingGuide />
+                    <ConnectionStatus />
+                    <PWAInstallPrompt />
+                    <MobileLayoutChecker />
 
-                  {/* Toasters */}
-                  <Toaster />
-                  <Sonner />
-                </TooltipProvider>
-              </AccessibilityProvider>
-            </AuthProvider>
-          </I18nProvider>
+                    {/* Toasters */}
+                    <Toaster />
+                    <Sonner />
+                  </TooltipProvider>
+                </AccessibilityProvider>
+              </AuthProvider>
+            </I18nProvider>
+          </ErrorBoundary>
         </SafeThemeProvider>
       </QueryClientProvider>
     </BrowserRouter>
