@@ -817,9 +817,13 @@ export const AutoContentModeration: React.FC = () => {
   );
 };
 
+// AI Personal Assistant from separate component
+import AIPersonalAssistantDashboard from "./AIPersonalAssistant";
+
 export default {
   SmartFeedCuration,
   AIContentAssistant,
   SmartPricePrediction,
   AutoContentModeration,
+  AIPersonalAssistant: AIPersonalAssistantDashboard,
 };
