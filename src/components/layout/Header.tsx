@@ -287,12 +287,13 @@ const Header = () => {
                   <span>Settings</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              {/* Temporarily disabled - Language & Region */}
+              {/* <DropdownMenuItem asChild>
                 <div className="flex items-center w-full font-medium lg:hidden">
                   <Globe className="mr-2 h-4 w-4" />
                   <span>Language & Region</span>
                 </div>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link to="/wallet" className="flex items-center w-full">
