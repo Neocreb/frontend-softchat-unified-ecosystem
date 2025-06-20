@@ -43,6 +43,8 @@ const AppLayout = () => {
       </main>
       {/* Creator Studio Floating Action Button */}
       <CreatorStudioFAB />
+      {/* AI Assistant Floating Action Button */}
+      <AIAssistantFAB />
       {/* Desktop Footer */}
       {!isMobile && <DesktopFooter />}
       {/* Mobile Footer Navigation */}
