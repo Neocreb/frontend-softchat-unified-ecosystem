@@ -727,6 +727,15 @@ const EnhancedSettings = () => {
                     AI
                   </span>
                 </TabsTrigger>
+                <TabsTrigger
+                  value="i18n"
+                  className="flex flex-col items-center gap-1 text-xs min-w-[70px] h-auto py-2 px-3 flex-shrink-0"
+                >
+                  <Languages className="w-4 h-4 flex-shrink-0" />
+                  <span className="text-[10px] leading-tight whitespace-nowrap">
+                    Language
+                  </span>
+                </TabsTrigger>
               </TabsList>
             </div>
           </div>
@@ -1162,7 +1171,7 @@ const EnhancedSettings = () => {
                         <SelectItem value="es">🇪🇸 Español</SelectItem>
                         <SelectItem value="fr">🇫🇷 Français</SelectItem>
                         <SelectItem value="de">🇩🇪 Deutsch</SelectItem>
-                        <SelectItem value="zh">🇨🇳 中文</SelectItem>
+                        <SelectItem value="zh">🇨���� 中文</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
