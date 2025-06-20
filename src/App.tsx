@@ -63,6 +63,7 @@ import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import DataManagement from "./components/data/DataManagement";
 import GamificationSystem from "./components/gamification/GamificationSystem";
 import AIFeatures from "./components/ai/AIFeatures";
+import AIPersonalAssistantDashboard from "./components/ai/AIPersonalAssistant";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import CommunityEvents from "./pages/CommunityEvents";
