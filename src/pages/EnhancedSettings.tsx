@@ -742,7 +742,7 @@ const EnhancedSettings = () => {
 
           {/* Desktop tabs with grid layout */}
           <div className="hidden lg:block">
-            <TabsList className="grid w-full grid-cols-9">
+            <TabsList className="grid w-full grid-cols-10">
               <TabsTrigger
                 value="profile"
                 className="flex flex-row items-center gap-2 text-sm"
@@ -1171,7 +1171,7 @@ const EnhancedSettings = () => {
                         <SelectItem value="es">🇪🇸 Español</SelectItem>
                         <SelectItem value="fr">🇫🇷 Français</SelectItem>
                         <SelectItem value="de">🇩🇪 Deutsch</SelectItem>
-                        <SelectItem value="zh">🇨���� 中文</SelectItem>
+                        <SelectItem value="zh">🇨🇳 中文</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
