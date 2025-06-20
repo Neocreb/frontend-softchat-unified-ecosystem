@@ -4,6 +4,7 @@ import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
 import SecondaryNav from "./SecondaryNav";
 import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
+import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const AppLayout = () => {
