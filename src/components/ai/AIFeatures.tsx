@@ -65,6 +65,7 @@ import {
   X,
   Settings,
   HelpCircle,
+  Shield,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
