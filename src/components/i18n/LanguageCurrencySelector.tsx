@@ -109,8 +109,24 @@ export const QuickLanguageSelector: React.FC = () => {
 
 // Quick Currency Selector
 export const QuickCurrencySelector: React.FC = () => {
-  const { currentCurrency, supportedCurrencies, setCurrency } = useI18n();
   const [open, setOpen] = useState(false);
+
+  // Add error boundary for I18n context
+  let currentCurrency, supportedCurrencies, setCurrency;
+  try {
+    const i18nContext = useI18n();
+    currentCurrency = i18nContext.currentCurrency;
+    supportedCurrencies = i18nContext.supportedCurrencies;
+    setCurrency = i18nContext.setCurrency;
+  } catch (error) {
+    // Fallback if context not available
+    console.warn("I18n context not available:", error);
+    return null;
+  }
+
+  if (!currentCurrency || !supportedCurrencies) {
+    return null;
+  }
 
   // Show popular currencies first
   const popularCurrencies = ["USD", "EUR", "GBP", "NGN", "GHS", "ZAR", "KES"];
