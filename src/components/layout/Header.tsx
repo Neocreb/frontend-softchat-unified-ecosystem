@@ -213,6 +213,12 @@ const Header = () => {
             </Link>
           )}
 
+          {/* Language and Currency Selectors - Desktop only */}
+          <div className="hidden lg:flex items-center gap-1">
+            <QuickLanguageSelector />
+            <QuickCurrencySelector />
+          </div>
+
           {/* Notifications */}
           <NotificationsDropdown />
 
