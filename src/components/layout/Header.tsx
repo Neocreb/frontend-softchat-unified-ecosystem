@@ -410,6 +410,22 @@ const Header = () => {
             <Award className="h-5 w-5" />
             <span>Rewards</span>
           </Link>
+          <Link
+            to="/ai-assistant"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Bot className="h-5 w-5" />
+            <span>AI Assistant</span>
+          </Link>
+          <Link
+            to="/creator-studio"
+            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <BarChart3 className="h-5 w-5" />
+            <span>Creator Studio</span>
+          </Link>
         </div>
       </div>
     </header>
