@@ -75,6 +75,7 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const initializeI18n = async () => {
     setIsLoading(true);
+    setHasError(false);
 
     try {
       // Load saved preferences or detect automatically
@@ -99,6 +100,7 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
       await i18nService.loadTranslations();
     } catch (error) {
       console.error("Failed to initialize i18n:", error);
+      setHasError(true);
     } finally {
       setIsLoading(false);
     }
