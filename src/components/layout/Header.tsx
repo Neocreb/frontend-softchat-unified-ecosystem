@@ -36,10 +36,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import SoftchatLogo from "../shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import {
-  QuickLanguageSelector,
-  QuickCurrencySelector,
-} from "@/components/i18n/LanguageCurrencySelector";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
