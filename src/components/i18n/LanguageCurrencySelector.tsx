@@ -48,8 +48,24 @@ import { cn } from "@/lib/utils";
 
 // Quick Language Selector (for header/nav)
 export const QuickLanguageSelector: React.FC = () => {
-  const { currentLanguage, supportedLanguages, setLanguage } = useI18n();
   const [open, setOpen] = useState(false);
+
+  // Add error boundary for I18n context
+  let currentLanguage, supportedLanguages, setLanguage;
+  try {
+    const i18nContext = useI18n();
+    currentLanguage = i18nContext.currentLanguage;
+    supportedLanguages = i18nContext.supportedLanguages;
+    setLanguage = i18nContext.setLanguage;
+  } catch (error) {
+    // Fallback if context not available
+    console.warn("I18n context not available:", error);
+    return null;
+  }
+
+  if (!currentLanguage || !supportedLanguages) {
+    return null;
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
