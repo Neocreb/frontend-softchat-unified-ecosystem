@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 type Theme = "light" | "dark" | "system";
 
@@ -8,9 +8,7 @@ interface ThemeContextType {
   isDark: boolean;
 }
 
-const ThemeContext = React.createContext<ThemeContextType | undefined>(
-  undefined,
-);
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const useTheme = () => {
   const context = React.useContext(ThemeContext);
