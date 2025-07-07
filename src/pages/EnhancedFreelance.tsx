@@ -40,13 +40,24 @@ import ProposalForm from "@/components/freelance/ProposalForm";
 import ProjectDashboard from "@/components/freelance/ProjectDashboard";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const EnhancedFreelance: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("browse-jobs");
   const [jobs, setJobs] = useState<JobPosting[]>([]);
   const [freelancers, setFreelancers] = useState<FreelancerProfile[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<SearchFilters>({});
+
+  // Show upgrade notice for new freelance system
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/freelance");
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
   const [categories, setCategories] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
