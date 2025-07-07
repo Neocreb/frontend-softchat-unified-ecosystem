@@ -308,6 +308,35 @@ const EnhancedFreelance: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto bg-white">
+      {/* Upgrade Notice */}
+      <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-green-800">
+                Enhanced Freelance System Available!
+              </h3>
+              <p className="text-sm text-green-700">
+                Experience our new integrated freelance platform with escrow,
+                real-time messaging, and advanced project management.
+              </p>
+            </div>
+          </div>
+          <Button
+            onClick={() => navigate("/freelance")}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            Try New System
+          </Button>
+        </div>
+        <div className="mt-3 text-xs text-green-600">
+          Redirecting automatically in 3 seconds...
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
         <div className="text-center">
