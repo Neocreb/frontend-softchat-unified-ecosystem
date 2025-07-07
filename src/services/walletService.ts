@@ -101,14 +101,19 @@ export const walletService = {
   // Get wallet balance
   async getWalletBalance(): Promise<WalletBalance> {
     try {
+      console.log("Fetching wallet balance from /api/wallet");
       const response = await fetch("/api/wallet");
+      console.log("Wallet API response status:", response.status);
       if (!response.ok) {
-        throw new Error("Failed to fetch wallet balance");
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      return await response.json();
+      const data = await response.json();
+      console.log("Wallet balance data:", data);
+      return data;
     } catch (error) {
       console.error("Error fetching wallet balance:", error);
       // Fallback to mock data in case of error
+      console.log("Using fallback mock wallet balance");
       return mockWalletBalance;
     }
   },
