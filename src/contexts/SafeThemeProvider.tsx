@@ -6,6 +6,7 @@ import React, {
   useState,
   useEffect,
   FC,
+  ErrorInfo,
 } from "react";
 import { ThemeProvider } from "./ThemeContext";
 
