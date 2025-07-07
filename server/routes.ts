@@ -935,7 +935,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sortBy,
         limit = 50,
         offset = 0,
-      } = req.query;
+      } = req.query as {
+        category?: string;
+        skills?: string | string[];
+        budgetMin?: string;
+        budgetMax?: string;
+        experienceLevel?: string | string[];
+        sortBy?: string;
+        limit?: string;
+        offset?: string;
+      };
 
       // Mock freelance jobs data
       const mockJobs = [
