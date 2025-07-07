@@ -1032,7 +1032,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ? experienceLevel
           : [experienceLevel as string];
         filteredJobs = filteredJobs.filter((job) =>
-          levels.includes(job.experienceLevel),
+          levels.includes(job.experienceLevel as string),
         );
       }
 
