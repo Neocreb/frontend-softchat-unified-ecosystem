@@ -58,7 +58,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   }, []);
 
   // Determine if dark mode is active
-  React.useEffect(() => {
+  useEffect(() => {
     const updateDarkMode = () => {
       try {
         let isDarkMode = false;
