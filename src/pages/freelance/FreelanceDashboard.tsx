@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
+import {
   DollarSign,
   TrendingUp,
   Clock,
@@ -22,7 +22,7 @@ import {
   ChevronRight,
   AlertTriangle,
   CheckCircle2,
-  Plus
+  Plus,
 } from "lucide-react";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
@@ -122,17 +122,24 @@ export const FreelanceDashboard: React.FC = () => {
   };
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
-    <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedProject(project)}>
+    <Card
+      className="hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => setSelectedProject(project)}
+    >
       <CardContent className="pt-4">
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold line-clamp-1 mb-1">{project.job.title}</h3>
+            <h3 className="font-semibold line-clamp-1 mb-1">
+              {project.job.title}
+            </h3>
             <div className="flex items-center gap-2 mb-2">
               <Avatar className="w-6 h-6">
                 <AvatarImage src={project.client.avatar} />
                 <AvatarFallback>{project.client.name[0]}</AvatarFallback>
               </Avatar>
-              <span className="text-sm text-muted-foreground">{project.client.name}</span>
+              <span className="text-sm text-muted-foreground">
+                {project.client.name}
+              </span>
             </div>
           </div>
           <Badge className={getProjectStatusColor(project.status)}>
@@ -150,17 +157,24 @@ export const FreelanceDashboard: React.FC = () => {
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <div className="text-muted-foreground">Budget</div>
-              <div className="font-medium">${project.budget.agreed.toLocaleString()}</div>
+              <div className="font-medium">
+                ${project.budget.agreed.toLocaleString()}
+              </div>
             </div>
             <div>
               <div className="text-muted-foreground">Earned</div>
-              <div className="font-medium text-green-600">${project.budget.paid.toLocaleString()}</div>
+              <div className="font-medium text-green-600">
+                ${project.budget.paid.toLocaleString()}
+              </div>
             </div>
           </div>
 
           <div className="flex justify-between items-center pt-2 border-t">
             <div className="text-xs text-muted-foreground">
-              Due: {project.deadline ? new Date(project.deadline).toLocaleDateString() : "No deadline"}
+              Due:{" "}
+              {project.deadline
+                ? new Date(project.deadline).toLocaleDateString()
+                : "No deadline"}
             </div>
             <ChevronRight className="w-4 h-4 text-muted-foreground" />
           </div>
@@ -189,9 +203,7 @@ export const FreelanceDashboard: React.FC = () => {
               </p>
             )}
           </div>
-          <div className={`p-3 rounded-lg ${color}`}>
-            {icon}
-          </div>
+          <div className={`p-3 rounded-lg ${color}`}>{icon}</div>
         </div>
       </CardContent>
     </Card>
@@ -251,7 +263,9 @@ export const FreelanceDashboard: React.FC = () => {
                 <div className="text-center py-12">
                   <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                   <h3 className="text-lg font-medium">No files yet</h3>
-                  <p className="text-muted-foreground">Upload project files and deliverables here</p>
+                  <p className="text-muted-foreground">
+                    Upload project files and deliverables here
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -266,19 +280,25 @@ export const FreelanceDashboard: React.FC = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="p-4 bg-green-50 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Total Earned</div>
+                      <div className="text-sm text-muted-foreground">
+                        Total Earned
+                      </div>
                       <div className="text-2xl font-bold text-green-600">
                         ${selectedProject.budget.paid.toLocaleString()}
                       </div>
                     </div>
                     <div className="p-4 bg-blue-50 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Pending</div>
+                      <div className="text-sm text-muted-foreground">
+                        Pending
+                      </div>
                       <div className="text-2xl font-bold text-blue-600">
                         ${selectedProject.budget.remaining.toLocaleString()}
                       </div>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-lg">
-                      <div className="text-sm text-muted-foreground">Total Budget</div>
+                      <div className="text-sm text-muted-foreground">
+                        Total Budget
+                      </div>
                       <div className="text-2xl font-bold">
                         ${selectedProject.budget.agreed.toLocaleString()}
                       </div>
@@ -399,17 +419,32 @@ export const FreelanceDashboard: React.FC = () => {
               <CardContent>
                 <div className="space-y-3">
                   {getRecentActivities().map((activity) => (
-                    <div key={activity.id} className="flex items-center gap-3 p-3 border rounded-lg">
+                    <div
+                      key={activity.id}
+                      className="flex items-center gap-3 p-3 border rounded-lg"
+                    >
                       <div className="p-2 bg-blue-50 rounded-full">
-                        {activity.type === "message" && <MessageCircle className="w-4 h-4 text-blue-600" />}
-                        {activity.type === "payment" && <DollarSign className="w-4 h-4 text-green-600" />}
-                        {activity.type === "milestone" && <Target className="w-4 h-4 text-purple-600" />}
+                        {activity.type === "message" && (
+                          <MessageCircle className="w-4 h-4 text-blue-600" />
+                        )}
+                        {activity.type === "payment" && (
+                          <DollarSign className="w-4 h-4 text-green-600" />
+                        )}
+                        {activity.type === "milestone" && (
+                          <Target className="w-4 h-4 text-purple-600" />
+                        )}
                       </div>
                       <div className="flex-1">
-                        <div className="font-medium text-sm">{activity.title}</div>
-                        <div className="text-xs text-muted-foreground">{activity.project}</div>
+                        <div className="font-medium text-sm">
+                          {activity.title}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {activity.project}
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground">{activity.timestamp}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {activity.timestamp}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -438,7 +473,13 @@ export const FreelanceDashboard: React.FC = () => {
                         {task.project}
                       </div>
                       <div className="flex items-center justify-between">
-                        <Badge variant={task.priority === "high" ? "destructive" : "secondary"}>
+                        <Badge
+                          variant={
+                            task.priority === "high"
+                              ? "destructive"
+                              : "secondary"
+                          }
+                        >
                           {task.priority}
                         </Badge>
                         <div className="text-xs text-muted-foreground">
@@ -483,22 +524,30 @@ export const FreelanceDashboard: React.FC = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Response Time</span>
-                  <span className="text-sm font-medium">< 2 hours</span>
+                  <span className="text-sm text-muted-foreground">
+                    Response Time
+                  </span>
+                  <span className="text-sm font-medium">&lt; 2 hours</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Client Rating</span>
+                  <span className="text-sm text-muted-foreground">
+                    Client Rating
+                  </span>
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                     <span className="text-sm font-medium">4.9</span>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">On-time Delivery</span>
+                  <span className="text-sm text-muted-foreground">
+                    On-time Delivery
+                  </span>
                   <span className="text-sm font-medium">98%</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Repeat Clients</span>
+                  <span className="text-sm text-muted-foreground">
+                    Repeat Clients
+                  </span>
                   <span className="text-sm font-medium">67%</span>
                 </div>
               </CardContent>
