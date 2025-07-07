@@ -79,7 +79,7 @@ class SafeThemeProvider extends Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ThemeProvider Error:", error, errorInfo);
   }
 
