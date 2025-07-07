@@ -16,10 +16,8 @@ const FallbackThemeContext = createContext({
   isDark: false,
 });
 
-const FallbackThemeProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [theme] = React.useState<"light" | "dark" | "system">("light");
+const FallbackThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [theme] = useState<"light" | "dark" | "system">("light");
   const [isDark] = React.useState(false);
 
   // Apply fallback theme to DOM
