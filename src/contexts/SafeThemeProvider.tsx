@@ -21,7 +21,7 @@ const FallbackThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [isDark] = useState(false);
 
   // Apply fallback theme to DOM
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       if (typeof window !== "undefined" && typeof document !== "undefined") {
         const root = document.documentElement;
