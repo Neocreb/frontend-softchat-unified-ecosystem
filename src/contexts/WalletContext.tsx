@@ -35,27 +35,19 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   const loadWalletData = async () => {
     try {
-      console.log("WalletContext: Starting loadWalletData");
       setIsLoading(true);
       setError(null);
 
-      console.log("WalletContext: Calling wallet service methods");
       const [balance, transactionHistory] = await Promise.all([
         walletService.getWalletBalance(),
         walletService.getTransactions(),
       ]);
 
-      console.log("WalletContext: Setting wallet data", {
-        balance,
-        transactionHistory,
-      });
       setWalletBalance(balance);
       setTransactions(transactionHistory);
-      console.log("WalletContext: Wallet data loaded successfully");
     } catch (err) {
-      const errorMessage = "Failed to load wallet data";
-      console.error("WalletContext: Wallet data loading error:", err);
-      setError(errorMessage);
+      setError("Failed to load wallet data");
+      console.error("Wallet data loading error:", err);
     } finally {
       setIsLoading(false);
     }
