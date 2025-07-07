@@ -29,6 +29,8 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
+import FreelanceJobs from "./pages/freelance/FreelanceJobs";
+import FreelanceDashboard from "./pages/freelance/FreelanceDashboard";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
