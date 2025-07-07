@@ -152,7 +152,7 @@ const Header = () => {
             <span className="text-sm hidden lg:inline">Crypto</span>
           </Link>
           <Link
-            to="/create"
+            to="/freelance"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
             <Briefcase className="h-4 w-4 lg:h-5 lg:w-5" />
