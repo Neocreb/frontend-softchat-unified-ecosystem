@@ -25,12 +25,12 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme state with safer initialization
-  const [theme, setTheme] = React.useState<Theme>("light"); // Default to light instead of system
-  const [isDark, setIsDark] = React.useState(false);
-  const [isInitialized, setIsInitialized] = React.useState(false);
+  const [theme, setTheme] = useState<Theme>("light"); // Default to light instead of system
+  const [isDark, setIsDark] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Initialize theme from localStorage on mount
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       if (typeof window !== "undefined" && window.localStorage) {
         const savedTheme = localStorage.getItem("theme") as Theme;
