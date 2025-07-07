@@ -384,7 +384,7 @@ const Header = () => {
             <span>Marketplace</span>
           </Link>
           <Link
-            to="/create"
+            to="/freelance"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
