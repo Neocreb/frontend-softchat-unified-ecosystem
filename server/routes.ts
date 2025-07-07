@@ -1027,11 +1027,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         filteredJobs = filteredJobs.filter((job) => job.category === category);
       }
       if (skills) {
-        const skillsArray = Array.isArray(skills) ? skills : [skills as string];
+        const skillsArray = Array.isArray(skills) ? skills : [skills];
         filteredJobs = filteredJobs.filter((job) =>
           skillsArray.some((skill) =>
             job.skills.some((jobSkill) =>
-              jobSkill.toLowerCase().includes((skill as string).toLowerCase()),
+              jobSkill.toLowerCase().includes(skill.toLowerCase()),
             ),
           ),
         );
@@ -1039,9 +1039,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (experienceLevel) {
         const levels = Array.isArray(experienceLevel)
           ? experienceLevel
-          : [experienceLevel as string];
+          : [experienceLevel];
         filteredJobs = filteredJobs.filter((job) =>
-          levels.includes(job.experienceLevel as string),
+          levels.includes(job.experienceLevel),
         );
       }
 
