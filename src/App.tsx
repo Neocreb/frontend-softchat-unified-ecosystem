@@ -185,11 +185,13 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <MarketplaceProvider>
-              <ChatProvider>
-                <AppLayout />
-              </ChatProvider>
-            </MarketplaceProvider>
+            <WalletProvider>
+              <MarketplaceProvider>
+                <ChatProvider>
+                  <AppLayout />
+                </ChatProvider>
+              </MarketplaceProvider>
+            </WalletProvider>
           </ProtectedRoute>
         }
       >
