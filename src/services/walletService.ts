@@ -64,7 +64,7 @@ const mockTransactions: Transaction[] = [
     description: "Bank withdrawal",
     timestamp: "2024-01-12T14:20:00Z",
     status: "completed",
-    sourceIcon: "���",
+    sourceIcon: "🏦",
   },
   {
     id: "6",
@@ -123,17 +123,12 @@ export const walletService = {
       if (source) params.append("source", source);
       if (limit) params.append("limit", limit.toString());
 
-      const url = `/api/wallet/transactions?${params}`;
-      console.log("Fetching transactions from:", url);
-      const response = await fetch(url);
-      console.log("Transactions API response status:", response.status);
-
+      const response = await fetch(`/api/wallet/transactions?${params}`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const transactions = await response.json();
-      console.log("Transactions data:", transactions);
       return transactions.sort(
         (a: Transaction, b: Transaction) =>
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
