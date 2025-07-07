@@ -923,6 +923,492 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Freelance API endpoints
+  app.get("/api/freelance/jobs", async (req, res) => {
+    try {
+      const {
+        category,
+        skills,
+        budgetMin,
+        budgetMax,
+        experienceLevel,
+        sortBy,
+        limit = 50,
+        offset = 0,
+      } = req.query;
+
+      // Mock freelance jobs data
+      const mockJobs = [
+        {
+          id: "1",
+          title: "Full-Stack Web Application Development",
+          description:
+            "Looking for an experienced developer to build a comprehensive e-commerce platform with React, Node.js, and MongoDB. Must have experience with payment integration and user authentication.",
+          category: "Web Development",
+          subcategory: "Full-Stack Development",
+          budget: { type: "fixed", amount: 5000 },
+          deadline: "2024-02-15",
+          duration: "2-3 months",
+          experienceLevel: "expert",
+          skills: ["React", "Node.js", "MongoDB", "Payment Integration"],
+          client: {
+            id: "1",
+            name: "TechCorp Solutions",
+            email: "contact@techcorp.com",
+            avatar:
+              "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop",
+            location: "San Francisco, CA",
+            timezone: "PST",
+            verified: true,
+            joinedDate: "2023-01-01",
+            companyName: "TechCorp Solutions",
+            totalSpent: 47500,
+            jobsPosted: 12,
+            hireRate: 85.5,
+            rating: 4.8,
+            paymentVerified: true,
+          },
+          proposals: [],
+          status: "open",
+          postedDate: "2024-01-10T10:00:00Z",
+          applicationsCount: 12,
+          visibility: "public",
+        },
+        {
+          id: "2",
+          title: "Mobile App UI/UX Design",
+          description:
+            "Need a talented designer to create a modern, user-friendly mobile app interface for a fitness tracking application.",
+          category: "Design",
+          subcategory: "Mobile Design",
+          budget: { type: "hourly", min: 60, max: 80 },
+          deadline: "2024-01-30",
+          duration: "3-4 weeks",
+          experienceLevel: "intermediate",
+          skills: ["UI/UX Design", "Figma", "Mobile Design", "Prototyping"],
+          client: {
+            id: "2",
+            name: "FitLife Startup",
+            email: "hello@fitlife.com",
+            avatar:
+              "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop",
+            location: "New York, NY",
+            timezone: "EST",
+            verified: true,
+            joinedDate: "2023-06-15",
+            companyName: "FitLife Inc.",
+            totalSpent: 23400,
+            jobsPosted: 8,
+            hireRate: 90.2,
+            rating: 4.6,
+            paymentVerified: true,
+          },
+          proposals: [],
+          status: "open",
+          postedDate: "2024-01-08T14:30:00Z",
+          applicationsCount: 8,
+          visibility: "public",
+        },
+      ];
+
+      let filteredJobs = mockJobs;
+
+      // Apply filters
+      if (category) {
+        filteredJobs = filteredJobs.filter((job) => job.category === category);
+      }
+      if (skills) {
+        const skillsArray = Array.isArray(skills) ? skills : [skills];
+        filteredJobs = filteredJobs.filter((job) =>
+          skillsArray.some((skill) =>
+            job.skills.some((jobSkill) =>
+              jobSkill.toLowerCase().includes(skill.toLowerCase()),
+            ),
+          ),
+        );
+      }
+      if (experienceLevel) {
+        const levels = Array.isArray(experienceLevel)
+          ? experienceLevel
+          : [experienceLevel];
+        filteredJobs = filteredJobs.filter((job) =>
+          levels.includes(job.experienceLevel),
+        );
+      }
+
+      const total = filteredJobs.length;
+      const jobs = filteredJobs.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+
+      res.json({
+        jobs,
+        total,
+        hasMore: total > Number(offset) + Number(limit),
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch freelance jobs" });
+    }
+  });
+
+  app.get("/api/freelance/jobs/:id", async (req, res) => {
+    try {
+      const jobId = req.params.id;
+      // Mock job details - in real app would fetch from database
+      const mockJob = {
+        id: jobId,
+        title: "Full-Stack Web Application Development",
+        description:
+          "Looking for an experienced developer to build a comprehensive e-commerce platform with React, Node.js, and MongoDB. Must have experience with payment integration and user authentication.",
+        category: "Web Development",
+        subcategory: "Full-Stack Development",
+        budget: { type: "fixed", amount: 5000 },
+        deadline: "2024-02-15",
+        duration: "2-3 months",
+        experienceLevel: "expert",
+        skills: ["React", "Node.js", "MongoDB", "Payment Integration"],
+        client: {
+          id: "1",
+          name: "TechCorp Solutions",
+          email: "contact@techcorp.com",
+          avatar:
+            "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop",
+          location: "San Francisco, CA",
+          timezone: "PST",
+          verified: true,
+          joinedDate: "2023-01-01",
+          companyName: "TechCorp Solutions",
+          totalSpent: 47500,
+          jobsPosted: 12,
+          hireRate: 85.5,
+          rating: 4.8,
+          paymentVerified: true,
+        },
+        proposals: [],
+        status: "open",
+        postedDate: "2024-01-10T10:00:00Z",
+        applicationsCount: 12,
+        visibility: "public",
+      };
+
+      res.json(mockJob);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch job details" });
+    }
+  });
+
+  app.post("/api/freelance/proposals", async (req, res) => {
+    try {
+      const proposalData = req.body;
+
+      // Mock proposal creation
+      const newProposal = {
+        id: `proposal_${Date.now()}`,
+        ...proposalData,
+        submittedDate: new Date().toISOString(),
+        status: "pending",
+      };
+
+      res.json(newProposal);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to submit proposal" });
+    }
+  });
+
+  app.get("/api/freelance/projects", async (req, res) => {
+    try {
+      const { userId, userType, status } = req.query;
+
+      // Mock projects data
+      const mockProjects = [
+        {
+          id: "project_1",
+          job: {
+            id: "1",
+            title: "E-commerce Platform Development",
+            category: "Web Development",
+          },
+          freelancer: {
+            id: "freelancer_1",
+            name: "John Smith",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          },
+          client: {
+            id: "client_1",
+            name: "Alice Johnson",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+          },
+          status: "active",
+          startDate: "2024-01-15T00:00:00Z",
+          deadline: "2024-02-15T00:00:00Z",
+          budget: {
+            agreed: 5000,
+            paid: 1500,
+            remaining: 3500,
+          },
+          milestones: [
+            {
+              id: "1",
+              title: "Project Setup & Architecture",
+              description:
+                "Set up development environment and project architecture",
+              amount: 1500,
+              dueDate: "2024-01-22",
+              status: "approved",
+            },
+            {
+              id: "2",
+              title: "Frontend Development",
+              description: "Build React frontend with responsive design",
+              amount: 2000,
+              dueDate: "2024-02-05",
+              status: "in-progress",
+            },
+          ],
+        },
+      ];
+
+      let filteredProjects = mockProjects;
+
+      if (userType === "freelancer") {
+        filteredProjects = filteredProjects.filter(
+          (p) => p.freelancer.id === userId,
+        );
+      } else if (userType === "client") {
+        filteredProjects = filteredProjects.filter(
+          (p) => p.client.id === userId,
+        );
+      }
+
+      if (status) {
+        filteredProjects = filteredProjects.filter((p) => p.status === status);
+      }
+
+      res.json(filteredProjects);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch projects" });
+    }
+  });
+
+  app.get("/api/freelance/stats/:userId", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+
+      // Mock freelance stats
+      const mockStats = {
+        totalEarnings: 24750,
+        activeProjects: 3,
+        completedProjects: 12,
+        totalProjects: 15,
+        rating: 4.8,
+        successRate: 96,
+        repeatClients: 67,
+      };
+
+      res.json(mockStats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch freelance stats" });
+    }
+  });
+
+  app.get("/api/freelance/categories", async (req, res) => {
+    try {
+      const categories = [
+        "Web Development",
+        "Mobile Development",
+        "Design",
+        "Writing & Content",
+        "Digital Marketing",
+        "Data Science",
+        "DevOps & Cloud",
+        "AI & Machine Learning",
+      ];
+      res.json(categories);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
+  app.get("/api/freelance/skills", async (req, res) => {
+    try {
+      const skills = [
+        "React",
+        "Node.js",
+        "Python",
+        "TypeScript",
+        "Vue.js",
+        "Angular",
+        "Figma",
+        "Adobe XD",
+        "Photoshop",
+        "Illustrator",
+        "Content Writing",
+        "SEO",
+        "Social Media Marketing",
+        "AWS",
+        "Docker",
+        "Kubernetes",
+        "PostgreSQL",
+        "MongoDB",
+      ];
+      res.json(skills);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch skills" });
+    }
+  });
+
+  // Escrow API endpoints
+  app.post("/api/escrow", async (req, res) => {
+    try {
+      const { projectId, clientId, freelancerId, amount, cryptoType } =
+        req.body;
+
+      // Mock escrow creation
+      const newEscrow = {
+        id: `escrow_${Date.now()}`,
+        projectId,
+        clientId,
+        freelancerId,
+        amount: amount.toString(),
+        cryptoType,
+        contractAddress: `0x${Math.random().toString(16).substr(2, 32)}`,
+        transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      res.json(newEscrow);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create escrow" });
+    }
+  });
+
+  app.post("/api/escrow/:id/release", async (req, res) => {
+    try {
+      const escrowId = req.params.id;
+      const { clientId, milestoneId } = req.body;
+
+      // Mock fund release
+      const transactionHash = `0x${Math.random().toString(16).substr(2, 64)}`;
+
+      res.json({
+        success: true,
+        transactionHash,
+        message: "Funds released successfully",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to release funds" });
+    }
+  });
+
+  app.post("/api/disputes", async (req, res) => {
+    try {
+      const { projectId, escrowId, reason, description, evidence } = req.body;
+
+      // Mock dispute creation
+      const disputeId = `dispute_${Date.now()}`;
+
+      res.json({
+        success: true,
+        disputeId,
+        message:
+          "Dispute created successfully. Admin will review within 24 hours.",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create dispute" });
+    }
+  });
+
+  // Freelance messaging endpoints
+  app.get("/api/freelance/projects/:projectId/messages", async (req, res) => {
+    try {
+      const projectId = req.params.projectId;
+      const { limit = 50, offset = 0 } = req.query;
+
+      // Mock messages
+      const mockMessages = [
+        {
+          id: "msg_1",
+          projectId,
+          senderId: "client_1",
+          content:
+            "Hi! I'm excited to start working on this project. When can we schedule a kickoff call?",
+          attachments: [],
+          messageType: "text",
+          read: true,
+          createdAt: "2024-01-15T09:00:00Z",
+          sender: {
+            id: "client_1",
+            name: "Alice Johnson",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+          },
+        },
+        {
+          id: "msg_2",
+          projectId,
+          senderId: "freelancer_1",
+          content:
+            "Hello Alice! I'm excited too. I'm available for a call today or tomorrow. What time works best for you?",
+          attachments: [],
+          messageType: "text",
+          read: true,
+          createdAt: "2024-01-15T09:15:00Z",
+          sender: {
+            id: "freelancer_1",
+            name: "John Smith",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          },
+        },
+      ];
+
+      const messages = mockMessages.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+      res.json({
+        messages,
+        total: mockMessages.length,
+        hasMore: mockMessages.length > Number(offset) + Number(limit),
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/freelance/projects/:projectId/messages", async (req, res) => {
+    try {
+      const projectId = req.params.projectId;
+      const { senderId, content, attachments, messageType = "text" } = req.body;
+
+      // Mock message creation
+      const newMessage = {
+        id: `msg_${Date.now()}`,
+        projectId,
+        senderId,
+        content,
+        attachments: attachments || [],
+        messageType,
+        read: false,
+        createdAt: new Date().toISOString(),
+        sender: {
+          id: senderId,
+          name: "Current User",
+          avatar: "/placeholder.svg",
+        },
+      };
+
+      res.json(newMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  });
+
   // Wallet API endpoints
   app.get("/api/wallet", async (req, res) => {
     try {
