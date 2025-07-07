@@ -1,4 +1,12 @@
-import React, { Component, ReactNode, createContext, useContext } from "react";
+import React, {
+  Component,
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  FC,
+} from "react";
 import { ThemeProvider } from "./ThemeContext";
 
 // Fallback theme context for error cases
