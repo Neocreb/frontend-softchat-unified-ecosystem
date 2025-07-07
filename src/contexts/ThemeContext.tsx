@@ -27,7 +27,7 @@ export const useTheme = () => {
 };
 
 interface ThemeProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
