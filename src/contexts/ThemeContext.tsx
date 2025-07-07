@@ -131,7 +131,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     }
   }, [theme]);
 
-  const contextValue: ThemeContextType = React.useMemo(
+  const contextValue: ThemeContextType = useMemo(
     () => ({
       theme,
       setTheme,
