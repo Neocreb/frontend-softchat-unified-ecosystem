@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
+import { WalletProvider } from "./contexts/WalletContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 // import { I18nProvider } from "./contexts/I18nContext"; // Temporarily disabled
 import ErrorBoundary from "./components/ui/error-boundary";
