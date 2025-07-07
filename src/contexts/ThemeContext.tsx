@@ -31,7 +31,7 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   // Initialize theme state with safer initialization
   const [theme, setTheme] = useState<Theme>("light"); // Default to light instead of system
   const [isDark, setIsDark] = useState(false);
