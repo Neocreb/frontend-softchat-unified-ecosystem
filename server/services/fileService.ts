@@ -77,17 +77,16 @@ const uploadToS3 = async (
 ): Promise<string> => {
   const key = `${folder}/${fileName}`;
 
-  const params: AWS.S3.PutObjectRequest = {
+  const command = new PutObjectCommand({
     Bucket: BUCKET_NAME,
     Key: key,
     Body: buffer,
     ContentType: contentType,
-    ACL: "public-read",
     CacheControl: "max-age=31536000", // 1 year
-  };
+  });
 
-  const result = await s3.upload(params).promise();
-  return result.Location;
+  await s3Client.send(command);
+  return `https://${BUCKET_NAME}.s3.amazonaws.com/${key}`;
 };
 
 // Image processing with Sharp
@@ -358,7 +357,11 @@ export class FileService {
   ): Promise<boolean> {
     try {
       const key = `${folder}/${fileName}`;
-      await s3.deleteObject({ Bucket: BUCKET_NAME, Key: key }).promise();
+      const command = new DeleteObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: key,
+      });
+      await s3Client.send(command);
       return true;
     } catch (error) {
       console.error("File deletion error:", error);
@@ -384,9 +387,8 @@ export class FileService {
   ): Promise<any> {
     try {
       const key = `${folder}/${fileName}`;
-      const result = await s3
-        .headObject({ Bucket: BUCKET_NAME, Key: key })
-        .promise();
+      const command = new HeadObjectCommand({ Bucket: BUCKET_NAME, Key: key });
+      const result = await s3Client.send(command);
       return {
         size: result.ContentLength,
         lastModified: result.LastModified,
@@ -400,21 +402,21 @@ export class FileService {
   }
 
   // Generate presigned URL for direct uploads
-  static generatePresignedUrl(
+  static async generatePresignedUrl(
     fileName: string,
     contentType: string,
     folder: string = "uploads",
     expiresIn: number = 3600,
-  ): string {
+  ): Promise<string> {
     const key = `${folder}/${fileName}`;
 
-    return s3.getSignedUrl("putObject", {
+    const command = new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: key,
       ContentType: contentType,
-      Expires: expiresIn,
-      ACL: "public-read",
     });
+
+    return await getSignedUrl(s3Client, command, { expiresIn });
   }
 
   // Validate file type and size
