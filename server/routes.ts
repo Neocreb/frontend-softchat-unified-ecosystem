@@ -1861,6 +1861,124 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Talent API endpoints
+  app.get("/api/talents", async (req, res) => {
+    try {
+      const { category, skills, minRating, maxRate, availability, search } =
+        req.query;
+
+      // Mock talents data (would be fetched from database)
+      const mockTalents = [
+        {
+          id: "1",
+          name: "Sarah Chen",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108755-2616b612b547?w=100&h=100&fit=crop&crop=face",
+          title: "Full-Stack React Developer",
+          description:
+            "Experienced developer specializing in React, Node.js, and modern web technologies.",
+          skills: ["React", "Node.js", "TypeScript", "PostgreSQL", "AWS"],
+          hourlyRate: 85,
+          rating: 4.9,
+          reviewCount: 127,
+          location: "San Francisco, CA",
+          availability: "available",
+          verified: true,
+          completedJobs: 89,
+          responseTime: "1 hour",
+          successRate: 98,
+          badges: ["Top Rated", "Rising Talent"],
+          languages: ["English", "Mandarin"],
+          joinedDate: "2022-03-15",
+          lastSeen: "Online now",
+        },
+        // Add more mock talents...
+      ];
+
+      // Apply filters (simplified for demo)
+      let filteredTalents = mockTalents;
+
+      if (search) {
+        filteredTalents = filteredTalents.filter(
+          (talent) =>
+            talent.name
+              .toLowerCase()
+              .includes(search.toString().toLowerCase()) ||
+            talent.title
+              .toLowerCase()
+              .includes(search.toString().toLowerCase()),
+        );
+      }
+
+      if (availability && availability !== "all") {
+        filteredTalents = filteredTalents.filter(
+          (talent) => talent.availability === availability,
+        );
+      }
+
+      if (minRating) {
+        filteredTalents = filteredTalents.filter(
+          (talent) => talent.rating >= parseFloat(minRating.toString()),
+        );
+      }
+
+      res.json(filteredTalents);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch talents" });
+    }
+  });
+
+  app.get("/api/talents/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      // Mock detailed talent data (would be fetched from database)
+      const mockTalentDetail = {
+        id: id,
+        name: "Sarah Chen",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b547?w=150&h=150&fit=crop&crop=face",
+        title: "Full-Stack React Developer",
+        description:
+          "Passionate full-stack developer with 6+ years of experience building scalable web applications.",
+        skills: [
+          "React",
+          "Node.js",
+          "TypeScript",
+          "PostgreSQL",
+          "AWS",
+          "Docker",
+        ],
+        hourlyRate: 85,
+        rating: 4.9,
+        reviewCount: 127,
+        location: "San Francisco, CA",
+        availability: "available",
+        verified: true,
+        completedJobs: 89,
+        responseTime: "1 hour",
+        successRate: 98,
+        portfolio: [
+          {
+            id: "1",
+            title: "E-commerce Platform",
+            image:
+              "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+            category: "Web Development",
+          },
+        ],
+        badges: ["Top Rated", "Rising Talent"],
+        languages: ["English (Native)", "Mandarin (Fluent)"],
+        joinedDate: "2022-03-15",
+        lastSeen: "Online now",
+      };
+
+      res.json(mockTalentDetail);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch talent details" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
