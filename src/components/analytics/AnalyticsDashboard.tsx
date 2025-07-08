@@ -50,6 +50,7 @@ import {
   Filter,
   RefreshCw,
   Target,
+  Briefcase,
   Award,
   Zap,
   Activity,
@@ -526,6 +527,10 @@ export const AnalyticsDashboard: React.FC = () => {
           <TabsTrigger value="performance" className="text-xs sm:text-sm">
             <span className="hidden sm:inline">Performance</span>
             <span className="sm:hidden">🚀</span>
+          </TabsTrigger>
+          <TabsTrigger value="freelance" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Freelance</span>
+            <span className="sm:hidden">💼</span>
           </TabsTrigger>
           <TabsTrigger value="goals" className="text-xs sm:text-sm">
             <span className="hidden sm:inline">Goals</span>
