@@ -318,41 +318,43 @@ export class EnhancedAIService {
     if (mentionedFeature) {
       const feature = this.platformFeatures[mentionedFeature];
       return {
-        message: `**${feature.name}**: ${feature.description}\n\n**Key Benefits:**\n${feature.benefits.map((b) => `• ${b}`).join("\n")}\n\n**Getting Started:**\n${feature.howToUse
+        message: `${feature.name} is all about ${feature.description}\n\nHere's what makes it awesome:\n${feature.benefits.map((b) => `• ${b}`).join("\n")}\n\nTo get started:\n${feature.howToUse
           .slice(0, 3)
-          .map((h) => `1. ${h}`)
-          .join("\n")}`,
+          .map((h, i) => `${i + 1}. ${h}`)
+          .join(
+            "\n",
+          )}\n\nWant me to show you around or answer any specific questions about it?`,
         suggestedActions: [
           {
-            label: `Try ${feature.name}`,
+            label: `Let's try ${feature.name}`,
             action: "navigate",
             url: this.getFeatureUrl(mentionedFeature),
           },
-          { label: "View Tutorial", action: "tutorial" },
-          { label: "Get Pro Tips", action: "tips" },
+          { label: "Show me how", action: "tutorial" },
+          { label: "Give me tips", action: "tips" },
         ],
         relatedTopics: [feature.name, "best practices", "optimization"],
         followUpQuestions: [
-          `How do I optimize my ${feature.name.toLowerCase()}?`,
-          `What are common mistakes in ${feature.name.toLowerCase()}?`,
-          `How much can I earn with ${feature.name.toLowerCase()}?`,
+          `How can I make the most of ${feature.name.toLowerCase()}?`,
+          `What mistakes should I avoid with ${feature.name.toLowerCase()}?`,
+          `How much money can I make with ${feature.name.toLowerCase()}?`,
         ],
       };
     }
 
     // General features overview
     return {
-      message: `SoftChat is a comprehensive platform with these main features:\n\n🌟 **Social Feed** - Share content and build community\n💰 **Crypto Trading** - Trade 50+ cryptocurrencies\n🛒 **Marketplace** - Buy and sell products\n💼 **Freelance** - Offer or hire services\n🎥 **Video Creation** - Create and stream content\n🏆 **Rewards System** - Earn SoftPoints for activities\n💳 **Digital Wallet** - Manage all earnings`,
+      message: `SoftChat has everything you need to succeed online! Here's what you can do:\n\n🌟 Social Feed - Share posts, build your following, and connect with others\n💰 Crypto Trading - Buy and sell 50+ cryptocurrencies with real-time data\n🛒 Marketplace - Sell your products or buy from other users\n💼 Freelance Hub - Offer your skills or hire talented people\n🎥 Video Studio - Create videos and live stream to your audience\n🏆 Rewards System - Earn SoftPoints for every activity you do\n💳 Digital Wallet - Keep track of all your earnings in one place\n\nWhat sounds most interesting to you? I can help you get started with any of these!`,
       suggestedActions: [
-        { label: "Start Creating Content", action: "create", url: "/create" },
+        { label: "Create my first post", action: "create", url: "/create" },
         {
-          label: "Explore Marketplace",
+          label: "Browse the marketplace",
           action: "marketplace",
           url: "/marketplace",
         },
-        { label: "Check Crypto Markets", action: "crypto", url: "/crypto" },
+        { label: "Check out crypto prices", action: "crypto", url: "/crypto" },
         {
-          label: "View Freelance Jobs",
+          label: "Find freelance work",
           action: "freelance",
           url: "/freelance",
         },
@@ -363,9 +365,9 @@ export class EnhancedAIService {
         "getting started",
       ],
       followUpQuestions: [
-        "Which feature should I start with?",
-        "How do these features work together?",
-        "What's the most profitable feature?",
+        "Which feature should I try first?",
+        "How do all these features work together?",
+        "What's the fastest way to start earning money?",
       ],
     };
   }
@@ -507,7 +509,7 @@ export class EnhancedAIService {
 
     const responses = {
       earning: {
-        message: `**Multiple Ways to Earn on SoftChat:**\n\n💰 **High-Earning Activities:**\n• Crypto trading (potential high returns)\n• Marketplace sales (500 SoftPoints per sale)\n• Freelance services (direct payments)\n• Video monetization (views + tips)\n\n🏆 **SoftPoints Earning:**\n• Daily login: 25 points\n• Create content: 100 points\n• Trading activity: 200 points\n• Community engagement: 50 points\n\n**Strategy:** Focus on 2-3 areas consistently for best results!`,
+        message: `**Multiple Ways to Earn on SoftChat:**\n\n💰 **High-Earning Activities:**\n• Crypto trading (potential high returns)\n• Marketplace sales (500 SoftPoints per sale)\n��� Freelance services (direct payments)\n• Video monetization (views + tips)\n\n🏆 **SoftPoints Earning:**\n• Daily login: 25 points\n• Create content: 100 points\n• Trading activity: 200 points\n• Community engagement: 50 points\n\n**Strategy:** Focus on 2-3 areas consistently for best results!`,
         suggestedActions: [
           { label: "Check Earning Opportunities", action: "earnings" },
           {
