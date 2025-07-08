@@ -43,7 +43,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // Custom hook to use the auth context
-export const useAuth = () => React.useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);
 
 // Authentication provider component
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
