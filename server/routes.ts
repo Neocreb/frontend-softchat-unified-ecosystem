@@ -1332,6 +1332,273 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Chat API endpoints
+  app.get("/api/chat/threads", async (req, res) => {
+    try {
+      const { type, unreadOnly, searchQuery } = req.query;
+
+      // Mock chat threads data
+      const mockThreads = [
+        {
+          id: "thread_1",
+          type: "freelance",
+          referenceId: "job_123",
+          participants: ["user_1", "user_2"],
+          lastMessage:
+            "I'm excited to work on this project! When can we start?",
+          lastMessageAt: "2024-01-20T15:30:00Z",
+          updatedAt: "2024-01-20T15:30:00Z",
+          isGroup: false,
+          createdAt: "2024-01-20T10:00:00Z",
+          unreadCount: 2,
+          contextData: {
+            jobTitle: "E-commerce Website Development",
+            jobBudget: 5000,
+            projectStatus: "negotiation",
+          },
+        },
+        {
+          id: "thread_2",
+          type: "marketplace",
+          referenceId: "product_456",
+          participants: ["user_1", "user_3"],
+          lastMessage: "Is this item still available?",
+          lastMessageAt: "2024-01-20T14:15:00Z",
+          updatedAt: "2024-01-20T14:15:00Z",
+          isGroup: false,
+          createdAt: "2024-01-20T14:00:00Z",
+          unreadCount: 1,
+          contextData: {
+            productName: "MacBook Pro 16-inch",
+            productPrice: 2500,
+            productImage:
+              "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400",
+          },
+        },
+        {
+          id: "thread_3",
+          type: "p2p",
+          referenceId: "trade_789",
+          participants: ["user_1", "user_4"],
+          lastMessage: "Payment sent! Please confirm receipt.",
+          lastMessageAt: "2024-01-20T16:45:00Z",
+          updatedAt: "2024-01-20T16:45:00Z",
+          isGroup: false,
+          createdAt: "2024-01-20T16:00:00Z",
+          unreadCount: 0,
+          contextData: {
+            tradeAmount: 0.5,
+            cryptoType: "BTC",
+            tradeStatus: "payment_sent",
+          },
+        },
+        {
+          id: "thread_4",
+          type: "social",
+          referenceId: null,
+          participants: ["user_1", "user_5"],
+          lastMessage: "Hey! How was your weekend?",
+          lastMessageAt: "2024-01-20T12:00:00Z",
+          updatedAt: "2024-01-20T12:00:00Z",
+          isGroup: false,
+          createdAt: "2024-01-19T20:00:00Z",
+          unreadCount: 0,
+          contextData: {
+            relationshipType: "friend",
+          },
+        },
+      ];
+
+      let filteredThreads = mockThreads;
+
+      if (type && type !== "all") {
+        filteredThreads = filteredThreads.filter(
+          (thread) => thread.type === type,
+        );
+      }
+
+      if (unreadOnly === "true") {
+        filteredThreads = filteredThreads.filter(
+          (thread) => (thread.unreadCount || 0) > 0,
+        );
+      }
+
+      if (searchQuery) {
+        const query = (searchQuery as string).toLowerCase();
+        filteredThreads = filteredThreads.filter(
+          (thread) =>
+            thread.lastMessage.toLowerCase().includes(query) ||
+            thread.contextData?.jobTitle?.toLowerCase().includes(query) ||
+            thread.contextData?.productName?.toLowerCase().includes(query),
+        );
+      }
+
+      res.json(
+        filteredThreads.sort(
+          (a, b) =>
+            new Date(b.lastMessageAt).getTime() -
+            new Date(a.lastMessageAt).getTime(),
+        ),
+      );
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch chat threads" });
+    }
+  });
+
+  app.get("/api/chat/threads/:threadId", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+
+      const mockThread = {
+        id: threadId,
+        type: "freelance",
+        referenceId: "job_123",
+        participants: ["user_1", "user_2"],
+        lastMessage: "I'm excited to work on this project!",
+        lastMessageAt: "2024-01-20T15:30:00Z",
+        updatedAt: "2024-01-20T15:30:00Z",
+        isGroup: false,
+        createdAt: "2024-01-20T10:00:00Z",
+        unreadCount: 2,
+        contextData: {
+          jobTitle: "E-commerce Website Development",
+          jobBudget: 5000,
+          projectStatus: "negotiation",
+        },
+      };
+
+      res.json(mockThread);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch chat thread" });
+    }
+  });
+
+  app.get("/api/chat/threads/:threadId/messages", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+      const { limit = 50, offset = 0 } = req.query;
+
+      const mockMessages = [
+        {
+          id: "msg_1",
+          threadId,
+          senderId: "user_2",
+          content:
+            "Hi! I saw your job posting for the e-commerce website. I have 5+ years of experience with React and Node.js.",
+          timestamp: "2024-01-20T10:05:00Z",
+          readBy: ["user_1", "user_2"],
+          messageType: "text",
+        },
+        {
+          id: "msg_2",
+          threadId,
+          senderId: "user_1",
+          content:
+            "Great! Your portfolio looks impressive. What's your estimated timeline for this project?",
+          timestamp: "2024-01-20T10:30:00Z",
+          readBy: ["user_1", "user_2"],
+          messageType: "text",
+        },
+        {
+          id: "msg_3",
+          threadId,
+          senderId: "user_2",
+          content:
+            "I can complete this in 8-10 weeks. Would you like to schedule a call to discuss the requirements in detail?",
+          timestamp: "2024-01-20T15:00:00Z",
+          readBy: ["user_2"],
+          messageType: "text",
+        },
+      ];
+
+      const paginatedMessages = mockMessages.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+      res.json(paginatedMessages);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/chat/threads", async (req, res) => {
+    try {
+      const {
+        type,
+        referenceId,
+        participants,
+        initialMessage,
+        groupName,
+        contextData,
+      } = req.body;
+
+      const newThread = {
+        id: `thread_${Date.now()}`,
+        type,
+        referenceId,
+        participants,
+        lastMessage: initialMessage || "",
+        lastMessageAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isGroup: participants.length > 2 || !!groupName,
+        groupName,
+        createdAt: new Date().toISOString(),
+        unreadCount: 0,
+        contextData,
+      };
+
+      res.json(newThread);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create chat thread" });
+    }
+  });
+
+  app.post("/api/chat/threads/:threadId/messages", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+      const { content, attachments, messageType = "text", replyTo } = req.body;
+
+      const newMessage = {
+        id: `msg_${Date.now()}`,
+        threadId,
+        senderId: "user_1", // Current user
+        content,
+        attachments: attachments || [],
+        timestamp: new Date().toISOString(),
+        readBy: ["user_1"],
+        messageType,
+        replyTo,
+      };
+
+      res.json(newMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  });
+
+  app.put("/api/chat/threads/:threadId/read", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+      const { userId } = req.body;
+
+      res.json({ success: true, message: "Messages marked as read" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to mark messages as read" });
+    }
+  });
+
+  app.post("/api/chat/upload", async (req, res) => {
+    try {
+      // Mock file upload
+      const fileName = `uploaded_${Date.now()}.jpg`;
+      const fileUrl = `https://storage.example.com/${fileName}`;
+
+      res.json({ url: fileUrl, fileName });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upload file" });
+    }
+  });
+
   // Freelance messaging endpoints
   app.get("/api/freelance/projects/:projectId/messages", async (req, res) => {
     try {
