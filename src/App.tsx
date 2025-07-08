@@ -271,7 +271,7 @@ const AppRoutes = () => {
         path="/admin"
         element={
           <AdminRoute>
-            <AppLayout />
+            <AdminLayout />
           </AdminRoute>
         }
       >
