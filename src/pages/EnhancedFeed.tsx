@@ -1334,7 +1334,6 @@ export default function EnhancedFeed() {
         </InfiniteScroll>
         </div>
       </div>
-    </PullToRefresh>
 
       {/* Story Modals */}
       <EnhancedStoryCreation
