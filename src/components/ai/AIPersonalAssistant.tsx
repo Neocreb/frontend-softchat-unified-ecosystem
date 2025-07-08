@@ -91,6 +91,8 @@ const AIPersonalAssistantDashboard: React.FC = () => {
   const [dashboardSummary, setDashboardSummary] = useState<any>(null);
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [conversationContext, setConversationContext] = useState<string[]>([]);
 
   useEffect(() => {
     if (user?.id) {
@@ -152,7 +154,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
 
   const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!chatInput.trim() || !user?.id) return;
+    if (!chatInput.trim() || !user?.id || isTyping) return;
 
     const userMessage = {
       id: `msg-${Date.now()}`,
@@ -165,10 +167,24 @@ const AIPersonalAssistantDashboard: React.FC = () => {
     const currentInput = chatInput;
     setChatInput("");
 
-    // Use enhanced AI service for intelligent responses
+    // Add to conversation context
+    setConversationContext((prev) => [...prev.slice(-4), currentInput]); // Keep last 5 messages for context
+
+    // Show typing indicator
+    setIsTyping(true);
+
+    // Simulate more realistic response time based on message complexity
+    const responseDelay = Math.min(500 + currentInput.length * 10, 2000);
+
     setTimeout(() => {
+      // Generate response with conversation context
+      const contextualInput =
+        conversationContext.length > 0
+          ? `Previous context: ${conversationContext.slice(-2).join(". ")}. Current: ${currentInput}`
+          : currentInput;
+
       const smartResponse = enhancedAIService.generateSmartResponse(
-        currentInput,
+        contextualInput,
         user,
       );
       const aiResponse = {
@@ -181,7 +197,8 @@ const AIPersonalAssistantDashboard: React.FC = () => {
         followUpQuestions: smartResponse.followUpQuestions,
       };
       setChatMessages((prev) => [...prev, aiResponse]);
-    }, 800);
+      setIsTyping(false);
+    }, responseDelay);
 
     // Track interaction
     await aiPersonalAssistantService.trackInteraction(user.id, "chat", {
@@ -201,7 +218,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
     }
 
     if (lowerInput.includes("feature") || lowerInput.includes("what can")) {
-      return "Here are SoftChat's main features: 📱 Social Feed & Stories, 💰 Crypto Trading & Portfolio, 🛒 Marketplace for products, 💼 Freelance services, 🎥 Video creation & streaming, 🏆 Rewards & achievements, 💬 Real-time messaging, 🌍 Community events. Which feature interests you most?";
+      return "Here are SoftChat's main features: 📱 Social Feed & Stories, 💰 Crypto Trading & Portfolio, 🛒 Marketplace for products, 💼 Freelance services, 🎥 Video creation & streaming, 🏆 Rewards & achievements, �� Real-time messaging, 🌍 Community events. Which feature interests you most?";
     }
 
     // Content and social media questions
@@ -968,6 +985,32 @@ const AIPersonalAssistantDashboard: React.FC = () => {
                     </div>
                   </div>
                 ))}
+
+                {/* Typing indicator */}
+                {isTyping && (
+                  <div className="flex justify-start">
+                    <div className="max-w-[80%]">
+                      <div className="bg-muted p-3 rounded-lg">
+                        <div className="flex items-center space-x-1">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
+                            <div
+                              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+                              style={{ animationDelay: "0.1s" }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+                              style={{ animationDelay: "0.2s" }}
+                            ></div>
+                          </div>
+                          <span className="text-xs text-muted-foreground ml-2">
+                            Edith is thinking...
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <form onSubmit={handleChatSubmit} className="flex gap-2">
