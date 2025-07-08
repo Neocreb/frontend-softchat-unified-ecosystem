@@ -37,22 +37,37 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     setIsLoading(true);
     setError(null);
 
-    try {
-      // Load wallet balance - service handles errors internally with fallback data
-      const balance = await walletService.getWalletBalance();
-      setWalletBalance(balance);
-    } catch (err) {
-      console.log("Failed to load wallet balance, using fallback");
-    }
+    // Safe wrapper functions that guarantee no thrown errors
+    const safeGetWalletBalance = async (): Promise<WalletBalance> => {
+      try {
+        return await walletService.getWalletBalance();
+      } catch (err) {
+        console.log("Failed to load wallet balance, using safe fallback");
+        return {
+          total: 0,
+          ecommerce: 0,
+          crypto: 0,
+          rewards: 0,
+          freelance: 0,
+        };
+      }
+    };
 
-    try {
-      // Load transactions - service handles errors internally with fallback data
-      const transactionHistory = await walletService.getTransactions();
-      setTransactions(transactionHistory);
-    } catch (err) {
-      console.log("Failed to load transactions, using fallback");
-    }
+    const safeGetTransactions = async (): Promise<Transaction[]> => {
+      try {
+        return await walletService.getTransactions();
+      } catch (err) {
+        console.log("Failed to load transactions, using safe fallback");
+        return [];
+      }
+    };
 
+    // Load data with guaranteed safe operations
+    const balance = await safeGetWalletBalance();
+    const transactionHistory = await safeGetTransactions();
+
+    setWalletBalance(balance);
+    setTransactions(transactionHistory);
     setIsLoading(false);
   };
 
