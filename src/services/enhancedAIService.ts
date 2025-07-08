@@ -841,7 +841,7 @@ export class EnhancedAIService {
         ],
       },
       social: {
-        message: `Building Your Social Presence:\n\n👥 Growth Strategies:\n• Post consistently (daily is ideal)\n• Use trending hashtags in your niche\n• Engage authentically with others\n• Share valuable, original content\n• Collaborate with other creators\n\n📈 Engagement Tips:\n• Respond to comments quickly\n• Ask questions in your posts\n• Share behind-the-scenes content\n• Post at optimal times (7-9 PM works best)`,
+        message: `Building Your Social Presence:\n\n��� Growth Strategies:\n• Post consistently (daily is ideal)\n• Use trending hashtags in your niche\n• Engage authentically with others\n• Share valuable, original content\n• Collaborate with other creators\n\n📈 Engagement Tips:\n• Respond to comments quickly\n• Ask questions in your posts\n• Share behind-the-scenes content\n• Post at optimal times (7-9 PM works best)`,
         suggestedActions: [
           { label: "Create Post", action: "create", url: "/create" },
           { label: "Find Trending Topics", action: "explore", url: "/explore" },
@@ -857,10 +857,10 @@ export class EnhancedAIService {
         ],
       },
       general: {
-        message: `Welcome to SoftChat! 🌟\n\nI'm Edith, your AI assistant. I can help you with:\n\n🎯 Platform Navigation - Find any feature quickly\n📈 Performance Optimization - Maximize your success\n💡 Strategy Advice - Best practices for each feature\n🛠️ Technical Support - Solve any issues\n📚 Learning Resources - Tutorials and guides\n\nJust ask me anything! I know every detail about the platform and I'm here to help you succeed.`,
+        message: `Welcome to SoftChat! 🌟\n\nI'm Edith, your AI assistant. I can help you with:\n\n🎯 Platform Navigation - Find any feature quickly\n📈 Performance Optimization - Maximize your success\n💡 Strategy Advice - Best practices for each feature\n🛠️ Technical Support - Solve any issues\n📚 Learning Resources - Tutorials and guides\n🤔 General Questions - Life, science, philosophy, and more!\n\nI love chatting about all kinds of topics - from SoftChat features to life's big questions! Just ask me anything and let's explore together.`,
         suggestedActions: [
           { label: "Platform Tour", action: "tour" },
-          { label: "Quick Start Guide", action: "quick_start" },
+          { label: "Ask me anything", action: "general_chat" },
           { label: "View My Dashboard", action: "dashboard", url: "/feed" },
         ],
       },
