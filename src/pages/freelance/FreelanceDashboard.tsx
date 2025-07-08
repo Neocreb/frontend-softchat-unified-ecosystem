@@ -87,7 +87,6 @@ export const FreelanceDashboard: React.FC = () => {
   };
 
   const getUrgentTasks = () => {
-    // Mock urgent tasks - in real app, this would come from project data
     return [
       {
         id: "1",
@@ -107,7 +106,6 @@ export const FreelanceDashboard: React.FC = () => {
   };
 
   const getRecentActivities = () => {
-    // Mock recent activities
     return [
       {
         id: "1",
@@ -221,6 +219,7 @@ export const FreelanceDashboard: React.FC = () => {
     </Card>
   );
 
+  // If a project is selected, show project details
   if (selectedProject) {
     return (
       <div className="container mx-auto px-4 py-6">
@@ -343,321 +342,323 @@ export const FreelanceDashboard: React.FC = () => {
     );
   }
 
+  // Main dashboard view
   return (
     <div className="container mx-auto px-4 py-6">
-        <div className="space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Freelance Dashboard</h1>
-              <p className="text-muted-foreground">
-                Manage your projects and track your progress
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline">
-                <Bell className="w-4 h-4 mr-2" />
-                Notifications
-              </Button>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Create Profile
-              </Button>
-            </div>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Freelance Dashboard</h1>
+            <p className="text-muted-foreground">
+              Manage your projects and track your progress
+            </p>
           </div>
-
-          {/* Advanced Features Tabs */}
-          <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-7">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
-              <TabsTrigger value="gamification">Achievements</TabsTrigger>
-              <TabsTrigger value="business-intel">Analytics</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
-              <TabsTrigger value="security">Security</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="overview" className="space-y-6">
-              {/* Stats Overview */}
-              {loading ? (
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <Card key={i}>
-                      <CardContent className="pt-4">
-                        <Skeleton className="h-16 w-full" />
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : stats ? (
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <StatCard
-                    title="Total Earnings"
-                    value={`$${stats.totalEarnings.toLocaleString()}`}
-                    change="+12% this month"
-                    icon={<DollarSign className="w-6 h-6 text-white" />}
-                    color="bg-green-500"
-                  />
-                  <StatCard
-                    title="Active Projects"
-                    value={stats.activeProjects}
-                    icon={<Briefcase className="w-6 h-6 text-white" />}
-                    color="bg-blue-500"
-                  />
-                  <StatCard
-                    title="Completed Projects"
-                    value={stats.completedProjects}
-                    icon={<CheckCircle2 className="w-6 h-6 text-white" />}
-                    color="bg-purple-500"
-                  />
-                  <StatCard
-                    title="Success Rate"
-                    value={`${stats.successRate}%`}
-                    icon={<Star className="w-6 h-6 text-white" />}
-                    color="bg-orange-500"
-                  />
-                </div>
-              ) : null}
-
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
-            {/* Active Projects */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Active Projects</CardTitle>
-                <Button variant="outline" size="sm">
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent>
-                {loading ? (
-                  <div className="space-y-4">
-                    {Array.from({ length: 3 }).map((_, i) => (
-                      <Skeleton key={i} className="h-32 w-full" />
-                    ))}
-                  </div>
-                ) : activeProjects.length > 0 ? (
-                  <div className="space-y-4">
-                    {activeProjects.map((project) => (
-                      <ProjectCard key={project.id} project={project} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <Briefcase className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-medium">No active projects</h3>
-                    <p className="text-muted-foreground mb-4">
-                      Start applying to jobs to see your projects here
-                    </p>
-                    <Button>Browse Jobs</Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="w-5 h-5" />
-                  Recent Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {getRecentActivities().map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="flex items-center gap-3 p-3 border rounded-lg"
-                    >
-                      <div className="p-2 bg-blue-50 rounded-full">
-                        {activity.type === "message" && (
-                          <MessageCircle className="w-4 h-4 text-blue-600" />
-                        )}
-                        {activity.type === "payment" && (
-                          <DollarSign className="w-4 h-4 text-green-600" />
-                        )}
-                        {activity.type === "milestone" && (
-                          <Target className="w-4 h-4 text-purple-600" />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-medium text-sm">
-                          {activity.title}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {activity.project}
-                        </div>
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        {activity.timestamp}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+          <div className="flex items-center gap-2">
+            <Button variant="outline">
+              <Bell className="w-4 h-4 mr-2" />
+              Notifications
+            </Button>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Create Profile
+            </Button>
           </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Urgent Tasks */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-orange-500" />
-                  Urgent Tasks
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {getUrgentTasks().map((task) => (
-                    <div key={task.id} className="p-3 border rounded-lg">
-                      <div className="font-medium text-sm line-clamp-2 mb-1">
-                        {task.title}
-                      </div>
-                      <div className="text-xs text-muted-foreground mb-2">
-                        {task.project}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <Badge
-                          variant={
-                            task.priority === "high"
-                              ? "destructive"
-                              : "secondary"
-                          }
-                        >
-                          {task.priority}
-                        </Badge>
-                        <div className="text-xs text-muted-foreground">
-                          Due: {new Date(task.dueDate).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="w-4 h-4 mr-2" />
-                  Create Invoice
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Contact Support
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Schedule Meeting
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Wallet className="w-4 h-4 mr-2" />
-                  View Earnings
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Advanced Features Quick Access */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-blue-600" />
-                  Smart Features
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
-                  <Brain className="w-4 h-4 mr-2" />
-                  AI Job Matching
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Business Intelligence
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Trophy className="w-4 h-4 mr-2" />
-                  View Achievements
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Security Center
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Performance Metrics */}
-            <Card>
-              <CardHeader>
-                <CardTitle>This Month</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    Response Time
-                  </span>
-                  <span className="text-sm font-medium">&lt; 2 hours</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    Client Rating
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium">4.9</span>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    On-time Delivery
-                  </span>
-                  <span className="text-sm font-medium">98%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">
-                    Repeat Clients
-                  </span>
-                  <span className="text-sm font-medium">67%</span>
-                </div>
-              </CardContent>
-            </Card>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="smart-matching">
-              <SmartFreelanceMatching userType="freelancer" />
-            </TabsContent>
-
-            <TabsContent value="gamification">
-              <FreelanceGamification />
-            </TabsContent>
-
-            <TabsContent value="business-intel">
-              <FreelanceBusinessIntelligence />
-            </TabsContent>
-
-            <TabsContent value="notifications">
-              <SmartFreelanceNotifications />
-            </TabsContent>
-
-            <TabsContent value="collaboration">
-              <FreelanceCollaborationTools />
-            </TabsContent>
-
-            <TabsContent value="security">
-              <FreelanceSecurityCenter />
-            </TabsContent>
-          </Tabs>
         </div>
+
+        {/* Advanced Features Tabs */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-7">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
+            <TabsTrigger value="gamification">Achievements</TabsTrigger>
+            <TabsTrigger value="business-intel">Analytics</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            {/* Stats Overview */}
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <Card key={i}>
+                    <CardContent className="pt-4">
+                      <Skeleton className="h-16 w-full" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : stats ? (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <StatCard
+                  title="Total Earnings"
+                  value={`$${stats.totalEarnings.toLocaleString()}`}
+                  change="+12% this month"
+                  icon={<DollarSign className="w-6 h-6 text-white" />}
+                  color="bg-green-500"
+                />
+                <StatCard
+                  title="Active Projects"
+                  value={stats.activeProjects}
+                  icon={<Briefcase className="w-6 h-6 text-white" />}
+                  color="bg-blue-500"
+                />
+                <StatCard
+                  title="Completed Projects"
+                  value={stats.completedProjects}
+                  icon={<CheckCircle2 className="w-6 h-6 text-white" />}
+                  color="bg-purple-500"
+                />
+                <StatCard
+                  title="Success Rate"
+                  value={`${stats.successRate}%`}
+                  icon={<Star className="w-6 h-6 text-white" />}
+                  color="bg-orange-500"
+                />
+              </div>
+            ) : null}
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Main Content */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Active Projects */}
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle>Active Projects</CardTitle>
+                    <Button variant="outline" size="sm">
+                      View All
+                    </Button>
+                  </CardHeader>
+                  <CardContent>
+                    {loading ? (
+                      <div className="space-y-4">
+                        {Array.from({ length: 3 }).map((_, i) => (
+                          <Skeleton key={i} className="h-32 w-full" />
+                        ))}
+                      </div>
+                    ) : activeProjects.length > 0 ? (
+                      <div className="space-y-4">
+                        {activeProjects.map((project) => (
+                          <ProjectCard key={project.id} project={project} />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12">
+                        <Briefcase className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                        <h3 className="text-lg font-medium">
+                          No active projects
+                        </h3>
+                        <p className="text-muted-foreground mb-4">
+                          Start applying to jobs to see your projects here
+                        </p>
+                        <Button>Browse Jobs</Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Recent Activity */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Activity className="w-5 h-5" />
+                      Recent Activity
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {getRecentActivities().map((activity) => (
+                        <div
+                          key={activity.id}
+                          className="flex items-center gap-3 p-3 border rounded-lg"
+                        >
+                          <div className="p-2 bg-blue-50 rounded-full">
+                            {activity.type === "message" && (
+                              <MessageCircle className="w-4 h-4 text-blue-600" />
+                            )}
+                            {activity.type === "payment" && (
+                              <DollarSign className="w-4 h-4 text-green-600" />
+                            )}
+                            {activity.type === "milestone" && (
+                              <Target className="w-4 h-4 text-purple-600" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-medium text-sm">
+                              {activity.title}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {activity.project}
+                            </div>
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {activity.timestamp}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Sidebar */}
+              <div className="space-y-6">
+                {/* Urgent Tasks */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <AlertTriangle className="w-5 h-5 text-orange-500" />
+                      Urgent Tasks
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {getUrgentTasks().map((task) => (
+                        <div key={task.id} className="p-3 border rounded-lg">
+                          <div className="font-medium text-sm line-clamp-2 mb-1">
+                            {task.title}
+                          </div>
+                          <div className="text-xs text-muted-foreground mb-2">
+                            {task.project}
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Badge
+                              variant={
+                                task.priority === "high"
+                                  ? "destructive"
+                                  : "secondary"
+                              }
+                            >
+                              {task.priority}
+                            </Badge>
+                            <div className="text-xs text-muted-foreground">
+                              Due: {new Date(task.dueDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Quick Actions */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Button variant="outline" className="w-full justify-start">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Create Invoice
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Contact Support
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Schedule Meeting
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <Wallet className="w-4 h-4 mr-2" />
+                      View Earnings
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Advanced Features Quick Access */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-blue-600" />
+                      Smart Features
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Brain className="w-4 h-4 mr-2" />
+                      AI Job Matching
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      Business Intelligence
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <Trophy className="w-4 h-4 mr-2" />
+                      View Achievements
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Security Center
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Performance Metrics */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>This Month</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        Response Time
+                      </span>
+                      <span className="text-sm font-medium">&lt; 2 hours</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        Client Rating
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-medium">4.9</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        On-time Delivery
+                      </span>
+                      <span className="text-sm font-medium">98%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        Repeat Clients
+                      </span>
+                      <span className="text-sm font-medium">67%</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="smart-matching">
+            <SmartFreelanceMatching userType="freelancer" />
+          </TabsContent>
+
+          <TabsContent value="gamification">
+            <FreelanceGamification />
+          </TabsContent>
+
+          <TabsContent value="business-intel">
+            <FreelanceBusinessIntelligence />
+          </TabsContent>
+
+          <TabsContent value="notifications">
+            <SmartFreelanceNotifications />
+          </TabsContent>
+
+          <TabsContent value="collaboration">
+            <FreelanceCollaborationTools />
+          </TabsContent>
+
+          <TabsContent value="security">
+            <FreelanceSecurityCenter />
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Review Modal */}
