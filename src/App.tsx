@@ -58,6 +58,7 @@ import AdminManagement from "./pages/admin/AdminManagement";
 import PlatformSettings from "./pages/admin/PlatformSettings";
 import ContentModeration from "./pages/admin/ContentModeration";
 import AdminRoute from "./components/admin/AdminRoute";
+import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
