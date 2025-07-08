@@ -10,6 +10,12 @@ import { Badge } from "@/components/ui/badge";
 import { useExplore } from "@/hooks/use-explore";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import {
+  ExploreGridSkeleton,
+  UserCardSkeleton,
+  LoadingSpinner,
+} from "@/components/ui/loading-states";
+import { useDebounce } from "@/hooks/use-performance";
+import {
   Users,
   TrendingUp,
   Hash,
@@ -39,6 +45,10 @@ const Explore = () => {
     "relevance",
   );
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Debounce search for better performance
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   // Handle URL search parameters
   useEffect(() => {
@@ -55,6 +65,15 @@ const Explore = () => {
     if (activeTab !== "discover") params.set("tab", activeTab);
     setSearchParams(params);
   }, [searchQuery, activeTab, setSearchParams]);
+
+  // Simulate loading when searching
+  useEffect(() => {
+    if (debouncedSearchQuery !== searchQuery) {
+      setIsLoading(true);
+      const timer = setTimeout(() => setIsLoading(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [debouncedSearchQuery, searchQuery]);
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -222,43 +241,67 @@ const Explore = () => {
         </div>
 
         <TabsContent value="discover" className="space-y-6 mt-6">
-          {/* AI Powered Recommendations */}
-          <SmartContentRecommendations
-            contentType="mixed"
-            availableContent={[
-              ...filteredTopics.map((topic, index) => ({
-                ...topic,
-                id: topic.id || `topic-${index}`,
-              })),
-              ...filteredUsers.map((user, index) => ({
-                ...user,
-                id: user.id || `user-${index}`,
-              })),
-              ...filteredHashtags.map((hashtag, index) => ({
-                ...hashtag,
-                id: hashtag.id || `hashtag-${index}`,
-              })),
-            ]}
-            onContentSelect={(content) => {
-              console.log("Selected content from explore:", content);
-            }}
-            maxItems={6}
-            className="mb-6"
-            layout="grid"
-          />
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <SuggestedUsers
-                title="Featured Users"
-                variant="grid"
-                maxUsers={6}
+          {isLoading ? (
+            <div className="space-y-6">
+              <ExploreGridSkeleton />
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 space-y-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <UserCardSkeleton key={i} />
+                  ))}
+                </div>
+                <div className="space-y-4">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <UserCardSkeleton key={i} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* AI Powered Recommendations */}
+              <SmartContentRecommendations
+                contentType="mixed"
+                availableContent={[
+                  ...filteredTopics.map((topic, index) => ({
+                    ...topic,
+                    id: topic.id || `topic-${index}`,
+                  })),
+                  ...filteredUsers.map((user, index) => ({
+                    ...user,
+                    id: user.id || `user-${index}`,
+                  })),
+                  ...filteredHashtags.map((hashtag, index) => ({
+                    ...hashtag,
+                    id: hashtag.id || `hashtag-${index}`,
+                  })),
+                ]}
+                onContentSelect={(content) => {
+                  console.log("Selected content from explore:", content);
+                }}
+                maxItems={6}
+                className="mb-6"
+                layout="grid"
               />
-            </div>
-            <div className="space-y-4">
-              <SuggestedUsers title="New Users" variant="card" maxUsers={4} />
-            </div>
-          </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <SuggestedUsers
+                    title="Featured Users"
+                    variant="grid"
+                    maxUsers={6}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <SuggestedUsers
+                    title="New Users"
+                    variant="card"
+                    maxUsers={4}
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </TabsContent>
 
         <TabsContent value="trending" className="mt-6">
