@@ -405,11 +405,11 @@ export class EnhancedAIService {
 
     if (input.includes("trade") || input.includes("crypto")) {
       return {
-        message: `**How to Start Crypto Trading:**\n\n1. Navigate to Crypto section\n2. Complete identity verification (if required)\n3. Deposit funds to your wallet\n4. Choose a trading pair (e.g., BTC/USD)\n5. Set your buy/sell orders\n6. Use stop-loss orders to manage risk\n7. Monitor your portfolio regularly\n\n**Beginner Tips:** Start small, use stop-losses, and consider copy trading to learn from experts!`,
+        message: `Getting started with crypto trading is easier than you think! Here's how:\n\n1. Head over to the Crypto section\n2. Complete your verification (just basic info)\n3. Add some funds to your wallet\n4. Pick a trading pair like BTC/USD or ETH/USD\n5. Set your buy or sell orders\n6. Always use stop-loss orders to protect yourself\n7. Keep an eye on your portfolio\n\nMy advice? Start with small amounts first, use those stop-losses religiously, and maybe try copy trading to learn from the pros. You'll get the hang of it quickly!`,
         suggestedActions: [
-          { label: "Start Trading", action: "crypto", url: "/crypto" },
-          { label: "View Market Analysis", action: "analysis" },
-          { label: "Copy Expert Traders", action: "copy_trading" },
+          { label: "Take me to trading", action: "crypto", url: "/crypto" },
+          { label: "Show me market data", action: "analysis" },
+          { label: "Find top traders to copy", action: "copy_trading" },
         ],
         relatedTopics: [
           "trading strategies",
@@ -417,26 +417,26 @@ export class EnhancedAIService {
           "market analysis",
         ],
         followUpQuestions: [
-          "What's the minimum amount to start trading?",
-          "How do I set up stop-loss orders?",
-          "Which cryptocurrencies should I trade?",
+          "How much money do I need to start trading?",
+          "How do stop-loss orders work exactly?",
+          "Which crypto should I start with?",
         ],
       };
     }
 
     // General how-to response
     return {
-      message: `I can guide you through any SoftChat feature! Here are popular tutorials:\n\n📱 **Content Creation** - Post engaging content\n💰 **Crypto Trading** - Start trading cryptocurrencies\n🛒 **Selling Products** - List items in marketplace\n💼 **Freelancing** - Offer your services\n🎥 **Video Streaming** - Create and stream videos\n🏆 **Earning Points** - Maximize SoftPoints rewards`,
+      message: `I'd love to help you learn anything on SoftChat! Here are the most popular things people ask about:\n\n📱 Content Creation - How to post amazing content that gets noticed\n💰 Crypto Trading - Step-by-step guide to start trading safely\n🛒 Selling Products - List and sell your stuff in the marketplace\n💼 Freelancing - Turn your skills into money\n🎥 Video Creation - Make videos and live streams that people love\n🏆 Earning Points - All the ways to rack up SoftPoints\n\nWhat would you like to dive into? I'll walk you through it!`,
       suggestedActions: [
-        { label: "Choose a Tutorial", action: "tutorials" },
-        { label: "Quick Start Guide", action: "quick_start" },
-        { label: "Video Tutorials", action: "video_help" },
+        { label: "Pick a topic for me", action: "tutorials" },
+        { label: "Show me the basics", action: "quick_start" },
+        { label: "Watch video guides", action: "video_help" },
       ],
       relatedTopics: ["tutorials", "getting started", "step-by-step guides"],
       followUpQuestions: [
-        "How do I create my first post?",
-        "What's the easiest way to start earning?",
-        "How do I set up my profile?",
+        "How do I make my first post?",
+        "What's the fastest way to start earning?",
+        "How do I set up my profile properly?",
       ],
     };
   }
