@@ -122,7 +122,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   );
 
   // Check for an existing session on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("AuthProvider: Initializing");
 
     const initializeAuth = async () => {
