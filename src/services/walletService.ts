@@ -107,7 +107,7 @@ export const walletService = {
       }
       return await response.json();
     } catch (error) {
-      console.error("Error fetching wallet balance:", error);
+      console.log("API unavailable, using mock wallet balance");
       // Fallback to mock data in case of error
       return mockWalletBalance;
     }
