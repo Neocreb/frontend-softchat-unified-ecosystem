@@ -134,9 +134,8 @@ export const walletService = {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
       );
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      console.log("API unavailable, using mock transactions");
       // Fallback to mock data in case of error
-      console.log("Using fallback mock transactions");
       let transactions = [...mockTransactions];
 
       if (source && source !== "all") {
