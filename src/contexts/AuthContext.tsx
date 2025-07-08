@@ -48,10 +48,10 @@ export const useAuth = () => useContext(AuthContext);
 // Authentication provider component
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // Define state hooks with safer initialization
-  const [user, setUser] = React.useState<ExtendedUser | null>(null);
-  const [session, setSession] = React.useState<Session | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   // Transform user data to include convenience properties
   const enhanceUserData = React.useCallback(
