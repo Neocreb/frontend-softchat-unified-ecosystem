@@ -228,7 +228,7 @@ const AppRoutes = () => {
         <Route path="videos" element={<EnhancedVideosV2 />} />
         <Route path="videos-improved" element={<ImprovedVideos />} />
         <Route path="videos-enhanced" element={<EnhancedVideos />} />
-        <Route path="chat" element={<Chat />} />
+        <Route path="chat" element={<Navigate to="/messages" replace />} />
         <Route path="explore" element={<Explore />} />
         <Route path="events" element={<CommunityEvents />} />
         <Route path="settings" element={<EnhancedSettings />} />
