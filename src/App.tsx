@@ -291,21 +291,6 @@ const AppRoutes = () => {
         <Route path="moderation" element={<ContentModeration />} />
       </Route>
 
-      <Route
-        path="/admin"
-        element={
-          <AdminRoute>
-            <AdminLayout />
-          </AdminRoute>
-        }
-      >
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="users" element={<UserManagement />} />
-        <Route path="management" element={<AdminManagement />} />
-        <Route path="settings" element={<PlatformSettings />} />
-        <Route path="moderation" element={<ContentModeration />} />
-      </Route>
-
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
