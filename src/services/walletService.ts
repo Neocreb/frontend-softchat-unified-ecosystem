@@ -256,15 +256,25 @@ export const walletService = {
   // Get bank accounts
   async getBankAccounts(): Promise<BankAccount[]> {
     try {
-      const response = await fetch("/api/wallet/bank-accounts");
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const response = await fetch("/api/wallet/bank-accounts", {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
         throw new Error("Failed to fetch bank accounts");
       }
       return await response.json();
     } catch (error) {
-      console.error("Error fetching bank accounts:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      console.log("API unavailable, using mock bank accounts:", errorMessage);
       // Fallback to mock data in case of error
-      return mockBankAccounts;
+      return [...mockBankAccounts];
     }
   },
 
