@@ -629,8 +629,8 @@ export const FreelanceDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          </div>
-
+                </div>
+              </div>
             </TabsContent>
 
             <TabsContent value="smart-matching">
