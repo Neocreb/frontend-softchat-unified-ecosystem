@@ -115,7 +115,7 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
         {
           id: "welcome",
           type: "assistant",
-          content: `Hi ${user.username || user.email}! I'm ${assistantData.name}, your AI personal assistant. I'm here to help you optimize your content, trading, and overall platform performance. What would you like to work on today?`,
+          content: `Hi ${user.username || user.email}! I'm ${assistantData.name}, your intelligent AI assistant for SoftChat. I can help you with content strategy, crypto trading, marketplace management, freelance opportunities, video creation, earning SoftPoints, and much more. I know everything about the platform and can answer any questions you have. What would you like to explore today?`,
           timestamp: new Date(),
         },
       ]);
