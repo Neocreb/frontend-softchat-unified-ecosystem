@@ -879,10 +879,10 @@ export const ReadingGuide: FC = () => {
 // Text-to-Speech Button
 interface TextToSpeechProps {
   text: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const TextToSpeechButton: React.FC<TextToSpeechProps> = ({
+export const TextToSpeechButton: FC<TextToSpeechProps> = ({
   text,
   children,
 }) => {
