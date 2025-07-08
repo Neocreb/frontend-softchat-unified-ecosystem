@@ -126,6 +126,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // Check for an existing session on component mount
   useEffect(() => {
     console.log("AuthProvider: Initializing");
+    let mounted = true;
 
     const initializeAuth = async () => {
       try {
@@ -138,6 +139,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
           error: sessionError,
         } = await supabase.auth.getSession();
 
+        // Only update state if component is still mounted
+        if (!mounted) return;
+
         if (sessionError) {
           console.error("Error getting session:", sessionError);
           setError(sessionError);
@@ -147,9 +151,13 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }
       } catch (error) {
         console.error("Auth initialization error:", error);
-        setError(error as Error);
+        if (mounted) {
+          setError(error as Error);
+        }
       } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -161,19 +169,27 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session?.user?.id);
 
+      // Only update state if component is still mounted
+      if (!mounted) return;
+
       try {
         setSession(session);
         setUser(enhanceUserData(session?.user || null));
         setError(null);
       } catch (error) {
         console.error("Auth state change error:", error);
-        setError(error as Error);
+        if (mounted) {
+          setError(error as Error);
+        }
       } finally {
-        setIsLoading(false);
+        if (mounted) {
+          setIsLoading(false);
+        }
       }
     });
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, [enhanceUserData]);

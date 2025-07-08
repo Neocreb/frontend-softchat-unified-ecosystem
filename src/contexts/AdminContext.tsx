@@ -59,6 +59,8 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   }, [adminSession]);
 
   const initializeAdminSession = async () => {
+    let mounted = true;
+
     try {
       setIsLoading(true);
 
@@ -72,7 +74,9 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
 
           // Validate session is still active
           const isValid = await validateSession(sessionToken);
-          if (isValid) {
+
+          // Only update state if component is still mounted
+          if (mounted && isValid) {
             setCurrentAdmin(admin);
             setAdminSession({
               id: `session-${admin.id}`,
@@ -84,7 +88,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
               expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
               createdAt: new Date(),
             });
-          } else {
+          } else if (!isValid) {
             // Session invalid, clear storage
             localStorage.removeItem("admin_session");
             localStorage.removeItem("admin_user");
@@ -98,8 +102,14 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
     } catch (error) {
       console.error("Error initializing admin session:", error);
     } finally {
-      setIsLoading(false);
+      if (mounted) {
+        setIsLoading(false);
+      }
     }
+
+    return () => {
+      mounted = false;
+    };
   };
 
   const validateSession = async (sessionToken: string): Promise<boolean> => {
