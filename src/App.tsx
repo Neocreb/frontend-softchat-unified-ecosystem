@@ -191,21 +191,22 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Protected routes inside app layout */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <WalletProvider>
-              <MarketplaceProvider>
-                <ChatProvider>
-                  <AppLayout />
-                </ChatProvider>
-              </MarketplaceProvider>
-            </WalletProvider>
-          </ProtectedRoute>
-        }
-      >
+      {/* Protected routes - only render when not loading */}
+      {!isLoading && (
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <WalletProvider>
+                <MarketplaceProvider>
+                  <ChatProvider>
+                    <AppLayout />
+                  </ChatProvider>
+                </MarketplaceProvider>
+              </WalletProvider>
+            </ProtectedRoute>
+          }
+        >
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="create" element={<EnhancedFreelance />} />
         <Route path="freelance" element={<FreelanceJobs />} />
