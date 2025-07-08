@@ -376,7 +376,7 @@ export class EnhancedAIService {
     // Analyze what specific action they want to learn
     if (input.includes("post") || input.includes("content")) {
       return {
-        message: `**How to Create Engaging Content:**\n\n1. Go to Create page or click '+' button\n2. Choose content type (post, image, video)\n3. Write compelling caption with relevant hashtags\n4. Add high-quality visuals\n5. Post at optimal times (7-9 PM for best engagement)\n6. Engage with comments quickly\n\n**Pro Tips:** Use trending hashtags, post consistently, and create value for your audience!`,
+        message: `How to Create Engaging Content:\n\n1. Go to Create page or click the '+' button\n2. Choose your content type (post, image, video)\n3. Write a compelling caption with relevant hashtags\n4. Add high-quality visuals that catch attention\n5. Post at optimal times (7-9 PM works best for engagement)\n6. Engage with comments quickly to build community\n\nPro Tips: Use trending hashtags, post consistently, and always create value for your audience!`,
         suggestedActions: [
           { label: "Create First Post", action: "create", url: "/create" },
           {
@@ -521,7 +521,7 @@ export class EnhancedAIService {
         ],
       },
       social: {
-        message: `**Building Your Social Presence:**\n\n👥 **Growth Strategies:**\n• Post consistently (daily recommended)\n• Use trending hashtags in your niche\n• Engage authentically with others\n• Share valuable, original content\n• Collaborate with other creators\n\n📈 **Engagement Tips:**\n• Respond to comments quickly\n• Ask questions in your posts\n• Share behind-the-scenes content\n• Post at optimal times (7-9 PM)`,
+        message: `Building Your Social Presence:\n\n👥 Growth Strategies:\n• Post consistently (daily is ideal)\n• Use trending hashtags in your niche\n• Engage authentically with others\n• Share valuable, original content\n• Collaborate with other creators\n\n📈 Engagement Tips:\n• Respond to comments quickly\n• Ask questions in your posts\n• Share behind-the-scenes content\n• Post at optimal times (7-9 PM works best)`,
         suggestedActions: [
           { label: "Create Post", action: "create", url: "/create" },
           { label: "Find Trending Topics", action: "explore", url: "/explore" },
@@ -529,7 +529,7 @@ export class EnhancedAIService {
         ],
       },
       trading: {
-        message: `**Crypto Trading Insights:**\n\n📊 **Current Market:**\n• Bitcoin: Strong support at $43,500\n• Ethereum: Bullish fundamentals\n• 50+ trading pairs available\n• Real-time market data\n\n⚡ **Trading Features:**\n• Spot trading with low fees\n• Copy trading from experts\n• Advanced charting tools\n• Risk management orders\n\n**Remember:** Only trade what you can afford to lose!`,
+        message: `Crypto Trading Insights:\n\n📊 Current Market:\n• Bitcoin: Strong support at $43,500\n• Ethereum: Bullish fundamentals\n• 50+ trading pairs available\n• Real-time market data\n\n⚡ Trading Features:\n• Spot trading with low fees\n• Copy trading from experts\n• Advanced charting tools\n• Risk management orders\n\nRemember: Only trade what you can afford to lose!`,
         suggestedActions: [
           { label: "View Markets", action: "crypto", url: "/crypto" },
           { label: "Copy Expert Traders", action: "copy_trading" },
@@ -537,7 +537,7 @@ export class EnhancedAIService {
         ],
       },
       general: {
-        message: `**Welcome to SoftChat! 🌟**\n\nI'm Edith, your AI assistant. I can help you with:\n\n🎯 **Platform Navigation** - Find any feature quickly\n📈 **Performance Optimization** - Maximize your success\n💡 **Strategy Advice** - Best practices for each feature\n🛠️ **Technical Support** - Solve any issues\n📚 **Learning Resources** - Tutorials and guides\n\n**Just ask me anything!** I know every detail about the platform and I'm here to help you succeed.`,
+        message: `Welcome to SoftChat! 🌟\n\nI'm Edith, your AI assistant. I can help you with:\n\n🎯 Platform Navigation - Find any feature quickly\n📈 Performance Optimization - Maximize your success\n💡 Strategy Advice - Best practices for each feature\n🛠️ Technical Support - Solve any issues\n📚 Learning Resources - Tutorials and guides\n\nJust ask me anything! I know every detail about the platform and I'm here to help you succeed.`,
         suggestedActions: [
           { label: "Platform Tour", action: "tour" },
           { label: "Quick Start Guide", action: "quick_start" },
