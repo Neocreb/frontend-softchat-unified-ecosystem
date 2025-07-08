@@ -10,18 +10,35 @@ const SUPABASE_ANON_KEY =
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function setupAdminProfile() {
-  const adminUserId = "22c17f79-907d-40ac-b2f2-5bcf2b441df3"; // From previous creation
   const adminEmail = "admin@softchat.com";
+  const adminPassword = "Admin123!";
   const adminName = "Super Admin";
 
   try {
     console.log("🔧 Setting up admin profile...");
 
-    // Create or update profile for the admin user
+    // First, sign in as the admin user to get proper session
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email: adminEmail,
+        password: adminPassword,
+      });
+
+    if (authError) {
+      throw new Error(`Authentication failed: ${authError.message}`);
+    }
+
+    if (!authData.user) {
+      throw new Error("No user data returned");
+    }
+
+    console.log("✅ Authenticated as admin user:", authData.user.id);
+
+    // Now create/update profile with authenticated session
     const { data: profileData, error: profileError } = await supabase
       .from("profiles")
       .upsert({
-        user_id: adminUserId,
+        user_id: authData.user.id,
         username: "superadmin",
         full_name: adminName,
         name: adminName,
@@ -47,7 +64,7 @@ async function setupAdminProfile() {
     const { data: walletData, error: walletError } = await supabase
       .from("wallets")
       .upsert({
-        user_id: adminUserId,
+        user_id: authData.user.id,
         softpoints_balance: 100000,
         usdt_balance: 1000,
         btc_balance: 0.1,
@@ -69,9 +86,9 @@ async function setupAdminProfile() {
     console.log("📋 Admin Login Details:");
     console.log("   📧 Email: admin@softchat.com");
     console.log("   🔑 Password: Admin123!");
-    console.log("   👤 User ID:", adminUserId);
-    console.log("   🌐 Admin Dashboard: http://localhost:5173/admin/dashboard");
-    console.log("   🔐 Admin Login: http://localhost:5173/admin-login");
+    console.log("   👤 User ID:", authData.user.id);
+    console.log("   🌐 Admin Dashboard: http://localhost:5000/admin/dashboard");
+    console.log("   🔐 Admin Login: http://localhost:5000/admin-login");
     console.log("\n⚠️  Important:");
     console.log("   • Please change the password after first login");
     console.log("   • The user has admin role set in the profile");
