@@ -156,40 +156,40 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
 const AppRoutes = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // If still loading auth state, show splash screen
-  if (isLoading) {
-    console.log("App routes: Auth is loading");
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading Softchat...</p>
-          <p className="text-xs text-muted-foreground mt-2">
-            Initializing session
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  console.log("App routes: Auth state determined", { isAuthenticated });
+  console.log("App routes: Auth state", { isAuthenticated, isLoading });
 
   return (
     <Routes>
+      {/* Admin login - accessible without authentication */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
       {/* Root path shows original feature-rich landing page */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
 
-      {/* Auth route - redirects to feed if already authenticated */}
-      <Route
-        path="/auth"
-        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
-      />
-
       {/* Public Blog routes - accessible to everyone */}
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
+
+      {/* Auth route - handle loading state and redirects */}
+      <Route
+        path="/auth"
+        element={
+          isLoading ? (
+            <div className="h-screen flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Loading...</p>
+              </div>
+            </div>
+          ) : isAuthenticated ? (
+            <Navigate to="/feed" replace />
+          ) : (
+            <Auth />
+          )
+        }
+      />
 
       {/* Protected routes inside app layout */}
       <Route
