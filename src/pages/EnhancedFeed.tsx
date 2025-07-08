@@ -41,7 +41,11 @@ import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
 import EventsBannerCard from "@/components/feed/EventsBannerCard";
-import { PullToRefresh, SwipeDetector, InfiniteScroll } from "@/components/mobile/TouchOptimizations";
+import {
+  PullToRefresh,
+  SwipeDetector,
+  InfiniteScroll,
+} from "@/components/mobile/TouchOptimizations";
 import {
   MediaUpload,
   PostCreationData,
@@ -1174,7 +1178,7 @@ export default function EnhancedFeed() {
     setIsLoading(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Generate more mock posts
       const newPosts = Array.from({ length: 3 }, (_, i) => ({
@@ -1183,7 +1187,7 @@ export default function EnhancedFeed() {
         timestamp: `${Math.floor(Math.random() * 24)} hours ago`,
       }));
 
-      setPosts(prev => [...prev, ...newPosts]);
+      setPosts((prev) => [...prev, ...newPosts]);
 
       // Simulate reaching end of content
       if (posts.length > 20) {
@@ -1198,7 +1202,7 @@ export default function EnhancedFeed() {
   const refreshFeed = async () => {
     try {
       // Simulate refreshing data
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Reset posts to initial state with new content
       const refreshedPosts = initialMockPosts.map((post, i) => ({
@@ -1220,118 +1224,122 @@ export default function EnhancedFeed() {
     <PullToRefresh onRefresh={refreshFeed}>
       <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden">
         <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-safe-area-bottom">
-        {/* Stories */}
-        <Stories
-          stories={stories}
-          onCreateStory={() => setShowStoryCreation(true)}
-          onViewStory={handleViewStory}
-        />
+          {/* Stories */}
+          <Stories
+            stories={stories}
+            onCreateStory={() => setShowStoryCreation(true)}
+            onViewStory={handleViewStory}
+          />
 
-        {/* Create Post */}
-        <CreatePost onPostCreated={handlePostCreated} />
+          {/* Create Post */}
+          <CreatePost onPostCreated={handlePostCreated} />
 
-        {/* Events Banner - New Feature Promotion */}
-        <EventsBannerCard />
+          {/* Events Banner - New Feature Promotion */}
+          <EventsBannerCard />
 
-        {/* Live Streams Section */}
-        {liveStreams.length > 0 && (
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  Live Now
-                </h3>
-                <Button variant="ghost" size="sm">
-                  View All
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 gap-3">
-                {liveStreams.map((stream) => (
-                  <div
-                    key={stream.id}
-                    className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
-                    onClick={() => setSelectedLiveStream(stream)}
-                  >
-                    <div className="relative">
-                      <Avatar className="h-12 w-12">
-                        <AvatarImage src={stream.streamerAvatar} />
-                        <AvatarFallback>
-                          {stream.streamerName.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-white rounded-full"></div>
+          {/* Live Streams Section */}
+          {liveStreams.length > 0 && (
+            <Card className="mb-6">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    Live Now
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    View All
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {liveStreams.map((stream) => (
+                    <div
+                      key={stream.id}
+                      className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => setSelectedLiveStream(stream)}
+                    >
+                      <div className="relative">
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage src={stream.streamerAvatar} />
+                          <AvatarFallback>
+                            {stream.streamerName.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">
+                          {stream.title}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {stream.streamerName}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant="secondary" className="text-xs">
+                            {stream.category}
+                          </Badge>
+                          <span className="text-xs text-gray-500">
+                            {stream.viewerCount} viewers
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">
-                        {stream.title}
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        {stream.streamerName}
-                      </p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="secondary" className="text-xs">
-                          {stream.category}
-                        </Badge>
-                        <span className="text-xs text-gray-500">
-                          {stream.viewerCount} viewers
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-        {/* AI Content Recommendations */}
-        <SmartContentRecommendations
-          contentType="posts"
-          availableContent={posts}
-          onContentSelect={(post) => {
-            // Scroll to selected post or handle selection
-            console.log("Selected recommended post:", post);
-          }}
-          maxItems={4}
-          className="mb-6"
-          layout="grid"
-        />
+          {/* AI Content Recommendations */}
+          <SmartContentRecommendations
+            contentType="posts"
+            availableContent={posts}
+            onContentSelect={(post) => {
+              // Scroll to selected post or handle selection
+              console.log("Selected recommended post:", post);
+            }}
+            maxItems={4}
+            className="mb-6"
+            layout="grid"
+          />
 
-        {/* Posts Feed with Infinite Scroll */}
-        <InfiniteScroll
-          hasMore={hasMorePosts}
-          isLoading={isLoading}
-          onLoadMore={loadMorePosts}
-          className="space-y-6"
-        >
-          {posts.map((post, index) => (
-            <SwipeDetector
-              key={post.id}
-              onSwipeLeft={() => console.log(`Swiped left on post ${post.id}`)}
-              onSwipeRight={() => console.log(`Swiped right on post ${post.id}`)}
-            >
-              <PostCard post={post} onPostUpdate={handlePostUpdate} />
+          {/* Posts Feed with Infinite Scroll */}
+          <InfiniteScroll
+            hasMore={hasMorePosts}
+            isLoading={isLoading}
+            onLoadMore={loadMorePosts}
+            className="space-y-6"
+          >
+            {posts.map((post, index) => (
+              <SwipeDetector
+                key={post.id}
+                onSwipeLeft={() =>
+                  console.log(`Swiped left on post ${post.id}`)
+                }
+                onSwipeRight={() =>
+                  console.log(`Swiped right on post ${post.id}`)
+                }
+              >
+                <PostCard post={post} onPostUpdate={handlePostUpdate} />
 
-              {/* Insert AI recommendations between posts occasionally */}
-              {index === 2 && (
-                <SmartContentRecommendations
-                  contentType="mixed"
-                  availableContent={[...posts, ...stories]}
-                  onContentSelect={(content) => {
-                    console.log("Selected mixed content:", content);
-                  }}
-                  maxItems={3}
-                  className="my-6"
-                  layout="carousel"
-                  showReasons={true}
-                />
-              )}
-            </SwipeDetector>
-          ))}
-        </InfiniteScroll>
+                {/* Insert AI recommendations between posts occasionally */}
+                {index === 2 && (
+                  <SmartContentRecommendations
+                    contentType="mixed"
+                    availableContent={[...posts, ...stories]}
+                    onContentSelect={(content) => {
+                      console.log("Selected mixed content:", content);
+                    }}
+                    maxItems={3}
+                    className="my-6"
+                    layout="carousel"
+                    showReasons={true}
+                  />
+                )}
+              </SwipeDetector>
+            ))}
+          </InfiniteScroll>
         </div>
       </div>
 
@@ -1373,6 +1381,6 @@ export default function EnhancedFeed() {
         initialStoryIndex={selectedStoryIndex}
         initialUserIndex={selectedUserIndex}
       />
-    </div>
+    </PullToRefresh>
   );
 }
