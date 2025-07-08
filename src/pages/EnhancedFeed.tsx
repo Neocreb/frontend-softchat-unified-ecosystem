@@ -42,6 +42,11 @@ import { SmartContentRecommendations } from "@/components/ai/SmartContentRecomme
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
 import EventsBannerCard from "@/components/feed/EventsBannerCard";
 import {
+  PullToRefresh,
+  SwipeDetector,
+  InfiniteScroll,
+} from "@/components/mobile/TouchOptimizations";
+import {
   MediaUpload,
   PostCreationData,
   feedService,
@@ -1122,6 +1127,7 @@ export default function EnhancedFeed() {
   const [posts, setPosts] = useState(initialMockPosts);
   const [stories, setStories] = useState(initialMockStories);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
   const [selectedLiveStream, setSelectedLiveStream] =
     useState<LiveStream | null>(null);
@@ -1165,135 +1171,175 @@ export default function EnhancedFeed() {
     setShowStoryViewer(true);
   };
 
-  // Simulate loading more posts
-  const loadMorePosts = () => {
+  // Load more posts
+  const loadMorePosts = async () => {
+    if (isLoading) return;
+
     setIsLoading(true);
-    setTimeout(() => {
-      // Add more posts (in real app, fetch from API)
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Generate more mock posts
+      const newPosts = Array.from({ length: 3 }, (_, i) => ({
+        ...initialMockPosts[i % initialMockPosts.length],
+        id: `${Date.now()}-${i}`,
+        timestamp: `${Math.floor(Math.random() * 24)} hours ago`,
+      }));
+
+      setPosts((prev) => [...prev, ...newPosts]);
+
+      // Simulate reaching end of content
+      if (posts.length > 20) {
+        setHasMorePosts(false);
+      }
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
+  };
+
+  // Refresh feed
+  const refreshFeed = async () => {
+    try {
+      // Simulate refreshing data
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Reset posts to initial state with new content
+      const refreshedPosts = initialMockPosts.map((post, i) => ({
+        ...post,
+        id: `refreshed-${Date.now()}-${i}`,
+        timestamp: "Just now",
+        likes: post.likes + Math.floor(Math.random() * 10),
+        comments: post.comments + Math.floor(Math.random() * 5),
+      }));
+
+      setPosts(refreshedPosts);
+      setHasMorePosts(true);
+    } catch (error) {
+      console.error("Failed to refresh feed:", error);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden">
-      <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-safe-area-bottom">
-        {/* Stories */}
-        <Stories
-          stories={stories}
-          onCreateStory={() => setShowStoryCreation(true)}
-          onViewStory={handleViewStory}
-        />
+    <PullToRefresh onRefresh={refreshFeed}>
+      <div className="min-h-screen bg-gray-50 w-full max-w-full overflow-x-hidden">
+        <div className="w-full max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-6 pb-safe-area-bottom">
+          {/* Stories */}
+          <Stories
+            stories={stories}
+            onCreateStory={() => setShowStoryCreation(true)}
+            onViewStory={handleViewStory}
+          />
 
-        {/* Create Post */}
-        <CreatePost onPostCreated={handlePostCreated} />
+          {/* Create Post */}
+          <CreatePost onPostCreated={handlePostCreated} />
 
-        {/* Events Banner - New Feature Promotion */}
-        <EventsBannerCard />
+          {/* Events Banner - New Feature Promotion */}
+          <EventsBannerCard />
 
-        {/* Live Streams Section */}
-        {liveStreams.length > 0 && (
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  Live Now
-                </h3>
-                <Button variant="ghost" size="sm">
-                  View All
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 gap-3">
-                {liveStreams.map((stream) => (
-                  <div
-                    key={stream.id}
-                    className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
-                    onClick={() => setSelectedLiveStream(stream)}
-                  >
-                    <div className="relative">
-                      <Avatar className="h-12 w-12">
-                        <AvatarImage src={stream.streamerAvatar} />
-                        <AvatarFallback>
-                          {stream.streamerName.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                        <div className="w-2 h-2 bg-white rounded-full"></div>
+          {/* Live Streams Section */}
+          {liveStreams.length > 0 && (
+            <Card className="mb-6">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    Live Now
+                  </h3>
+                  <Button variant="ghost" size="sm">
+                    View All
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {liveStreams.map((stream) => (
+                    <div
+                      key={stream.id}
+                      className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => setSelectedLiveStream(stream)}
+                    >
+                      <div className="relative">
+                        <Avatar className="h-12 w-12">
+                          <AvatarImage src={stream.streamerAvatar} />
+                          <AvatarFallback>
+                            {stream.streamerName.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">
+                          {stream.title}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {stream.streamerName}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge variant="secondary" className="text-xs">
+                            {stream.category}
+                          </Badge>
+                          <span className="text-xs text-gray-500">
+                            {stream.viewerCount} viewers
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">
-                        {stream.title}
-                      </p>
-                      <p className="text-xs text-gray-600">
-                        {stream.streamerName}
-                      </p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="secondary" className="text-xs">
-                          {stream.category}
-                        </Badge>
-                        <span className="text-xs text-gray-500">
-                          {stream.viewerCount} viewers
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-        {/* AI Content Recommendations */}
-        <SmartContentRecommendations
-          contentType="posts"
-          availableContent={posts}
-          onContentSelect={(post) => {
-            // Scroll to selected post or handle selection
-            console.log("Selected recommended post:", post);
-          }}
-          maxItems={4}
-          className="mb-6"
-          layout="grid"
-        />
+          {/* AI Content Recommendations */}
+          <SmartContentRecommendations
+            contentType="posts"
+            availableContent={posts}
+            onContentSelect={(post) => {
+              // Scroll to selected post or handle selection
+              console.log("Selected recommended post:", post);
+            }}
+            maxItems={4}
+            className="mb-6"
+            layout="grid"
+          />
 
-        {/* Posts Feed */}
-        <div className="space-y-6">
-          {posts.map((post, index) => (
-            <div key={post.id}>
-              <PostCard post={post} onPostUpdate={handlePostUpdate} />
+          {/* Posts Feed with Infinite Scroll */}
+          <InfiniteScroll
+            hasMore={hasMorePosts}
+            isLoading={isLoading}
+            onLoadMore={loadMorePosts}
+            className="space-y-6"
+          >
+            {posts.map((post, index) => (
+              <SwipeDetector
+                key={post.id}
+                onSwipeLeft={() =>
+                  console.log(`Swiped left on post ${post.id}`)
+                }
+                onSwipeRight={() =>
+                  console.log(`Swiped right on post ${post.id}`)
+                }
+              >
+                <PostCard post={post} onPostUpdate={handlePostUpdate} />
 
-              {/* Insert AI recommendations between posts occasionally */}
-              {index === 2 && (
-                <SmartContentRecommendations
-                  contentType="mixed"
-                  availableContent={[...posts, ...stories]}
-                  onContentSelect={(content) => {
-                    console.log("Selected mixed content:", content);
-                  }}
-                  maxItems={3}
-                  className="my-6"
-                  layout="carousel"
-                  showReasons={true}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Load More */}
-        {isLoading && (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-          </div>
-        )}
-
-        {/* End of Feed */}
-        <div className="text-center py-8">
-          <p className="text-gray-500">You're all caught up!</p>
-          <p className="text-sm text-gray-400 mt-1">
-            Check back later for new posts
-          </p>
+                {/* Insert AI recommendations between posts occasionally */}
+                {index === 2 && (
+                  <SmartContentRecommendations
+                    contentType="mixed"
+                    availableContent={[...posts, ...stories]}
+                    onContentSelect={(content) => {
+                      console.log("Selected mixed content:", content);
+                    }}
+                    maxItems={3}
+                    className="my-6"
+                    layout="carousel"
+                    showReasons={true}
+                  />
+                )}
+              </SwipeDetector>
+            ))}
+          </InfiniteScroll>
         </div>
       </div>
 
@@ -1335,6 +1381,6 @@ export default function EnhancedFeed() {
         initialStoryIndex={selectedStoryIndex}
         initialUserIndex={selectedUserIndex}
       />
-    </div>
+    </PullToRefresh>
   );
 }

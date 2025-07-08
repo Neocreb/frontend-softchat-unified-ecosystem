@@ -51,12 +51,16 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (!adminSession) return;
+
     // Check session validity every 5 minutes
     const interval = setInterval(checkSessionValidity, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, [adminSession]);
 
   const initializeAdminSession = async () => {
+    let mounted = true;
+
     try {
       setIsLoading(true);
 
@@ -70,14 +74,21 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
 
           // Validate session is still active
           const isValid = await validateSession(sessionToken);
-          if (isValid) {
+
+          // Only update state if component is still mounted
+          if (mounted && isValid) {
             setCurrentAdmin(admin);
             setAdminSession({
-              sessionToken,
+              id: `session-${admin.id}`,
               adminId: admin.id,
+              sessionToken,
+              ipAddress: window.location.hostname,
+              userAgent: navigator.userAgent,
               isActive: true,
-            } as AdminSession);
-          } else {
+              expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
+              createdAt: new Date(),
+            });
+          } else if (!isValid) {
             // Session invalid, clear storage
             localStorage.removeItem("admin_session");
             localStorage.removeItem("admin_user");
@@ -91,8 +102,14 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
     } catch (error) {
       console.error("Error initializing admin session:", error);
     } finally {
-      setIsLoading(false);
+      if (mounted) {
+        setIsLoading(false);
+      }
     }
+
+    return () => {
+      mounted = false;
+    };
   };
 
   const validateSession = async (sessionToken: string): Promise<boolean> => {

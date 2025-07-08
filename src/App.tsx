@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { setupGlobalErrorHandlers } from "@/lib/error-handler";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { AdminProvider } from "./contexts/AdminContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
@@ -26,6 +27,7 @@ import {
   PWAInstallPrompt,
 } from "./components/mobile/MobileOptimizations";
 import MobileLayoutChecker from "./components/layout/MobileLayoutChecker";
+import PerformanceMonitor from "./components/debug/PerformanceMonitor";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -57,6 +59,12 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminManagement from "./pages/admin/AdminManagement";
 import PlatformSettings from "./pages/admin/PlatformSettings";
 import ContentModeration from "./pages/admin/ContentModeration";
+import AdminMarketplace from "./pages/admin/AdminMarketplace";
+import AdminCrypto from "./pages/admin/AdminCrypto";
+import AdminFreelance from "./pages/admin/AdminFreelance";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminLogs from "./pages/admin/AdminLogs";
+import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideos from "./pages/EnhancedVideos";
@@ -175,20 +183,7 @@ const AppRoutes = () => {
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
-        element={
-          isLoading ? (
-            <div className="h-screen flex items-center justify-center">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading...</p>
-              </div>
-            </div>
-          ) : isAuthenticated ? (
-            <Navigate to="/feed" replace />
-          ) : (
-            <Auth />
-          )
-        }
+        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
       />
 
       {/* Protected routes - only render when not loading */}
@@ -213,6 +208,11 @@ const AppRoutes = () => {
           <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
           <Route path="messages" element={<Messages />} />
           <Route path="messages/:threadId" element={<ChatRoom />} />
+          <Route path="chat" element={<Navigate to="/messages" replace />} />
+          <Route
+            path="chat/:threadId"
+            element={<Navigate to="/messages/:threadId" replace />}
+          />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
           <Route path="profile/:username" element={<EnhancedProfile />} />
@@ -284,11 +284,18 @@ const AppRoutes = () => {
           </AdminRoute>
         }
       >
+        <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="management" element={<AdminManagement />} />
         <Route path="settings" element={<PlatformSettings />} />
         <Route path="moderation" element={<ContentModeration />} />
+        <Route path="marketplace" element={<AdminMarketplace />} />
+        <Route path="crypto" element={<AdminCrypto />} />
+        <Route path="freelance" element={<AdminFreelance />} />
+        <Route path="analytics" element={<AdminAnalytics />} />
+        <Route path="logs" element={<AdminLogs />} />
+        <Route path="security" element={<AdminSecurity />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
@@ -298,6 +305,11 @@ const AppRoutes = () => {
 
 const App = () => {
   console.log("App rendering");
+
+  // Setup global error handlers for fetch aborts
+  React.useEffect(() => {
+    setupGlobalErrorHandlers();
+  }, []);
 
   // Register service worker for PWA
   React.useEffect(() => {
@@ -317,7 +329,26 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <SafeThemeProvider>
-          <ErrorBoundary fallback={<div>Loading application...</div>}>
+          <ErrorBoundary
+            fallback={
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Application Error
+                  </h2>
+                  <p className="text-muted-foreground mb-4">
+                    Something went wrong. Please refresh the page.
+                  </p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-primary text-primary-foreground rounded"
+                  >
+                    Refresh Page
+                  </button>
+                </div>
+              </div>
+            }
+          >
             {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
             <AuthProvider>
               <AdminProvider>
@@ -334,6 +365,7 @@ const App = () => {
                     <ConnectionStatus />
                     <PWAInstallPrompt />
                     <MobileLayoutChecker />
+                    <PerformanceMonitor />
 
                     {/* Toasters */}
                     <Toaster />

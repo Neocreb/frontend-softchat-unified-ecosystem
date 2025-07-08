@@ -75,8 +75,30 @@ export const LOCATION_SUGGESTIONS = [
 ];
 
 class FeedService {
+  // Helper method for delays with abort support
+  private delay(ms: number, signal?: AbortSignal): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (signal?.aborted) {
+        reject(new Error("Request was aborted"));
+        return;
+      }
+
+      const timeout = setTimeout(() => {
+        resolve();
+      }, ms);
+
+      signal?.addEventListener("abort", () => {
+        clearTimeout(timeout);
+        reject(new Error("Request was aborted"));
+      });
+    });
+  }
+
   // Media upload functionality
-  async uploadMedia(files: File[]): Promise<MediaUpload[]> {
+  async uploadMedia(
+    files: File[],
+    signal?: AbortSignal,
+  ): Promise<MediaUpload[]> {
     const uploads: MediaUpload[] = [];
 
     for (const file of files) {
@@ -101,9 +123,12 @@ class FeedService {
   }
 
   // Create a new post
-  async createPost(postData: PostCreationData): Promise<any> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  async createPost(
+    postData: PostCreationData,
+    signal?: AbortSignal,
+  ): Promise<any> {
+    // Simulate API call with abort support
+    await this.delay(1000, signal);
 
     const newPost = {
       id: Date.now().toString(),
@@ -139,9 +164,10 @@ class FeedService {
   async toggleLike(
     postId: string,
     currentlyLiked: boolean,
+    signal?: AbortSignal,
   ): Promise<{ isLiked: boolean; likesCount: number }> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    // Simulate API call with abort support
+    await this.delay(300, signal);
 
     return {
       isLiked: !currentlyLiked,
@@ -153,9 +179,10 @@ class FeedService {
   async toggleSave(
     postId: string,
     currentlySaved: boolean,
+    signal?: AbortSignal,
   ): Promise<{ isSaved: boolean }> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    // Simulate API call with abort support
+    await this.delay(300, signal);
 
     return {
       isSaved: !currentlySaved,
@@ -165,9 +192,10 @@ class FeedService {
   // Share a post
   async sharePost(
     postId: string,
+    signal?: AbortSignal,
   ): Promise<{ success: boolean; shareCount: number }> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Simulate API call with abort support
+    await this.delay(500, signal);
 
     return {
       success: true,
@@ -176,9 +204,9 @@ class FeedService {
   }
 
   // Get comments for a post
-  async getComments(postId: string): Promise<Comment[]> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  async getComments(postId: string, signal?: AbortSignal): Promise<Comment[]> {
+    // Simulate API call with abort support
+    await this.delay(500, signal);
 
     // Mock comments data
     return [
@@ -206,9 +234,13 @@ class FeedService {
   }
 
   // Add a comment
-  async addComment(postId: string, content: string): Promise<Comment> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 400));
+  async addComment(
+    postId: string,
+    content: string,
+    signal?: AbortSignal,
+  ): Promise<Comment> {
+    // Simulate API call with abort support
+    await this.delay(400, signal);
 
     return {
       id: Date.now().toString(),
@@ -223,9 +255,12 @@ class FeedService {
   }
 
   // Search locations
-  async searchLocations(query: string): Promise<typeof LOCATION_SUGGESTIONS> {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 300));
+  async searchLocations(
+    query: string,
+    signal?: AbortSignal,
+  ): Promise<typeof LOCATION_SUGGESTIONS> {
+    // Simulate API call with abort support
+    await this.delay(300, signal);
 
     return LOCATION_SUGGESTIONS.filter((location) =>
       location.name.toLowerCase().includes(query.toLowerCase()),
