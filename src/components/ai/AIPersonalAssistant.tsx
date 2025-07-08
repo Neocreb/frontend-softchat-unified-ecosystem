@@ -73,6 +73,7 @@ import {
   type PerformanceAnalysis,
   type AIPersonalAssistant,
 } from "@/services/aiPersonalAssistantService";
+import { enhancedAIService } from "@/services/enhancedAIService";
 
 const AIPersonalAssistantDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -161,22 +162,30 @@ const AIPersonalAssistantDashboard: React.FC = () => {
     };
 
     setChatMessages((prev) => [...prev, userMessage]);
+    const currentInput = chatInput;
     setChatInput("");
 
-    // Simulate AI response
+    // Use enhanced AI service for intelligent responses
     setTimeout(() => {
+      const smartResponse = enhancedAIService.generateSmartResponse(
+        currentInput,
+        user,
+      );
       const aiResponse = {
         id: `ai-${Date.now()}`,
         type: "assistant",
-        content: generateAIResponse(chatInput),
+        content: smartResponse.message,
         timestamp: new Date(),
+        suggestedActions: smartResponse.suggestedActions,
+        relatedTopics: smartResponse.relatedTopics,
+        followUpQuestions: smartResponse.followUpQuestions,
       };
       setChatMessages((prev) => [...prev, aiResponse]);
-    }, 1000);
+    }, 800);
 
     // Track interaction
     await aiPersonalAssistantService.trackInteraction(user.id, "chat", {
-      message: chatInput,
+      message: currentInput,
     });
   };
 
