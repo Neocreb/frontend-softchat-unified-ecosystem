@@ -277,7 +277,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, [user]);
 
   // Update user profile
-  const updateProfile = React.useCallback(
+  const updateProfile = useCallback(
     async (data: Partial<UserProfile>): Promise<void> => {
       try {
         if (!user) {
