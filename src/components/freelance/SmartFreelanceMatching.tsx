@@ -285,11 +285,23 @@ export const SmartFreelanceMatching: React.FC<{
       </div>
 
       <Tabs defaultValue="talent" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="talent">Talent Matching</TabsTrigger>
-          <TabsTrigger value="success">Success Predictor</TabsTrigger>
-          <TabsTrigger value="skills">Skill Gap Analysis</TabsTrigger>
-          <TabsTrigger value="budget">Budget Optimization</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+          <TabsTrigger value="talent" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Talent Matching</span>
+            <span className="sm:hidden">Talent</span>
+          </TabsTrigger>
+          <TabsTrigger value="success" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Success Predictor</span>
+            <span className="sm:hidden">Success</span>
+          </TabsTrigger>
+          <TabsTrigger value="skills" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Skill Gap Analysis</span>
+            <span className="sm:hidden">Skills</span>
+          </TabsTrigger>
+          <TabsTrigger value="budget" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Budget Optimization</span>
+            <span className="sm:hidden">Budget</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="talent" className="space-y-4">

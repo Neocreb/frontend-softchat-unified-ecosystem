@@ -427,12 +427,30 @@ export const FreelanceCollaborationTools: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="team-assembly">Team Assembly</TabsTrigger>
-          <TabsTrigger value="workspace">Project Workspace</TabsTrigger>
-          <TabsTrigger value="time-tracking">Time Tracking</TabsTrigger>
-          <TabsTrigger value="milestones">Milestone Management</TabsTrigger>
-          <TabsTrigger value="contracts">Contract Templates</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1">
+          <TabsTrigger value="team-assembly" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Team Assembly</span>
+            <span className="sm:hidden">Team</span>
+          </TabsTrigger>
+          <TabsTrigger value="workspace" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Project Workspace</span>
+            <span className="sm:hidden">Workspace</span>
+          </TabsTrigger>
+          <TabsTrigger value="time-tracking" className="text-xs sm:text-sm">
+            <span className="hidden lg:inline">Time Tracking</span>
+            <span className="lg:hidden">Time</span>
+          </TabsTrigger>
+          <TabsTrigger value="milestones" className="text-xs sm:text-sm">
+            <span className="hidden lg:inline">Milestone Management</span>
+            <span className="lg:hidden">Milestones</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="contracts"
+            className="text-xs sm:text-sm col-span-2 sm:col-span-1"
+          >
+            <span className="hidden lg:inline">Contract Templates</span>
+            <span className="lg:hidden">Contracts</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="team-assembly" className="space-y-4">

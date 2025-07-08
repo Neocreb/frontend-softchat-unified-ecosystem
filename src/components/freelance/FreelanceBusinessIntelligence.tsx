@@ -385,12 +385,30 @@ export const FreelanceBusinessIntelligence: React.FC = () => {
       </div>
 
       <Tabs defaultValue="rates" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="rates">Rate Negotiation</TabsTrigger>
-          <TabsTrigger value="timeline">Timeline Estimator</TabsTrigger>
-          <TabsTrigger value="risk">Risk Assessment</TabsTrigger>
-          <TabsTrigger value="roi">ROI Calculator</TabsTrigger>
-          <TabsTrigger value="capacity">Capacity Planning</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1">
+          <TabsTrigger value="rates" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Rate Negotiation</span>
+            <span className="sm:hidden">Rates</span>
+          </TabsTrigger>
+          <TabsTrigger value="timeline" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Timeline Estimator</span>
+            <span className="sm:hidden">Timeline</span>
+          </TabsTrigger>
+          <TabsTrigger value="risk" className="text-xs sm:text-sm">
+            <span className="hidden lg:inline">Risk Assessment</span>
+            <span className="lg:hidden">Risk</span>
+          </TabsTrigger>
+          <TabsTrigger value="roi" className="text-xs sm:text-sm">
+            <span className="hidden lg:inline">ROI Calculator</span>
+            <span className="lg:hidden">ROI</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="capacity"
+            className="text-xs sm:text-sm col-span-2 sm:col-span-1"
+          >
+            <span className="hidden lg:inline">Capacity Planning</span>
+            <span className="lg:hidden">Capacity</span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="rates" className="space-y-4">
