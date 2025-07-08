@@ -235,9 +235,17 @@ export const FreelanceJobs: React.FC = () => {
                   <p className="text-muted-foreground mb-4">
                     Save interesting jobs to review them later
                   </p>
-                  <Button onClick={() => setActiveTab("browse")}>
-                    Browse Jobs
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button onClick={() => setActiveTab("browse")}>
+                      Browse Jobs
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setActiveTab("talents")}
+                    >
+                      Browse Talents
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
