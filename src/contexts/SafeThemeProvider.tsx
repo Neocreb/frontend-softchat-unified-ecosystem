@@ -1,12 +1,12 @@
-import React, {
+import {
   Component,
   ReactNode,
   createContext,
   useContext,
   useState,
   useEffect,
-  FC,
-  ErrorInfo,
+  type FC,
+  type ErrorInfo,
 } from "react";
 import { ThemeProvider } from "./ThemeContext";
 
