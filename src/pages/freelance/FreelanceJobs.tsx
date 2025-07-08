@@ -24,6 +24,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export const FreelanceJobs: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
+  const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [activeTab, setActiveTab] = useState("browse");
   const { user } = useAuth();
 
