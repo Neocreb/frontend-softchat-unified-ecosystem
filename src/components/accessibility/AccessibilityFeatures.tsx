@@ -931,9 +931,9 @@ export const TextToSpeechButton: FC<TextToSpeechProps> = ({
 };
 
 // Skip Link Component
-export const SkipLink: React.FC<{
+export const SkipLink: FC<{
   href: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }> = ({ href, children }) => {
   return (
     <a
