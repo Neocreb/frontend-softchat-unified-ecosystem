@@ -443,15 +443,15 @@ export class EnhancedAIService {
 
   private generateOptimizationResponse(input: string): SmartResponse {
     return {
-      message: `**Platform Optimization Strategies:**\n\n🎯 **Content Optimization:**\n• Post during peak hours (7-9 PM)\n• Use 3-5 relevant hashtags\n• Create video content (34% more engagement)\n• Respond to comments within 2 hours\n\n📈 **Earning Optimization:**\n• Complete daily activities for SoftPoints\n• Cross-promote across all features\n• Focus on high-value activities (crypto trading, marketplace sales)\n• Build consistent presence\n\n💡 **Profile Optimization:**\n• Complete all profile sections\n• Add professional photos\n• Showcase your best work\n• Get verified status`,
+      message: `Great question! Here's how to level up your SoftChat game:\n\n🎯 For better content engagement:\n• Post between 7-9 PM when most people are online\n• Use 3-5 hashtags that actually relate to your content\n• Try making more videos - they get 34% more engagement!\n• Reply to comments quickly, like within 2 hours\n\n📈 To earn more money:\n• Do your daily activities for easy SoftPoints\n• Use multiple features - cross-promote your content\n• Focus on the big earners like crypto trading and marketplace sales\n• Stay consistent - show up regularly\n\n💡 Make your profile shine:\n• Fill out every section completely\n• Use professional photos that actually look like you\n• Show off your best work in your portfolio\n• Get that verified checkmark if you can\n\nWhat area would you like me to dive deeper into?`,
       suggestedActions: [
         {
-          label: "Analyze My Performance",
+          label: "Check my current stats",
           action: "analytics",
           url: "/analytics",
         },
-        { label: "View Optimization Tips", action: "tips" },
-        { label: "Check Best Practices", action: "best_practices" },
+        { label: "Give me specific tips", action: "tips" },
+        { label: "Show me what works", action: "best_practices" },
       ],
       relatedTopics: [
         "performance optimization",
@@ -459,26 +459,26 @@ export class EnhancedAIService {
         "earning tips",
       ],
       followUpQuestions: [
-        "How can I increase my engagement rate?",
-        "What's the best content posting schedule?",
-        "How do I get more followers quickly?",
+        "How can I double my engagement rate?",
+        "When exactly should I post my content?",
+        "What's the secret to getting more followers?",
       ],
     };
   }
 
   private generateTroubleshootingResponse(input: string): SmartResponse {
     return {
-      message: `**Common Issues & Solutions:**\n\n🔧 **Account Issues:**\n• Verification problems - Check email/documents\n• Login issues - Reset password or clear cache\n• Profile problems - Update information completely\n\n💰 **Financial Issues:**\n• Payment delays - Check payment method validity\n• Withdrawal problems - Verify account limits\n• Trading issues - Ensure sufficient balance\n\n📱 **Technical Issues:**\n• App crashes - Update to latest version\n• Slow loading - Check internet connection\n• Features not working - Clear browser cache\n\n**Need more help?** Contact our support team or check the help center for detailed guides.`,
+      message: `Oh no! Let me help you fix whatever's going wrong. Here are the most common issues and quick fixes:\n\n🔧 Account problems:\n• Can't verify? Double-check your email or upload clear document photos\n• Can't log in? Try resetting your password or clearing your browser cache\n• Profile acting weird? Make sure all your info is filled out properly\n\n💰 Money issues:\n• Payment taking forever? Check if your payment method is still valid\n• Can't withdraw? You might have hit a daily limit - check your account settings\n• Trading not working? Make sure you have enough balance in your wallet\n\n📱 Technical stuff:\n• App keeps crashing? Update to the newest version from the app store\n• Everything loading super slow? Check your internet connection\n• Features not responding? Clear your browser cache and cookies\n\nStill stuck? Don't worry - our support team is really helpful and usually responds within a few hours. Want me to help you contact them?`,
       suggestedActions: [
-        { label: "Contact Support", action: "support" },
-        { label: "Check Help Center", action: "help_center" },
-        { label: "Report Bug", action: "bug_report" },
+        { label: "Get help from support", action: "support" },
+        { label: "Browse help articles", action: "help_center" },
+        { label: "Report this bug", action: "bug_report" },
       ],
       relatedTopics: ["troubleshooting", "technical support", "account help"],
       followUpQuestions: [
-        "How do I contact support?",
-        "Where is the help center?",
-        "How long do support tickets take?",
+        "How do I reach the support team?",
+        "Where can I find step-by-step help guides?",
+        "How fast does support usually respond?",
       ],
     };
   }
