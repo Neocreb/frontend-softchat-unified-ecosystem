@@ -32,6 +32,8 @@ import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
 import FreelanceJobs from "./pages/freelance/FreelanceJobs";
 import FreelanceDashboard from "./pages/freelance/FreelanceDashboard";
+import Inbox from "./chat/Inbox";
+import ChatRoom from "./chat/ChatRoom";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
