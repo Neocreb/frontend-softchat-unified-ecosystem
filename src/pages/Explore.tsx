@@ -284,6 +284,18 @@ const Explore = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="people" className="mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="md:col-span-2 lg:col-span-3">
+                <SuggestedUsers
+                  title={searchQuery ? `People matching "${searchQuery}"` : "Discover People"}
+                  variant="grid"
+                  maxUsers={12}
+                />
+              </div>
+            </div>
+          </TabsContent>
+
           <TabsContent value="hashtags" className="mt-6">
             <ExploreContent
               activeTab="hashtags"
