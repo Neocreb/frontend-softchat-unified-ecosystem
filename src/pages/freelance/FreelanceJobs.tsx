@@ -32,14 +32,25 @@ export const FreelanceJobs: React.FC = () => {
     setSelectedJob(job);
   };
 
+  const handleTalentSelect = (talent: Talent) => {
+    setSelectedTalent(talent);
+  };
+
   const handleBack = () => {
     setSelectedJob(null);
+    setSelectedTalent(null);
   };
 
   const handleApply = (jobId: string) => {
     // Handle successful application
     setSelectedJob(null);
     setActiveTab("proposals");
+  };
+
+  const handleHire = (talentId: string) => {
+    // Handle talent hiring
+    setSelectedTalent(null);
+    // Could redirect to messaging or contract creation
   };
 
   // Quick stats (mock data)
