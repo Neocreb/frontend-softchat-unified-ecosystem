@@ -22,6 +22,7 @@ import {
   Target,
   Calendar,
   Mail,
+  Lightbulb,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -792,7 +793,7 @@ export const SmartFreelanceNotifications: React.FC = () => {
                   </h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• AI-powered opportunity matching</li>
-                    <li>• Predictive deadline reminders</li>
+                    <li>�� Predictive deadline reminders</li>
                     <li>• Market trend analysis</li>
                     <li>• Personalized recommendations</li>
                   </ul>
