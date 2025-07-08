@@ -8,6 +8,19 @@ import { Button } from "@/components/ui/button";
 const Messages = () => {
   const mockConversations = [
     {
+      id: "edith-ai",
+      user: {
+        name: "Edith - AI Assistant",
+        avatar: "/placeholder.svg",
+        isAI: true,
+      },
+      lastMessage:
+        "Hi! I'm here to help you with anything on SoftChat. Ask me about trading, content creation, earning tips, or anything else!",
+      time: "now",
+      unread: 0,
+      online: true,
+    },
+    {
       id: "1",
       user: { name: "Alice Johnson", avatar: "/placeholder.svg" },
       lastMessage: "Hey! How are you doing?",
@@ -59,32 +72,73 @@ const Messages = () => {
           {mockConversations.map((conversation) => (
             <Card
               key={conversation.id}
-              className="cursor-pointer hover:bg-muted/50 transition-colors"
+              className={`cursor-pointer hover:bg-muted/50 transition-colors ${
+                conversation.user.isAI
+                  ? "border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50"
+                  : ""
+              }`}
             >
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <Avatar className="h-12 w-12">
+                    <Avatar
+                      className={`h-12 w-12 ${
+                        conversation.user.isAI
+                          ? "border-2 border-purple-300"
+                          : ""
+                      }`}
+                    >
                       <AvatarImage src={conversation.user.avatar} />
-                      <AvatarFallback>
-                        {conversation.user.name.substring(0, 2)}
+                      <AvatarFallback
+                        className={
+                          conversation.user.isAI
+                            ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white"
+                            : ""
+                        }
+                      >
+                        {conversation.user.isAI
+                          ? "🤖"
+                          : conversation.user.name.substring(0, 2)}
                       </AvatarFallback>
                     </Avatar>
                     {conversation.online && (
-                      <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 border-2 border-background rounded-full"></div>
+                      <div
+                        className={`absolute -bottom-1 -right-1 h-4 w-4 border-2 border-background rounded-full ${
+                          conversation.user.isAI
+                            ? "bg-purple-500"
+                            : "bg-green-500"
+                        }`}
+                      ></div>
                     )}
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium truncate">
-                        {conversation.user.name}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3
+                          className={`font-medium truncate ${
+                            conversation.user.isAI ? "text-purple-700" : ""
+                          }`}
+                        >
+                          {conversation.user.name}
+                        </h3>
+                        {conversation.user.isAI && (
+                          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                            AI
+                          </span>
+                        )}
+                      </div>
                       <span className="text-xs text-muted-foreground">
                         {conversation.time}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground truncate">
+                    <p
+                      className={`text-sm truncate ${
+                        conversation.user.isAI
+                          ? "text-purple-600"
+                          : "text-muted-foreground"
+                      }`}
+                    >
                       {conversation.lastMessage}
                     </p>
                   </div>
