@@ -32,30 +32,24 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  // Initialize theme state with safer initialization
-  const [theme, setTheme] = useState<Theme>("light"); // Default to light instead of system
-  const [isDark, setIsDark] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  // Initialize theme from localStorage on mount
-  useEffect(() => {
+  // Initialize theme state with immediate localStorage check to avoid hydration issues
+  const [theme, setTheme] = useState<Theme>(() => {
     try {
       if (typeof window !== "undefined" && window.localStorage) {
         const savedTheme = localStorage.getItem("theme") as Theme;
         if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
-          setTheme(savedTheme);
-        } else {
-          // Default to light theme if no saved theme
-          setTheme("light");
+          return savedTheme;
         }
       }
-      setIsInitialized(true);
     } catch (error) {
       console.warn("Failed to read theme from localStorage:", error);
-      setTheme("light"); // Fallback to light theme
-      setIsInitialized(true);
     }
-  }, []);
+    return "light"; // Default fallback
+  });
+
+  const [isDark, setIsDark] = useState(false);
+
+  // Remove the initialization effect since we're handling it in useState
 
   // Determine if dark mode is active
   useEffect(() => {
@@ -139,11 +133,6 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     }),
     [theme, isDark],
   );
-
-  // Don't render children until theme is initialized to prevent context issues
-  if (!isInitialized) {
-    return <div className="theme-loading">{children}</div>;
-  }
 
   return (
     <ThemeContext.Provider value={contextValue}>
