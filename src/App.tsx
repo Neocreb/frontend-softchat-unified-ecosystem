@@ -156,117 +156,126 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
 const AppRoutes = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // If still loading auth state, show splash screen
-  if (isLoading) {
-    console.log("App routes: Auth is loading");
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading Softchat...</p>
-          <p className="text-xs text-muted-foreground mt-2">
-            Initializing session
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  console.log("App routes: Auth state determined", { isAuthenticated });
+  console.log("App routes: Auth state", { isAuthenticated, isLoading });
 
   return (
     <Routes>
+      {/* Admin login - accessible without authentication */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
       {/* Root path shows original feature-rich landing page */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
 
-      {/* Auth route - redirects to feed if already authenticated */}
-      <Route
-        path="/auth"
-        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
-      />
-
       {/* Public Blog routes - accessible to everyone */}
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
 
-      {/* Protected routes inside app layout */}
+      {/* Auth route - handle loading state and redirects */}
       <Route
-        path="/"
+        path="/auth"
         element={
-          <ProtectedRoute>
-            <WalletProvider>
-              <MarketplaceProvider>
-                <ChatProvider>
-                  <AppLayout />
-                </ChatProvider>
-              </MarketplaceProvider>
-            </WalletProvider>
-          </ProtectedRoute>
-        }
-      >
-        <Route path="feed" element={<EnhancedFeed />} />
-        <Route path="create" element={<EnhancedFreelance />} />
-        <Route path="freelance" element={<FreelanceJobs />} />
-        <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
-        <Route path="messages" element={<Messages />} />
-        <Route path="messages/:threadId" element={<ChatRoom />} />
-        <Route path="chat-demo" element={<ChatDemo />} />
-        <Route path="profile" element={<EnhancedProfile />} />
-        <Route path="profile/:username" element={<EnhancedProfile />} />
-        <Route path="user/:username" element={<EnhancedProfile />} />
-        <Route path="demo/profiles" element={<ProfileDemo />} />
-        <Route path="wallet" element={<Wallet />} />
-        <Route path="notifications" element={<Notifications />} />
-
-        {/* Marketplace routes */}
-        <Route path="marketplace" element={<EnhancedMarketplace />} />
-        <Route path="marketplace/my" element={<MarketplaceDashboard />} />
-        <Route path="marketplace/list" element={<MarketplaceList />} />
-        <Route
-          path="marketplace/seller/:username"
-          element={<MarketplaceSeller />}
-        />
-        <Route path="marketplace/wishlist" element={<MarketplaceWishlist />} />
-        <Route path="marketplace/cart" element={<MarketplaceCart />} />
-        <Route path="marketplace/checkout" element={<MarketplaceCheckout />} />
-
-        <Route path="crypto" element={<EnhancedCrypto />} />
-        <Route path="rewards" element={<EnhancedRewards />} />
-        <Route path="videos" element={<EnhancedVideosV2 />} />
-        <Route path="videos-improved" element={<ImprovedVideos />} />
-        <Route path="videos-enhanced" element={<EnhancedVideos />} />
-        <Route path="chat" element={<Navigate to="/messages" replace />} />
-        <Route path="explore" element={<Explore />} />
-        <Route path="events" element={<CommunityEvents />} />
-        <Route path="settings" element={<EnhancedSettings />} />
-        <Route path="analytics" element={<AnalyticsDashboard />} />
-        <Route path="creator-studio" element={<CreatorStudio />} />
-        <Route path="data" element={<DataManagement />} />
-        <Route path="achievements" element={<GamificationSystem />} />
-        <Route path="ai-assistant" element={<AIPersonalAssistantDashboard />} />
-        <Route
-          path="ai"
-          element={
-            <div className="space-y-6 p-6">
-              <h1 className="text-2xl font-bold">AI Features</h1>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <AIFeatures.SmartFeedCuration />
-                <AIFeatures.AIContentAssistant />
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <AIFeatures.SmartPricePrediction />
-                <AIFeatures.AutoContentModeration />
+          isLoading ? (
+            <div className="h-screen flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Loading...</p>
               </div>
             </div>
+          ) : isAuthenticated ? (
+            <Navigate to="/feed" replace />
+          ) : (
+            <Auth />
+          )
+        }
+      />
+
+      {/* Protected routes - only render when not loading */}
+      {!isLoading && (
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <WalletProvider>
+                <MarketplaceProvider>
+                  <ChatProvider>
+                    <AppLayout />
+                  </ChatProvider>
+                </MarketplaceProvider>
+              </WalletProvider>
+            </ProtectedRoute>
           }
-        />
-      </Route>
+        >
+          <Route path="feed" element={<EnhancedFeed />} />
+          <Route path="create" element={<EnhancedFreelance />} />
+          <Route path="freelance" element={<FreelanceJobs />} />
+          <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="messages/:threadId" element={<ChatRoom />} />
+          <Route path="chat-demo" element={<ChatDemo />} />
+          <Route path="profile" element={<EnhancedProfile />} />
+          <Route path="profile/:username" element={<EnhancedProfile />} />
+          <Route path="user/:username" element={<EnhancedProfile />} />
+          <Route path="demo/profiles" element={<ProfileDemo />} />
+          <Route path="wallet" element={<Wallet />} />
+          <Route path="notifications" element={<Notifications />} />
+
+          {/* Marketplace routes */}
+          <Route path="marketplace" element={<EnhancedMarketplace />} />
+          <Route path="marketplace/my" element={<MarketplaceDashboard />} />
+          <Route path="marketplace/list" element={<MarketplaceList />} />
+          <Route
+            path="marketplace/seller/:username"
+            element={<MarketplaceSeller />}
+          />
+          <Route
+            path="marketplace/wishlist"
+            element={<MarketplaceWishlist />}
+          />
+          <Route path="marketplace/cart" element={<MarketplaceCart />} />
+          <Route
+            path="marketplace/checkout"
+            element={<MarketplaceCheckout />}
+          />
+
+          <Route path="crypto" element={<EnhancedCrypto />} />
+          <Route path="rewards" element={<EnhancedRewards />} />
+          <Route path="videos" element={<EnhancedVideosV2 />} />
+          <Route path="videos-improved" element={<ImprovedVideos />} />
+          <Route path="videos-enhanced" element={<EnhancedVideos />} />
+          <Route path="chat" element={<Navigate to="/messages" replace />} />
+          <Route path="explore" element={<Explore />} />
+          <Route path="events" element={<CommunityEvents />} />
+          <Route path="settings" element={<EnhancedSettings />} />
+          <Route path="analytics" element={<AnalyticsDashboard />} />
+          <Route path="creator-studio" element={<CreatorStudio />} />
+          <Route path="data" element={<DataManagement />} />
+          <Route path="achievements" element={<GamificationSystem />} />
+          <Route
+            path="ai-assistant"
+            element={<AIPersonalAssistantDashboard />}
+          />
+          <Route
+            path="ai"
+            element={
+              <div className="space-y-6 p-6">
+                <h1 className="text-2xl font-bold">AI Features</h1>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <AIFeatures.SmartFeedCuration />
+                  <AIFeatures.AIContentAssistant />
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <AIFeatures.SmartPricePrediction />
+                  <AIFeatures.AutoContentModeration />
+                </div>
+              </div>
+            }
+          />
+        </Route>
+      )}
 
       {/* Admin Routes */}
-      <Route path="/admin/login" element={<AdminLogin />} />
-
       <Route
         path="/admin"
         element={
