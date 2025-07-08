@@ -303,7 +303,7 @@ const applyAccessibilitySettings = (settings: AccessibilitySettings) => {
 };
 
 // Accessibility Control Panel
-export const AccessibilityControlPanel: React.FC = () => {
+export const AccessibilityControlPanel: FC = () => {
   const { settings, updateSettings, speak } = useAccessibility();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
