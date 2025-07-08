@@ -65,9 +65,6 @@ const FreelanceWalletCard = () => {
     },
   ]);
 
-  const freelanceBalance = getSourceBalance("freelance");
-  const freelanceTransactions = getTransactionsBySource("freelance");
-
   const pendingEarnings = projects
     .filter((p) => p.status === "completed")
     .reduce((sum, p) => sum + p.amount, 0);
