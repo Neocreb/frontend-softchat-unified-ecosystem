@@ -310,25 +310,27 @@ const App = () => {
           <ErrorBoundary fallback={<div>Loading application...</div>}>
             {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
             <AuthProvider>
-              <AccessibilityProvider>
-                <TooltipProvider>
-                  <AppRoutes />
+              <AdminProvider>
+                <AccessibilityProvider>
+                  <TooltipProvider>
+                    <AppRoutes />
 
-                  {/* Global Components */}
-                  <OnboardingTour />
-                  <NotificationSystem />
-                  <AccessibilityControlPanel />
-                  <KeyboardNavigationHelper />
-                  <ReadingGuide />
-                  <ConnectionStatus />
-                  <PWAInstallPrompt />
-                  <MobileLayoutChecker />
+                    {/* Global Components */}
+                    <OnboardingTour />
+                    <NotificationSystem />
+                    <AccessibilityControlPanel />
+                    <KeyboardNavigationHelper />
+                    <ReadingGuide />
+                    <ConnectionStatus />
+                    <PWAInstallPrompt />
+                    <MobileLayoutChecker />
 
-                  {/* Toasters */}
-                  <Toaster />
-                  <Sonner />
-                </TooltipProvider>
-              </AccessibilityProvider>
+                    {/* Toasters */}
+                    <Toaster />
+                    <Sonner />
+                  </TooltipProvider>
+                </AccessibilityProvider>
+              </AdminProvider>
             </AuthProvider>
             {/* </I18nProvider> Temporarily disabled */}
           </ErrorBoundary>
