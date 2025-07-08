@@ -56,7 +56,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [error, setError] = useState<Error | null>(null);
 
   // Transform user data to include convenience properties
-  const enhanceUserData = React.useCallback(
+  const enhanceUserData = useCallback(
     (rawUser: User | null): ExtendedUser | null => {
       if (!rawUser) return null;
 
