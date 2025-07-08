@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { AdminProvider } from "./contexts/AdminContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { WalletProvider } from "./contexts/WalletContext";
@@ -52,6 +53,12 @@ import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
+import AdminLogin from "./pages/AdminLogin";
+import AdminManagement from "./pages/admin/AdminManagement";
+import PlatformSettings from "./pages/admin/PlatformSettings";
+import ContentModeration from "./pages/admin/ContentModeration";
+import AdminRoute from "./components/admin/AdminRoute";
+import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
@@ -115,12 +122,12 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   return <>{children}</>;
 };
 
-// Admin route component - now properly typed
-interface AdminRouteProps {
+// Legacy admin route component for backward compatibility
+interface LegacyAdminRouteProps {
   children: React.ReactNode;
 }
 
-const AdminRoute = ({ children }: AdminRouteProps) => {
+const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
   if (isLoading) {
@@ -258,16 +265,21 @@ const AppRoutes = () => {
       </Route>
 
       {/* Admin Routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
       <Route
         path="/admin"
         element={
           <AdminRoute>
-            <AppLayout />
+            <AdminLayout />
           </AdminRoute>
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
+        <Route path="management" element={<AdminManagement />} />
+        <Route path="settings" element={<PlatformSettings />} />
+        <Route path="moderation" element={<ContentModeration />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
@@ -299,25 +311,27 @@ const App = () => {
           <ErrorBoundary fallback={<div>Loading application...</div>}>
             {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
             <AuthProvider>
-              <AccessibilityProvider>
-                <TooltipProvider>
-                  <AppRoutes />
+              <AdminProvider>
+                <AccessibilityProvider>
+                  <TooltipProvider>
+                    <AppRoutes />
 
-                  {/* Global Components */}
-                  <OnboardingTour />
-                  <NotificationSystem />
-                  <AccessibilityControlPanel />
-                  <KeyboardNavigationHelper />
-                  <ReadingGuide />
-                  <ConnectionStatus />
-                  <PWAInstallPrompt />
-                  <MobileLayoutChecker />
+                    {/* Global Components */}
+                    <OnboardingTour />
+                    <NotificationSystem />
+                    <AccessibilityControlPanel />
+                    <KeyboardNavigationHelper />
+                    <ReadingGuide />
+                    <ConnectionStatus />
+                    <PWAInstallPrompt />
+                    <MobileLayoutChecker />
 
-                  {/* Toasters */}
-                  <Toaster />
-                  <Sonner />
-                </TooltipProvider>
-              </AccessibilityProvider>
+                    {/* Toasters */}
+                    <Toaster />
+                    <Sonner />
+                  </TooltipProvider>
+                </AccessibilityProvider>
+              </AdminProvider>
             </AuthProvider>
             {/* </I18nProvider> Temporarily disabled */}
           </ErrorBoundary>

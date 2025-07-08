@@ -482,6 +482,121 @@ export const insertFreelanceEscrowSchema = createInsertSchema(
   updatedAt: true,
 });
 
+// Admin permissions table
+export const adminPermissions = pgTable("admin_permissions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  role: text("role").notNull(), // 'super_admin', 'content_admin', 'user_admin', 'marketplace_admin', 'crypto_admin', 'freelance_admin', 'support_admin'
+  permissions: jsonb("permissions").notNull(), // Array of specific permissions
+  isActive: boolean("is_active").default(true),
+  grantedBy: uuid("granted_by")
+    .notNull()
+    .references(() => users.id),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Admin activity logs table
+export const adminActivityLogs = pgTable("admin_activity_logs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  adminId: uuid("admin_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  action: text("action").notNull(), // 'create', 'update', 'delete', 'suspend', 'activate', etc.
+  targetType: text("target_type").notNull(), // 'user', 'post', 'product', 'job', etc.
+  targetId: uuid("target_id"),
+  details: jsonb("details"), // Additional action details
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Platform settings table (for admin control)
+export const platformSettings = pgTable("platform_settings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  category: text("category").notNull(), // 'general', 'marketplace', 'crypto', 'freelance', 'content'
+  key: text("key").notNull(),
+  value: jsonb("value").notNull(),
+  description: text("description"),
+  isPublic: boolean("is_public").default(false), // Whether setting is visible to users
+  lastModifiedBy: uuid("last_modified_by")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Admin sessions table (for tracking admin logins)
+export const adminSessions = pgTable("admin_sessions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  adminId: uuid("admin_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  sessionToken: text("session_token").notNull().unique(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  lastActivity: timestamp("last_activity").defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Content moderation queue
+export const contentModerationQueue = pgTable("content_moderation_queue", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  contentType: text("content_type").notNull(), // 'post', 'comment', 'product', 'job'
+  contentId: uuid("content_id").notNull(),
+  reportedBy: uuid("reported_by").references(() => users.id),
+  reason: text("reason").notNull(),
+  description: text("description"),
+  priority: text("priority").default("medium"), // 'low', 'medium', 'high', 'urgent'
+  status: text("status").default("pending"), // 'pending', 'reviewed', 'approved', 'rejected', 'removed'
+  assignedTo: uuid("assigned_to").references(() => users.id),
+  reviewedBy: uuid("reviewed_by").references(() => users.id),
+  reviewNotes: text("review_notes"),
+  autoDetected: boolean("auto_detected").default(false),
+  confidence: decimal("confidence", { precision: 3, scale: 2 }), // AI confidence score
+  reviewedAt: timestamp("reviewed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Insert schemas for admin tables
+export const insertAdminPermissionSchema = createInsertSchema(
+  adminPermissions,
+).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertAdminActivityLogSchema = createInsertSchema(
+  adminActivityLogs,
+).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPlatformSettingSchema = createInsertSchema(
+  platformSettings,
+).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertContentModerationSchema = createInsertSchema(
+  contentModerationQueue,
+).omit({
+  id: true,
+  reviewedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Type exports
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -512,3 +627,18 @@ export type InsertFreelanceEscrow = z.infer<typeof insertFreelanceEscrowSchema>;
 export type FreelanceDispute = typeof freelanceDisputes.$inferSelect;
 export type FreelanceMessage = typeof freelanceMessages.$inferSelect;
 export type ProjectFile = typeof projectFiles.$inferSelect;
+
+// Admin types
+export type AdminPermission = typeof adminPermissions.$inferSelect;
+export type InsertAdminPermission = z.infer<typeof insertAdminPermissionSchema>;
+export type AdminActivityLog = typeof adminActivityLogs.$inferSelect;
+export type InsertAdminActivityLog = z.infer<
+  typeof insertAdminActivityLogSchema
+>;
+export type PlatformSetting = typeof platformSettings.$inferSelect;
+export type InsertPlatformSetting = z.infer<typeof insertPlatformSettingSchema>;
+export type AdminSession = typeof adminSessions.$inferSelect;
+export type ContentModerationItem = typeof contentModerationQueue.$inferSelect;
+export type InsertContentModerationItem = z.infer<
+  typeof insertContentModerationSchema
+>;
