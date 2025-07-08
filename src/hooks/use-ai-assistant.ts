@@ -9,6 +9,7 @@ import {
   type SchedulingOptimization,
   type AIPersonalAssistant,
 } from "@/services/aiPersonalAssistantService";
+import { enhancedAIService } from "@/services/enhancedAIService";
 
 export interface UseAIAssistantReturn {
   // Data
@@ -343,16 +344,23 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
       // Track chat interaction
       await trackInteraction("chat", { message });
 
-      // Simulate AI response (in a real app, this would call an AI service)
+      // Use enhanced AI service for more intelligent responses
       setTimeout(() => {
+        const smartResponse = enhancedAIService.generateSmartResponse(
+          message,
+          user,
+        );
         const aiResponse = {
           id: `ai-${Date.now()}`,
           type: "assistant",
-          content: generateAIResponse(message),
+          content: smartResponse.message,
           timestamp: new Date(),
+          suggestedActions: smartResponse.suggestedActions,
+          relatedTopics: smartResponse.relatedTopics,
+          followUpQuestions: smartResponse.followUpQuestions,
         };
         setChatMessages((prev) => [...prev, aiResponse]);
-      }, 1000);
+      }, 800);
     },
     [user?.id, trackInteraction],
   );
