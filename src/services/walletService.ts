@@ -101,13 +101,25 @@ export const walletService = {
   // Get wallet balance
   async getWalletBalance(): Promise<WalletBalance> {
     try {
-      const response = await fetch("/api/wallet");
+      const response = await fetch("/api/wallet", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // Add timeout and other fetch options for better error handling
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      return await response.json();
+
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.log("API unavailable, using mock wallet balance");
+      console.log(
+        "API unavailable, using mock wallet balance:",
+        error instanceof Error ? error.message : "Unknown error",
+      );
       // Fallback to mock data in case of error
       return mockWalletBalance;
     }
@@ -123,7 +135,13 @@ export const walletService = {
       if (source) params.append("source", source);
       if (limit) params.append("limit", limit.toString());
 
-      const response = await fetch(`/api/wallet/transactions?${params}`);
+      const response = await fetch(`/api/wallet/transactions?${params}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
@@ -134,7 +152,10 @@ export const walletService = {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
       );
     } catch (error) {
-      console.log("API unavailable, using mock transactions");
+      console.log(
+        "API unavailable, using mock transactions:",
+        error instanceof Error ? error.message : "Unknown error",
+      );
       // Fallback to mock data in case of error
       let transactions = [...mockTransactions];
 
