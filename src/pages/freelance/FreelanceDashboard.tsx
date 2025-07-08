@@ -221,22 +221,40 @@ export const FreelanceDashboard: React.FC = () => {
   if (selectedProject) {
     return (
       <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Button variant="outline" onClick={() => setSelectedProject(null)}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+          <Button
+            variant="outline"
+            onClick={() => setSelectedProject(null)}
+            className="w-full sm:w-auto"
+          >
             ← Back to Dashboard
           </Button>
-          <div>
-            <h1 className="text-2xl font-bold">{selectedProject.job.title}</h1>
+          <div className="w-full sm:w-auto">
+            <h1 className="text-xl sm:text-2xl font-bold">
+              {selectedProject.job.title}
+            </h1>
             <p className="text-muted-foreground">Project Management</p>
           </div>
         </div>
 
         <Tabs defaultValue="tasks" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="tasks">Tasks & Progress</TabsTrigger>
-            <TabsTrigger value="messages">Messages</TabsTrigger>
-            <TabsTrigger value="files">Files</TabsTrigger>
-            <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+            <TabsTrigger value="tasks" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Tasks & Progress</span>
+              <span className="sm:hidden">Tasks</span>
+            </TabsTrigger>
+            <TabsTrigger value="messages" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Messages</span>
+              <span className="sm:hidden">💬</span>
+            </TabsTrigger>
+            <TabsTrigger value="files" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Files</span>
+              <span className="sm:hidden">📁</span>
+            </TabsTrigger>
+            <TabsTrigger value="billing" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Billing</span>
+              <span className="sm:hidden">💰</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="tasks">
@@ -327,22 +345,28 @@ export const FreelanceDashboard: React.FC = () => {
     <div className="container mx-auto px-4 py-6">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Freelance Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              Freelance Dashboard
+            </h1>
             <p className="text-muted-foreground">
               Manage your projects and track your progress
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               onClick={() => (window.location.href = "/profile")}
+              className="w-full sm:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Edit Profile
             </Button>
-            <Button onClick={() => (window.location.href = "/wallet")}>
+            <Button
+              onClick={() => (window.location.href = "/wallet")}
+              className="w-full sm:w-auto"
+            >
               <Wallet className="w-4 h-4 mr-2" />
               View Wallet
             </Button>
@@ -351,13 +375,23 @@ export const FreelanceDashboard: React.FC = () => {
 
         {/* Advanced Features Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
-            <TabsTrigger value="business-intel">
-              Business Intelligence
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Overview</span>
+              <span className="sm:hidden">📊</span>
             </TabsTrigger>
-            <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+            <TabsTrigger value="smart-matching" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">AI Matching</span>
+              <span className="sm:hidden">🧠</span>
+            </TabsTrigger>
+            <TabsTrigger value="business-intel" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Business Intelligence</span>
+              <span className="sm:hidden">📈</span>
+            </TabsTrigger>
+            <TabsTrigger value="collaboration" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Collaboration</span>
+              <span className="sm:hidden">🤝</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
