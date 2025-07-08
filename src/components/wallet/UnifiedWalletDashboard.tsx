@@ -259,7 +259,7 @@ const WalletDashboardContent = () => {
                 value="all"
                 className="flex flex-col items-center gap-1 px-3 py-2 text-xs data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
               >
-                <span className="text-base">💰</span>
+                <Wallet className="w-4 h-4 text-blue-600" />
                 <span className="font-medium">All</span>
               </TabsTrigger>
               {walletSources.map((source) => (
@@ -268,7 +268,16 @@ const WalletDashboardContent = () => {
                   value={source.id}
                   className="flex flex-col items-center gap-1 px-3 py-2 text-xs data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:bg-transparent rounded-none"
                 >
-                  <span className="text-base">{source.icon}</span>
+                  <div className="w-4 h-4 text-blue-600">
+                    {source.id === "ecommerce" && (
+                      <ShoppingCart className="w-4 h-4" />
+                    )}
+                    {source.id === "crypto" && <Bitcoin className="w-4 h-4" />}
+                    {source.id === "rewards" && <Gift className="w-4 h-4" />}
+                    {source.id === "freelance" && (
+                      <Briefcase className="w-4 h-4" />
+                    )}
+                  </div>
                   <span className="text-center leading-tight font-medium">
                     <span className="sm:hidden">
                       {source.name.split(" ")[0]}
