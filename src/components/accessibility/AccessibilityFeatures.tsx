@@ -843,7 +843,7 @@ export const KeyboardNavigationHelper: FC = () => {
 };
 
 // Reading Guide Component
-export const ReadingGuide: React.FC = () => {
+export const ReadingGuide: FC = () => {
   const { settings } = useAccessibility();
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
