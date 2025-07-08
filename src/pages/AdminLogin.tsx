@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Lock, Eye, EyeOff, AlertTriangle } from "lucide-react";
-import { AdminService } from "@/services/adminService";
+import { useAdmin } from "@/contexts/AdminContext";
 import { useNotification } from "@/hooks/use-notification";
 
 const AdminLogin = () => {
@@ -23,29 +23,32 @@ const AdminLogin = () => {
     mfaCode: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [requiresMFA, setRequiresMFA] = useState(false);
 
   const navigate = useNavigate();
   const notification = useNotification();
+  const { loginAsAdmin, isAdminAuthenticated, isLoading } = useAdmin();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAdminAuthenticated) {
+      navigate("/admin/dashboard");
+    }
+  }, [isAdminAuthenticated, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
 
     try {
-      const result = await AdminService.adminLogin(credentials);
+      const result = await loginAsAdmin(
+        credentials.email,
+        credentials.password,
+      );
 
-      if (result.success && result.user) {
-        // Store admin session info
-        if (result.session) {
-          localStorage.setItem("admin_session", result.session.sessionToken);
-          localStorage.setItem("admin_user", JSON.stringify(result.user));
-        }
-
-        notification.success(`Welcome back, ${result.user.name}!`);
+      if (result.success) {
+        notification.success("Welcome to the admin panel!");
         navigate("/admin/dashboard");
       } else {
         setError(result.error || "Login failed");
@@ -53,8 +56,6 @@ const AdminLogin = () => {
     } catch (error) {
       console.error("Admin login error:", error);
       setError("An unexpected error occurred");
-    } finally {
-      setIsLoading(false);
     }
   };
 
