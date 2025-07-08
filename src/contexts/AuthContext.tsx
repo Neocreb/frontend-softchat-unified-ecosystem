@@ -179,7 +179,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, [enhanceUserData]);
 
   // Login function
-  const login = React.useCallback(
+  const login = useCallback(
     async (email: string, password: string): Promise<{ error?: Error }> => {
       try {
         setIsLoading(true);
