@@ -322,7 +322,26 @@ const App = () => {
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <SafeThemeProvider>
-          <ErrorBoundary fallback={<div>Loading application...</div>}>
+          <ErrorBoundary
+            fallback={
+              <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                  <h2 className="text-xl font-semibold mb-2">
+                    Application Error
+                  </h2>
+                  <p className="text-muted-foreground mb-4">
+                    Something went wrong. Please refresh the page.
+                  </p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-primary text-primary-foreground rounded"
+                  >
+                    Refresh Page
+                  </button>
+                </div>
+              </div>
+            }
+          >
             {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
             <AuthProvider>
               <AdminProvider>
