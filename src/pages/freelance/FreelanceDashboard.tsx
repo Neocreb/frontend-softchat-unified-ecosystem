@@ -29,13 +29,11 @@ import {
   BarChart3,
   Bell,
   Zap,
+  Settings,
 } from "lucide-react";
 import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
-import { FreelanceGamification } from "@/components/freelance/FreelanceGamification";
 import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
-import { SmartFreelanceNotifications } from "@/components/freelance/SmartFreelanceNotifications";
 import { FreelanceCollaborationTools } from "@/components/freelance/FreelanceCollaborationTools";
-import { FreelanceSecurityCenter } from "@/components/freelance/FreelanceSecurityCenter";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
@@ -355,27 +353,29 @@ export const FreelanceDashboard: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline">
-              <Bell className="w-4 h-4 mr-2" />
-              Notifications
-            </Button>
-            <Button>
+            <Button
+              variant="outline"
+              onClick={() => (window.location.href = "/profile")}
+            >
               <Plus className="w-4 h-4 mr-2" />
-              Create Profile
+              Edit Profile
+            </Button>
+            <Button onClick={() => (window.location.href = "/wallet")}>
+              <Wallet className="w-4 h-4 mr-2" />
+              View Wallet
             </Button>
           </div>
         </div>
 
         {/* Advanced Features Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
-            <TabsTrigger value="gamification">Achievements</TabsTrigger>
-            <TabsTrigger value="business-intel">Analytics</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            <TabsTrigger value="business-intel">
+              Business Intelligence
+            </TabsTrigger>
             <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -549,31 +549,43 @@ export const FreelanceDashboard: React.FC = () => {
                     <CardTitle>Quick Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
-                      <FileText className="w-4 h-4 mr-2" />
-                      Create Invoice
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => (window.location.href = "/wallet")}
+                    >
+                      <Wallet className="w-4 h-4 mr-2" />
+                      View Wallet
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => (window.location.href = "/profile")}
+                    >
+                      <Users className="w-4 h-4 mr-2" />
+                      Edit Profile
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => (window.location.href = "/settings")}
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Settings
                     </Button>
                     <Button variant="outline" className="w-full justify-start">
                       <MessageCircle className="w-4 h-4 mr-2" />
                       Contact Support
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Schedule Meeting
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Wallet className="w-4 h-4 mr-2" />
-                      View Earnings
-                    </Button>
                   </CardContent>
                 </Card>
 
-                {/* Advanced Features Quick Access */}
+                {/* Freelance-Specific Features */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Zap className="h-5 w-5 text-blue-600" />
-                      Smart Features
+                      Freelance Tools
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
@@ -583,15 +595,19 @@ export const FreelanceDashboard: React.FC = () => {
                     </Button>
                     <Button variant="outline" className="w-full justify-start">
                       <BarChart3 className="w-4 h-4 mr-2" />
-                      Business Intelligence
+                      Rate Calculator
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => (window.location.href = "/rewards")}
+                    >
                       <Trophy className="w-4 h-4 mr-2" />
-                      View Achievements
+                      Achievements
                     </Button>
                     <Button variant="outline" className="w-full justify-start">
-                      <Shield className="w-4 h-4 mr-2" />
-                      Security Center
+                      <Target className="w-4 h-4 mr-2" />
+                      Project Planner
                     </Button>
                   </CardContent>
                 </Card>
@@ -639,24 +655,12 @@ export const FreelanceDashboard: React.FC = () => {
             <SmartFreelanceMatching userType="freelancer" />
           </TabsContent>
 
-          <TabsContent value="gamification">
-            <FreelanceGamification />
-          </TabsContent>
-
           <TabsContent value="business-intel">
             <FreelanceBusinessIntelligence />
           </TabsContent>
 
-          <TabsContent value="notifications">
-            <SmartFreelanceNotifications />
-          </TabsContent>
-
           <TabsContent value="collaboration">
             <FreelanceCollaborationTools />
-          </TabsContent>
-
-          <TabsContent value="security">
-            <FreelanceSecurityCenter />
           </TabsContent>
         </Tabs>
       </div>
