@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
 import SuggestedUsers from "@/components/profile/SuggestedUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useExplore } from "@/hooks/use-explore";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
-import { Users, TrendingUp, Hash, Globe, Sparkles } from "lucide-react";
+import { Users, TrendingUp, Hash, Globe, Sparkles, Filter, MapPin, Calendar } from "lucide-react";
 
 const Explore = () => {
   const {
@@ -21,67 +24,182 @@ const Explore = () => {
     filteredPages,
   } = useExplore();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState<'relevance' | 'date' | 'popularity'>('relevance');
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Handle URL search parameters
+  useEffect(() => {
+    const query = searchParams.get('q');
+    const tab = searchParams.get('tab');
+    if (query) setSearchQuery(query);
+    if (tab) setActiveTab(tab);
+  }, [searchParams, setSearchQuery, setActiveTab]);
+
+  // Update URL when search changes
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchQuery) params.set('q', searchQuery);
+    if (activeTab !== 'discover') params.set('tab', activeTab);
+    setSearchParams(params);
+  }, [searchQuery, activeTab, setSearchParams]);
+
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
+      {/* Enhanced Search Section */}
+      <div className="space-y-4">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        <Tabs defaultValue="discover" className="w-full">
-          {/* Mobile-friendly tabs */}
-          <div className="sm:hidden">
-            <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
-              <TabsTrigger
-                value="discover"
-                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-              >
-                <Users className="w-4 h-4 flex-shrink-0" />
-                <span className="text-[10px] leading-tight">Discover</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="trending"
-                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-              >
-                <TrendingUp className="w-4 h-4 flex-shrink-0" />
-                <span className="text-[10px] leading-tight">Trending</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="hashtags"
-                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-              >
-                <Hash className="w-4 h-4 flex-shrink-0" />
-                <span className="text-[10px] leading-tight">Tags</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="explore"
-                className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
-              >
-                <Globe className="w-4 h-4 flex-shrink-0" />
-                <span className="text-[10px] leading-tight">Explore</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
+        {/* Search Results Summary */}
+        {searchQuery && (
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">
+                Search results for "{searchQuery}"
+              </span>
+              <Badge variant="secondary" className="text-xs">
+                {filteredTopics.length + filteredUsers.length + filteredHashtags.length} results
+              </Badge>
+            </div>
 
-          {/* Desktop tabs */}
-          <div className="hidden sm:block">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="discover" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
-                <span>Discover</span>
-              </TabsTrigger>
-              <TabsTrigger value="trending" className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                <span>Trending</span>
-              </TabsTrigger>
-              <TabsTrigger value="hashtags" className="flex items-center gap-2">
-                <Hash className="w-4 h-4" />
-                <span>Hashtags</span>
-              </TabsTrigger>
-              <TabsTrigger value="explore" className="flex items-center gap-2">
-                <Globe className="w-4 h-4" />
-                <span>Explore</span>
-              </TabsTrigger>
-            </TabsList>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-1"
+              >
+                <Filter className="w-3 h-3" />
+                Filters
+              </Button>
+
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="text-sm border rounded px-2 py-1 bg-background"
+              >
+                <option value="relevance">Most Relevant</option>
+                <option value="date">Recent</option>
+                <option value="popularity">Popular</option>
+              </select>
+            </div>
           </div>
+        )}
+
+        {/* Advanced Filters Panel */}
+        {showFilters && (
+          <Card className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Location</label>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-gray-400" />
+                  <select className="flex-1 text-sm border rounded px-2 py-1 bg-background">
+                    <option>All locations</option>
+                    <option>New York</option>
+                    <option>Los Angeles</option>
+                    <option>London</option>
+                    <option>Tokyo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Time Range</label>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-gray-400" />
+                  <select className="flex-1 text-sm border rounded px-2 py-1 bg-background">
+                    <option>All time</option>
+                    <option>Last 24 hours</option>
+                    <option>Last week</option>
+                    <option>Last month</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">Content Type</label>
+                <select className="w-full text-sm border rounded px-2 py-1 bg-background">
+                  <option>All types</option>
+                  <option>Posts</option>
+                  <option>Videos</option>
+                  <option>Images</option>
+                  <option>Articles</option>
+                </select>
+              </div>
+            </div>
+          </Card>
+        )}
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        {/* Mobile-friendly tabs */}
+        <div className="sm:hidden">
+          <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
+            <TabsTrigger
+              value="discover"
+              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <Sparkles className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">Discover</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="trending"
+              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <TrendingUp className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">Trending</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="hashtags"
+              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <Hash className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">Tags</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="people"
+              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <Users className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">People</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="explore"
+              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+            >
+              <Globe className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">More</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
+
+        {/* Desktop tabs */}
+        <div className="hidden sm:block">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="discover" className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4" />
+              <span>Discover</span>
+            </TabsTrigger>
+            <TabsTrigger value="trending" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span>Trending</span>
+            </TabsTrigger>
+            <TabsTrigger value="hashtags" className="flex items-center gap-2">
+              <Hash className="w-4 h-4" />
+              <span>Hashtags</span>
+            </TabsTrigger>
+            <TabsTrigger value="people" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span>People</span>
+            </TabsTrigger>
+            <TabsTrigger value="explore" className="flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              <span>Explore</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
           <TabsContent value="discover" className="space-y-6 mt-6">
             {/* AI Powered Recommendations */}
