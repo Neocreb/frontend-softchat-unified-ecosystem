@@ -10,7 +10,9 @@ import { setupVite, serveStatic, log } from "./vite";
     const app = express();
 
     // CORS middleware for development
-    if (app.get("env") === "development") {
+    const isDevelopment = process.env.NODE_ENV !== "production";
+    if (isDevelopment) {
+      log("Setting up CORS for development environment");
       app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header(
