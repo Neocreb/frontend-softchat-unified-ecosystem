@@ -49,6 +49,7 @@ export interface UseAIAssistantReturn {
 
   // Chat
   chatMessages: any[];
+  isTyping: boolean;
   sendChatMessage: (message: string) => Promise<void>;
   clearChat: () => void;
 
@@ -81,6 +82,8 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
   );
   const [dashboardSummary, setDashboardSummary] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [conversationContext, setConversationContext] = useState<string[]>([]);
 
   // Loading states
   const [isLoading, setIsLoading] = useState(false);
@@ -330,7 +333,7 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
   const sendChatMessage = useCallback(
     async (message: string) => {
-      if (!user?.id || !message.trim()) return;
+      if (!user?.id || !message.trim() || isTyping) return;
 
       const userMessage = {
         id: `msg-${Date.now()}`,
@@ -341,13 +344,28 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
       setChatMessages((prev) => [...prev, userMessage]);
 
+      // Add to conversation context
+      setConversationContext((prev) => [...prev.slice(-4), message]); // Keep last 5 messages for context
+
       // Track chat interaction
       await trackInteraction("chat", { message });
 
+      // Show typing indicator
+      setIsTyping(true);
+
+      // Simulate realistic response time based on message complexity
+      const responseDelay = Math.min(500 + message.length * 10, 2000);
+
       // Use enhanced AI service for more intelligent responses
       setTimeout(() => {
+        // Generate response with conversation context
+        const contextualInput =
+          conversationContext.length > 0
+            ? `Previous context: ${conversationContext.slice(-2).join(". ")}. Current: ${message}`
+            : message;
+
         const smartResponse = enhancedAIService.generateSmartResponse(
-          message,
+          contextualInput,
           user,
         );
         const aiResponse = {
@@ -360,9 +378,10 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
           followUpQuestions: smartResponse.followUpQuestions,
         };
         setChatMessages((prev) => [...prev, aiResponse]);
-      }, 800);
+        setIsTyping(false);
+      }, responseDelay);
     },
-    [user?.id, trackInteraction],
+    [user?.id, trackInteraction, isTyping, conversationContext],
   );
 
   const generateAIResponse = (input: string): string => {
@@ -490,6 +509,8 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
   const clearChat = useCallback(() => {
     setChatMessages([]);
+    setConversationContext([]);
+    setIsTyping(false);
   }, []);
 
   // Utility functions
@@ -559,6 +580,7 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
     // Chat
     chatMessages,
+    isTyping,
     sendChatMessage,
     clearChat,
 
