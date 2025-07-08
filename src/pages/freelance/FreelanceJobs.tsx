@@ -89,9 +89,9 @@ export const FreelanceJobs: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Freelance Jobs</h1>
+            <h1 className="text-3xl font-bold">Freelance Hub</h1>
             <p className="text-muted-foreground">
-              Discover opportunities that match your skills
+              Discover opportunities and talented freelancers
             </p>
           </div>
 
