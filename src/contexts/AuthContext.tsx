@@ -29,7 +29,7 @@ type AuthContextType = {
 };
 
 // Create the auth context with default values
-const AuthContext = React.createContext<AuthContextType>({
+const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   isLoading: true,
   user: null,
