@@ -2,17 +2,12 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase client
+// Initialize Supabase client with anon key for user creation
 const SUPABASE_URL = "https://hjebzdekquczudhrygns.supabase.co";
-const SUPABASE_SERVICE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqZWJ6ZGVrcXVjenVkaHJ5Z25zIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NDYyMjMyOSwiZXhwIjoyMDYwMTk4MzI5fQ.hwL1TBz6vd0xZAVkSJHqswhgQT8KrYRq9IqKhHaZJfM"; // Note: Use service role for admin operations
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqZWJ6ZGVrcXVjenVkaHJ5Z25zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MjIzMjksImV4cCI6MjA2MDE5ODMyOX0.bUXtDIV-QReFFgv6UoOGovH2zi2q68HKe2E4Kkbhc7U";
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-  },
-});
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function createAdminUser() {
   const adminEmail = "admin@softchat.com";
@@ -22,27 +17,16 @@ async function createAdminUser() {
   try {
     console.log("🔐 Creating admin user...");
 
-    // Check if user already exists in auth.users
-    const { data: existingAuthUser } = await supabase.auth.admin.listUsers();
-    const userExists = existingAuthUser.users.find(
-      (user) => user.email === adminEmail,
-    );
-
-    if (userExists) {
-      console.log("❌ Admin user already exists with email:", adminEmail);
-      return;
-    }
-
-    // Create user in Supabase Auth
-    const { data: authData, error: authError } =
-      await supabase.auth.admin.createUser({
-        email: adminEmail,
-        password: adminPassword,
-        email_confirm: true,
-        user_metadata: {
+    // Try to sign up the user (this will create them in auth.users)
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: adminEmail,
+      password: adminPassword,
+      options: {
+        data: {
           full_name: adminName,
         },
-      });
+      },
+    });
 
     if (authError) {
       throw new Error(`Auth creation failed: ${authError.message}`);
