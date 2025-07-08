@@ -749,7 +749,7 @@ export const ScreenReaderAnnouncer: FC<{
 };
 
 // Keyboard Navigation Helper
-export const KeyboardNavigationHelper: React.FC = () => {
+export const KeyboardNavigationHelper: FC = () => {
   const { settings, focusNext, focusPrevious } = useAccessibility();
   const [showHelp, setShowHelp] = useState(false);
 
