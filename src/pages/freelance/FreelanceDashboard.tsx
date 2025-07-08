@@ -232,14 +232,11 @@ export const FreelanceDashboard: React.FC = () => {
         </div>
 
         <Tabs defaultValue="tasks" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="tasks">Tasks & Progress</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
             <TabsTrigger value="files">Files</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
-            <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
-            <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
           </TabsList>
 
           <TabsContent value="tasks">
@@ -319,21 +316,6 @@ export const FreelanceDashboard: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-
-          <TabsContent value="smart-matching">
-            <SmartFreelanceMatching
-              projectId={selectedProject.id}
-              userType="freelancer"
-            />
-          </TabsContent>
-
-          <TabsContent value="collaboration">
-            <FreelanceCollaborationTools />
-          </TabsContent>
-
-          <TabsContent value="security">
-            <FreelanceSecurityCenter />
           </TabsContent>
         </Tabs>
       </div>
