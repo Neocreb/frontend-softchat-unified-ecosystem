@@ -1,13 +1,4 @@
-import {
-  Component,
-  ReactNode,
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type FC,
-  type ErrorInfo,
-} from "react";
+import { Component, ReactNode, createContext, type ErrorInfo } from "react";
 import { ThemeProvider } from "./ThemeContext";
 
 // Fallback theme context for error cases
@@ -17,36 +8,32 @@ const FallbackThemeContext = createContext({
   isDark: false,
 });
 
-const FallbackThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme] = useState<"light" | "dark" | "system">("light");
-  const [isDark] = useState(false);
-
-  // Apply fallback theme to DOM
-  useEffect(() => {
+// Simple fallback without hooks to avoid hook call issues
+const FallbackThemeProvider = ({ children }: { children: ReactNode }) => {
+  // Apply fallback theme to DOM immediately
+  if (typeof window !== "undefined" && typeof document !== "undefined") {
     try {
-      if (typeof window !== "undefined" && typeof document !== "undefined") {
-        const root = document.documentElement;
-        root.classList.add("light");
-        root.classList.remove("dark");
+      const root = document.documentElement;
+      root.classList.add("light");
+      root.classList.remove("dark");
 
-        // Ensure CSS variables are set for light theme
-        root.style.setProperty("--background", "0 0% 100%");
-        root.style.setProperty("--foreground", "222.2 84% 4.9%");
-      }
+      // Ensure CSS variables are set for light theme
+      root.style.setProperty("--background", "0 0% 100%");
+      root.style.setProperty("--foreground", "222.2 84% 4.9%");
     } catch (error) {
       console.warn("Failed to apply fallback theme:", error);
     }
-  }, []);
+  }
 
   const contextValue = {
-    theme,
+    theme: "light" as const,
     setTheme: (newTheme: "light" | "dark" | "system") => {
       console.warn(
         "Theme switching disabled in fallback mode. Attempted to set:",
         newTheme,
       );
     },
-    isDark,
+    isDark: false,
   };
 
   return (
