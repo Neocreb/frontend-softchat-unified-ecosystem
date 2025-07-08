@@ -617,6 +617,40 @@ export class EnhancedAIService {
       };
     }
 
+    if (lowerInput.includes("happiness") || lowerInput.includes("happy")) {
+      return {
+        message: `Happiness is like a warm feeling that comes from both inside and outside. It's not just one thing - it's moments of joy, contentment, gratitude, and connection with others.\n\nTrue happiness often comes from simple things: meaningful relationships, doing things you're passionate about, helping others, appreciating what you have, and growing as a person. It's not about having everything perfect, but finding joy even in ordinary moments.\n\nResearch shows that happiness is less about getting stuff and more about experiences, relationships, and having a sense of purpose. The happiest people tend to focus on what they can control, practice gratitude, and invest in their relationships.\n\nRemember, it's okay not to be happy all the time - that's just being human! The goal isn't constant happiness, but building a life that feels meaningful and satisfying to you.`,
+        suggestedActions: [
+          { label: "Explore gratitude", action: "gratitude" },
+          { label: "Learn about well-being", action: "wellbeing" },
+          { label: "Find your purpose", action: "purpose" },
+        ],
+        relatedTopics: ["well-being", "gratitude", "relationships", "purpose"],
+        followUpQuestions: [
+          "How can I be more grateful?",
+          "What makes life meaningful?",
+          "How do I find my purpose in life?",
+        ],
+      };
+    }
+
+    if (lowerInput.includes("success")) {
+      return {
+        message: `Success means different things to different people, and that's perfectly okay! For some, it's career achievements or financial goals. For others, it's having great relationships, making a positive impact, or simply being content with who they are.\n\nTrue success often involves:\n• Setting goals that actually matter to YOU, not what others expect\n• Working consistently toward those goals, even when it's hard\n• Learning from setbacks and keeping going\n• Maintaining good relationships along the way\n• Taking care of your physical and mental health\n• Finding ways to help others and contribute to something bigger\n\nThe most successful people I've learned about tend to focus on progress, not perfection. They're kind to themselves when things don't go perfectly, and they remember that success is a journey, not a destination.\n\nWhat does success look like for you? That's the most important question!`,
+        suggestedActions: [
+          { label: "Set meaningful goals", action: "goals" },
+          { label: "Build good habits", action: "habits" },
+          { label: "Find your definition", action: "personal_success" },
+        ],
+        relatedTopics: ["goals", "achievement", "personal growth", "purpose"],
+        followUpQuestions: [
+          "How do I set better goals?",
+          "What habits lead to success?",
+          "How do I stay motivated?",
+        ],
+      };
+    }
+
     // Default philosophical response
     return {
       message: `That's a profound question that philosophers and thinkers have explored for centuries! These big questions about life, existence, and human nature don't have simple answers, but exploring them is part of what makes us human.\n\nPhilosophy isn't about having all the answers - it's about asking good questions and thinking deeply about what matters most. Whether you're wondering about purpose, morality, consciousness, or the nature of reality, remember that great minds throughout history have wrestled with the same questions.\n\nWhat's beautiful is that your own life experiences, relationships, and reflections contribute to how you understand these mysteries. Everyone's perspective is valuable in the ongoing human conversation about existence and meaning.`,
