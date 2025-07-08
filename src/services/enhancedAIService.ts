@@ -281,16 +281,16 @@ export class EnhancedAIService {
     const userName = userContext?.username || userContext?.email || "there";
 
     return {
-      message: `Hello ${userName}! 👋 I'm Edith, your intelligent SoftChat assistant. I'm here to help you make the most of every platform feature - from content creation to crypto trading, marketplace sales to freelance work. I can answer questions, provide tips, and guide you to success!`,
+      message: `Hey ${userName}! 👋 I'm Edith, your personal SoftChat assistant. I'm here to help you succeed on the platform - whether you want to create amazing content, trade crypto, sell products, or earn through freelancing. Just ask me anything and I'll guide you step by step!`,
       suggestedActions: [
-        { label: "Explore Platform Features", action: "show_features" },
-        { label: "Get Started Guide", action: "show_guide" },
+        { label: "Show me around", action: "show_features" },
+        { label: "Help me get started", action: "show_guide" },
         {
-          label: "Check My Performance",
+          label: "Check my stats",
           action: "analytics",
           url: "/analytics",
         },
-        { label: "Earn SoftPoints", action: "rewards", url: "/rewards" },
+        { label: "How to earn points", action: "rewards", url: "/rewards" },
       ],
       relatedTopics: [
         "platform overview",
@@ -299,9 +299,9 @@ export class EnhancedAIService {
         "best practices",
       ],
       followUpQuestions: [
-        "What's the best way to start earning on SoftChat?",
-        "How can I optimize my content for better engagement?",
-        "What are the most profitable features to focus on?",
+        "What's the easiest way to start earning money here?",
+        "How can I get more followers and engagement?",
+        "Which features should I focus on first?",
       ],
     };
   }
