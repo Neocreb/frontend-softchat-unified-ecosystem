@@ -57,6 +57,12 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminManagement from "./pages/admin/AdminManagement";
 import PlatformSettings from "./pages/admin/PlatformSettings";
 import ContentModeration from "./pages/admin/ContentModeration";
+import AdminMarketplace from "./pages/admin/AdminMarketplace";
+import AdminCrypto from "./pages/admin/AdminCrypto";
+import AdminFreelance from "./pages/admin/AdminFreelance";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminLogs from "./pages/admin/AdminLogs";
+import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideos from "./pages/EnhancedVideos";
@@ -290,6 +296,12 @@ const AppRoutes = () => {
         <Route path="management" element={<AdminManagement />} />
         <Route path="settings" element={<PlatformSettings />} />
         <Route path="moderation" element={<ContentModeration />} />
+        <Route path="marketplace" element={<AdminMarketplace />} />
+        <Route path="crypto" element={<AdminCrypto />} />
+        <Route path="freelance" element={<AdminFreelance />} />
+        <Route path="analytics" element={<AdminAnalytics />} />
+        <Route path="logs" element={<AdminLogs />} />
+        <Route path="security" element={<AdminSecurity />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
