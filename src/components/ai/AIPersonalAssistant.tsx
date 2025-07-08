@@ -136,7 +136,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
         {
           id: "welcome",
           type: "assistant",
-          content: `Hi ${user.username || user.email}! I'm ${assistantData.name}, your intelligent AI assistant for SoftChat. I can help you with content strategy, crypto trading, marketplace management, freelance opportunities, video creation, earning SoftPoints, and much more. I know everything about the platform and can answer any questions you have. What would you like to explore today?`,
+          content: `Hey ${user.username || user.email || "there"}! ��� I'm ${assistantData.name}, your personal SoftChat assistant.\n\nI'm here to help you succeed on the platform - whether you want to create amazing content, trade crypto, sell products, or earn through freelancing. Just ask me anything and I'll guide you step by step!\n\nWhat would you like to explore first?`,
           timestamp: new Date(),
         },
       ]);
