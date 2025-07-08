@@ -509,7 +509,7 @@ export class EnhancedAIService {
 
     const responses = {
       earning: {
-        message: `**Multiple Ways to Earn on SoftChat:**\n\n💰 **High-Earning Activities:**\n• Crypto trading (potential high returns)\n• Marketplace sales (500 SoftPoints per sale)\n��� Freelance services (direct payments)\n• Video monetization (views + tips)\n\n🏆 **SoftPoints Earning:**\n• Daily login: 25 points\n• Create content: 100 points\n• Trading activity: 200 points\n• Community engagement: 50 points\n\n**Strategy:** Focus on 2-3 areas consistently for best results!`,
+        message: `Multiple Ways to Earn on SoftChat:\n\n💰 High-Earning Activities:\n• Crypto trading (potential high returns)\n• Marketplace sales (500 SoftPoints per sale)\n• Freelance services (direct payments)\n• Video monetization (views + tips)\n\n🏆 SoftPoints Earning:\n• Daily login: 25 points\n• Create content: 100 points\n• Trading activity: 200 points\n• Community engagement: 50 points\n\nMy advice: Focus on 2-3 areas consistently for the best results!`,
         suggestedActions: [
           { label: "Check Earning Opportunities", action: "earnings" },
           {
