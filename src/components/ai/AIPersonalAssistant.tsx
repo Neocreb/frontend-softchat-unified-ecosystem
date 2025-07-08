@@ -183,26 +183,124 @@ const AIPersonalAssistantDashboard: React.FC = () => {
   const generateAIResponse = (input: string): string => {
     const lowerInput = input.toLowerCase();
 
-    if (lowerInput.includes("content") || lowerInput.includes("post")) {
-      return "I can help you create engaging content! Based on your recent performance, I'd recommend focusing on React tutorials or crypto analysis posts. Your Tuesday evening posts get the best engagement. Would you like me to generate specific content ideas?";
+    // Platform feature questions
+    if (
+      lowerInput.includes("what") &&
+      (lowerInput.includes("platform") || lowerInput.includes("softchat"))
+    ) {
+      return "SoftChat is a comprehensive social platform combining social media, crypto trading, freelance marketplace, video content creation, and rewards system. You can create posts, trade cryptocurrencies, hire freelancers, sell products, stream live videos, and earn SoftPoints for activities. What specific feature would you like to know more about?";
     }
 
-    if (lowerInput.includes("trading") || lowerInput.includes("crypto")) {
-      return "For trading insights, I'm currently tracking Bitcoin's support at $43,500 and Ethereum's strong fundamentals. Your trading content performs 2x better than general posts. Would you like detailed analysis on any specific assets?";
+    if (lowerInput.includes("feature") || lowerInput.includes("what can")) {
+      return "Here are SoftChat's main features: 📱 Social Feed & Stories, 💰 Crypto Trading & Portfolio, 🛒 Marketplace for products, 💼 Freelance services, 🎥 Video creation & streaming, 🏆 Rewards & achievements, 💬 Real-time messaging, 🌍 Community events. Which feature interests you most?";
     }
 
+    // Content and social media questions
+    if (
+      lowerInput.includes("content") ||
+      lowerInput.includes("post") ||
+      lowerInput.includes("social")
+    ) {
+      return "I can help optimize your content strategy! Best performing content types: React tutorials (high engagement), crypto analysis (2x revenue), video content (34% better than static posts). Optimal posting times: Tuesday 7PM, Sunday 6PM for crypto. Want me to generate specific content ideas or analyze your recent posts?";
+    }
+
+    // Crypto and trading questions
+    if (
+      lowerInput.includes("trading") ||
+      lowerInput.includes("crypto") ||
+      lowerInput.includes("bitcoin") ||
+      lowerInput.includes("ethereum")
+    ) {
+      return "I'm tracking crypto markets 24/7! Current insights: Bitcoin support at $43,500, Ethereum showing strong fundamentals. You can trade 50+ cryptocurrencies, set up automated trading, join copy trading, stake for rewards, and create crypto content. Your trading posts generate 2x more engagement. Need specific analysis or trading guidance?";
+    }
+
+    // Marketplace questions
+    if (
+      lowerInput.includes("marketplace") ||
+      lowerInput.includes("sell") ||
+      lowerInput.includes("buy") ||
+      lowerInput.includes("product")
+    ) {
+      return "The SoftChat Marketplace has electronics, fashion, home goods, digital products, and more. You can list products, manage inventory, process orders, and track sales. Sellers earn SoftPoints for each sale. Need help listing a product, managing orders, or boosting your listings?";
+    }
+
+    // Freelance questions
+    if (
+      lowerInput.includes("freelance") ||
+      lowerInput.includes("job") ||
+      lowerInput.includes("hire") ||
+      lowerInput.includes("work")
+    ) {
+      return "Our freelance platform connects you with opportunities in development, design, marketing, writing, and more. You can create proposals, manage projects, use escrow protection, and build your reputation. Completed projects earn SoftPoints and reviews. Are you looking to hire someone or find freelance work?";
+    }
+
+    // Video and streaming questions
+    if (
+      lowerInput.includes("video") ||
+      lowerInput.includes("stream") ||
+      lowerInput.includes("live")
+    ) {
+      return "SoftChat's video features include: content creation tools, live streaming, video monetization, audience engagement, and analytics. Live streams can earn donations and SoftPoints. Video content gets 34% more engagement than posts. Want help with video creation, streaming setup, or monetization strategies?";
+    }
+
+    // Rewards and points questions
+    if (
+      lowerInput.includes("points") ||
+      lowerInput.includes("reward") ||
+      lowerInput.includes("earn") ||
+      lowerInput.includes("softpoint")
+    ) {
+      return "SoftPoints reward your platform activity! Earn points for: posting content (100pts), crypto trading (200pts), marketplace sales (500pts), completing freelance jobs (300pts), daily visits (25pts), and more. Redeem for marketplace credits, trading bonuses, or premium features. Current balance and earning tips?";
+    }
+
+    // Analytics and performance questions
     if (
       lowerInput.includes("analytics") ||
-      lowerInput.includes("performance")
+      lowerInput.includes("performance") ||
+      lowerInput.includes("stats")
     ) {
-      return "Your performance is trending upward! Views increased 18.5% this week, and engagement is up 12.3%. Your video content strategy is particularly effective. Would you like me to dive deeper into any specific metrics?";
+      return "Your performance is trending up! Views +18.5%, engagement +12.3% this week. Video content strategy is highly effective. I track all metrics: post performance, crypto portfolio, marketplace sales, freelance earnings, and SoftPoints. Which metrics would you like to analyze in detail?";
     }
 
-    if (lowerInput.includes("schedule") || lowerInput.includes("time")) {
-      return "Based on your audience activity, the best times to post are Tuesday 7 PM for maximum engagement and Sunday 6 PM for crypto analysis. Avoid Saturday afternoons. Would you like me to create a posting schedule?";
+    // Scheduling and timing questions
+    if (
+      lowerInput.includes("schedule") ||
+      lowerInput.includes("time") ||
+      lowerInput.includes("when")
+    ) {
+      return "Optimal timing based on your audience: Tuesday 7PM (max engagement), Sunday 6PM (crypto analysis), Wednesday 12PM (B2B content), Thursday 8PM (video content). Avoid Saturday afternoons. I can create automated posting schedules and send reminders. Want a custom schedule?";
     }
 
-    return "I'm here to help with content creation, trading analysis, performance optimization, and scheduling. Just let me know what specific area you'd like to focus on, and I'll provide personalized recommendations based on your data!";
+    // Wallet and financial questions
+    if (
+      lowerInput.includes("wallet") ||
+      lowerInput.includes("money") ||
+      lowerInput.includes("earnings") ||
+      lowerInput.includes("withdraw")
+    ) {
+      return "Your SoftChat wallet manages all earnings: crypto trading profits, marketplace sales, freelance payments, video monetization, and SoftPoints. Support for 20+ payment methods including crypto, bank transfers, and mobile money. Need help with deposits, withdrawals, or financial tracking?";
+    }
+
+    // Help and navigation questions
+    if (
+      lowerInput.includes("help") ||
+      lowerInput.includes("how") ||
+      lowerInput.includes("guide")
+    ) {
+      return "I'm here to help with everything! Main areas I assist with: 📈 Content optimization, 💹 Trading strategies, 🛒 Marketplace management, 💼 Freelance success, 🎥 Video creation, 📊 Analytics insights, 💰 Earnings optimization. What specific help do you need?";
+    }
+
+    // General platform questions
+    if (
+      lowerInput.includes("community") ||
+      lowerInput.includes("event") ||
+      lowerInput.includes("people")
+    ) {
+      return "SoftChat has an active community with live events, competitions, networking opportunities, and collaborative projects. Join community events to earn bonus SoftPoints and connect with other creators, traders, and entrepreneurs. Check the Community Events tab for upcoming activities!";
+    }
+
+    // Default response with platform overview
+    return "Hi! I'm Edith, your AI assistant for SoftChat. I help with content creation, crypto trading, marketplace sales, freelance work, video content, rewards optimization, and performance analytics. I can answer questions about any platform feature, provide personalized recommendations, and help you maximize your success. What would you like to explore today?";
   };
 
   const acceptSuggestion = async (suggestionId: string, type: string) => {
