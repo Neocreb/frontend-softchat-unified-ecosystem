@@ -46,9 +46,7 @@ const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 // Authentication provider component
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // Define state hooks with safer initialization
   const [user, setUser] = React.useState<ExtendedUser | null>(null);
   const [session, setSession] = React.useState<Session | null>(null);
