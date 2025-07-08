@@ -17,6 +17,8 @@ import {
 import { JobPosting } from "@/types/freelance";
 import JobList from "@/components/freelance/JobList";
 import JobDetails from "@/components/freelance/JobDetails";
+import TalentsList, { Talent } from "@/components/freelance/TalentsList";
+import TalentProfile from "@/components/freelance/TalentProfile";
 import { useFreelance } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
 
