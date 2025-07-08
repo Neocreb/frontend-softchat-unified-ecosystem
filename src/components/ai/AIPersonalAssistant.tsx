@@ -218,7 +218,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
     }
 
     if (lowerInput.includes("feature") || lowerInput.includes("what can")) {
-      return "Here are SoftChat's main features: 📱 Social Feed & Stories, 💰 Crypto Trading & Portfolio, 🛒 Marketplace for products, 💼 Freelance services, 🎥 Video creation & streaming, 🏆 Rewards & achievements, �� Real-time messaging, 🌍 Community events. Which feature interests you most?";
+      return "Here are SoftChat's main features: 📱 Social Feed & Stories, 💰 Crypto Trading & Portfolio, 🛒 Marketplace for products, 💼 Freelance services, 🎥 Video creation & streaming, 🏆 Rewards & achievements, 💬 Real-time messaging, 🌍 Community events. Which feature interests you most?";
     }
 
     // Content and social media questions
@@ -927,7 +927,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
                             : "bg-muted"
                         }`}
                       >
-                        <div className="text-sm whitespace-pre-line">
+                        <div className="text-sm whitespace-pre-line leading-relaxed">
                           {message.content}
                         </div>
                         <p className="text-xs opacity-70 mt-1">
