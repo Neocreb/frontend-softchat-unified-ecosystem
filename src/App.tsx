@@ -204,6 +204,7 @@ const AppRoutes = () => {
         <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
         <Route path="messages" element={<Inbox />} />
         <Route path="messages/:threadId" element={<ChatRoom />} />
+        <Route path="chat-demo" element={<ChatDemo />} />
         <Route path="profile" element={<EnhancedProfile />} />
         <Route path="profile/:username" element={<EnhancedProfile />} />
         <Route path="user/:username" element={<EnhancedProfile />} />
