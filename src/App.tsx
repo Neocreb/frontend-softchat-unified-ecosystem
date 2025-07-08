@@ -121,12 +121,12 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   return <>{children}</>;
 };
 
-// Admin route component - now properly typed
-interface AdminRouteProps {
+// Legacy admin route component for backward compatibility
+interface LegacyAdminRouteProps {
   children: React.ReactNode;
 }
 
-const AdminRoute = ({ children }: AdminRouteProps) => {
+const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
   if (isLoading) {
