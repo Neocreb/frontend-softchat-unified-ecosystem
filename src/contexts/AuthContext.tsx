@@ -272,7 +272,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   );
 
   // Check if user is admin
-  const isAdmin = React.useCallback((): boolean => {
+  const isAdmin = useCallback((): boolean => {
     return user?.role === "admin" || user?.profile?.role === "admin";
   }, [user]);
 
