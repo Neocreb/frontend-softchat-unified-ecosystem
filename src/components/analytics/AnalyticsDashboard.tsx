@@ -50,6 +50,7 @@ import {
   Filter,
   RefreshCw,
   Target,
+  Briefcase,
   Award,
   Zap,
   Activity,
@@ -526,6 +527,10 @@ export const AnalyticsDashboard: React.FC = () => {
           <TabsTrigger value="performance" className="text-xs sm:text-sm">
             <span className="hidden sm:inline">Performance</span>
             <span className="sm:hidden">🚀</span>
+          </TabsTrigger>
+          <TabsTrigger value="freelance" className="text-xs sm:text-sm">
+            <span className="hidden sm:inline">Freelance</span>
+            <span className="sm:hidden">💼</span>
           </TabsTrigger>
           <TabsTrigger value="goals" className="text-xs sm:text-sm">
             <span className="hidden sm:inline">Goals</span>
@@ -1011,6 +1016,104 @@ export const AnalyticsDashboard: React.FC = () => {
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Freelance Analytics Tab */}
+        <TabsContent value="freelance" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 text-purple-600" />
+                  Freelance Performance
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-3 bg-green-50 rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">
+                        $12.5K
+                      </div>
+                      <div className="text-sm text-green-700">
+                        Monthly Earnings
+                      </div>
+                    </div>
+                    <div className="text-center p-3 bg-blue-50 rounded-lg">
+                      <div className="text-2xl font-bold text-blue-600">
+                        4.9
+                      </div>
+                      <div className="text-sm text-blue-700">Avg Rating</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Project Success Rate</span>
+                      <span className="font-medium">95%</span>
+                    </div>
+                    <Progress value={95} className="h-2" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>On-time Delivery</span>
+                      <span className="font-medium">98%</span>
+                    </div>
+                    <Progress value={98} className="h-2" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-green-600" />
+                  Market Insights
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-3 bg-blue-50 rounded-lg">
+                    <h4 className="font-medium text-blue-800 mb-1">
+                      Skills in Demand
+                    </h4>
+                    <div className="flex flex-wrap gap-1">
+                      <Badge variant="secondary" className="text-xs">
+                        React
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs">
+                        Node.js
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs">
+                        Python
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-green-50 rounded-lg">
+                    <h4 className="font-medium text-green-800 mb-1">
+                      Rate Suggestion
+                    </h4>
+                    <p className="text-sm text-green-700">
+                      Consider increasing your rate to $85/hr based on market
+                      demand
+                    </p>
+                  </div>
+
+                  <div className="p-3 bg-purple-50 rounded-lg">
+                    <h4 className="font-medium text-purple-800 mb-1">
+                      Opportunities
+                    </h4>
+                    <p className="text-sm text-purple-700">
+                      3 high-value projects match your skills this week
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

@@ -22,7 +22,16 @@ import { Badge } from "@/components/ui/badge";
 import { WalletBalance, BankAccount } from "@/types/wallet";
 import { walletService } from "@/services/walletService";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2, CreditCard, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  CreditCard,
+  AlertCircle,
+  Wallet,
+  ShoppingCart,
+  Bitcoin,
+  Gift,
+  Briefcase,
+} from "lucide-react";
 
 interface WithdrawModalProps {
   isOpen: boolean;
@@ -84,17 +93,29 @@ const WithdrawModal = ({
 
   const getSourceInfo = () => {
     const sources = {
-      total: { name: "Total Balance", icon: "💰", color: "bg-blue-500" },
+      total: {
+        name: "Total Balance",
+        icon: <Wallet className="w-4 h-4" />,
+        color: "bg-blue-500",
+      },
       ecommerce: {
         name: "E-Commerce Earnings",
-        icon: "🛒",
+        icon: <ShoppingCart className="w-4 h-4" />,
         color: "bg-green-500",
       },
-      crypto: { name: "Crypto Portfolio", icon: "💹", color: "bg-orange-500" },
-      rewards: { name: "Rewards System", icon: "🎁", color: "bg-purple-500" },
+      crypto: {
+        name: "Crypto Portfolio",
+        icon: <Bitcoin className="w-4 h-4" />,
+        color: "bg-orange-500",
+      },
+      rewards: {
+        name: "Rewards System",
+        icon: <Gift className="w-4 h-4" />,
+        color: "bg-purple-500",
+      },
       freelance: {
         name: "Freelance Income",
-        icon: "💼",
+        icon: <Briefcase className="w-4 h-4" />,
         color: "bg-indigo-500",
       },
     };

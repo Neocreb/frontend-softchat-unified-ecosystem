@@ -87,21 +87,29 @@ export const FreelanceJobs: React.FC = () => {
     <div className="container mx-auto px-4 py-6">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Freelance Hub</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Freelance Hub</h1>
             <p className="text-muted-foreground">
               Discover opportunities and talented freelancers
             </p>
           </div>
 
           {user && (
-            <div className="flex items-center gap-2">
-              <Button variant="outline">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={() => (window.location.href = "/freelance/dashboard")}
+                className="w-full sm:w-auto"
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Dashboard
+              </Button>
+              <Button variant="outline" className="w-full sm:w-auto">
                 <Filter className="w-4 h-4 mr-2" />
                 Saved Jobs
               </Button>
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Job Alerts
               </Button>
@@ -176,12 +184,27 @@ export const FreelanceJobs: React.FC = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
-            <TabsTrigger value="talents">Browse Talents</TabsTrigger>
-            <TabsTrigger value="proposals">My Proposals</TabsTrigger>
-            <TabsTrigger value="saved">Saved Jobs</TabsTrigger>
-            <TabsTrigger value="recommended">Recommended</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-5 gap-1">
+            <TabsTrigger value="browse" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Browse Jobs</span>
+              <span className="sm:hidden">Jobs</span>
+            </TabsTrigger>
+            <TabsTrigger value="talents" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Browse Talents</span>
+              <span className="sm:hidden">Talents</span>
+            </TabsTrigger>
+            <TabsTrigger value="proposals" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">My Proposals</span>
+              <span className="sm:hidden">Props</span>
+            </TabsTrigger>
+            <TabsTrigger value="saved" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Saved Jobs</span>
+              <span className="sm:hidden">Save</span>
+            </TabsTrigger>
+            <TabsTrigger value="recommended" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Recommended</span>
+              <span className="sm:hidden">★</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="browse" className="mt-6">

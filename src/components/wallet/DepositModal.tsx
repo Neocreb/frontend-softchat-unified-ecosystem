@@ -27,8 +27,11 @@ import {
   Loader2,
   Plus,
   CreditCard,
-  Wallet,
+  ShoppingCart,
   Bitcoin,
+  Gift,
+  Briefcase,
+  Wallet,
   Building,
   Smartphone,
 } from "lucide-react";
@@ -78,25 +81,25 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
     {
       value: "ecommerce",
       label: "E-Commerce Wallet",
-      icon: "🛒",
+      icon: <ShoppingCart className="w-5 h-5" />,
       description: "For marketplace purchases",
     },
     {
       value: "crypto",
       label: "Crypto Portfolio",
-      icon: "💹",
+      icon: <Bitcoin className="w-5 h-5" />,
       description: "For crypto trading",
     },
     {
       value: "rewards",
       label: "Rewards Account",
-      icon: "🎁",
+      icon: <Gift className="w-5 h-5" />,
       description: "For reward programs",
     },
     {
       value: "freelance",
       label: "Freelance Wallet",
-      icon: "💼",
+      icon: <Briefcase className="w-5 h-5" />,
       description: "For freelance payments",
     },
   ];

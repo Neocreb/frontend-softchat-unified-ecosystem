@@ -65,9 +65,6 @@ const FreelanceWalletCard = () => {
     },
   ]);
 
-  const freelanceBalance = getSourceBalance("freelance");
-  const freelanceTransactions = getTransactionsBySource("freelance");
-
   const pendingEarnings = projects
     .filter((p) => p.status === "completed")
     .reduce((sum, p) => sum + p.amount, 0);
@@ -250,7 +247,7 @@ const FreelanceWalletCard = () => {
                 >
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-indigo-100 rounded-full">
-                      <span className="text-lg">💼</span>
+                      <Briefcase className="w-5 h-5 text-indigo-600" />
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">

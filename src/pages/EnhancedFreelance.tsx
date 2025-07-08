@@ -310,7 +310,7 @@ const EnhancedFreelance: React.FC = () => {
     <div className="max-w-7xl mx-auto bg-white">
       {/* Upgrade Notice */}
       <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-green-600" />
@@ -325,12 +325,22 @@ const EnhancedFreelance: React.FC = () => {
               </p>
             </div>
           </div>
-          <Button
-            onClick={() => navigate("/freelance")}
-            className="bg-green-600 hover:bg-green-700"
-          >
-            Try New System
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button
+              onClick={() => navigate("/freelance/dashboard")}
+              variant="outline"
+              className="w-full sm:w-auto border-green-600 text-green-600 hover:bg-green-50"
+            >
+              <Users className="w-4 h-4 mr-2" />
+              Dashboard
+            </Button>
+            <Button
+              onClick={() => navigate("/freelance")}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
+            >
+              Try New System
+            </Button>
+          </div>
         </div>
         <div className="mt-3 text-xs text-green-600">
           Redirecting automatically in 3 seconds...
