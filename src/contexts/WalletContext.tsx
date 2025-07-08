@@ -34,42 +34,26 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
 
   const loadWalletData = async () => {
+    setIsLoading(true);
+    setError(null);
+
     try {
-      setIsLoading(true);
-      setError(null);
-
-      // Use individual try-catch for each service call to ensure fallback data works
-      const balance = await walletService.getWalletBalance().catch((err) => {
-        console.log("Wallet balance API unavailable, using fallback data");
-        return walletService.getWalletBalance(); // This will return mock data
-      });
-
-      const transactionHistory = await walletService
-        .getTransactions()
-        .catch((err) => {
-          console.log(
-            "Wallet transactions API unavailable, using fallback data",
-          );
-          return walletService.getTransactions(); // This will return mock data
-        });
-
+      // Load wallet balance - service handles errors internally with fallback data
+      const balance = await walletService.getWalletBalance();
       setWalletBalance(balance);
+    } catch (err) {
+      console.log("Failed to load wallet balance, using fallback");
+    }
+
+    try {
+      // Load transactions - service handles errors internally with fallback data
+      const transactionHistory = await walletService.getTransactions();
       setTransactions(transactionHistory);
     } catch (err) {
-      // Don't set error state since wallet service provides fallback data
-      console.log("Using wallet fallback data due to API unavailability");
-
-      // Ensure we always have some data even if everything fails
-      setWalletBalance({
-        total: 0,
-        available: 0,
-        pending: 0,
-        currency: "USD",
-      });
-      setTransactions([]);
-    } finally {
-      setIsLoading(false);
+      console.log("Failed to load transactions, using fallback");
     }
+
+    setIsLoading(false);
   };
 
   const refreshWallet = async () => {
