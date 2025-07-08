@@ -899,16 +899,72 @@ const AIPersonalAssistantDashboard: React.FC = () => {
                     className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[80%] p-3 rounded-lg ${
-                        message.type === "user"
-                          ? "bg-purple-500 text-white"
-                          : "bg-muted"
+                      className={`max-w-[80%] ${
+                        message.type === "user" ? "" : "space-y-2"
                       }`}
                     >
-                      <p className="text-sm">{message.content}</p>
-                      <p className="text-xs opacity-70 mt-1">
-                        {message.timestamp.toLocaleTimeString()}
-                      </p>
+                      <div
+                        className={`p-3 rounded-lg ${
+                          message.type === "user"
+                            ? "bg-purple-500 text-white"
+                            : "bg-muted"
+                        }`}
+                      >
+                        <div className="text-sm whitespace-pre-line">
+                          {message.content}
+                        </div>
+                        <p className="text-xs opacity-70 mt-1">
+                          {message.timestamp.toLocaleTimeString()}
+                        </p>
+                      </div>
+
+                      {/* Show suggested actions for AI messages */}
+                      {message.type === "assistant" &&
+                        message.suggestedActions && (
+                          <div className="flex flex-wrap gap-1">
+                            {message.suggestedActions
+                              .slice(0, 3)
+                              .map((action: any, index: number) => (
+                                <Button
+                                  key={index}
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs h-6"
+                                  onClick={() => {
+                                    if (action.url) {
+                                      // Navigate to URL if provided
+                                      window.location.href = action.url;
+                                    }
+                                  }}
+                                >
+                                  {action.label}
+                                </Button>
+                              ))}
+                          </div>
+                        )}
+
+                      {/* Show follow-up questions */}
+                      {message.type === "assistant" &&
+                        message.followUpQuestions && (
+                          <div className="space-y-1">
+                            <p className="text-xs text-muted-foreground">
+                              Quick questions:
+                            </p>
+                            <div className="space-y-1">
+                              {message.followUpQuestions
+                                .slice(0, 2)
+                                .map((question: string, index: number) => (
+                                  <button
+                                    key={index}
+                                    className="block text-xs text-purple-600 hover:text-purple-800 underline"
+                                    onClick={() => setChatInput(question)}
+                                  >
+                                    {question}
+                                  </button>
+                                ))}
+                            </div>
+                          </div>
+                        )}
                     </div>
                   </div>
                 ))}
