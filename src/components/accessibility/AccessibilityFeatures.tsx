@@ -714,7 +714,7 @@ export const AccessibilityControlPanel: FC = () => {
 };
 
 // Screen Reader Announcer Component
-export const ScreenReaderAnnouncer: React.FC<{
+export const ScreenReaderAnnouncer: FC<{
   message: string;
   priority?: "polite" | "assertive";
 }> = ({ message, priority = "polite" }) => {
