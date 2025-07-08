@@ -73,10 +73,15 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
           if (isValid) {
             setCurrentAdmin(admin);
             setAdminSession({
-              sessionToken,
+              id: `session-${admin.id}`,
               adminId: admin.id,
+              sessionToken,
+              ipAddress: window.location.hostname,
+              userAgent: navigator.userAgent,
               isActive: true,
-            } as AdminSession);
+              expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
+              createdAt: new Date(),
+            });
           } else {
             // Session invalid, clear storage
             localStorage.removeItem("admin_session");
