@@ -1,46 +1,22 @@
-import { Component, ReactNode, createContext, type ErrorInfo } from "react";
+import React, { Component, ReactNode, type ErrorInfo } from "react";
 import { ThemeProvider } from "./ThemeContext";
 
-// Fallback theme context for error cases
-const FallbackThemeContext = createContext({
-  theme: "light" as const,
-  setTheme: () => {},
-  isDark: false,
-});
-
-// Simple fallback without hooks to avoid hook call issues
+// Fallback theme context that applies light theme without hooks
 const FallbackThemeProvider = ({ children }: { children: ReactNode }) => {
-  // Apply fallback theme to DOM immediately
-  if (typeof window !== "undefined" && typeof document !== "undefined") {
-    try {
-      const root = document.documentElement;
-      root.classList.add("light");
-      root.classList.remove("dark");
-
-      // Ensure CSS variables are set for light theme
-      root.style.setProperty("--background", "0 0% 100%");
-      root.style.setProperty("--foreground", "222.2 84% 4.9%");
-    } catch (error) {
-      console.warn("Failed to apply fallback theme:", error);
+  // Apply fallback theme to DOM immediately on render
+  React.useLayoutEffect(() => {
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      try {
+        const root = document.documentElement;
+        root.classList.add("light");
+        root.classList.remove("dark");
+      } catch (error) {
+        console.warn("Failed to apply fallback theme:", error);
+      }
     }
-  }
+  }, []);
 
-  const contextValue = {
-    theme: "light" as const,
-    setTheme: (newTheme: "light" | "dark" | "system") => {
-      console.warn(
-        "Theme switching disabled in fallback mode. Attempted to set:",
-        newTheme,
-      );
-    },
-    isDark: false,
-  };
-
-  return (
-    <FallbackThemeContext.Provider value={contextValue}>
-      {children}
-    </FallbackThemeContext.Provider>
-  );
+  return <>{children}</>;
 };
 
 interface SafeThemeProviderState {
@@ -68,6 +44,20 @@ class SafeThemeProvider extends Component<
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ThemeProvider Error:", error, errorInfo);
+
+    // Apply fallback light theme immediately
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      try {
+        const root = document.documentElement;
+        root.classList.add("light");
+        root.classList.remove("dark");
+      } catch (themeError) {
+        console.warn(
+          "Failed to apply fallback theme in error handler:",
+          themeError,
+        );
+      }
+    }
   }
 
   render() {
@@ -81,7 +71,14 @@ class SafeThemeProvider extends Component<
       );
     }
 
-    return <ThemeProvider>{this.props.children}</ThemeProvider>;
+    try {
+      return <ThemeProvider>{this.props.children}</ThemeProvider>;
+    } catch (error) {
+      console.error("Error in ThemeProvider render:", error);
+      return (
+        <FallbackThemeProvider>{this.props.children}</FallbackThemeProvider>
+      );
+    }
   }
 }
 
