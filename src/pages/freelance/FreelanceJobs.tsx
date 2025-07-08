@@ -87,16 +87,25 @@ export const FreelanceJobs: React.FC = () => {
     <div className="container mx-auto px-4 py-6">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Freelance Hub</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Freelance Hub</h1>
             <p className="text-muted-foreground">
               Discover opportunities and talented freelancers
             </p>
           </div>
 
           {user && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+              <Button
+                variant="outline"
+                onClick={() => window.location.href = '/freelance/dashboard'}
+                className="w-full sm:w-auto"
+              >
+                <Users className="w-4 h-4 mr-2" />
+                Dashboard
+              </Button>
+              <div className="flex items-center gap-2">
               <Button variant="outline">
                 <Filter className="w-4 h-4 mr-2" />
                 Saved Jobs
