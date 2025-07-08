@@ -154,7 +154,7 @@ const AccessibilityContext = createContext<AccessibilityContextType | null>(
 );
 
 // Accessibility Provider
-export const AccessibilityProvider: React.FC<{ children: ReactNode }> = ({
+export const AccessibilityProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [settings, setSettings] = useState<AccessibilitySettings>(() => {
