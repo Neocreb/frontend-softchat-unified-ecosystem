@@ -231,7 +231,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   // Signup function
-  const signup = React.useCallback(
+  const signup = useCallback(
     async (
       email: string,
       password: string,
