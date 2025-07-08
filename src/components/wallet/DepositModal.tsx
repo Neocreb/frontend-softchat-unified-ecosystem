@@ -32,7 +32,6 @@ import {
   Gift,
   Briefcase,
   Wallet,
-  Bitcoin,
   Building,
   Smartphone,
 } from "lucide-react";
