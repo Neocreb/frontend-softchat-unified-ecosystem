@@ -93,7 +93,26 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    loadWalletData();
+    // Wrap in try-catch to prevent any unhandled errors from bubbling up
+    const initializeWallet = async () => {
+      try {
+        await loadWalletData();
+      } catch (error) {
+        console.log("Failed to initialize wallet data:", error);
+        // Set safe fallback state
+        setWalletBalance({
+          total: 0,
+          ecommerce: 0,
+          crypto: 0,
+          rewards: 0,
+          freelance: 0,
+        });
+        setTransactions([]);
+        setIsLoading(false);
+      }
+    };
+
+    initializeWallet();
   }, []);
 
   const contextValue: WalletContextType = {
