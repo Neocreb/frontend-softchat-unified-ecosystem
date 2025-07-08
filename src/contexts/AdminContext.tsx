@@ -196,17 +196,6 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
 
   const isAdminAuthenticated = !!(currentAdmin && adminSession?.isActive);
 
-  // Debug logging
-  React.useEffect(() => {
-    console.log("AdminContext state:", {
-      currentAdmin: !!currentAdmin,
-      adminSession: !!adminSession,
-      sessionActive: adminSession?.isActive,
-      isAdminAuthenticated,
-      isLoading,
-    });
-  }, [currentAdmin, adminSession, isAdminAuthenticated, isLoading]);
-
   const contextValue: AdminContextType = {
     currentAdmin,
     adminSession,
