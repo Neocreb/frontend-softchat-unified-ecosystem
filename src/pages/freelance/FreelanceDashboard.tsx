@@ -379,51 +379,50 @@ export const FreelanceDashboard: React.FC = () => {
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
+              {/* Stats Overview */}
+              {loading ? (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <Card key={i}>
+                      <CardContent className="pt-4">
+                        <Skeleton className="h-16 w-full" />
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : stats ? (
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <StatCard
+                    title="Total Earnings"
+                    value={`$${stats.totalEarnings.toLocaleString()}`}
+                    change="+12% this month"
+                    icon={<DollarSign className="w-6 h-6 text-white" />}
+                    color="bg-green-500"
+                  />
+                  <StatCard
+                    title="Active Projects"
+                    value={stats.activeProjects}
+                    icon={<Briefcase className="w-6 h-6 text-white" />}
+                    color="bg-blue-500"
+                  />
+                  <StatCard
+                    title="Completed Projects"
+                    value={stats.completedProjects}
+                    icon={<CheckCircle2 className="w-6 h-6 text-white" />}
+                    color="bg-purple-500"
+                  />
+                  <StatCard
+                    title="Success Rate"
+                    value={`${stats.successRate}%`}
+                    icon={<Star className="w-6 h-6 text-white" />}
+                    color="bg-orange-500"
+                  />
+                </div>
+              ) : null}
 
-        {/* Stats Overview */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Card key={i}>
-                <CardContent className="pt-4">
-                  <Skeleton className="h-16 w-full" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : stats ? (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <StatCard
-              title="Total Earnings"
-              value={`$${stats.totalEarnings.toLocaleString()}`}
-              change="+12% this month"
-              icon={<DollarSign className="w-6 h-6 text-white" />}
-              color="bg-green-500"
-            />
-            <StatCard
-              title="Active Projects"
-              value={stats.activeProjects}
-              icon={<Briefcase className="w-6 h-6 text-white" />}
-              color="bg-blue-500"
-            />
-            <StatCard
-              title="Completed Projects"
-              value={stats.completedProjects}
-              icon={<CheckCircle2 className="w-6 h-6 text-white" />}
-              color="bg-purple-500"
-            />
-            <StatCard
-              title="Success Rate"
-              value={`${stats.successRate}%`}
-              icon={<Star className="w-6 h-6 text-white" />}
-              color="bg-orange-500"
-            />
-          </div>
-        ) : null}
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Main Content */}
+                <div className="lg:col-span-2 space-y-6">
             {/* Active Projects */}
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
