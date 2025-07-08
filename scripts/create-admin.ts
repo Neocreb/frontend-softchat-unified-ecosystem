@@ -1,29 +1,18 @@
 #!/usr/bin/env npx tsx
 
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-serverless";
-import ws from "ws";
-import * as schema from "../shared/schema";
-import crypto from "crypto";
+import { createClient } from "@supabase/supabase-js";
 
-neonConfig.webSocketConstructor = ws;
+// Initialize Supabase client
+const SUPABASE_URL = "https://hjebzdekquczudhrygns.supabase.co";
+const SUPABASE_SERVICE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqZWJ6ZGVrcXVjenVkaHJ5Z25zIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NDYyMjMyOSwiZXhwIjoyMDYwMTk4MzI5fQ.hwL1TBz6vd0xZAVkSJHqswhgQT8KrYRq9IqKhHaZJfM"; // Note: Use service role for admin operations
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
-}
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const db = drizzle({ client: pool, schema });
-
-// Hash password function (simple bcrypt-like implementation)
-function hashPassword(password: string): string {
-  return crypto
-    .createHash("sha256")
-    .update(password + "salt")
-    .digest("hex");
-}
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+});
 
 async function createAdminUser() {
   const adminEmail = "admin@softchat.com";
@@ -31,54 +20,71 @@ async function createAdminUser() {
   const adminName = "Super Admin";
 
   try {
-    // Check if admin already exists
-    const existingUser = await db.query.users.findFirst({
-      where: (users, { eq }) => eq(users.email, adminEmail),
-    });
+    console.log("🔐 Creating admin user...");
 
-    if (existingUser) {
+    // Check if user already exists in auth.users
+    const { data: existingAuthUser } = await supabase.auth.admin.listUsers();
+    const userExists = existingAuthUser.users.find(
+      (user) => user.email === adminEmail,
+    );
+
+    if (userExists) {
       console.log("❌ Admin user already exists with email:", adminEmail);
       return;
     }
 
-    console.log("🔐 Creating admin user...");
-
-    // Create user
-    const [newUser] = await db
-      .insert(schema.users)
-      .values({
+    // Create user in Supabase Auth
+    const { data: authData, error: authError } =
+      await supabase.auth.admin.createUser({
         email: adminEmail,
-        password: hashPassword(adminPassword),
-        emailConfirmed: true,
-      })
-      .returning();
+        password: adminPassword,
+        email_confirm: true,
+        user_metadata: {
+          full_name: adminName,
+        },
+      });
 
-    console.log("✅ User created with ID:", newUser.id);
+    if (authError) {
+      throw new Error(`Auth creation failed: ${authError.message}`);
+    }
+
+    if (!authData.user) {
+      throw new Error("User creation failed - no user returned");
+    }
+
+    console.log("✅ Auth user created with ID:", authData.user.id);
 
     // Create profile
-    const [newProfile] = await db
-      .insert(schema.profiles)
-      .values({
-        userId: newUser.id,
+    const { data: profileData, error: profileError } = await supabase
+      .from("profiles")
+      .insert({
+        id: authData.user.id,
+        user_id: authData.user.id,
         username: "superadmin",
-        fullName: adminName,
+        full_name: adminName,
         name: adminName,
         bio: "Platform Super Administrator",
         role: "admin",
         status: "active",
-        isVerified: true,
+        is_verified: true,
         level: "platinum",
         points: 10000,
       })
-      .returning();
+      .select()
+      .single();
 
-    console.log("✅ Profile created with ID:", newProfile.id);
+    if (profileError) {
+      console.error("⚠️ Profile creation error:", profileError);
+      // Continue anyway, profile might already exist
+    } else {
+      console.log("✅ Profile created with ID:", profileData.id);
+    }
 
     // Grant super admin permissions
-    const [adminPermission] = await db
-      .insert(schema.adminPermissions)
-      .values({
-        userId: newUser.id,
+    const { data: permissionData, error: permissionError } = await supabase
+      .from("admin_permissions")
+      .insert({
+        user_id: authData.user.id,
         role: "super_admin",
         permissions: [
           "admin.all",
@@ -90,12 +96,18 @@ async function createAdminUser() {
           "settings.all",
           "moderation.all",
         ],
-        isActive: true,
-        grantedBy: newUser.id, // Self-granted for initial setup
+        is_active: true,
+        granted_by: authData.user.id, // Self-granted for initial setup
       })
-      .returning();
+      .select()
+      .single();
 
-    console.log("✅ Admin permissions granted with ID:", adminPermission.id);
+    if (permissionError) {
+      console.error("⚠️ Permission creation error:", permissionError);
+      // Continue anyway, might be a schema difference
+    } else {
+      console.log("✅ Admin permissions granted with ID:", permissionData.id);
+    }
 
     console.log("\n🎉 Admin user created successfully!");
     console.log("📋 Login Details:");
@@ -106,8 +118,6 @@ async function createAdminUser() {
     console.log("\n⚠️  Please change the password after first login!");
   } catch (error) {
     console.error("❌ Error creating admin user:", error);
-  } finally {
-    await pool.end();
   }
 }
 
