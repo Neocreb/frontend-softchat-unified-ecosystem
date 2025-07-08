@@ -1,11 +1,11 @@
-import React, {
+import {
   createContext,
   useState,
   useEffect,
   useContext,
-  ReactNode,
+  type ReactNode,
   useMemo,
-  FC,
+  type FC,
 } from "react";
 
 type Theme = "light" | "dark" | "system";
