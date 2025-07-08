@@ -176,8 +176,9 @@ export const FreelanceJobs: React.FC = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
+            <TabsTrigger value="talents">Browse Talents</TabsTrigger>
             <TabsTrigger value="proposals">My Proposals</TabsTrigger>
             <TabsTrigger value="saved">Saved Jobs</TabsTrigger>
             <TabsTrigger value="recommended">Recommended</TabsTrigger>
