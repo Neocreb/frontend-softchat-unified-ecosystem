@@ -194,13 +194,19 @@ export const walletService = {
     request: WithdrawalRequest,
   ): Promise<{ success: boolean; transactionId?: string; message: string }> {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       const response = await fetch("/api/wallet/withdraw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(request),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const result = await response.json();
 
@@ -213,7 +219,9 @@ export const walletService = {
 
       return result;
     } catch (error) {
-      console.error("Error processing withdrawal:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      console.error("Error processing withdrawal:", errorMessage);
       return {
         success: false,
         message: "Network error occurred",
@@ -226,13 +234,19 @@ export const walletService = {
     request: DepositRequest,
   ): Promise<{ success: boolean; transactionId?: string; message: string }> {
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+
       const response = await fetch("/api/wallet/deposit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(request),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const result = await response.json();
 
