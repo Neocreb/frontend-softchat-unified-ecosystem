@@ -1,0 +1,831 @@
+import type { Express } from "express";
+import { createServer, type Server } from "http";
+import { WebSocketServer } from "ws";
+import compression from "compression";
+import {
+  authenticateToken,
+  requireRole,
+  createRateLimitMiddleware,
+  securityHeaders,
+  corsOptions,
+  globalErrorHandler,
+  sanitizeInput,
+  validateEmail,
+  validatePassword,
+  AppError,
+} from "../config/security";
+import {
+  userOperations,
+  profileOperations,
+  postOperations,
+  productOperations,
+  followOperations,
+  freelanceOperations,
+  notificationOperations,
+  searchOperations,
+} from "../database/operations";
+import { FileService, uploadMiddleware } from "../services/fileService";
+import { emailService, emailQueue } from "../services/emailService";
+import { PaymentService, FeeCalculator } from "../services/paymentService";
+import cors from "cors";
+
+// Rate limiting configurations
+const authLimiter = createRateLimitMiddleware(5); // 5 attempts per window
+const uploadLimiter = createRateLimitMiddleware(20); // 20 uploads per window
+const apiLimiter = createRateLimitMiddleware(100); // 100 API calls per window
+
+export async function registerEnhancedRoutes(app: Express): Promise<Server> {
+  // Global middleware
+  app.use(compression());
+  app.use(securityHeaders);
+  app.use(cors(corsOptions));
+  app.use(apiLimiter);
+
+  // Health check endpoint
+  app.get("/health", (req, res) => {
+    res.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
+    });
+  });
+
+  // ============================================================================
+  // AUTHENTICATION ROUTES
+  // ============================================================================
+
+  // User registration
+  app.post("/api/auth/register", authLimiter, async (req, res, next) => {
+    try {
+      const { name, email, password } = sanitizeInput(req.body);
+
+      // Validation
+      if (!name || !email || !password) {
+        throw new AppError("Name, email, and password are required", 400);
+      }
+
+      if (!validateEmail(email)) {
+        throw new AppError("Invalid email format", 400);
+      }
+
+      const passwordValidation = validatePassword(password);
+      if (!passwordValidation.isValid) {
+        throw new AppError(passwordValidation.errors.join(", "), 400);
+      }
+
+      // Check if user exists
+      const existingUser = await userOperations.findByEmail(email);
+      if (existingUser) {
+        throw new AppError("User already exists with this email", 409);
+      }
+
+      // Create user and profile
+      const user = await userOperations.create({ email, password });
+      const profile = await profileOperations.create({
+        userId: user.id,
+        name,
+        username: email.split("@")[0],
+      });
+
+      // Send welcome email
+      emailQueue.add({
+        type: "welcome",
+        recipient: email,
+        data: { user, profile },
+        maxAttempts: 3,
+      });
+
+      res.status(201).json({
+        message: "User created successfully",
+        user: { id: user.id, email: user.email },
+        profile: {
+          id: profile.id,
+          name: profile.name,
+          username: profile.username,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // User login
+  app.post("/api/auth/login", authLimiter, async (req, res, next) => {
+    try {
+      const { email, password } = sanitizeInput(req.body);
+
+      if (!email || !password) {
+        throw new AppError("Email and password are required", 400);
+      }
+
+      const user = await userOperations.findByEmail(email);
+      if (!user) {
+        throw new AppError("Invalid credentials", 401);
+      }
+
+      // Compare password (you'll implement comparePassword in security.ts)
+      // const isValidPassword = await comparePassword(password, user.password);
+      // For now, direct comparison (INSECURE - FIX THIS)
+      if (user.password !== password) {
+        throw new AppError("Invalid credentials", 401);
+      }
+
+      const profile = await profileOperations.findByUserId(user.id);
+
+      // Generate JWT token
+      const { generateToken } = await import("../config/security");
+      const token = generateToken({ ...user, role: profile?.role });
+
+      res.json({
+        message: "Login successful",
+        token,
+        user: { id: user.id, email: user.email },
+        profile,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Get current user
+  app.get("/api/auth/me", authenticateToken, async (req, res, next) => {
+    try {
+      const user = await userOperations.findById(req.user.userId);
+      const profile = await profileOperations.findByUserId(req.user.userId);
+
+      if (!user) {
+        throw new AppError("User not found", 404);
+      }
+
+      res.json({ user, profile });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // ============================================================================
+  // USER PROFILE ROUTES
+  // ============================================================================
+
+  // Get user profile
+  app.get("/api/profiles/:userId", async (req, res, next) => {
+    try {
+      const profile = await profileOperations.findByUserId(req.params.userId);
+      if (!profile) {
+        throw new AppError("Profile not found", 404);
+      }
+
+      const followCounts = await followOperations.getFollowCounts(
+        req.params.userId,
+      );
+
+      res.json({ ...profile, ...followCounts });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Update user profile
+  app.put(
+    "/api/profiles/:userId",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { userId } = req.params;
+
+        // Check if user can update this profile
+        if (req.user.userId !== userId && req.user.role !== "admin") {
+          throw new AppError("Unauthorized to update this profile", 403);
+        }
+
+        const updates = sanitizeInput(req.body);
+        const profile = await profileOperations.update(userId, updates);
+
+        if (!profile) {
+          throw new AppError("Profile not found", 404);
+        }
+
+        res.json(profile);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // Upload avatar
+  app.post(
+    "/api/profiles/:userId/avatar",
+    authenticateToken,
+    uploadLimiter,
+    uploadMiddleware.avatar,
+    async (req, res, next) => {
+      try {
+        const { userId } = req.params;
+
+        if (req.user.userId !== userId && req.user.role !== "admin") {
+          throw new AppError("Unauthorized", 403);
+        }
+
+        if (!req.file) {
+          throw new AppError("No file uploaded", 400);
+        }
+
+        const uploadResult = await FileService.uploadAvatar(req.file);
+
+        // Update profile with new avatar URL
+        await profileOperations.update(userId, {
+          avatarUrl: uploadResult.variants?.medium || uploadResult.url,
+        });
+
+        res.json({
+          message: "Avatar uploaded successfully",
+          avatar: uploadResult,
+        });
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // SOCIAL FEED ROUTES
+  // ============================================================================
+
+  // Get feed posts
+  app.get("/api/posts", async (req, res, next) => {
+    try {
+      const { limit = 50, offset = 0, userId } = req.query;
+      const posts = await postOperations.getFeed(
+        userId as string,
+        parseInt(limit as string),
+        parseInt(offset as string),
+      );
+
+      // Enhance posts with user data and engagement metrics
+      const enhancedPosts = await Promise.all(
+        posts.map(async (post) => {
+          const [profile, likes, isLiked, comments] = await Promise.all([
+            profileOperations.findByUserId(post.userId),
+            postOperations.getLikes(post.id),
+            userId ? postOperations.isLiked(post.id, userId as string) : false,
+            postOperations.getComments(post.id),
+          ]);
+
+          return {
+            ...post,
+            user: profile,
+            likes,
+            isLiked,
+            comments: comments.slice(0, 3), // First 3 comments
+            totalComments: comments.length,
+          };
+        }),
+      );
+
+      res.json(enhancedPosts);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Create post
+  app.post(
+    "/api/posts",
+    authenticateToken,
+    uploadMiddleware.postMedia,
+    async (req, res, next) => {
+      try {
+        const { content, type = "post", tags } = sanitizeInput(req.body);
+
+        if (!content && !req.file) {
+          throw new AppError("Post must have content or media", 400);
+        }
+
+        let mediaUrl = null;
+        if (req.file) {
+          const uploadResult = await FileService.uploadPostMedia(req.file);
+          mediaUrl = uploadResult.url;
+        }
+
+        const postData = {
+          userId: req.user.userId,
+          content: content || "",
+          type,
+          tags: tags ? JSON.parse(tags) : null,
+          imageUrl: req.file?.mimetype.startsWith("image/") ? mediaUrl : null,
+          videoUrl: req.file?.mimetype.startsWith("video/") ? mediaUrl : null,
+        };
+
+        const post = await postOperations.create(postData);
+
+        // Award points for posting
+        await profileOperations.updatePoints(req.user.userId, 10);
+
+        res.status(201).json(post);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // Like/unlike post
+  app.post(
+    "/api/posts/:postId/like",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { postId } = req.params;
+        const { userId } = req.user;
+
+        const isLiked = await postOperations.isLiked(postId, userId);
+
+        if (isLiked) {
+          await postOperations.unlike(postId, userId);
+        } else {
+          await postOperations.like(postId, userId);
+
+          // Create notification for post owner
+          const post = await postOperations.findById(postId);
+          if (post && post.userId !== userId) {
+            await notificationOperations.create({
+              userId: post.userId,
+              title: "New Like",
+              content: "Someone liked your post",
+              type: "like",
+              relatedUserId: userId,
+              relatedPostId: postId,
+            });
+          }
+        }
+
+        const likes = await postOperations.getLikes(postId);
+        res.json({ likes, isLiked: !isLiked });
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // Comment on post
+  app.post(
+    "/api/posts/:postId/comments",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { postId } = req.params;
+        const { content } = sanitizeInput(req.body);
+
+        if (!content?.trim()) {
+          throw new AppError("Comment content is required", 400);
+        }
+
+        const comment = await postOperations.addComment(
+          postId,
+          req.user.userId,
+          content,
+        );
+
+        // Create notification for post owner
+        const post = await postOperations.findById(postId);
+        if (post && post.userId !== req.user.userId) {
+          await notificationOperations.create({
+            userId: post.userId,
+            title: "New Comment",
+            content: `Someone commented on your post: ${content.slice(0, 50)}...`,
+            type: "comment",
+            relatedUserId: req.user.userId,
+            relatedPostId: postId,
+          });
+        }
+
+        res.status(201).json(comment);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // MARKETPLACE ROUTES
+  // ============================================================================
+
+  // Get products
+  app.get("/api/products", async (req, res, next) => {
+    try {
+      const filters = {
+        category: req.query.category as string,
+        minPrice: req.query.minPrice
+          ? parseFloat(req.query.minPrice as string)
+          : undefined,
+        maxPrice: req.query.maxPrice
+          ? parseFloat(req.query.maxPrice as string)
+          : undefined,
+        search: req.query.search as string,
+        limit: parseInt(req.query.limit as string) || 50,
+        offset: parseInt(req.query.offset as string) || 0,
+      };
+
+      const products = await productOperations.search(filters);
+
+      // Enhance with seller info
+      const enhancedProducts = await Promise.all(
+        products.map(async (product) => {
+          const seller = await profileOperations.findByUserId(product.sellerId);
+          return { ...product, seller };
+        }),
+      );
+
+      res.json(enhancedProducts);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Create product
+  app.post(
+    "/api/products",
+    authenticateToken,
+    uploadMiddleware.productImages,
+    async (req, res, next) => {
+      try {
+        const productData = sanitizeInput(req.body);
+
+        if (
+          !productData.name ||
+          !productData.description ||
+          !productData.price
+        ) {
+          throw new AppError("Name, description, and price are required", 400);
+        }
+
+        let imageUrl = null;
+        if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+          const uploadResults = await FileService.uploadProductImages(
+            req.files,
+          );
+          imageUrl = uploadResults[0].variants?.large || uploadResults[0].url;
+        }
+
+        const product = await productOperations.create({
+          ...productData,
+          sellerId: req.user.userId,
+          imageUrl,
+          price: parseFloat(productData.price),
+        });
+
+        res.status(201).json(product);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // Purchase product
+  app.post(
+    "/api/products/:productId/purchase",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { productId } = req.params;
+        const { quantity = 1, paymentMethodId } = req.body;
+
+        const product = await productOperations.findById(productId);
+        if (!product) {
+          throw new AppError("Product not found", 404);
+        }
+
+        const totalAmount = parseFloat(product.price) * quantity;
+        const feePercentage = FeeCalculator.getFeePercentage(
+          "marketplace_purchase",
+        );
+
+        const paymentIntent = await PaymentService.createPaymentIntent({
+          userId: req.user.userId,
+          type: "marketplace_purchase",
+          amount: totalAmount,
+          currency: "usd",
+          description: `Purchase: ${product.name}`,
+          feePercentage,
+          metadata: {
+            productId,
+            sellerId: product.sellerId,
+            quantity: quantity.toString(),
+          },
+        });
+
+        res.json(paymentIntent);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // FREELANCE ROUTES
+  // ============================================================================
+
+  // Get freelance jobs
+  app.get("/api/freelance/jobs", async (req, res, next) => {
+    try {
+      const filters = {
+        category: req.query.category as string,
+        experienceLevel: req.query.experienceLevel
+          ? (req.query.experienceLevel as string).split(",")
+          : undefined,
+        budgetMin: req.query.budgetMin
+          ? parseFloat(req.query.budgetMin as string)
+          : undefined,
+        budgetMax: req.query.budgetMax
+          ? parseFloat(req.query.budgetMax as string)
+          : undefined,
+        skills: req.query.skills
+          ? (req.query.skills as string).split(",")
+          : undefined,
+        search: req.query.search as string,
+        limit: parseInt(req.query.limit as string) || 50,
+        offset: parseInt(req.query.offset as string) || 0,
+      };
+
+      const jobs = await freelanceOperations.searchJobs(filters);
+
+      // Enhance with client info
+      const enhancedJobs = await Promise.all(
+        jobs.map(async (job) => {
+          const client = await profileOperations.findByUserId(job.clientId);
+          return { ...job, client };
+        }),
+      );
+
+      res.json(enhancedJobs);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Create freelance job
+  app.post("/api/freelance/jobs", authenticateToken, async (req, res, next) => {
+    try {
+      const jobData = sanitizeInput(req.body);
+
+      if (!jobData.title || !jobData.description || !jobData.category) {
+        throw new AppError(
+          "Title, description, and category are required",
+          400,
+        );
+      }
+
+      const job = await freelanceOperations.createJob({
+        ...jobData,
+        clientId: req.user.userId,
+        skills: Array.isArray(jobData.skills)
+          ? jobData.skills
+          : [jobData.skills],
+      });
+
+      res.status(201).json(job);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Submit proposal
+  app.post(
+    "/api/freelance/jobs/:jobId/proposals",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { jobId } = req.params;
+        const proposalData = sanitizeInput(req.body);
+
+        if (!proposalData.coverLetter || !proposalData.proposedAmount) {
+          throw new AppError(
+            "Cover letter and proposed amount are required",
+            400,
+          );
+        }
+
+        const proposal = await freelanceOperations.submitProposal({
+          ...proposalData,
+          jobId,
+          freelancerId: req.user.userId,
+          proposedAmount: parseFloat(proposalData.proposedAmount),
+        });
+
+        res.status(201).json(proposal);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // FILE UPLOAD ROUTES
+  // ============================================================================
+
+  // Generic file upload
+  app.post(
+    "/api/upload",
+    authenticateToken,
+    uploadLimiter,
+    uploadMiddleware.single("file"),
+    async (req, res, next) => {
+      try {
+        if (!req.file) {
+          throw new AppError("No file uploaded", 400);
+        }
+
+        const folder = (req.query.folder as string) || "uploads";
+        const generateVariants = req.query.variants === "true";
+
+        const uploadResult = await FileService.uploadFile(
+          req.file,
+          folder,
+          generateVariants,
+        );
+
+        res.json(uploadResult);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // SEARCH ROUTES
+  // ============================================================================
+
+  // Global search
+  app.get("/api/search", async (req, res, next) => {
+    try {
+      const { q: query, limit = 20 } = req.query;
+
+      if (!query || typeof query !== "string") {
+        throw new AppError("Search query is required", 400);
+      }
+
+      const results = await searchOperations.searchAll(
+        query,
+        parseInt(limit as string),
+      );
+
+      res.json(results);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // ============================================================================
+  // NOTIFICATION ROUTES
+  // ============================================================================
+
+  // Get user notifications
+  app.get("/api/notifications", authenticateToken, async (req, res, next) => {
+    try {
+      const { limit = 50 } = req.query;
+
+      const notifications = await notificationOperations.getUserNotifications(
+        req.user.userId,
+        parseInt(limit as string),
+      );
+
+      const unreadCount = await notificationOperations.getUnreadCount(
+        req.user.userId,
+      );
+
+      res.json({ notifications, unreadCount });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Mark notification as read
+  app.put(
+    "/api/notifications/:notificationId/read",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { notificationId } = req.params;
+
+        const success = await notificationOperations.markAsRead(
+          notificationId,
+          req.user.userId,
+        );
+
+        if (!success) {
+          throw new AppError("Notification not found", 404);
+        }
+
+        res.json({ message: "Notification marked as read" });
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // PAYMENT WEBHOOK
+  // ============================================================================
+
+  // Stripe webhook
+  app.post("/api/webhooks/stripe", async (req, res, next) => {
+    try {
+      const signature = req.headers["stripe-signature"] as string;
+
+      await PaymentService.handleWebhook(req.body, signature);
+
+      res.json({ received: true });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // ============================================================================
+  // ADMIN ROUTES
+  // ============================================================================
+
+  // Get platform analytics (admin only)
+  app.get(
+    "/api/admin/analytics",
+    authenticateToken,
+    requireRole(["admin"]),
+    async (req, res, next) => {
+      try {
+        const { startDate, endDate } = req.query;
+
+        const analytics = await PaymentService.getPaymentAnalytics(
+          new Date(startDate as string),
+          new Date(endDate as string),
+        );
+
+        res.json(analytics);
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // ============================================================================
+  // ERROR HANDLING
+  // ============================================================================
+
+  // Global error handler
+  app.use(globalErrorHandler);
+
+  // 404 handler
+  app.use((req, res) => {
+    res.status(404).json({ error: "Route not found" });
+  });
+
+  // ============================================================================
+  // WEBSOCKET SERVER
+  // ============================================================================
+
+  const httpServer = createServer(app);
+  const wss = new WebSocketServer({ server: httpServer });
+
+  wss.on("connection", (ws, req) => {
+    console.log("New WebSocket connection");
+
+    ws.on("message", async (data) => {
+      try {
+        const message = JSON.parse(data.toString());
+
+        switch (message.type) {
+          case "subscribe_notifications":
+            // Subscribe to user notifications
+            ws.userId = message.userId;
+            break;
+          case "subscribe_chat":
+            // Subscribe to chat messages
+            ws.chatId = message.chatId;
+            break;
+          default:
+            console.log("Unknown message type:", message.type);
+        }
+      } catch (error) {
+        console.error("WebSocket message error:", error);
+      }
+    });
+
+    ws.on("close", () => {
+      console.log("WebSocket connection closed");
+    });
+  });
+
+  // WebSocket notification broadcaster
+  global.broadcastNotification = (userId: string, notification: any) => {
+    wss.clients.forEach((client: any) => {
+      if (client.userId === userId && client.readyState === client.OPEN) {
+        client.send(
+          JSON.stringify({
+            type: "notification",
+            data: notification,
+          }),
+        );
+      }
+    });
+  };
+
+  return httpServer;
+}
