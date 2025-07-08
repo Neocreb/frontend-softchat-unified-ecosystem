@@ -264,6 +264,8 @@ const AppRoutes = () => {
       </Route>
 
       {/* Admin Routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
       <Route
         path="/admin"
         element={
@@ -274,6 +276,9 @@ const AppRoutes = () => {
       >
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
+        <Route path="management" element={<AdminManagement />} />
+        <Route path="settings" element={<PlatformSettings />} />
+        <Route path="moderation" element={<ContentModeration />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
