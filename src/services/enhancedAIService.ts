@@ -215,6 +215,18 @@ export class EnhancedAIService {
       return this.generateTroubleshootingResponse(lowerInput);
     }
 
+    if (this.isPhilosophicalQuestion(lowerInput)) {
+      return this.generatePhilosophicalResponse(lowerInput);
+    }
+
+    if (this.isFactualQuestion(lowerInput)) {
+      return this.generateFactualResponse(lowerInput);
+    }
+
+    if (this.isGeneralKnowledgeQuestion(lowerInput)) {
+      return this.generateGeneralKnowledgeResponse(lowerInput);
+    }
+
     // Default comprehensive response
     return this.generateComprehensiveResponse(lowerInput);
   }
@@ -275,6 +287,74 @@ export class EnhancedAIService {
       "stuck",
     ];
     return troubleKeywords.some((keyword) => input.includes(keyword));
+  }
+
+  private isGeneralKnowledgeQuestion(input: string): boolean {
+    const knowledgeKeywords = [
+      "what is",
+      "who is",
+      "where is",
+      "when did",
+      "how does",
+      "why does",
+      "explain",
+      "define",
+      "tell me about",
+      "what are",
+      "how to",
+    ];
+    return knowledgeKeywords.some((keyword) => input.includes(keyword));
+  }
+
+  private isPhilosophicalQuestion(input: string): boolean {
+    const philosophicalTopics = [
+      "love",
+      "god",
+      "meaning of life",
+      "purpose",
+      "happiness",
+      "success",
+      "failure",
+      "death",
+      "existence",
+      "truth",
+      "beauty",
+      "good",
+      "evil",
+      "right",
+      "wrong",
+      "soul",
+      "consciousness",
+      "free will",
+      "destiny",
+      "fate",
+    ];
+    return philosophicalTopics.some((topic) => input.includes(topic));
+  }
+
+  private isFactualQuestion(input: string): boolean {
+    const factualKeywords = [
+      "earth",
+      "sun",
+      "moon",
+      "planet",
+      "gravity",
+      "science",
+      "history",
+      "geography",
+      "math",
+      "physics",
+      "chemistry",
+      "biology",
+      "space",
+      "universe",
+      "ocean",
+      "mountain",
+      "country",
+      "capital",
+      "population",
+    ];
+    return factualKeywords.some((keyword) => input.includes(keyword));
   }
 
   private generateGreetingResponse(userContext?: Partial<User>): SmartResponse {
@@ -479,6 +559,148 @@ export class EnhancedAIService {
         "How do I reach the support team?",
         "Where can I find step-by-step help guides?",
         "How fast does support usually respond?",
+      ],
+    };
+  }
+
+  private generatePhilosophicalResponse(input: string): SmartResponse {
+    const lowerInput = input.toLowerCase();
+
+    if (lowerInput.includes("love")) {
+      return {
+        message: `Love is one of humanity's most beautiful and complex experiences. It's the deep connection we feel with others - whether romantic, familial, or friendship love. It's caring more about someone else's happiness than your own, feeling joy in their presence, and wanting to support them through life's ups and downs.\n\nLove comes in many forms: the passionate romance between partners, the unconditional bond between family, the loyalty of true friends, and even the compassion we show strangers. What makes love special is that it grows when shared - the more you give, the more you have.\n\nAt its core, love is about understanding, acceptance, and choosing to be there for someone, even when it's difficult. It's both a feeling and a choice we make every day.`,
+        suggestedActions: [
+          { label: "Tell me about relationships", action: "relationships" },
+          { label: "Ask about friendship", action: "friendship" },
+          { label: "Explore more philosophy", action: "philosophy" },
+        ],
+        relatedTopics: ["relationships", "philosophy", "human connection"],
+        followUpQuestions: [
+          "What's the difference between love and infatuation?",
+          "How do you know when you truly love someone?",
+          "What about self-love and why is it important?",
+        ],
+      };
+    }
+
+    if (lowerInput.includes("god")) {
+      return {
+        message: `The question of God has been pondered by humans throughout history, and people have many different perspectives based on their beliefs, experiences, and cultural backgrounds.\n\nFor many, God represents the ultimate source of love, wisdom, and creation - a divine presence that gives life meaning and purpose. Some see God as a personal being who cares about each individual, while others view God as the underlying force or energy that connects all things.\n\nSome people find God through organized religion, others through personal spiritual experiences, nature, or acts of kindness and love. And some find meaning and purpose without belief in God at all.\n\nWhat's beautiful is that this question has inspired countless acts of compassion, art, music, and literature throughout human history. Whether you believe or not, the search for meaning and purpose is something we all share.`,
+        suggestedActions: [
+          { label: "Explore meaning of life", action: "meaning" },
+          { label: "Talk about purpose", action: "purpose" },
+          { label: "Discuss spirituality", action: "spirituality" },
+        ],
+        relatedTopics: ["spirituality", "philosophy", "meaning", "faith"],
+        followUpQuestions: [
+          "What gives life meaning and purpose?",
+          "How do different religions view God?",
+          "What about finding purpose without religion?",
+        ],
+      };
+    }
+
+    if (lowerInput.includes("failure")) {
+      return {
+        message: `Failure isn't the opposite of success - it's a stepping stone to it! Every successful person has a trail of failures behind them, because failure is how we learn, grow, and discover what really works.\n\nWhen something doesn't go as planned, it's not a reflection of your worth as a person. It's just feedback. It tells you what didn't work this time, so you can try a different approach. Some of the world's greatest innovations came from people who "failed" multiple times but kept learning and improving.\n\nFailure builds resilience, teaches humility, and makes eventual success even sweeter because you appreciate how hard it was to achieve. The only real failure is not trying at all, or giving up when you could keep learning.\n\nRemember: every expert was once a beginner, and every pro was once an amateur who refused to give up.`,
+        suggestedActions: [
+          { label: "Learn about success", action: "success" },
+          { label: "Build resilience", action: "resilience" },
+          { label: "Explore growth mindset", action: "growth" },
+        ],
+        relatedTopics: ["success", "growth", "resilience", "learning"],
+        followUpQuestions: [
+          "How do I bounce back from setbacks?",
+          "What's the difference between failing and being a failure?",
+          "How do successful people handle failure?",
+        ],
+      };
+    }
+
+    // Default philosophical response
+    return {
+      message: `That's a profound question that philosophers and thinkers have explored for centuries! These big questions about life, existence, and human nature don't have simple answers, but exploring them is part of what makes us human.\n\nPhilosophy isn't about having all the answers - it's about asking good questions and thinking deeply about what matters most. Whether you're wondering about purpose, morality, consciousness, or the nature of reality, remember that great minds throughout history have wrestled with the same questions.\n\nWhat's beautiful is that your own life experiences, relationships, and reflections contribute to how you understand these mysteries. Everyone's perspective is valuable in the ongoing human conversation about existence and meaning.`,
+      suggestedActions: [
+        { label: "Explore big questions", action: "philosophy" },
+        { label: "Learn about meaning", action: "meaning" },
+        { label: "Discuss existence", action: "existence" },
+      ],
+      relatedTopics: ["philosophy", "existence", "meaning", "consciousness"],
+      followUpQuestions: [
+        "What is the meaning of life?",
+        "How do we find purpose?",
+        "What makes us human?",
+      ],
+    };
+  }
+
+  private generateFactualResponse(input: string): SmartResponse {
+    const lowerInput = input.toLowerCase();
+
+    if (lowerInput.includes("earth") && lowerInput.includes("round")) {
+      return {
+        message: `Yes, the Earth is round! Well, technically it's an oblate spheroid - basically a sphere that's slightly flattened at the poles and bulges a bit at the equator due to its rotation.\n\nWe've known this for over 2,000 years! Ancient Greek scholars like Eratosthenes calculated Earth's circumference with remarkable accuracy. Today we have countless evidence: satellite photos, physics of gravity, how ships disappear over the horizon hull-first, time zones, and the fact that we can circumnavigate the globe.\n\nThe curvature is about 8 inches per mile, which is why the horizon appears flat when you're standing on the ground - you'd need to be really high up to see the curve clearly!\n\nIt's amazing how much we can learn about our world through observation, mathematics, and scientific inquiry.`,
+        suggestedActions: [
+          { label: "Learn about space", action: "space" },
+          { label: "Explore science", action: "science" },
+          { label: "Ask about planets", action: "planets" },
+        ],
+        relatedTopics: ["science", "astronomy", "geography", "physics"],
+        followUpQuestions: [
+          "How do we know the Earth rotates?",
+          "What other planets are round?",
+          "How big is Earth compared to other planets?",
+        ],
+      };
+    }
+
+    if (lowerInput.includes("sun") || lowerInput.includes("solar")) {
+      return {
+        message: `The Sun is absolutely fascinating! It's a massive ball of hot plasma held together by its own gravity, essentially a giant nuclear fusion reactor that's been burning for about 4.6 billion years.\n\nEvery second, the Sun converts about 4 million tons of matter into pure energy through nuclear fusion - that's what makes it shine! It's so big that you could fit about 1.3 million Earths inside it, yet it's just an average-sized star compared to others in our galaxy.\n\nThe Sun is about 93 million miles away from Earth - just the right distance to keep us warm but not too hot. Without the Sun, there would be no life on Earth as we know it. It drives our weather, ocean currents, and provides the energy that plants use for photosynthesis.\n\nPretty amazing that this giant star in space is what makes life possible here on our little blue planet!`,
+        suggestedActions: [
+          { label: "Explore the solar system", action: "solar_system" },
+          { label: "Learn about stars", action: "stars" },
+          { label: "Discover space facts", action: "space_facts" },
+        ],
+        relatedTopics: ["astronomy", "solar system", "physics", "space"],
+        followUpQuestions: [
+          "How hot is the Sun?",
+          "What will happen when the Sun dies?",
+          "Are there other stars like our Sun?",
+        ],
+      };
+    }
+
+    // Default factual response
+    return {
+      message: `That's a great question about our world! I love curiosity about science, history, geography, and how things work. While I might not have every specific fact memorized, I'm always happy to explore topics about our fascinating universe.\n\nFrom the tiniest atoms to the vast cosmos, from ancient history to cutting-edge discoveries, there's so much to learn about our world. Science helps us understand everything from why the sky is blue to how our brains work to what makes the seasons change.\n\nWhat specific aspect interests you most? I'd love to explore it together!`,
+      suggestedActions: [
+        { label: "Explore science topics", action: "science" },
+        { label: "Learn about history", action: "history" },
+        { label: "Discover nature facts", action: "nature" },
+      ],
+      relatedTopics: ["science", "knowledge", "learning", "discovery"],
+      followUpQuestions: [
+        "What's something amazing about space?",
+        "How do things work in nature?",
+        "What's an interesting historical fact?",
+      ],
+    };
+  }
+
+  private generateGeneralKnowledgeResponse(input: string): SmartResponse {
+    return {
+      message: `I'd love to help you learn about that! While I'm primarily designed to help with SoftChat, I also enjoy exploring general knowledge topics with curious minds like yours.\n\nI can chat about science, philosophy, history, how things work, and many other fascinating topics. My responses come from my training, so while I aim to be helpful and accurate, I always encourage you to explore topics further through reliable sources too.\n\nWhat would you like to know more about? Whether it's something scientific, philosophical, historical, or just something you're curious about - I'm here to explore it with you!`,
+      suggestedActions: [
+        { label: "Ask about science", action: "science" },
+        { label: "Explore philosophy", action: "philosophy" },
+        { label: "Learn something new", action: "learning" },
+      ],
+      relatedTopics: ["knowledge", "learning", "curiosity", "education"],
+      followUpQuestions: [
+        "How does something in nature work?",
+        "What's a big question about life?",
+        "Tell me an interesting fact about the world?",
       ],
     };
   }
