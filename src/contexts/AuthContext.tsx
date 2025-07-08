@@ -209,7 +209,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   );
 
   // Logout function
-  const logout = React.useCallback(async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.signOut();
