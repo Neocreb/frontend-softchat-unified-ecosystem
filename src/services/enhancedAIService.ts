@@ -705,6 +705,45 @@ export class EnhancedAIService {
       };
     }
 
+    if (lowerInput.includes("gravity")) {
+      return {
+        message: `Gravity is the invisible force that keeps everything together! It's what makes things fall down, keeps you on the ground, and holds the Earth in orbit around the Sun.\n\nEinstein showed us that gravity isn't actually a "force" pulling things together, but rather the bending of space and time itself. Imagine a bowling ball placed on a stretched rubber sheet - it creates a dip, and if you roll marbles nearby, they'll curve toward the ball. That's kind of how massive objects like Earth bend spacetime!\n\nEverything with mass has gravity - even you! But Earth is so much more massive than everyday objects that its gravity dominates. The Moon's gravity is what causes our ocean tides, and the Sun's gravity keeps all the planets in their orbits.\n\nWithout gravity, there would be no stars, no planets, no galaxies - just particles floating around in space!`,
+        suggestedActions: [
+          { label: "Learn about physics", action: "physics" },
+          { label: "Explore space", action: "space" },
+          { label: "Understand forces", action: "forces" },
+        ],
+        relatedTopics: ["physics", "space", "science", "Einstein"],
+        followUpQuestions: [
+          "How does gravity work in space?",
+          "Why don't we feel Earth spinning?",
+          "What would happen without gravity?",
+        ],
+      };
+    }
+
+    if (lowerInput.includes("ocean") || lowerInput.includes("sea")) {
+      return {
+        message: `The oceans are Earth's most amazing feature! They cover about 71% of our planet's surface and contain 97% of all the water on Earth. We've actually explored less than 5% of our oceans - there's more mystery in our deep seas than on the surface of Mars!\n\nOceans are incredibly important: they produce over half the oxygen we breathe (thanks to tiny marine plants called phytoplankton), regulate our climate, and are home to countless species we haven't even discovered yet.\n\nThe deepest part is the Mariana Trench in the Pacific - it's about 36,000 feet deep! If Mount Everest were placed in it, the peak would still be over a mile underwater. And the pressure down there is so intense it would crush a human instantly.\n\nOceans are also highways for nutrients and heat around the planet, making life possible everywhere on Earth!`,
+        suggestedActions: [
+          { label: "Discover marine life", action: "marine_life" },
+          { label: "Learn about climate", action: "climate" },
+          { label: "Explore deep sea", action: "deep_sea" },
+        ],
+        relatedTopics: [
+          "marine biology",
+          "climate",
+          "geography",
+          "exploration",
+        ],
+        followUpQuestions: [
+          "What lives in the deepest ocean?",
+          "How do oceans affect weather?",
+          "What's the biggest ocean creature?",
+        ],
+      };
+    }
+
     // Default factual response
     return {
       message: `That's a great question about our world! I love curiosity about science, history, geography, and how things work. While I might not have every specific fact memorized, I'm always happy to explore topics about our fascinating universe.\n\nFrom the tiniest atoms to the vast cosmos, from ancient history to cutting-edge discoveries, there's so much to learn about our world. Science helps us understand everything from why the sky is blue to how our brains work to what makes the seasons change.\n\nWhat specific aspect interests you most? I'd love to explore it together!`,
