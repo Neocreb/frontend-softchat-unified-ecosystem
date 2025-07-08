@@ -184,12 +184,30 @@ export const FreelanceJobs: React.FC = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
-            <TabsTrigger value="talents">Browse Talents</TabsTrigger>
-            <TabsTrigger value="proposals">My Proposals</TabsTrigger>
-            <TabsTrigger value="saved">Saved Jobs</TabsTrigger>
-            <TabsTrigger value="recommended">Recommended</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1">
+            <TabsTrigger value="browse" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Browse Jobs</span>
+              <span className="sm:hidden">Jobs</span>
+            </TabsTrigger>
+            <TabsTrigger value="talents" className="text-xs sm:text-sm">
+              <span className="hidden sm:inline">Browse Talents</span>
+              <span className="sm:hidden">Talents</span>
+            </TabsTrigger>
+            <TabsTrigger value="proposals" className="text-xs sm:text-sm">
+              <span className="hidden lg:inline">My Proposals</span>
+              <span className="lg:hidden">Proposals</span>
+            </TabsTrigger>
+            <TabsTrigger value="saved" className="text-xs sm:text-sm">
+              <span className="hidden lg:inline">Saved Jobs</span>
+              <span className="lg:hidden">Saved</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="recommended"
+              className="text-xs sm:text-sm col-span-2 sm:col-span-1"
+            >
+              <span className="hidden lg:inline">Recommended</span>
+              <span className="lg:hidden">⭐</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="browse" className="mt-6">
