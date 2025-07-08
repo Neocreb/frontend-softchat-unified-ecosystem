@@ -23,7 +23,19 @@ import {
   AlertTriangle,
   CheckCircle2,
   Plus,
+  Brain,
+  Shield,
+  Trophy,
+  BarChart3,
+  Bell,
+  Zap,
 } from "lucide-react";
+import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
+import { FreelanceGamification } from "@/components/freelance/FreelanceGamification";
+import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
+import { SmartFreelanceNotifications } from "@/components/freelance/SmartFreelanceNotifications";
+import { FreelanceCollaborationTools } from "@/components/freelance/FreelanceCollaborationTools";
+import { FreelanceSecurityCenter } from "@/components/freelance/FreelanceSecurityCenter";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
@@ -223,11 +235,14 @@ export const FreelanceDashboard: React.FC = () => {
         </div>
 
         <Tabs defaultValue="tasks" className="space-y-6">
-          <TabsList>
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="tasks">Tasks & Progress</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
             <TabsTrigger value="files">Files</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
+            <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
+            <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
           </TabsList>
 
           <TabsContent value="tasks">
@@ -308,6 +323,21 @@ export const FreelanceDashboard: React.FC = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="smart-matching">
+            <SmartFreelanceMatching
+              projectId={selectedProject.id}
+              userType="freelancer"
+            />
+          </TabsContent>
+
+          <TabsContent value="collaboration">
+            <FreelanceCollaborationTools />
+          </TabsContent>
+
+          <TabsContent value="security">
+            <FreelanceSecurityCenter />
+          </TabsContent>
         </Tabs>
       </div>
     );
@@ -315,20 +345,40 @@ export const FreelanceDashboard: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Freelance Dashboard</h1>
-            <p className="text-muted-foreground">
-              Manage your projects and track your progress
-            </p>
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Freelance Dashboard</h1>
+              <p className="text-muted-foreground">
+                Manage your projects and track your progress
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline">
+                <Bell className="w-4 h-4 mr-2" />
+                Notifications
+              </Button>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Create Profile
+              </Button>
+            </div>
           </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            Create Profile
-          </Button>
-        </div>
+
+          {/* Advanced Features Tabs */}
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-7">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="smart-matching">AI Matching</TabsTrigger>
+              <TabsTrigger value="gamification">Achievements</TabsTrigger>
+              <TabsTrigger value="business-intel">Analytics</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="space-y-6">
 
         {/* Stats Overview */}
         {loading ? (
@@ -517,6 +567,34 @@ export const FreelanceDashboard: React.FC = () => {
               </CardContent>
             </Card>
 
+            {/* Advanced Features Quick Access */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-blue-600" />
+                  Smart Features
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Button variant="outline" className="w-full justify-start">
+                  <Brain className="w-4 h-4 mr-2" />
+                  AI Job Matching
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  Business Intelligence
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Trophy className="w-4 h-4 mr-2" />
+                  View Achievements
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Shield className="w-4 h-4 mr-2" />
+                  Security Center
+                </Button>
+              </CardContent>
+            </Card>
+
             {/* Performance Metrics */}
             <Card>
               <CardHeader>
@@ -553,6 +631,33 @@ export const FreelanceDashboard: React.FC = () => {
               </CardContent>
             </Card>
           </div>
+
+            </TabsContent>
+
+            <TabsContent value="smart-matching">
+              <SmartFreelanceMatching userType="freelancer" />
+            </TabsContent>
+
+            <TabsContent value="gamification">
+              <FreelanceGamification />
+            </TabsContent>
+
+            <TabsContent value="business-intel">
+              <FreelanceBusinessIntelligence />
+            </TabsContent>
+
+            <TabsContent value="notifications">
+              <SmartFreelanceNotifications />
+            </TabsContent>
+
+            <TabsContent value="collaboration">
+              <FreelanceCollaborationTools />
+            </TabsContent>
+
+            <TabsContent value="security">
+              <FreelanceSecurityCenter />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
 
