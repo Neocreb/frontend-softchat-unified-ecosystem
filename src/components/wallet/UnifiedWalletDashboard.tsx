@@ -18,6 +18,10 @@ import {
   RefreshCw,
   Eye,
   EyeOff,
+  ShoppingCart,
+  Bitcoin,
+  Gift,
+  Briefcase,
 } from "lucide-react";
 
 const WalletDashboardContent = () => {
@@ -41,28 +45,28 @@ const WalletDashboardContent = () => {
     {
       id: "ecommerce",
       name: "E-Commerce Earnings",
-      icon: "🛒",
+      icon: <ShoppingCart className="w-6 h-6 text-white" />,
       color: "bg-gradient-to-r from-green-500 to-green-600",
       description: "Marketplace sales and commissions",
     },
     {
       id: "crypto",
       name: "Crypto Portfolio",
-      icon: "💹",
+      icon: <Bitcoin className="w-6 h-6 text-white" />,
       color: "bg-gradient-to-r from-orange-500 to-orange-600",
       description: "Trading profits and investments",
     },
     {
       id: "rewards",
       name: "Rewards System",
-      icon: "🎁",
+      icon: <Gift className="w-6 h-6 text-white" />,
       color: "bg-gradient-to-r from-purple-500 to-purple-600",
       description: "Points, bonuses, and achievements",
     },
     {
       id: "freelance",
       name: "Freelance Income",
-      icon: "💼",
+      icon: <Briefcase className="w-6 h-6 text-white" />,
       color: "bg-gradient-to-r from-indigo-500 to-indigo-600",
       description: "Project payments and milestones",
     },
