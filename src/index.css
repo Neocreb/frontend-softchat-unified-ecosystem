@@ -342,6 +342,17 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Mobile font size for accessibility */
+  html {
+    font-size: 16px; /* Default font size */
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 13px; /* Mobile font size for better accessibility */
+    }
+  }
 }
 
 /* Mobile-specific optimizations */
