@@ -68,18 +68,26 @@ export function PullToRefresh({
     const container = containerRef.current;
     if (!container) return;
 
-    container.addEventListener("touchstart", handleTouchStart, {
+    // Store refs to handlers for cleanup
+    const startHandler = handleTouchStart;
+    const moveHandler = handleTouchMove;
+    const endHandler = handleTouchEnd;
+
+    container.addEventListener("touchstart", startHandler, {
       passive: true,
     });
-    container.addEventListener("touchmove", handleTouchMove, {
+    container.addEventListener("touchmove", moveHandler, {
       passive: false,
     });
-    container.addEventListener("touchend", handleTouchEnd, { passive: true });
+    container.addEventListener("touchend", endHandler, { passive: true });
 
     return () => {
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-      container.removeEventListener("touchend", handleTouchEnd);
+      // Use the stored refs for cleanup to prevent errors
+      if (container) {
+        container.removeEventListener("touchstart", startHandler);
+        container.removeEventListener("touchmove", moveHandler);
+        container.removeEventListener("touchend", endHandler);
+      }
     };
   }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 

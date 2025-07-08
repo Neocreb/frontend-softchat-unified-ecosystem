@@ -262,20 +262,27 @@ export function useMemoryMonitor() {
 
   useEffect(() => {
     const updateMemoryInfo = () => {
-      if ("memory" in performance) {
-        const memory = (performance as any).memory;
-        setMemoryInfo({
-          usedJSHeapSize: memory.usedJSHeapSize,
-          totalJSHeapSize: memory.totalJSHeapSize,
-          jsHeapSizeLimit: memory.jsHeapSizeLimit,
-        });
+      try {
+        if ("memory" in performance) {
+          const memory = (performance as any).memory;
+          setMemoryInfo({
+            usedJSHeapSize: memory.usedJSHeapSize,
+            totalJSHeapSize: memory.totalJSHeapSize,
+            jsHeapSizeLimit: memory.jsHeapSizeLimit,
+          });
+        }
+      } catch (error) {
+        // Silently handle errors during component unmount
+        console.warn("Memory info update failed:", error);
       }
     };
 
     updateMemoryInfo();
     const interval = setInterval(updateMemoryInfo, 5000); // Update every 5 seconds
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return memoryInfo;

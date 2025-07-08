@@ -51,6 +51,8 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (!adminSession) return;
+
     // Check session validity every 5 minutes
     const interval = setInterval(checkSessionValidity, 5 * 60 * 1000);
     return () => clearInterval(interval);
