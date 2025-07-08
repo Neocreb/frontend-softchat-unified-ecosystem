@@ -27,6 +27,16 @@ const AdminRoute: React.FC<AdminRouteProps> = ({
   } = useAdmin();
   const location = useLocation();
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log("AdminRoute check:", {
+      isAdminAuthenticated,
+      currentAdmin: !!currentAdmin,
+      isLoading,
+      location: location.pathname,
+    });
+  }, [isAdminAuthenticated, currentAdmin, isLoading, location.pathname]);
+
   // Show loading state
   if (isLoading) {
     return (
