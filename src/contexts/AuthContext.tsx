@@ -316,7 +316,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     [user],
   );
 
-  const contextValue: AuthContextType = React.useMemo(
+  const contextValue: AuthContextType = useMemo(
     () => ({
       isAuthenticated: !!session && !!user,
       isLoading,
