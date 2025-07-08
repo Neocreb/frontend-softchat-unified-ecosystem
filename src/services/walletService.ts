@@ -101,13 +101,19 @@ export const walletService = {
   // Get wallet balance
   async getWalletBalance(): Promise<WalletBalance> {
     try {
+      // Add timeout controller to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
       const response = await fetch("/api/wallet", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        // Add timeout and other fetch options for better error handling
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -116,12 +122,14 @@ export const walletService = {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.log(
-        "API unavailable, using mock wallet balance:",
-        error instanceof Error ? error.message : "Unknown error",
-      );
-      // Fallback to mock data in case of error
-      return mockWalletBalance;
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      console.log("API unavailable, using mock wallet balance:", errorMessage);
+
+      // Return mock data as fallback - this should never throw
+      return {
+        ...mockWalletBalance,
+      };
     }
   },
 
@@ -135,12 +143,19 @@ export const walletService = {
       if (source) params.append("source", source);
       if (limit) params.append("limit", limit.toString());
 
+      // Add timeout controller to prevent hanging requests
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
       const response = await fetch(`/api/wallet/transactions?${params}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -152,10 +167,10 @@ export const walletService = {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
       );
     } catch (error) {
-      console.log(
-        "API unavailable, using mock transactions:",
-        error instanceof Error ? error.message : "Unknown error",
-      );
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      console.log("API unavailable, using mock transactions:", errorMessage);
+
       // Fallback to mock data in case of error
       let transactions = [...mockTransactions];
 
