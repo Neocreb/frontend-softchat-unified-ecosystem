@@ -39,6 +39,7 @@ import {
   Trash2,
   Timer,
   BarChart3,
+  DollarSign,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
