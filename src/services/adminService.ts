@@ -14,16 +14,55 @@ import {
 
 export class AdminService {
   // Authentication methods
-  static async adminLogin(
-    credentials: AdminLoginCredentials,
-  ): Promise<{
+  static async adminLogin(credentials: AdminLoginCredentials): Promise<{
     success: boolean;
     user?: AdminUser;
     session?: AdminSession;
     error?: string;
   }> {
     try {
-      // First authenticate with Supabase
+      // Demo admin credentials for immediate access
+      if (
+        credentials.email === "admin@softchat.com" &&
+        credentials.password === "SoftChat2024!"
+      ) {
+        const demoAdmin: AdminUser = {
+          id: "demo-admin-001",
+          name: "Demo Administrator",
+          email: "admin@softchat.com",
+          avatar:
+            "https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=white",
+          roles: ["super_admin"],
+          permissions: [
+            "admin.all",
+            "users.all",
+            "content.all",
+            "marketplace.all",
+            "crypto.all",
+            "freelance.all",
+            "settings.all",
+            "moderation.all",
+          ],
+          isActive: true,
+          createdAt: new Date().toISOString(),
+        };
+
+        const demoSession: AdminSession = {
+          id: "demo-session-001",
+          adminId: "demo-admin-001",
+          sessionToken: "demo-token-" + Date.now(),
+          ipAddress: window.location.hostname,
+          userAgent: navigator.userAgent,
+          isActive: true,
+          expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
+          createdAt: new Date(),
+        };
+
+        console.log("Demo admin login successful");
+        return { success: true, user: demoAdmin, session: demoSession };
+      }
+
+      // Try regular Supabase authentication
       const { data: authData, error: authError } =
         await supabase.auth.signInWithPassword({
           email: credentials.email,
