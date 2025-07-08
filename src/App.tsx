@@ -57,6 +57,7 @@ import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
+import Messages from "./pages/Messages";
 import Explore from "./pages/Explore";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
@@ -202,7 +203,7 @@ const AppRoutes = () => {
         <Route path="create" element={<EnhancedFreelance />} />
         <Route path="freelance" element={<FreelanceJobs />} />
         <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
-        <Route path="messages" element={<Inbox />} />
+        <Route path="messages" element={<Messages />} />
         <Route path="messages/:threadId" element={<ChatRoom />} />
         <Route path="chat-demo" element={<ChatDemo />} />
         <Route path="profile" element={<EnhancedProfile />} />
@@ -211,7 +212,6 @@ const AppRoutes = () => {
         <Route path="demo/profiles" element={<ProfileDemo />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="notifications" element={<Notifications />} />
-        <Route path="messages" element={<Navigate to="/chat" replace />} />
 
         {/* Marketplace routes */}
         <Route path="marketplace" element={<EnhancedMarketplace />} />

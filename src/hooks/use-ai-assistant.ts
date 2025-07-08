@@ -9,6 +9,7 @@ import {
   type SchedulingOptimization,
   type AIPersonalAssistant,
 } from "@/services/aiPersonalAssistantService";
+import { enhancedAIService } from "@/services/enhancedAIService";
 
 export interface UseAIAssistantReturn {
   // Data
@@ -48,6 +49,7 @@ export interface UseAIAssistantReturn {
 
   // Chat
   chatMessages: any[];
+  isTyping: boolean;
   sendChatMessage: (message: string) => Promise<void>;
   clearChat: () => void;
 
@@ -80,6 +82,8 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
   );
   const [dashboardSummary, setDashboardSummary] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [conversationContext, setConversationContext] = useState<string[]>([]);
 
   // Loading states
   const [isLoading, setIsLoading] = useState(false);
@@ -115,7 +119,7 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
         {
           id: "welcome",
           type: "assistant",
-          content: `Hi ${user.username || user.email}! I'm ${assistantData.name}, your AI personal assistant. I'm here to help you optimize your content, trading, and overall platform performance. What would you like to work on today?`,
+          content: `Hey ${user.username || user.email || "there"}! 👋 I'm ${assistantData.name}, your personal SoftChat assistant.\n\nI'm here to help you succeed on the platform - whether you want to create amazing content, trade crypto, sell products, or earn through freelancing. Just ask me anything and I'll guide you step by step!\n\nWhat would you like to explore first?`,
           timestamp: new Date(),
         },
       ]);
@@ -329,7 +333,7 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
   const sendChatMessage = useCallback(
     async (message: string) => {
-      if (!user?.id || !message.trim()) return;
+      if (!user?.id || !message.trim() || isTyping) return;
 
       const userMessage = {
         id: `msg-${Date.now()}`,
@@ -340,50 +344,50 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
       setChatMessages((prev) => [...prev, userMessage]);
 
+      // Add to conversation context
+      setConversationContext((prev) => [...prev.slice(-4), message]); // Keep last 5 messages for context
+
       // Track chat interaction
       await trackInteraction("chat", { message });
 
-      // Simulate AI response (in a real app, this would call an AI service)
+      // Show typing indicator
+      setIsTyping(true);
+
+      // Simulate realistic response time based on message complexity
+      const responseDelay = Math.min(500 + message.length * 10, 2000);
+
+      // Use enhanced AI service for more intelligent responses
       setTimeout(() => {
+        // Generate response with conversation context
+        const contextualInput =
+          conversationContext.length > 0
+            ? `Previous context: ${conversationContext.slice(-2).join(". ")}. Current: ${message}`
+            : message;
+
+        const smartResponse = enhancedAIService.generateSmartResponse(
+          contextualInput,
+          user,
+        );
         const aiResponse = {
           id: `ai-${Date.now()}`,
           type: "assistant",
-          content: generateAIResponse(message),
+          content: smartResponse.message,
           timestamp: new Date(),
+          suggestedActions: smartResponse.suggestedActions,
+          relatedTopics: smartResponse.relatedTopics,
+          followUpQuestions: smartResponse.followUpQuestions,
         };
         setChatMessages((prev) => [...prev, aiResponse]);
-      }, 1000);
+        setIsTyping(false);
+      }, responseDelay);
     },
-    [user?.id, trackInteraction],
+    [user?.id, trackInteraction, isTyping, conversationContext],
   );
-
-  const generateAIResponse = (input: string): string => {
-    const lowerInput = input.toLowerCase();
-
-    if (lowerInput.includes("content") || lowerInput.includes("post")) {
-      return "I can help you create engaging content! Based on your recent performance, I'd recommend focusing on React tutorials or crypto analysis posts. Your Tuesday evening posts get the best engagement. Would you like me to generate specific content ideas?";
-    }
-
-    if (lowerInput.includes("trading") || lowerInput.includes("crypto")) {
-      return "For trading insights, I'm currently tracking Bitcoin's support at $43,500 and Ethereum's strong fundamentals. Your trading content performs 2x better than general posts. Would you like detailed analysis on any specific assets?";
-    }
-
-    if (
-      lowerInput.includes("analytics") ||
-      lowerInput.includes("performance")
-    ) {
-      return "Your performance is trending upward! Views increased 18.5% this week, and engagement is up 12.3%. Your video content strategy is particularly effective. Would you like me to dive deeper into any specific metrics?";
-    }
-
-    if (lowerInput.includes("schedule") || lowerInput.includes("time")) {
-      return "Based on your audience activity, the best times to post are Tuesday 7 PM for maximum engagement and Sunday 6 PM for crypto analysis. Avoid Saturday afternoons. Would you like me to create a posting schedule?";
-    }
-
-    return "I'm here to help with content creation, trading analysis, performance optimization, and scheduling. Just let me know what specific area you'd like to focus on, and I'll provide personalized recommendations based on your data!";
-  };
 
   const clearChat = useCallback(() => {
     setChatMessages([]);
+    setConversationContext([]);
+    setIsTyping(false);
   }, []);
 
   // Utility functions
@@ -453,6 +457,7 @@ export const useAIAssistant = (): UseAIAssistantReturn => {
 
     // Chat
     chatMessages,
+    isTyping,
     sendChatMessage,
     clearChat,
 
