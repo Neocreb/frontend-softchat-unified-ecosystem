@@ -103,11 +103,11 @@ export const walletService = {
     try {
       const response = await fetch("/api/wallet");
       if (!response.ok) {
-        throw new Error("Failed to fetch wallet balance");
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       return await response.json();
     } catch (error) {
-      console.error("Error fetching wallet balance:", error);
+      console.log("API unavailable, using mock wallet balance");
       // Fallback to mock data in case of error
       return mockWalletBalance;
     }
@@ -125,7 +125,7 @@ export const walletService = {
 
       const response = await fetch(`/api/wallet/transactions?${params}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch transactions");
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const transactions = await response.json();
@@ -134,7 +134,7 @@ export const walletService = {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
       );
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      console.log("API unavailable, using mock transactions");
       // Fallback to mock data in case of error
       let transactions = [...mockTransactions];
 

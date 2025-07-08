@@ -1,4 +1,13 @@
-import * as React from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  type FC,
+  type ReactNode,
+} from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
 import { ExtendedUser, UserProfile } from "@/types/user";
@@ -22,7 +31,7 @@ type AuthContextType = {
 };
 
 // Create the auth context with default values
-const AuthContext = React.createContext<AuthContextType>({
+const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   isLoading: true,
   user: null,
@@ -36,20 +45,18 @@ const AuthContext = React.createContext<AuthContextType>({
 });
 
 // Custom hook to use the auth context
-export const useAuth = () => React.useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);
 
 // Authentication provider component
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   // Define state hooks with safer initialization
-  const [user, setUser] = React.useState<ExtendedUser | null>(null);
-  const [session, setSession] = React.useState<Session | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [error, setError] = React.useState<Error | null>(null);
+  const [user, setUser] = useState<ExtendedUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   // Transform user data to include convenience properties
-  const enhanceUserData = React.useCallback(
+  const enhanceUserData = useCallback(
     (rawUser: User | null): ExtendedUser | null => {
       if (!rawUser) return null;
 
@@ -117,7 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   // Check for an existing session on component mount
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("AuthProvider: Initializing");
 
     const initializeAuth = async () => {
@@ -172,7 +179,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [enhanceUserData]);
 
   // Login function
-  const login = React.useCallback(
+  const login = useCallback(
     async (email: string, password: string): Promise<{ error?: Error }> => {
       try {
         setIsLoading(true);
@@ -202,7 +209,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   // Logout function
-  const logout = React.useCallback(async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
       const { error } = await supabase.auth.signOut();
@@ -224,7 +231,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   // Signup function
-  const signup = React.useCallback(
+  const signup = useCallback(
     async (
       email: string,
       password: string,
@@ -265,12 +272,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   // Check if user is admin
-  const isAdmin = React.useCallback((): boolean => {
+  const isAdmin = useCallback((): boolean => {
     return user?.role === "admin" || user?.profile?.role === "admin";
   }, [user]);
 
   // Update user profile
-  const updateProfile = React.useCallback(
+  const updateProfile = useCallback(
     async (data: Partial<UserProfile>): Promise<void> => {
       try {
         if (!user) {
@@ -309,7 +316,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     [user],
   );
 
-  const contextValue: AuthContextType = React.useMemo(
+  const contextValue: AuthContextType = useMemo(
     () => ({
       isAuthenticated: !!session && !!user,
       isLoading,

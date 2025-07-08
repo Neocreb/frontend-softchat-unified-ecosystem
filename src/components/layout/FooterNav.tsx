@@ -31,8 +31,10 @@ const FooterNav = () => {
     {
       icon: Plus,
       label: "Freelance",
-      href: "/create",
-      active: location.pathname === "/create",
+      href: "/freelance",
+      active:
+        location.pathname === "/freelance" ||
+        location.pathname.startsWith("/freelance"),
       special: true,
     },
     {

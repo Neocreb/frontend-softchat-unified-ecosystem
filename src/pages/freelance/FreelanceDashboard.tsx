@@ -1,0 +1,576 @@
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DollarSign,
+  TrendingUp,
+  Clock,
+  Star,
+  Briefcase,
+  MessageCircle,
+  Calendar,
+  FileText,
+  Users,
+  Award,
+  Target,
+  Activity,
+  Wallet,
+  ChevronRight,
+  AlertTriangle,
+  CheckCircle2,
+  Plus,
+} from "lucide-react";
+import { Project, FreelanceStats } from "@/types/freelance";
+import { useFreelance, useEscrow } from "@/hooks/use-freelance";
+import { useAuth } from "@/contexts/AuthContext";
+import TaskTracker from "@/components/freelance/TaskTracker";
+import NegotiationChat from "@/components/freelance/NegotiationChat";
+import ReviewForm from "@/components/freelance/ReviewForm";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export const FreelanceDashboard: React.FC = () => {
+  const [activeProjects, setActiveProjects] = useState<Project[]>([]);
+  const [stats, setStats] = useState<FreelanceStats | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const { getProjects, getFreelanceStats, loading } = useFreelance();
+  const { getUserEscrows } = useEscrow();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (!user) return;
+
+      const [projectsData, statsData] = await Promise.all([
+        getProjects(user.id, "freelancer"),
+        getFreelanceStats(user.id),
+      ]);
+
+      if (projectsData) setActiveProjects(projectsData);
+      if (statsData) setStats(statsData);
+    };
+
+    loadData();
+  }, [user, getProjects, getFreelanceStats]);
+
+  const getProjectStatusColor = (status: string) => {
+    switch (status) {
+      case "active":
+        return "bg-blue-100 text-blue-800";
+      case "completed":
+        return "bg-green-100 text-green-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      case "disputed":
+        return "bg-yellow-100 text-yellow-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getUrgentTasks = () => {
+    // Mock urgent tasks - in real app, this would come from project data
+    return [
+      {
+        id: "1",
+        title: "Submit wireframes for review",
+        project: "E-commerce Platform",
+        dueDate: "2024-01-18",
+        priority: "high",
+      },
+      {
+        id: "2",
+        title: "Client feedback response needed",
+        project: "Mobile App Design",
+        dueDate: "2024-01-19",
+        priority: "medium",
+      },
+    ];
+  };
+
+  const getRecentActivities = () => {
+    // Mock recent activities
+    return [
+      {
+        id: "1",
+        type: "message",
+        title: "New message from Alice Johnson",
+        project: "E-commerce Platform",
+        timestamp: "2 hours ago",
+      },
+      {
+        id: "2",
+        type: "payment",
+        title: "Payment received: $1,500",
+        project: "Mobile App Design",
+        timestamp: "1 day ago",
+      },
+      {
+        id: "3",
+        type: "milestone",
+        title: "Milestone approved",
+        project: "Website Redesign",
+        timestamp: "2 days ago",
+      },
+    ];
+  };
+
+  const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
+    <Card
+      className="hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => setSelectedProject(project)}
+    >
+      <CardContent className="pt-4">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold line-clamp-1 mb-1">
+              {project.job.title}
+            </h3>
+            <div className="flex items-center gap-2 mb-2">
+              <Avatar className="w-6 h-6">
+                <AvatarImage src={project.client.avatar} />
+                <AvatarFallback>{project.client.name[0]}</AvatarFallback>
+              </Avatar>
+              <span className="text-sm text-muted-foreground">
+                {project.client.name}
+              </span>
+            </div>
+          </div>
+          <Badge className={getProjectStatusColor(project.status)}>
+            {project.status}
+          </Badge>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Progress</span>
+            <span className="font-medium">75%</span>
+          </div>
+          <Progress value={75} className="h-2" />
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div className="text-muted-foreground">Budget</div>
+              <div className="font-medium">
+                ${project.budget.agreed.toLocaleString()}
+              </div>
+            </div>
+            <div>
+              <div className="text-muted-foreground">Earned</div>
+              <div className="font-medium text-green-600">
+                ${project.budget.paid.toLocaleString()}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center pt-2 border-t">
+            <div className="text-xs text-muted-foreground">
+              Due:{" "}
+              {project.deadline
+                ? new Date(project.deadline).toLocaleDateString()
+                : "No deadline"}
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const StatCard: React.FC<{
+    title: string;
+    value: string | number;
+    change?: string;
+    icon: React.ReactNode;
+    color: string;
+  }> = ({ title, value, change, icon, color }) => (
+    <Card>
+      <CardContent className="pt-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-muted-foreground">{title}</p>
+            <p className="text-2xl font-bold">{value}</p>
+            {change && (
+              <p className="text-xs text-green-600">
+                <TrendingUp className="w-3 h-3 inline mr-1" />
+                {change}
+              </p>
+            )}
+          </div>
+          <div className={`p-3 rounded-lg ${color}`}>{icon}</div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  if (selectedProject) {
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex items-center gap-4 mb-6">
+          <Button variant="outline" onClick={() => setSelectedProject(null)}>
+            ← Back to Dashboard
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold">{selectedProject.job.title}</h1>
+            <p className="text-muted-foreground">Project Management</p>
+          </div>
+        </div>
+
+        <Tabs defaultValue="tasks" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="tasks">Tasks & Progress</TabsTrigger>
+            <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="files">Files</TabsTrigger>
+            <TabsTrigger value="billing">Billing</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="tasks">
+            <TaskTracker projectId={selectedProject.id} userRole="freelancer" />
+          </TabsContent>
+
+          <TabsContent value="messages">
+            <NegotiationChat
+              projectId={selectedProject.id}
+              currentUserId={user?.id || ""}
+              projectStatus={selectedProject.status as any}
+              participants={{
+                client: {
+                  id: selectedProject.client.id,
+                  name: selectedProject.client.name,
+                  avatar: selectedProject.client.avatar,
+                },
+                freelancer: {
+                  id: selectedProject.freelancer.id,
+                  name: selectedProject.freelancer.name,
+                  avatar: selectedProject.freelancer.avatar,
+                },
+              }}
+            />
+          </TabsContent>
+
+          <TabsContent value="files">
+            <Card>
+              <CardHeader>
+                <CardTitle>Project Files</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                  <h3 className="text-lg font-medium">No files yet</h3>
+                  <p className="text-muted-foreground">
+                    Upload project files and deliverables here
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="billing">
+            <Card>
+              <CardHeader>
+                <CardTitle>Billing & Payments</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <div className="text-sm text-muted-foreground">
+                        Total Earned
+                      </div>
+                      <div className="text-2xl font-bold text-green-600">
+                        ${selectedProject.budget.paid.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="p-4 bg-blue-50 rounded-lg">
+                      <div className="text-sm text-muted-foreground">
+                        Pending
+                      </div>
+                      <div className="text-2xl font-bold text-blue-600">
+                        ${selectedProject.budget.remaining.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-muted-foreground">
+                        Total Budget
+                      </div>
+                      <div className="text-2xl font-bold">
+                        ${selectedProject.budget.agreed.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-6">
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Freelance Dashboard</h1>
+            <p className="text-muted-foreground">
+              Manage your projects and track your progress
+            </p>
+          </div>
+          <Button>
+            <Plus className="w-4 h-4 mr-2" />
+            Create Profile
+          </Button>
+        </div>
+
+        {/* Stats Overview */}
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i}>
+                <CardContent className="pt-4">
+                  <Skeleton className="h-16 w-full" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : stats ? (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <StatCard
+              title="Total Earnings"
+              value={`$${stats.totalEarnings.toLocaleString()}`}
+              change="+12% this month"
+              icon={<DollarSign className="w-6 h-6 text-white" />}
+              color="bg-green-500"
+            />
+            <StatCard
+              title="Active Projects"
+              value={stats.activeProjects}
+              icon={<Briefcase className="w-6 h-6 text-white" />}
+              color="bg-blue-500"
+            />
+            <StatCard
+              title="Completed Projects"
+              value={stats.completedProjects}
+              icon={<CheckCircle2 className="w-6 h-6 text-white" />}
+              color="bg-purple-500"
+            />
+            <StatCard
+              title="Success Rate"
+              value={`${stats.successRate}%`}
+              icon={<Star className="w-6 h-6 text-white" />}
+              color="bg-orange-500"
+            />
+          </div>
+        ) : null}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Active Projects */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Active Projects</CardTitle>
+                <Button variant="outline" size="sm">
+                  View All
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="space-y-4">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <Skeleton key={i} className="h-32 w-full" />
+                    ))}
+                  </div>
+                ) : activeProjects.length > 0 ? (
+                  <div className="space-y-4">
+                    {activeProjects.map((project) => (
+                      <ProjectCard key={project.id} project={project} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Briefcase className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+                    <h3 className="text-lg font-medium">No active projects</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Start applying to jobs to see your projects here
+                    </p>
+                    <Button>Browse Jobs</Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="w-5 h-5" />
+                  Recent Activity
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {getRecentActivities().map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="flex items-center gap-3 p-3 border rounded-lg"
+                    >
+                      <div className="p-2 bg-blue-50 rounded-full">
+                        {activity.type === "message" && (
+                          <MessageCircle className="w-4 h-4 text-blue-600" />
+                        )}
+                        {activity.type === "payment" && (
+                          <DollarSign className="w-4 h-4 text-green-600" />
+                        )}
+                        {activity.type === "milestone" && (
+                          <Target className="w-4 h-4 text-purple-600" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-medium text-sm">
+                          {activity.title}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {activity.project}
+                        </div>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {activity.timestamp}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Urgent Tasks */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-orange-500" />
+                  Urgent Tasks
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {getUrgentTasks().map((task) => (
+                    <div key={task.id} className="p-3 border rounded-lg">
+                      <div className="font-medium text-sm line-clamp-2 mb-1">
+                        {task.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground mb-2">
+                        {task.project}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <Badge
+                          variant={
+                            task.priority === "high"
+                              ? "destructive"
+                              : "secondary"
+                          }
+                        >
+                          {task.priority}
+                        </Badge>
+                        <div className="text-xs text-muted-foreground">
+                          Due: {new Date(task.dueDate).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Button variant="outline" className="w-full justify-start">
+                  <FileText className="w-4 h-4 mr-2" />
+                  Create Invoice
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Contact Support
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Schedule Meeting
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Wallet className="w-4 h-4 mr-2" />
+                  View Earnings
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Performance Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle>This Month</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    Response Time
+                  </span>
+                  <span className="text-sm font-medium">&lt; 2 hours</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    Client Rating
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-medium">4.9</span>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    On-time Delivery
+                  </span>
+                  <span className="text-sm font-medium">98%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-muted-foreground">
+                    Repeat Clients
+                  </span>
+                  <span className="text-sm font-medium">67%</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* Review Modal */}
+      {showReviewModal && selectedProject && (
+        <ReviewForm
+          project={selectedProject}
+          userRole="freelancer"
+          isOpen={showReviewModal}
+          onClose={() => setShowReviewModal(false)}
+          onSubmit={(review) => {
+            console.log("Review submitted:", review);
+            setShowReviewModal(false);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+export default FreelanceDashboard;

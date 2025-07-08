@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useContext, createContext } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  type ReactNode,
+  type FC,
+} from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -147,7 +154,7 @@ const AccessibilityContext = createContext<AccessibilityContextType | null>(
 );
 
 // Accessibility Provider
-export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
+export const AccessibilityProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [settings, setSettings] = useState<AccessibilitySettings>(() => {
@@ -296,7 +303,7 @@ const applyAccessibilitySettings = (settings: AccessibilitySettings) => {
 };
 
 // Accessibility Control Panel
-export const AccessibilityControlPanel: React.FC = () => {
+export const AccessibilityControlPanel: FC = () => {
   const { settings, updateSettings, speak } = useAccessibility();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
@@ -707,7 +714,7 @@ export const AccessibilityControlPanel: React.FC = () => {
 };
 
 // Screen Reader Announcer Component
-export const ScreenReaderAnnouncer: React.FC<{
+export const ScreenReaderAnnouncer: FC<{
   message: string;
   priority?: "polite" | "assertive";
 }> = ({ message, priority = "polite" }) => {
@@ -742,7 +749,7 @@ export const ScreenReaderAnnouncer: React.FC<{
 };
 
 // Keyboard Navigation Helper
-export const KeyboardNavigationHelper: React.FC = () => {
+export const KeyboardNavigationHelper: FC = () => {
   const { settings, focusNext, focusPrevious } = useAccessibility();
   const [showHelp, setShowHelp] = useState(false);
 
@@ -836,7 +843,7 @@ export const KeyboardNavigationHelper: React.FC = () => {
 };
 
 // Reading Guide Component
-export const ReadingGuide: React.FC = () => {
+export const ReadingGuide: FC = () => {
   const { settings } = useAccessibility();
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -872,10 +879,10 @@ export const ReadingGuide: React.FC = () => {
 // Text-to-Speech Button
 interface TextToSpeechProps {
   text: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const TextToSpeechButton: React.FC<TextToSpeechProps> = ({
+export const TextToSpeechButton: FC<TextToSpeechProps> = ({
   text,
   children,
 }) => {
@@ -924,9 +931,9 @@ export const TextToSpeechButton: React.FC<TextToSpeechProps> = ({
 };
 
 // Skip Link Component
-export const SkipLink: React.FC<{
+export const SkipLink: FC<{
   href: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }> = ({ href, children }) => {
   return (
     <a

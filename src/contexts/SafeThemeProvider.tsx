@@ -1,4 +1,13 @@
-import React, { Component, ReactNode, createContext, useContext } from "react";
+import {
+  Component,
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type FC,
+  type ErrorInfo,
+} from "react";
 import { ThemeProvider } from "./ThemeContext";
 
 // Fallback theme context for error cases
@@ -8,14 +17,12 @@ const FallbackThemeContext = createContext({
   isDark: false,
 });
 
-const FallbackThemeProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [theme] = React.useState<"light" | "dark" | "system">("light");
-  const [isDark] = React.useState(false);
+const FallbackThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  const [theme] = useState<"light" | "dark" | "system">("light");
+  const [isDark] = useState(false);
 
   // Apply fallback theme to DOM
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       if (typeof window !== "undefined" && typeof document !== "undefined") {
         const root = document.documentElement;
@@ -72,7 +79,7 @@ class SafeThemeProvider extends Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ThemeProvider Error:", error, errorInfo);
   }
 

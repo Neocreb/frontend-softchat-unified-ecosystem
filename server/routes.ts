@@ -923,6 +923,768 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Freelance API endpoints
+  app.get("/api/freelance/jobs", async (req, res) => {
+    try {
+      const {
+        category,
+        skills,
+        budgetMin,
+        budgetMax,
+        experienceLevel,
+        sortBy,
+        limit = 50,
+        offset = 0,
+      } = req.query as {
+        category?: string;
+        skills?: string | string[];
+        budgetMin?: string;
+        budgetMax?: string;
+        experienceLevel?: string | string[];
+        sortBy?: string;
+        limit?: string;
+        offset?: string;
+      };
+
+      // Mock freelance jobs data
+      const mockJobs = [
+        {
+          id: "1",
+          title: "Full-Stack Web Application Development",
+          description:
+            "Looking for an experienced developer to build a comprehensive e-commerce platform with React, Node.js, and MongoDB. Must have experience with payment integration and user authentication.",
+          category: "Web Development",
+          subcategory: "Full-Stack Development",
+          budget: { type: "fixed", amount: 5000 },
+          deadline: "2024-02-15",
+          duration: "2-3 months",
+          experienceLevel: "expert",
+          skills: ["React", "Node.js", "MongoDB", "Payment Integration"],
+          client: {
+            id: "1",
+            name: "TechCorp Solutions",
+            email: "contact@techcorp.com",
+            avatar:
+              "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop",
+            location: "San Francisco, CA",
+            timezone: "PST",
+            verified: true,
+            joinedDate: "2023-01-01",
+            companyName: "TechCorp Solutions",
+            totalSpent: 47500,
+            jobsPosted: 12,
+            hireRate: 85.5,
+            rating: 4.8,
+            paymentVerified: true,
+          },
+          proposals: [],
+          status: "open",
+          postedDate: "2024-01-10T10:00:00Z",
+          applicationsCount: 12,
+          visibility: "public",
+        },
+        {
+          id: "2",
+          title: "Mobile App UI/UX Design",
+          description:
+            "Need a talented designer to create a modern, user-friendly mobile app interface for a fitness tracking application.",
+          category: "Design",
+          subcategory: "Mobile Design",
+          budget: { type: "hourly", min: 60, max: 80 },
+          deadline: "2024-01-30",
+          duration: "3-4 weeks",
+          experienceLevel: "intermediate",
+          skills: ["UI/UX Design", "Figma", "Mobile Design", "Prototyping"],
+          client: {
+            id: "2",
+            name: "FitLife Startup",
+            email: "hello@fitlife.com",
+            avatar:
+              "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=100&h=100&fit=crop",
+            location: "New York, NY",
+            timezone: "EST",
+            verified: true,
+            joinedDate: "2023-06-15",
+            companyName: "FitLife Inc.",
+            totalSpent: 23400,
+            jobsPosted: 8,
+            hireRate: 90.2,
+            rating: 4.6,
+            paymentVerified: true,
+          },
+          proposals: [],
+          status: "open",
+          postedDate: "2024-01-08T14:30:00Z",
+          applicationsCount: 8,
+          visibility: "public",
+        },
+      ];
+
+      let filteredJobs = mockJobs;
+
+      // Apply filters
+      if (category) {
+        filteredJobs = filteredJobs.filter((job) => job.category === category);
+      }
+      if (skills) {
+        const skillsArray = Array.isArray(skills) ? skills : [skills];
+        filteredJobs = filteredJobs.filter((job) =>
+          skillsArray.some((skill) =>
+            job.skills.some((jobSkill) =>
+              jobSkill.toLowerCase().includes(skill.toLowerCase()),
+            ),
+          ),
+        );
+      }
+      if (experienceLevel) {
+        const levels = Array.isArray(experienceLevel)
+          ? experienceLevel
+          : [experienceLevel];
+        filteredJobs = filteredJobs.filter((job) =>
+          levels.includes(job.experienceLevel),
+        );
+      }
+
+      const total = filteredJobs.length;
+      const jobs = filteredJobs.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+
+      res.json({
+        jobs,
+        total,
+        hasMore: total > Number(offset) + Number(limit),
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch freelance jobs" });
+    }
+  });
+
+  app.get("/api/freelance/jobs/:id", async (req, res) => {
+    try {
+      const jobId = req.params.id;
+      // Mock job details - in real app would fetch from database
+      const mockJob = {
+        id: jobId,
+        title: "Full-Stack Web Application Development",
+        description:
+          "Looking for an experienced developer to build a comprehensive e-commerce platform with React, Node.js, and MongoDB. Must have experience with payment integration and user authentication.",
+        category: "Web Development",
+        subcategory: "Full-Stack Development",
+        budget: { type: "fixed", amount: 5000 },
+        deadline: "2024-02-15",
+        duration: "2-3 months",
+        experienceLevel: "expert",
+        skills: ["React", "Node.js", "MongoDB", "Payment Integration"],
+        client: {
+          id: "1",
+          name: "TechCorp Solutions",
+          email: "contact@techcorp.com",
+          avatar:
+            "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop",
+          location: "San Francisco, CA",
+          timezone: "PST",
+          verified: true,
+          joinedDate: "2023-01-01",
+          companyName: "TechCorp Solutions",
+          totalSpent: 47500,
+          jobsPosted: 12,
+          hireRate: 85.5,
+          rating: 4.8,
+          paymentVerified: true,
+        },
+        proposals: [],
+        status: "open",
+        postedDate: "2024-01-10T10:00:00Z",
+        applicationsCount: 12,
+        visibility: "public",
+      };
+
+      res.json(mockJob);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch job details" });
+    }
+  });
+
+  app.post("/api/freelance/proposals", async (req, res) => {
+    try {
+      const proposalData = req.body;
+
+      // Mock proposal creation
+      const newProposal = {
+        id: `proposal_${Date.now()}`,
+        ...proposalData,
+        submittedDate: new Date().toISOString(),
+        status: "pending",
+      };
+
+      res.json(newProposal);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to submit proposal" });
+    }
+  });
+
+  app.get("/api/freelance/projects", async (req, res) => {
+    try {
+      const { userId, userType, status } = req.query;
+
+      // Mock projects data
+      const mockProjects = [
+        {
+          id: "project_1",
+          job: {
+            id: "1",
+            title: "E-commerce Platform Development",
+            category: "Web Development",
+          },
+          freelancer: {
+            id: "freelancer_1",
+            name: "John Smith",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          },
+          client: {
+            id: "client_1",
+            name: "Alice Johnson",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+          },
+          status: "active",
+          startDate: "2024-01-15T00:00:00Z",
+          deadline: "2024-02-15T00:00:00Z",
+          budget: {
+            agreed: 5000,
+            paid: 1500,
+            remaining: 3500,
+          },
+          milestones: [
+            {
+              id: "1",
+              title: "Project Setup & Architecture",
+              description:
+                "Set up development environment and project architecture",
+              amount: 1500,
+              dueDate: "2024-01-22",
+              status: "approved",
+            },
+            {
+              id: "2",
+              title: "Frontend Development",
+              description: "Build React frontend with responsive design",
+              amount: 2000,
+              dueDate: "2024-02-05",
+              status: "in-progress",
+            },
+          ],
+        },
+      ];
+
+      let filteredProjects = mockProjects;
+
+      if (userType === "freelancer") {
+        filteredProjects = filteredProjects.filter(
+          (p) => p.freelancer.id === userId,
+        );
+      } else if (userType === "client") {
+        filteredProjects = filteredProjects.filter(
+          (p) => p.client.id === userId,
+        );
+      }
+
+      if (status) {
+        filteredProjects = filteredProjects.filter((p) => p.status === status);
+      }
+
+      res.json(filteredProjects);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch projects" });
+    }
+  });
+
+  app.get("/api/freelance/stats/:userId", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+
+      // Mock freelance stats
+      const mockStats = {
+        totalEarnings: 24750,
+        activeProjects: 3,
+        completedProjects: 12,
+        totalProjects: 15,
+        rating: 4.8,
+        successRate: 96,
+        repeatClients: 67,
+      };
+
+      res.json(mockStats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch freelance stats" });
+    }
+  });
+
+  app.get("/api/freelance/categories", async (req, res) => {
+    try {
+      const categories = [
+        "Web Development",
+        "Mobile Development",
+        "Design",
+        "Writing & Content",
+        "Digital Marketing",
+        "Data Science",
+        "DevOps & Cloud",
+        "AI & Machine Learning",
+      ];
+      res.json(categories);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
+  app.get("/api/freelance/skills", async (req, res) => {
+    try {
+      const skills = [
+        "React",
+        "Node.js",
+        "Python",
+        "TypeScript",
+        "Vue.js",
+        "Angular",
+        "Figma",
+        "Adobe XD",
+        "Photoshop",
+        "Illustrator",
+        "Content Writing",
+        "SEO",
+        "Social Media Marketing",
+        "AWS",
+        "Docker",
+        "Kubernetes",
+        "PostgreSQL",
+        "MongoDB",
+      ];
+      res.json(skills);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch skills" });
+    }
+  });
+
+  // Escrow API endpoints
+  app.post("/api/escrow", async (req, res) => {
+    try {
+      const { projectId, clientId, freelancerId, amount, cryptoType } =
+        req.body;
+
+      // Mock escrow creation
+      const newEscrow = {
+        id: `escrow_${Date.now()}`,
+        projectId,
+        clientId,
+        freelancerId,
+        amount: amount.toString(),
+        cryptoType,
+        contractAddress: `0x${Math.random().toString(16).substr(2, 32)}`,
+        transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      res.json(newEscrow);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create escrow" });
+    }
+  });
+
+  app.post("/api/escrow/:id/release", async (req, res) => {
+    try {
+      const escrowId = req.params.id;
+      const { clientId, milestoneId } = req.body;
+
+      // Mock fund release
+      const transactionHash = `0x${Math.random().toString(16).substr(2, 64)}`;
+
+      res.json({
+        success: true,
+        transactionHash,
+        message: "Funds released successfully",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to release funds" });
+    }
+  });
+
+  app.post("/api/disputes", async (req, res) => {
+    try {
+      const { projectId, escrowId, reason, description, evidence } = req.body;
+
+      // Mock dispute creation
+      const disputeId = `dispute_${Date.now()}`;
+
+      res.json({
+        success: true,
+        disputeId,
+        message:
+          "Dispute created successfully. Admin will review within 24 hours.",
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create dispute" });
+    }
+  });
+
+  // Chat API endpoints
+  app.get("/api/chat/threads", async (req, res) => {
+    try {
+      const { type, unreadOnly, searchQuery } = req.query;
+
+      // Mock chat threads data
+      const mockThreads = [
+        {
+          id: "thread_1",
+          type: "freelance",
+          referenceId: "job_123",
+          participants: ["user_1", "user_2"],
+          lastMessage:
+            "I'm excited to work on this project! When can we start?",
+          lastMessageAt: "2024-01-20T15:30:00Z",
+          updatedAt: "2024-01-20T15:30:00Z",
+          isGroup: false,
+          createdAt: "2024-01-20T10:00:00Z",
+          unreadCount: 2,
+          contextData: {
+            jobTitle: "E-commerce Website Development",
+            jobBudget: 5000,
+            projectStatus: "negotiation",
+          },
+        },
+        {
+          id: "thread_2",
+          type: "marketplace",
+          referenceId: "product_456",
+          participants: ["user_1", "user_3"],
+          lastMessage: "Is this item still available?",
+          lastMessageAt: "2024-01-20T14:15:00Z",
+          updatedAt: "2024-01-20T14:15:00Z",
+          isGroup: false,
+          createdAt: "2024-01-20T14:00:00Z",
+          unreadCount: 1,
+          contextData: {
+            productName: "MacBook Pro 16-inch",
+            productPrice: 2500,
+            productImage:
+              "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400",
+          },
+        },
+        {
+          id: "thread_3",
+          type: "p2p",
+          referenceId: "trade_789",
+          participants: ["user_1", "user_4"],
+          lastMessage: "Payment sent! Please confirm receipt.",
+          lastMessageAt: "2024-01-20T16:45:00Z",
+          updatedAt: "2024-01-20T16:45:00Z",
+          isGroup: false,
+          createdAt: "2024-01-20T16:00:00Z",
+          unreadCount: 0,
+          contextData: {
+            tradeAmount: 0.5,
+            cryptoType: "BTC",
+            tradeStatus: "payment_sent",
+          },
+        },
+        {
+          id: "thread_4",
+          type: "social",
+          referenceId: null,
+          participants: ["user_1", "user_5"],
+          lastMessage: "Hey! How was your weekend?",
+          lastMessageAt: "2024-01-20T12:00:00Z",
+          updatedAt: "2024-01-20T12:00:00Z",
+          isGroup: false,
+          createdAt: "2024-01-19T20:00:00Z",
+          unreadCount: 0,
+          contextData: {
+            relationshipType: "friend",
+          },
+        },
+      ];
+
+      let filteredThreads = mockThreads;
+
+      if (type && type !== "all") {
+        filteredThreads = filteredThreads.filter(
+          (thread) => thread.type === type,
+        );
+      }
+
+      if (unreadOnly === "true") {
+        filteredThreads = filteredThreads.filter(
+          (thread) => (thread.unreadCount || 0) > 0,
+        );
+      }
+
+      if (searchQuery) {
+        const query = (searchQuery as string).toLowerCase();
+        filteredThreads = filteredThreads.filter(
+          (thread) =>
+            thread.lastMessage.toLowerCase().includes(query) ||
+            thread.contextData?.jobTitle?.toLowerCase().includes(query) ||
+            thread.contextData?.productName?.toLowerCase().includes(query),
+        );
+      }
+
+      res.json(
+        filteredThreads.sort(
+          (a, b) =>
+            new Date(b.lastMessageAt).getTime() -
+            new Date(a.lastMessageAt).getTime(),
+        ),
+      );
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch chat threads" });
+    }
+  });
+
+  app.get("/api/chat/threads/:threadId", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+
+      const mockThread = {
+        id: threadId,
+        type: "freelance",
+        referenceId: "job_123",
+        participants: ["user_1", "user_2"],
+        lastMessage: "I'm excited to work on this project!",
+        lastMessageAt: "2024-01-20T15:30:00Z",
+        updatedAt: "2024-01-20T15:30:00Z",
+        isGroup: false,
+        createdAt: "2024-01-20T10:00:00Z",
+        unreadCount: 2,
+        contextData: {
+          jobTitle: "E-commerce Website Development",
+          jobBudget: 5000,
+          projectStatus: "negotiation",
+        },
+      };
+
+      res.json(mockThread);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch chat thread" });
+    }
+  });
+
+  app.get("/api/chat/threads/:threadId/messages", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+      const { limit = 50, offset = 0 } = req.query;
+
+      const mockMessages = [
+        {
+          id: "msg_1",
+          threadId,
+          senderId: "user_2",
+          content:
+            "Hi! I saw your job posting for the e-commerce website. I have 5+ years of experience with React and Node.js.",
+          timestamp: "2024-01-20T10:05:00Z",
+          readBy: ["user_1", "user_2"],
+          messageType: "text",
+        },
+        {
+          id: "msg_2",
+          threadId,
+          senderId: "user_1",
+          content:
+            "Great! Your portfolio looks impressive. What's your estimated timeline for this project?",
+          timestamp: "2024-01-20T10:30:00Z",
+          readBy: ["user_1", "user_2"],
+          messageType: "text",
+        },
+        {
+          id: "msg_3",
+          threadId,
+          senderId: "user_2",
+          content:
+            "I can complete this in 8-10 weeks. Would you like to schedule a call to discuss the requirements in detail?",
+          timestamp: "2024-01-20T15:00:00Z",
+          readBy: ["user_2"],
+          messageType: "text",
+        },
+      ];
+
+      const paginatedMessages = mockMessages.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+      res.json(paginatedMessages);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/chat/threads", async (req, res) => {
+    try {
+      const {
+        type,
+        referenceId,
+        participants,
+        initialMessage,
+        groupName,
+        contextData,
+      } = req.body;
+
+      const newThread = {
+        id: `thread_${Date.now()}`,
+        type,
+        referenceId,
+        participants,
+        lastMessage: initialMessage || "",
+        lastMessageAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isGroup: participants.length > 2 || !!groupName,
+        groupName,
+        createdAt: new Date().toISOString(),
+        unreadCount: 0,
+        contextData,
+      };
+
+      res.json(newThread);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create chat thread" });
+    }
+  });
+
+  app.post("/api/chat/threads/:threadId/messages", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+      const { content, attachments, messageType = "text", replyTo } = req.body;
+
+      const newMessage = {
+        id: `msg_${Date.now()}`,
+        threadId,
+        senderId: "user_1", // Current user
+        content,
+        attachments: attachments || [],
+        timestamp: new Date().toISOString(),
+        readBy: ["user_1"],
+        messageType,
+        replyTo,
+      };
+
+      res.json(newMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  });
+
+  app.put("/api/chat/threads/:threadId/read", async (req, res) => {
+    try {
+      const threadId = req.params.threadId;
+      const { userId } = req.body;
+
+      res.json({ success: true, message: "Messages marked as read" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to mark messages as read" });
+    }
+  });
+
+  app.post("/api/chat/upload", async (req, res) => {
+    try {
+      // Mock file upload
+      const fileName = `uploaded_${Date.now()}.jpg`;
+      const fileUrl = `https://storage.example.com/${fileName}`;
+
+      res.json({ url: fileUrl, fileName });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upload file" });
+    }
+  });
+
+  // Freelance messaging endpoints
+  app.get("/api/freelance/projects/:projectId/messages", async (req, res) => {
+    try {
+      const projectId = req.params.projectId;
+      const { limit = 50, offset = 0 } = req.query;
+
+      // Mock messages
+      const mockMessages = [
+        {
+          id: "msg_1",
+          projectId,
+          senderId: "client_1",
+          content:
+            "Hi! I'm excited to start working on this project. When can we schedule a kickoff call?",
+          attachments: [],
+          messageType: "text",
+          read: true,
+          createdAt: "2024-01-15T09:00:00Z",
+          sender: {
+            id: "client_1",
+            name: "Alice Johnson",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100",
+          },
+        },
+        {
+          id: "msg_2",
+          projectId,
+          senderId: "freelancer_1",
+          content:
+            "Hello Alice! I'm excited too. I'm available for a call today or tomorrow. What time works best for you?",
+          attachments: [],
+          messageType: "text",
+          read: true,
+          createdAt: "2024-01-15T09:15:00Z",
+          sender: {
+            id: "freelancer_1",
+            name: "John Smith",
+            avatar:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
+          },
+        },
+      ];
+
+      const messages = mockMessages.slice(
+        Number(offset),
+        Number(offset) + Number(limit),
+      );
+      res.json({
+        messages,
+        total: mockMessages.length,
+        hasMore: mockMessages.length > Number(offset) + Number(limit),
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+
+  app.post("/api/freelance/projects/:projectId/messages", async (req, res) => {
+    try {
+      const projectId = req.params.projectId;
+      const { senderId, content, attachments, messageType = "text" } = req.body;
+
+      // Mock message creation
+      const newMessage = {
+        id: `msg_${Date.now()}`,
+        projectId,
+        senderId,
+        content,
+        attachments: attachments || [],
+        messageType,
+        read: false,
+        createdAt: new Date().toISOString(),
+        sender: {
+          id: senderId,
+          name: "Current User",
+          avatar: "/placeholder.svg",
+        },
+      };
+
+      res.json(newMessage);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  });
+
   // Wallet API endpoints
   app.get("/api/wallet", async (req, res) => {
     try {
@@ -1096,6 +1858,124 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(mockBankAccounts);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch bank accounts" });
+    }
+  });
+
+  // Talent API endpoints
+  app.get("/api/talents", async (req, res) => {
+    try {
+      const { category, skills, minRating, maxRate, availability, search } =
+        req.query;
+
+      // Mock talents data (would be fetched from database)
+      const mockTalents = [
+        {
+          id: "1",
+          name: "Sarah Chen",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108755-2616b612b547?w=100&h=100&fit=crop&crop=face",
+          title: "Full-Stack React Developer",
+          description:
+            "Experienced developer specializing in React, Node.js, and modern web technologies.",
+          skills: ["React", "Node.js", "TypeScript", "PostgreSQL", "AWS"],
+          hourlyRate: 85,
+          rating: 4.9,
+          reviewCount: 127,
+          location: "San Francisco, CA",
+          availability: "available",
+          verified: true,
+          completedJobs: 89,
+          responseTime: "1 hour",
+          successRate: 98,
+          badges: ["Top Rated", "Rising Talent"],
+          languages: ["English", "Mandarin"],
+          joinedDate: "2022-03-15",
+          lastSeen: "Online now",
+        },
+        // Add more mock talents...
+      ];
+
+      // Apply filters (simplified for demo)
+      let filteredTalents = mockTalents;
+
+      if (search) {
+        filteredTalents = filteredTalents.filter(
+          (talent) =>
+            talent.name
+              .toLowerCase()
+              .includes(search.toString().toLowerCase()) ||
+            talent.title
+              .toLowerCase()
+              .includes(search.toString().toLowerCase()),
+        );
+      }
+
+      if (availability && availability !== "all") {
+        filteredTalents = filteredTalents.filter(
+          (talent) => talent.availability === availability,
+        );
+      }
+
+      if (minRating) {
+        filteredTalents = filteredTalents.filter(
+          (talent) => talent.rating >= parseFloat(minRating.toString()),
+        );
+      }
+
+      res.json(filteredTalents);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch talents" });
+    }
+  });
+
+  app.get("/api/talents/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      // Mock detailed talent data (would be fetched from database)
+      const mockTalentDetail = {
+        id: id,
+        name: "Sarah Chen",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b547?w=150&h=150&fit=crop&crop=face",
+        title: "Full-Stack React Developer",
+        description:
+          "Passionate full-stack developer with 6+ years of experience building scalable web applications.",
+        skills: [
+          "React",
+          "Node.js",
+          "TypeScript",
+          "PostgreSQL",
+          "AWS",
+          "Docker",
+        ],
+        hourlyRate: 85,
+        rating: 4.9,
+        reviewCount: 127,
+        location: "San Francisco, CA",
+        availability: "available",
+        verified: true,
+        completedJobs: 89,
+        responseTime: "1 hour",
+        successRate: 98,
+        portfolio: [
+          {
+            id: "1",
+            title: "E-commerce Platform",
+            image:
+              "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop",
+            category: "Web Development",
+          },
+        ],
+        badges: ["Top Rated", "Rising Talent"],
+        languages: ["English (Native)", "Mandarin (Fluent)"],
+        joinedDate: "2022-03-15",
+        lastSeen: "Online now",
+      };
+
+      res.json(mockTalentDetail);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch talent details" });
     }
   });
 

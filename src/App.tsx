@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
+import { WalletProvider } from "./contexts/WalletContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 // import { I18nProvider } from "./contexts/I18nContext"; // Temporarily disabled
 import ErrorBoundary from "./components/ui/error-boundary";
@@ -29,6 +30,11 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
+import FreelanceJobs from "./pages/freelance/FreelanceJobs";
+import FreelanceDashboard from "./pages/freelance/FreelanceDashboard";
+import Inbox from "./chat/Inbox";
+import ChatRoom from "./chat/ChatRoom";
+import ChatDemo from "./pages/ChatDemo";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
@@ -182,16 +188,23 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <MarketplaceProvider>
-              <ChatProvider>
-                <AppLayout />
-              </ChatProvider>
-            </MarketplaceProvider>
+            <WalletProvider>
+              <MarketplaceProvider>
+                <ChatProvider>
+                  <AppLayout />
+                </ChatProvider>
+              </MarketplaceProvider>
+            </WalletProvider>
           </ProtectedRoute>
         }
       >
         <Route path="feed" element={<EnhancedFeed />} />
         <Route path="create" element={<EnhancedFreelance />} />
+        <Route path="freelance" element={<FreelanceJobs />} />
+        <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
+        <Route path="messages" element={<Inbox />} />
+        <Route path="messages/:threadId" element={<ChatRoom />} />
+        <Route path="chat-demo" element={<ChatDemo />} />
         <Route path="profile" element={<EnhancedProfile />} />
         <Route path="profile/:username" element={<EnhancedProfile />} />
         <Route path="user/:username" element={<EnhancedProfile />} />
@@ -217,7 +230,7 @@ const AppRoutes = () => {
         <Route path="videos" element={<EnhancedVideosV2 />} />
         <Route path="videos-improved" element={<ImprovedVideos />} />
         <Route path="videos-enhanced" element={<EnhancedVideos />} />
-        <Route path="chat" element={<Chat />} />
+        <Route path="chat" element={<Navigate to="/messages" replace />} />
         <Route path="explore" element={<Explore />} />
         <Route path="events" element={<CommunityEvents />} />
         <Route path="settings" element={<EnhancedSettings />} />
