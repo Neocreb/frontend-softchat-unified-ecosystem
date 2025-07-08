@@ -302,7 +302,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
               </Avatar>
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  {assistant?.name || "Sophia"}
+                  {assistant?.name || "Edith"}
                   <Crown className="w-4 h-4 text-yellow-500" />
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">
@@ -781,7 +781,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bot className="w-5 h-5 text-purple-500" />
-                Chat with {assistant?.name || "Sophia"}
+                Chat with {assistant?.name || "Edith"}
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col">

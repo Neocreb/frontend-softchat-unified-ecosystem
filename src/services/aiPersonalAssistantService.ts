@@ -128,7 +128,7 @@ class AIPersonalAssistantService {
   ): Promise<AIPersonalAssistant> {
     const defaultAssistant: AIPersonalAssistant = {
       userId,
-      name: "Sophia",
+      name: "Edith",
       personality: "friendly",
       preferences: {
         contentFocus: ["social", "professional"],
