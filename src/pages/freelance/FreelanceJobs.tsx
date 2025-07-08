@@ -188,6 +188,13 @@ export const FreelanceJobs: React.FC = () => {
             <JobList onJobSelect={handleJobSelect} showFilters={true} />
           </TabsContent>
 
+          <TabsContent value="talents" className="mt-6">
+            <TalentsList
+              onTalentSelect={handleTalentSelect}
+              showFilters={true}
+            />
+          </TabsContent>
+
           <TabsContent value="proposals" className="mt-6">
             <Card>
               <CardHeader>
