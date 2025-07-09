@@ -49,12 +49,7 @@ interface ShortcutItemProps {
   badge?: string;
 }
 
-const ShortcutItem: React.FC<ShortcutItemProps> = ({
-  icon,
-  label,
-  href,
-  badge,
-}) => (
+const ShortcutItem: React.FC<ShortcutItemProps> = ({ icon, label, href, badge }) => (
   <Link
     to={href}
     className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-[80px] relative"
@@ -82,7 +77,7 @@ interface FacebookStyleSidebarProps {
 const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
   isOpen = true,
   onClose,
-  isMobile = false,
+  isMobile = false
 }) => {
   const { user } = useAuth();
   const location = useLocation();
@@ -95,7 +90,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     }
   };
 
-  const shortcuts = [
+    const shortcuts = [
     {
       icon: <Calendar className="w-8 h-8 text-blue-600" />,
       label: "Events",
@@ -187,30 +182,59 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     },
   ];
 
-  return (
-    <div className="w-80 bg-white border-r border-gray-200 h-full overflow-y-auto">
-      <div className="p-4 space-y-6">
-        {/* Profile Section */}
-        <Link
-          to="/profile"
-          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          <Avatar className="w-9 h-9">
-            <AvatarImage src={user?.avatar} />
-            <AvatarFallback className="bg-blue-100 text-blue-600">
-              {user?.name?.substring(0, 2).toUpperCase() || "SC"}
-            </AvatarFallback>
-          </Avatar>
-          <span className="font-semibold text-gray-900 truncate">
-            {user?.name || "Your Profile"}
-          </span>
-        </Link>
+    return (
+    <>
+      {/* Mobile Overlay */}
+      {isMobile && isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`
+        ${isMobile
+          ? `fixed left-0 top-0 bottom-0 z-50 bg-white transform transition-transform duration-300 ${
+              isOpen ? 'translate-x-0' : '-translate-x-full'
+            } w-80`
+          : 'w-80 bg-white border-r border-gray-200 h-full'
+        } overflow-y-auto
+      `}>
+        <div className="p-4 space-y-6">
+          {/* Close button for mobile */}
+          {isMobile && (
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-900">Menu</h2>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <Users className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+
+          {/* Profile Section */}
+          <Link
+            to="/profile"
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+            onClick={handleLinkClick}
+          >
+            <Avatar className="w-9 h-9">
+              <AvatarImage src={user?.avatar} />
+              <AvatarFallback className="bg-blue-100 text-blue-600">
+                {user?.name?.substring(0, 2).toUpperCase() || "SC"}
+              </AvatarFallback>
+            </Avatar>
+            <span className="font-semibold text-gray-900 truncate">
+              {user?.name || "Your Profile"}
+            </span>
+          </Link>
 
         {/* Your Shortcuts Section */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">
-            Your shortcuts
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">Your shortcuts</h3>
           <div className="flex gap-2 overflow-x-auto pb-2">
             {shortcuts.map((shortcut, index) => (
               <ShortcutItem
@@ -249,30 +273,18 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
         {/* Privacy & Terms Footer */}
         <div className="text-xs text-gray-500 space-y-1 pb-4">
           <div className="flex flex-wrap gap-2">
-            <Link to="/privacy" className="hover:underline">
-              Privacy
-            </Link>
+            <Link to="/privacy" className="hover:underline">Privacy</Link>
             <span>·</span>
-            <Link to="/terms" className="hover:underline">
-              Terms
-            </Link>
+            <Link to="/terms" className="hover:underline">Terms</Link>
             <span>·</span>
-            <Link to="/advertising" className="hover:underline">
-              Advertising
-            </Link>
+            <Link to="/advertising" className="hover:underline">Advertising</Link>
             <span>·</span>
-            <Link to="/ad-choices" className="hover:underline">
-              Ad Choices
-            </Link>
+            <Link to="/ad-choices" className="hover:underline">Ad Choices</Link>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link to="/cookies" className="hover:underline">
-              Cookies
-            </Link>
+            <Link to="/cookies" className="hover:underline">Cookies</Link>
             <span>·</span>
-            <Link to="/help" className="hover:underline">
-              More
-            </Link>
+            <Link to="/help" className="hover:underline">More</Link>
             <span>·</span>
             <span>SoftChat © 2024</span>
           </div>
