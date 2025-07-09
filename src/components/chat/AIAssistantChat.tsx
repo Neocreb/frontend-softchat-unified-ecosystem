@@ -477,7 +477,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Ask ${AI_ASSISTANT_CONFIG.name} for real-time info: time, crypto, weather, news...`}
+              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - SoftChat, life, or real-time info!`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
@@ -495,8 +495,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           <div className="flex items-center gap-1 text-xs text-purple-600">
             <Sparkles className="h-3 w-3" />
             <span>
-              Real-time data: time, crypto prices, weather, news, calculations &
-              SoftChat features!
+              Your friendly AI companion! Ask about anything - SoftChat
+              features, real-time data, or just chat! 😊
             </span>
           </div>
         </form>
