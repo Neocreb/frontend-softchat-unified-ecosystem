@@ -1300,7 +1300,7 @@ const AdminDashboard = () => {
                     <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <span className="text-sm">Average Latency</span>
                       <span className="font-medium text-green-600">
-                        {dashboardData.systemHealth.apiLatency}ms
+                        {dashboardData?.systemHealth?.apiLatency || 0}ms
                       </span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
