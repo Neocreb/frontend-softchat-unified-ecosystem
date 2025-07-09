@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { ChatConversation, ChatMessage } from "@/types/user";
-import { UnifiedChatType, UnifiedChatThread } from "@/types/unified-chat";
+import {
+  UnifiedChatType,
+  UnifiedChatThread,
+  UnifiedChatContextData,
+} from "@/types/unified-chat";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase/client";
 
