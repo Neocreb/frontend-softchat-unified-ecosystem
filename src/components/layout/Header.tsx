@@ -455,8 +455,12 @@ const Header = () => {
             <span>Creator Studio</span>
           </Link>
           <div className="border-t pt-4 mt-4">
-            <p className="text-sm font-medium text-muted-foreground mb-3 px-3">
-              New Features
+            <p
+              className="text-sm font-medium text-muted-foreground mb-3 px-3"
+              role="heading"
+              aria-level={3}
+            >
+              ✨ New Features
             </p>
             <Link
               to="/events"
