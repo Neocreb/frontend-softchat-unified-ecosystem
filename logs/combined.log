@@ -578,3 +578,4 @@
 {"level":"warn","message":"Optional environment variables not set: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_S3_BUCKET, REDIS_URL","service":"softchat-backend","timestamp":"2025-07-09T14:14:43.371Z"}
 {"level":"warn","message":"Some features may not work correctly without these variables","service":"softchat-backend","timestamp":"2025-07-09T14:14:43.373Z"}
 {"environment":"development","host":"0.0.0.0","level":"info","message":"Server started successfully","nodeVersion":"v22.16.0","platform":"linux","port":3000,"service":"softchat-backend","timestamp":"2025-07-09T14:14:43.626Z"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-backend","timestamp":"2025-07-09T14:17:40.707Z"}
