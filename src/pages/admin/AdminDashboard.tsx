@@ -368,7 +368,7 @@ const AdminDashboard = () => {
         </Alert>
 
         {/* System Alert */}
-        {dashboardData.stats.pendingModeration > 0 && (
+        {(dashboardData?.stats?.pendingModeration || 0) > 0 && (
           <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20">
             <Bell className="h-4 w-4 text-amber-600" />
             <AlertDescription className="text-amber-800 dark:text-amber-200">
