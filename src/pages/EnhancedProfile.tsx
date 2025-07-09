@@ -487,7 +487,37 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         {mockProfile.verified && (
                           <Verified className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 fill-current flex-shrink-0" />
                         )}
+                        {/* Premium Status Indicator */}
+                        <Crown className="h-4 w-4 sm:h-5 sm:w-5 text-purple-500 fill-current flex-shrink-0" />
+                        {/* KYC Status Indicator */}
+                        <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 fill-current flex-shrink-0" />
                       </div>
+
+                      {/* Status Badges */}
+                      <div className="flex flex-wrap gap-1 mb-1">
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-purple-100 text-purple-700 border-purple-200"
+                        >
+                          <Crown className="h-3 w-3 mr-1" />
+                          Premium
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-green-100 text-green-700 border-green-200"
+                        >
+                          <Shield className="h-3 w-3 mr-1" />
+                          KYC Verified
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-blue-100 text-blue-700 border-blue-200"
+                        >
+                          <Star className="h-3 w-3 mr-1" />
+                          Creator Level 8
+                        </Badge>
+                      </div>
+
                       <p className="text-sm sm:text-base text-muted-foreground">
                         @{mockProfile.username}
                       </p>
