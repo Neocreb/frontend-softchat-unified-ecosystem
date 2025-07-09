@@ -73,11 +73,27 @@ const ShortcutItem: React.FC<ShortcutItemProps> = ({
   </Link>
 );
 
-const FacebookStyleSidebar: React.FC = () => {
+interface FacebookStyleSidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+  isMobile?: boolean;
+}
+
+const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
+  isOpen = true,
+  onClose,
+  isMobile = false,
+}) => {
   const { user } = useAuth();
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLinkClick = () => {
+    if (isMobile && onClose) {
+      onClose();
+    }
+  };
 
   const shortcuts = [
     {
