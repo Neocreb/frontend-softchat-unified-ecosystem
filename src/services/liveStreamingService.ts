@@ -918,6 +918,9 @@ class LiveStreamingService {
         tags: ["crypto", "trading", "bitcoin", "live"],
         language: "en",
         createdAt: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+        streamerName: "CryptoMaster",
+        streamerAvatar:
+          "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
       },
       {
         id: "stream-2",
@@ -945,6 +948,9 @@ class LiveStreamingService {
         tags: ["art", "digital", "creative", "painting"],
         language: "en",
         createdAt: new Date(Date.now() - 40 * 60 * 1000).toISOString(),
+        streamerName: "ArtisticSoul",
+        streamerAvatar:
+          "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
       },
       {
         id: "stream-3",
@@ -972,6 +978,9 @@ class LiveStreamingService {
         tags: ["gaming", "new-release", "giveaway", "live"],
         language: "en",
         createdAt: new Date(Date.now() - 90 * 60 * 1000).toISOString(),
+        streamerName: "GameMaster99",
+        streamerAvatar:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
       },
     ];
     return mockStreams.slice(0, limit);
