@@ -263,7 +263,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           </div>
           <p className="text-xs text-purple-600">
-            Always here to help • Responds instantly
+            Real-time AI • Live data • Current information
           </p>
         </div>
         <Button variant="ghost" size="sm" className="text-purple-600">
@@ -445,7 +445,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Ask ${AI_ASSISTANT_CONFIG.name} anything about SoftChat...`}
+              placeholder={`Ask ${AI_ASSISTANT_CONFIG.name} for real-time info: time, crypto, weather, news...`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
@@ -463,7 +463,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           <div className="flex items-center gap-1 text-xs text-purple-600">
             <Sparkles className="h-3 w-3" />
             <span>
-              I can help with content, trading, marketplace, freelancing & more!
+              Real-time data: time, crypto prices, weather, news, calculations &
+              SoftChat features!
             </span>
           </div>
         </form>
