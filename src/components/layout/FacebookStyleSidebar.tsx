@@ -288,9 +288,9 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
             <span>·</span>
             <span>SoftChat © 2024</span>
           </div>
-        </div>
+                </div>
       </div>
-    </div>
+    </>
   );
 };
 
