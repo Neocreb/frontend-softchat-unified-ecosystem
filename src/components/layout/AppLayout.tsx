@@ -30,18 +30,29 @@ const AppLayout = () => {
       <Header />
       {/* Secondary Navigation for user pages (desktop only) */}
       <SecondaryNav />
-      {/* Add proper spacing for fixed header and ensure no horizontal overflow */}
-      <main
-        className={`w-full max-w-full overflow-x-hidden flex-1 ${
-          isMobile ? "pt-14 pb-20 px-2" : "pt-20 pb-6 px-4"
-        }`}
-      >
-        <div className="w-full max-w-full mx-auto">
-          <div className={`${isMobile ? "py-2" : "py-4"}`}>
-            <Outlet />
+
+      {/* Main content area with sidebar for desktop */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Facebook-style sidebar - Desktop only */}
+        {!isMobile && (
+          <div className="fixed left-0 top-20 bottom-0 z-10">
+            <FacebookStyleSidebar />
           </div>
-        </div>
-      </main>
+        )}
+
+        {/* Main content */}
+        <main
+          className={`flex-1 overflow-y-auto ${
+            isMobile ? "pt-14 pb-20 px-2" : "pt-0 pb-6 px-4 ml-80" // ml-80 to account for sidebar width
+          }`}
+        >
+          <div className="w-full max-w-full mx-auto">
+            <div className={`${isMobile ? "py-2" : "py-4"}`}>
+              <Outlet />
+            </div>
+          </div>
+        </main>
+      </div>
       {/* Creator Studio Floating Action Button */}
       <CreatorStudioFAB />
       {/* AI Assistant Floating Action Button */}
