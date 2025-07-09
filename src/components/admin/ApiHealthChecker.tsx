@@ -158,6 +158,13 @@ export function ApiHealthChecker() {
           Re-check APIs
         </Button>
 
+        {successCount === 1 && (
+          <div className="text-xs text-amber-600 bg-amber-50 p-2 rounded border border-amber-200">
+            ℹ️ Running in basic server mode. Some comprehensive features require
+            the enhanced backend.
+          </div>
+        )}
+
         {overallHealth === "healthy" && (
           <div className="text-center text-sm text-green-600 bg-green-50 p-2 rounded-lg">
             🎉 All comprehensive backend features are working!
