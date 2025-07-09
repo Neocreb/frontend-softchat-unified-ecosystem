@@ -1259,9 +1259,16 @@ export default function EnhancedFeed() {
                     >
                       <div className="relative">
                         <Avatar className="h-12 w-12">
-                          <AvatarImage src={stream.streamerAvatar} />
+                          <AvatarImage
+                            src={
+                              (stream as any).streamerAvatar ||
+                              "/placeholder.svg"
+                            }
+                          />
                           <AvatarFallback>
-                            {stream.streamerName.charAt(0)}
+                            {(
+                              (stream as any).streamerName || "Unknown"
+                            )?.charAt(0) || "U"}
                           </AvatarFallback>
                         </Avatar>
                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
@@ -1273,7 +1280,7 @@ export default function EnhancedFeed() {
                           {stream.title}
                         </p>
                         <p className="text-xs text-gray-600">
-                          {stream.streamerName}
+                          {(stream as any).streamerName || "Unknown Streamer"}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge variant="secondary" className="text-xs">
