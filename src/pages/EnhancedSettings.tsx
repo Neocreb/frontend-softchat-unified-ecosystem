@@ -3,7 +3,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 // import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 // import { I18nSettingsModal, RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
