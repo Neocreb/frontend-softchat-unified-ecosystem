@@ -438,7 +438,10 @@ class SubscriptionService {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error("Error recording tip:", error);
+      console.error(
+        "Error recording tip:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
