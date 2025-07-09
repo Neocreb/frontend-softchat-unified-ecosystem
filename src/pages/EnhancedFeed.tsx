@@ -32,6 +32,7 @@ import {
   Trash2,
   Star,
   Shield,
+  Gift,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
