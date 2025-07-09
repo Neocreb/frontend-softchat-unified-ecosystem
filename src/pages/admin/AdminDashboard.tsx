@@ -397,7 +397,7 @@ const AdminDashboard = () => {
               </CardTitle>
               <CardDescription>Total Users</CardDescription>
               <div className="text-xs text-green-600 mt-1">
-                {formatNumber(dashboardData.stats.activeUsers)} active
+                {formatNumber(dashboardData?.stats?.activeUsers || 0)} active
               </div>
             </CardContent>
           </Card>
