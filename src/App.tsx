@@ -225,12 +225,12 @@ const AppRoutes = () => {
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
           <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="messages/:threadId" element={<ChatRoom />} />
-          <Route path="chat" element={<Navigate to="/messages" replace />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="chat/:threadId" element={<ChatRoom />} />
+          <Route path="messages" element={<Navigate to="/chat" replace />} />
           <Route
-            path="chat/:threadId"
-            element={<Navigate to="/messages/:threadId" replace />}
+            path="messages/:threadId"
+            element={<Navigate to="/chat/:threadId" replace />}
           />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
