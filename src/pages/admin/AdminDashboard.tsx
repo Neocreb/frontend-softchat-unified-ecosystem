@@ -393,7 +393,7 @@ const AdminDashboard = () => {
                 <Users className="h-6 w-6 text-blue-600" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {formatNumber(dashboardData.stats.totalUsers)}
+                {formatNumber(dashboardData?.stats?.totalUsers || 0)}
               </CardTitle>
               <CardDescription>Total Users</CardDescription>
               <div className="text-xs text-green-600 mt-1">
