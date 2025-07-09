@@ -24,6 +24,16 @@ import {
   notificationOperations,
   searchOperations,
 } from "../database/operations";
+import {
+  walletOperations,
+  escrowOperations,
+  chatOperations,
+  p2pOperations,
+  marketplaceOperations,
+  boostOperations,
+  premiumOperations,
+  adminOperations,
+} from "../database/enhanced-operations";
 import { FileService, uploadMiddleware } from "../services/fileService";
 import { emailService, emailQueue } from "../services/emailService";
 import { PaymentService, FeeCalculator } from "../services/paymentService";
@@ -47,6 +57,16 @@ export async function registerEnhancedRoutes(app: Express): Promise<Server> {
       status: "ok",
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
+      features: {
+        freelance: true,
+        marketplace: true,
+        p2pTrading: true,
+        multiCurrencyWallet: true,
+        boostSystem: true,
+        premiumSubscriptions: true,
+        multiAdminSystem: true,
+        realTimeChat: true,
+      },
       memory: process.memoryUsage(),
     });
   });
