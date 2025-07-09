@@ -23,6 +23,7 @@ import {
   AI_ASSISTANT_CONFIG,
 } from "@/types/unified-chat";
 import { intelligentAIService } from "@/services/intelligentAIService";
+import { realTimeAIService } from "@/services/realTimeAIService";
 import { cn } from "@/lib/utils";
 
 interface AIAssistantChatProps {
@@ -122,10 +123,11 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
       //   user,
       // );
 
-      // Generate intelligent AI response
-      const smartResponse = intelligentAIService.generateIntelligentResponse(
+      // Generate real-time intelligent AI response
+      const smartResponse = await realTimeAIService.generateRealTimeResponse(
         contextualInput,
         user,
+        conversationContext,
       );
 
       // Simulate realistic response time
