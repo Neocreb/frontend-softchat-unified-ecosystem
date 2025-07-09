@@ -21,7 +21,9 @@ import {
   Coins,
   MessageSquare,
   Filter,
+  ArrowLeft,
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,6 +55,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 }) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   // State management
   const [activeTab, setActiveTab] = useState<UnifiedChatType>("social");
@@ -289,28 +292,48 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 
       {/* Main chat area */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full grid grid-cols-1 lg:grid-cols-12 gap-0">
-          {/* Conversations List - Hide on mobile when chat is selected */}
+        <div className="h-full flex">
+          {/* Conversations List - Responsive sidebar */}
           <div
             className={cn(
-              "lg:col-span-4 xl:col-span-3 border-r bg-background/50",
-              selectedChat && "hidden lg:flex",
+              "transition-all duration-300 ease-in-out bg-background border-r",
+              "flex flex-col",
+              // Mobile: full width when no chat selected, hidden when chat selected
+              isMobile &&
+                !selectedChat &&
+                activeTab !== "ai_assistant" &&
+                "w-full",
+              isMobile &&
+                (selectedChat || activeTab === "ai_assistant") &&
+                "hidden",
+              // Desktop: fixed sidebar width
+              !isMobile && "w-80 xl:w-96",
             )}
           >
-            <Card className="w-full border-0 shadow-none bg-transparent">
-              <CardHeader className="pb-3">
+            <Card className="w-full h-full border-0 shadow-none bg-transparent flex flex-col">
+              <CardHeader
+                className={`pb-3 ${isMobile ? "px-3 py-3" : "px-4 py-4"}`}
+              >
                 <div className="flex justify-between items-center mb-2">
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle
+                    className={`flex items-center gap-2 ${isMobile ? "text-base" : "text-lg"}`}
+                  >
                     {getTypeIcon(activeTab)}
-                    {activeTab === "ai_assistant"
-                      ? "AI Assistant"
-                      : activeTab.charAt(0).toUpperCase() +
-                        activeTab.slice(1)}{" "}
-                    Chat
+                    <span className="truncate">
+                      {activeTab === "ai_assistant"
+                        ? "AI Assistant"
+                        : activeTab.charAt(0).toUpperCase() +
+                          activeTab.slice(1)}{" "}
+                      {isMobile ? "" : "Chat"}
+                    </span>
                   </CardTitle>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Button
+                        variant="ghost"
+                        size={isMobile ? "sm" : "default"}
+                        className={isMobile ? "h-8 w-8 p-0" : "h-9 w-9 p-0"}
+                      >
                         <span className="sr-only">Open menu</span>
                         <PlusCircle className="h-4 w-4" />
                       </Button>
@@ -330,26 +353,34 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                 {activeTab !== "ai_assistant" && (
                   <>
                     <div className="relative">
-                      <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
-                        placeholder="Search conversations..."
-                        className="pl-8"
+                        placeholder={
+                          isMobile ? "Search..." : "Search conversations..."
+                        }
+                        className={`pl-10 ${isMobile ? "h-9" : "h-10"}`}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <div className="flex justify-between items-center mt-2">
+                    <div className="flex justify-between items-center mt-2 gap-2">
                       <Button
                         variant={showUnreadOnly ? "default" : "outline"}
                         size="sm"
                         onClick={() => setShowUnreadOnly(!showUnreadOnly)}
+                        className={isMobile ? "text-xs px-2" : ""}
                       >
                         <Filter className="h-3 w-3 mr-1" />
                         {showUnreadOnly ? "All" : "Unread"}
                       </Button>
-                      <span className="text-xs text-muted-foreground">
-                        {filteredConversations.length} conversation
-                        {filteredConversations.length !== 1 ? "s" : ""}
+                      <span
+                        className={`text-muted-foreground ${isMobile ? "text-xs" : "text-sm"}`}
+                      >
+                        {filteredConversations.length}
+                        {!isMobile && " conversation"}
+                        {!isMobile && filteredConversations.length !== 1
+                          ? "s"
+                          : ""}
                       </span>
                     </div>
                   </>
@@ -357,26 +388,45 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
               </CardHeader>
 
               {activeTab === "ai_assistant" ? (
-                <CardContent className="p-0">
-                  <div className="p-4 text-center">
+                <CardContent className="p-0 flex-1">
+                  <div className={`${isMobile ? "p-3" : "p-4"} text-center`}>
                     <AIAssistantChat isMinimized />
-                    <p className="text-sm text-muted-foreground mt-2">
-                      AI Assistant is always available in the main chat area
+                    <p
+                      className={`text-muted-foreground mt-2 ${isMobile ? "text-xs" : "text-sm"}`}
+                    >
+                      {isMobile
+                        ? "AI Assistant available"
+                        : "AI Assistant is always available in the main chat area"}
                     </p>
                   </div>
                 </CardContent>
               ) : (
-                <CardContent className="p-0">
-                  <ScrollArea className="h-[calc(100vh-280px)]">
+                <CardContent className="p-0 flex-1 overflow-hidden">
+                  <ScrollArea
+                    className={
+                      isMobile
+                        ? "h-[calc(100vh-200px)]"
+                        : "h-[calc(100vh-240px)]"
+                    }
+                    style={{
+                      height: isMobile
+                        ? "calc(100vh - 200px)"
+                        : "calc(100vh - 240px)",
+                    }}
+                  >
                     {loading ? (
-                      <div className="p-4 text-center">
+                      <div
+                        className={`${isMobile ? "p-3" : "p-4"} text-center`}
+                      >
                         <div className="animate-pulse space-y-3">
                           {[...Array(3)].map((_, i) => (
                             <div
                               key={i}
-                              className="flex items-center gap-3 p-3"
+                              className={`flex items-center gap-3 ${isMobile ? "p-2" : "p-3"}`}
                             >
-                              <div className="w-10 h-10 bg-muted rounded-full" />
+                              <div
+                                className={`bg-muted rounded-full ${isMobile ? "w-8 h-8" : "w-10 h-10"}`}
+                              />
                               <div className="flex-1 space-y-2">
                                 <div className="h-4 bg-muted rounded w-3/4" />
                                 <div className="h-3 bg-muted rounded w-1/2" />
@@ -390,15 +440,19 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                         <div
                           key={conv.id}
                           className={cn(
-                            "flex items-start gap-3 p-4 cursor-pointer transition-all duration-200 border-b border-border/30 last:border-b-0",
+                            "flex items-start cursor-pointer transition-all duration-200 border-b border-border/30 last:border-b-0",
+                            "active:bg-muted/70 touch-manipulation", // Touch optimizations
+                            isMobile ? "gap-2 p-3" : "gap-3 p-4",
                             selectedChat?.id === conv.id
                               ? "bg-primary/5 border-l-2 border-l-primary"
                               : "hover:bg-muted/50 hover:border-l-2 hover:border-l-muted-foreground/20",
                           )}
                           onClick={() => handleChatSelect(conv)}
                         >
-                          <div className="relative">
-                            <Avatar className="h-12 w-12">
+                          <div className="relative flex-shrink-0">
+                            <Avatar
+                              className={isMobile ? "h-10 w-10" : "h-12 w-12"}
+                            >
                               <AvatarImage
                                 src={conv.participant_profile?.avatar}
                               />
@@ -408,29 +462,51 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                               </AvatarFallback>
                             </Avatar>
                             {conv.participant_profile?.is_online && (
-                              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-background rounded-full"></div>
+                              <div
+                                className={`absolute bg-green-500 border-2 border-background rounded-full ${
+                                  isMobile
+                                    ? "-bottom-0.5 -right-0.5 w-2.5 h-2.5"
+                                    : "-bottom-0.5 -right-0.5 w-3 h-3"
+                                }`}
+                              ></div>
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start mb-1">
                               <div className="flex items-center gap-2 min-w-0 flex-1">
-                                <div className="p-1 rounded bg-muted/50">
+                                <div
+                                  className={`rounded bg-muted/50 ${isMobile ? "p-0.5" : "p-1"}`}
+                                >
                                   {getTypeIcon(conv.type)}
                                 </div>
-                                <h4 className="text-sm font-semibold truncate text-foreground">
+                                <h4
+                                  className={`font-semibold truncate text-foreground ${
+                                    isMobile ? "text-sm" : "text-sm"
+                                  }`}
+                                >
                                   {conv.participant_profile?.name}
                                 </h4>
                               </div>
-                              <div className="flex flex-col items-end gap-1">
-                                <p className="text-xs text-muted-foreground">
+                              <div className="flex flex-col items-end gap-1 ml-2">
+                                <p
+                                  className={`text-muted-foreground ${
+                                    isMobile ? "text-xs" : "text-xs"
+                                  }`}
+                                >
                                   {formatMessageDate(conv.lastMessageAt)}
                                 </p>
                                 {(conv.unreadCount || 0) > 0 && (
                                   <Badge
                                     variant="destructive"
-                                    className="h-5 min-w-[20px] text-xs px-1.5"
+                                    className={`text-xs ${
+                                      isMobile
+                                        ? "h-4 min-w-[16px] px-1"
+                                        : "h-5 min-w-[20px] px-1.5"
+                                    }`}
                                   >
-                                    {conv.unreadCount}
+                                    {conv.unreadCount > 99
+                                      ? "99+"
+                                      : conv.unreadCount}
                                   </Badge>
                                 )}
                               </div>
@@ -440,23 +516,51 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                             {getContextInfo(conv) && (
                               <div className="flex items-center gap-1 mb-1">
                                 <div className="w-1 h-1 bg-primary rounded-full"></div>
-                                <p className="text-xs text-primary font-medium">
+                                <p
+                                  className={`text-primary font-medium ${
+                                    isMobile ? "text-xs" : "text-xs"
+                                  }`}
+                                >
                                   {getContextInfo(conv)}
                                 </p>
                               </div>
                             )}
 
-                            <p className="text-sm text-muted-foreground truncate leading-relaxed">
+                            <p
+                              className={`text-muted-foreground truncate leading-relaxed ${
+                                isMobile ? "text-xs" : "text-sm"
+                              }`}
+                            >
                               {conv.lastMessage || "No messages yet"}
                             </p>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div className="p-4 text-center text-muted-foreground">
-                        {searchQuery
-                          ? "No conversations found"
-                          : `No ${activeTab} conversations yet`}
+                      <div
+                        className={`${isMobile ? "p-3" : "p-4"} text-center text-muted-foreground`}
+                      >
+                        <div className="space-y-2">
+                          <MessageSquare
+                            className={`mx-auto text-muted-foreground/50 ${
+                              isMobile ? "h-8 w-8" : "h-12 w-12"
+                            }`}
+                          />
+                          <p className={isMobile ? "text-sm" : "text-base"}>
+                            {searchQuery
+                              ? "No conversations found"
+                              : `No ${activeTab} conversations yet`}
+                          </p>
+                          {!searchQuery && (
+                            <p
+                              className={`text-muted-foreground/70 ${
+                                isMobile ? "text-xs" : "text-sm"
+                              }`}
+                            >
+                              Start a new conversation to get started
+                            </p>
+                          )}
+                        </div>
                       </div>
                     )}
                   </ScrollArea>
