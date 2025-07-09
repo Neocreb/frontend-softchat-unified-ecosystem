@@ -250,15 +250,19 @@ const AdminDashboard = () => {
   ];
 
   const systemHealthData = [
-    { name: "CPU", value: dashboardData.systemHealth.cpu, color: "#8884d8" },
+    {
+      name: "CPU",
+      value: dashboardData?.systemHealth?.cpu || 0,
+      color: "#8884d8",
+    },
     {
       name: "Memory",
-      value: dashboardData.systemHealth.memory,
+      value: dashboardData?.systemHealth?.memory || 0,
       color: "#82ca9d",
     },
     {
       name: "Storage",
-      value: dashboardData.systemHealth.storage,
+      value: dashboardData?.systemHealth?.storage || 0,
       color: "#ffc658",
     },
   ];
