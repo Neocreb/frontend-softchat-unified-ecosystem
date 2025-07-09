@@ -31,8 +31,15 @@ export function WalletWidget() {
       setWallet(walletData);
       setError(null);
     } catch (err) {
-      setError("Failed to load wallet");
       console.error("Wallet error:", err);
+      // Use demo wallet data when API fails
+      setWallet({
+        usdtBalance: 1247.5,
+        ethBalance: 0.5432,
+        btcBalance: 0.0089,
+        softPointsBalance: 8420,
+      });
+      setError("Demo data - API not available");
     } finally {
       setLoading(false);
     }
