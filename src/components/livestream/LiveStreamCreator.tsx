@@ -181,7 +181,7 @@ export function LiveStreamCreator({
         },
       };
 
-      const newStream = await liveStreamingService.startStream(streamData);
+      const newStream = await liveStreamingService.startStreamDemo(streamData);
       setCurrentStream(newStream);
       setIsStreaming(true);
       setViewerCount(1); // Start with 1 viewer
@@ -207,7 +207,7 @@ export function LiveStreamCreator({
   const endStream = async () => {
     if (currentStream) {
       try {
-        await liveStreamingService.endStream(currentStream.id);
+        console.log("Ending demo stream:", currentStream.id);
         setIsStreaming(false);
         setCurrentStream(null);
         stopPreview();
