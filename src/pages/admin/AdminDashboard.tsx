@@ -1306,9 +1306,9 @@ const AdminDashboard = () => {
                     <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                       <span className="text-sm">Error Rate</span>
                       <span className="font-medium text-red-600">
-                        {(dashboardData.systemHealth.errorRate * 100).toFixed(
-                          2,
-                        )}
+                        {(
+                          (dashboardData?.systemHealth?.errorRate || 0) * 100
+                        ).toFixed(2)}
                         %
                       </span>
                     </div>
