@@ -322,7 +322,10 @@ class FraudDetectionService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error("Error getting identity verifications:", error);
+      console.error(
+        "Error getting identity verifications:",
+        error instanceof Error ? error.message : error,
+      );
       return [];
     }
   }
