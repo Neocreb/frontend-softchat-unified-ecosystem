@@ -583,32 +583,34 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {dashboardData.recentActivity.slice(0, 10).map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-                    >
-                      <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">
-                          <span className="text-blue-600">
-                            {activity.adminName}
-                          </span>{" "}
-                          {activity.action.replace("_", " ")}
-                          <span className="text-gray-600">
-                            {" "}
-                            {activity.targetType}
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {new Date(activity.createdAt).toLocaleString()}
-                        </p>
+                  {(dashboardData?.recentActivity || [])
+                    .slice(0, 10)
+                    .map((activity) => (
+                      <div
+                        key={activity.id}
+                        className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                      >
+                        <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">
+                            <span className="text-blue-600">
+                              {activity.adminName}
+                            </span>{" "}
+                            {activity.action.replace("_", " ")}
+                            <span className="text-gray-600">
+                              {" "}
+                              {activity.targetType}
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(activity.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {activity.action}
+                        </Badge>
                       </div>
-                      <Badge variant="outline" className="text-xs">
-                        {activity.action}
-                      </Badge>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </CardContent>
             </Card>
