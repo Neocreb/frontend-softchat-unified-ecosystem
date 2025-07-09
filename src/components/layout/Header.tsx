@@ -454,6 +454,43 @@ const Header = () => {
             <BarChart3 className="h-5 w-5" />
             <span>Creator Studio</span>
           </Link>
+          <div className="border-t pt-4 mt-4">
+            <p className="text-sm font-medium text-muted-foreground mb-3 px-3">
+              New Features
+            </p>
+            <Link
+              to="/events"
+              className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Calendar className="h-5 w-5" />
+              <span>Events</span>
+            </Link>
+            <Link
+              to="/live-streaming"
+              className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors text-red-600"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Video className="h-5 w-5" />
+              <span>Live Streaming</span>
+            </Link>
+            <Link
+              to="/premium"
+              className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors text-purple-600"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Award className="h-5 w-5" />
+              <span>Premium</span>
+            </Link>
+            <Link
+              to="/kyc"
+              className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors text-green-600"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <ShoppingCart className="h-5 w-5" />
+              <span>KYC Verification</span>
+            </Link>
+          </div>
         </div>
       </div>
     </header>
