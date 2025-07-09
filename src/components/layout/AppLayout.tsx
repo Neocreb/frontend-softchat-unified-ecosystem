@@ -1,4 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
+import { useState } from "react";
 import Header from "./Header";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
@@ -11,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const AppLayout = () => {
   const isMobile = useIsMobile();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Video pages should have full-screen experience
   const isVideoPage = location.pathname === "/videos";
@@ -27,18 +29,24 @@ const AppLayout = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header />
+      <Header
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+      />
       {/* Secondary Navigation for user pages (desktop only) */}
       <SecondaryNav />
 
+      {/* Facebook-style sidebar - Mobile and Desktop */}
+      <FacebookStyleSidebar
+        isOpen={isMobile ? mobileMenuOpen : true}
+        onClose={() => setMobileMenuOpen(false)}
+        isMobile={isMobile}
+      />
+
       {/* Main content area with sidebar for desktop */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Facebook-style sidebar - Desktop only */}
-        {!isMobile && (
-          <div className="fixed left-0 top-20 bottom-0 z-10">
-            <FacebookStyleSidebar />
-          </div>
-        )}
+        {/* Spacer for desktop sidebar */}
+        {!isMobile && <div className="w-80"></div>}
 
         {/* Main content */}
         <main
