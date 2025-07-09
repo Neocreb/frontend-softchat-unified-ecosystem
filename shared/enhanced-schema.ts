@@ -771,39 +771,40 @@ export const userSuspensions = pgTable("user_suspensions", {
 // );
 
 // Chat indexes
-export const chatThreadTypeIdx = index("chat_thread_type_idx").on(
-  chatThreads.type,
-);
-export const chatMessageThreadIdx = index("chat_message_thread_idx").on(
-  chatMessages.threadId,
-);
+// Temporarily commented out due to index issue
+// export const chatThreadTypeIdx = index("chat_thread_type_idx").on(
+//   chatThreads.type,
+// );
+// export const chatMessageThreadIdx = index("chat_message_thread_idx").on(
+//   chatMessages.threadId,
+// );
 
 // Trade indexes
-export const p2pTradeStatusIdx = index("p2p_trade_status_idx").on(
-  p2pTrades.status,
-);
-export const p2pTradeBuyerIdx = index("p2p_trade_buyer_idx").on(
-  p2pTrades.buyerId,
-);
-export const p2pTradeSellerIdx = index("p2p_trade_seller_idx").on(
-  p2pTrades.sellerId,
-);
+// export const p2pTradeStatusIdx = index("p2p_trade_status_idx").on(
+//   p2pTrades.status,
+// );
+// export const p2pTradeBuyerIdx = index("p2p_trade_buyer_idx").on(
+//   p2pTrades.buyerId,
+// );
+// export const p2pTradeSellerIdx = index("p2p_trade_seller_idx").on(
+//   p2pTrades.sellerId,
+// );
 
 // Admin activity indexes
-export const adminActivityAdminIdx = index("admin_activity_admin_idx").on(
-  adminActivityLogs.adminId,
-);
-export const adminActivityActionIdx = index("admin_activity_action_idx").on(
-  adminActivityLogs.action,
-);
+// export const adminActivityAdminIdx = index("admin_activity_admin_idx").on(
+//   adminActivityLogs.adminId,
+// );
+// export const adminActivityActionIdx = index("admin_activity_action_idx").on(
+//   adminActivityLogs.action,
+// );
 
 // Report indexes
-export const contentReportStatusIdx = index("content_report_status_idx").on(
-  contentReports.status,
-);
-export const contentReportTypeIdx = index("content_report_type_idx").on(
-  contentReports.contentType,
-);
+// export const contentReportStatusIdx = index("content_report_status_idx").on(
+//   contentReports.status,
+// );
+// export const contentReportTypeIdx = index("content_report_type_idx").on(
+//   contentReports.contentType,
+// );
 
 // =============================================================================
 // INSERT SCHEMAS FOR VALIDATION
