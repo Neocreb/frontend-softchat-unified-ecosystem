@@ -60,6 +60,11 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const [selectedChat, setSelectedChat] = useState<UnifiedChatThread | null>(
     null,
   );
+  const [conversations, setConversations] = useState<UnifiedChatThread[]>([]);
+  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
+  const [messageInput, setMessageInput] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [showUnreadOnly, setShowUnreadOnly] = useState(false);
 
   // Handle URL parameters for direct navigation
   useEffect(() => {
@@ -78,11 +83,6 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       }
     }
   }, [conversations]);
-  const [conversations, setConversations] = useState<UnifiedChatThread[]>([]);
-  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
-  const [messageInput, setMessageInput] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [showUnreadOnly, setShowUnreadOnly] = useState(false);
 
   // Enhanced tabs with unread counts
   const tabsWithCounts = useMemo<UnifiedChatTab[]>(() => {
