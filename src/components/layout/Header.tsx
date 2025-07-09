@@ -173,6 +173,20 @@ const Header = () => {
             <span className="text-sm hidden lg:inline">Creator Studio</span>
           </Link>
           <Link
+            to="/events"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Calendar className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Events</span>
+          </Link>
+          <Link
+            to="/live-streaming"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Video className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Live</span>
+          </Link>
+          <Link
             to="/ai-assistant"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
