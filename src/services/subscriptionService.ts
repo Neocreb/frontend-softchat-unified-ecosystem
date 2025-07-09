@@ -191,7 +191,10 @@ class SubscriptionService {
       if (error && error.code !== "PGRST116") throw error;
       return data;
     } catch (error) {
-      console.error("Error getting user subscription:", error);
+      console.error(
+        "Error getting user subscription:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
@@ -283,7 +286,10 @@ class SubscriptionService {
       if (error && error.code !== "PGRST116") throw error;
       return data;
     } catch (error) {
-      console.error("Error getting subscription usage:", error);
+      console.error(
+        "Error getting subscription usage:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
