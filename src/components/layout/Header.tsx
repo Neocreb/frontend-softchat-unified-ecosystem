@@ -18,6 +18,7 @@ import {
   BarChart3,
   Bot,
   Globe,
+  Calendar,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
