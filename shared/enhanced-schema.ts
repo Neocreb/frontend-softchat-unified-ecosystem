@@ -759,15 +759,16 @@ export const userSuspensions = pgTable("user_suspensions", {
 // =============================================================================
 
 // Wallet transaction indexes
-export const walletTransactionUserIdx = index("wallet_transaction_user_idx").on(
-  walletTransactions.userId,
-);
-export const walletTransactionStatusIdx = index(
-  "wallet_transaction_status_idx",
-).on(walletTransactions.status);
-export const walletTransactionTypeIdx = index("wallet_transaction_type_idx").on(
-  walletTransactions.type,
-);
+// Temporarily commented out due to index issue
+// export const walletTransactionUserIdx = index("wallet_transaction_user_idx").on(
+//   walletTransactions.userId,
+// );
+// export const walletTransactionStatusIdx = index(
+//   "wallet_transaction_status_idx",
+// ).on(walletTransactions.status);
+// export const walletTransactionTypeIdx = index("wallet_transaction_type_idx").on(
+//   walletTransactions.type,
+// );
 
 // Chat indexes
 export const chatThreadTypeIdx = index("chat_thread_type_idx").on(
