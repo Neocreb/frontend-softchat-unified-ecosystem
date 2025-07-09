@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNotification } from "@/hooks/use-notification";
 import { AdminService } from "@/services/adminService";
 import { AdminDashboardData, AdminUser } from "@/types/admin";
+import { ComprehensiveFeatureShowcase } from "@/components/admin/ComprehensiveFeatureShowcase";
 import {
   BarChart,
   Bar,
@@ -277,6 +278,53 @@ const AdminDashboard = () => {
       </div>
 
       <div className="p-6 space-y-6">
+        {/* Comprehensive Server Alert */}
+        <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20">
+          <Zap className="h-4 w-4 text-blue-600" />
+          <AlertDescription className="text-blue-800 dark:text-blue-200">
+            <div className="flex flex-col gap-2">
+              <div>
+                🚀 <strong>NEW!</strong> SoftChat Comprehensive Backend is
+                available with advanced features: Freelance, P2P Trading,
+                Multi-Admin System, Real-time Chat, Boost System, and more!
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText("npm run dev:comprehensive");
+                    notification.success("Command copied to clipboard!");
+                  }}
+                  className="text-blue-800 border-blue-300 hover:bg-blue-100"
+                >
+                  📋 Copy Start Command
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    window.open("http://localhost:3000/admin", "_blank")
+                  }
+                  className="text-blue-800 border-blue-300 hover:bg-blue-100"
+                >
+                  🔗 Access Full Admin (Port 3000)
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    window.open("/README.comprehensive.md", "_blank")
+                  }
+                  className="text-blue-800 border-blue-300 hover:bg-blue-100"
+                >
+                  📖 View Documentation
+                </Button>
+              </div>
+            </div>
+          </AlertDescription>
+        </Alert>
+
         {/* System Alert */}
         {dashboardData.stats.pendingModeration > 0 && (
           <Alert className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20">
@@ -399,6 +447,11 @@ const AdminDashboard = () => {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
+            {/* Comprehensive Feature Showcase */}
+            <div className="mb-6">
+              <ComprehensiveFeatureShowcase />
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
