@@ -5,14 +5,13 @@ import { db } from "../db";
 import {
   chatMessages,
   chatThreads,
-  users,
-  profiles,
   adminUsers,
   adminActivityLogs,
   p2pTrades,
   escrowContracts,
-  notifications,
 } from "../../shared/enhanced-schema";
+
+import { users, profiles, notifications } from "../../shared/schema";
 import { eq, and, or, desc, inArray } from "drizzle-orm";
 
 interface AuthenticatedWebSocket extends WebSocket {
