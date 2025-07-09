@@ -91,7 +91,7 @@ import BlogPost from "./pages/BlogPost";
 import CommunityEvents from "./pages/CommunityEvents";
 import { SubscriptionManager } from "./components/premium/SubscriptionManager";
 import { VirtualGiftsAndTips } from "./components/premium/VirtualGiftsAndTips";
-import { EnhancedKYCVerification } from "./components/kyc/EnhancedKYCVerification";
+import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
 import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
 
 // Create a query client with retry configuration
