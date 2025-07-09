@@ -833,6 +833,34 @@ class LiveStreamingService {
     return true;
   }
 
+  async getStreamMessages(
+    streamId: string,
+    limit: number = 50,
+  ): Promise<StreamMessage[]> {
+    console.log(`Getting messages for stream ${streamId}`);
+    // Return mock messages for demo
+    return [
+      {
+        id: "1",
+        streamId,
+        userId: "user-1",
+        username: "CryptoTrader",
+        message: "Great analysis! 🚀",
+        type: "chat",
+        timestamp: new Date(Date.now() - 60000).toISOString(),
+      },
+      {
+        id: "2",
+        streamId,
+        userId: "user-2",
+        username: "ArtLover",
+        message: "This is amazing work!",
+        type: "chat",
+        timestamp: new Date(Date.now() - 30000).toISOString(),
+      },
+    ];
+  }
+
   async startStreamDemo(streamData: any): Promise<LiveStream> {
     console.log("Starting demo stream with data:", streamData);
     const mockStream = this.getMockLiveStreams(1)[0];
@@ -844,6 +872,17 @@ class LiveStreamingService {
       category: streamData.category || mockStream.category,
       userId: streamData.streamerId || mockStream.userId,
     };
+  }
+
+  // Mock join/leave methods for demo
+  async joinStream(streamId: string, userId: string): Promise<boolean> {
+    console.log(`User ${userId} joined stream ${streamId}`);
+    return true;
+  }
+
+  async leaveStream(streamId: string, userId: string): Promise<boolean> {
+    console.log(`User ${userId} left stream ${streamId}`);
+    return true;
   }
 
   // Mock data for when database is not available
