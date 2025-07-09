@@ -236,7 +236,10 @@ class FraudDetectionService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error("Error getting recent security events:", error);
+      console.error(
+        "Error getting recent security events:",
+        error instanceof Error ? error.message : error,
+      );
       return [];
     }
   }
