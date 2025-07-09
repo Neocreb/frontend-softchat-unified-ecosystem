@@ -350,7 +350,8 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
           setProducts([]);
           setServices([]);
         } else if (targetUsername) {
-          const profile = await profileService.getProfile(targetUsername);
+          const profile =
+            await profileService.getUserByUsername(targetUsername);
           if (profile) {
             setProfileUser(profile);
             const [userPosts, userProducts, userServices] = await Promise.all([
