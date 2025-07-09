@@ -574,3 +574,4 @@
 {"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-07-09T14:13:49.516Z","url":"/","userAgent":"node"}
 {"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-07-09T14:13:51.518Z","url":"/","userAgent":"node"}
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-07-09T14:13:53.520Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-07-09T14:13:54.704Z"}
