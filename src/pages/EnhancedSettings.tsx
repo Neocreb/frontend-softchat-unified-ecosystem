@@ -103,6 +103,7 @@ import {
   Home,
   Store,
   Coins,
+  Crown,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
