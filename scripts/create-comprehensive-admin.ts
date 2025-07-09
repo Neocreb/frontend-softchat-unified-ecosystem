@@ -4,12 +4,9 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import bcrypt from "bcryptjs";
 import readline from "readline";
-import {
-  users,
-  profiles,
-  wallets,
-  adminUsers,
-} from "../shared/enhanced-schema";
+import { wallets, adminUsers } from "../shared/enhanced-schema";
+
+import { users, profiles } from "../shared/schema";
 
 // Setup database connection
 const connectionString = process.env.DATABASE_URL;
