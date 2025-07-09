@@ -36,7 +36,7 @@ const emailConfig: EmailConfig = {
 
 // Create transporter
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     host: emailConfig.smtp.host,
     port: emailConfig.smtp.port,
     secure: emailConfig.smtp.secure,
@@ -75,9 +75,9 @@ const emailTemplates = {
           <div class="content">
             <h2>Hi ${profile?.name || user.email}! 👋</h2>
             <p>Welcome to the most advanced social platform with AI recommendations, comprehensive analytics, and full accessibility. We're excited to have you join our community of creators, traders, sellers, and innovators!</p>
-            
+
             <a href="${process.env.FRONTEND_URL}/app" class="button">Get Started Now</a>
-            
+
             <div class="features">
               <div class="feature">
                 <h3>🤖 AI-Powered</h3>
@@ -96,7 +96,7 @@ const emailTemplates = {
                 <p>Find jobs or hire talented freelancers</p>
               </div>
             </div>
-            
+
             <h3>What's next?</h3>
             <ul>
               <li>Complete your profile to get personalized recommendations</li>
@@ -104,9 +104,9 @@ const emailTemplates = {
               <li>Explore the marketplace and crypto trading features</li>
               <li>Start earning SoftPoints through platform engagement</li>
             </ul>
-            
+
             <p>If you have any questions, our support team is here to help. Just reply to this email!</p>
-            
+
             <p>Happy creating! 🚀<br>The Softchat Team</p>
           </div>
           <div class="footer">
@@ -146,14 +146,14 @@ const emailTemplates = {
           <div class="content">
             <h2>Almost there!</h2>
             <p>Please verify your email address to complete your Softchat account setup.</p>
-            
+
             <a href="${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}" class="button">Verify Email Address</a>
-            
+
             <p>Or enter this verification code manually:</p>
             <div class="code">${verificationToken.slice(0, 6).toUpperCase()}</div>
-            
+
             <p><strong>Security tip:</strong> This link will expire in 24 hours for your security.</p>
-            
+
             <p>If you didn't create a Softchat account, please ignore this email.</p>
           </div>
           <div class="footer">
@@ -192,9 +192,9 @@ const emailTemplates = {
           <div class="content">
             <h2>Reset your password</h2>
             <p>We received a request to reset your Softchat password. Click the button below to set a new password:</p>
-            
+
             <a href="${process.env.FRONTEND_URL}/reset-password?token=${resetToken}" class="button">Reset Password</a>
-            
+
             <div class="warning">
               <strong>⚠️ Security Notice:</strong>
               <ul>
@@ -203,7 +203,7 @@ const emailTemplates = {
                 <li>Your current password remains unchanged until you set a new one</li>
               </ul>
             </div>
-            
+
             <p>For your security, we recommend choosing a strong password that includes:</p>
             <ul>
               <li>At least 8 characters</li>
