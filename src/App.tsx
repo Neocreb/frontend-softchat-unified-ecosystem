@@ -93,6 +93,21 @@ import SubscriptionManager from "./components/premium/SubscriptionManager";
 import VirtualGiftsAndTips from "./components/premium/VirtualGiftsAndTips";
 import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
 import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
+import {
+  FriendsPage,
+  GroupsPage,
+  AdsPage,
+  MemoriesPage,
+  SavedPage,
+  SupportPage,
+  PagesPage,
+  PrivacyPage,
+  TermsPage,
+  AdvertisingPage,
+  AdChoicesPage,
+  CookiesPage,
+  HelpPage,
+} from "./pages/PlaceholderPages";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
