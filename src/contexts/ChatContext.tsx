@@ -1,22 +1,46 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
 import { ChatConversation, ChatMessage } from "@/types/user";
+import {
+  UnifiedChatType,
+  UnifiedChatThread,
+  UnifiedChatContextData,
+} from "@/types/unified-chat";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase/client";
 
 type ChatContextType = {
   conversations: ChatConversation[];
+  unifiedConversations: UnifiedChatThread[];
   messages: Record<string, ChatMessage[]>;
   selectedChat: ChatConversation | null;
+  selectedUnifiedChat: UnifiedChatThread | null;
   messageInput: string;
+  activeTab: UnifiedChatType;
   setMessageInput: (input: string) => void;
   setSelectedChat: (chat: ChatConversation | null) => void;
+  setSelectedUnifiedChat: (chat: UnifiedChatThread | null) => void;
+  setActiveTab: (tab: UnifiedChatType) => void;
   sendMessage: (content: string) => void;
   markAsRead: (chatId: string) => void;
-  startNewChat: (userId: string, initialMessage?: string) => void;
+  startNewChat: (
+    userId: string,
+    initialMessage?: string,
+    type?: UnifiedChatType,
+  ) => void;
   searchConversations: (query: string) => ChatConversation[];
   unreadCount: number;
+  getUnifiedConversations: (type?: UnifiedChatType) => UnifiedChatThread[];
+  handleNotificationChat: (notification: {
+    type:
+      | "freelance_application"
+      | "marketplace_inquiry"
+      | "trade_request"
+      | "social_mention";
+    fromUserId: string;
+    referenceId?: string;
+    metadata?: any;
+  }) => Promise<string | null>;
 };
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -27,9 +51,17 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [conversations, setConversations] = useState<ChatConversation[]>([]);
+  const [unifiedConversations, setUnifiedConversations] = useState<
+    UnifiedChatThread[]
+  >([]);
   const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
-  const [selectedChat, setSelectedChat] = useState<ChatConversation | null>(null);
+  const [selectedChat, setSelectedChat] = useState<ChatConversation | null>(
+    null,
+  );
+  const [selectedUnifiedChat, setSelectedUnifiedChat] =
+    useState<UnifiedChatThread | null>(null);
   const [messageInput, setMessageInput] = useState("");
+  const [activeTab, setActiveTab] = useState<UnifiedChatType>("social");
 
   // Load conversations
   useEffect(() => {
@@ -39,9 +71,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         // Get all conversations where the current user is a participant
         const { data: conversationsData, error } = await supabase
-          .from('chat_conversations')
-          .select('*')
-          .contains('participants', [user.id]);
+          .from("chat_conversations")
+          .select("*")
+          .contains("participants", [user.id]);
 
         if (error) {
           console.error("Error loading conversations:", error);
@@ -53,15 +85,17 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
         for (const conv of conversationsData) {
           // Find the other participant (not the current user)
-          const otherParticipantId = conv.participants.find(id => id !== user.id);
+          const otherParticipantId = conv.participants.find(
+            (id) => id !== user.id,
+          );
 
           if (!otherParticipantId) continue;
 
           // Get the other participant's profile
           const { data: profileData, error: profileError } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('user_id', otherParticipantId)
+            .from("profiles")
+            .select("*")
+            .eq("user_id", otherParticipantId)
             .single();
 
           if (profileError) {
@@ -71,24 +105,25 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
           // Get unread count for this conversation
           const { count: unreadCount, error: countError } = await supabase
-            .from('chat_messages')
-            .select('*', { count: 'exact', head: true })
-            .eq('conversation_id', conv.id)
-            .eq('read', false)
-            .neq('sender_id', user.id);
+            .from("chat_messages")
+            .select("*", { count: "exact", head: true })
+            .eq("conversation_id", conv.id)
+            .eq("read", false)
+            .neq("sender_id", user.id);
 
           if (countError) {
             console.error("Error getting unread count:", countError);
           }
 
           // Get the last message for this conversation
-          const { data: lastMessageData, error: lastMessageError } = await supabase
-            .from('chat_messages')
-            .select('*')
-            .eq('conversation_id', conv.id)
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single();
+          const { data: lastMessageData, error: lastMessageError } =
+            await supabase
+              .from("chat_messages")
+              .select("*")
+              .eq("conversation_id", conv.id)
+              .order("created_at", { ascending: false })
+              .limit(1)
+              .single();
 
           formattedConversations.push({
             id: conv.id,
@@ -96,27 +131,29 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             created_at: conv.created_at,
             updated_at: conv.updated_at,
             unread_count: unreadCount || 0,
-            last_message: lastMessageData ? {
-              id: lastMessageData.id,
-              content: lastMessageData.content,
-              sender_id: lastMessageData.sender_id,
-              conversation_id: lastMessageData.conversation_id,
-              created_at: lastMessageData.created_at,
-              read: lastMessageData.read,
-            } : undefined,
+            last_message: lastMessageData
+              ? {
+                  id: lastMessageData.id,
+                  content: lastMessageData.content,
+                  sender_id: lastMessageData.sender_id,
+                  conversation_id: lastMessageData.conversation_id,
+                  created_at: lastMessageData.created_at,
+                  read: lastMessageData.read,
+                }
+              : undefined,
             participant_profile: {
               id: otherParticipantId,
-              name: profileData.full_name || profileData.username || 'User',
-              avatar: profileData.avatar_url || '/placeholder.svg',
-              is_online: false // TODO: Implement online status tracking
-            }
+              name: profileData.full_name || profileData.username || "User",
+              avatar: profileData.avatar_url || "/placeholder.svg",
+              is_online: false, // TODO: Implement online status tracking
+            },
           });
         }
 
         setConversations(formattedConversations);
 
         // Load messages for each conversation
-        formattedConversations.forEach(conv => {
+        formattedConversations.forEach((conv) => {
           loadMessages(conv.id);
         });
       } catch (error) {
@@ -128,19 +165,23 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Subscribe to new messages
     const channel = supabase
-      .channel('chat_messages_channel')
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'chat_messages'
-      }, payload => {
-        const newMessage = payload.new as ChatMessage;
+      .channel("chat_messages_channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "chat_messages",
+        },
+        (payload) => {
+          const newMessage = payload.new as ChatMessage;
 
-        // Only process messages for conversations the user is part of
-        if (conversations.some(c => c.id === newMessage.conversation_id)) {
-          handleNewMessage(newMessage);
-        }
-      })
+          // Only process messages for conversations the user is part of
+          if (conversations.some((c) => c.id === newMessage.conversation_id)) {
+            handleNewMessage(newMessage);
+          }
+        },
+      )
       .subscribe();
 
     return () => {
@@ -151,29 +192,31 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const loadMessages = async (conversationId: string) => {
     try {
       const { data, error } = await supabase
-        .from('chat_messages')
-        .select(`
+        .from("chat_messages")
+        .select(
+          `
           *,
           sender:profiles!chat_messages_sender_id_fkey(*)
-        `)
-        .eq('conversation_id', conversationId)
-        .order('created_at', { ascending: true });
+        `,
+        )
+        .eq("conversation_id", conversationId)
+        .order("created_at", { ascending: true });
 
       if (error) {
         console.error("Error loading messages:", error);
         return;
       }
 
-      const formattedMessages: ChatMessage[] = data.map(msg => {
+      const formattedMessages: ChatMessage[] = data.map((msg) => {
         // Check if sender exists and handle possible errors
-        let senderName = 'Unknown';
-        let senderAvatar = '/placeholder.svg';
+        let senderName = "Unknown";
+        let senderAvatar = "/placeholder.svg";
 
-        if (msg.sender && typeof msg.sender === 'object') {
+        if (msg.sender && typeof msg.sender === "object") {
           // Make sure to use optional chaining for all properties
           const sender = msg.sender as Record<string, any>; // Type assertion to avoid null checks
-          senderName = sender?.full_name || sender?.username || 'Unknown';
-          senderAvatar = sender?.avatar_url || '/placeholder.svg';
+          senderName = sender?.full_name || sender?.username || "Unknown";
+          senderAvatar = sender?.avatar_url || "/placeholder.svg";
         }
 
         return {
@@ -185,14 +228,14 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
           read: msg.read,
           sender: {
             name: senderName,
-            avatar: senderAvatar
-          }
+            avatar: senderAvatar,
+          },
         };
       });
 
-      setMessages(prev => ({
+      setMessages((prev) => ({
         ...prev,
-        [conversationId]: formattedMessages
+        [conversationId]: formattedMessages,
       }));
     } catch (error) {
       console.error("Error in loadMessages:", error);
@@ -201,39 +244,48 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleNewMessage = (message: ChatMessage) => {
     // Update messages
-    setMessages(prev => ({
+    setMessages((prev) => ({
       ...prev,
-      [message.conversation_id]: [...(prev[message.conversation_id] || []), message]
+      [message.conversation_id]: [
+        ...(prev[message.conversation_id] || []),
+        message,
+      ],
     }));
 
     // Update conversation
-    setConversations(prev =>
-      prev.map(conv =>
+    setConversations((prev) =>
+      prev.map((conv) =>
         conv.id === message.conversation_id
           ? {
-            ...conv,
-            last_message: message,
-            unread_count: message.sender_id !== user?.id ? (conv.unread_count || 0) + 1 : conv.unread_count
-          }
-          : conv
-      )
+              ...conv,
+              last_message: message,
+              unread_count:
+                message.sender_id !== user?.id
+                  ? (conv.unread_count || 0) + 1
+                  : conv.unread_count,
+            }
+          : conv,
+      ),
     );
   };
 
   // Calculate unread count
-  const unreadCount = conversations.reduce((count, conv) => count + (conv.unread_count || 0), 0);
+  const unreadCount = conversations.reduce(
+    (count, conv) => count + (conv.unread_count || 0),
+    0,
+  );
 
   const sendMessage = async (content: string) => {
     if (!selectedChat || !content.trim() || !user) return;
 
     try {
       const { data: message, error } = await supabase
-        .from('chat_messages')
+        .from("chat_messages")
         .insert({
           content: content.trim(),
           sender_id: user.id,
           conversation_id: selectedChat.id,
-          read: false
+          read: false,
         })
         .select()
         .single();
@@ -248,9 +300,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         created_at: message.created_at,
         read: message.read,
         sender: {
-          name: user.name || 'User',
-          avatar: user.avatar || '/placeholder.svg'
-        }
+          name: user.name || "User",
+          avatar: user.avatar || "/placeholder.svg",
+        },
       };
 
       handleNewMessage(newMessage);
@@ -270,32 +322,36 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       const { error } = await supabase
-        .from('chat_messages')
+        .from("chat_messages")
         .update({ read: true })
-        .eq('conversation_id', chatId)
-        .neq('sender_id', user.id);
+        .eq("conversation_id", chatId)
+        .neq("sender_id", user.id);
 
       if (error) throw error;
 
-      setConversations(prev =>
-        prev.map(conv =>
-          conv.id === chatId
-            ? { ...conv, unread_count: 0 }
-            : conv
-        )
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === chatId ? { ...conv, unread_count: 0 } : conv,
+        ),
       );
     } catch (error) {
       console.error("Error marking messages as read:", error);
     }
   };
 
-  const startNewChat = async (userId: string, initialMessage?: string) => {
+  const startNewChat = async (
+    userId: string,
+    initialMessage?: string,
+    type: UnifiedChatType = "social",
+  ) => {
     if (!user) return;
 
     try {
       // Check if chat already exists
-      const existingChat = conversations.find(conv =>
-        conv.participants.includes(userId) && conv.participants.includes(user.id)
+      const existingChat = conversations.find(
+        (conv) =>
+          conv.participants.includes(userId) &&
+          conv.participants.includes(user.id),
       );
 
       if (existingChat) {
@@ -308,9 +364,9 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Get the other user's profile
       const { data: otherUserProfile, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', userId)
+        .from("profiles")
+        .select("*")
+        .eq("user_id", userId)
         .single();
 
       if (profileError) {
@@ -320,7 +376,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Create new conversation
       const { data: conversation, error } = await supabase
-        .from('chat_conversations')
+        .from("chat_conversations")
         .insert({
           participants: [user.id, userId],
         })
@@ -334,14 +390,32 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         unread_count: 0,
         participant_profile: {
           id: userId,
-          name: otherUserProfile.full_name || otherUserProfile.username || 'User',
-          avatar: otherUserProfile.avatar_url || '/placeholder.svg',
-          is_online: false
-        }
+          name:
+            otherUserProfile.full_name || otherUserProfile.username || "User",
+          avatar: otherUserProfile.avatar_url || "/placeholder.svg",
+          is_online: false,
+        },
       };
 
-      setConversations(prev => [newChat, ...prev]);
+      // Also create unified chat entry
+      const newUnifiedChat: UnifiedChatThread = {
+        id: conversation.id,
+        type,
+        referenceId: null,
+        participants: [user.id, userId],
+        lastMessage: initialMessage || "",
+        lastMessageAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isGroup: false,
+        createdAt: new Date().toISOString(),
+        unreadCount: 0,
+        participant_profile: newChat.participant_profile,
+      };
+
+      setConversations((prev) => [newChat, ...prev]);
+      setUnifiedConversations((prev) => [newUnifiedChat, ...prev]);
       setSelectedChat(newChat);
+      setSelectedUnifiedChat(newUnifiedChat);
 
       if (initialMessage) {
         setMessageInput(initialMessage);
@@ -356,36 +430,157 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const getUnifiedConversations = (type?: UnifiedChatType) => {
+    if (!type || type === "all") {
+      return unifiedConversations;
+    }
+    return unifiedConversations.filter((conv) => conv.type === type);
+  };
+
+  // Handle real-time notifications and create chats
+  const handleNotificationChat = async (notification: {
+    type:
+      | "freelance_application"
+      | "marketplace_inquiry"
+      | "trade_request"
+      | "social_mention";
+    fromUserId: string;
+    referenceId?: string;
+    metadata?: any;
+  }) => {
+    const { type, fromUserId, referenceId, metadata } = notification;
+
+    try {
+      // Check if chat already exists
+      const existingChat = conversations.find(
+        (conv) =>
+          conv.participants.includes(fromUserId) &&
+          conv.participants.includes(user?.id || "") &&
+          (referenceId ? conv.referenceId === referenceId : true),
+      );
+
+      if (existingChat) {
+        setSelectedChat(existingChat);
+        return existingChat.id;
+      }
+
+      // Create new chat based on notification type
+      let chatType: UnifiedChatType;
+      let contextData: UnifiedChatContextData = {};
+      let initialMessage = "";
+
+      switch (type) {
+        case "freelance_application":
+          chatType = "freelance";
+          contextData = {
+            jobTitle: metadata?.jobTitle,
+            jobBudget: metadata?.jobBudget,
+            projectStatus: "proposal",
+          };
+          initialMessage = `Hi! I'm interested in your job posting: ${metadata?.jobTitle}`;
+          break;
+
+        case "marketplace_inquiry":
+          chatType = "marketplace";
+          contextData = {
+            productName: metadata?.productName,
+            productPrice: metadata?.productPrice,
+            productImage: metadata?.productImage,
+          };
+          initialMessage = `Hi! I'm interested in your product: ${metadata?.productName}`;
+          break;
+
+        case "trade_request":
+          chatType = "p2p";
+          contextData = {
+            tradeAmount: metadata?.amount,
+            cryptoType: metadata?.crypto,
+            tradeStatus: "initiated",
+          };
+          initialMessage = `Hi! I'd like to discuss a ${metadata?.crypto} trade`;
+          break;
+
+        case "social_mention":
+          chatType = "social";
+          contextData = {
+            relationshipType: "friend",
+          };
+          initialMessage = "Hi! 👋";
+          break;
+
+        default:
+          throw new Error(`Unknown notification type: ${type}`);
+      }
+
+      // Create new unified chat
+      const newThread: UnifiedChatThread = {
+        id: `thread_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: chatType,
+        referenceId: referenceId || null,
+        participants: [user?.id || "", fromUserId],
+        lastMessage: initialMessage,
+        lastMessageAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isGroup: false,
+        createdAt: new Date().toISOString(),
+        unreadCount: 1,
+        contextData,
+      };
+
+      setUnifiedConversations((prev) => [newThread, ...prev]);
+      setActiveTab(chatType);
+
+      return newThread.id;
+    } catch (error) {
+      console.error("Error handling notification chat:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create chat from notification",
+        variant: "destructive",
+      });
+      return null;
+    }
+  };
+
   const searchConversations = (query: string) => {
     if (!query) return conversations;
 
     const normalizedQuery = query.toLowerCase();
-    return conversations.filter(conv => {
-      const participantName = conv.participant_profile?.name?.toLowerCase() || '';
-      const lastMessageContent = conv.last_message?.content?.toLowerCase() || '';
+    return conversations.filter((conv) => {
+      const participantName =
+        conv.participant_profile?.name?.toLowerCase() || "";
+      const lastMessageContent =
+        conv.last_message?.content?.toLowerCase() || "";
 
-      return participantName.includes(normalizedQuery) ||
-        lastMessageContent.includes(normalizedQuery);
+      return (
+        participantName.includes(normalizedQuery) ||
+        lastMessageContent.includes(normalizedQuery)
+      );
     });
   };
 
   const contextValue: ChatContextType = {
     conversations,
+    unifiedConversations,
     messages,
     selectedChat,
+    selectedUnifiedChat,
     messageInput,
+    activeTab,
     setMessageInput,
     setSelectedChat,
+    setSelectedUnifiedChat,
+    setActiveTab,
     sendMessage,
     markAsRead,
     startNewChat,
     searchConversations,
-    unreadCount
+    unreadCount,
+    getUnifiedConversations,
+    handleNotificationChat,
   };
 
   return (
-    <ChatContext.Provider value={contextValue}>
-      {children}
-    </ChatContext.Provider>
+    <ChatContext.Provider value={contextValue}>{children}</ChatContext.Provider>
   );
 };

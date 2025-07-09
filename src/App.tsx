@@ -221,6 +221,7 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="feed" replace />} />
           <Route path="feed" element={<EnhancedFeed />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />

@@ -36,39 +36,54 @@ const AppLayout = () => {
       {/* Secondary Navigation for user pages (desktop only) */}
       <SecondaryNav />
 
-      {/* Facebook-style sidebar - Mobile and Desktop */}
-      <FacebookStyleSidebar
-        isOpen={isMobile ? mobileMenuOpen : true}
-        onClose={() => setMobileMenuOpen(false)}
-        isMobile={isMobile}
-      />
-
       {/* Main content area with sidebar for desktop */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Facebook-style sidebar - positioned for desktop, overlay for mobile */}
+        {!isMobile && (
+          <div className="fixed left-0 top-14 bottom-0 w-80 z-30">
+            <FacebookStyleSidebar
+              isOpen={true}
+              onClose={() => setMobileMenuOpen(false)}
+              isMobile={false}
+            />
+          </div>
+        )}
+
+        {/* Mobile sidebar */}
+        {isMobile && (
+          <FacebookStyleSidebar
+            isOpen={mobileMenuOpen}
+            onClose={() => setMobileMenuOpen(false)}
+            isMobile={true}
+          />
+        )}
+
         {/* Spacer for desktop sidebar */}
-        {!isMobile && <div className="w-80"></div>}
+        {!isMobile && <div className="w-80 flex-shrink-0"></div>}
 
         {/* Main content */}
         <main
           className={`flex-1 overflow-y-auto ${
-            isMobile ? "pt-14 pb-20 px-2" : "pt-0 pb-6 px-4 ml-80" // ml-80 to account for sidebar width
+            isMobile ? "pt-14 pb-20 px-2" : "pt-2 pb-4 px-4"
           }`}
         >
           <div className="w-full max-w-full mx-auto">
-            <div className={`${isMobile ? "py-2" : "py-4"}`}>
+            <div className={`${isMobile ? "py-1" : "py-2"}`}>
               <Outlet />
             </div>
           </div>
         </main>
       </div>
-      {/* Creator Studio Floating Action Button */}
-      <CreatorStudioFAB />
-      {/* AI Assistant Floating Action Button */}
-      <AIAssistantFAB />
-      {/* Desktop Footer */}
-      {!isMobile && <DesktopFooter />}
-      {/* Mobile Footer Navigation */}
+
+      {/* Footer navigation for mobile */}
       {isMobile && <FooterNav />}
+
+      {/* Floating Action Buttons */}
+      <CreatorStudioFAB />
+      <AIAssistantFAB />
+
+      {/* Desktop footer */}
+      {!isMobile && <DesktopFooter />}
     </div>
   );
 };

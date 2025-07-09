@@ -11,6 +11,8 @@ export interface PlatformFeature {
 
 export interface SmartResponse {
   message: string;
+  confidence?: number;
+  sources?: string[];
   suggestedActions: Array<{
     label: string;
     action: string;
@@ -193,42 +195,49 @@ export class EnhancedAIService {
     userContext?: Partial<User>,
   ): SmartResponse {
     const lowerInput = input.toLowerCase();
+    let response: SmartResponse;
+    let confidence = 70; // Default confidence
 
     // Analyze input and determine best response strategy
     if (this.isGreeting(lowerInput)) {
-      return this.generateGreetingResponse(userContext);
+      response = this.generateGreetingResponse(userContext);
+      confidence = 95;
+    } else if (this.isFeatureQuestion(lowerInput)) {
+      response = this.generateFeatureResponse(lowerInput);
+      confidence = 90;
+    } else if (this.isHowToQuestion(lowerInput)) {
+      response = this.generateHowToResponse(lowerInput);
+      confidence = 85;
+    } else if (this.isOptimizationQuestion(lowerInput)) {
+      response = this.generateOptimizationResponse(lowerInput);
+      confidence = 88;
+    } else if (this.isTroubleshootingQuestion(lowerInput)) {
+      response = this.generateTroubleshootingResponse(lowerInput);
+      confidence = 82;
+    } else if (this.isPhilosophicalQuestion(lowerInput)) {
+      response = this.generatePhilosophicalResponse(lowerInput);
+      confidence = 75;
+    } else if (this.isFactualQuestion(lowerInput)) {
+      response = this.generateFactualResponse(lowerInput);
+      confidence = 80;
+    } else if (this.isGeneralKnowledgeQuestion(lowerInput)) {
+      response = this.generateGeneralKnowledgeResponse(lowerInput);
+      confidence = 78;
+    } else {
+      // Default comprehensive response
+      response = this.generateComprehensiveResponse(lowerInput);
+      confidence = 70;
     }
 
-    if (this.isFeatureQuestion(lowerInput)) {
-      return this.generateFeatureResponse(lowerInput);
-    }
+    // Add confidence and sources
+    response.confidence = confidence;
+    response.sources = [
+      "SoftChat Platform Knowledge",
+      "AI Assistant Training",
+      "User Guidelines",
+    ];
 
-    if (this.isHowToQuestion(lowerInput)) {
-      return this.generateHowToResponse(lowerInput);
-    }
-
-    if (this.isOptimizationQuestion(lowerInput)) {
-      return this.generateOptimizationResponse(lowerInput);
-    }
-
-    if (this.isTroubleshootingQuestion(lowerInput)) {
-      return this.generateTroubleshootingResponse(lowerInput);
-    }
-
-    if (this.isPhilosophicalQuestion(lowerInput)) {
-      return this.generatePhilosophicalResponse(lowerInput);
-    }
-
-    if (this.isFactualQuestion(lowerInput)) {
-      return this.generateFactualResponse(lowerInput);
-    }
-
-    if (this.isGeneralKnowledgeQuestion(lowerInput)) {
-      return this.generateGeneralKnowledgeResponse(lowerInput);
-    }
-
-    // Default comprehensive response
-    return this.generateComprehensiveResponse(lowerInput);
+    return response;
   }
 
   private isGreeting(input: string): boolean {
@@ -449,7 +458,7 @@ export class EnhancedAIService {
 
     // General features overview
     return {
-      message: `SoftChat has everything you need to succeed online! Here's what you can do:\n\n🌟 Social Feed - Share posts, build your following, and connect with others\n💰 Crypto Trading - Buy and sell 50+ cryptocurrencies with real-time data\n🛒 Marketplace - Sell your products or buy from other users\n💼 Freelance Hub - Offer your skills or hire talented people\n🎥 Video Studio - Create videos and live stream to your audience\n🏆 Rewards System - Earn SoftPoints for every activity you do\n💳 Digital Wallet - Keep track of all your earnings in one place\n\nWhat sounds most interesting to you? I can help you get started with any of these!`,
+      message: `SoftChat has everything you need to succeed online! Here's what you can do:\n\n🌟 Social Feed - Share posts, build your following, and connect with others\n💰 Crypto Trading - Buy and sell 50+ cryptocurrencies with real-time data\n🛒 Marketplace - Sell your products or buy from other users\n💼 Freelance Hub - Offer your skills or hire talented people\n🎥 Video Studio - Create videos and live stream to your audience\n🏆 Rewards System - Earn SoftPoints for every activity you do\n��� Digital Wallet - Keep track of all your earnings in one place\n\nWhat sounds most interesting to you? I can help you get started with any of these!`,
       suggestedActions: [
         { label: "Create my first post", action: "create", url: "/create" },
         {
