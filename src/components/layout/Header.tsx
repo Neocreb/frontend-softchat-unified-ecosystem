@@ -1,375 +1,220 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Search,
-  Menu,
-  X,
-  User,
-  Bell,
-  Home,
-  TrendingUp,
-  Wallet,
-  Award,
-  Video,
-  MessageCircle,
-  ShoppingCart,
-  Briefcase,
-  Settings,
-  BarChart3,
-  Bot,
-  Globe,
-  Calendar,
-} from "lucide-react";
-import { cn } from "@/utils/utils";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import {
+  Menu,
+  Search,
+  Bell,
+  MessageSquare,
+  Settings,
+  LogOut,
+  User,
+  PlusCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import SoftchatLogo from "@/components/shared/SoftchatLogo";
+import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useAuth } from "@/contexts/AuthContext";
-import SoftchatLogo from "../shared/SoftchatLogo";
-import NotificationsDropdown from "./NotificationsDropdown";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { cn } from "@/lib/utils";
 
 interface HeaderProps {
-  mobileMenuOpen?: boolean;
-  setMobileMenuOpen?: (open: boolean) => void;
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: (open: boolean) => void;
+  sidebarCollapsed?: boolean;
+  setSidebarCollapsed?: (collapsed: boolean) => void;
 }
 
-const Header = ({ mobileMenuOpen = false, setMobileMenuOpen }: HeaderProps) => {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const isMobile = useIsMobile();
+const Header = ({
+  mobileMenuOpen,
+  setMobileMenuOpen,
+  sidebarCollapsed = false,
+  setSidebarCollapsed,
+}: HeaderProps) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
+  const isMobile = useIsMobile();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/auth");
+      toast({
+        title: "Logged out successfully",
+        description: "See you soon!",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to log out",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/explore?q=${encodeURIComponent(searchQuery)}`);
-      setSearchOpen(false);
+      navigate(`/explore?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     }
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div
-        className={`w-full max-w-full flex h-14 items-center justify-between ${isMobile ? "px-3" : "px-4"}`}
-      >
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          {isMobile && (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-16 items-center px-4">
+        {/* Left section */}
+        <div className="flex items-center gap-4">
+          {/* Mobile menu toggle */}
+          {isMobile ? (
             <Button
               variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen?.(!mobileMenuOpen)}
-              className="md:hidden h-8 w-8 flex-shrink-0"
-              aria-label="Toggle menu"
+              size="sm"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden"
             >
-              {mobileMenuOpen ? (
-                <X className="h-4 w-4" />
+              <Menu className="h-5 w-5" />
+            </Button>
+          ) : (
+            /* Desktop sidebar toggle */
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarCollapsed?.(!sidebarCollapsed)}
+              className="hidden lg:flex"
+            >
+              {sidebarCollapsed ? (
+                <ChevronRight className="h-5 w-5" />
               ) : (
-                <Menu className="h-4 w-4" />
+                <ChevronLeft className="h-5 w-5" />
               )}
             </Button>
           )}
 
-          <Link to="/" className="flex items-center gap-2 min-w-0 flex-1">
-            <SoftchatLogo
-              className={`${isMobile ? "h-6 w-6" : "h-8 w-8"} flex-shrink-0`}
-            />
-            <span
-              className={`font-bold text-softchat-primary truncate ${isMobile ? "text-lg" : "text-xl"}`}
-            >
-              Softchat
-            </span>
+          {/* Logo */}
+          <Link to="/feed" className="flex items-center gap-2">
+            <SoftchatLogo className="h-8 w-8" />
+            {(!isMobile || !mobileMenuOpen) && (
+              <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                SoftChat
+              </span>
+            )}
           </Link>
         </div>
 
-        {/* Desktop Search */}
-        <div className="hidden md:flex items-center mx-2 lg:mx-4 flex-1 max-w-md">
-          <form onSubmit={handleSearchSubmit} className="w-full relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        {/* Center section - Search */}
+        <div className="flex-1 max-w-lg mx-4">
+          <form onSubmit={handleSearch} className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search"
-              className="pl-9 bg-muted/40 border-none rounded-full text-sm"
+              type="search"
+              placeholder="Search SoftChat..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 bg-muted/50 border-0 focus:bg-background focus:ring-2 focus:ring-primary/20"
             />
           </form>
         </div>
 
-        {/* Creator Studio Quick Link */}
-        <div className="hidden lg:flex items-center">
+        {/* Right section */}
+        <div className="flex items-center gap-2">
+          {/* Create button */}
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => navigate("/create")}
+            className="hidden sm:flex items-center gap-2"
+          >
+            <PlusCircle className="h-4 w-4" />
+            Create
+          </Button>
+
+          {/* Notifications */}
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/creator-studio")}
-            className="text-sm font-medium"
+            onClick={() => navigate("/notifications")}
+            className="relative"
           >
-            <BarChart3 className="w-4 h-4 mr-2" />
-            Creator Studio
-          </Button>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6">
-          <Link
-            to="/feed"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Home className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Feed</span>
-          </Link>
-          <Link
-            to="/explore"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Search className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Explore</span>
-          </Link>
-          <Link
-            to="/videos"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Video className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Videos</span>
-          </Link>
-          <Link
-            to="/marketplace"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <ShoppingCart className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Market</span>
-          </Link>
-          <Link
-            to="/crypto"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <TrendingUp className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Crypto</span>
-          </Link>
-          <Link
-            to="/freelance"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Briefcase className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Freelance</span>
-          </Link>
-          <Link
-            to="/rewards"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Award className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Rewards</span>
-          </Link>
-          <Link
-            to="/creator-studio"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <BarChart3 className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Creator Studio</span>
-          </Link>
-          <Link
-            to="/events"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Calendar className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Events</span>
-          </Link>
-          <Link
-            to="/live-streaming"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Video className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden lg:inline">Live</span>
-          </Link>
-          <Link
-            to="/ai-assistant"
-            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
-          >
-            <Bot className="h-4 w-4 lg:h-5 lg:w-5" />
-            <span className="text-sm hidden xl:inline">AI Assistant</span>
-          </Link>
-        </nav>
-
-        <div className="flex items-center gap-1 min-w-0">
-          {/* Search Button - Mobile only */}
-          {isMobile && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 flex-shrink-0"
-              aria-label="Search"
-              onClick={() => setSearchOpen(!searchOpen)}
+            <Bell className="h-5 w-5" />
+            <Badge
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center"
             >
-              <Search className="h-4 w-4" />
-            </Button>
-          )}
+              3
+            </Badge>
+          </Button>
 
-          {/* Chat Button - Mobile only */}
-          {isMobile && (
-            <Link to="/chat">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 flex-shrink-0"
-                aria-label="Messages"
-              >
-                <MessageCircle className="h-4 w-4" />
-              </Button>
-            </Link>
-          )}
+          {/* Messages */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/chat")}
+            className="relative"
+          >
+            <MessageSquare className="h-5 w-5" />
+            <Badge
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center"
+            >
+              5
+            </Badge>
+          </Button>
 
-          {/* Language and Currency Selectors - Desktop only - Temporarily disabled */}
-          {/* <div className="hidden lg:flex items-center gap-1">
-            <QuickLanguageSelector />
-            <QuickCurrencySelector />
-          </div> */}
-
-          {/* Notifications */}
-          <NotificationsDropdown />
-
-          {/* Theme Toggle - Hidden on mobile to save space */}
-          <div className="hidden lg:block">
-            <ThemeToggle />
-          </div>
-
+          {/* User menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className={`relative rounded-full flex-shrink-0 ${isMobile ? "h-8 w-8" : "h-9 w-9"}`}
+                className="relative h-10 w-10 rounded-full"
               >
-                <Avatar className={isMobile ? "h-7 w-7" : "h-8 w-8"}>
-                  <AvatarImage
-                    src={user?.avatar || "/placeholder.svg"}
-                    alt={user?.name || "@user"}
-                  />
-                  <AvatarFallback className="text-xs">
-                    {user?.name?.substring(0, 2).toUpperCase() || "SC"}
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={user?.avatar} alt={user?.name} />
+                  <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                    {user?.name?.charAt(0) || user?.email?.charAt(0) || "U"}
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-48 sm:w-56"
-              align="end"
-              forceMount
-            >
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {user?.name || "User"}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {user?.email || "user@example.com"}
-                  </p>
+            <DropdownMenuContent className="w-56" align="end" forceMount>
+              <div className="flex items-center justify-start gap-2 p-2">
+                <div className="flex flex-col space-y-1 leading-none">
+                  <p className="font-medium">{user?.name || "User"}</p>
+                  <p className="text-xs text-muted-foreground">{user?.email}</p>
                 </div>
-              </DropdownMenuLabel>
+              </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link
-                  to="/profile"
-                  className="flex items-center w-full font-medium"
-                >
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </Link>
+              <DropdownMenuItem onClick={() => navigate("/profile")}>
+                <User className="mr-2 h-4 w-4" />
+                Profile
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link
-                  to="/ai-assistant"
-                  className="flex items-center w-full font-medium"
-                >
-                  <Bot className="mr-2 h-4 w-4" />
-                  <span>AI Assistant</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link
-                  to="/settings"
-                  className="flex items-center w-full font-medium"
-                >
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </Link>
-              </DropdownMenuItem>
-              {/* Temporarily disabled - Language & Region */}
-              {/* <DropdownMenuItem asChild>
-                <div className="flex items-center w-full font-medium lg:hidden">
-                  <Globe className="mr-2 h-4 w-4" />
-                  <span>Language & Region</span>
-                </div>
-              </DropdownMenuItem> */}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link to="/wallet" className="flex items-center w-full">
-                  <Wallet className="mr-2 h-4 w-4" />
-                  <span>Wallet</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/chat" className="flex items-center w-full">
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  <span>Messages</span>
-                </Link>
+              <DropdownMenuItem onClick={() => navigate("/settings")}>
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link
-                  to="/premium"
-                  className="flex items-center w-full font-medium text-purple-600"
-                >
-                  <Award className="mr-2 h-4 w-4" />
-                  <span>Premium</span>
-                </Link>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Log out
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/kyc" className="flex items-center w-full">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  <span>KYC Verification</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/notifications" className="flex items-center w-full">
-                  <Bell className="mr-2 h-4 w-4" />
-                  <span>Notifications</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
-
-      {/* Mobile Search Bar */}
-      {searchOpen && (
-        <div className="p-3 border-t w-full bg-background">
-          <form
-            onSubmit={handleSearchSubmit}
-            className="relative w-full max-w-full"
-          >
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search SoftChat"
-              className="pl-9 bg-muted/40 border-none rounded-full w-full focus:bg-background"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
-            />
-          </form>
-        </div>
-      )}
     </header>
   );
 };

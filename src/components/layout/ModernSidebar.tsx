@@ -278,20 +278,29 @@ export default function ModernSidebar({
       )}
     >
       <div className="flex flex-col h-full">
-        {/* Collapse toggle */}
+        {/* Quick actions when collapsed, or welcome message when expanded */}
         <div className="p-3 border-b">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {}} // This will be handled by parent
-            className="w-full justify-center"
-          >
-            {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
-          </Button>
+          {collapsed ? (
+            <div className="space-y-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-center"
+                onClick={() => (window.location.href = "/create")}
+              >
+                <PlusCircle className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <div className="text-center">
+              <p className="text-sm font-medium text-foreground">
+                Welcome back!
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Ready to create something amazing?
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Navigation sections */}
