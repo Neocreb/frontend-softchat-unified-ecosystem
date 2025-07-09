@@ -219,33 +219,33 @@ const AdminDashboard = () => {
   const userActivityData = [
     {
       name: "Jan",
-      posts: dashboardData.stats.totalPosts * 0.1,
-      users: dashboardData.stats.totalUsers * 0.1,
+      posts: (dashboardData?.stats?.totalPosts || 0) * 0.1,
+      users: (dashboardData?.stats?.totalUsers || 0) * 0.1,
     },
     {
       name: "Feb",
-      posts: dashboardData.stats.totalPosts * 0.15,
-      users: dashboardData.stats.totalUsers * 0.15,
+      posts: (dashboardData?.stats?.totalPosts || 0) * 0.15,
+      users: (dashboardData?.stats?.totalUsers || 0) * 0.15,
     },
     {
       name: "Mar",
-      posts: dashboardData.stats.totalPosts * 0.2,
-      users: dashboardData.stats.totalUsers * 0.2,
+      posts: (dashboardData?.stats?.totalPosts || 0) * 0.2,
+      users: (dashboardData?.stats?.totalUsers || 0) * 0.2,
     },
     {
       name: "Apr",
-      posts: dashboardData.stats.totalPosts * 0.18,
-      users: dashboardData.stats.totalUsers * 0.18,
+      posts: (dashboardData?.stats?.totalPosts || 0) * 0.18,
+      users: (dashboardData?.stats?.totalUsers || 0) * 0.18,
     },
     {
       name: "May",
-      posts: dashboardData.stats.totalPosts * 0.22,
-      users: dashboardData.stats.totalUsers * 0.22,
+      posts: (dashboardData?.stats?.totalPosts || 0) * 0.22,
+      users: (dashboardData?.stats?.totalUsers || 0) * 0.22,
     },
     {
       name: "Jun",
-      posts: dashboardData.stats.totalPosts * 0.15,
-      users: dashboardData.stats.totalUsers * 0.25,
+      posts: (dashboardData?.stats?.totalPosts || 0) * 0.15,
+      users: (dashboardData?.stats?.totalUsers || 0) * 0.25,
     },
   ];
 
