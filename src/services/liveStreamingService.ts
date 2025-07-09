@@ -850,6 +850,8 @@ class LiveStreamingService {
         streamId,
         userId: "user-1",
         username: "CryptoTrader",
+        userAvatar:
+          "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face",
         message: "Great analysis! 🚀",
         type: "chat",
         timestamp: new Date(Date.now() - 60000).toISOString(),
@@ -859,6 +861,8 @@ class LiveStreamingService {
         streamId,
         userId: "user-2",
         username: "ArtLover",
+        userAvatar:
+          "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
         message: "This is amazing work!",
         type: "chat",
         timestamp: new Date(Date.now() - 30000).toISOString(),
