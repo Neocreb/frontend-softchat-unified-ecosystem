@@ -487,17 +487,25 @@ const Header = () => {
               to="/premium"
               className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors text-purple-600"
               onClick={() => setMobileMenuOpen(false)}
+              aria-label="Navigate to Premium Subscription Features"
             >
-              <Award className="h-5 w-5" />
+              <Award className="h-5 w-5" aria-hidden="true" />
               <span>Premium</span>
+              <Badge className="ml-auto text-xs bg-purple-100 text-purple-600">
+                Upgrade
+              </Badge>
             </Link>
             <Link
               to="/kyc"
               className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors text-green-600"
               onClick={() => setMobileMenuOpen(false)}
+              aria-label="Navigate to KYC Identity Verification"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="h-5 w-5" aria-hidden="true" />
               <span>KYC Verification</span>
+              <Badge className="ml-auto text-xs bg-green-100 text-green-600">
+                Secure
+              </Badge>
             </Link>
           </div>
         </div>
