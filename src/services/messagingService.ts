@@ -124,6 +124,42 @@ export const messagingService = {
     limit: number = 50,
   ): Promise<ChatMessage[]> {
     try {
+      // Handle sample conversation
+      if (conversationId === "sample-conversation-1") {
+        return [
+          {
+            id: "sample-message-1",
+            sender_id: "sample-user-1",
+            conversation_id: "sample-conversation-1",
+            content:
+              "Hey! Welcome to SoftChat messaging. This is a sample conversation for testing.",
+            created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+            read: false,
+            sender: {
+              name: "SoftChat Bot",
+              username: "softchat_bot",
+              avatar:
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+            },
+          },
+          {
+            id: "sample-message-2",
+            sender_id: "sample-user-1",
+            conversation_id: "sample-conversation-1",
+            content:
+              "You can now send real messages and they will be stored in the database.",
+            created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+            read: false,
+            sender: {
+              name: "SoftChat Bot",
+              username: "softchat_bot",
+              avatar:
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=softchat",
+            },
+          },
+        ];
+      }
+
       const { data: messages, error } = await supabase
         .from("chat_messages")
         .select("*")
