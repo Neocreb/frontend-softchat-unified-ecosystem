@@ -1745,6 +1745,144 @@ const EnhancedSettings = () => {
             </Card>
           </TabsContent>
 
+          {/* Premium Settings */}
+          <TabsContent value="premium" className="space-y-6">
+            {/* Premium Status Overview */}
+            <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-purple-900">
+                  <Crown className="w-5 h-5" />
+                  Premium Subscription
+                </CardTitle>
+                <CardDescription>
+                  Manage your premium subscription and access advanced features
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-white rounded-lg border">
+                  <div>
+                    <h3 className="font-semibold">Current Plan: Free</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Upgrade to unlock premium features and boost your
+                      experience
+                    </p>
+                  </div>
+                  <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                    <Crown className="w-4 h-4 mr-2" />
+                    Upgrade Now
+                  </Button>
+                </div>
+
+                {/* Premium Features Preview */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 bg-white rounded-lg border">
+                    <h4 className="font-medium mb-2">Creator Tools</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Advanced analytics</li>
+                      <li>• Live streaming tools</li>
+                      <li>• Content scheduling</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 bg-white rounded-lg border">
+                    <h4 className="font-medium mb-2">Business Features</h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>• Priority support</li>
+                      <li>• Custom branding</li>
+                      <li>• Team collaboration</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Links to Premium Features */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5" />
+                  Premium Features Access
+                </CardTitle>
+                <CardDescription>
+                  Quick access to premium features and tools
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <Button
+                    variant="outline"
+                    className="h-auto p-4 flex flex-col items-center gap-2"
+                    onClick={() => window.open("/premium", "_blank")}
+                  >
+                    <Crown className="w-6 h-6 text-purple-600" />
+                    <span className="font-medium">Subscription Manager</span>
+                    <span className="text-xs text-muted-foreground">
+                      Manage plans & billing
+                    </span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-auto p-4 flex flex-col items-center gap-2"
+                    onClick={() => window.open("/live-streaming", "_blank")}
+                  >
+                    <Radio className="w-6 h-6 text-red-600" />
+                    <span className="font-medium">Live Streaming</span>
+                    <span className="text-xs text-muted-foreground">
+                      Professional streaming
+                    </span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="h-auto p-4 flex flex-col items-center gap-2"
+                    onClick={() => window.open("/creator-studio", "_blank")}
+                  >
+                    <BarChart3 className="w-6 h-6 text-blue-600" />
+                    <span className="font-medium">Creator Analytics</span>
+                    <span className="text-xs text-muted-foreground">
+                      Advanced insights
+                    </span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* KYC Integration for Premium Features */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Account Verification
+                </CardTitle>
+                <CardDescription>
+                  Complete verification to access all premium features
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-green-900">
+                        Identity Verification
+                      </h4>
+                      <p className="text-sm text-green-700">
+                        Required for trading and monetization
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="border-green-600 text-green-600 hover:bg-green-50"
+                    onClick={() => window.open("/kyc", "_blank")}
+                  >
+                    Start Verification
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Notifications Settings */}
           <TabsContent value="notifications" className="space-y-6">
             <Card>
