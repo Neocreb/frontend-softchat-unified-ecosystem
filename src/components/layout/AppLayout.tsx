@@ -3,72 +3,73 @@ import { useState } from "react";
 import Header from "./Header";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
-import ModernSidebar from "./ModernSidebar";
+import SecondaryNav from "./SecondaryNav";
+import FacebookStyleSidebar from "./FacebookStyleSidebar";
 import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
 import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
 
 const AppLayout = () => {
   const isMobile = useIsMobile();
   const location = useLocation();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Full-screen pages (videos, chat)
-  const isFullScreenPage =
-    location.pathname === "/videos" || location.pathname === "/chat";
+  // Video pages should have full-screen experience
+  const isVideoPage = location.pathname === "/videos";
 
-  // Full screen layout for specific pages
-  if (isFullScreenPage) {
+  if (isVideoPage) {
     return (
       <div className="min-h-screen bg-background">
         <Outlet />
+        {/* Footer navigation for videos with special styling */}
         {isMobile && <FooterNav />}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Clean, modern header */}
+    <div className="min-h-screen bg-background flex flex-col">
       <Header
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
-        sidebarCollapsed={sidebarCollapsed}
-        setSidebarCollapsed={setSidebarCollapsed}
+      />
+      {/* Secondary Navigation for user pages (desktop only) */}
+      <SecondaryNav />
+
+      {/* Facebook-style sidebar - Mobile and Desktop */}
+      <FacebookStyleSidebar
+        isOpen={isMobile ? mobileMenuOpen : true}
+        onClose={() => setMobileMenuOpen(false)}
+        isMobile={isMobile}
       />
 
-      <div className="flex h-[calc(100vh-64px)]">
-        {/* Modern organized sidebar */}
-        <ModernSidebar
-          collapsed={sidebarCollapsed}
-          isOpen={isMobile ? mobileMenuOpen : true}
-          onClose={() => setMobileMenuOpen(false)}
-          isMobile={isMobile}
-        />
+      {/* Main content area with sidebar for desktop */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Spacer for desktop sidebar */}
+        {!isMobile && <div className="w-80"></div>}
 
-        {/* Main content area */}
+        {/* Main content */}
         <main
-          className={cn(
-            "flex-1 overflow-y-auto",
-            !isMobile && (sidebarCollapsed ? "ml-16" : "ml-72"),
-          )}
+          className={`flex-1 overflow-y-auto ${
+            isMobile ? "pt-14 pb-20 px-2" : "pt-0 pb-6 px-4"
+          }`}
         >
-          <div className="p-4 md:p-6">
-            <Outlet />
+          <div className="w-full max-w-full mx-auto">
+            <div className={`${isMobile ? "py-2" : "py-4"}`}>
+              <Outlet />
+            </div>
           </div>
         </main>
       </div>
 
-      {/* Mobile navigation */}
+      {/* Footer navigation for mobile */}
       {isMobile && <FooterNav />}
 
       {/* Floating Action Buttons */}
       <CreatorStudioFAB />
       <AIAssistantFAB />
 
-      {/* Desktop Footer */}
+      {/* Desktop footer */}
       {!isMobile && <DesktopFooter />}
     </div>
   );
