@@ -45,31 +45,63 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
 
   // Initialize AI assistant with welcome message
   useEffect(() => {
-    if (user && messages.length === 0) {
-      // Generate personalized real-time welcome message
-      const welcomeResponse = await realTimeAIService.generateRealTimeResponse(
-        "Welcome! I'm your real-time AI assistant",
-        user,
-      );
+    const initializeWelcome = async () => {
+      if (user && messages.length === 0) {
+        try {
+          // Generate personalized real-time welcome message
+          const welcomeResponse =
+            await realTimeAIService.generateRealTimeResponse(
+              "Welcome! I'm your real-time AI assistant",
+              user,
+            );
 
-      const welcomeMessage: AIAssistantMessage = {
-        id: "welcome-msg",
-        threadId: "ai_assistant",
-        senderId: "ai_assistant",
-        content: welcomeResponse.message,
-        timestamp: new Date().toISOString(),
-        readBy: [],
-        messageType: "text",
-        aiContext: {
-          confidence: welcomeResponse.confidence,
-          sources: welcomeResponse.sources,
-          suggestedActions: welcomeResponse.suggestedActions,
-          followUpQuestions: welcomeResponse.followUpQuestions,
-          relatedTopics: welcomeResponse.relatedTopics,
-        },
-      };
-      setMessages([welcomeMessage]);
-    }
+          const welcomeMessage: AIAssistantMessage = {
+            id: "welcome-msg",
+            threadId: "ai_assistant",
+            senderId: "ai_assistant",
+            content: welcomeResponse.message,
+            timestamp: new Date().toISOString(),
+            readBy: [],
+            messageType: "text",
+            aiContext: {
+              confidence: welcomeResponse.confidence,
+              sources: welcomeResponse.sources,
+              suggestedActions: welcomeResponse.suggestedActions,
+              followUpQuestions: welcomeResponse.followUpQuestions,
+              relatedTopics: welcomeResponse.relatedTopics,
+            },
+          };
+          setMessages([welcomeMessage]);
+        } catch (error) {
+          console.error("Error initializing welcome message:", error);
+          // Fallback to simple welcome message
+          const fallbackMessage: AIAssistantMessage = {
+            id: "welcome-msg",
+            threadId: "ai_assistant",
+            senderId: "ai_assistant",
+            content: `Hi ${user.name || "there"}! I'm Edith, your real-time AI assistant. Ask me about current time, crypto prices, weather, news, calculations, or SoftChat features!`,
+            timestamp: new Date().toISOString(),
+            readBy: [],
+            messageType: "text",
+            aiContext: {
+              confidence: 95,
+              sources: ["Real-time AI"],
+              suggestedActions: [],
+              followUpQuestions: [
+                "What's the current time?",
+                "Show me Bitcoin price",
+                "What's the weather like?",
+                "Tell me the latest news",
+              ],
+              relatedTopics: ["real-time data", "platform features"],
+            },
+          };
+          setMessages([fallbackMessage]);
+        }
+      }
+    };
+
+    initializeWelcome();
   }, [user]);
 
   // Auto-scroll to bottom when new messages arrive
