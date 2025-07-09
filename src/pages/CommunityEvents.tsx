@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,8 +12,23 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 import LiveCommunityEvents from "@/components/community/LiveCommunityEvents";
 import LiveEventRoom from "@/components/community/LiveEventRoom";
+import VirtualGiftsAndTips, {
+  QuickTipButton,
+} from "@/components/premium/VirtualGiftsAndTips";
 import {
   useCommunityEvents,
   useEventAnalytics,
@@ -43,6 +58,19 @@ import {
   Bookmark,
   Share2,
   Settings,
+  Video,
+  Mic,
+  Gift,
+  Crown,
+  Zap,
+  Globe,
+  Lock,
+  AlertCircle,
+  CheckCircle2,
+  Camera,
+  Heart,
+  Coffee,
+  Sparkles,
 } from "lucide-react";
 
 const CommunityEvents = () => {
@@ -50,6 +78,21 @@ const CommunityEvents = () => {
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showCreateEvent, setShowCreateEvent] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("recent");
+  const [newEventData, setNewEventData] = useState({
+    title: "",
+    description: "",
+    type: "workshop",
+    startTime: "",
+    duration: 60,
+    maxParticipants: 100,
+    isPrivate: false,
+    requiresPayment: false,
+    price: 0,
+    tags: "",
+  });
   const { events, loading, searchEvents, createEvent } = useCommunityEvents();
   const { user } = useAuth();
   const { analytics } = useEventAnalytics(undefined, user?.id);
@@ -135,7 +178,10 @@ const CommunityEvents = () => {
                     Analytics
                   </Button>
                 )}
-                <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                <Button
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                  onClick={() => setShowCreateEvent(true)}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Create Event
                 </Button>
@@ -304,6 +350,287 @@ const CommunityEvents = () => {
                       <List className="w-4 h-4" />
                     </Button>
                   </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Create Event Dialog */}
+          <Dialog open={showCreateEvent} onOpenChange={setShowCreateEvent}>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Plus className="h-5 w-5" />
+                  Create New Event
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="event-title">Event Title</Label>
+                    <Input
+                      id="event-title"
+                      value={newEventData.title}
+                      onChange={(e) =>
+                        setNewEventData({
+                          ...newEventData,
+                          title: e.target.value,
+                        })
+                      }
+                      placeholder="Enter event title..."
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="event-type">Event Type</Label>
+                    <Select
+                      value={newEventData.type}
+                      onValueChange={(value) =>
+                        setNewEventData({ ...newEventData, type: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="workshop">📚 Workshop</SelectItem>
+                        <SelectItem value="trading">
+                          📈 Trading Session
+                        </SelectItem>
+                        <SelectItem value="marketplace">
+                          🛒 Shopping Event
+                        </SelectItem>
+                        <SelectItem value="social">❤️ Social Meetup</SelectItem>
+                        <SelectItem value="challenge">🏆 Challenge</SelectItem>
+                        <SelectItem value="freelance">
+                          💼 Freelance Session
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="event-description">Description</Label>
+                  <Textarea
+                    id="event-description"
+                    value={newEventData.description}
+                    onChange={(e) =>
+                      setNewEventData({
+                        ...newEventData,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Describe your event..."
+                    rows={3}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <Label htmlFor="start-time">Start Time</Label>
+                    <Input
+                      id="start-time"
+                      type="datetime-local"
+                      value={newEventData.startTime}
+                      onChange={(e) =>
+                        setNewEventData({
+                          ...newEventData,
+                          startTime: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="duration">Duration (minutes)</Label>
+                    <Input
+                      id="duration"
+                      type="number"
+                      min="15"
+                      max="480"
+                      value={newEventData.duration}
+                      onChange={(e) =>
+                        setNewEventData({
+                          ...newEventData,
+                          duration: parseInt(e.target.value),
+                        })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="max-participants">Max Participants</Label>
+                    <Input
+                      id="max-participants"
+                      type="number"
+                      min="2"
+                      max="1000"
+                      value={newEventData.maxParticipants}
+                      onChange={(e) =>
+                        setNewEventData({
+                          ...newEventData,
+                          maxParticipants: parseInt(e.target.value),
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="private-event">Private Event</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Only invited users can join
+                      </p>
+                    </div>
+                    <Switch
+                      id="private-event"
+                      checked={newEventData.isPrivate}
+                      onCheckedChange={(checked) =>
+                        setNewEventData({ ...newEventData, isPrivate: checked })
+                      }
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="paid-event">Paid Event</Label>
+                      <p className="text-xs text-muted-foreground">
+                        Charge participants to join
+                      </p>
+                    </div>
+                    <Switch
+                      id="paid-event"
+                      checked={newEventData.requiresPayment}
+                      onCheckedChange={(checked) =>
+                        setNewEventData({
+                          ...newEventData,
+                          requiresPayment: checked,
+                        })
+                      }
+                    />
+                  </div>
+
+                  {newEventData.requiresPayment && (
+                    <div>
+                      <Label htmlFor="event-price">Price ($)</Label>
+                      <Input
+                        id="event-price"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={newEventData.price}
+                        onChange={(e) =>
+                          setNewEventData({
+                            ...newEventData,
+                            price: parseFloat(e.target.value),
+                          })
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="event-tags">Tags (comma-separated)</Label>
+                  <Input
+                    id="event-tags"
+                    value={newEventData.tags}
+                    onChange={(e) =>
+                      setNewEventData({ ...newEventData, tags: e.target.value })
+                    }
+                    placeholder="e.g., beginner, crypto, live-trading"
+                  />
+                </div>
+
+                <div className="flex gap-3">
+                  <Button
+                    className="flex-1"
+                    onClick={() => {
+                      // Handle create event
+                      toast({
+                        title: "Event created!",
+                        description:
+                          "Your event has been scheduled successfully.",
+                      });
+                      setShowCreateEvent(false);
+                    }}
+                  >
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Create Event
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCreateEvent(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+
+          {/* Advanced Filters */}
+          <Card className="mb-6">
+            <CardContent className="p-4">
+              <div className="flex flex-col md:flex-row gap-4 items-center">
+                <div className="flex-1">
+                  <Select
+                    value={selectedCategory}
+                    onValueChange={setSelectedCategory}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Categories</SelectItem>
+                      <SelectItem value="trading">📈 Trading</SelectItem>
+                      <SelectItem value="marketplace">🛒 Shopping</SelectItem>
+                      <SelectItem value="workshop">📚 Workshops</SelectItem>
+                      <SelectItem value="social">❤️ Social</SelectItem>
+                      <SelectItem value="challenge">🏆 Challenges</SelectItem>
+                      <SelectItem value="freelance">💼 Freelance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex-1">
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="recent">🕒 Most Recent</SelectItem>
+                      <SelectItem value="popular">🔥 Most Popular</SelectItem>
+                      <SelectItem value="upcoming">⏰ Starting Soon</SelectItem>
+                      <SelectItem value="participants">
+                        👥 Most Participants
+                      </SelectItem>
+                      <SelectItem value="price-low">
+                        💰 Price: Low to High
+                      </SelectItem>
+                      <SelectItem value="price-high">
+                        💰 Price: High to Low
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedCategory("all");
+                      setSortBy("recent");
+                      setSearchQuery("");
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
                 </div>
               </div>
             </CardContent>
