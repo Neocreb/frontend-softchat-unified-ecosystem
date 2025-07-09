@@ -11,7 +11,7 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { WalletProvider } from "./contexts/WalletContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-// import { I18nProvider } from "./contexts/I18nContext"; // Temporarily disabled
+import { I18nProvider } from "./contexts/I18nContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
@@ -349,32 +349,32 @@ const App = () => {
               </div>
             }
           >
-            {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
-            <AuthProvider>
-              <AdminProvider>
-                <AccessibilityProvider>
-                  <TooltipProvider>
-                    <AppRoutes />
+            <I18nProvider>
+              <AuthProvider>
+                <AdminProvider>
+                  <AccessibilityProvider>
+                    <TooltipProvider>
+                      <AppRoutes />
 
-                    {/* Global Components */}
-                    <OnboardingTour />
-                    <NotificationSystem />
-                    <AccessibilityControlPanel />
-                    <KeyboardNavigationHelper />
-                    <ReadingGuide />
-                    <ConnectionStatus />
-                    <PWAInstallPrompt />
-                    <MobileLayoutChecker />
-                    <PerformanceMonitor />
+                      {/* Global Components */}
+                      <OnboardingTour />
+                      <NotificationSystem />
+                      <AccessibilityControlPanel />
+                      <KeyboardNavigationHelper />
+                      <ReadingGuide />
+                      <ConnectionStatus />
+                      <PWAInstallPrompt />
+                      <MobileLayoutChecker />
+                      <PerformanceMonitor />
 
-                    {/* Toasters */}
-                    <Toaster />
-                    <Sonner />
-                  </TooltipProvider>
-                </AccessibilityProvider>
-              </AdminProvider>
-            </AuthProvider>
-            {/* </I18nProvider> Temporarily disabled */}
+                      {/* Toasters */}
+                      <Toaster />
+                      <Sonner />
+                    </TooltipProvider>
+                  </AccessibilityProvider>
+                </AdminProvider>
+              </AuthProvider>
+            </I18nProvider>
           </ErrorBoundary>
         </SafeThemeProvider>
       </QueryClientProvider>
