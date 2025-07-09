@@ -477,7 +477,10 @@ class VirtualGiftsService {
       if (error && error.code !== "PGRST116") throw error;
       return data;
     } catch (error) {
-      console.error("Error getting tip settings:", error);
+      console.error(
+        "Error getting tip settings:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
