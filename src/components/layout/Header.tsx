@@ -466,17 +466,22 @@ const Header = () => {
               to="/events"
               className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
+              aria-label="Navigate to Community Events"
             >
-              <Calendar className="h-5 w-5" />
+              <Calendar className="h-5 w-5" aria-hidden="true" />
               <span>Events</span>
             </Link>
             <Link
               to="/live-streaming"
               className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors text-red-600"
               onClick={() => setMobileMenuOpen(false)}
+              aria-label="Navigate to Live Streaming Studio"
             >
-              <Video className="h-5 w-5" />
+              <Video className="h-5 w-5" aria-hidden="true" />
               <span>Live Streaming</span>
+              <Badge className="ml-auto text-xs bg-red-100 text-red-600">
+                New
+              </Badge>
             </Link>
             <Link
               to="/premium"
