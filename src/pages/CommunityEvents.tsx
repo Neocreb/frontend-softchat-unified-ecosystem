@@ -166,6 +166,37 @@ const CommunityEvents = () => {
                 <p className="text-muted-foreground text-lg">
                   Join real-time collaborative experiences with the community
                 </p>
+
+                {/* Cross-Navigation Quick Links */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open("/videos", "_blank")}
+                    className="flex items-center gap-2"
+                  >
+                    <Video className="h-4 w-4" />
+                    Watch Videos
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open("/live-streaming", "_blank")}
+                    className="flex items-center gap-2 border-red-200 text-red-600 hover:bg-red-50"
+                  >
+                    <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    Start Live Stream
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => window.open("/premium", "_blank")}
+                    className="flex items-center gap-2 border-purple-200 text-purple-600 hover:bg-purple-50"
+                  >
+                    <Crown className="h-4 w-4" />
+                    Premium Events
+                  </Button>
+                </div>
               </div>
 
               <div className="flex items-center gap-3">
