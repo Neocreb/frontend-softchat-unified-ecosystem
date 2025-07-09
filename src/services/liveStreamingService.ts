@@ -827,6 +827,25 @@ class LiveStreamingService {
     console.log(`Broadcasting ICE candidate for stream ${streamId}`, candidate);
   }
 
+  // Additional methods for demo compatibility
+  async reactToStream(streamId: string, reaction: string): Promise<boolean> {
+    console.log(`Reacting to stream ${streamId} with ${reaction}`);
+    return true;
+  }
+
+  async startStreamDemo(streamData: any): Promise<LiveStream> {
+    console.log("Starting demo stream with data:", streamData);
+    const mockStream = this.getMockLiveStreams(1)[0];
+    return {
+      ...mockStream,
+      id: `stream-${Date.now()}`,
+      title: streamData.title || mockStream.title,
+      description: streamData.description || mockStream.description,
+      category: streamData.category || mockStream.category,
+      userId: streamData.streamerId || mockStream.userId,
+    };
+  }
+
   // Mock data for when database is not available
   private getMockLiveStreams(limit: number): LiveStream[] {
     const mockStreams: LiveStream[] = [
