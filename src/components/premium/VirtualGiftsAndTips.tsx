@@ -185,7 +185,10 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
         throw new Error("Failed to send tip");
       }
     } catch (error) {
-      console.error("Error sending tip:", error);
+      console.error(
+        "Error sending tip:",
+        error instanceof Error ? error.message : error,
+      );
       toast({
         title: "Failed to send tip",
         description: "Please try again or contact support.",
@@ -634,7 +637,10 @@ export const QuickTipButton: React.FC<{
         });
       }
     } catch (error) {
-      console.error("Error sending quick tip:", error);
+      console.error(
+        "Error sending quick tip:",
+        error instanceof Error ? error.message : error,
+      );
       toast({
         title: "Failed to send tip",
         description: "Please try again.",
