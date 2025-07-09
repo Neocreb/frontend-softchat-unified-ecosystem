@@ -18,7 +18,7 @@ export interface SubscribeRequest {
   billingType: "monthly" | "yearly";
 }
 
-export class PremiumService {
+class PremiumServiceClass {
   static async subscribe(
     data: SubscribeRequest,
   ): Promise<{ success: boolean; subscription: PremiumSubscription }> {
@@ -139,3 +139,7 @@ export class PremiumService {
     );
   }
 }
+
+// Export both class and instance
+export const PremiumService = PremiumServiceClass;
+export const premiumService = new PremiumServiceClass();

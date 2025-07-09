@@ -28,7 +28,7 @@ export interface SendMoneyRequest {
   description?: string;
 }
 
-export class WalletService {
+class WalletServiceClass {
   static async getWallet(): Promise<Wallet> {
     const response = await apiCall("/api/wallet");
     return response.wallet;
@@ -94,3 +94,7 @@ export class WalletService {
     }
   }
 }
+
+// Export both class and instance to support existing and new code
+export const WalletService = WalletServiceClass;
+export const walletService = new WalletServiceClass();
