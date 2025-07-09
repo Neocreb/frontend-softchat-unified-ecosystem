@@ -36,17 +36,30 @@ const AppLayout = () => {
       {/* Secondary Navigation for user pages (desktop only) */}
       <SecondaryNav />
 
-      {/* Facebook-style sidebar - Mobile and Desktop */}
-      <FacebookStyleSidebar
-        isOpen={isMobile ? mobileMenuOpen : true}
-        onClose={() => setMobileMenuOpen(false)}
-        isMobile={isMobile}
-      />
-
       {/* Main content area with sidebar for desktop */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Facebook-style sidebar - positioned for desktop, overlay for mobile */}
+        {!isMobile && (
+          <div className="fixed left-0 top-14 bottom-0 w-80 z-30">
+            <FacebookStyleSidebar
+              isOpen={true}
+              onClose={() => setMobileMenuOpen(false)}
+              isMobile={false}
+            />
+          </div>
+        )}
+
+        {/* Mobile sidebar */}
+        {isMobile && (
+          <FacebookStyleSidebar
+            isOpen={mobileMenuOpen}
+            onClose={() => setMobileMenuOpen(false)}
+            isMobile={true}
+          />
+        )}
+
         {/* Spacer for desktop sidebar */}
-        {!isMobile && <div className="w-80"></div>}
+        {!isMobile && <div className="w-80 flex-shrink-0"></div>}
 
         {/* Main content */}
         <main
