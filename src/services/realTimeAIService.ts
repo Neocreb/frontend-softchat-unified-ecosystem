@@ -313,8 +313,23 @@ export class RealTimeAIService {
         return this.handleCalculationQuery(normalizedQuery);
       }
 
-      // Fall back to contextual AI response
-      return this.generateContextualResponse(query, user, context);
+      // Handle SoftChat platform queries
+      if (this.isSoftChatQuery(normalizedQuery)) {
+        return this.handleSoftChatQuery(normalizedQuery, user);
+      }
+
+      // Handle personal/emotional queries
+      if (this.isPersonalQuery(normalizedQuery)) {
+        return this.handlePersonalQuery(normalizedQuery, user);
+      }
+
+      // Handle casual conversation
+      if (this.isCasualQuery(normalizedQuery)) {
+        return this.handleCasualQuery(normalizedQuery, user);
+      }
+
+      // Fall back to friendly contextual AI response
+      return this.generateFriendlyResponse(query, user, context);
     } catch (error) {
       console.error("Error generating real-time response:", error);
       return this.generateFallbackResponse(query, user);
