@@ -301,6 +301,21 @@ const AppRoutes = () => {
           />
           <Route path="settings" element={<EnhancedSettings />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
+
+          {/* Facebook-style navigation pages */}
+          <Route path="friends" element={<FriendsPage />} />
+          <Route path="groups" element={<GroupsPage />} />
+          <Route path="ads" element={<AdsPage />} />
+          <Route path="memories" element={<MemoriesPage />} />
+          <Route path="saved" element={<SavedPage />} />
+          <Route path="support" element={<SupportPage />} />
+          <Route path="pages" element={<PagesPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="terms" element={<TermsPage />} />
+          <Route path="advertising" element={<AdvertisingPage />} />
+          <Route path="ad-choices" element={<AdChoicesPage />} />
+          <Route path="cookies" element={<CookiesPage />} />
+          <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
