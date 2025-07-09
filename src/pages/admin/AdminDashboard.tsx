@@ -552,7 +552,7 @@ const AdminDashboard = () => {
                             </div>
                           </div>
                           <div className="flex gap-1">
-                            {admin.roles.slice(0, 2).map((role) => (
+                            {(admin.roles || []).slice(0, 2).map((role) => (
                               <Badge
                                 key={role}
                                 variant="secondary"
