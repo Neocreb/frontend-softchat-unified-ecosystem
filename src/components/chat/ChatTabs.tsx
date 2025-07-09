@@ -54,7 +54,7 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
         <TabsList
           className={cn(
             "flex w-full h-auto bg-muted/30 rounded-lg overflow-x-auto",
-            isMobile ? "p-0.5 gap-0.5" : "p-1 gap-1",
+            isMobile ? "p-0.5 gap-0.5 touch-pan-x" : "p-1 gap-1",
             "scrollbar-hide", // Hide scrollbar on mobile
           )}
         >
@@ -69,12 +69,13 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
                 key={tab.id}
                 value={tab.id}
                 className={cn(
-                  "flex items-center relative transition-all duration-200 touch-manipulation",
+                  "flex items-center relative transition-all duration-200 touch-optimized",
                   "data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-foreground",
-                  "hover:bg-background/60 rounded-md active:scale-95",
+                  "hover:bg-background/60 rounded-md",
+                  isMobile && "active:scale-95", // Only scale on mobile
                   // Mobile specific styling
                   isMobile && [
-                    "flex-col gap-1 py-2 px-1.5 text-xs min-w-[60px] max-w-[80px]",
+                    "flex-col gap-1 py-2.5 px-1.5 text-xs min-w-[64px] max-w-[80px] min-h-[52px]", // Increased min-height for better touch target
                     "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground",
                   ],
                   // Desktop specific styling
