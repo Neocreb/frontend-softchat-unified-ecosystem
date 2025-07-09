@@ -290,360 +290,380 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       {/* Main chat area */}
       <div className="flex-1 overflow-hidden">
         <div className="h-full grid grid-cols-1 lg:grid-cols-12 gap-0">
-        {/* Conversations List - Hide on mobile when chat is selected */}
-        <div
-          className={cn(
-            "lg:col-span-4 xl:col-span-3 border-r bg-background/50",
-            selectedChat && "hidden lg:flex"
-          )}
-        >
-          <Card className="w-full border-0 shadow-none bg-transparent">
-          <CardHeader className="pb-3">
-            <div className="flex justify-between items-center mb-2">
-              <CardTitle className="flex items-center gap-2">
-                {getTypeIcon(activeTab)}
-                {activeTab === "ai_assistant"
-                  ? "AI Assistant"
-                  : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}{" "}
-                Chat
-              </CardTitle>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                    <span className="sr-only">Open menu</span>
-                    <PlusCircle className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>New Chat</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Start Social Chat</DropdownMenuItem>
-                  <DropdownMenuItem>Find Freelancer</DropdownMenuItem>
-                  <DropdownMenuItem>Message Seller</DropdownMenuItem>
-                  <DropdownMenuItem>P2P Trade Chat</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            {/* Search and Filter */}
-            {activeTab !== "ai_assistant" && (
-              <>
-                <div className="relative">
-                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search conversations..."
-                    className="pl-8"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <div className="flex justify-between items-center mt-2">
-                  <Button
-                    variant={showUnreadOnly ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setShowUnreadOnly(!showUnreadOnly)}
-                  >
-                    <Filter className="h-3 w-3 mr-1" />
-                    {showUnreadOnly ? "All" : "Unread"}
-                  </Button>
-                  <span className="text-xs text-muted-foreground">
-                    {filteredConversations.length} conversation
-                    {filteredConversations.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-              </>
+          {/* Conversations List - Hide on mobile when chat is selected */}
+          <div
+            className={cn(
+              "lg:col-span-4 xl:col-span-3 border-r bg-background/50",
+              selectedChat && "hidden lg:flex",
             )}
-          </CardHeader>
-
-          {activeTab === "ai_assistant" ? (
-            <CardContent className="p-0">
-              <div className="p-4 text-center">
-                <AIAssistantChat isMinimized />
-                <p className="text-sm text-muted-foreground mt-2">
-                  AI Assistant is always available in the main chat area
-                </p>
-              </div>
-            </CardContent>
-          ) : (
-            <CardContent className="p-0">
-              <ScrollArea className="h-[calc(100vh-280px)]">
-                {loading ? (
-                  <div className="p-4 text-center">
-                    <div className="animate-pulse space-y-3">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className="flex items-center gap-3 p-3">
-                          <div className="w-10 h-10 bg-muted rounded-full" />
-                          <div className="flex-1 space-y-2">
-                            <div className="h-4 bg-muted rounded w-3/4" />
-                            <div className="h-3 bg-muted rounded w-1/2" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : filteredConversations.length > 0 ? (
-                  filteredConversations.map((conv) => (
-                    <div
-                      key={conv.id}
-                      className={cn(
-                        "flex items-start gap-3 p-3 cursor-pointer transition-colors",
-                        selectedChat?.id === conv.id
-                          ? "bg-muted"
-                          : "hover:bg-muted/50",
-                      )}
-                      onClick={() => handleChatSelect(conv)}
-                    >
-                      <Avatar>
-                        <AvatarImage src={conv.participant_profile?.avatar} />
-                        <AvatarFallback>
-                          {conv.participant_profile?.name?.charAt(0) || "?"}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-start mb-1">
-                          <div className="flex items-center gap-1">
-                            {getTypeIcon(conv.type)}
-                            <h4 className="text-sm font-medium truncate">
-                              {conv.participant_profile?.name}
-                            </h4>
-                          </div>
-                          <p className="text-xs text-muted-foreground">
-                            {formatMessageDate(conv.lastMessageAt)}
-                          </p>
-                        </div>
-
-                        {/* Context info */}
-                        {getContextInfo(conv) && (
-                          <p className="text-xs text-purple-600 mb-1">
-                            {getContextInfo(conv)}
-                          </p>
-                        )}
-
-                        <p className="text-sm text-muted-foreground truncate">
-                          {conv.lastMessage || "No messages yet"}
-                        </p>
-                      </div>
-
-                      {(conv.unreadCount || 0) > 0 && (
-                        <Badge variant="destructive" className="ml-1">
-                          {conv.unreadCount}
-                        </Badge>
-                      )}
-                    </div>
-                  ))
-                ) : (
-                  <div className="p-4 text-center text-muted-foreground">
-                    {searchQuery
-                      ? "No conversations found"
-                      : `No ${activeTab} conversations yet`}
-                  </div>
-                )}
-              </ScrollArea>
-            </CardContent>
-          )}
-          </Card>
-        </div>
-
-        {/* Chat Area - Show back button on mobile */}
-        <div
-          className={cn(
-            "lg:col-span-8 xl:col-span-9 bg-background",
-            !selectedChat && activeTab !== "ai_assistant" && "hidden lg:flex"
-          )}
-        >
-          <Card className="w-full border-0 shadow-none h-full">
-          <Tabs value={activeTab} className="h-full">
-            <TabsContent value="ai_assistant" className="h-full mt-0">
-              <div className="flex flex-col h-[600px]">
-                {/* Mobile back button for AI Assistant */}
-                <div className="lg:hidden border-b p-3">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedChat(null)}
-                    className="flex items-center gap-2"
-                  >
-                    <MessageSquare className="h-4 w-4" />
-                    Back to chats
-                  </Button>
+          >
+            <Card className="w-full border-0 shadow-none bg-transparent">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-center mb-2">
+                  <CardTitle className="flex items-center gap-2">
+                    {getTypeIcon(activeTab)}
+                    {activeTab === "ai_assistant"
+                      ? "AI Assistant"
+                      : activeTab.charAt(0).toUpperCase() +
+                        activeTab.slice(1)}{" "}
+                    Chat
+                  </CardTitle>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <PlusCircle className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>New Chat</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Start Social Chat</DropdownMenuItem>
+                      <DropdownMenuItem>Find Freelancer</DropdownMenuItem>
+                      <DropdownMenuItem>Message Seller</DropdownMenuItem>
+                      <DropdownMenuItem>P2P Trade Chat</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-                <div className="flex-1">
-                  <AIAssistantChat />
-                </div>
-              </div>
-            </TabsContent>
 
-            {/* Other chat types */}
-            {["social", "freelance", "marketplace", "p2p"].map((chatType) => (
-              <TabsContent
-                key={chatType}
-                value={chatType}
-                className="h-full mt-0"
-              >
-                {selectedChat ? (
+                {/* Search and Filter */}
+                {activeTab !== "ai_assistant" && (
                   <>
-                    <CardHeader className="pb-3">
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                          {/* Mobile back button */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setSelectedChat(null)}
-                            className="lg:hidden"
-                          >
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
-                          <Avatar>
-                            <AvatarImage
-                              src={selectedChat.participant_profile?.avatar}
-                            />
-                            <AvatarFallback>
-                              {selectedChat.participant_profile?.name?.charAt(
-                                0,
-                              ) || "?"}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              {getTypeIcon(selectedChat.type)}
-                              <CardTitle className="text-base">
-                                {selectedChat.participant_profile?.name}
-                              </CardTitle>
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                              {selectedChat.participant_profile?.is_online
-                                ? "Online"
-                                : "Offline"}
-                            </p>
-                            {getContextInfo(selectedChat) && (
-                              <p className="text-xs text-purple-600">
-                                {getContextInfo(selectedChat)}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="icon">
-                            <Phone className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon">
-                            <Video className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="p-0">
-                      <ScrollArea className="h-[calc(100vh-320px)] px-4">
-                        <div className="flex flex-col gap-4 py-4">
-                          {messages[selectedChat.id] &&
-                          messages[selectedChat.id].length > 0 ? (
-                            messages[selectedChat.id].map((msg) => (
-                              <div
-                                key={msg.id}
-                                className={cn(
-                                  "flex",
-                                  msg.senderId === user.id
-                                    ? "justify-end"
-                                    : "justify-start",
-                                )}
-                              >
-                                <div
-                                  className={cn(
-                                    "flex items-start gap-2 max-w-[80%]",
-                                    msg.senderId === user.id
-                                      ? "flex-row-reverse"
-                                      : "",
-                                  )}
-                                >
-                                  {msg.senderId !== user.id && (
-                                    <Avatar className="h-8 w-8">
-                                      <AvatarImage src={msg.sender?.avatar} />
-                                      <AvatarFallback>
-                                        {msg.sender?.name?.charAt(0) || "?"}
-                                      </AvatarFallback>
-                                    </Avatar>
-                                  )}
-                                  <div>
-                                    <div
-                                      className={cn(
-                                        "rounded-lg p-3",
-                                        msg.senderId === user.id
-                                          ? "bg-primary text-primary-foreground"
-                                          : "bg-muted",
-                                      )}
-                                    >
-                                      <p className="text-sm">{msg.content}</p>
-                                    </div>
-                                    <div className="flex items-center justify-end mt-1 gap-1">
-                                      <p className="text-xs text-muted-foreground">
-                                        {formatMessageDate(msg.timestamp)}
-                                      </p>
-                                      {msg.senderId === user.id && (
-                                        <CheckCheck
-                                          className={cn(
-                                            "h-3 w-3",
-                                            msg.readBy.length > 1
-                                              ? "text-blue-500"
-                                              : "text-muted-foreground",
-                                          )}
-                                        />
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-center p-4 text-muted-foreground">
-                              No messages yet. Start the conversation!
-                            </div>
-                          )}
-                        </div>
-                      </ScrollArea>
-                    </CardContent>
-
-                    <div className="p-3 border-t">
-                      <form
-                        onSubmit={handleSendMessage}
-                        className="flex w-full gap-2"
+                    <div className="relative">
+                      <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search conversations..."
+                        className="pl-8"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex justify-between items-center mt-2">
+                      <Button
+                        variant={showUnreadOnly ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setShowUnreadOnly(!showUnreadOnly)}
                       >
-                        <Input
-                          placeholder="Type a message..."
-                          value={messageInput}
-                          onChange={(e) => setMessageInput(e.target.value)}
-                          className="flex-1"
-                        />
-                        <Button type="submit" size="sm">
-                          <Send className="h-4 w-4 mr-1" />
-                          Send
-                        </Button>
-                      </form>
+                        <Filter className="h-3 w-3 mr-1" />
+                        {showUnreadOnly ? "All" : "Unread"}
+                      </Button>
+                      <span className="text-xs text-muted-foreground">
+                        {filteredConversations.length} conversation
+                        {filteredConversations.length !== 1 ? "s" : ""}
+                      </span>
                     </div>
                   </>
-                ) : (
-                  <div className="h-[600px] flex flex-col items-center justify-center p-4">
-                    <div className="text-center space-y-2">
-                      <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
-                        {getTypeIcon(activeTab as UnifiedChatType)}
+                )}
+              </CardHeader>
+
+              {activeTab === "ai_assistant" ? (
+                <CardContent className="p-0">
+                  <div className="p-4 text-center">
+                    <AIAssistantChat isMinimized />
+                    <p className="text-sm text-muted-foreground mt-2">
+                      AI Assistant is always available in the main chat area
+                    </p>
+                  </div>
+                </CardContent>
+              ) : (
+                <CardContent className="p-0">
+                  <ScrollArea className="h-[calc(100vh-280px)]">
+                    {loading ? (
+                      <div className="p-4 text-center">
+                        <div className="animate-pulse space-y-3">
+                          {[...Array(3)].map((_, i) => (
+                            <div
+                              key={i}
+                              className="flex items-center gap-3 p-3"
+                            >
+                              <div className="w-10 h-10 bg-muted rounded-full" />
+                              <div className="flex-1 space-y-2">
+                                <div className="h-4 bg-muted rounded w-3/4" />
+                                <div className="h-3 bg-muted rounded w-1/2" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <h3 className="text-lg font-medium">
-                        Select a {activeTab} conversation
-                      </h3>
-                      <p className="text-muted-foreground">
-                        Choose a conversation from the list or start a new one
-                      </p>
+                    ) : filteredConversations.length > 0 ? (
+                      filteredConversations.map((conv) => (
+                        <div
+                          key={conv.id}
+                          className={cn(
+                            "flex items-start gap-3 p-3 cursor-pointer transition-colors",
+                            selectedChat?.id === conv.id
+                              ? "bg-muted"
+                              : "hover:bg-muted/50",
+                          )}
+                          onClick={() => handleChatSelect(conv)}
+                        >
+                          <Avatar>
+                            <AvatarImage
+                              src={conv.participant_profile?.avatar}
+                            />
+                            <AvatarFallback>
+                              {conv.participant_profile?.name?.charAt(0) || "?"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start mb-1">
+                              <div className="flex items-center gap-1">
+                                {getTypeIcon(conv.type)}
+                                <h4 className="text-sm font-medium truncate">
+                                  {conv.participant_profile?.name}
+                                </h4>
+                              </div>
+                              <p className="text-xs text-muted-foreground">
+                                {formatMessageDate(conv.lastMessageAt)}
+                              </p>
+                            </div>
+
+                            {/* Context info */}
+                            {getContextInfo(conv) && (
+                              <p className="text-xs text-purple-600 mb-1">
+                                {getContextInfo(conv)}
+                              </p>
+                            )}
+
+                            <p className="text-sm text-muted-foreground truncate">
+                              {conv.lastMessage || "No messages yet"}
+                            </p>
+                          </div>
+
+                          {(conv.unreadCount || 0) > 0 && (
+                            <Badge variant="destructive" className="ml-1">
+                              {conv.unreadCount}
+                            </Badge>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-4 text-center text-muted-foreground">
+                        {searchQuery
+                          ? "No conversations found"
+                          : `No ${activeTab} conversations yet`}
+                      </div>
+                    )}
+                  </ScrollArea>
+                </CardContent>
+              )}
+            </Card>
+          </div>
+
+          {/* Chat Area - Show back button on mobile */}
+          <div
+            className={cn(
+              "lg:col-span-8 xl:col-span-9 bg-background",
+              !selectedChat && activeTab !== "ai_assistant" && "hidden lg:flex",
+            )}
+          >
+            <Card className="w-full border-0 shadow-none h-full">
+              <Tabs value={activeTab} className="h-full">
+                <TabsContent value="ai_assistant" className="h-full mt-0">
+                  <div className="flex flex-col h-[600px]">
+                    {/* Mobile back button for AI Assistant */}
+                    <div className="lg:hidden border-b p-3">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedChat(null)}
+                        className="flex items-center gap-2"
+                      >
+                        <MessageSquare className="h-4 w-4" />
+                        Back to chats
+                      </Button>
+                    </div>
+                    <div className="flex-1">
+                      <AIAssistantChat />
                     </div>
                   </div>
+                </TabsContent>
+
+                {/* Other chat types */}
+                {["social", "freelance", "marketplace", "p2p"].map(
+                  (chatType) => (
+                    <TabsContent
+                      key={chatType}
+                      value={chatType}
+                      className="h-full mt-0"
+                    >
+                      {selectedChat ? (
+                        <>
+                          <CardHeader className="pb-3">
+                            <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-3">
+                                {/* Mobile back button */}
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setSelectedChat(null)}
+                                  className="lg:hidden"
+                                >
+                                  <MessageSquare className="h-4 w-4" />
+                                </Button>
+                                <Avatar>
+                                  <AvatarImage
+                                    src={
+                                      selectedChat.participant_profile?.avatar
+                                    }
+                                  />
+                                  <AvatarFallback>
+                                    {selectedChat.participant_profile?.name?.charAt(
+                                      0,
+                                    ) || "?"}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <div>
+                                  <div className="flex items-center gap-2">
+                                    {getTypeIcon(selectedChat.type)}
+                                    <CardTitle className="text-base">
+                                      {selectedChat.participant_profile?.name}
+                                    </CardTitle>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground">
+                                    {selectedChat.participant_profile?.is_online
+                                      ? "Online"
+                                      : "Offline"}
+                                  </p>
+                                  {getContextInfo(selectedChat) && (
+                                    <p className="text-xs text-purple-600">
+                                      {getContextInfo(selectedChat)}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button variant="ghost" size="icon">
+                                  <Phone className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon">
+                                  <Video className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </CardHeader>
+
+                          <CardContent className="p-0">
+                            <ScrollArea className="h-[calc(100vh-320px)] px-4">
+                              <div className="flex flex-col gap-4 py-4">
+                                {messages[selectedChat.id] &&
+                                messages[selectedChat.id].length > 0 ? (
+                                  messages[selectedChat.id].map((msg) => (
+                                    <div
+                                      key={msg.id}
+                                      className={cn(
+                                        "flex",
+                                        msg.senderId === user.id
+                                          ? "justify-end"
+                                          : "justify-start",
+                                      )}
+                                    >
+                                      <div
+                                        className={cn(
+                                          "flex items-start gap-2 max-w-[80%]",
+                                          msg.senderId === user.id
+                                            ? "flex-row-reverse"
+                                            : "",
+                                        )}
+                                      >
+                                        {msg.senderId !== user.id && (
+                                          <Avatar className="h-8 w-8">
+                                            <AvatarImage
+                                              src={msg.sender?.avatar}
+                                            />
+                                            <AvatarFallback>
+                                              {msg.sender?.name?.charAt(0) ||
+                                                "?"}
+                                            </AvatarFallback>
+                                          </Avatar>
+                                        )}
+                                        <div>
+                                          <div
+                                            className={cn(
+                                              "rounded-lg p-3",
+                                              msg.senderId === user.id
+                                                ? "bg-primary text-primary-foreground"
+                                                : "bg-muted",
+                                            )}
+                                          >
+                                            <p className="text-sm">
+                                              {msg.content}
+                                            </p>
+                                          </div>
+                                          <div className="flex items-center justify-end mt-1 gap-1">
+                                            <p className="text-xs text-muted-foreground">
+                                              {formatMessageDate(msg.timestamp)}
+                                            </p>
+                                            {msg.senderId === user.id && (
+                                              <CheckCheck
+                                                className={cn(
+                                                  "h-3 w-3",
+                                                  msg.readBy.length > 1
+                                                    ? "text-blue-500"
+                                                    : "text-muted-foreground",
+                                                )}
+                                              />
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <div className="text-center p-4 text-muted-foreground">
+                                    No messages yet. Start the conversation!
+                                  </div>
+                                )}
+                              </div>
+                            </ScrollArea>
+                          </CardContent>
+
+                          <div className="p-3 border-t">
+                            <form
+                              onSubmit={handleSendMessage}
+                              className="flex w-full gap-2"
+                            >
+                              <Input
+                                placeholder="Type a message..."
+                                value={messageInput}
+                                onChange={(e) =>
+                                  setMessageInput(e.target.value)
+                                }
+                                className="flex-1"
+                              />
+                              <Button type="submit" size="sm">
+                                <Send className="h-4 w-4 mr-1" />
+                                Send
+                              </Button>
+                            </form>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="h-[600px] flex flex-col items-center justify-center p-4">
+                          <div className="text-center space-y-2">
+                            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+                              {getTypeIcon(activeTab as UnifiedChatType)}
+                            </div>
+                            <h3 className="text-lg font-medium">
+                              Select a {activeTab} conversation
+                            </h3>
+                            <p className="text-muted-foreground">
+                              Choose a conversation from the list or start a new
+                              one
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </TabsContent>
+                  ),
                 )}
-              </TabsContent>
-            ))}
-          </Tabs>
-        </Card>
+              </Tabs>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
