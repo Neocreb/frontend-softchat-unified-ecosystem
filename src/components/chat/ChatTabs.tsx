@@ -60,15 +60,16 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
                 key={tab.id}
                 value={tab.id}
                 className={cn(
-                  "flex flex-col items-center gap-1 py-2 px-2 text-xs relative transition-all duration-200",
-                  "data-[state=active]:bg-background data-[state=active]:shadow-sm",
+                  "flex items-center gap-2 py-2.5 px-4 text-sm relative transition-all duration-200 min-w-0 flex-1 lg:flex-none",
+                  "data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-foreground",
+                  "hover:bg-background/60 rounded-md",
                   isActive &&
                     tab.color &&
                     colorMap[tab.color as keyof typeof colorMap],
                   hasUnread && !isActive && "font-medium",
                 )}
               >
-                <div className="relative">
+                <div className="relative shrink-0">
                   <IconComponent
                     className={cn(
                       "h-4 w-4 transition-colors",
@@ -78,19 +79,31 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
                   {hasUnread && (
                     <Badge
                       variant="destructive"
-                      className="absolute -top-2 -right-2 h-4 w-4 p-0 text-xs flex items-center justify-center min-w-[16px]"
+                      className="absolute -top-1 -right-1 h-3 w-3 p-0 text-xs flex items-center justify-center min-w-[12px] text-[10px]"
                     >
-                      {tab.count! > 99 ? "99+" : tab.count}
+                      {tab.count! > 9 ? "9+" : tab.count}
                     </Badge>
                   )}
                 </div>
                 <span
                   className={cn(
-                    "truncate max-w-full transition-colors",
-                    isActive ? "text-current" : "text-muted-foreground",
+                    "truncate transition-colors hidden lg:block",
+                    isActive
+                      ? "text-current font-medium"
+                      : "text-muted-foreground",
                   )}
                 >
                   {tab.label}
+                </span>
+                <span
+                  className={cn(
+                    "lg:hidden block text-xs truncate",
+                    isActive
+                      ? "text-current font-medium"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {tab.label.split(" ")[0]}
                 </span>
 
                 {/* AI Assistant special indicator */}
