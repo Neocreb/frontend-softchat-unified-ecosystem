@@ -460,7 +460,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
                       ></div>
                     </div>
                     <span className="text-xs text-purple-600 ml-2">
-                      {AI_ASSISTANT_CONFIG.name} is thinking...
+                      {AI_ASSISTANT_CONFIG.name} is fetching real-time data...
                     </span>
                   </div>
                 </div>
