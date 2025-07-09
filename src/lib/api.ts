@@ -156,7 +156,11 @@ export const apiClient = new ApiClient();
 
 // Helper function for simple API calls
 export async function apiCall(endpoint: string, options: RequestInit = {}) {
-  const url = endpoint.startsWith("/") ? `/api${endpoint}` : `/api/${endpoint}`;
+  const url = endpoint.startsWith("/api")
+    ? endpoint
+    : endpoint.startsWith("/")
+      ? `/api${endpoint}`
+      : `/api/${endpoint}`;
   const config: RequestInit = {
     headers: {
       "Content-Type": "application/json",
