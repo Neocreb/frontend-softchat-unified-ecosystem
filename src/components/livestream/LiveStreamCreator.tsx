@@ -44,6 +44,9 @@ import {
   Zap,
   AlertCircle,
   CheckCircle,
+  Calendar,
+  Crown,
+  BarChart3,
 } from "lucide-react";
 import {
   LiveStream,
