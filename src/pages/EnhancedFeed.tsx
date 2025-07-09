@@ -1127,6 +1127,7 @@ const PostCard = ({
 
 // Main Feed Component
 export default function EnhancedFeed() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState(initialMockPosts);
   const [stories, setStories] = useState(initialMockStories);
   const [isLoading, setIsLoading] = useState(false);
