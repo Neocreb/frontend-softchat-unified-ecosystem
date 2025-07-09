@@ -247,7 +247,10 @@ class SubscriptionService {
 
       return data;
     } catch (error) {
-      console.error("Error subscribing to tier:", error);
+      console.error(
+        "Error subscribing to tier:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
@@ -266,7 +269,10 @@ class SubscriptionService {
 
       return !error;
     } catch (error) {
-      console.error("Error cancelling subscription:", error);
+      console.error(
+        "Error cancelling subscription:",
+        error instanceof Error ? error.message : error,
+      );
       return false;
     }
   }
@@ -317,7 +323,10 @@ class SubscriptionService {
 
       return !error;
     } catch (error) {
-      console.error("Error updating usage:", error);
+      console.error(
+        "Error updating usage:",
+        error instanceof Error ? error.message : error,
+      );
       return false;
     }
   }
@@ -392,7 +401,10 @@ class SubscriptionService {
           return { allowed: false };
       }
     } catch (error) {
-      console.error("Error checking action permission:", error);
+      console.error(
+        "Error checking action permission:",
+        error instanceof Error ? error.message : error,
+      );
       return { allowed: false };
     }
   }
@@ -415,7 +427,10 @@ class SubscriptionService {
         last_updated: new Date().toISOString(),
       });
     } catch (error) {
-      console.error("Error initializing usage tracking:", error);
+      console.error(
+        "Error initializing usage tracking:",
+        error instanceof Error ? error.message : error,
+      );
     }
   }
 
@@ -475,7 +490,10 @@ class SubscriptionService {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error("Error recording subscription payment:", error);
+      console.error(
+        "Error recording subscription payment:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
@@ -528,7 +546,10 @@ class SubscriptionService {
         recent: earnings.slice(0, 10),
       };
     } catch (error) {
-      console.error("Error getting creator earnings:", error);
+      console.error(
+        "Error getting creator earnings:",
+        error instanceof Error ? error.message : error,
+      );
       return { total: 0, byType: {}, recent: [] };
     }
   }
