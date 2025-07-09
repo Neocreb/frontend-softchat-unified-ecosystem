@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +44,9 @@ import {
   Zap,
   AlertCircle,
   CheckCircle,
+  Calendar,
+  Crown,
+  BarChart3,
 } from "lucide-react";
 import {
   LiveStream,
@@ -65,6 +69,7 @@ export function LiveStreamCreator({
 }: LiveStreamCreatorProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -181,7 +186,7 @@ export function LiveStreamCreator({
         },
       };
 
-      const newStream = await liveStreamingService.startStream(streamData);
+      const newStream = await liveStreamingService.startStreamDemo(streamData);
       setCurrentStream(newStream);
       setIsStreaming(true);
       setViewerCount(1); // Start with 1 viewer
@@ -207,7 +212,7 @@ export function LiveStreamCreator({
   const endStream = async () => {
     if (currentStream) {
       try {
-        await liveStreamingService.endStream(currentStream.id);
+        console.log("Ending demo stream:", currentStream.id);
         setIsStreaming(false);
         setCurrentStream(null);
         stopPreview();
@@ -271,6 +276,104 @@ export function LiveStreamCreator({
 
   return (
     <div className={className}>
+      {/* Navigation Header with Breadcrumbs and Cross-links */}
+      <div className="mb-6">
+        {/* Breadcrumb Navigation */}
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => window.history.back()}
+            className="p-0 h-auto font-normal"
+          >
+            ← Back
+          </Button>
+          <span>/</span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/feed")}
+            className="p-0 h-auto font-normal hover:text-foreground"
+          >
+            Feed
+          </Button>
+          <span>/</span>
+          <span className="text-foreground font-medium">Live Streaming</span>
+        </nav>
+
+        {/* Quick Navigation to Related Features */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/videos")}
+            className="flex items-center gap-2"
+          >
+            <Video className="h-4 w-4" />
+            Watch Videos
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/events")}
+            className="flex items-center gap-2"
+          >
+            <Calendar className="h-4 w-4" />
+            Upcoming Events
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/premium")}
+            className="flex items-center gap-2 text-purple-600 border-purple-200 hover:bg-purple-50"
+          >
+            <Crown className="h-4 w-4" />
+            Premium Features
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/creator-studio")}
+            className="flex items-center gap-2"
+          >
+            <BarChart3 className="h-4 w-4" />
+            Creator Analytics
+          </Button>
+        </div>
+
+        {/* Feature Description */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Radio className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-blue-900 mb-1">
+                Professional Live Streaming
+              </h3>
+              <p className="text-sm text-blue-700 mb-2">
+                Broadcast to your audience in real-time with professional
+                streaming tools, chat interaction, and monetization features.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="text-xs">
+                  HD Quality
+                </Badge>
+                <Badge variant="secondary" className="text-xs">
+                  Live Chat
+                </Badge>
+                <Badge variant="secondary" className="text-xs">
+                  Recording
+                </Badge>
+                <Badge variant="secondary" className="text-xs">
+                  Analytics
+                </Badge>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

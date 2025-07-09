@@ -11,7 +11,7 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { WalletProvider } from "./contexts/WalletContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-// import { I18nProvider } from "./contexts/I18nContext"; // Temporarily disabled
+import { I18nProvider } from "./contexts/I18nContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
@@ -89,6 +89,25 @@ import AIPersonalAssistantDashboard from "./components/ai/AIPersonalAssistant";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import CommunityEvents from "./pages/CommunityEvents";
+import SubscriptionManager from "./components/premium/SubscriptionManager";
+import VirtualGiftsAndTips from "./components/premium/VirtualGiftsAndTips";
+import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
+import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
+import {
+  FriendsPage,
+  GroupsPage,
+  AdsPage,
+  MemoriesPage,
+  SavedPage,
+  SupportPage,
+  PagesPage,
+  PrivacyPage,
+  TermsPage,
+  AdvertisingPage,
+  AdChoicesPage,
+  CookiesPage,
+  HelpPage,
+} from "./pages/PlaceholderPages";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -206,12 +225,12 @@ const AppRoutes = () => {
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
           <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="messages/:threadId" element={<ChatRoom />} />
-          <Route path="chat" element={<Navigate to="/messages" replace />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="chat/:threadId" element={<ChatRoom />} />
+          <Route path="messages" element={<Navigate to="/chat" replace />} />
           <Route
-            path="chat/:threadId"
-            element={<Navigate to="/messages/:threadId" replace />}
+            path="messages/:threadId"
+            element={<Navigate to="/chat/:threadId" replace />}
           />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
@@ -244,11 +263,58 @@ const AppRoutes = () => {
           <Route path="videos" element={<EnhancedVideosV2 />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
-          <Route path="chat" element={<Navigate to="/messages" replace />} />
           <Route path="explore" element={<Explore />} />
           <Route path="events" element={<CommunityEvents />} />
+          <Route
+            path="premium"
+            element={
+              <div className="container mx-auto px-4 py-6">
+                <div className="max-w-4xl mx-auto">
+                  <SubscriptionManager />
+                  <div className="mt-8">
+                    <VirtualGiftsAndTips />
+                  </div>
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path="kyc"
+            element={
+              <div className="container mx-auto px-4 py-6">
+                <div className="max-w-4xl mx-auto">
+                  <EnhancedKYCVerification />
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path="live-streaming"
+            element={
+              <div className="container mx-auto px-4 py-6">
+                <div className="max-w-6xl mx-auto">
+                  <LiveStreamCreator />
+                </div>
+              </div>
+            }
+          />
           <Route path="settings" element={<EnhancedSettings />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
+
+          {/* Facebook-style navigation pages */}
+          <Route path="friends" element={<FriendsPage />} />
+          <Route path="groups" element={<GroupsPage />} />
+          <Route path="ads" element={<AdsPage />} />
+          <Route path="memories" element={<MemoriesPage />} />
+          <Route path="saved" element={<SavedPage />} />
+          <Route path="support" element={<SupportPage />} />
+          <Route path="pages" element={<PagesPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="terms" element={<TermsPage />} />
+          <Route path="advertising" element={<AdvertisingPage />} />
+          <Route path="ad-choices" element={<AdChoicesPage />} />
+          <Route path="cookies" element={<CookiesPage />} />
+          <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
@@ -349,32 +415,32 @@ const App = () => {
               </div>
             }
           >
-            {/* <I18nProvider> Temporarily disabled to fix React hooks error */}
-            <AuthProvider>
-              <AdminProvider>
-                <AccessibilityProvider>
-                  <TooltipProvider>
-                    <AppRoutes />
+            <I18nProvider>
+              <AuthProvider>
+                <AdminProvider>
+                  <AccessibilityProvider>
+                    <TooltipProvider>
+                      <AppRoutes />
 
-                    {/* Global Components */}
-                    <OnboardingTour />
-                    <NotificationSystem />
-                    <AccessibilityControlPanel />
-                    <KeyboardNavigationHelper />
-                    <ReadingGuide />
-                    <ConnectionStatus />
-                    <PWAInstallPrompt />
-                    <MobileLayoutChecker />
-                    <PerformanceMonitor />
+                      {/* Global Components */}
+                      <OnboardingTour />
+                      <NotificationSystem />
+                      <AccessibilityControlPanel />
+                      <KeyboardNavigationHelper />
+                      <ReadingGuide />
+                      <ConnectionStatus />
+                      <PWAInstallPrompt />
+                      <MobileLayoutChecker />
+                      <PerformanceMonitor />
 
-                    {/* Toasters */}
-                    <Toaster />
-                    <Sonner />
-                  </TooltipProvider>
-                </AccessibilityProvider>
-              </AdminProvider>
-            </AuthProvider>
-            {/* </I18nProvider> Temporarily disabled */}
+                      {/* Toasters */}
+                      <Toaster />
+                      <Sonner />
+                    </TooltipProvider>
+                  </AccessibilityProvider>
+                </AdminProvider>
+              </AuthProvider>
+            </I18nProvider>
           </ErrorBoundary>
         </SafeThemeProvider>
       </QueryClientProvider>

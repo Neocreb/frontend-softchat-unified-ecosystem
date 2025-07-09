@@ -351,7 +351,9 @@ export function LiveStreamPlayer({
             <div className="flex items-center gap-3">
               <Avatar className="w-10 h-10 border-2 border-white">
                 <AvatarImage src={stream.streamerAvatar} />
-                <AvatarFallback>{stream.streamerName.charAt(0)}</AvatarFallback>
+                <AvatarFallback>
+                  {stream.streamerName?.charAt(0) || "S"}
+                </AvatarFallback>
               </Avatar>
               <div>
                 <h4 className="text-white font-semibold text-sm">
@@ -419,7 +421,7 @@ export function LiveStreamPlayer({
                     <Avatar className="w-6 h-6 flex-shrink-0">
                       <AvatarImage src={message.userAvatar} />
                       <AvatarFallback className="text-xs">
-                        {message.username.charAt(0)}
+                        {message.username?.charAt(0) || "U"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">

@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Sheet,
   SheetContent,
@@ -56,8 +60,23 @@ import {
   WifiOff,
   Battery,
   Signal,
+  Gauge,
+  Monitor,
+  Settings,
+  Eye,
+  EyeOff,
+  Smartphone,
+  AlertTriangle,
+  CheckCircle,
+  TrendingUp,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  networkOptimizer,
+  memoryManager,
+  performanceMonitor,
+  shouldReduceAnimations,
+} from "@/utils/mobilePerformance";
 
 // Hook for detecting mobile device and capabilities
 export const useMobileDetection = () => {
@@ -67,6 +86,8 @@ export const useMobileDetection = () => {
   const [isPWA, setIsPWA] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [connectionType, setConnectionType] = useState<string>("");
+  const [performanceMetrics, setPerformanceMetrics] = useState<any>(null);
+  const [memoryInfo, setMemoryInfo] = useState<any>(null);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -102,6 +123,15 @@ export const useMobileDetection = () => {
     window.addEventListener("online", handleOnlineStatus);
     window.addEventListener("offline", handleOnlineStatus);
 
+    // Performance monitoring
+    const updatePerformance = () => {
+      setPerformanceMetrics(performanceMonitor.getAllMetrics());
+      setMemoryInfo(memoryManager.getMemoryInfo());
+    };
+
+    updatePerformance();
+    const perfInterval = setInterval(updatePerformance, 5000);
+
     const connection = (navigator as any).connection;
     if (connection) {
       connection.addEventListener("change", handleConnectionChange);
@@ -115,10 +145,25 @@ export const useMobileDetection = () => {
       if (connection) {
         connection.removeEventListener("change", handleConnectionChange);
       }
+      clearInterval(perfInterval);
     };
   }, []);
 
-  return { isMobile, isIOS, isAndroid, isPWA, isOnline, connectionType };
+  return {
+    isMobile,
+    isIOS,
+    isAndroid,
+    isPWA,
+    isOnline,
+    connectionType,
+    performanceMetrics,
+    memoryInfo,
+    networkQuality: networkOptimizer.isSlowConnection()
+      ? "slow"
+      : networkOptimizer.isFastConnection()
+        ? "fast"
+        : "medium",
+  };
 };
 
 // Swipe gesture hook
@@ -785,6 +830,273 @@ export const PWAInstallPrompt: React.FC = () => {
   );
 };
 
+// Enhanced performance dashboard
+export const MobilePerformanceDashboard: React.FC = () => {
+  const {
+    isMobile,
+    isIOS,
+    isAndroid,
+    isPWA,
+    isOnline,
+    connectionType,
+    performanceMetrics,
+    memoryInfo,
+    networkQuality,
+  } = useMobileDetection();
+
+  const [optimizationSettings, setOptimizationSettings] = useState({
+    reduceAnimations: shouldReduceAnimations(),
+    compressImages: networkOptimizer.isSlowConnection(),
+    preloadContent: networkOptimizer.shouldPreloadImages(),
+    enableVibration: isMobile,
+  });
+
+  const getPerformanceScore = () => {
+    if (!performanceMetrics || !memoryInfo) return 0;
+
+    let score = 100;
+
+    // Network quality impact
+    if (networkQuality === "slow") score -= 30;
+    else if (networkQuality === "medium") score -= 10;
+
+    // Memory usage impact
+    if (memoryInfo) {
+      const memoryUsage =
+        memoryInfo.usedJSHeapSize / memoryInfo.jsHeapSizeLimit;
+      if (memoryUsage > 0.8) score -= 25;
+      else if (memoryUsage > 0.6) score -= 10;
+    }
+
+    return Math.max(0, score);
+  };
+
+  const updateOptimizationSetting = (key: string, value: boolean) => {
+    setOptimizationSettings((prev) => ({ ...prev, [key]: value }));
+
+    // Apply settings immediately
+    switch (key) {
+      case "reduceAnimations":
+        document.documentElement.style.setProperty(
+          "--animation-duration",
+          value ? "0ms" : "300ms",
+        );
+        break;
+    }
+  };
+
+  const performanceScore = getPerformanceScore();
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Smartphone className="h-5 w-5" />
+          Mobile Performance
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="performance">Performance</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-4">
+            {/* Performance Score */}
+            <div className="text-center">
+              <div className="text-4xl font-bold mb-2">
+                {performanceScore}
+                <span className="text-xl text-muted-foreground">/100</span>
+              </div>
+              <p className="text-muted-foreground">Performance Score</p>
+              <Progress value={performanceScore} className="mt-2" />
+            </div>
+
+            {/* Device Info */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Device</Label>
+                <p className="text-sm">
+                  {isMobile ? "📱 Mobile" : "💻 Desktop"}
+                  {isIOS && " (iOS)"}
+                  {isAndroid && " (Android)"}
+                  {isPWA && " - PWA"}
+                </p>
+              </div>
+
+              <div>
+                <Label>Connection</Label>
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      !isOnline
+                        ? "bg-red-500"
+                        : networkQuality === "fast"
+                          ? "bg-green-500"
+                          : networkQuality === "medium"
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                    }`}
+                  />
+                  <span className="text-sm capitalize">
+                    {!isOnline ? "Offline" : networkQuality}{" "}
+                    {connectionType && `(${connectionType})`}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="performance" className="space-y-4">
+            {memoryInfo && (
+              <Card>
+                <CardContent className="p-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Memory Usage</span>
+                      <span>
+                        {Math.round(
+                          (memoryInfo.usedJSHeapSize /
+                            memoryInfo.jsHeapSizeLimit) *
+                            100,
+                        )}
+                        %
+                      </span>
+                    </div>
+                    <Progress
+                      value={
+                        (memoryInfo.usedJSHeapSize /
+                          memoryInfo.jsHeapSizeLimit) *
+                        100
+                      }
+                    />
+                    <div className="text-xs text-muted-foreground">
+                      {Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024)}MB /
+                      {Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024)}MB
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <Signal
+                    className={`h-6 w-6 mx-auto mb-2 ${
+                      networkQuality === "fast"
+                        ? "text-green-500"
+                        : networkQuality === "medium"
+                          ? "text-yellow-500"
+                          : "text-red-500"
+                    }`}
+                  />
+                  <p className="text-sm font-medium capitalize">
+                    {networkQuality}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Network</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <Gauge
+                    className={`h-6 w-6 mx-auto mb-2 ${
+                      performanceScore > 80
+                        ? "text-green-500"
+                        : performanceScore > 60
+                          ? "text-yellow-500"
+                          : "text-red-500"
+                    }`}
+                  />
+                  <p className="text-sm font-medium">
+                    {performanceScore > 80
+                      ? "Excellent"
+                      : performanceScore > 60
+                        ? "Good"
+                        : "Needs Work"}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Overall</p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-4">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="reduce-animations">Reduce Animations</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Improve performance on slower devices
+                  </p>
+                </div>
+                <Switch
+                  id="reduce-animations"
+                  checked={optimizationSettings.reduceAnimations}
+                  onCheckedChange={(checked) =>
+                    updateOptimizationSetting("reduceAnimations", checked)
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="compress-images">Compress Images</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Reduce image quality to save bandwidth
+                  </p>
+                </div>
+                <Switch
+                  id="compress-images"
+                  checked={optimizationSettings.compressImages}
+                  onCheckedChange={(checked) =>
+                    updateOptimizationSetting("compressImages", checked)
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="preload-content">Preload Content</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Load content in advance (uses more data)
+                  </p>
+                </div>
+                <Switch
+                  id="preload-content"
+                  checked={optimizationSettings.preloadContent}
+                  onCheckedChange={(checked) =>
+                    updateOptimizationSetting("preloadContent", checked)
+                  }
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="enable-vibration">Enable Vibration</Label>
+                  <p className="text-xs text-muted-foreground">
+                    Haptic feedback for interactions
+                  </p>
+                </div>
+                <Switch
+                  id="enable-vibration"
+                  checked={optimizationSettings.enableVibration}
+                  onCheckedChange={(checked) =>
+                    updateOptimizationSetting("enableVibration", checked)
+                  }
+                />
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  );
+};
+
 export default {
   useMobileDetection,
   useSwipeGesture,
@@ -795,4 +1107,5 @@ export default {
   TouchVideoPlayer,
   ConnectionStatus,
   PWAInstallPrompt,
+  MobilePerformanceDashboard,
 };

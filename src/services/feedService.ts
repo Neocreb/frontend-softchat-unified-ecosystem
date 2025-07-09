@@ -206,31 +206,11 @@ class FeedService {
   // Get comments for a post
   async getComments(postId: string, signal?: AbortSignal): Promise<Comment[]> {
     // Simulate API call with abort support
-    await this.delay(500, signal);
+    await this.delay(300, signal);
 
-    // Mock comments data
-    return [
-      {
-        id: "1",
-        userId: "101",
-        userName: "Alice Johnson",
-        userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alice",
-        content: "Great post! Really insightful.",
-        timestamp: "2 hours ago",
-        likes: 5,
-        isLiked: false,
-      },
-      {
-        id: "2",
-        userId: "102",
-        userName: "Mike Chen",
-        userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
-        content: "I totally agree with this perspective!",
-        timestamp: "1 hour ago",
-        likes: 12,
-        isLiked: true,
-      },
-    ];
+    // In a real implementation, this would fetch from API
+    // For now, return empty array to enable real-time comment functionality
+    return [];
   }
 
   // Add a comment

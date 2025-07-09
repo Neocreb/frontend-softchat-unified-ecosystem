@@ -18,10 +18,12 @@ import {
   BarChart3,
   Bot,
   Globe,
+  Calendar,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -37,8 +39,12 @@ import SoftchatLogo from "../shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+interface HeaderProps {
+  mobileMenuOpen?: boolean;
+  setMobileMenuOpen?: (open: boolean) => void;
+}
+
+const Header = ({ mobileMenuOpen = false, setMobileMenuOpen }: HeaderProps) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const isMobile = useIsMobile();
@@ -64,7 +70,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setMobileMenuOpen?.(!mobileMenuOpen)}
               className="md:hidden h-8 w-8 flex-shrink-0"
               aria-label="Toggle menu"
             >
@@ -171,6 +177,20 @@ const Header = () => {
           >
             <BarChart3 className="h-4 w-4 lg:h-5 lg:w-5" />
             <span className="text-sm hidden lg:inline">Creator Studio</span>
+          </Link>
+          <Link
+            to="/events"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Calendar className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Events</span>
+          </Link>
+          <Link
+            to="/live-streaming"
+            className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+          >
+            <Video className="h-4 w-4 lg:h-5 lg:w-5" />
+            <span className="text-sm hidden lg:inline">Live</span>
           </Link>
           <Link
             to="/ai-assistant"
@@ -303,6 +323,22 @@ const Header = () => {
                   <span>Messages</span>
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/premium"
+                  className="flex items-center w-full font-medium text-purple-600"
+                >
+                  <Award className="mr-2 h-4 w-4" />
+                  <span>Premium</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/kyc" className="flex items-center w-full">
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  <span>KYC Verification</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/notifications" className="flex items-center w-full">
                   <Bell className="mr-2 h-4 w-4" />
@@ -334,97 +370,6 @@ const Header = () => {
           </form>
         </div>
       )}
-
-      {/* Mobile Menu */}
-      <div
-        className={cn(
-          "fixed inset-0 top-14 z-[100] grid h-[calc(100vh-3.5rem)] grid-flow-row auto-rows-max overflow-auto p-4 pb-20 shadow-md animate-in slide-in-from-bottom-80 md:hidden bg-background",
-          mobileMenuOpen ? "block" : "hidden",
-        )}
-      >
-        <div className="relative z-20 grid gap-4 rounded-md bg-background p-4 w-full max-w-full mx-auto">
-          <Link
-            to="/feed"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Home className="h-5 w-5" />
-            <span>Feed</span>
-          </Link>
-          <Link
-            to="/videos"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Video className="h-5 w-5" />
-            <span>Videos</span>
-          </Link>
-          <Link
-            to="/explore"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Search className="h-5 w-5" />
-            <span>Explore</span>
-          </Link>
-          <Link
-            to="/crypto"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <TrendingUp className="h-5 w-5" />
-            <span>Crypto</span>
-          </Link>
-          <Link
-            to="/marketplace"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <ShoppingCart className="h-5 w-5" />
-            <span>Marketplace</span>
-          </Link>
-          <Link
-            to="/freelance"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Briefcase className="h-5 w-5" />
-            <span>Freelance</span>
-          </Link>
-          <Link
-            to="/wallet"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Wallet className="h-5 w-5" />
-            <span>Wallet</span>
-          </Link>
-          <Link
-            to="/rewards"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Award className="h-5 w-5" />
-            <span>Rewards</span>
-          </Link>
-          <Link
-            to="/ai-assistant"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Bot className="h-5 w-5" />
-            <span>AI Assistant</span>
-          </Link>
-          <Link
-            to="/creator-studio"
-            className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <BarChart3 className="h-5 w-5" />
-            <span>Creator Studio</span>
-          </Link>
-        </div>
-      </div>
     </header>
   );
 };

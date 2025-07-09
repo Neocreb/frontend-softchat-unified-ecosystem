@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -29,6 +30,9 @@ import {
   X,
   Edit,
   Trash2,
+  Star,
+  Shield,
+  Gift,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -420,7 +424,7 @@ const Stories = ({
                         <Avatar className="w-full h-full">
                           <AvatarImage src={getStoryPreview(userStories)} />
                           <AvatarFallback className="text-xs">
-                            {latestStory.user.name.charAt(0)}
+                            {latestStory.user?.name?.charAt(0) || "U"}
                           </AvatarFallback>
                         </Avatar>
                       </div>
@@ -931,7 +935,7 @@ const PostCard = ({
             <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
               <AvatarImage src={post.user.avatar} />
               <AvatarFallback className="text-xs sm:text-sm">
-                {post.user.name.charAt(0)}
+                {post.user?.name?.charAt(0) || "U"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
@@ -1090,6 +1094,20 @@ const PostCard = ({
                 <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="text-xs sm:text-sm">{sharesCount}</span>
               </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 p-1 h-auto touch-target text-yellow-600 hover:text-yellow-700"
+                onClick={() => {
+                  toast({
+                    title: "Send Gift",
+                    description: "Choose a gift to send to " + post.user.name,
+                  });
+                }}
+              >
+                <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-xs sm:text-sm">Gift</span>
+              </Button>
             </div>
             <Button
               variant="ghost"
@@ -1124,6 +1142,7 @@ const PostCard = ({
 
 // Main Feed Component
 export default function EnhancedFeed() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState(initialMockPosts);
   const [stories, setStories] = useState(initialMockStories);
   const [isLoading, setIsLoading] = useState(false);
@@ -1237,6 +1256,63 @@ export default function EnhancedFeed() {
           {/* Events Banner - New Feature Promotion */}
           <EventsBannerCard />
 
+          {/* Premium Features Promotion */}
+          <Card className="mb-6 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-blue-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Shield className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-blue-900">
+                      Get Verified
+                    </h3>
+                    <p className="text-sm text-blue-700">
+                      Get the blue checkmark and show everyone you're authentic
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => navigate("/premium")}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Star className="w-4 h-4 mr-2" />
+                  Verify Account
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* KYC Verification Promotion */}
+          <Card className="mb-6 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-200">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Shield className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-green-900">
+                      Complete KYC Verification
+                    </h3>
+                    <p className="text-sm text-green-700">
+                      Verify your identity for enhanced security and trading
+                      capabilities
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => navigate("/kyc")}
+                  variant="outline"
+                  className="border-green-600 text-green-600 hover:bg-green-50"
+                >
+                  Verify Now
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Live Streams Section */}
           {liveStreams.length > 0 && (
             <Card className="mb-6">
@@ -1246,9 +1322,22 @@ export default function EnhancedFeed() {
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                     Live Now
                   </h3>
-                  <Button variant="ghost" size="sm">
-                    View All
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate("/live-streaming")}
+                    >
+                      View All
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => navigate("/live-streaming")}
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Go Live
+                    </Button>
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 gap-3">
                   {liveStreams.map((stream) => (
@@ -1259,9 +1348,16 @@ export default function EnhancedFeed() {
                     >
                       <div className="relative">
                         <Avatar className="h-12 w-12">
-                          <AvatarImage src={stream.streamerAvatar} />
+                          <AvatarImage
+                            src={
+                              (stream as any).streamerAvatar ||
+                              "/placeholder.svg"
+                            }
+                          />
                           <AvatarFallback>
-                            {stream.streamerName.charAt(0)}
+                            {(
+                              (stream as any).streamerName || "Unknown"
+                            )?.charAt(0) || "U"}
                           </AvatarFallback>
                         </Avatar>
                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
@@ -1273,7 +1369,7 @@ export default function EnhancedFeed() {
                           {stream.title}
                         </p>
                         <p className="text-xs text-gray-600">
-                          {stream.streamerName}
+                          {(stream as any).streamerName || "Unknown Streamer"}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge variant="secondary" className="text-xs">

@@ -193,9 +193,21 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoading,
   };
 
-  // Don't render children if there's a critical error
+  // Fallback UI for critical errors
   if (hasError && isLoading) {
-    return <div>Loading language settings...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading language settings...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If there's an error but not loading, use fallback values
+  if (hasError) {
+    console.warn("I18n service failed, using fallback values");
   }
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
