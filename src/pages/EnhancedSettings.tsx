@@ -769,6 +769,13 @@ const EnhancedSettings = () => {
                 <span>Money</span>
               </TabsTrigger>
               <TabsTrigger
+                value="premium"
+                className="flex flex-row items-center gap-2 text-sm text-purple-600"
+              >
+                <Crown className="w-4 h-4" />
+                <span>Premium</span>
+              </TabsTrigger>
+              <TabsTrigger
                 value="notifications"
                 className="flex flex-row items-center gap-2 text-sm"
               >
