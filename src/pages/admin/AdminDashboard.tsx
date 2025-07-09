@@ -438,7 +438,7 @@ const AdminDashboard = () => {
                 <Bitcoin className="h-6 w-6 text-yellow-600" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {formatNumber(dashboardData.stats.totalTrades || 89)}
+                {formatNumber(dashboardData?.stats?.totalTrades || 89)}
               </CardTitle>
               <CardDescription>P2P Trades</CardDescription>
               <div className="text-xs text-green-600 mt-1">$1.2M volume</div>
