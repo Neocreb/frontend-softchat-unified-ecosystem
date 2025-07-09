@@ -15,8 +15,6 @@ import {
 } from "drizzle-orm";
 import { db } from "../db";
 import {
-  users,
-  profiles,
   wallets,
   walletTransactions,
   escrowContracts,
@@ -25,7 +23,6 @@ import {
   premiumSubscriptions,
   chatThreads,
   chatMessages,
-  p2pOffers,
   p2pTrades,
   p2pDisputes,
   marketplaceOrders,
@@ -35,12 +32,6 @@ import {
   adminActivityLogs,
   contentReports,
   userSuspensions,
-  freelanceJobs,
-  freelanceProposals,
-  freelanceProjects,
-  freelanceEscrow,
-  freelanceDisputes,
-  products,
   type InsertWallet,
   type InsertWalletTransaction,
   type InsertEscrowContract,
