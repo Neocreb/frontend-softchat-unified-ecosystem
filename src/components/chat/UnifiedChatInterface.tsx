@@ -273,9 +273,9 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   if (!user) return null;
 
   return (
-    <div className={cn("max-w-7xl mx-auto", className)}>
-      {/* Chat Tabs */}
-      <div className="mb-4">
+    <div className={cn("h-full flex flex-col", className)}>
+      {/* Chat Tabs - sticky top */}
+      <div className="shrink-0 bg-background border-b px-4 py-3">
         <ChatTabs
           tabs={tabsWithCounts}
           activeTab={activeTab}
@@ -287,11 +287,17 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      {/* Main chat area */}
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full grid grid-cols-1 lg:grid-cols-12 gap-0">
         {/* Conversations List - Hide on mobile when chat is selected */}
-        <Card
-          className={cn("lg:col-span-1", selectedChat && "hidden lg:block")}
+        <div
+          className={cn(
+            "lg:col-span-4 xl:col-span-3 border-r bg-background/50",
+            selectedChat && "hidden lg:flex"
+          )}
         >
+          <Card className="w-full border-0 shadow-none bg-transparent">
           <CardHeader className="pb-3">
             <div className="flex justify-between items-center mb-2">
               <CardTitle className="flex items-center gap-2">
@@ -360,7 +366,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
             </CardContent>
           ) : (
             <CardContent className="p-0">
-              <ScrollArea className="h-[300px] sm:h-[400px] lg:h-[500px]">
+              <ScrollArea className="h-[calc(100vh-280px)]">
                 {loading ? (
                   <div className="p-4 text-center">
                     <div className="animate-pulse space-y-3">
@@ -435,15 +441,17 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
               </ScrollArea>
             </CardContent>
           )}
-        </Card>
+          </Card>
+        </div>
 
         {/* Chat Area - Show back button on mobile */}
-        <Card
+        <div
           className={cn(
-            "lg:col-span-2",
-            !selectedChat && activeTab !== "ai_assistant" && "hidden lg:block",
+            "lg:col-span-8 xl:col-span-9 bg-background",
+            !selectedChat && activeTab !== "ai_assistant" && "hidden lg:flex"
           )}
         >
+          <Card className="w-full border-0 shadow-none h-full">
           <Tabs value={activeTab} className="h-full">
             <TabsContent value="ai_assistant" className="h-full mt-0">
               <div className="flex flex-col h-[600px]">
@@ -530,7 +538,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                     </CardHeader>
 
                     <CardContent className="p-0">
-                      <ScrollArea className="h-[250px] sm:h-[350px] lg:h-[400px] px-4">
+                      <ScrollArea className="h-[calc(100vh-320px)] px-4">
                         <div className="flex flex-col gap-4 py-4">
                           {messages[selectedChat.id] &&
                           messages[selectedChat.id].length > 0 ? (
