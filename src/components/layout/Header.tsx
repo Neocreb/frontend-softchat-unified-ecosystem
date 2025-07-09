@@ -318,6 +318,22 @@ const Header = () => {
                   <span>Messages</span>
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/premium"
+                  className="flex items-center w-full font-medium text-purple-600"
+                >
+                  <Award className="mr-2 h-4 w-4" />
+                  <span>Premium</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/kyc" className="flex items-center w-full">
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  <span>KYC Verification</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/notifications" className="flex items-center w-full">
                   <Bell className="mr-2 h-4 w-4" />
