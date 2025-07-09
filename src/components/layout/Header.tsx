@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -19,35 +19,84 @@ import {
   Settings,
   LogOut,
   User,
-  PlusCircle,
-  ChevronLeft,
-  ChevronRight,
+  Plus,
+  Home,
+  Video,
+  ShoppingBag,
+  Briefcase,
+  TrendingUp,
+  Coins,
+  Gift,
+  Calendar,
+  Zap,
+  Bot,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
 import { useToast } from "@/hooks/use-toast";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
-  sidebarCollapsed?: boolean;
-  setSidebarCollapsed?: (collapsed: boolean) => void;
 }
 
-const Header = ({
-  mobileMenuOpen,
-  setMobileMenuOpen,
-  sidebarCollapsed = false,
-  setSidebarCollapsed,
-}: HeaderProps) => {
+const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Main navigation items (like mobile footer but organized for desktop)
+  const mainNavItems = [
+    {
+      icon: Home,
+      label: "Feed",
+      href: "/feed",
+      active: location.pathname === "/" || location.pathname === "/feed",
+    },
+    {
+      icon: Search,
+      label: "Explore",
+      href: "/explore",
+      active: location.pathname === "/explore",
+    },
+    {
+      icon: Video,
+      label: "Videos",
+      href: "/videos",
+      active: location.pathname === "/videos",
+    },
+    {
+      icon: ShoppingBag,
+      label: "Market",
+      href: "/marketplace",
+      active:
+        location.pathname === "/marketplace" ||
+        location.pathname.startsWith("/marketplace"),
+    },
+    {
+      icon: Briefcase,
+      label: "Freelance",
+      href: "/freelance",
+      active:
+        location.pathname === "/freelance" ||
+        location.pathname.startsWith("/freelance"),
+    },
+    {
+      icon: Coins,
+      label: "Crypto",
+      href: "/crypto",
+      active: location.pathname === "/crypto",
+    },
+    {
+      icon: Gift,
+      label: "Rewards",
+      href: "/rewards",
+      active: location.pathname === "/rewards",
+    },
+  ];
 
   const handleLogout = async () => {
     try {
@@ -76,62 +125,63 @@ const Header = ({
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-16 items-center px-4">
-        {/* Left section */}
+      <div className="flex h-16 items-center justify-between px-4">
+        {/* Left section - Logo and Mobile Menu */}
         <div className="flex items-center gap-4">
-          {/* Mobile menu toggle */}
-          {isMobile ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden"
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          ) : (
-            /* Desktop sidebar toggle */
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSidebarCollapsed?.(!sidebarCollapsed)}
-              className="hidden lg:flex"
-            >
-              {sidebarCollapsed ? (
-                <ChevronRight className="h-5 w-5" />
-              ) : (
-                <ChevronLeft className="h-5 w-5" />
-              )}
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden"
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
 
-          {/* Logo */}
           <Link to="/feed" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
-            {(!isMobile || !mobileMenuOpen) && (
-              <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                SoftChat
-              </span>
-            )}
+            <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              SoftChat
+            </span>
           </Link>
         </div>
 
-        {/* Center section - Search */}
-        <div className="flex-1 max-w-lg mx-4">
-          <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search SoftChat..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-muted/50 border-0 focus:bg-background focus:ring-2 focus:ring-primary/20"
-            />
-          </form>
-        </div>
+        {/* Center section - Main Navigation (Desktop Only) */}
+        <nav className="hidden lg:flex items-center gap-1">
+          {mainNavItems.map((item) => (
+            <Link
+              key={item.href}
+              to={item.href}
+              className={cn(
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-muted/60",
+                item.active
+                  ? "bg-primary/10 text-primary border border-primary/20"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <item.icon
+                className={cn("h-4 w-4", item.active ? "text-primary" : "")}
+              />
+              <span>{item.label}</span>
+            </Link>
+          ))}
+        </nav>
 
-        {/* Right section */}
+        {/* Right section - Search, Actions, User */}
         <div className="flex items-center gap-2">
+          {/* Search (Desktop) */}
+          <div className="hidden lg:block w-64">
+            <form onSubmit={handleSearch} className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search SoftChat..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-muted/50 border-0 focus:bg-background focus:ring-2 focus:ring-primary/20"
+              />
+            </form>
+          </div>
+
           {/* Create button */}
           <Button
             variant="default"
@@ -139,11 +189,11 @@ const Header = ({
             onClick={() => navigate("/create")}
             className="hidden sm:flex items-center gap-2"
           >
-            <PlusCircle className="h-4 w-4" />
+            <Plus className="h-4 w-4" />
             Create
           </Button>
 
-          {/* Notifications */}
+          {/* Quick Actions */}
           <Button
             variant="ghost"
             size="sm"
@@ -159,7 +209,6 @@ const Header = ({
             </Badge>
           </Button>
 
-          {/* Messages */}
           <Button
             variant="ghost"
             size="sm"
