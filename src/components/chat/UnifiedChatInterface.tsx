@@ -390,51 +390,66 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                         <div
                           key={conv.id}
                           className={cn(
-                            "flex items-start gap-3 p-3 cursor-pointer transition-colors",
+                            "flex items-start gap-3 p-4 cursor-pointer transition-all duration-200 border-b border-border/30 last:border-b-0",
                             selectedChat?.id === conv.id
-                              ? "bg-muted"
-                              : "hover:bg-muted/50",
+                              ? "bg-primary/5 border-l-2 border-l-primary"
+                              : "hover:bg-muted/50 hover:border-l-2 hover:border-l-muted-foreground/20",
                           )}
                           onClick={() => handleChatSelect(conv)}
                         >
-                          <Avatar>
-                            <AvatarImage
-                              src={conv.participant_profile?.avatar}
-                            />
-                            <AvatarFallback>
-                              {conv.participant_profile?.name?.charAt(0) || "?"}
-                            </AvatarFallback>
-                          </Avatar>
+                          <div className="relative">
+                            <Avatar className="h-12 w-12">
+                              <AvatarImage
+                                src={conv.participant_profile?.avatar}
+                              />
+                              <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-semibold">
+                                {conv.participant_profile?.name?.charAt(0) ||
+                                  "?"}
+                              </AvatarFallback>
+                            </Avatar>
+                            {conv.participant_profile?.is_online && (
+                              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-background rounded-full"></div>
+                            )}
+                          </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start mb-1">
-                              <div className="flex items-center gap-1">
-                                {getTypeIcon(conv.type)}
-                                <h4 className="text-sm font-medium truncate">
+                              <div className="flex items-center gap-2 min-w-0 flex-1">
+                                <div className="p-1 rounded bg-muted/50">
+                                  {getTypeIcon(conv.type)}
+                                </div>
+                                <h4 className="text-sm font-semibold truncate text-foreground">
                                   {conv.participant_profile?.name}
                                 </h4>
                               </div>
-                              <p className="text-xs text-muted-foreground">
-                                {formatMessageDate(conv.lastMessageAt)}
-                              </p>
+                              <div className="flex flex-col items-end gap-1">
+                                <p className="text-xs text-muted-foreground">
+                                  {formatMessageDate(conv.lastMessageAt)}
+                                </p>
+                                {(conv.unreadCount || 0) > 0 && (
+                                  <Badge
+                                    variant="destructive"
+                                    className="h-5 min-w-[20px] text-xs px-1.5"
+                                  >
+                                    {conv.unreadCount}
+                                  </Badge>
+                                )}
+                              </div>
                             </div>
 
                             {/* Context info */}
                             {getContextInfo(conv) && (
-                              <p className="text-xs text-purple-600 mb-1">
-                                {getContextInfo(conv)}
-                              </p>
+                              <div className="flex items-center gap-1 mb-1">
+                                <div className="w-1 h-1 bg-primary rounded-full"></div>
+                                <p className="text-xs text-primary font-medium">
+                                  {getContextInfo(conv)}
+                                </p>
+                              </div>
                             )}
 
-                            <p className="text-sm text-muted-foreground truncate">
+                            <p className="text-sm text-muted-foreground truncate leading-relaxed">
                               {conv.lastMessage || "No messages yet"}
                             </p>
                           </div>
-
-                          {(conv.unreadCount || 0) > 0 && (
-                            <Badge variant="destructive" className="ml-1">
-                              {conv.unreadCount}
-                            </Badge>
-                          )}
                         </div>
                       ))
                     ) : (
