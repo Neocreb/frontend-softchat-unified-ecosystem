@@ -420,7 +420,7 @@ const Stories = ({
                         <Avatar className="w-full h-full">
                           <AvatarImage src={getStoryPreview(userStories)} />
                           <AvatarFallback className="text-xs">
-                            {latestStory.user.name.charAt(0)}
+                            {latestStory.user?.name?.charAt(0) || "U"}
                           </AvatarFallback>
                         </Avatar>
                       </div>
