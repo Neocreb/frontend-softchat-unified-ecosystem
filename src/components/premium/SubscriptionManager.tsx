@@ -368,7 +368,7 @@ const SubscriptionManager: React.FC<SubscriptionManagerProps> = ({
                         "Current Plan"
                       ) : isUpgrade ? (
                         <>
-                          <Upgrade className="h-4 w-4 mr-2" />
+                          <ArrowUp className="h-4 w-4 mr-2" />
                           Upgrade
                         </>
                       ) : (
