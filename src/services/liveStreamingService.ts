@@ -497,7 +497,10 @@ class LiveStreamingService {
       if (error) throw error;
       return data.reverse(); // Return in chronological order
     } catch (error) {
-      console.error("Error getting stream messages:", error);
+      console.error(
+        "Error getting stream messages:",
+        error instanceof Error ? error.message : error,
+      );
       // Return mock messages for demo
       return [
         {
