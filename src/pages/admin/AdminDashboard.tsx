@@ -466,7 +466,7 @@ const AdminDashboard = () => {
                 <AlertTriangle className="h-6 w-6 text-red-600" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {dashboardData.stats.pendingModeration}
+                {dashboardData?.stats?.pendingModeration || 0}
               </CardTitle>
               <CardDescription>Pending Reviews</CardDescription>
               <div className="text-xs text-red-600 mt-1">
