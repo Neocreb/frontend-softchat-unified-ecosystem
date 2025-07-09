@@ -374,7 +374,7 @@ const Header = () => {
           mobileMenuOpen ? "block" : "hidden",
         )}
       >
-        <div className="relative z-20 rounded-md bg-background p-4 w-full max-w-full mx-auto space-y-4">
+        <div className="relative z-20 rounded-md bg-background p-4 w-full max-w-full mx-auto">
           <Link
             to="/feed"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
