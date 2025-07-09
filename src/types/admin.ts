@@ -128,3 +128,58 @@ export type AdminSession = {
   isActive: boolean;
   createdAt: string;
 };
+
+export const ADMIN_PERMISSIONS = {
+  // User Management
+  VIEW_USERS: "view_users",
+  CREATE_USERS: "create_users",
+  EDIT_USERS: "edit_users",
+  DELETE_USERS: "delete_users",
+  BAN_USERS: "ban_users",
+  VERIFY_USERS: "verify_users",
+
+  // Content Management
+  VIEW_CONTENT: "view_content",
+  MODERATE_CONTENT: "moderate_content",
+  DELETE_CONTENT: "delete_content",
+  FEATURE_CONTENT: "feature_content",
+
+  // Analytics
+  VIEW_ANALYTICS: "view_analytics",
+  EXPORT_DATA: "export_data",
+
+  // Marketplace
+  VIEW_MARKETPLACE: "view_marketplace",
+  MANAGE_MARKETPLACE: "manage_marketplace",
+  APPROVE_PRODUCTS: "approve_products",
+  MANAGE_ORDERS: "manage_orders",
+
+  // Crypto
+  VIEW_CRYPTO: "view_crypto",
+  MANAGE_CRYPTO: "manage_crypto",
+  PROCESS_WITHDRAWALS: "process_withdrawals",
+  KYC_VERIFICATION: "kyc_verification",
+
+  // Freelance
+  VIEW_FREELANCE: "view_freelance",
+  MANAGE_FREELANCE: "manage_freelance",
+  APPROVE_JOBS: "approve_jobs",
+  MANAGE_DISPUTES: "manage_disputes",
+
+  // Settings
+  VIEW_SETTINGS: "view_settings",
+  MANAGE_SETTINGS: "manage_settings",
+
+  // System
+  VIEW_LOGS: "view_logs",
+  MANAGE_BACKUPS: "manage_backups",
+  SERVER_MANAGEMENT: "server_management",
+
+  // Admin Management
+  MANAGE_ADMINS: "manage_admins",
+  ASSIGN_ROLES: "assign_roles",
+
+  // Security
+  VIEW_SECURITY: "view_security",
+  MANAGE_SECURITY: "manage_security",
+} as const;

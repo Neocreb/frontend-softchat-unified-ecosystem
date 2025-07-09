@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import rateLimit from "rate-limiter-flexible";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 import helmet from "helmet";
 import cors from "cors";
 import { Request, Response, NextFunction } from "express";
@@ -53,8 +53,7 @@ export const verifyToken = (token: string): JWTPayload => {
 };
 
 // Rate limiting
-export const rateLimiter = new rateLimit.RateLimiterMemory({
-  keyGenerator: (req: Request) => req.ip || "unknown",
+export const rateLimiter = new RateLimiterMemory({
   points: config.rateLimitMax,
   duration: config.rateLimitWindow / 1000, // Convert to seconds
 });
@@ -62,8 +61,7 @@ export const rateLimiter = new rateLimit.RateLimiterMemory({
 export const createRateLimitMiddleware = (
   points: number = config.rateLimitMax,
 ) => {
-  const limiter = new rateLimit.RateLimiterMemory({
-    keyGenerator: (req: Request) => req.ip || "unknown",
+  const limiter = new RateLimiterMemory({
     points,
     duration: config.rateLimitWindow / 1000,
   });
@@ -72,7 +70,7 @@ export const createRateLimitMiddleware = (
     try {
       await limiter.consume(req.ip || "unknown");
       next();
-    } catch (rateLimiterRes) {
+    } catch (rateLimiterRes: any) {
       res.status(429).json({
         error: "Too many requests",
         retryAfter: Math.round(rateLimiterRes.msBeforeNext) || 1,
