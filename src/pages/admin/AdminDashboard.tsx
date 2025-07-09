@@ -102,9 +102,44 @@ const AdminDashboard = () => {
       const admin = JSON.parse(adminData);
       setCurrentAdmin(admin);
 
-      // Fetch dashboard data
-      const data = await AdminService.getDashboardData();
-      setDashboardData(data);
+      // Fetch dashboard data with fallback
+      try {
+        const data = await AdminService.getDashboardData();
+        setDashboardData(data);
+      } catch (apiError) {
+        console.error("Error fetching dashboard data:", apiError);
+        // Use fallback data when API is not available
+        setDashboardData({
+          stats: {
+            totalUsers: 1247,
+            activeUsers: 892,
+            totalProducts: 156,
+            totalJobs: 89,
+            totalTrades: 234,
+            pendingModeration: 12,
+            revenueMonth: 48500,
+            activeBoosts: 27,
+            premiumSubscribers: {
+              silver: 45,
+              gold: 23,
+              pro: 8,
+            },
+          },
+          recentActivity: [],
+          activeAdmins: [],
+          pendingModeration: [],
+          topProducts: [],
+          platformEarnings: [],
+          trafficOverview: [],
+          systemHealth: {
+            uptime: "99.9%",
+            cpu: 45,
+            memory: 68,
+            storage: 34,
+          },
+        });
+        setError("Using demo data - API not available");
+      }
 
       notification.success(`Welcome back, ${admin.name}!`);
     } catch (error) {
