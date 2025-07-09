@@ -60,6 +60,24 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const [selectedChat, setSelectedChat] = useState<UnifiedChatThread | null>(
     null,
   );
+
+  // Handle URL parameters for direct navigation
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get("type") as UnifiedChatType;
+    const threadParam = urlParams.get("thread");
+
+    if (typeParam && DEFAULT_CHAT_TABS.some((tab) => tab.id === typeParam)) {
+      setActiveTab(typeParam);
+    }
+
+    if (threadParam && conversations.length > 0) {
+      const targetChat = conversations.find((conv) => conv.id === threadParam);
+      if (targetChat) {
+        setSelectedChat(targetChat);
+      }
+    }
+  }, [conversations]);
   const [conversations, setConversations] = useState<UnifiedChatThread[]>([]);
   const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
   const [messageInput, setMessageInput] = useState("");

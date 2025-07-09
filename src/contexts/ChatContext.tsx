@@ -27,6 +27,16 @@ type ChatContextType = {
   searchConversations: (query: string) => ChatConversation[];
   unreadCount: number;
   getUnifiedConversations: (type?: UnifiedChatType) => UnifiedChatThread[];
+  handleNotificationChat: (notification: {
+    type:
+      | "freelance_application"
+      | "marketplace_inquiry"
+      | "trade_request"
+      | "social_mention";
+    fromUserId: string;
+    referenceId?: string;
+    metadata?: any;
+  }) => Promise<string | null>;
 };
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -423,6 +433,111 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     return unifiedConversations.filter((conv) => conv.type === type);
   };
 
+  // Handle real-time notifications and create chats
+  const handleNotificationChat = async (notification: {
+    type:
+      | "freelance_application"
+      | "marketplace_inquiry"
+      | "trade_request"
+      | "social_mention";
+    fromUserId: string;
+    referenceId?: string;
+    metadata?: any;
+  }) => {
+    const { type, fromUserId, referenceId, metadata } = notification;
+
+    try {
+      // Check if chat already exists
+      const existingChat = conversations.find(
+        (conv) =>
+          conv.participants.includes(fromUserId) &&
+          conv.participants.includes(user?.id || "") &&
+          (referenceId ? conv.referenceId === referenceId : true),
+      );
+
+      if (existingChat) {
+        setSelectedChat(existingChat);
+        return existingChat.id;
+      }
+
+      // Create new chat based on notification type
+      let chatType: UnifiedChatType;
+      let contextData: UnifiedChatContextData = {};
+      let initialMessage = "";
+
+      switch (type) {
+        case "freelance_application":
+          chatType = "freelance";
+          contextData = {
+            jobTitle: metadata?.jobTitle,
+            jobBudget: metadata?.jobBudget,
+            projectStatus: "proposal",
+          };
+          initialMessage = `Hi! I'm interested in your job posting: ${metadata?.jobTitle}`;
+          break;
+
+        case "marketplace_inquiry":
+          chatType = "marketplace";
+          contextData = {
+            productName: metadata?.productName,
+            productPrice: metadata?.productPrice,
+            productImage: metadata?.productImage,
+          };
+          initialMessage = `Hi! I'm interested in your product: ${metadata?.productName}`;
+          break;
+
+        case "trade_request":
+          chatType = "p2p";
+          contextData = {
+            tradeAmount: metadata?.amount,
+            cryptoType: metadata?.crypto,
+            tradeStatus: "initiated",
+          };
+          initialMessage = `Hi! I'd like to discuss a ${metadata?.crypto} trade`;
+          break;
+
+        case "social_mention":
+          chatType = "social";
+          contextData = {
+            relationshipType: "friend",
+          };
+          initialMessage = "Hi! 👋";
+          break;
+
+        default:
+          throw new Error(`Unknown notification type: ${type}`);
+      }
+
+      // Create new unified chat
+      const newThread: UnifiedChatThread = {
+        id: `thread_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type: chatType,
+        referenceId: referenceId || null,
+        participants: [user?.id || "", fromUserId],
+        lastMessage: initialMessage,
+        lastMessageAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        isGroup: false,
+        createdAt: new Date().toISOString(),
+        unreadCount: 1,
+        contextData,
+      };
+
+      setUnifiedConversations((prev) => [newThread, ...prev]);
+      setActiveTab(chatType);
+
+      return newThread.id;
+    } catch (error) {
+      console.error("Error handling notification chat:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create chat from notification",
+        variant: "destructive",
+      });
+      return null;
+    }
+  };
+
   const searchConversations = (query: string) => {
     if (!query) return conversations;
 
@@ -458,6 +573,7 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     searchConversations,
     unreadCount,
     getUnifiedConversations,
+    handleNotificationChat,
   };
 
   return (
