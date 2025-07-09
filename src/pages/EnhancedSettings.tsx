@@ -104,7 +104,6 @@ import {
   Store,
   Coins,
   Crown,
-  Zap,
   Radio,
   BarChart3,
   CheckCircle,
