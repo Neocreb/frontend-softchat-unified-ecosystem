@@ -629,44 +629,46 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {dashboardData.pendingModeration.slice(0, 5).map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between p-4 border rounded-lg"
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline">{item.contentType}</Badge>
-                          <Badge
-                            variant={
-                              item.priority === "high"
-                                ? "destructive"
-                                : item.priority === "medium"
-                                  ? "default"
-                                  : "secondary"
-                            }
-                          >
-                            {item.priority}
-                          </Badge>
+                  {(dashboardData?.pendingModeration || [])
+                    .slice(0, 5)
+                    .map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="outline">{item.contentType}</Badge>
+                            <Badge
+                              variant={
+                                item.priority === "high"
+                                  ? "destructive"
+                                  : item.priority === "medium"
+                                    ? "default"
+                                    : "secondary"
+                              }
+                            >
+                              {item.priority}
+                            </Badge>
+                          </div>
+                          <p className="text-sm font-medium">{item.reason}</p>
+                          <p className="text-xs text-gray-600 mt-1">
+                            {item.description}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Reported {new Date(item.createdAt).toLocaleString()}
+                          </p>
                         </div>
-                        <p className="text-sm font-medium">{item.reason}</p>
-                        <p className="text-xs text-gray-600 mt-1">
-                          {item.description}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Reported {new Date(item.createdAt).toLocaleString()}
-                        </p>
+                        <div className="flex gap-2 ml-4">
+                          <Button size="sm" variant="outline">
+                            Review
+                          </Button>
+                          <Button size="sm" variant="destructive">
+                            Remove
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex gap-2 ml-4">
-                        <Button size="sm" variant="outline">
-                          Review
-                        </Button>
-                        <Button size="sm" variant="destructive">
-                          Remove
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </CardContent>
             </Card>
