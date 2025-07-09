@@ -6,3 +6,7 @@
 {"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-07-09T13:43:36.187Z"}
 {"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-07-09T13:43:36.188Z"}
 {"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-07-09T13:43:36.188Z"}
+{"duration":"6ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-09T13:44:16.051Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-09T13:44:18.030Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-09T13:44:20.031Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-09T13:44:20.161Z","url":"/?reload=1752067941970","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
