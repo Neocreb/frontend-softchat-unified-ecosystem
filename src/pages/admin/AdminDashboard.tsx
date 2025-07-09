@@ -350,7 +350,7 @@ const AdminDashboard = () => {
                   }
                   className="text-blue-800 border-blue-300 hover:bg-blue-100"
                 >
-                  🔗 Access Full Admin (Port 3000)
+                  �� Access Full Admin (Port 3000)
                 </Button>
                 <Button
                   variant="outline"
@@ -408,7 +408,7 @@ const AdminDashboard = () => {
                 <ShoppingCart className="h-6 w-6 text-orange-600" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {formatNumber(dashboardData.stats.totalProducts)}
+                {formatNumber(dashboardData?.stats?.totalProducts || 0)}
               </CardTitle>
               <CardDescription>Marketplace</CardDescription>
               <div className="text-xs text-blue-600 mt-1">
