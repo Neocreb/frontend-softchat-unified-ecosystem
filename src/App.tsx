@@ -247,6 +247,39 @@ const AppRoutes = () => {
           <Route path="chat" element={<Navigate to="/messages" replace />} />
           <Route path="explore" element={<Explore />} />
           <Route path="events" element={<CommunityEvents />} />
+          <Route
+            path="premium"
+            element={
+              <div className="container mx-auto px-4 py-6">
+                <div className="max-w-4xl mx-auto">
+                  <SubscriptionManager />
+                  <div className="mt-8">
+                    <VirtualGiftsAndTips />
+                  </div>
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path="kyc"
+            element={
+              <div className="container mx-auto px-4 py-6">
+                <div className="max-w-4xl mx-auto">
+                  <EnhancedKYCVerification />
+                </div>
+              </div>
+            }
+          />
+          <Route
+            path="live-streaming"
+            element={
+              <div className="container mx-auto px-4 py-6">
+                <div className="max-w-6xl mx-auto">
+                  <LiveStreamCreator />
+                </div>
+              </div>
+            }
+          />
           <Route path="settings" element={<EnhancedSettings />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
