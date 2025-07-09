@@ -877,17 +877,6 @@ class LiveStreamingService {
     };
   }
 
-  // Mock join/leave methods for demo
-  async joinStream(streamId: string, userId: string): Promise<boolean> {
-    console.log(`User ${userId} joined stream ${streamId}`);
-    return true;
-  }
-
-  async leaveStream(streamId: string, userId: string): Promise<boolean> {
-    console.log(`User ${userId} left stream ${streamId}`);
-    return true;
-  }
-
   // Mock data for when database is not available
   private getMockLiveStreams(limit: number): LiveStream[] {
     const mockStreams: LiveStream[] = [
