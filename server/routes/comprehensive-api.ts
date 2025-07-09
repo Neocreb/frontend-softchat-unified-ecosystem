@@ -26,8 +26,6 @@ import {
   AppError,
 } from "../config/security";
 import {
-  users,
-  profiles,
   wallets,
   walletTransactions,
   escrowContracts,
@@ -45,11 +43,16 @@ import {
   adminActivityLogs,
   contentReports,
   userSuspensions,
+} from "../../shared/enhanced-schema";
+
+import {
+  users,
+  profiles,
   freelanceJobs,
   freelanceProposals,
   freelanceProjects,
   products,
-} from "../../shared/enhanced-schema";
+} from "../../shared/schema";
 
 const router = express.Router();
 
