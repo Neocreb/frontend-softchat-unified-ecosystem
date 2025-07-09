@@ -22,8 +22,8 @@ import {
   AIAction,
   AI_ASSISTANT_CONFIG,
 } from "@/types/unified-chat";
-import { enhancedAIService } from "@/services/enhancedAIService";
-import { aiPersonalAssistantService } from "@/services/aiPersonalAssistantService";
+// import { enhancedAIService } from "@/services/enhancedAIService";
+// import { aiPersonalAssistantService } from "@/services/aiPersonalAssistantService";
 import { cn } from "@/lib/utils";
 
 interface AIAssistantChatProps {
