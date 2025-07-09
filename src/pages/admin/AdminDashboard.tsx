@@ -50,6 +50,14 @@ import {
   Eye,
   Clock,
   Bell,
+  Briefcase,
+  Bitcoin,
+  MessageSquare,
+  Star,
+  Flag,
+  CreditCard,
+  Zap,
+  Globe,
 } from "lucide-react";
 
 const COLORS = [
@@ -287,8 +295,8 @@ const AdminDashboard = () => {
           </Alert>
         )}
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Enhanced Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6">
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="flex flex-col items-center justify-center p-6">
               <div className="bg-blue-500/10 p-3 rounded-full mb-4">
@@ -312,24 +320,52 @@ const AdminDashboard = () => {
               <CardTitle className="text-2xl font-bold">
                 {formatNumber(dashboardData.stats.totalProducts)}
               </CardTitle>
-              <CardDescription>Marketplace Products</CardDescription>
+              <CardDescription>Marketplace</CardDescription>
               <div className="text-xs text-blue-600 mt-1">
-                {formatNumber(dashboardData.stats.totalJobs)} jobs
+                {formatNumber(dashboardData.stats.totalJobs || 0)} orders
               </div>
             </CardContent>
           </Card>
 
           <Card className="hover:shadow-md transition-shadow">
             <CardContent className="flex flex-col items-center justify-center p-6">
-              <div className="bg-green-500/10 p-3 rounded-full mb-4">
-                <TrendingUp className="h-6 w-6 text-green-600" />
+              <div className="bg-purple-500/10 p-3 rounded-full mb-4">
+                <Briefcase className="h-6 w-6 text-purple-600" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {formatNumber(dashboardData.stats.totalTrades)}
+                {formatNumber(dashboardData.stats.totalJobs || 156)}
               </CardTitle>
-              <CardDescription>Total Trades</CardDescription>
+              <CardDescription>Freelance Jobs</CardDescription>
               <div className="text-xs text-green-600 mt-1">
-                ${formatNumber(dashboardData.stats.revenueMonth)} this month
+                {formatNumber(42)} active
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <div className="bg-yellow-500/10 p-3 rounded-full mb-4">
+                <Bitcoin className="h-6 w-6 text-yellow-600" />
+              </div>
+              <CardTitle className="text-2xl font-bold">
+                {formatNumber(dashboardData.stats.totalTrades || 89)}
+              </CardTitle>
+              <CardDescription>P2P Trades</CardDescription>
+              <div className="text-xs text-green-600 mt-1">$1.2M volume</div>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="flex flex-col items-center justify-center p-6">
+              <div className="bg-indigo-500/10 p-3 rounded-full mb-4">
+                <Star className="h-6 w-6 text-indigo-600" />
+              </div>
+              <CardTitle className="text-2xl font-bold">
+                {formatNumber(27)}
+              </CardTitle>
+              <CardDescription>Active Boosts</CardDescription>
+              <div className="text-xs text-blue-600 mt-1">
+                5 pending approval
               </div>
             </CardContent>
           </Card>
@@ -351,10 +387,14 @@ const AdminDashboard = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="freelance">Freelance</TabsTrigger>
+            <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
+            <TabsTrigger value="crypto">P2P Trading</TabsTrigger>
             <TabsTrigger value="moderation">Moderation</TabsTrigger>
+            <TabsTrigger value="financial">Financial</TabsTrigger>
             <TabsTrigger value="system">System</TabsTrigger>
           </TabsList>
 
@@ -528,6 +568,578 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="users" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5" />
+                    User Management
+                  </CardTitle>
+                  <CardDescription>
+                    Recent user registrations and activity
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        name: "John Doe",
+                        email: "john@example.com",
+                        status: "active",
+                        role: "user",
+                      },
+                      {
+                        name: "Jane Smith",
+                        email: "jane@example.com",
+                        status: "verified",
+                        role: "premium",
+                      },
+                      {
+                        name: "Bob Johnson",
+                        email: "bob@example.com",
+                        status: "pending",
+                        role: "user",
+                      },
+                      {
+                        name: "Alice Brown",
+                        email: "alice@example.com",
+                        status: "active",
+                        role: "seller",
+                      },
+                    ].map((user, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium">{user.name}</p>
+                          <p className="text-sm text-gray-600">{user.email}</p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Badge
+                            variant={
+                              user.status === "active" ? "default" : "secondary"
+                            }
+                          >
+                            {user.status}
+                          </Badge>
+                          <Badge variant="outline">{user.role}</Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-4">
+                    <Button variant="outline" className="w-full">
+                      View All Users
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <UserCheck className="w-5 h-5" />
+                    KYC Verification Queue
+                  </CardTitle>
+                  <CardDescription>
+                    Users pending identity verification
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        name: "Sarah Wilson",
+                        submitted: "2 hours ago",
+                        status: "pending",
+                      },
+                      {
+                        name: "Mike Chen",
+                        submitted: "5 hours ago",
+                        status: "under_review",
+                      },
+                      {
+                        name: "Lisa Garcia",
+                        submitted: "1 day ago",
+                        status: "pending",
+                      },
+                    ].map((kyc, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium">{kyc.name}</p>
+                          <p className="text-sm text-gray-600">
+                            Submitted {kyc.submitted}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline">
+                            Review
+                          </Button>
+                          <Button size="sm">Approve</Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="freelance" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Briefcase className="w-5 h-5" />
+                    Freelance Jobs Overview
+                  </CardTitle>
+                  <CardDescription>
+                    Active jobs and project management
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div className="p-3 bg-blue-50 rounded-lg">
+                        <p className="text-2xl font-bold text-blue-600">42</p>
+                        <p className="text-sm text-gray-600">Active Jobs</p>
+                      </div>
+                      <div className="p-3 bg-green-50 rounded-lg">
+                        <p className="text-2xl font-bold text-green-600">28</p>
+                        <p className="text-sm text-gray-600">In Progress</p>
+                      </div>
+                      <div className="p-3 bg-purple-50 rounded-lg">
+                        <p className="text-2xl font-bold text-purple-600">
+                          156
+                        </p>
+                        <p className="text-sm text-gray-600">Completed</p>
+                      </div>
+                    </div>
+                    <Button variant="outline" className="w-full">
+                      Manage Freelance Jobs
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="w-5 h-5" />
+                    Escrow Management
+                  </CardTitle>
+                  <CardDescription>
+                    Active escrow contracts and payments
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        project: "Website Development",
+                        amount: "$2,500",
+                        status: "funded",
+                        client: "Tech Corp",
+                      },
+                      {
+                        project: "Logo Design",
+                        amount: "$500",
+                        status: "pending",
+                        client: "StartupXYZ",
+                      },
+                      {
+                        project: "Mobile App",
+                        amount: "$8,000",
+                        status: "milestone",
+                        client: "InnovateCo",
+                      },
+                    ].map((escrow, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium">{escrow.project}</p>
+                          <p className="text-sm text-gray-600">
+                            {escrow.client}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-medium">{escrow.amount}</p>
+                          <Badge
+                            variant={
+                              escrow.status === "funded"
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
+                            {escrow.status}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="marketplace" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ShoppingCart className="w-5 h-5" />
+                    Marketplace Analytics
+                  </CardTitle>
+                  <CardDescription>
+                    Sales performance and product metrics
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 bg-green-50 rounded-lg text-center">
+                        <p className="text-2xl font-bold text-green-600">
+                          $12.5K
+                        </p>
+                        <p className="text-sm text-gray-600">Today's Sales</p>
+                      </div>
+                      <div className="p-3 bg-blue-50 rounded-lg text-center">
+                        <p className="text-2xl font-bold text-blue-600">89</p>
+                        <p className="text-sm text-gray-600">Orders</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Top Categories</p>
+                      <div className="space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-sm">Electronics</span>
+                          <span className="text-sm font-medium">45%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm">Fashion</span>
+                          <span className="text-sm font-medium">32%</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm">Home & Garden</span>
+                          <span className="text-sm font-medium">23%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Flag className="w-5 h-5" />
+                    Product Reviews & Disputes
+                  </CardTitle>
+                  <CardDescription>
+                    Content moderation and dispute resolution
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        product: "Wireless Headphones",
+                        issue: "Quality complaint",
+                        priority: "high",
+                      },
+                      {
+                        product: "Smartphone Case",
+                        issue: "Shipping delay",
+                        priority: "medium",
+                      },
+                      {
+                        product: "Gaming Mouse",
+                        issue: "False advertising",
+                        priority: "high",
+                      },
+                    ].map((dispute, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium">{dispute.product}</p>
+                          <p className="text-sm text-gray-600">
+                            {dispute.issue}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Badge
+                            variant={
+                              dispute.priority === "high"
+                                ? "destructive"
+                                : "default"
+                            }
+                          >
+                            {dispute.priority}
+                          </Badge>
+                          <Button size="sm" variant="outline">
+                            Resolve
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="crypto" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bitcoin className="w-5 h-5" />
+                    P2P Trading Overview
+                  </CardTitle>
+                  <CardDescription>
+                    Cryptocurrency trading statistics
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div className="p-3 bg-yellow-50 rounded-lg">
+                        <p className="text-2xl font-bold text-yellow-600">89</p>
+                        <p className="text-sm text-gray-600">Active Trades</p>
+                      </div>
+                      <div className="p-3 bg-green-50 rounded-lg">
+                        <p className="text-2xl font-bold text-green-600">
+                          $1.2M
+                        </p>
+                        <p className="text-sm text-gray-600">24h Volume</p>
+                      </div>
+                      <div className="p-3 bg-red-50 rounded-lg">
+                        <p className="text-2xl font-bold text-red-600">3</p>
+                        <p className="text-sm text-gray-600">Disputes</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">
+                        Popular Trading Pairs
+                      </p>
+                      <div className="space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-sm">USDT/USD</span>
+                          <span className="text-sm font-medium">$450K</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm">BTC/USD</span>
+                          <span className="text-sm font-medium">$380K</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-sm">ETH/USD</span>
+                          <span className="text-sm font-medium">$290K</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5" />
+                    Trade Disputes
+                  </CardTitle>
+                  <CardDescription>
+                    Active disputes requiring resolution
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        trade: "BTC/USD #1234",
+                        issue: "Payment not received",
+                        status: "open",
+                        amount: "$5,200",
+                      },
+                      {
+                        trade: "USDT/USD #1235",
+                        issue: "Crypto not released",
+                        status: "investigating",
+                        amount: "$1,800",
+                      },
+                      {
+                        trade: "ETH/USD #1236",
+                        issue: "Fraud suspected",
+                        status: "escalated",
+                        amount: "$3,400",
+                      },
+                    ].map((dispute, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium">{dispute.trade}</p>
+                          <p className="text-sm text-gray-600">
+                            {dispute.issue}
+                          </p>
+                          <p className="text-sm font-medium text-green-600">
+                            {dispute.amount}
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          <Badge
+                            variant={
+                              dispute.status === "escalated"
+                                ? "destructive"
+                                : "default"
+                            }
+                          >
+                            {dispute.status}
+                          </Badge>
+                          <Button size="sm" variant="outline">
+                            Review
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="financial" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="w-5 h-5" />
+                    Platform Earnings
+                  </CardTitle>
+                  <CardDescription>
+                    Revenue from fees and subscriptions
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 bg-green-50 rounded-lg text-center">
+                        <p className="text-2xl font-bold text-green-600">
+                          $8.4K
+                        </p>
+                        <p className="text-sm text-gray-600">Today</p>
+                      </div>
+                      <div className="p-3 bg-blue-50 rounded-lg text-center">
+                        <p className="text-2xl font-bold text-blue-600">
+                          $156K
+                        </p>
+                        <p className="text-sm text-gray-600">This Month</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Revenue Sources</p>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Freelance Fees (10%)</span>
+                          <span className="text-sm font-medium">$2.1K</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Marketplace Fees (5%)</span>
+                          <span className="text-sm font-medium">$3.2K</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Trading Fees (0.3%)</span>
+                          <span className="text-sm font-medium">$1.8K</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Premium Subscriptions</span>
+                          <span className="text-sm font-medium">$1.3K</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Zap className="w-5 h-5" />
+                    Boost System
+                  </CardTitle>
+                  <CardDescription>
+                    Content promotion and advertising revenue
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-3 bg-purple-50 rounded-lg text-center">
+                        <p className="text-2xl font-bold text-purple-600">27</p>
+                        <p className="text-sm text-gray-600">Active Boosts</p>
+                      </div>
+                      <div className="p-3 bg-orange-50 rounded-lg text-center">
+                        <p className="text-2xl font-bold text-orange-600">5</p>
+                        <p className="text-sm text-gray-600">Pending</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">
+                        Pending Boost Approvals
+                      </p>
+                      {[
+                        {
+                          item: "Job: React Developer",
+                          type: "featured",
+                          cost: "$100",
+                        },
+                        {
+                          item: "Product: Gaming Setup",
+                          type: "top_listing",
+                          cost: "$200",
+                        },
+                        {
+                          item: "Post: Tutorial Video",
+                          type: "highlight",
+                          cost: "$50",
+                        },
+                      ].map((boost, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-2 border rounded"
+                        >
+                          <div>
+                            <p className="text-sm font-medium">{boost.item}</p>
+                            <p className="text-xs text-gray-600">
+                              {boost.type} - {boost.cost}
+                            </p>
+                          </div>
+                          <div className="flex gap-1">
+                            <Button size="sm" variant="outline">
+                              Approve
+                            </Button>
+                            <Button size="sm" variant="destructive">
+                              Reject
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
           <TabsContent value="system" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
@@ -588,6 +1200,18 @@ const AdminDashboard = () => {
                           2,
                         )}
                         %
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <span className="text-sm">WebSocket Connections</span>
+                      <span className="font-medium text-blue-600">
+                        342 active
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <span className="text-sm">Database Connections</span>
+                      <span className="font-medium text-green-600">
+                        12/50 pool
                       </span>
                     </div>
                   </div>
