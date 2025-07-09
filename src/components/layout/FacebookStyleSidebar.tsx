@@ -16,6 +16,7 @@ import {
   Settings,
   Radio,
   X,
+  MessageCircle,
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -95,6 +96,12 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
 
   const shortcuts = [
     {
+      icon: <MessageCircle className="w-8 h-8 text-blue-600" />,
+      label: "Messages",
+      href: "/chat",
+      badge: "2",
+    },
+    {
       icon: <Calendar className="w-8 h-8 text-blue-600" />,
       label: "Events",
       href: "/events",
@@ -127,6 +134,11 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       icon: <Rss className="w-6 h-6 text-blue-600" />,
       label: "Feed",
       href: "/feed",
+    },
+    {
+      icon: <MessageCircle className="w-6 h-6 text-blue-600" />,
+      label: "Messages",
+      href: "/chat",
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-purple-600" />,
