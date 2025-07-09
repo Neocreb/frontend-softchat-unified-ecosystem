@@ -3,8 +3,7 @@ import { useState } from "react";
 import Header from "./Header";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
-import SecondaryNav from "./SecondaryNav";
-import FacebookStyleSidebar from "./FacebookStyleSidebar";
+import ModernSidebar from "./ModernSidebar";
 import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
 import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,41 +11,47 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const AppLayout = () => {
   const isMobile = useIsMobile();
   const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Video pages should have full-screen experience
-  const isVideoPage = location.pathname === "/videos";
+  // Full-screen pages (videos, chat)
+  const isFullScreenPage = location.pathname === "/videos" || location.pathname === "/chat";
+
+  // Check if we're on a page that should have minimal layout
+  const isMinimalLayout = isFullScreenPage;
 
   if (isVideoPage) {
     return (
       <div className="min-h-screen bg-background">
         <Outlet />
-        {/* Footer navigation for videos with special styling */}
         {isMobile && <FooterNav />}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background">
+      {/* Modern Header - Cleaner design */}
       <Header
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
-      />
-      {/* Secondary Navigation for user pages (desktop only) */}
-      <SecondaryNav />
-
-      {/* Facebook-style sidebar - Mobile and Desktop */}
-      <FacebookStyleSidebar
-        isOpen={isMobile ? mobileMenuOpen : true}
-        onClose={() => setMobileMenuOpen(false)}
-        isMobile={isMobile}
+        sidebarCollapsed={sidebarCollapsed}
+        setSidebarCollapsed={setSidebarCollapsed}
       />
 
-      {/* Main content area with sidebar for desktop */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Spacer for desktop sidebar */}
-        {!isMobile && <div className="w-80"></div>}
+      <div className="flex h-[calc(100vh-64px)]">
+        {/* Modern Sidebar - Only show on non-minimal layouts */}
+        {!isMinimalLayout && (
+          <ModernSidebar
+            collapsed={sidebarCollapsed}
+            isOpen={isMobile ? mobileMenuOpen : true}
+            onClose={() => setMobileMenuOpen(false)}
+            isMobile={isMobile}
+          />
+        )}
+
+        {/* Main content area */}
+        <main className={`flex-1 overflow-hidden ${!isMinimalLayout && !isMobile ? (sidebarCollapsed ? 'ml-16' : 'ml-72') : ''}`}>
 
         {/* Main content */}
         <main
