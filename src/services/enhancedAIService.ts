@@ -11,6 +11,8 @@ export interface PlatformFeature {
 
 export interface SmartResponse {
   message: string;
+  confidence?: number;
+  sources?: string[];
   suggestedActions: Array<{
     label: string;
     action: string;
@@ -449,7 +451,7 @@ export class EnhancedAIService {
 
     // General features overview
     return {
-      message: `SoftChat has everything you need to succeed online! Here's what you can do:\n\n🌟 Social Feed - Share posts, build your following, and connect with others\n💰 Crypto Trading - Buy and sell 50+ cryptocurrencies with real-time data\n🛒 Marketplace - Sell your products or buy from other users\n💼 Freelance Hub - Offer your skills or hire talented people\n🎥 Video Studio - Create videos and live stream to your audience\n🏆 Rewards System - Earn SoftPoints for every activity you do\n💳 Digital Wallet - Keep track of all your earnings in one place\n\nWhat sounds most interesting to you? I can help you get started with any of these!`,
+      message: `SoftChat has everything you need to succeed online! Here's what you can do:\n\n🌟 Social Feed - Share posts, build your following, and connect with others\n💰 Crypto Trading - Buy and sell 50+ cryptocurrencies with real-time data\n🛒 Marketplace - Sell your products or buy from other users\n💼 Freelance Hub - Offer your skills or hire talented people\n🎥 Video Studio - Create videos and live stream to your audience\n🏆 Rewards System - Earn SoftPoints for every activity you do\n��� Digital Wallet - Keep track of all your earnings in one place\n\nWhat sounds most interesting to you? I can help you get started with any of these!`,
       suggestedActions: [
         { label: "Create my first post", action: "create", url: "/create" },
         {
