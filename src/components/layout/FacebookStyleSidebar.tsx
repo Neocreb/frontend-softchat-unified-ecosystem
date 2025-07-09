@@ -110,29 +110,24 @@ const FacebookStyleSidebar: React.FC = () => {
 
   const menuItems = [
     {
-      icon: <Users className="w-6 h-6 text-blue-600" />,
-      label: "Friends",
-      href: "/friends",
+      icon: <Rss className="w-6 h-6 text-blue-600" />,
+      label: "Feed",
+      href: "/feed",
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-purple-600" />,
-      label: "Professional dashboard",
+      label: "Creator Studio",
       href: "/creator-studio",
     },
     {
-      icon: <UserPlus className="w-6 h-6 text-blue-500" />,
-      label: "Groups",
-      href: "/groups",
+      icon: <Video className="w-6 h-6 text-red-600" />,
+      label: "Videos",
+      href: "/videos",
     },
     {
-      icon: <Megaphone className="w-6 h-6 text-blue-400" />,
-      label: "Ad Center",
-      href: "/ads",
-    },
-    {
-      icon: <Rss className="w-6 h-6 text-blue-600" />,
-      label: "Feeds",
-      href: "/feed",
+      icon: <Radio className="w-6 h-6 text-red-500" />,
+      label: "Live Streaming",
+      href: "/live-streaming",
     },
     {
       icon: <ShoppingCart className="w-6 h-6 text-blue-600" />,
@@ -140,29 +135,9 @@ const FacebookStyleSidebar: React.FC = () => {
       href: "/marketplace",
     },
     {
-      icon: <Video className="w-6 h-6 text-blue-600" />,
-      label: "Reels",
-      href: "/videos",
-    },
-    {
-      icon: <Clock className="w-6 h-6 text-blue-600" />,
-      label: "Memories",
-      href: "/memories",
-    },
-    {
-      icon: <BookMarked className="w-6 h-6 text-purple-600" />,
-      label: "Saved",
-      href: "/saved",
-    },
-    {
-      icon: <HelpCircle className="w-6 h-6 text-blue-600" />,
-      label: "Support",
-      href: "/support",
-    },
-    {
-      icon: <FileText className="w-6 h-6 text-orange-600" />,
-      label: "Pages",
-      href: "/pages",
+      icon: <TrendingUp className="w-6 h-6 text-green-600" />,
+      label: "Crypto Trading",
+      href: "/crypto",
     },
     {
       icon: <Briefcase className="w-6 h-6 text-blue-600" />,
@@ -170,9 +145,24 @@ const FacebookStyleSidebar: React.FC = () => {
       href: "/freelance",
     },
     {
+      icon: <Calendar className="w-6 h-6 text-blue-500" />,
+      label: "Events",
+      href: "/events",
+    },
+    {
       icon: <Wallet className="w-6 h-6 text-green-600" />,
       label: "Wallet",
       href: "/wallet",
+    },
+    {
+      icon: <Award className="w-6 h-6 text-purple-600" />,
+      label: "Rewards",
+      href: "/rewards",
+    },
+    {
+      icon: <Award className="w-6 h-6 text-blue-600" />,
+      label: "Get Verified",
+      href: "/premium",
     },
     {
       icon: <Settings className="w-6 h-6 text-gray-600" />,
