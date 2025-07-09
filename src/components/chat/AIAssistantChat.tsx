@@ -122,27 +122,11 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
       //   user,
       // );
 
-      // Mock response for now
-      const smartResponse = {
-        message: `I understand you're asking about: "${currentInput}". I'm here to help with SoftChat features, content creation, trading, marketplace, and freelancing. What specific area would you like assistance with?`,
-        confidence: 85,
-        suggestedActions: [
-          {
-            id: "explore",
-            label: "Explore Features",
-            action: "navigate",
-            url: "/features",
-          },
-          { id: "help", label: "Get Help", action: "navigate", url: "/help" },
-        ],
-        followUpQuestions: [
-          "How can I improve my content performance?",
-          "What are the latest crypto trading opportunities?",
-          "How do I optimize my marketplace listings?",
-        ],
-        relatedTopics: ["platform features", "user guide", "best practices"],
-        sources: ["SoftChat Knowledge Base"],
-      };
+      // Generate intelligent AI response
+      const smartResponse = intelligentAIService.generateIntelligentResponse(
+        contextualInput,
+        user,
+      );
 
       // Simulate realistic response time
       const responseDelay = Math.min(800 + currentInput.length * 15, 3000);
