@@ -12,6 +12,8 @@ export interface LiveStream {
     | "talk"
     | "entertainment"
     | "business"
+    | "trading"
+    | "art"
     | "other";
   thumbnailUrl?: string;
   status: "scheduled" | "live" | "ended" | "paused";
@@ -34,6 +36,8 @@ export interface LiveStream {
   tags: string[];
   language: string;
   createdAt: string;
+  streamerName: string;
+  streamerAvatar?: string;
 }
 
 export interface StreamViewer {
