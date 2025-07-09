@@ -69,6 +69,7 @@ export function LiveStreamCreator({
 }: LiveStreamCreatorProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
