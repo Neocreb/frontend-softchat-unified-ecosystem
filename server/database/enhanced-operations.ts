@@ -45,6 +45,18 @@ import {
   type InsertAdminUser,
 } from "../../shared/enhanced-schema";
 
+import {
+  users,
+  profiles,
+  p2pOffers,
+  freelanceJobs,
+  freelanceProposals,
+  freelanceProjects,
+  freelanceEscrow,
+  freelanceDisputes,
+  products,
+} from "../../shared/schema";
+
 // =============================================================================
 // WALLET OPERATIONS
 // =============================================================================
