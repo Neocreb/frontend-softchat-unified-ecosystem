@@ -1307,9 +1307,22 @@ export default function EnhancedFeed() {
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                     Live Now
                   </h3>
-                  <Button variant="ghost" size="sm">
-                    View All
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => navigate("/live-streaming")}
+                    >
+                      View All
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => navigate("/live-streaming")}
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      Go Live
+                    </Button>
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 gap-3">
                   {liveStreams.map((stream) => (
