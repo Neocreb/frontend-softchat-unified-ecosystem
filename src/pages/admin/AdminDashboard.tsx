@@ -15,6 +15,9 @@ import { useNotification } from "@/hooks/use-notification";
 import { AdminService } from "@/services/adminService";
 import { AdminDashboardData, AdminUser } from "@/types/admin";
 import { ComprehensiveFeatureShowcase } from "@/components/admin/ComprehensiveFeatureShowcase";
+import { WalletWidget } from "@/components/wallet/WalletWidget";
+import { PremiumStatusWidget } from "@/components/premium/PremiumStatusWidget";
+import { ApiHealthChecker } from "@/components/admin/ApiHealthChecker";
 import {
   BarChart,
   Bar,
@@ -450,6 +453,13 @@ const AdminDashboard = () => {
             {/* Comprehensive Feature Showcase */}
             <div className="mb-6">
               <ComprehensiveFeatureShowcase />
+            </div>
+
+            {/* Live Feature Demos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+              <WalletWidget />
+              <PremiumStatusWidget />
+              <ApiHealthChecker />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
