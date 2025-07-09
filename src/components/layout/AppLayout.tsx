@@ -20,7 +20,7 @@ const AppLayout = () => {
   // Check if we're on a page that should have minimal layout
   const isMinimalLayout = isFullScreenPage;
 
-  if (isVideoPage) {
+  if (isFullScreenPage) {
     return (
       <div className="min-h-screen bg-background">
         <Outlet />
