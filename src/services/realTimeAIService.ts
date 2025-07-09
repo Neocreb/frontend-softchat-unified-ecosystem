@@ -12,9 +12,269 @@ interface RealTimeData {
   data: any;
 }
 
+interface SoftChatKnowledge {
+  features: Record<string, any>;
+  howTo: Record<string, string[]>;
+  tips: Record<string, string[]>;
+  troubleshooting: Record<string, any>;
+}
+
 export class RealTimeAIService {
   private cache: Map<string, RealTimeData> = new Map();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+  // Comprehensive SoftChat platform knowledge
+  private softchatKnowledge: SoftChatKnowledge = {
+    features: {
+      social: {
+        name: "Social Feed & Content",
+        description:
+          "Your personal timeline where you connect with friends, share posts, stories, and build your community.",
+        capabilities: [
+          "Create posts",
+          "Share stories",
+          "Like and comment",
+          "Follow friends",
+          "Join groups",
+          "Live streaming",
+          "Video creation",
+        ],
+      },
+      crypto: {
+        name: "Cryptocurrency Trading",
+        description:
+          "Complete crypto ecosystem with real-time trading, P2P exchange, portfolio tracking, and market analysis.",
+        capabilities: [
+          "Buy/sell crypto",
+          "P2P trading",
+          "Portfolio tracking",
+          "Market analysis",
+          "Price alerts",
+          "Trading signals",
+        ],
+      },
+      marketplace: {
+        name: "Digital Marketplace",
+        description:
+          "Buy and sell products, both digital and physical, with secure payments and seller protection.",
+        capabilities: [
+          "List products",
+          "Secure payments",
+          "Seller dashboard",
+          "Product analytics",
+          "Customer reviews",
+          "Shipping integration",
+        ],
+      },
+      freelance: {
+        name: "Freelance Platform",
+        description:
+          "Connect with clients, showcase your skills, and build your freelance career with project management tools.",
+        capabilities: [
+          "Create profile",
+          "Find projects",
+          "Proposal system",
+          "Time tracking",
+          "Secure payments",
+          "Client reviews",
+        ],
+      },
+      wallet: {
+        name: "Digital Wallet",
+        description:
+          "Unified wallet for managing crypto, fiat, earnings from all platform activities.",
+        capabilities: [
+          "Multi-currency support",
+          "Instant transfers",
+          "Payment history",
+          "Security features",
+          "Integration with all platform features",
+        ],
+      },
+      aiAssistant: {
+        name: "AI Assistant (Edith)",
+        description:
+          "Your personal AI companion that helps with platform features, provides real-time information, and offers friendly conversation.",
+        capabilities: [
+          "Real-time data",
+          "Platform guidance",
+          "Personal assistance",
+          "Friendly chat",
+          "24/7 availability",
+        ],
+      },
+      premium: {
+        name: "Premium Membership",
+        description:
+          "Enhanced features, priority support, exclusive content, and advanced tools for power users.",
+        capabilities: [
+          "Ad-free experience",
+          "Priority support",
+          "Advanced analytics",
+          "Exclusive features",
+          "Higher limits",
+        ],
+      },
+      rewards: {
+        name: "SoftPoints Rewards",
+        description:
+          "Earn points for platform activity and redeem for real rewards, gift cards, and platform benefits.",
+        capabilities: [
+          "Earn through activity",
+          "Redeem rewards",
+          "Gift cards",
+          "Platform benefits",
+          "Loyalty bonuses",
+        ],
+      },
+    },
+    howTo: {
+      "create account": [
+        "Click 'Sign Up' in the top right corner",
+        "Enter your email and create a strong password",
+        "Verify your email address",
+        "Complete your profile with a photo and bio",
+        "Start exploring and connecting!",
+      ],
+      "post content": [
+        "Go to your Feed page",
+        "Click 'Create Post' or the '+' button",
+        "Choose your content type (text, image, video)",
+        "Write your caption and add hashtags",
+        "Set your privacy settings",
+        "Click 'Post' to share with your community",
+      ],
+      "start trading crypto": [
+        "Navigate to the Crypto section",
+        "Complete KYC verification if needed",
+        "Link your payment method",
+        "Browse available cryptocurrencies",
+        "Click 'Buy' on your chosen crypto",
+        "Enter amount and confirm transaction",
+      ],
+      "sell on marketplace": [
+        "Go to Marketplace and click 'Sell'",
+        "Upload high-quality product photos",
+        "Write detailed product description",
+        "Set competitive pricing",
+        "Choose shipping options",
+        "Publish your listing",
+      ],
+      "find freelance work": [
+        "Visit the Freelance section",
+        "Complete your professional profile",
+        "Browse available projects",
+        "Submit compelling proposals",
+        "Highlight relevant experience",
+        "Build client relationships",
+      ],
+      "earn softpoints": [
+        "Stay active by posting and engaging daily",
+        "Complete your profile 100%",
+        "Refer friends to join SoftChat",
+        "Participate in community events",
+        "Use different platform features",
+        "Maintain positive community standing",
+      ],
+    },
+    tips: {
+      "content creation": [
+        "Post consistently - aim for 1-3 posts daily",
+        "Use trending hashtags relevant to your content",
+        "Engage authentically with your community",
+        "Share a mix of personal and professional content",
+        "Use high-quality images and videos",
+        "Post during peak hours (7-9 PM)",
+      ],
+      "crypto trading": [
+        "Start small and learn as you go",
+        "Never invest more than you can afford to lose",
+        "Do your research before buying any crypto",
+        "Use dollar-cost averaging for long-term investing",
+        "Keep your crypto secure in the wallet",
+        "Stay updated with market news and trends",
+      ],
+      "marketplace success": [
+        "Take professional-quality photos",
+        "Write detailed, honest descriptions",
+        "Price competitively based on market research",
+        "Respond quickly to customer inquiries",
+        "Maintain excellent customer service",
+        "Build positive reviews and reputation",
+      ],
+      freelancing: [
+        "Showcase your best work in your portfolio",
+        "Write personalized proposals for each job",
+        "Set realistic timelines and stick to them",
+        "Communicate clearly with clients",
+        "Deliver high-quality work consistently",
+        "Build long-term client relationships",
+      ],
+    },
+    troubleshooting: {
+      "login issues": {
+        solutions: [
+          "Reset your password using 'Forgot Password'",
+          "Clear browser cache and cookies",
+          "Try a different browser",
+          "Check if account is verified",
+        ],
+        common: "Usually resolved by password reset or browser cache clearing",
+      },
+      "payment problems": {
+        solutions: [
+          "Verify payment method is valid",
+          "Check account balance",
+          "Contact support if persistent",
+          "Try alternative payment method",
+        ],
+        common:
+          "Most payment issues are due to expired cards or insufficient funds",
+      },
+      "slow performance": {
+        solutions: [
+          "Clear browser cache",
+          "Close unnecessary tabs",
+          "Check internet connection",
+          "Try different browser",
+        ],
+        common: "Performance usually improves after clearing cache",
+      },
+    },
+  };
+
+  // Personality traits for friendly conversation
+  private personalityTraits = {
+    greeting: ["Hey there!", "Hi friend!", "Hello!", "Hey!", "Hi there!"],
+    enthusiasm: [
+      "That's awesome!",
+      "How exciting!",
+      "That sounds great!",
+      "Wonderful!",
+      "Amazing!",
+    ],
+    support: [
+      "I'm here for you",
+      "You've got this!",
+      "I believe in you",
+      "Don't worry, we'll figure it out",
+      "I'm always here to help",
+    ],
+    casual: [
+      "totally",
+      "definitely",
+      "absolutely",
+      "for sure",
+      "absolutely right",
+    ],
+    empathy: [
+      "I understand how you feel",
+      "That must be tough",
+      "I hear you",
+      "That makes sense",
+      "I can relate to that",
+    ],
+  };
 
   /**
    * Generate intelligent response with real-time data integration
