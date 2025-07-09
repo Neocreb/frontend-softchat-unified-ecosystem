@@ -7,6 +7,7 @@ import ModernSidebar from "./ModernSidebar";
 import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
 import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 const AppLayout = () => {
   const isMobile = useIsMobile();
@@ -15,11 +16,10 @@ const AppLayout = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Full-screen pages (videos, chat)
-  const isFullScreenPage = location.pathname === "/videos" || location.pathname === "/chat";
+  const isFullScreenPage =
+    location.pathname === "/videos" || location.pathname === "/chat";
 
-  // Check if we're on a page that should have minimal layout
-  const isMinimalLayout = isFullScreenPage;
-
+  // Full screen layout for specific pages
   if (isFullScreenPage) {
     return (
       <div className="min-h-screen bg-background">
@@ -31,7 +31,7 @@ const AppLayout = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Modern Header - Cleaner design */}
+      {/* Clean, modern header */}
       <Header
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
@@ -40,40 +40,36 @@ const AppLayout = () => {
       />
 
       <div className="flex h-[calc(100vh-64px)]">
-        {/* Modern Sidebar - Only show on non-minimal layouts */}
-        {!isMinimalLayout && (
-          <ModernSidebar
-            collapsed={sidebarCollapsed}
-            isOpen={isMobile ? mobileMenuOpen : true}
-            onClose={() => setMobileMenuOpen(false)}
-            isMobile={isMobile}
-          />
-        )}
+        {/* Modern organized sidebar */}
+        <ModernSidebar
+          collapsed={sidebarCollapsed}
+          isOpen={isMobile ? mobileMenuOpen : true}
+          onClose={() => setMobileMenuOpen(false)}
+          isMobile={isMobile}
+        />
 
         {/* Main content area */}
-        <main className={`flex-1 overflow-hidden ${!isMinimalLayout && !isMobile ? (sidebarCollapsed ? 'ml-16' : 'ml-72') : ''}`}>
-
-        {/* Main content */}
         <main
-          className={`flex-1 overflow-y-auto ${
-            isMobile ? "pt-14 pb-20 px-2" : "pt-0 pb-6 px-4 ml-80" // ml-80 to account for sidebar width
-          }`}
+          className={cn(
+            "flex-1 overflow-y-auto",
+            !isMobile && (sidebarCollapsed ? "ml-16" : "ml-72"),
+          )}
         >
-          <div className="w-full max-w-full mx-auto">
-            <div className={`${isMobile ? "py-2" : "py-4"}`}>
-              <Outlet />
-            </div>
+          <div className="p-4 md:p-6">
+            <Outlet />
           </div>
         </main>
       </div>
-      {/* Creator Studio Floating Action Button */}
+
+      {/* Mobile navigation */}
+      {isMobile && <FooterNav />}
+
+      {/* Floating Action Buttons */}
       <CreatorStudioFAB />
-      {/* AI Assistant Floating Action Button */}
       <AIAssistantFAB />
+
       {/* Desktop Footer */}
       {!isMobile && <DesktopFooter />}
-      {/* Mobile Footer Navigation */}
-      {isMobile && <FooterNav />}
     </div>
   );
 };
