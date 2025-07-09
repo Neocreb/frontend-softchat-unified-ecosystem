@@ -48,7 +48,7 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
   return (
     <div className={cn("w-full", className)}>
       <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 lg:grid-cols-5 gap-1 h-auto p-1">
+        <TabsList className="flex w-full lg:w-auto lg:inline-flex h-auto p-1 bg-muted/30 rounded-lg">
           {tabs.map((tab) => {
             const IconComponent =
               iconMap[tab.icon as keyof typeof iconMap] || MessageSquare;
