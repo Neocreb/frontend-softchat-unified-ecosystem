@@ -575,3 +575,6 @@
 {"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-07-09T14:13:51.518Z","url":"/","userAgent":"node"}
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-07-09T14:13:53.520Z","url":"/","userAgent":"node"}
 {"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-07-09T14:13:54.704Z"}
+{"level":"warn","message":"Optional environment variables not set: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_S3_BUCKET, REDIS_URL","service":"softchat-backend","timestamp":"2025-07-09T14:14:43.371Z"}
+{"level":"warn","message":"Some features may not work correctly without these variables","service":"softchat-backend","timestamp":"2025-07-09T14:14:43.373Z"}
+{"environment":"development","host":"0.0.0.0","level":"info","message":"Server started successfully","nodeVersion":"v22.16.0","platform":"linux","port":3000,"service":"softchat-backend","timestamp":"2025-07-09T14:14:43.626Z"}
