@@ -535,6 +535,38 @@ const EnhancedVideosV2: React.FC = () => {
               </Button>
             </div>
           </div>
+          {/* Cross-Navigation Quick Access */}
+          <div className="px-4 pb-2">
+            <div className="flex items-center gap-2 justify-center">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open("/live-streaming", "_blank")}
+                className="bg-red-600/20 border-red-400 text-red-300 hover:bg-red-600/30 flex items-center gap-2"
+              >
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                Go Live
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open("/events", "_blank")}
+                className="bg-blue-600/20 border-blue-400 text-blue-300 hover:bg-blue-600/30 flex items-center gap-2"
+              >
+                <Calendar className="w-4 h-4" />
+                Events
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open("/premium", "_blank")}
+                className="bg-purple-600/20 border-purple-400 text-purple-300 hover:bg-purple-600/30 flex items-center gap-2"
+              >
+                <Crown className="w-4 h-4" />
+                Premium
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
