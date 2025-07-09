@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
@@ -9,6 +10,10 @@ const __dirname = dirname(__filename);
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 8080,
+    host: true
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
