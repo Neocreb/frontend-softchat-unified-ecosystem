@@ -117,10 +117,10 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
     setConversationContext((prev) => [...prev.slice(-4), currentInput]);
 
     try {
-      // Track interaction
-      await aiPersonalAssistantService.trackInteraction(user.id, "chat", {
-        message: currentInput,
-      });
+      // Track interaction (temporarily disabled)
+      // await aiPersonalAssistantService.trackInteraction(user.id, "chat", {
+      //   message: currentInput,
+      // });
 
       // Generate AI response with context
       const contextualInput =
@@ -128,10 +128,32 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           ? `Previous context: ${conversationContext.slice(-2).join(". ")}. Current: ${currentInput}`
           : currentInput;
 
-      const smartResponse = enhancedAIService.generateSmartResponse(
-        contextualInput,
-        user,
-      );
+      // const smartResponse = enhancedAIService.generateSmartResponse(
+      //   contextualInput,
+      //   user,
+      // );
+
+      // Mock response for now
+      const smartResponse = {
+        message: `I understand you're asking about: "${currentInput}". I'm here to help with SoftChat features, content creation, trading, marketplace, and freelancing. What specific area would you like assistance with?`,
+        confidence: 85,
+        suggestedActions: [
+          {
+            id: "explore",
+            label: "Explore Features",
+            action: "navigate",
+            url: "/features",
+          },
+          { id: "help", label: "Get Help", action: "navigate", url: "/help" },
+        ],
+        followUpQuestions: [
+          "How can I improve my content performance?",
+          "What are the latest crypto trading opportunities?",
+          "How do I optimize my marketplace listings?",
+        ],
+        relatedTopics: ["platform features", "user guide", "best practices"],
+        sources: ["SoftChat Knowledge Base"],
+      };
 
       // Simulate realistic response time
       const responseDelay = Math.min(800 + currentInput.length * 15, 3000);
