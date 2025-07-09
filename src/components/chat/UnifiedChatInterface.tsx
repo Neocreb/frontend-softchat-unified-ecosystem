@@ -270,8 +270,10 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-        {/* Conversations List */}
-        <Card className="lg:col-span-1">
+        {/* Conversations List - Hide on mobile when chat is selected */}
+        <Card
+          className={cn("lg:col-span-1", selectedChat && "hidden lg:block")}
+        >
           <CardHeader className="pb-3">
             <div className="flex justify-between items-center mb-2">
               <CardTitle className="flex items-center gap-2">
@@ -417,11 +419,32 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
           )}
         </Card>
 
-        {/* Chat Area */}
-        <Card className="lg:col-span-2">
+        {/* Chat Area - Show back button on mobile */}
+        <Card
+          className={cn(
+            "lg:col-span-2",
+            !selectedChat && activeTab !== "ai_assistant" && "hidden lg:block",
+          )}
+        >
           <Tabs value={activeTab} className="h-full">
             <TabsContent value="ai_assistant" className="h-full mt-0">
-              <AIAssistantChat />
+              <div className="flex flex-col h-[600px]">
+                {/* Mobile back button for AI Assistant */}
+                <div className="lg:hidden border-b p-3">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedChat(null)}
+                    className="flex items-center gap-2"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    Back to chats
+                  </Button>
+                </div>
+                <div className="flex-1">
+                  <AIAssistantChat />
+                </div>
+              </div>
             </TabsContent>
 
             {/* Other chat types */}
@@ -436,6 +459,15 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-3">
+                          {/* Mobile back button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedChat(null)}
+                            className="lg:hidden"
+                          >
+                            <MessageSquare className="h-4 w-4" />
+                          </Button>
                           <Avatar>
                             <AvatarImage
                               src={selectedChat.participant_profile?.avatar}
