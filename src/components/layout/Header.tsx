@@ -39,8 +39,12 @@ import SoftchatLogo from "../shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+interface HeaderProps {
+  mobileMenuOpen?: boolean;
+  setMobileMenuOpen?: (open: boolean) => void;
+}
+
+const Header = ({ mobileMenuOpen = false, setMobileMenuOpen }: HeaderProps) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const isMobile = useIsMobile();
@@ -66,7 +70,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => setMobileMenuOpen?.(!mobileMenuOpen)}
               className="md:hidden h-8 w-8 flex-shrink-0"
               aria-label="Toggle menu"
             >
