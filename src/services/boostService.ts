@@ -25,8 +25,8 @@ export interface BoostRequest {
   paymentMethod: "USDT" | "soft_points";
 }
 
-export class BoostService {
-  static async requestBoost(
+class BoostServiceClass {
+  async requestBoost(
     data: BoostRequest,
   ): Promise<{ success: boolean; boostId: string }> {
     const response = await apiCall("/api/boost/request", {
@@ -36,7 +36,7 @@ export class BoostService {
     return response;
   }
 
-  static async getUserBoosts(status?: string): Promise<Boost[]> {
+  async getUserBoosts(status?: string): Promise<Boost[]> {
     const queryParams = status ? `?status=${status}` : "";
     const response = await apiCall(`/api/boosts${queryParams}`);
     return response.boosts;
@@ -102,3 +102,7 @@ export class BoostService {
     return names[type as keyof typeof names] || type;
   }
 }
+
+// Export both class and instance
+export const BoostService = BoostServiceClass;
+export const boostService = new BoostServiceClass();
