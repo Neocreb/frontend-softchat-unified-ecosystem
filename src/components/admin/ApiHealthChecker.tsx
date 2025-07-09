@@ -14,6 +14,7 @@ interface HealthStatus {
 }
 
 export function ApiHealthChecker() {
+  const [isComprehensiveMode, setIsComprehensiveMode] = useState(true);
   const [healthChecks, setHealthChecks] = useState<HealthStatus[]>([
     { endpoint: "/health", name: "Server Health", status: "loading" },
     { endpoint: "/api/wallet", name: "Wallet API", status: "loading" },
