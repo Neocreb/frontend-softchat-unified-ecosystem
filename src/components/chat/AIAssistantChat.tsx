@@ -22,8 +22,7 @@ import {
   AIAction,
   AI_ASSISTANT_CONFIG,
 } from "@/types/unified-chat";
-// import { enhancedAIService } from "@/services/enhancedAIService";
-// import { aiPersonalAssistantService } from "@/services/aiPersonalAssistantService";
+import { intelligentAIService } from "@/services/intelligentAIService";
 import { cn } from "@/lib/utils";
 
 interface AIAssistantChatProps {
@@ -46,36 +45,26 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
   // Initialize AI assistant with welcome message
   useEffect(() => {
     if (user && messages.length === 0) {
+      // Generate personalized welcome message
+      const welcomeResponse = intelligentAIService.generateIntelligentResponse(
+        "welcome to softchat platform overview",
+        user,
+      );
+
       const welcomeMessage: AIAssistantMessage = {
         id: "welcome-msg",
         threadId: "ai_assistant",
         senderId: "ai_assistant",
-        content: AI_ASSISTANT_CONFIG.welcomeMessage,
+        content: welcomeResponse.message,
         timestamp: new Date().toISOString(),
         readBy: [],
         messageType: "text",
         aiContext: {
-          confidence: 100,
-          suggestedActions: [
-            {
-              id: "explore-features",
-              label: "Explore Features",
-              action: "navigate",
-              url: "/features",
-            },
-            {
-              id: "get-started",
-              label: "Get Started Guide",
-              action: "navigate",
-              url: "/help",
-            },
-          ],
-          followUpQuestions: [
-            "How can I improve my content performance?",
-            "What are the latest crypto trading opportunities?",
-            "How do I optimize my marketplace listings?",
-            "What freelance skills are in demand?",
-          ],
+          confidence: welcomeResponse.confidence,
+          sources: welcomeResponse.sources,
+          suggestedActions: welcomeResponse.suggestedActions,
+          followUpQuestions: welcomeResponse.followUpQuestions,
+          relatedTopics: welcomeResponse.relatedTopics,
         },
       };
       setMessages([welcomeMessage]);

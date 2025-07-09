@@ -146,7 +146,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
         </div>
 
         {/* Center section - Main Navigation (Desktop Only) */}
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="flex items-center gap-1 ml-8">
           {mainNavItems.map((item) => (
             <Link
               key={item.href}
@@ -161,7 +161,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
               <item.icon
                 className={cn("h-4 w-4", item.active ? "text-primary" : "")}
               />
-              <span>{item.label}</span>
+              <span className="hidden xl:block">{item.label}</span>
             </Link>
           ))}
         </nav>
