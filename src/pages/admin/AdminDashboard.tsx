@@ -531,35 +531,39 @@ const AdminDashboard = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {dashboardData.activeAdmins.slice(0, 8).map((admin) => (
-                      <div
-                        key={admin.id}
-                        className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                            {admin.name.charAt(0).toUpperCase()}
+                    {(dashboardData?.activeAdmins || [])
+                      .slice(0, 8)
+                      .map((admin) => (
+                        <div
+                          key={admin.id}
+                          className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                              {admin.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm">
+                                {admin.name}
+                              </p>
+                              <p className="text-xs text-gray-600 dark:text-gray-400">
+                                {admin.email}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-medium text-sm">{admin.name}</p>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">
-                              {admin.email}
-                            </p>
+                          <div className="flex gap-1">
+                            {admin.roles.slice(0, 2).map((role) => (
+                              <Badge
+                                key={role}
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {role.replace("_", " ")}
+                              </Badge>
+                            ))}
                           </div>
                         </div>
-                        <div className="flex gap-1">
-                          {admin.roles.slice(0, 2).map((role) => (
-                            <Badge
-                              key={role}
-                              variant="secondary"
-                              className="text-xs"
-                            >
-                              {role.replace("_", " ")}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </CardContent>
               </Card>
