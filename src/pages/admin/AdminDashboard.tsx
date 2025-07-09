@@ -423,7 +423,7 @@ const AdminDashboard = () => {
                 <Briefcase className="h-6 w-6 text-purple-600" />
               </div>
               <CardTitle className="text-2xl font-bold">
-                {formatNumber(dashboardData.stats.totalJobs || 156)}
+                {formatNumber(dashboardData?.stats?.totalJobs || 156)}
               </CardTitle>
               <CardDescription>Freelance Jobs</CardDescription>
               <div className="text-xs text-green-600 mt-1">
