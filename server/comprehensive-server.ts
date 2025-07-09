@@ -422,7 +422,7 @@ server.listen(PORT, () => {
     `💾 Database: ${process.env.DATABASE_URL ? "Connected" : "Not configured"}`,
   );
   logger.info(
-    `📧 Email: ${emailService.isConfigured() ? "Configured" : "Not configured"}`,
+    `📧 Email: ${process.env.SMTP_HOST ? "Configured" : "Not configured"}`,
   );
   logger.info(`🔗 WebSocket: Enabled on /ws`);
 
