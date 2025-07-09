@@ -104,6 +104,10 @@ import {
   Store,
   Coins,
   Crown,
+  Zap,
+  Radio,
+  BarChart3,
+  CheckCircle,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
