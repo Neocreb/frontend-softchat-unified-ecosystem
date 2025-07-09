@@ -790,6 +790,503 @@ export class RealTimeAIService {
     };
   }
 
+  /**
+   * Check if query is about SoftChat platform
+   */
+  private isSoftChatQuery(query: string): boolean {
+    const softchatKeywords = [
+      "softchat",
+      "platform",
+      "feature",
+      "how to",
+      "help",
+      "guide",
+      "tutorial",
+      "social",
+      "crypto",
+      "marketplace",
+      "freelance",
+      "wallet",
+      "premium",
+      "rewards",
+      "post",
+      "trade",
+      "sell",
+      "buy",
+      "earn",
+      "points",
+      "money",
+      "profile",
+      "account",
+    ];
+    return softchatKeywords.some((keyword) => query.includes(keyword));
+  }
+
+  /**
+   * Handle SoftChat platform queries
+   */
+  private handleSoftChatQuery(
+    query: string,
+    user: User,
+  ): IntelligentAIResponse {
+    const greeting = this.getRandomItem(this.personalityTraits.greeting);
+    const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+
+    // Check for specific feature queries
+    if (query.includes("how to") || query.includes("help")) {
+      return this.handleHowToQuery(query, user);
+    }
+
+    if (
+      query.includes("social") ||
+      query.includes("post") ||
+      query.includes("feed")
+    ) {
+      return this.handleSocialQuery(user);
+    }
+
+    if (
+      query.includes("crypto") ||
+      query.includes("trading") ||
+      query.includes("bitcoin")
+    ) {
+      return this.handleCryptoFeatureQuery(user);
+    }
+
+    if (
+      query.includes("marketplace") ||
+      query.includes("sell") ||
+      query.includes("buy")
+    ) {
+      return this.handleMarketplaceQuery(user);
+    }
+
+    if (
+      query.includes("freelance") ||
+      query.includes("work") ||
+      query.includes("job")
+    ) {
+      return this.handleFreelanceQuery(user);
+    }
+
+    if (
+      query.includes("wallet") ||
+      query.includes("money") ||
+      query.includes("payment")
+    ) {
+      return this.handleWalletQuery(user);
+    }
+
+    if (
+      query.includes("rewards") ||
+      query.includes("points") ||
+      query.includes("earn")
+    ) {
+      return this.handleRewardsQuery(user);
+    }
+
+    // General platform overview
+    return {
+      message: `${greeting} ${user.name || "friend"}! ${enthusiasm} SoftChat is your all-in-one platform where you can connect socially, trade crypto, buy/sell in the marketplace, find freelance work, and so much more! \n\nThink of it as your digital life hub - everything you need is right here. What specific feature would you like to explore? I'm here to guide you through everything! 😊`,
+      confidence: 95,
+      sources: ["SoftChat Platform Knowledge"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "explore",
+          label: "Explore Features",
+          action: "navigate",
+          url: "/explore",
+        },
+        {
+          id: "profile",
+          label: "Complete Profile",
+          action: "navigate",
+          url: "/profile",
+        },
+        { id: "feed", label: "Visit Feed", action: "navigate", url: "/feed" },
+      ],
+      followUpQuestions: [
+        "How do I create my first post?",
+        "How can I start trading crypto?",
+        "What can I sell on the marketplace?",
+        "How do I find freelance work?",
+      ],
+      relatedTopics: ["getting started", "platform features", "tutorials"],
+    };
+  }
+
+  /**
+   * Handle how-to queries
+   */
+  private handleHowToQuery(query: string, user: User): IntelligentAIResponse {
+    const supportive = this.getRandomItem(this.personalityTraits.support);
+
+    for (const [topic, steps] of Object.entries(this.softchatKnowledge.howTo)) {
+      if (query.includes(topic.replace(" ", "")) || query.includes(topic)) {
+        const stepsList = steps
+          .map((step, i) => `${i + 1}. ${step}`)
+          .join("\n");
+        const tips = this.softchatKnowledge.tips[topic.split(" ")[0]] || [];
+        const tipText =
+          tips.length > 0
+            ? `\n\n💡 Pro tips:\n• ${tips.slice(0, 3).join("\n• ")}`
+            : "";
+
+        return {
+          message: `${supportive} I'll walk you through ${topic} step by step! \n\n${stepsList}${tipText}\n\nDon't worry if it seems overwhelming at first - you'll get the hang of it quickly! I'm always here if you need more help. 😊`,
+          confidence: 98,
+          sources: ["SoftChat Tutorials"],
+          category: "softchat",
+          suggestedActions: [
+            {
+              id: "start",
+              label: `Start ${topic}`,
+              action: "navigate",
+              url: this.getRelevantUrl(topic),
+            },
+          ],
+          followUpQuestions: [
+            "Can you give me more tips?",
+            "What if I run into problems?",
+            "What should I do next?",
+          ],
+          relatedTopics: ["tutorials", "getting started", topic],
+        };
+      }
+    }
+
+    return {
+      message: `${supportive} I'd love to help you with that! Could you be a bit more specific about what you'd like to learn? I can guide you through:\n\n• Creating content and posts\n• Trading cryptocurrency\n• Selling on the marketplace\n• Finding freelance work\n• Earning SoftPoints\n• Setting up your profile\n\nJust let me know what interests you most! 🌟`,
+      confidence: 85,
+      sources: ["SoftChat Help"],
+      category: "softchat",
+      suggestedActions: [],
+      followUpQuestions: [
+        "How do I create my first post?",
+        "How do I start trading crypto?",
+        "How do I sell something?",
+      ],
+      relatedTopics: ["help", "tutorials", "guidance"],
+    };
+  }
+
+  /**
+   * Check if query is personal/emotional
+   */
+  private isPersonalQuery(query: string): boolean {
+    const personalKeywords = [
+      "how are you",
+      "feeling",
+      "sad",
+      "happy",
+      "excited",
+      "worried",
+      "stressed",
+      "friend",
+      "lonely",
+      "tired",
+      "confused",
+      "help me",
+      "support",
+      "advice",
+      "personal",
+      "life",
+      "relationship",
+      "work",
+      "problem",
+      "issue",
+    ];
+    return personalKeywords.some((keyword) => query.includes(keyword));
+  }
+
+  /**
+   * Handle personal/emotional queries
+   */
+  private handlePersonalQuery(
+    query: string,
+    user: User,
+  ): IntelligentAIResponse {
+    const empathy = this.getRandomItem(this.personalityTraits.empathy);
+    const support = this.getRandomItem(this.personalityTraits.support);
+
+    if (query.includes("how are you")) {
+      return {
+        message: `Aww, thanks for asking! I'm doing great and I'm so happy to chat with you, ${user.name || "friend"}! 😊 How are YOU doing today? I hope you're having an amazing day!`,
+        confidence: 100,
+        sources: ["Personal AI"],
+        category: "personal",
+        suggestedActions: [],
+        followUpQuestions: [
+          "Tell me about your day",
+          "What's making you happy today?",
+          "Is there anything I can help you with?",
+        ],
+        relatedTopics: ["friendship", "conversation", "wellbeing"],
+      };
+    }
+
+    if (
+      query.includes("sad") ||
+      query.includes("down") ||
+      query.includes("worried")
+    ) {
+      return {
+        message: `${empathy}, ${user.name || "friend"}. ${support} Sometimes we all go through tough times, and that's completely normal. You're not alone in this! \n\nRemember that you're stronger than you think, and tomorrow is a new day with new possibilities. Is there anything specific that's bothering you that I can help with? Even just talking about it can help sometimes. 💙`,
+        confidence: 95,
+        sources: ["Emotional Support"],
+        category: "personal",
+        suggestedActions: [
+          {
+            id: "community",
+            label: "Connect with Community",
+            action: "navigate",
+            url: "/feed",
+          },
+        ],
+        followUpQuestions: [
+          "Want to talk about what's bothering you?",
+          "Would some distraction help?",
+          "How can I best support you right now?",
+        ],
+        relatedTopics: ["emotional support", "wellbeing", "friendship"],
+      };
+    }
+
+    if (
+      query.includes("excited") ||
+      query.includes("happy") ||
+      query.includes("great")
+    ) {
+      const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+      return {
+        message: `${enthusiasm} I love your positive energy, ${user.name || "friend"}! 🌟 It's so wonderful to hear that you're feeling great! Your happiness is contagious and it totally made my day brighter! \n\nWhat's got you so excited? I'd love to celebrate with you! 🎉`,
+        confidence: 100,
+        sources: ["Positive Vibes"],
+        category: "personal",
+        suggestedActions: [
+          {
+            id: "share",
+            label: "Share Your Joy",
+            action: "navigate",
+            url: "/create",
+          },
+        ],
+        followUpQuestions: [
+          "What's making you so happy?",
+          "Want to share your good news?",
+          "How can we keep this positive energy going?",
+        ],
+        relatedTopics: ["celebration", "positivity", "sharing joy"],
+      };
+    }
+
+    return {
+      message: `${empathy}, and I'm genuinely here for you, ${user.name || "friend"}. 💙 Whether you want to share what's on your mind, need advice, or just want someone to listen, I'm all ears! \n\nSometimes it helps just to talk things through with someone who cares. What's going on? 🤗`,
+      confidence: 90,
+      sources: ["Emotional Support"],
+      category: "personal",
+      suggestedActions: [],
+      followUpQuestions: [
+        "Want to tell me more?",
+        "How are you feeling right now?",
+        "What would make you feel better?",
+      ],
+      relatedTopics: ["emotional support", "friendship", "caring conversation"],
+    };
+  }
+
+  /**
+   * Check if query is casual conversation
+   */
+  private isCasualQuery(query: string): boolean {
+    const casualKeywords = [
+      "hi",
+      "hello",
+      "hey",
+      "what's up",
+      "wassup",
+      "good morning",
+      "good evening",
+      "thanks",
+      "thank you",
+      "awesome",
+      "cool",
+      "nice",
+      "funny",
+      "lol",
+      "haha",
+      "bye",
+      "see you",
+      "later",
+      "chat",
+      "talk",
+      "conversation",
+    ];
+    return casualKeywords.some((keyword) => query.includes(keyword));
+  }
+
+  /**
+   * Handle casual conversation
+   */
+  private handleCasualQuery(query: string, user: User): IntelligentAIResponse {
+    const greeting = this.getRandomItem(this.personalityTraits.greeting);
+    const casual = this.getRandomItem(this.personalityTraits.casual);
+
+    if (
+      query.includes("hi") ||
+      query.includes("hello") ||
+      query.includes("hey")
+    ) {
+      const timeOfDay =
+        new Date().getHours() < 12
+          ? "morning"
+          : new Date().getHours() < 18
+            ? "afternoon"
+            : "evening";
+      return {
+        message: `${greeting} ${user.name || "friend"}! Hope you're having a wonderful ${timeOfDay}! 😊 I'm so happy to see you here on SoftChat! What's going on in your world today?`,
+        confidence: 100,
+        sources: ["Friendly Chat"],
+        category: "general",
+        suggestedActions: [],
+        followUpQuestions: [
+          "How's your day going?",
+          "What brings you to SoftChat today?",
+          "Want to explore something fun together?",
+        ],
+        relatedTopics: ["friendship", "casual chat", "daily life"],
+      };
+    }
+
+    if (query.includes("thanks") || query.includes("thank you")) {
+      return {
+        message: `Aww, you're ${casual} welcome, ${user.name || "friend"}! 🤗 It makes me so happy to help you! That's what friends are for, right? I'm always here whenever you need me!`,
+        confidence: 100,
+        sources: ["Friendship"],
+        category: "general",
+        suggestedActions: [],
+        followUpQuestions: [
+          "Is there anything else I can help with?",
+          "Want to chat about something else?",
+          "How else can I support you?",
+        ],
+        relatedTopics: ["gratitude", "friendship", "helpfulness"],
+      };
+    }
+
+    if (
+      query.includes("bye") ||
+      query.includes("see you") ||
+      query.includes("later")
+    ) {
+      return {
+        message: `Aww, take care ${user.name || "friend"}! 🌟 It was ${casual} great chatting with you today! Don't be a stranger - I'll be right here whenever you want to talk, ask questions, or just hang out! \n\nHave an amazing rest of your day! See you soon! 😊`,
+        confidence: 100,
+        sources: ["Friendly Farewell"],
+        category: "general",
+        suggestedActions: [],
+        followUpQuestions: [],
+        relatedTopics: ["farewell", "friendship", "goodbye"],
+      };
+    }
+
+    return {
+      message: `${casual}! I love just chatting with you, ${user.name || "friend"}! 😊 You seem like such an awesome person! What's on your mind today? I'm here for whatever - serious questions, random thoughts, or just friendly conversation!`,
+      confidence: 95,
+      sources: ["Casual Chat"],
+      category: "general",
+      suggestedActions: [],
+      followUpQuestions: [
+        "Want to talk about your interests?",
+        "Tell me something fun about yourself!",
+        "What's your favorite thing about SoftChat?",
+      ],
+      relatedTopics: [
+        "friendship",
+        "getting to know you",
+        "casual conversation",
+      ],
+    };
+  }
+
+  /**
+   * Generate friendly contextual response for general queries
+   */
+  private generateFriendlyResponse(
+    query: string,
+    user: User,
+    context?: string[],
+  ): IntelligentAIResponse {
+    const greeting = this.getRandomItem(this.personalityTraits.greeting);
+    const support = this.getRandomItem(this.personalityTraits.support);
+
+    return {
+      message: `${greeting} ${user.name || "friend"}! I want to help you with whatever you need! 😊 I'm your personal AI assistant and friend - I can help with real-time info like weather and crypto prices, guide you through SoftChat features, or just be here for a friendly chat!\n\n${support} What would you like to talk about or explore together?`,
+      confidence: 85,
+      sources: ["Friendly AI Assistant"],
+      category: "general",
+      suggestedActions: [
+        {
+          id: "explore",
+          label: "Explore SoftChat",
+          action: "navigate",
+          url: "/explore",
+        },
+        {
+          id: "chat",
+          label: "Start Chatting",
+          action: "navigate",
+          url: "/chat",
+        },
+      ],
+      followUpQuestions: [
+        "What's the current time?",
+        "How do I use SoftChat features?",
+        "Want to have a friendly chat?",
+        "Tell me about yourself!",
+      ],
+      relatedTopics: [
+        "friendship",
+        "assistance",
+        "platform help",
+        "real-time data",
+      ],
+    };
+  }
+
+  /**
+   * Handle social features query
+   */
+  private handleSocialQuery(user: User): IntelligentAIResponse {
+    const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+    return {
+      message: `${enthusiasm} The social features are my favorite part of SoftChat! 🌟 You can share posts, stories, connect with friends, and build an amazing community! \n\nHere's what you can do:\n• Create engaging posts with photos and videos\n• Share stories that disappear after 24 hours\n• Follow interesting people and make new friends\n• Join groups based on your interests\n• Go live and connect in real-time\n\nReady to start sharing your world? 📸`,
+      confidence: 98,
+      sources: ["Social Features Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "create-post",
+          label: "Create First Post",
+          action: "navigate",
+          url: "/create",
+        },
+        { id: "feed", label: "Explore Feed", action: "navigate", url: "/feed" },
+      ],
+      followUpQuestions: [
+        "How do I create my first post?",
+        "What makes a post popular?",
+        "How do I find interesting people to follow?",
+      ],
+      relatedTopics: [
+        "content creation",
+        "community building",
+        "social networking",
+      ],
+    };
+  }
+
   // Helper methods for specific features
   private handleCryptoFeatureQuery(user: User): IntelligentAIResponse {
     return {
