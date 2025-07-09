@@ -46,9 +46,9 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
   // Initialize AI assistant with welcome message
   useEffect(() => {
     if (user && messages.length === 0) {
-      // Generate personalized welcome message
-      const welcomeResponse = intelligentAIService.generateIntelligentResponse(
-        "welcome to softchat platform overview",
+      // Generate personalized real-time welcome message
+      const welcomeResponse = await realTimeAIService.generateRealTimeResponse(
+        "Welcome! I'm your real-time AI assistant",
         user,
       );
 
