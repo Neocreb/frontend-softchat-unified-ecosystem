@@ -790,6 +790,165 @@ export class RealTimeAIService {
     };
   }
 
+  // Helper methods for specific features
+  private handleCryptoFeatureQuery(user: User): IntelligentAIResponse {
+    return {
+      message: `The crypto features on SoftChat are incredible! 🚀 You can trade Bitcoin, Ethereum, and many other cryptocurrencies safely and easily. Plus, there's P2P trading where you can trade directly with other users!\n\nFeatures include:\n• Real-time price tracking\n• Secure buy/sell transactions\n• P2P trading with escrow protection\n• Portfolio tracking and analytics\n• Price alerts and notifications\n\nWant to start your crypto journey? I can guide you step by step!`,
+      confidence: 98,
+      sources: ["Crypto Features Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "crypto",
+          label: "Explore Crypto",
+          action: "navigate",
+          url: "/crypto",
+        },
+        { id: "kyc", label: "Complete KYC", action: "navigate", url: "/kyc" },
+      ],
+      followUpQuestions: [
+        "How do I start trading crypto?",
+        "Is crypto trading safe here?",
+        "What cryptocurrencies are available?",
+      ],
+      relatedTopics: ["cryptocurrency", "trading", "P2P", "portfolio"],
+    };
+  }
+
+  private handleMarketplaceQuery(user: User): IntelligentAIResponse {
+    return {
+      message: `The marketplace is amazing for both buyers and sellers! 🛍️ You can sell anything from digital products to physical items, and buying is super secure with our payment protection!\n\nAs a seller:\n• List unlimited products\n• Reach thousands of potential buyers\n• Secure payment processing\n• Built-in analytics and insights\n\nAs a buyer:\n• Discover unique products\n• Secure checkout process\n• Buyer protection guarantee\n• Review and rating system\n\nReady to start buying or selling?`,
+      confidence: 98,
+      sources: ["Marketplace Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "marketplace",
+          label: "Browse Marketplace",
+          action: "navigate",
+          url: "/marketplace",
+        },
+        {
+          id: "sell",
+          label: "Start Selling",
+          action: "navigate",
+          url: "/marketplace/sell",
+        },
+      ],
+      followUpQuestions: [
+        "How do I sell my first product?",
+        "What can I sell on the marketplace?",
+        "How secure are the payments?",
+      ],
+      relatedTopics: ["e-commerce", "selling", "buying", "payments"],
+    };
+  }
+
+  private handleFreelanceQuery(user: User): IntelligentAIResponse {
+    return {
+      message: `The freelance platform is perfect for building your career! 💼 Whether you're offering services or looking to hire talent, we've got you covered!\n\nFor freelancers:\n• Create a professional profile\n• Browse thousands of projects\n• Secure milestone-based payments\n• Build your reputation with reviews\n• Track time and manage projects\n\nFor clients:\n• Post your projects for free\n• Review proposals from qualified freelancers\n• Secure escrow payment system\n• Project management tools\n\nReady to start your freelance journey?`,
+      confidence: 98,
+      sources: ["Freelance Platform Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "freelance",
+          label: "Explore Freelance",
+          action: "navigate",
+          url: "/freelance",
+        },
+        {
+          id: "profile",
+          label: "Build Profile",
+          action: "navigate",
+          url: "/profile",
+        },
+      ],
+      followUpQuestions: [
+        "How do I create a freelancer profile?",
+        "What services can I offer?",
+        "How do payments work?",
+      ],
+      relatedTopics: ["freelancing", "projects", "services", "career"],
+    };
+  }
+
+  private handleWalletQuery(user: User): IntelligentAIResponse {
+    return {
+      message: `Your SoftChat wallet is your financial hub! 💰 It securely manages all your money from different platform activities - crypto trading, marketplace sales, freelance earnings, and more!\n\nWallet features:\n• Multi-currency support (crypto + fiat)\n• Instant transfers between platform features\n• Detailed transaction history\n• Bank-level security\n• Easy deposits and withdrawals\n• Real-time balance tracking\n\nYour money is always safe and accessible!`,
+      confidence: 98,
+      sources: ["Wallet Features Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "wallet",
+          label: "Open Wallet",
+          action: "navigate",
+          url: "/wallet",
+        },
+        {
+          id: "security",
+          label: "Security Settings",
+          action: "navigate",
+          url: "/settings",
+        },
+      ],
+      followUpQuestions: [
+        "How do I add money to my wallet?",
+        "Is my money safe in the wallet?",
+        "How do I withdraw my earnings?",
+      ],
+      relatedTopics: ["payments", "security", "transactions", "earnings"],
+    };
+  }
+
+  private handleRewardsQuery(user: User): IntelligentAIResponse {
+    return {
+      message: `SoftPoints are so much fun to earn! 🎆 You get rewarded for being active on the platform, and you can redeem them for real rewards!\n\nEarn SoftPoints by:\n• Creating and sharing content\n• Engaging with the community\n• Completing your profile\n• Referring friends\n• Using different platform features\n• Maintaining positive interactions\n\nRedeem for:\n• Gift cards to popular stores\n• Platform premium features\n• Exclusive merchandise\n• Cash rewards\n\nThe more active you are, the more you earn!`,
+      confidence: 98,
+      sources: ["Rewards System Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "rewards",
+          label: "Check Rewards",
+          action: "navigate",
+          url: "/rewards",
+        },
+        {
+          id: "earn",
+          label: "Start Earning",
+          action: "navigate",
+          url: "/feed",
+        },
+      ],
+      followUpQuestions: [
+        "How do I earn more SoftPoints?",
+        "What rewards are available?",
+        "How do I redeem my points?",
+      ],
+      relatedTopics: ["points", "rewards", "earning", "engagement"],
+    };
+  }
+
+  // Helper method to get random personality trait
+  private getRandomItem(array: string[]): string {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  // Helper method to get relevant URL for features
+  private getRelevantUrl(topic: string): string {
+    const urlMap: Record<string, string> = {
+      "create account": "/auth",
+      "post content": "/create",
+      "start trading crypto": "/crypto",
+      "sell on marketplace": "/marketplace/sell",
+      "find freelance work": "/freelance",
+      "earn softpoints": "/rewards",
+    };
+    return urlMap[topic] || "/explore";
+  }
+
   /**
    * Clear cache
    */
