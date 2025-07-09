@@ -226,14 +226,14 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
     type: "like" | "dislike",
   ) => {
     if (user) {
-      await aiPersonalAssistantService.trackInteraction(
-        user.id,
-        "ai_feedback",
-        {
-          messageId,
-          reaction: type,
-        },
-      );
+      // await aiPersonalAssistantService.trackInteraction(
+      //   user.id,
+      //   "ai_feedback",
+      //   {
+      //     messageId,
+      //     reaction: type,
+      //   },
+      // );
 
       toast({
         title: "Thanks for your feedback!",
