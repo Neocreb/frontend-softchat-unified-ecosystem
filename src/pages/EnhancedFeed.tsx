@@ -1257,28 +1257,28 @@ export default function EnhancedFeed() {
           <EventsBannerCard />
 
           {/* Premium Features Promotion */}
-          <Card className="mb-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-purple-200">
+          <Card className="mb-6 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-blue-200">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Star className="w-5 h-5 text-purple-600" />
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Shield className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-purple-900">
-                      Unlock Premium Features
+                    <h3 className="font-semibold text-blue-900">
+                      Get Verified
                     </h3>
-                    <p className="text-sm text-purple-700">
-                      Get exclusive access to advanced tools, analytics, and
-                      monetization
+                    <p className="text-sm text-blue-700">
+                      Get the blue checkmark and show everyone you're authentic
                     </p>
                   </div>
                 </div>
                 <Button
                   onClick={() => navigate("/premium")}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  Upgrade Now
+                  <Star className="w-4 h-4 mr-2" />
+                  Verify Account
                 </Button>
               </div>
             </CardContent>
