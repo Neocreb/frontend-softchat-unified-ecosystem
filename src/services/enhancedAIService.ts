@@ -195,42 +195,49 @@ export class EnhancedAIService {
     userContext?: Partial<User>,
   ): SmartResponse {
     const lowerInput = input.toLowerCase();
+    let response: SmartResponse;
+    let confidence = 70; // Default confidence
 
     // Analyze input and determine best response strategy
     if (this.isGreeting(lowerInput)) {
-      return this.generateGreetingResponse(userContext);
+      response = this.generateGreetingResponse(userContext);
+      confidence = 95;
+    } else if (this.isFeatureQuestion(lowerInput)) {
+      response = this.generateFeatureResponse(lowerInput);
+      confidence = 90;
+    } else if (this.isHowToQuestion(lowerInput)) {
+      response = this.generateHowToResponse(lowerInput);
+      confidence = 85;
+    } else if (this.isOptimizationQuestion(lowerInput)) {
+      response = this.generateOptimizationResponse(lowerInput);
+      confidence = 88;
+    } else if (this.isTroubleshootingQuestion(lowerInput)) {
+      response = this.generateTroubleshootingResponse(lowerInput);
+      confidence = 82;
+    } else if (this.isPhilosophicalQuestion(lowerInput)) {
+      response = this.generatePhilosophicalResponse(lowerInput);
+      confidence = 75;
+    } else if (this.isFactualQuestion(lowerInput)) {
+      response = this.generateFactualResponse(lowerInput);
+      confidence = 80;
+    } else if (this.isGeneralKnowledgeQuestion(lowerInput)) {
+      response = this.generateGeneralKnowledgeResponse(lowerInput);
+      confidence = 78;
+    } else {
+      // Default comprehensive response
+      response = this.generateComprehensiveResponse(lowerInput);
+      confidence = 70;
     }
 
-    if (this.isFeatureQuestion(lowerInput)) {
-      return this.generateFeatureResponse(lowerInput);
-    }
+    // Add confidence and sources
+    response.confidence = confidence;
+    response.sources = [
+      "SoftChat Platform Knowledge",
+      "AI Assistant Training",
+      "User Guidelines",
+    ];
 
-    if (this.isHowToQuestion(lowerInput)) {
-      return this.generateHowToResponse(lowerInput);
-    }
-
-    if (this.isOptimizationQuestion(lowerInput)) {
-      return this.generateOptimizationResponse(lowerInput);
-    }
-
-    if (this.isTroubleshootingQuestion(lowerInput)) {
-      return this.generateTroubleshootingResponse(lowerInput);
-    }
-
-    if (this.isPhilosophicalQuestion(lowerInput)) {
-      return this.generatePhilosophicalResponse(lowerInput);
-    }
-
-    if (this.isFactualQuestion(lowerInput)) {
-      return this.generateFactualResponse(lowerInput);
-    }
-
-    if (this.isGeneralKnowledgeQuestion(lowerInput)) {
-      return this.generateGeneralKnowledgeResponse(lowerInput);
-    }
-
-    // Default comprehensive response
-    return this.generateComprehensiveResponse(lowerInput);
+    return response;
   }
 
   private isGreeting(input: string): boolean {
