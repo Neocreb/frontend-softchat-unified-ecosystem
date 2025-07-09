@@ -797,6 +797,414 @@ export async function registerEnhancedRoutes(app: Express): Promise<Server> {
     res.status(404).json({ error: "Route not found" });
   });
 
+  // =============================================================================
+  // COMPREHENSIVE PLATFORM ROUTES
+  // =============================================================================
+
+  // Get wallet balance
+  app.get("/api/wallet", authenticateToken, async (req, res, next) => {
+    try {
+      const userId = (req as any).user.userId;
+
+      // Mock wallet data
+      const wallet = {
+        id: `wallet-${userId}`,
+        userId,
+        usdtBalance: "1500.00",
+        ethBalance: "0.5",
+        btcBalance: "0.02",
+        softPointsBalance: "5000.00",
+        isFrozen: false,
+        createdAt: new Date().toISOString(),
+      };
+
+      res.json({ success: true, wallet });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Send money
+  app.post("/api/wallet/send", authenticateToken, async (req, res, next) => {
+    try {
+      const userId = (req as any).user.userId;
+      const { recipientId, amount, currency, description } = req.body;
+
+      if (!recipientId || !amount || !currency) {
+        return res.status(400).json({
+          success: false,
+          error: "Missing required fields: recipientId, amount, currency",
+        });
+      }
+
+      res.json({
+        success: true,
+        message: "Transfer completed successfully",
+        transactionId: `txn-${Date.now()}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Get transaction history
+  app.get("/api/wallet/history", authenticateToken, async (req, res, next) => {
+    try {
+      const transactions = [
+        {
+          id: "txn-1",
+          type: "transfer",
+          currency: "SOFT_POINTS",
+          amount: "100.00",
+          description: "Transfer to John",
+          status: "confirmed",
+          createdAt: new Date().toISOString(),
+        },
+        {
+          id: "txn-2",
+          type: "boost_payment",
+          currency: "SOFT_POINTS",
+          amount: "-50.00",
+          description: "Boost payment",
+          status: "confirmed",
+          createdAt: new Date(Date.now() - 86400000).toISOString(),
+        },
+      ];
+
+      res.json({ success: true, transactions });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Request boost
+  app.post("/api/boost/request", authenticateToken, async (req, res, next) => {
+    try {
+      const userId = (req as any).user.userId;
+      const { type, referenceId, boostType, duration, paymentMethod } =
+        req.body;
+
+      const baseCosts = {
+        featured: 100,
+        top_listing: 200,
+        premium_placement: 300,
+        highlight: 50,
+      };
+      const cost =
+        (baseCosts[boostType as keyof typeof baseCosts] || 100) *
+        (duration / 24);
+
+      res.status(201).json({
+        success: true,
+        message: "Boost request submitted for approval",
+        boostId: `boost-${Date.now()}`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Get user boosts
+  app.get("/api/boosts", authenticateToken, async (req, res, next) => {
+    try {
+      const boosts = [
+        {
+          id: "boost-1",
+          type: "freelance_job",
+          boostType: "featured",
+          duration: 72,
+          cost: "300",
+          status: "active",
+          startDate: new Date().toISOString(),
+          endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+        },
+      ];
+
+      res.json({ success: true, boosts });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Subscribe to premium
+  app.post(
+    "/api/premium/subscribe",
+    authenticateToken,
+    async (req, res, next) => {
+      try {
+        const { tier, billingType } = req.body;
+
+        const pricing = {
+          silver: { monthly: 9.99, yearly: 99.99 },
+          gold: { monthly: 19.99, yearly: 199.99 },
+          pro: { monthly: 39.99, yearly: 399.99 },
+        };
+
+        const price =
+          pricing[tier as keyof typeof pricing][
+            billingType as keyof typeof pricing.silver
+          ];
+
+        res.status(201).json({
+          success: true,
+          message: "Premium subscription activated",
+          subscription: {
+            id: `sub-${Date.now()}`,
+            tier,
+            billingType,
+            price: price.toString(),
+            status: "active",
+          },
+        });
+      } catch (error) {
+        next(error);
+      }
+    },
+  );
+
+  // Get premium status
+  app.get("/api/premium/status", authenticateToken, async (req, res, next) => {
+    try {
+      const subscription = {
+        id: "sub-demo",
+        tier: "gold",
+        status: "active",
+        monthlyBoostCredits: 15,
+        usedBoostCredits: 3,
+        endDate: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString(),
+      };
+
+      res.json({
+        success: true,
+        subscription,
+        isPremium: true,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Admin login
+  app.post("/api/admin/login", async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+
+      if (email === "admin@softchat.com" && password === "SoftChat2024!") {
+        const token = "demo-admin-token-" + Date.now();
+        const admin = {
+          id: "demo-admin-001",
+          name: "Demo Administrator",
+          email: "admin@softchat.com",
+          roles: ["super_admin"],
+          permissions: ["admin.all"],
+        };
+
+        res.json({ success: true, token, admin });
+        return;
+      }
+
+      res.status(401).json({
+        success: false,
+        error: "Invalid credentials. Use admin@softchat.com / SoftChat2024!",
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Admin dashboard data
+  app.get("/api/admin/dashboard", async (req, res, next) => {
+    try {
+      const dashboard = {
+        stats: {
+          totalUsers: 1247,
+          activeUsers: 892,
+          totalProducts: 156,
+          totalJobs: 89,
+          totalTrades: 234,
+          pendingModeration: 12,
+          revenueMonth: 48500,
+          activeBoosts: 27,
+          premiumSubscribers: { silver: 45, gold: 23, pro: 8 },
+        },
+        recentActivity: [
+          {
+            id: "1",
+            adminName: "Demo Admin",
+            action: "user_verification",
+            description: "Verified user account",
+            createdAt: new Date().toISOString(),
+          },
+        ],
+        activeAdmins: [
+          {
+            id: "demo-admin-001",
+            name: "Demo Administrator",
+            email: "admin@softchat.com",
+            roles: ["super_admin"],
+          },
+        ],
+        systemHealth: {
+          cpu: 45,
+          memory: 62,
+          storage: 78,
+          apiLatency: 120,
+          errorRate: 0.02,
+        },
+      };
+
+      res.json({ success: true, dashboard });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Admin user management
+  app.get("/api/admin/users", async (req, res, next) => {
+    try {
+      const mockUsers = [
+        {
+          id: "user-1",
+          email: "john@example.com",
+          emailConfirmed: true,
+          createdAt: new Date().toISOString(),
+          profile: {
+            fullName: "John Doe",
+            username: "johndoe",
+            status: "active",
+            isVerified: true,
+            role: "user",
+            level: "silver",
+            points: 1250,
+          },
+          wallet: {
+            usdtBalance: "500.00",
+            ethBalance: "0.1",
+            btcBalance: "0.005",
+            softPointsBalance: "2500.00",
+            isFrozen: false,
+          },
+        },
+        {
+          id: "user-2",
+          email: "jane@example.com",
+          emailConfirmed: true,
+          createdAt: new Date(Date.now() - 86400000).toISOString(),
+          profile: {
+            fullName: "Jane Smith",
+            username: "janesmith",
+            status: "active",
+            isVerified: true,
+            role: "premium",
+            level: "gold",
+            points: 3450,
+          },
+          wallet: {
+            usdtBalance: "1200.00",
+            ethBalance: "0.5",
+            btcBalance: "0.02",
+            softPointsBalance: "5000.00",
+            isFrozen: false,
+          },
+        },
+      ];
+
+      res.json({
+        success: true,
+        users: mockUsers,
+        pagination: {
+          total: mockUsers.length,
+          limit: 50,
+          offset: 0,
+          hasMore: false,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Suspend user
+  app.post("/api/admin/users/:userId/suspend", async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const { type, reason } = req.body;
+      console.log(`Suspending user ${userId}: ${type} - ${reason}`);
+      res.json({ success: true, message: "User suspended successfully" });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Get boost requests for admin
+  app.get("/api/admin/boosts", async (req, res, next) => {
+    try {
+      const boosts = [
+        {
+          id: "boost-1",
+          type: "freelance_job",
+          referenceId: "job-123",
+          boostType: "featured",
+          duration: 72,
+          cost: "300",
+          currency: "SOFT_POINTS",
+          status: "pending",
+          createdAt: new Date().toISOString(),
+          user: { name: "John Doe", email: "john@example.com" },
+        },
+      ];
+
+      res.json({ success: true, boosts });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Approve/reject boost
+  app.post("/api/admin/boosts/:boostId/:action", async (req, res, next) => {
+    try {
+      const { boostId, action } = req.params;
+
+      if (!["approve", "reject"].includes(action)) {
+        return res.status(400).json({
+          success: false,
+          error: "Invalid action. Use 'approve' or 'reject'",
+        });
+      }
+
+      res.json({ success: true, message: `Boost ${action}ed successfully` });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Platform earnings
+  app.get("/api/admin/earnings", async (req, res, next) => {
+    try {
+      const earnings = [
+        {
+          id: "earn-1",
+          sourceType: "freelance",
+          feeAmount: "250.00",
+          currency: "USDT",
+          description: "Freelance platform fee",
+          earnedAt: new Date().toISOString(),
+          user: { email: "freelancer@example.com", name: "Alice Johnson" },
+        },
+      ];
+
+      const summary = {
+        totalEarnings: 15420.8,
+        totalUsdEarnings: 15420.8,
+        transactionCount: 127,
+      };
+
+      res.json({ success: true, earnings, summary });
+    } catch (error) {
+      next(error);
+    }
+  });
+
   // ============================================================================
   // WEBSOCKET SERVER
   // ============================================================================
