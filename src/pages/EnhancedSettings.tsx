@@ -739,7 +739,7 @@ const EnhancedSettings = () => {
 
           {/* Desktop tabs with grid layout */}
           <div className="hidden lg:block">
-            <TabsList className="grid w-full grid-cols-10">
+            <TabsList className="grid w-full grid-cols-11">
               <TabsTrigger
                 value="profile"
                 className="flex flex-row items-center gap-2 text-sm"
