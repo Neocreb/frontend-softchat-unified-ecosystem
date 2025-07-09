@@ -3,6 +3,7 @@ import Header from "./Header";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
 import SecondaryNav from "./SecondaryNav";
+import FacebookStyleSidebar from "./FacebookStyleSidebar";
 import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
 import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
