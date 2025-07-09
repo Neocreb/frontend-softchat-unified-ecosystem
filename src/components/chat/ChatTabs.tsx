@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { UnifiedChatType, UnifiedChatTab } from "@/types/unified-chat";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ChatTabsProps {
   tabs: UnifiedChatTab[];
@@ -45,10 +46,18 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
   totalUnreadCount,
   className,
 }) => {
+  const isMobile = useIsMobile();
+
   return (
     <div className={cn("w-full", className)}>
       <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-        <TabsList className="flex w-full lg:w-auto lg:inline-flex h-auto p-1 bg-muted/30 rounded-lg">
+        <TabsList
+          className={cn(
+            "flex w-full h-auto bg-muted/30 rounded-lg overflow-x-auto",
+            isMobile ? "p-0.5 gap-0.5 touch-pan-x" : "p-1 gap-1",
+            "scrollbar-hide", // Hide scrollbar on mobile
+          )}
+        >
           {tabs.map((tab) => {
             const IconComponent =
               iconMap[tab.icon as keyof typeof iconMap] || MessageSquare;
@@ -60,11 +69,22 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
                 key={tab.id}
                 value={tab.id}
                 className={cn(
-                  "flex items-center gap-2 py-2.5 px-4 text-sm relative transition-all duration-200 min-w-0 flex-1 lg:flex-none",
+                  "flex items-center relative transition-all duration-200 touch-optimized",
                   "data-[state=active]:bg-background data-[state=active]:shadow-sm data-[state=active]:text-foreground",
                   "hover:bg-background/60 rounded-md",
+                  isMobile && "active:scale-95", // Only scale on mobile
+                  // Mobile specific styling
+                  isMobile && [
+                    "flex-col gap-1 py-2.5 px-1.5 text-xs min-w-[64px] max-w-[80px] min-h-[52px]", // Increased min-height for better touch target
+                    "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground",
+                  ],
+                  // Desktop specific styling
+                  !isMobile && [
+                    "gap-2 py-2.5 px-4 text-sm min-w-0 flex-1 lg:flex-none",
+                  ],
                   isActive &&
                     tab.color &&
+                    !isMobile &&
                     colorMap[tab.color as keyof typeof colorMap],
                   hasUnread && !isActive && "font-medium",
                 )}
@@ -72,44 +92,70 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
                 <div className="relative shrink-0">
                   <IconComponent
                     className={cn(
-                      "h-4 w-4 transition-colors",
+                      "transition-colors",
+                      isMobile ? "h-4 w-4" : "h-4 w-4",
                       isActive ? "text-current" : "text-muted-foreground",
                     )}
                   />
                   {hasUnread && (
                     <Badge
                       variant="destructive"
-                      className="absolute -top-1 -right-1 h-3 w-3 p-0 text-xs flex items-center justify-center min-w-[12px] text-[10px]"
+                      className={cn(
+                        "absolute flex items-center justify-center text-[10px] font-medium",
+                        isMobile
+                          ? "-top-1.5 -right-1.5 h-4 w-4 p-0 min-w-[16px]"
+                          : "-top-1 -right-1 h-3 w-3 p-0 min-w-[12px]",
+                      )}
                     >
-                      {tab.count! > 9 ? "9+" : tab.count}
+                      {tab.count! > 99
+                        ? "99+"
+                        : tab.count! > 9
+                          ? "9+"
+                          : tab.count}
                     </Badge>
                   )}
                 </div>
-                <span
-                  className={cn(
-                    "truncate transition-colors hidden lg:block",
-                    isActive
-                      ? "text-current font-medium"
-                      : "text-muted-foreground",
-                  )}
-                >
-                  {tab.label}
-                </span>
-                <span
-                  className={cn(
-                    "lg:hidden block text-xs truncate",
-                    isActive
-                      ? "text-current font-medium"
-                      : "text-muted-foreground",
-                  )}
-                >
-                  {tab.label.split(" ")[0]}
-                </span>
 
-                {/* AI Assistant special indicator */}
+                {/* Mobile: Show short label below icon */}
+                {isMobile ? (
+                  <span
+                    className={cn(
+                      "text-[10px] leading-tight text-center truncate max-w-full",
+                      isActive
+                        ? "text-current font-medium"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {tab.id === "ai_assistant" ? "AI" : tab.label.split(" ")[0]}
+                  </span>
+                ) : (
+                  /* Desktop: Show full label */
+                  <span
+                    className={cn(
+                      "truncate transition-colors",
+                      isActive
+                        ? "text-current font-medium"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {tab.label}
+                  </span>
+                )}
+
+                {/* AI Assistant special indicator - adjusted for mobile */}
                 {tab.id === "ai_assistant" && (
-                  <div className="absolute top-1 right-1">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
+                  <div
+                    className={cn(
+                      "absolute",
+                      isMobile ? "top-0.5 right-0.5" : "top-1 right-1",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "bg-purple-500 rounded-full animate-pulse",
+                        isMobile ? "w-1.5 h-1.5" : "w-2 h-2",
+                      )}
+                    />
                   </div>
                 )}
               </TabsTrigger>
@@ -118,11 +164,14 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
         </TabsList>
       </Tabs>
 
-      {/* Total unread count for mobile */}
-      {totalUnreadCount && totalUnreadCount > 0 && (
-        <div className="flex justify-center mt-2 lg:hidden">
-          <Badge variant="outline" className="text-xs">
-            {totalUnreadCount} unread message{totalUnreadCount > 1 ? "s" : ""}
+      {/* Total unread count for mobile - improved design */}
+      {isMobile && totalUnreadCount && totalUnreadCount > 0 && (
+        <div className="flex justify-center mt-2">
+          <Badge
+            variant="secondary"
+            className="text-xs px-2 py-1 bg-primary/10 text-primary border-primary/20"
+          >
+            {totalUnreadCount} unread
           </Badge>
         </div>
       )}

@@ -23,6 +23,7 @@ import {
   AI_ASSISTANT_CONFIG,
 } from "@/types/unified-chat";
 import { intelligentAIService } from "@/services/intelligentAIService";
+import { realTimeAIService } from "@/services/realTimeAIService";
 import { cn } from "@/lib/utils";
 
 interface AIAssistantChatProps {
@@ -44,31 +45,63 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
 
   // Initialize AI assistant with welcome message
   useEffect(() => {
-    if (user && messages.length === 0) {
-      // Generate personalized welcome message
-      const welcomeResponse = intelligentAIService.generateIntelligentResponse(
-        "welcome to softchat platform overview",
-        user,
-      );
+    const initializeWelcome = async () => {
+      if (user && messages.length === 0) {
+        try {
+          // Generate personalized real-time welcome message
+          const welcomeResponse =
+            await realTimeAIService.generateRealTimeResponse(
+              "Welcome! I'm your real-time AI assistant",
+              user,
+            );
 
-      const welcomeMessage: AIAssistantMessage = {
-        id: "welcome-msg",
-        threadId: "ai_assistant",
-        senderId: "ai_assistant",
-        content: welcomeResponse.message,
-        timestamp: new Date().toISOString(),
-        readBy: [],
-        messageType: "text",
-        aiContext: {
-          confidence: welcomeResponse.confidence,
-          sources: welcomeResponse.sources,
-          suggestedActions: welcomeResponse.suggestedActions,
-          followUpQuestions: welcomeResponse.followUpQuestions,
-          relatedTopics: welcomeResponse.relatedTopics,
-        },
-      };
-      setMessages([welcomeMessage]);
-    }
+          const welcomeMessage: AIAssistantMessage = {
+            id: "welcome-msg",
+            threadId: "ai_assistant",
+            senderId: "ai_assistant",
+            content: welcomeResponse.message,
+            timestamp: new Date().toISOString(),
+            readBy: [],
+            messageType: "text",
+            aiContext: {
+              confidence: welcomeResponse.confidence,
+              sources: welcomeResponse.sources,
+              suggestedActions: welcomeResponse.suggestedActions,
+              followUpQuestions: welcomeResponse.followUpQuestions,
+              relatedTopics: welcomeResponse.relatedTopics,
+            },
+          };
+          setMessages([welcomeMessage]);
+        } catch (error) {
+          console.error("Error initializing welcome message:", error);
+          // Fallback to simple welcome message
+          const fallbackMessage: AIAssistantMessage = {
+            id: "welcome-msg",
+            threadId: "ai_assistant",
+            senderId: "ai_assistant",
+            content: `Hi ${user.name || "there"}! I'm Edith, your real-time AI assistant. Ask me about current time, crypto prices, weather, news, calculations, or SoftChat features!`,
+            timestamp: new Date().toISOString(),
+            readBy: [],
+            messageType: "text",
+            aiContext: {
+              confidence: 95,
+              sources: ["Real-time AI"],
+              suggestedActions: [],
+              followUpQuestions: [
+                "What's the current time?",
+                "Show me Bitcoin price",
+                "What's the weather like?",
+                "Tell me the latest news",
+              ],
+              relatedTopics: ["real-time data", "platform features"],
+            },
+          };
+          setMessages([fallbackMessage]);
+        }
+      }
+    };
+
+    initializeWelcome();
   }, [user]);
 
   // Auto-scroll to bottom when new messages arrive
@@ -122,10 +155,11 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
       //   user,
       // );
 
-      // Generate intelligent AI response
-      const smartResponse = intelligentAIService.generateIntelligentResponse(
+      // Generate real-time intelligent AI response
+      const smartResponse = await realTimeAIService.generateRealTimeResponse(
         contextualInput,
         user,
+        conversationContext,
       );
 
       // Simulate realistic response time
@@ -261,7 +295,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           </div>
           <p className="text-xs text-purple-600">
-            Always here to help • Responds instantly
+            Real-time AI • Live data • Current information
           </p>
         </div>
         <Button variant="ghost" size="sm" className="text-purple-600">
@@ -426,7 +460,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
                       ></div>
                     </div>
                     <span className="text-xs text-purple-600 ml-2">
-                      {AI_ASSISTANT_CONFIG.name} is thinking...
+                      {AI_ASSISTANT_CONFIG.name} is fetching real-time data...
                     </span>
                   </div>
                 </div>
@@ -443,7 +477,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Ask ${AI_ASSISTANT_CONFIG.name} anything about SoftChat...`}
+              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - SoftChat, life, or real-time info!`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
@@ -461,7 +495,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           <div className="flex items-center gap-1 text-xs text-purple-600">
             <Sparkles className="h-3 w-3" />
             <span>
-              I can help with content, trading, marketplace, freelancing & more!
+              Your friendly AI companion! Ask about anything - SoftChat
+              features, real-time data, or just chat! 😊
             </span>
           </div>
         </form>

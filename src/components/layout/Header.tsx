@@ -30,6 +30,10 @@ import {
   Calendar,
   Zap,
   Bot,
+  Wallet,
+  Crown,
+  ShieldCheck,
+  CreditCard,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
@@ -251,9 +255,33 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/ai-assistant")}>
+                <Bot className="mr-2 h-4 w-4" />
+                AI Assistant
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/settings")}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/wallet")}>
+                <Wallet className="mr-2 h-4 w-4" />
+                Wallet
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/chat")}>
+                <MessageSquare className="mr-2 h-4 w-4" />
+                Messages
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/premium")}>
+                <Crown className="mr-2 h-4 w-4 text-purple-600" />
+                <span className="text-purple-600">Premium</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/kyc")}>
+                <ShieldCheck className="mr-2 h-4 w-4" />
+                KYC Verification
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/notifications")}>
+                <Bell className="mr-2 h-4 w-4" />
+                Notifications
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
