@@ -324,8 +324,8 @@ class LiveStreamingService {
         ? data.map(this.mapDbStreamToStream)
         : this.getMockLiveStreams(limit);
     } catch (error) {
-      console.error(
-        "Error getting live streams:",
+      console.warn(
+        "Database not available, using mock data for live streams:",
         error instanceof Error ? error.message : error,
       );
       return this.getMockLiveStreams(limit);
