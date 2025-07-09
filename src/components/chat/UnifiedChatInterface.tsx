@@ -403,11 +403,12 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
               ) : (
                 <CardContent className="p-0 flex-1 overflow-hidden">
                   <ScrollArea
-                    className={
+                    className={cn(
+                      "chat-scroll-area",
                       isMobile
                         ? "h-[calc(100vh-200px)]"
-                        : "h-[calc(100vh-240px)]"
-                    }
+                        : "h-[calc(100vh-240px)]",
+                    )}
                     style={{
                       height: isMobile
                         ? "calc(100vh - 200px)"
@@ -441,8 +442,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                           key={conv.id}
                           className={cn(
                             "flex items-start cursor-pointer transition-all duration-200 border-b border-border/30 last:border-b-0",
-                            "active:bg-muted/70 touch-manipulation", // Touch optimizations
-                            isMobile ? "gap-2 p-3" : "gap-3 p-4",
+                            "touch-optimized active:bg-muted/70", // Touch optimizations
+                            isMobile ? "gap-2 p-3 min-h-[60px]" : "gap-3 p-4", // Minimum touch target
                             selectedChat?.id === conv.id
                               ? "bg-primary/5 border-l-2 border-l-primary"
                               : "hover:bg-muted/50 hover:border-l-2 hover:border-l-muted-foreground/20",
@@ -719,7 +720,10 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 
                           <CardContent className="p-0 flex-1 overflow-hidden flex flex-col">
                             <ScrollArea
-                              className={`flex-1 ${isMobile ? "px-3" : "px-4"}`}
+                              className={cn(
+                                "flex-1 chat-scroll-area",
+                                isMobile ? "px-3" : "px-4",
+                              )}
                               style={{
                                 height: isMobile
                                   ? "calc(100vh - 180px)"
@@ -776,7 +780,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                         <div className="flex-1">
                                           <div
                                             className={cn(
-                                              "rounded-lg",
+                                              "rounded-lg chat-message-bubble",
                                               isMobile ? "p-2.5" : "p-3",
                                               msg.senderId === user.id
                                                 ? "bg-primary text-primary-foreground"
@@ -784,11 +788,12 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                             )}
                                           >
                                             <p
-                                              className={
+                                              className={cn(
+                                                "text-responsive",
                                                 isMobile
                                                   ? "text-sm leading-relaxed"
-                                                  : "text-sm"
-                                              }
+                                                  : "text-sm",
+                                              )}
                                             >
                                               {msg.content}
                                             </p>
@@ -861,13 +866,22 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                 onChange={(e) =>
                                   setMessageInput(e.target.value)
                                 }
-                                className={`flex-1 ${isMobile ? "h-9" : "h-10"}`}
+                                className={cn(
+                                  "flex-1",
+                                  isMobile ? "h-11 chat-input-mobile" : "h-10",
+                                )}
                                 autoComplete="off"
+                                autoFocus={!isMobile} // Don't auto-focus on mobile to prevent keyboard popup
                               />
                               <Button
                                 type="submit"
-                                size={isMobile ? "sm" : "default"}
-                                className={isMobile ? "px-3" : "px-4"}
+                                size={isMobile ? "default" : "default"}
+                                className={cn(
+                                  "touch-optimized",
+                                  isMobile
+                                    ? "px-4 min-w-[50px] h-11"
+                                    : "px-4 h-10", // Larger touch target on mobile
+                                )}
                                 disabled={!messageInput.trim()}
                               >
                                 <Send className="h-4 w-4" />
