@@ -591,7 +591,10 @@ class SubscriptionService {
         totalSpent,
       };
     } catch (error) {
-      console.error("Error getting subscription analytics:", error);
+      console.error(
+        "Error getting subscription analytics:",
+        error instanceof Error ? error.message : error,
+      );
       return {
         tier: null,
         usage: null,
