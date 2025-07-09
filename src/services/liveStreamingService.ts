@@ -314,8 +314,8 @@ class LiveStreamingService {
         .limit(limit);
 
       if (error) {
-        console.error(
-          "Database error getting live streams:",
+        console.warn(
+          "Database not available, using mock data for live streams:",
           error.message || error,
         );
         return this.getMockLiveStreams(limit);
