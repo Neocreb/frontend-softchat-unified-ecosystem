@@ -49,7 +49,11 @@ export function ApiHealthChecker() {
                   ...item,
                   status: "error",
                   error:
-                    error instanceof Error ? error.message : "Unknown error",
+                    check.endpoint === "/health"
+                      ? error instanceof Error
+                        ? error.message
+                        : "Unknown error"
+                      : "API not available (basic server mode)",
                 }
               : item,
           ),
