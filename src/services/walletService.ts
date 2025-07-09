@@ -29,12 +29,12 @@ export interface SendMoneyRequest {
 }
 
 class WalletServiceClass {
-  static async getWallet(): Promise<Wallet> {
+  async getWallet(): Promise<Wallet> {
     const response = await apiCall("/api/wallet");
     return response.wallet;
   }
 
-  static async sendMoney(
+  async sendMoney(
     data: SendMoneyRequest,
   ): Promise<{ success: boolean; transactionId: string }> {
     const response = await apiCall("/api/wallet/send", {
@@ -44,7 +44,7 @@ class WalletServiceClass {
     return response;
   }
 
-  static async getTransactionHistory(params?: {
+  async getTransactionHistory(params?: {
     limit?: number;
     offset?: number;
     type?: string;

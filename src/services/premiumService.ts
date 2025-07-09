@@ -19,7 +19,7 @@ export interface SubscribeRequest {
 }
 
 class PremiumServiceClass {
-  static async subscribe(
+  async subscribe(
     data: SubscribeRequest,
   ): Promise<{ success: boolean; subscription: PremiumSubscription }> {
     const response = await apiCall("/api/premium/subscribe", {
@@ -29,7 +29,7 @@ class PremiumServiceClass {
     return response;
   }
 
-  static async getPremiumStatus(): Promise<{
+  async getPremiumStatus(): Promise<{
     subscription: PremiumSubscription | null;
     isPremium: boolean;
   }> {
