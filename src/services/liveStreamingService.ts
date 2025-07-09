@@ -57,6 +57,7 @@ export interface StreamMessage {
   streamId: string;
   userId: string;
   username: string;
+  userAvatar?: string;
   message: string;
   type: "chat" | "gift" | "tip" | "system" | "moderation";
   metadata?: Record<string, any>;
