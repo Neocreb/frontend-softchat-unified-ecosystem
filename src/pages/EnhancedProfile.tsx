@@ -38,6 +38,7 @@ import {
   Gift,
   Shield,
   Verified,
+  Crown,
   Edit,
   Share2,
   MoreHorizontal,
