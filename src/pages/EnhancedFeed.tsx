@@ -931,7 +931,7 @@ const PostCard = ({
             <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
               <AvatarImage src={post.user.avatar} />
               <AvatarFallback className="text-xs sm:text-sm">
-                {post.user.name.charAt(0)}
+                {post.user?.name?.charAt(0) || "U"}
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
