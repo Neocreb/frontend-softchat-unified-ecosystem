@@ -376,7 +376,10 @@ class VirtualGiftsService {
 
       return data;
     } catch (error) {
-      console.error("Error sending tip:", error);
+      console.error(
+        "Error sending tip:",
+        error instanceof Error ? error.message : error,
+      );
       return null;
     }
   }
@@ -458,7 +461,10 @@ class VirtualGiftsService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error("Error getting received tips:", error);
+      console.error(
+        "Error getting received tips:",
+        error instanceof Error ? error.message : error,
+      );
       return [];
     }
   }
@@ -501,7 +507,10 @@ class VirtualGiftsService {
 
       return !error;
     } catch (error) {
-      console.error("Error updating tip settings:", error);
+      console.error(
+        "Error updating tip settings:",
+        error instanceof Error ? error.message : error,
+      );
       return false;
     }
   }
@@ -605,7 +614,10 @@ class VirtualGiftsService {
         topTippers,
       };
     } catch (error) {
-      console.error("Error getting tip statistics:", error);
+      console.error(
+        "Error getting tip statistics:",
+        error instanceof Error ? error.message : error,
+      );
       return {
         totalTipsReceived: 0,
         totalTipValue: 0,
