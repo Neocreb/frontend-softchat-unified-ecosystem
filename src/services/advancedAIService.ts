@@ -85,7 +85,7 @@ export class AdvancedAIService {
       query.includes("btc") ||
       cryptoSymbol === "bitcoin"
     ) {
-      const trend = cryptoData.change24h >= 0 ? "📈" : "📉";
+      const trend = cryptoData.change24h >= 0 ? "📈" : "����";
       const analysis = this.generateMarketAnalysis(cryptoData);
       const dataSource =
         cryptoResponse.source === "real_api"
@@ -193,13 +193,19 @@ export class AdvancedAIService {
     query: string,
     user: User,
   ): Promise<IntelligentAIResponse> {
-    const newsData = await this.simulateNewsAPI();
+    const category = this.extractNewsCategory(query);
+    const newsResponse = await realAPIService.getNewsData(category);
+    const newsData = newsResponse.data;
     const summary = this.generateNewsSummary(newsData);
+    const dataSource =
+      newsResponse.source === "real_api"
+        ? "Live News API"
+        : "Intelligent News Simulation";
 
     return {
-      message: `📰 **Latest News Headlines**\n\n${newsData.map((story, i) => `**${i + 1}.** ${story.headline}\n   📊 *${story.category} • ${story.timeAgo}*\n   ${story.summary}\n`).join("\n")}\n🤖 **AI Insight:** ${summary}\n\n*News updated every 15 minutes*`,
+      message: `📰 **Latest ${category.charAt(0).toUpperCase() + category.slice(1)} News**\n\n${newsData.map((story, i) => `**${i + 1}.** ${story.title}\n   📊 *${story.source} • ${this.getTimeAgo(story.publishedAt)}*\n   ${story.summary}\n`).join("\n")}\n🤖 **AI Insight:** ${summary}\n\n*Data from: ${dataSource} • Updated: ${new Date().toLocaleTimeString()}*`,
       confidence: 88,
-      sources: ["News API", "AI Summarization"],
+      sources: [dataSource, "AI News Analysis"],
       category: "general",
       suggestedActions: [
         {
