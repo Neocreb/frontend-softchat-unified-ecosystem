@@ -434,18 +434,68 @@ export class AdvancedAIService {
   }
 
   private generateWeatherForecast(data: any): string {
-    return data.forecast
-      .map((f: any) => `${f.time}: ${f.temp}°F, ${f.condition}`)
-      .join("\n");
+    if (data.forecast && data.forecast.length > 0) {
+      return data.forecast
+        .map((f: any) => `${f.time}: ${f.temp}°F, ${f.condition}`)
+        .join("\n");
+    }
+    return "Forecast data not available";
   }
 
   private generateWeatherAdvice(data: any): string {
-    const temp = data.current.temp;
+    const temp = data.temperature || data.current?.temp || 70;
     if (temp > 80)
       return "Great weather for outdoor activities! Don't forget sunscreen and stay hydrated.";
     if (temp < 50)
       return "Chilly day ahead - perfect for cozy indoor activities or warm layers if going out.";
     return "Perfect weather for any activity you have planned! Enjoy your day!";
+  }
+
+  private extractNewsCategory(query: string): string {
+    const categories = [
+      "technology",
+      "business",
+      "sports",
+      "health",
+      "entertainment",
+    ];
+    const lowerQuery = query.toLowerCase();
+
+    for (const category of categories) {
+      if (
+        lowerQuery.includes(category) ||
+        lowerQuery.includes(category.slice(0, 4))
+      ) {
+        return category;
+      }
+    }
+
+    if (
+      lowerQuery.includes("tech") ||
+      lowerQuery.includes("ai") ||
+      lowerQuery.includes("crypto")
+    ) {
+      return "technology";
+    }
+
+    return "general";
+  }
+
+  private getTimeAgo(dateString: string): string {
+    const now = new Date();
+    const publishedDate = new Date(dateString);
+    const diffMs = now.getTime() - publishedDate.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+    if (diffHours < 1) {
+      return `${diffMinutes} minutes ago`;
+    } else if (diffHours < 24) {
+      return `${diffHours} hours ago`;
+    } else {
+      const diffDays = Math.floor(diffHours / 24);
+      return `${diffDays} days ago`;
+    }
   }
 
   private generateNewsSummary(news: any[]): string {
