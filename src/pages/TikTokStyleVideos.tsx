@@ -700,13 +700,13 @@ const VideoCard: React.FC<{
       <Button
         size="icon"
         variant="ghost"
-        className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 border-none"
+        className="absolute top-16 right-3 w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 border-none z-30"
         onClick={() => setIsMuted(!isMuted)}
       >
         {isMuted ? (
-          <VolumeX className="w-5 h-5 text-white" />
+          <VolumeX className="w-4 h-4 text-white" />
         ) : (
-          <Volume2 className="w-5 h-5 text-white" />
+          <Volume2 className="w-4 h-4 text-white" />
         )}
       </Button>
 
