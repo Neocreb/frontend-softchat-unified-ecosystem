@@ -127,7 +127,7 @@ const AdminRoute = ({ children }: AdminRouteProps) => {
   }
 
   if (!isAdmin()) {
-    return <Navigate to="/feed" replace />;
+    return <Navigate to="/app/feed" replace />;
   }
 
   return <>{children}</>;
