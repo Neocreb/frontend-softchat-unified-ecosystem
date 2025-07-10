@@ -56,7 +56,7 @@ const EventsBannerCard = () => {
             </div>
 
             <div className="flex gap-2">
-              <Link to="/events" className="flex-1">
+              <Link to="/app/events" className="flex-1">
                 <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm">
                   <Play className="w-4 h-4 mr-2" />
                   Join Live Events
