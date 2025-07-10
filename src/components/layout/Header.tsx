@@ -222,7 +222,7 @@ const Header = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link
-                  to="/profile"
+                  to="/app/profile"
                   className="flex items-center w-full font-medium"
                 >
                   <User className="mr-2 h-4 w-4" />
@@ -231,7 +231,7 @@ const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
-                  to="/settings"
+                  to="/app/settings"
                   className="flex items-center w-full font-medium"
                 >
                   <Settings className="mr-2 h-4 w-4" />
@@ -240,19 +240,22 @@ const Header = () => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/wallet" className="flex items-center w-full">
+                <Link to="/app/wallet" className="flex items-center w-full">
                   <Wallet className="mr-2 h-4 w-4" />
                   <span>Wallet</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/chat" className="flex items-center w-full">
+                <Link to="/app/chat" className="flex items-center w-full">
                   <MessageCircle className="mr-2 h-4 w-4" />
                   <span>Messages</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/notifications" className="flex items-center w-full">
+                <Link
+                  to="/app/notifications"
+                  className="flex items-center w-full"
+                >
                   <Bell className="mr-2 h-4 w-4" />
                   <span>Notifications</span>
                 </Link>
