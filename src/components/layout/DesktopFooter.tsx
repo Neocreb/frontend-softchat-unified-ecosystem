@@ -193,13 +193,13 @@ const DesktopFooter = () => {
 
           <div className="flex items-center gap-4">
             <Link
-              to="/profile"
+              to="/app/profile"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Profile
             </Link>
             <Link
-              to="/settings"
+              to="/app/settings"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Settings
