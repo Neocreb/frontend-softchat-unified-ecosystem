@@ -407,10 +407,10 @@ const VideoCard: React.FC<{
 
       {/* Challenge Banner - TikTok style */}
       {video.challenge && showControls && (
-        <div className="absolute top-16 left-4 right-20 z-30">
-          <div className="bg-gradient-to-r from-purple-600/30 to-pink-600/30 backdrop-blur-md border border-white/20 rounded-full px-4 py-2">
+        <div className="absolute top-12 left-4 right-24 z-30">
+          <div className="bg-gradient-to-r from-purple-600/30 to-pink-600/30 backdrop-blur-md border border-white/20 rounded-full px-3 py-2">
             <div className="flex items-center gap-2">
-              <Flame className="w-4 h-4 text-orange-400" />
+              <Flame className="w-3 h-3 text-orange-400" />
               <span className="text-white text-sm font-semibold">
                 #{video.challenge.hashtag}
               </span>
