@@ -160,16 +160,14 @@ export default function BlogRSSFeed({
               />
               Refresh
             </Button>
-            <Button variant="outline" size="sm" asChild>
-              <a
-                href="/blog"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs"
-              >
-                <ExternalLink className="h-3 w-3 mr-1" />
-                View All
-              </a>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/blog")}
+              className="text-xs"
+            >
+              <ExternalLink className="h-3 w-3 mr-1" />
+              View All
             </Button>
           </div>
         </div>
