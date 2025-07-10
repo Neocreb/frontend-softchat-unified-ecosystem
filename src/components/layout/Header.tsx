@@ -101,7 +101,7 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6">
           <Link
-            to="/feed"
+            to="/app/feed"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
           >
             <Home className="h-4 w-4 lg:h-5 lg:w-5" />
