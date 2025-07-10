@@ -835,14 +835,12 @@ export default function EnhancedCrypto() {
                           📡 RSS Feed
                         </a>
                       </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <a
-                          href="/blog"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View All Articles
-                        </a>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate("/blog")}
+                      >
+                        View All Articles
                       </Button>
                     </div>
                   </div>
