@@ -27,6 +27,7 @@ export default function BlogRSSFeed({
   showHeader = true,
   className,
 }: BlogRSSFeedProps) {
+  const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
