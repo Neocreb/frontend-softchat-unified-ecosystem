@@ -131,14 +131,14 @@ const DesktopFooter = () => {
                 Settings
               </Link>
               <Link
-                to="/notifications"
+                to="/app/notifications"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Bell className="h-4 w-4" />
                 Notifications
               </Link>
               <Link
-                to="/chat"
+                to="/app/chat"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <MessageCircle className="h-4 w-4" />
