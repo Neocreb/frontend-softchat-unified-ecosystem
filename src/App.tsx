@@ -246,6 +246,7 @@ const AppRoutes = () => {
           </AdminRoute>
         }
       >
+        <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
       </Route>
