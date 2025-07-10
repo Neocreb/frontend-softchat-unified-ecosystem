@@ -47,7 +47,7 @@ const DesktopFooter = () => {
             <h3 className="font-semibold text-sm">Platform</h3>
             <nav className="flex flex-col space-y-2">
               <Link
-                to="/feed"
+                to="/app/feed"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Home className="h-4 w-4" />
