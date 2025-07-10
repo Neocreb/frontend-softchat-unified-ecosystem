@@ -19,6 +19,7 @@ import {
 import { BlogPost } from "@/types/blog";
 import { blogService } from "@/services/blogService";
 import { cn } from "@/lib/utils";
+import CommentsSection from "@/components/blog/CommentsSection";
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
