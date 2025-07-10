@@ -550,10 +550,10 @@ const VideoCard: React.FC<{
         </div>
 
         {/* Right side - Action buttons (TikTok style) */}
-        <div className="flex flex-col items-center justify-end gap-6 p-4 pb-32 md:pb-12">
+        <div className="flex flex-col items-center justify-end gap-4 p-3 pb-32 md:pb-12 w-16">
           {/* User avatar with follow button overlay */}
-          <div className="relative">
-            <Avatar className="w-14 h-14 border-2 border-white">
+          <div className="relative mb-2">
+            <Avatar className="w-12 h-12 border-2 border-white">
               <AvatarImage src={video.user.avatar} />
               <AvatarFallback>{video.user.displayName[0]}</AvatarFallback>
             </Avatar>
@@ -561,9 +561,9 @@ const VideoCard: React.FC<{
               <Button
                 size="sm"
                 onClick={handleFollow}
-                className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full bg-red-500 hover:bg-red-600 p-0 border-2 border-white"
+                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-red-500 hover:bg-red-600 p-0 border-2 border-white"
               >
-                <Plus className="w-4 h-4 text-white" />
+                <Plus className="w-3 h-3 text-white" />
               </Button>
             )}
           </div>
@@ -575,7 +575,7 @@ const VideoCard: React.FC<{
               variant="ghost"
               onClick={handleLike}
               className={cn(
-                "like-button w-12 h-12 rounded-full transition-all duration-200",
+                "like-button w-11 h-11 rounded-full transition-all duration-200",
                 isLiked
                   ? "bg-red-500/20 text-red-500 scale-110"
                   : "bg-black/40 text-white hover:bg-black/60",
@@ -583,12 +583,12 @@ const VideoCard: React.FC<{
             >
               <Heart
                 className={cn(
-                  "w-7 h-7",
+                  "w-6 h-6",
                   isLiked ? "fill-red-500 text-red-500" : "",
                 )}
               />
             </Button>
-            <span className="text-white text-sm font-medium">
+            <span className="text-white text-xs font-medium">
               {formatNumber(video.stats.likes + (isLiked ? 1 : 0))}
             </span>
           </div>
@@ -598,14 +598,40 @@ const VideoCard: React.FC<{
             <Button
               size="icon"
               variant="ghost"
-              className="w-12 h-12 rounded-full bg-black/40 text-white hover:bg-black/60"
+              className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
             >
-              <MessageCircle className="w-7 h-7" />
+              <MessageCircle className="w-6 h-6" />
             </Button>
-            <span className="text-white text-sm font-medium">
+            <span className="text-white text-xs font-medium">
               {formatNumber(video.stats.comments)}
             </span>
           </div>
+
+          {/* Live Events Icon */}
+          {video.isLiveStream ? (
+            <div className="flex flex-col items-center gap-1">
+              <Button
+                size="icon"
+                variant="ghost"
+                className="w-11 h-11 rounded-full bg-red-500/30 text-red-400 hover:bg-red-500/40 animate-pulse"
+              >
+                <Zap className="w-6 h-6" />
+              </Button>
+              <span className="text-red-400 text-xs font-medium">LIVE</span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-1">
+              <Button
+                size="icon"
+                variant="ghost"
+                className="w-11 h-11 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 hover:from-purple-500/30 hover:to-pink-500/30"
+                title="Live Events"
+              >
+                <Zap className="w-6 h-6" />
+              </Button>
+              <span className="text-purple-400 text-xs font-medium">Live</span>
+            </div>
+          )}
 
           {/* Bookmark */}
           <div className="flex flex-col items-center gap-1">
@@ -614,7 +640,7 @@ const VideoCard: React.FC<{
               variant="ghost"
               onClick={() => setIsBookmarked(!isBookmarked)}
               className={cn(
-                "w-12 h-12 rounded-full transition-all duration-200",
+                "w-11 h-11 rounded-full transition-all duration-200",
                 isBookmarked
                   ? "bg-yellow-500/20 text-yellow-500"
                   : "bg-black/40 text-white hover:bg-black/60",
@@ -622,14 +648,16 @@ const VideoCard: React.FC<{
             >
               <Bookmark
                 className={cn(
-                  "w-6 h-6",
+                  "w-5 h-5",
                   isBookmarked ? "fill-yellow-500 text-yellow-500" : "",
                 )}
               />
             </Button>
-            <span className="text-white text-sm font-medium">
-              {video.stats.saves ? formatNumber(video.stats.saves) : ""}
-            </span>
+            {video.stats.saves && (
+              <span className="text-white text-xs font-medium">
+                {formatNumber(video.stats.saves)}
+              </span>
+            )}
           </div>
 
           {/* Share */}
@@ -637,11 +665,11 @@ const VideoCard: React.FC<{
             <Button
               size="icon"
               variant="ghost"
-              className="w-12 h-12 rounded-full bg-black/40 text-white hover:bg-black/60"
+              className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
             >
-              <Share className="w-6 h-6" />
+              <Share className="w-5 h-5" />
             </Button>
-            <span className="text-white text-sm font-medium">
+            <span className="text-white text-xs font-medium">
               {formatNumber(video.stats.shares)}
             </span>
           </div>
@@ -650,16 +678,16 @@ const VideoCard: React.FC<{
           <Button
             size="icon"
             variant="ghost"
-            className="w-12 h-12 rounded-full bg-black/40 text-white hover:bg-black/60"
+            className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
           >
-            <MoreHorizontal className="w-6 h-6" />
+            <MoreHorizontal className="w-5 h-5" />
           </Button>
 
           {/* Rotating disc for music - TikTok style */}
-          <div className="relative mt-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center tiktok-disc-spin">
-              <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
-                <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center">
+          <div className="relative mt-2">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center tiktok-disc-spin">
+              <div className="w-9 h-9 rounded-full bg-black flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-gray-800 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-white"></div>
                 </div>
               </div>
