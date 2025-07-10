@@ -853,9 +853,7 @@ export default function EnhancedCrypto() {
                         <Card
                           key={post.id}
                           className="cursor-pointer hover:shadow-lg transition-shadow group"
-                          onClick={() =>
-                            window.open(`/blog/${post.slug}`, "_blank")
-                          }
+                          onClick={() => navigate(`/blog/${post.slug}`)}
                         >
                           {post.featuredImage && (
                             <div className="relative h-32 sm:h-40 overflow-hidden rounded-t-lg">
