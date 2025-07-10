@@ -657,7 +657,7 @@ const VideoCard: React.FC<{
 
           {/* Rotating disc for music - TikTok style */}
           <div className="relative mt-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center animate-spin">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center tiktok-disc-spin">
               <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
                 <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center">
                   <div className="w-2 h-2 rounded-full bg-white"></div>
