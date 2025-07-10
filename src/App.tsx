@@ -267,7 +267,7 @@ const AppRoutes = () => {
 
           <Route path="crypto" element={<EnhancedCrypto />} />
           <Route path="rewards" element={<EnhancedRewards />} />
-          <Route path="videos" element={<EnhancedVideosV2 />} />
+          <Route path="videos" element={<TikTokStyleVideos />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="explore" element={<Explore />} />
