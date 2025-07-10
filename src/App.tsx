@@ -202,7 +202,9 @@ const AppRoutes = () => {
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
-        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
+        element={
+          isAuthenticated ? <Navigate to="/app/feed" replace /> : <Auth />
+        }
       />
 
       {/* Protected routes - only render when not loading */}
