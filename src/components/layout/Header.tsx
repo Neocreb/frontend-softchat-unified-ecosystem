@@ -303,7 +303,7 @@ const Header = () => {
             <span>Feed</span>
           </Link>
           <Link
-            to="/videos"
+            to="/app/videos"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -311,7 +311,7 @@ const Header = () => {
             <span>Videos</span>
           </Link>
           <Link
-            to="/explore"
+            to="/app/explore"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -319,7 +319,7 @@ const Header = () => {
             <span>Explore</span>
           </Link>
           <Link
-            to="/crypto"
+            to="/app/crypto"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -327,7 +327,7 @@ const Header = () => {
             <span>Crypto</span>
           </Link>
           <Link
-            to="/marketplace"
+            to="/app/marketplace"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -335,7 +335,7 @@ const Header = () => {
             <span>Marketplace</span>
           </Link>
           <Link
-            to="/create"
+            to="/app/create"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -343,7 +343,7 @@ const Header = () => {
             <span>Freelance</span>
           </Link>
           <Link
-            to="/wallet"
+            to="/app/wallet"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -351,7 +351,7 @@ const Header = () => {
             <span>Wallet</span>
           </Link>
           <Link
-            to="/rewards"
+            to="/app/rewards"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
