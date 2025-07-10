@@ -167,7 +167,7 @@ const Header = () => {
 
           {/* Chat Button - Mobile only */}
           {isMobile && (
-            <Link to="/chat">
+            <Link to="/app/chat">
               <Button
                 variant="ghost"
                 size="icon"
