@@ -575,7 +575,7 @@ const VideoCard: React.FC<{
               variant="ghost"
               onClick={handleLike}
               className={cn(
-                "w-12 h-12 rounded-full transition-all duration-200",
+                "like-button w-12 h-12 rounded-full transition-all duration-200",
                 isLiked
                   ? "bg-red-500/20 text-red-500 scale-110"
                   : "bg-black/40 text-white hover:bg-black/60",
