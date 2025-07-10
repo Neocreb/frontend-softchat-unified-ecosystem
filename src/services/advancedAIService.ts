@@ -1,4 +1,5 @@
 import { IntelligentAIResponse } from "./intelligentAIService";
+import { realAPIService } from "./realAPIService";
 
 interface User {
   id: string;
@@ -67,18 +68,34 @@ export class AdvancedAIService {
     query: string,
     user: User,
   ): Promise<IntelligentAIResponse> {
-    // Simulate real-time crypto API with more detailed data
-    const cryptoData = await this.simulateRealCryptoAPI();
+    // Get real crypto data from API service
+    let cryptoSymbol = "bitcoin";
+    if (query.includes("ethereum") || query.includes("eth"))
+      cryptoSymbol = "ethereum";
+    if (query.includes("cardano") || query.includes("ada"))
+      cryptoSymbol = "cardano";
+    if (query.includes("solana") || query.includes("sol"))
+      cryptoSymbol = "solana";
 
-    if (query.includes("bitcoin") || query.includes("btc")) {
-      const btc = cryptoData.bitcoin;
-      const trend = btc.change24h >= 0 ? "📈" : "📉";
-      const analysis = this.generateMarketAnalysis(btc);
+    const cryptoResponse = await realAPIService.getCryptoPrice(cryptoSymbol);
+    const cryptoData = cryptoResponse.data;
+
+    if (
+      query.includes("bitcoin") ||
+      query.includes("btc") ||
+      cryptoSymbol === "bitcoin"
+    ) {
+      const trend = cryptoData.change24h >= 0 ? "📈" : "📉";
+      const analysis = this.generateMarketAnalysis(cryptoData);
+      const dataSource =
+        cryptoResponse.source === "real_api"
+          ? "Live API Data"
+          : "Real-time Simulation";
 
       return {
-        message: `**Bitcoin (BTC)** ${trend}\n\n💰 **Price:** $${btc.price.toLocaleString()}\n📊 **24h Change:** ${btc.change24h >= 0 ? "+" : ""}${btc.change24h.toFixed(2)}%\n📈 **Market Cap:** $${btc.marketCap.toLocaleString()}\n💹 **Volume:** $${btc.volume24h.toLocaleString()}\n\n🔍 **AI Analysis:** ${analysis}\n\n*Last updated: ${new Date().toLocaleTimeString()}*`,
+        message: `**${cryptoData.symbol.toUpperCase()} (${cryptoSymbol.toUpperCase()})** ${trend}\n\n💰 **Price:** $${cryptoData.price.toLocaleString()}\n📊 **24h Change:** ${cryptoData.change24h >= 0 ? "+" : ""}${cryptoData.change24h.toFixed(2)}%${cryptoData.marketCap ? `\n📈 **Market Cap:** $${cryptoData.marketCap.toLocaleString()}` : ""}${cryptoData.volume24h ? `\n💹 **Volume:** $${cryptoData.volume24h.toLocaleString()}` : ""}\n\n🔍 **AI Analysis:** ${analysis}\n\n*Data from: ${dataSource} • Updated: ${new Date().toLocaleTimeString()}*`,
         confidence: 98,
-        sources: ["Real-time Crypto API", "Market Analysis AI"],
+        sources: [dataSource, "Market Analysis AI"],
         category: "financial",
         suggestedActions: [
           {
