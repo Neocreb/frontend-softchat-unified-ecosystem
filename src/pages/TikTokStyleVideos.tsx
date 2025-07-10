@@ -924,16 +924,16 @@ const TikTokStyleVideos: React.FC = () => {
       </div>
 
       {/* Create button and quick actions - TikTok style */}
-      <div className="fixed bottom-24 md:bottom-8 right-4 z-50 flex flex-col gap-3">
+      <div className="fixed bottom-28 md:bottom-12 right-2 z-40 flex flex-col gap-2">
         {/* Creator Dashboard */}
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setIsDashboardOpen(true)}
-          className="w-12 h-12 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 backdrop-blur-sm"
+          className="w-11 h-11 rounded-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 backdrop-blur-sm"
           title="Creator Studio"
         >
-          <Crown className="w-6 h-6" />
+          <Crown className="w-5 h-5" />
         </Button>
 
         {/* Discover */}
@@ -941,20 +941,20 @@ const TikTokStyleVideos: React.FC = () => {
           variant="ghost"
           size="icon"
           onClick={() => setIsDiscoveryOpen(true)}
-          className="w-12 h-12 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 backdrop-blur-sm"
+          className="w-11 h-11 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 backdrop-blur-sm"
           title="Discover Trends"
         >
-          <TrendingUp className="w-6 h-6" />
+          <TrendingUp className="w-5 h-5" />
         </Button>
 
         {/* Main create button - TikTok style */}
         <Button
           onClick={() => setIsAdvancedRecorderOpen(true)}
-          className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-2xl w-16 h-16 shadow-xl transition-all duration-200 hover:scale-105 relative overflow-hidden"
+          className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-2xl w-14 h-14 shadow-xl transition-all duration-200 hover:scale-105 relative overflow-hidden"
           title="Create Video"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-pink-400 opacity-30 animate-pulse"></div>
-          <Plus className="h-8 w-8 relative z-10" />
+          <Plus className="h-7 w-7 relative z-10" />
         </Button>
       </div>
 
