@@ -24,6 +24,7 @@ import {
 } from "@/types/unified-chat";
 import { intelligentAIService } from "@/services/intelligentAIService";
 import { realTimeAIService } from "@/services/realTimeAIService";
+import { advancedAIService } from "@/services/advancedAIService";
 import { cn } from "@/lib/utils";
 
 interface AIAssistantChatProps {
@@ -155,12 +156,25 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
       //   user,
       // );
 
-      // Generate real-time intelligent AI response
-      const smartResponse = await realTimeAIService.generateRealTimeResponse(
-        contextualInput,
-        user,
-        conversationContext,
-      );
+      // Generate advanced intelligent AI response
+      let smartResponse;
+
+      // Try advanced AI service first for most intelligent responses
+      try {
+        smartResponse = await advancedAIService.generateIntelligentResponse(
+          contextualInput,
+          user,
+          conversationContext,
+        );
+      } catch (error) {
+        console.log("Falling back to real-time AI service");
+        // Fallback to real-time AI service
+        smartResponse = await realTimeAIService.generateRealTimeResponse(
+          contextualInput,
+          user,
+          conversationContext,
+        );
+      }
 
       // Simulate realistic response time
       const responseDelay = Math.min(800 + currentInput.length * 15, 3000);
@@ -295,7 +309,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           </div>
           <p className="text-xs text-purple-600">
-            Real-time AI • Live data • Current information
+            Advanced AI • Real-time Data • Intelligent Conversation • Emotional
+            Support
           </p>
         </div>
         <Button variant="ghost" size="sm" className="text-purple-600">
@@ -477,7 +492,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - SoftChat, life, or real-time info!`}
+              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - I'm your intelligent friend and assistant! 🤖✨`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
@@ -495,8 +510,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           <div className="flex items-center gap-1 text-xs text-purple-600">
             <Sparkles className="h-3 w-3" />
             <span>
-              Your friendly AI companion! Ask about anything - SoftChat
-              features, real-time data, or just chat! 😊
+              🧠 Intelligent AI • 💰 Live Crypto • 🌤️ Weather • 📰 News • 🧮
+              Calculations • 💬 Friendly Chat
             </span>
           </div>
         </form>
