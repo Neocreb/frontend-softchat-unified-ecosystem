@@ -864,16 +864,33 @@ const TikTokStyleVideos: React.FC = () => {
             ))}
           </TabsContent>
           <TabsContent value="following" className="h-full mt-0">
-            {followingVideos.map((video, index) => (
-              <VideoCard
-                key={video.id}
-                video={video}
-                isActive={
-                  index === currentVideoIndex && activeTab === "following"
-                }
-                showControls={showControls}
-              />
-            ))}
+            {followingVideos.length > 0 ? (
+              followingVideos.map((video, index) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  isActive={
+                    index === currentVideoIndex && activeTab === "following"
+                  }
+                  showControls={showControls}
+                />
+              ))
+            ) : (
+              <div className="h-screen flex flex-col items-center justify-center text-white p-8">
+                <UserPlus className="w-24 h-24 text-white/40 mb-6" />
+                <h3 className="text-2xl font-bold mb-4">No videos yet</h3>
+                <p className="text-white/70 text-center text-lg leading-relaxed mb-8 max-w-sm">
+                  Follow creators to see their latest videos here. Discover
+                  amazing creators in the For You tab!
+                </p>
+                <Button
+                  onClick={() => setActiveTab("foryou")}
+                  className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 text-lg font-semibold rounded-xl"
+                >
+                  Discover creators
+                </Button>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
