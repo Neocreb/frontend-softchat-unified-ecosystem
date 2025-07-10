@@ -178,7 +178,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
     // Simulate more realistic response time based on message complexity
     const responseDelay = Math.min(500 + currentInput.length * 10, 2000);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       // Generate response with conversation context
       const contextualInput =
         conversationContext.length > 0
