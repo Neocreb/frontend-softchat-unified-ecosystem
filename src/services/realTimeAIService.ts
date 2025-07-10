@@ -489,7 +489,10 @@ export class RealTimeAIService {
   /**
    * Handle time-related queries
    */
-  private async handleTimeQuery(query: string): Promise<IntelligentAIResponse> {
+  private async handleTimeQuery(
+    query: string,
+    analysis?: ConversationAnalysis,
+  ): Promise<IntelligentAIResponse> {
     const now = new Date();
     const timeString = now.toLocaleTimeString();
     const dateString = now.toLocaleDateString();
@@ -551,6 +554,7 @@ export class RealTimeAIService {
    */
   private async handleCryptoQuery(
     query: string,
+    analysis?: ConversationAnalysis,
   ): Promise<IntelligentAIResponse> {
     // Simulate real-time crypto data (in production, integrate with CoinGecko/CoinMarketCap API)
     const mockPrices = {
@@ -650,6 +654,7 @@ export class RealTimeAIService {
    */
   private async handleWeatherQuery(
     query: string,
+    analysis?: ConversationAnalysis,
   ): Promise<IntelligentAIResponse> {
     // Mock weather data (in production, integrate with OpenWeatherMap API)
     const mockWeather = {
@@ -705,7 +710,10 @@ export class RealTimeAIService {
   /**
    * Handle news queries
    */
-  private async handleNewsQuery(query: string): Promise<IntelligentAIResponse> {
+  private async handleNewsQuery(
+    query: string,
+    analysis?: ConversationAnalysis,
+  ): Promise<IntelligentAIResponse> {
     // Mock news data (in production, integrate with news APIs)
     const mockNews = [
       "Tech markets show strong growth amid AI innovations",
@@ -760,6 +768,7 @@ export class RealTimeAIService {
    */
   private async handleMarketQuery(
     query: string,
+    analysis?: ConversationAnalysis,
   ): Promise<IntelligentAIResponse> {
     // Mock market data
     const mockMarket = {
@@ -812,7 +821,10 @@ export class RealTimeAIService {
   /**
    * Handle calculation queries
    */
-  private handleCalculationQuery(query: string): IntelligentAIResponse {
+  private handleCalculationQuery(
+    query: string,
+    analysis?: ConversationAnalysis,
+  ): IntelligentAIResponse {
     try {
       // Simple calculation parsing (in production, use a proper math parser)
       const mathExpression = query.match(/[\d\+\-\*\/\(\)\.\s]+/)?.[0];
@@ -959,6 +971,7 @@ export class RealTimeAIService {
   private handleSoftChatQuery(
     query: string,
     user: User,
+    analysis?: ConversationAnalysis,
   ): IntelligentAIResponse {
     const greeting = this.getRandomItem(this.personalityTraits.greeting);
     const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
@@ -1137,6 +1150,7 @@ export class RealTimeAIService {
   private handlePersonalQuery(
     query: string,
     user: User,
+    analysis?: ConversationAnalysis,
   ): IntelligentAIResponse {
     const empathy = this.getRandomItem(this.personalityTraits.empathy);
     const support = this.getRandomItem(this.personalityTraits.support);
@@ -1260,7 +1274,11 @@ export class RealTimeAIService {
   /**
    * Handle casual conversation
    */
-  private handleCasualQuery(query: string, user: User): IntelligentAIResponse {
+  private handleCasualQuery(
+    query: string,
+    user: User,
+    analysis?: ConversationAnalysis,
+  ): IntelligentAIResponse {
     const greeting = this.getRandomItem(this.personalityTraits.greeting);
     const casual = this.getRandomItem(this.personalityTraits.casual);
 
