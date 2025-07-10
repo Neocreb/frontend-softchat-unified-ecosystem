@@ -292,7 +292,7 @@ const Header = () => {
       >
         <div className="relative z-20 grid gap-4 rounded-md bg-background p-4 w-full max-w-full mx-auto">
           <Link
-            to="/feed"
+            to="/app/feed"
             className="flex items-center gap-3 text-lg font-semibold p-3 rounded-lg hover:bg-muted/50 transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
