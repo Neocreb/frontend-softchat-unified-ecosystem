@@ -27,9 +27,19 @@ const FeaturesSection = () => {
         "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&q=80&w=1280",
     },
     {
+      id: "freelance",
+      icon: <Briefcase className="h-6 w-6" />,
+      title: "Freelance & Jobs",
+      tagline: "Professional marketplace for talent",
+      description:
+        "Connect with top freelancers and clients worldwide. Advanced project management tools, secure payments, dispute resolution, skill verification, and portfolio showcasing. Build your career or find the perfect talent for your projects.",
+      image:
+        "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=1280",
+    },
+    {
       id: "marketplace",
-      icon: <BarChart3 className="h-6 w-6" />,
-      title: "Marketplace & Analytics",
+      icon: <ShoppingBag className="h-6 w-6" />,
+      title: "Commerce & Analytics",
       tagline: "E-commerce with powerful insights",
       description:
         "Advanced marketplace with detailed analytics, performance tracking, and data-driven insights. Track your sales, understand your customers, and grow your business with comprehensive dashboard tools.",
@@ -47,12 +57,22 @@ const FeaturesSection = () => {
         "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1280",
     },
     {
-      id: "platform",
-      icon: <Zap className="h-6 w-6" />,
-      title: "Platform & Rewards",
-      tagline: "Gamified experience with accessibility",
+      id: "rewards",
+      icon: <Trophy className="h-6 w-6" />,
+      title: "Rewards & Gamification",
+      tagline: "Earn while you engage and achieve",
       description:
-        "Earn rewards through gamification, track achievements, compete on leaderboards. Full accessibility support, PWA capabilities, and seamless data import/export across all your platforms.",
+        "Comprehensive rewards system with points, badges, and achievements. Complete daily challenges, refer friends, participate in community events, and unlock exclusive perks. Gamified experience that makes every interaction rewarding.",
+      image:
+        "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&q=80&w=1280",
+    },
+    {
+      id: "analytics",
+      icon: <BarChart3 className="h-6 w-6" />,
+      title: "Analytics & Platform",
+      tagline: "Data-driven insights with accessibility",
+      description:
+        "Comprehensive analytics across all activities with beautiful visualizations. Full accessibility support, PWA capabilities, seamless data import/export, and advanced reporting tools for informed decision-making.",
       image:
         "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80&w=1280",
     },
