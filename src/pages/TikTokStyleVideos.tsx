@@ -711,8 +711,8 @@ const VideoCard: React.FC<{
       </Button>
 
       {/* Views badge */}
-      <div className="absolute top-4 left-4">
-        <Badge className="bg-black/50 text-white border-0 backdrop-blur-sm">
+      <div className="absolute top-4 left-4 z-30">
+        <Badge className="bg-black/50 text-white border-0 backdrop-blur-sm text-xs">
           <Eye className="w-3 h-3 mr-1" />
           {video.stats.views}
         </Badge>
