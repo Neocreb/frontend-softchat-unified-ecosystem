@@ -476,7 +476,7 @@ const VideoCard: React.FC<{
                 <Button
                   size="sm"
                   onClick={handleFollow}
-                  className="bg-red-500 hover:bg-red-600 text-white border-0 rounded-md px-4 py-1.5 text-sm font-semibold"
+                  className="bg-red-500 hover:bg-red-600 text-white border-0 rounded-md px-4 py-1.5 text-sm font-semibold tiktok-follow-pulse"
                 >
                   Follow
                 </Button>
