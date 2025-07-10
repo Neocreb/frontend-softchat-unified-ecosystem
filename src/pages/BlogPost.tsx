@@ -395,6 +395,15 @@ export default function BlogPostPage() {
 
           <Separator className="my-8" />
 
+          {/* Comments Section */}
+          <CommentsSection
+            postId={post.id}
+            postSlug={post.slug}
+            className="mb-8"
+          />
+
+          <Separator className="my-8" />
+
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
             <section>
