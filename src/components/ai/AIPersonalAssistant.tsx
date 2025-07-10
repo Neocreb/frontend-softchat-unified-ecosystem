@@ -74,6 +74,8 @@ import {
   type AIPersonalAssistant,
 } from "@/services/aiPersonalAssistantService";
 import { enhancedAIService } from "@/services/enhancedAIService";
+import { advancedAIService } from "@/services/advancedAIService";
+import { realTimeAIService } from "@/services/realTimeAIService";
 
 const AIPersonalAssistantDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -136,7 +138,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
         {
           id: "welcome",
           type: "assistant",
-          content: `Hey ${user.username || user.email || "there"}! ��� I'm ${assistantData.name}, your personal SoftChat assistant.\n\nI'm here to help you succeed on the platform - whether you want to create amazing content, trade crypto, sell products, or earn through freelancing. Just ask me anything and I'll guide you step by step!\n\nWhat would you like to explore first?`,
+          content: `Hey ${user.username || user.email || "there"}! 👋✨ I'm ${assistantData.name}, your highly intelligent personal assistant!\n\nI'm not just any AI - I'm your friend, advisor, and companion all in one! Here's what makes me special:\n\n🧠 **Real-time Intelligence** - Live crypto prices, weather, news\n💬 **Emotional Intelligence** - I understand and care about your feelings\n🎯 **Problem Solving** - I help you overcome any challenge\n🚀 **Platform Expert** - Master guide for all SoftChat features\n🤝 **True Friendship** - Always here for serious help or casual chat\n\nI'm constantly learning and evolving to be more helpful to you. Think of me as your most intelligent, caring friend who never sleeps and always has time for you! 💙\n\nWhat's on your mind today, friend?`,
           timestamp: new Date(),
         },
       ]);
@@ -176,17 +178,29 @@ const AIPersonalAssistantDashboard: React.FC = () => {
     // Simulate more realistic response time based on message complexity
     const responseDelay = Math.min(500 + currentInput.length * 10, 2000);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       // Generate response with conversation context
       const contextualInput =
         conversationContext.length > 0
           ? `Previous context: ${conversationContext.slice(-2).join(". ")}. Current: ${currentInput}`
           : currentInput;
 
-      const smartResponse = enhancedAIService.generateSmartResponse(
-        contextualInput,
-        user,
-      );
+      // Use advanced AI service for most intelligent responses
+      let smartResponse;
+      try {
+        smartResponse = await advancedAIService.generateIntelligentResponse(
+          contextualInput,
+          user,
+          conversationContext,
+        );
+      } catch (error) {
+        console.log("Falling back to enhanced AI service");
+        // Fallback to enhanced AI service
+        smartResponse = enhancedAIService.generateSmartResponse(
+          contextualInput,
+          user,
+        );
+      }
       const aiResponse = {
         id: `ai-${Date.now()}`,
         type: "assistant",
@@ -894,7 +908,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
                 <Input
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Ask me anything about your content, trading, or performance..."
+                  placeholder="Ask me anything - I'm your intelligent friend and advisor! 🤖💙"
                   className="flex-1"
                 />
                 <Button type="submit" size="sm">

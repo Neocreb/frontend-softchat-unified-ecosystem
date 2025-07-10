@@ -24,6 +24,8 @@ import {
 } from "@/types/unified-chat";
 import { intelligentAIService } from "@/services/intelligentAIService";
 import { realTimeAIService } from "@/services/realTimeAIService";
+import { advancedAIService } from "@/services/advancedAIService";
+import { aiPersonalityService } from "@/services/aiPersonalityService";
 import { cn } from "@/lib/utils";
 
 interface AIAssistantChatProps {
@@ -49,6 +51,9 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
       if (user && messages.length === 0) {
         try {
           // Generate personalized real-time welcome message
+          // Generate personalized welcome with personality
+          const personalizedGreeting =
+            aiPersonalityService.generatePersonalizedGreeting(user);
           const welcomeResponse =
             await realTimeAIService.generateRealTimeResponse(
               "Welcome! I'm your real-time AI assistant",
@@ -59,7 +64,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             id: "welcome-msg",
             threadId: "ai_assistant",
             senderId: "ai_assistant",
-            content: welcomeResponse.message,
+            content: personalizedGreeting + "\n\n" + welcomeResponse.message,
             timestamp: new Date().toISOString(),
             readBy: [],
             messageType: "text",
@@ -79,7 +84,9 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             id: "welcome-msg",
             threadId: "ai_assistant",
             senderId: "ai_assistant",
-            content: `Hi ${user.name || "there"}! I'm Edith, your real-time AI assistant. Ask me about current time, crypto prices, weather, news, calculations, or SoftChat features!`,
+            content:
+              aiPersonalityService.generatePersonalizedGreeting(user) +
+              "\n\nI can help with real-time data like crypto prices, weather, news, calculations, and SoftChat features! Plus, I'm here for friendly conversation and emotional support! 💙",
             timestamp: new Date().toISOString(),
             readBy: [],
             messageType: "text",
@@ -88,10 +95,11 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
               sources: ["Real-time AI"],
               suggestedActions: [],
               followUpQuestions: [
-                "What's the current time?",
-                "Show me Bitcoin price",
-                "What's the weather like?",
-                "Tell me the latest news",
+                "What's the current time? ⏰",
+                "Show me Bitcoin price 💰",
+                "What's the weather like? 🌤️",
+                "Tell me the latest news 📰",
+                "Let's have a friendly chat! 😊",
               ],
               relatedTopics: ["real-time data", "platform features"],
             },
@@ -155,12 +163,25 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
       //   user,
       // );
 
-      // Generate real-time intelligent AI response
-      const smartResponse = await realTimeAIService.generateRealTimeResponse(
-        contextualInput,
-        user,
-        conversationContext,
-      );
+      // Generate advanced intelligent AI response
+      let smartResponse;
+
+      // Try advanced AI service first for most intelligent responses
+      try {
+        smartResponse = await advancedAIService.generateIntelligentResponse(
+          contextualInput,
+          user,
+          conversationContext,
+        );
+      } catch (error) {
+        console.log("Falling back to real-time AI service");
+        // Fallback to real-time AI service
+        smartResponse = await realTimeAIService.generateRealTimeResponse(
+          contextualInput,
+          user,
+          conversationContext,
+        );
+      }
 
       // Simulate realistic response time
       const responseDelay = Math.min(800 + currentInput.length * 15, 3000);
@@ -295,7 +316,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
           </div>
           <p className="text-xs text-purple-600">
-            Real-time AI • Live data • Current information
+            Advanced AI • Real-time Data • Intelligent Conversation • Emotional
+            Support
           </p>
         </div>
         <Button variant="ghost" size="sm" className="text-purple-600">
@@ -460,7 +482,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
                       ></div>
                     </div>
                     <span className="text-xs text-purple-600 ml-2">
-                      {AI_ASSISTANT_CONFIG.name} is fetching real-time data...
+                      {aiPersonalityService.generateThinkingMessage()}
                     </span>
                   </div>
                 </div>
@@ -477,7 +499,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - SoftChat, life, or real-time info!`}
+              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - I'm your intelligent friend and assistant! 🤖✨`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
@@ -495,8 +517,8 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           <div className="flex items-center gap-1 text-xs text-purple-600">
             <Sparkles className="h-3 w-3" />
             <span>
-              Your friendly AI companion! Ask about anything - SoftChat
-              features, real-time data, or just chat! 😊
+              🧠 Intelligent AI • 💰 Live Crypto • 🌤️ Weather • 📰 News • 🧮
+              Calculations • 💬 Friendly Chat
             </span>
           </div>
         </form>
