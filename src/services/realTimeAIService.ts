@@ -1,4 +1,5 @@
 import { IntelligentAIResponse, AIAction } from "./intelligentAIService";
+import { softChatKnowledgeService } from "./softchatKnowledgeService";
 
 interface User {
   id: string;
@@ -966,7 +967,7 @@ export class RealTimeAIService {
   }
 
   /**
-   * Handle SoftChat platform queries
+   * Handle SoftChat platform queries with comprehensive knowledge base
    */
   private handleSoftChatQuery(
     query: string,
@@ -975,6 +976,27 @@ export class RealTimeAIService {
   ): IntelligentAIResponse {
     const greeting = this.getRandomItem(this.personalityTraits.greeting);
     const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+
+    // Search comprehensive knowledge base
+    const knowledgeResults = softChatKnowledgeService.searchKnowledge(query);
+
+    // If we found specific feature guides, use them
+    if (knowledgeResults.features.length > 0) {
+      const feature = knowledgeResults.features[0];
+      return this.generateFeatureGuideResponse(feature, user, analysis);
+    }
+
+    // If we found relevant tutorials, suggest them
+    if (knowledgeResults.tutorials.length > 0) {
+      const tutorial = knowledgeResults.tutorials[0];
+      return this.generateTutorialResponse(tutorial, user, analysis);
+    }
+
+    // If we found FAQ answers, provide them
+    if (knowledgeResults.faqs.length > 0) {
+      const faq = knowledgeResults.faqs[0];
+      return this.generateFAQResponse(faq, user, analysis);
+    }
 
     // Check for specific feature queries
     if (query.includes("how to") || query.includes("help")) {
@@ -1029,11 +1051,13 @@ export class RealTimeAIService {
       return this.handleRewardsQuery(user);
     }
 
-    // General platform overview
+    // Generate personalized platform overview with recommendations
+    const dailyTips = softChatKnowledgeService.getDailyEngagementTips();
+
     return {
-      message: `${greeting} ${user.name || "friend"}! ${enthusiasm} SoftChat is your all-in-one platform where you can connect socially, trade crypto, buy/sell in the marketplace, find freelance work, and so much more! \n\nThink of it as your digital life hub - everything you need is right here. What specific feature would you like to explore? I'm here to guide you through everything! 😊`,
+      message: `${greeting} ${user.name || "friend"}! ${enthusiasm} SoftChat is your all-in-one platform where you can connect socially, trade crypto, buy/sell in the marketplace, find freelance work, and so much more! \n\nThink of it as your digital life hub - everything you need is right here. Here are today's personalized tips for you:\n\n• ${dailyTips[0]}\n• ${dailyTips[1]}\n\nWhat specific feature would you like to explore? I'm here to guide you through everything! 😊`,
       confidence: 95,
-      sources: ["SoftChat Platform Knowledge"],
+      sources: ["Comprehensive SoftChat Knowledge"],
       category: "softchat",
       suggestedActions: [
         {
@@ -1043,10 +1067,10 @@ export class RealTimeAIService {
           url: "/explore",
         },
         {
-          id: "profile",
-          label: "Complete Profile",
+          id: "tutorial",
+          label: "Getting Started Guide",
           action: "navigate",
-          url: "/profile",
+          url: "/ai-assistant",
         },
         { id: "feed", label: "Visit Feed", action: "navigate", url: "/feed" },
       ],
@@ -1055,8 +1079,14 @@ export class RealTimeAIService {
         "How can I start trading crypto?",
         "What can I sell on the marketplace?",
         "How do I find freelance work?",
+        "Show me today's best opportunities!",
       ],
-      relatedTopics: ["getting started", "platform features", "tutorials"],
+      relatedTopics: [
+        "getting started",
+        "platform features",
+        "tutorials",
+        "daily tips",
+      ],
     };
   }
 
@@ -1997,6 +2027,133 @@ export class RealTimeAIService {
         "intelligent conversation",
       ],
     };
+  }
+
+  /**
+   * Generate feature guide response
+   */
+  private generateFeatureGuideResponse(
+    feature: any,
+    user: User,
+    analysis?: ConversationAnalysis,
+  ): IntelligentAIResponse {
+    const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+    const support = this.getRandomItem(this.personalityTraits.support);
+
+    const howToSteps = feature.howToUse
+      .slice(0, 5)
+      .map((step: string, i: number) => `${i + 1}. ${step}`)
+      .join("\n");
+    const topTips = feature.tips
+      .slice(0, 3)
+      .map((tip: string) => `• ${tip}`)
+      .join("\n");
+
+    return {
+      message: `${enthusiasm} I'd love to help you with **${feature.name}**! \n\n📖 **What it is:** ${feature.description}\n\n🚀 **How to get started:**\n${howToSteps}\n\n💡 **Pro Tips:**\n${topTips}\n\n${support} Want me to walk you through any specific part?`,
+      confidence: 98,
+      sources: ["SoftChat Feature Guide"],
+      category: "softchat",
+      suggestedActions: [
+        {
+          id: "try-feature",
+          label: `Try ${feature.name}`,
+          action: "navigate",
+          url: this.getFeatureUrl(feature.key),
+        },
+      ],
+      followUpQuestions: [
+        `What are the benefits of ${feature.name}?`,
+        "Can you give me more detailed steps?",
+        "What if I run into problems?",
+        "Show me advanced tips for this feature",
+      ],
+      relatedTopics: feature.relatedFeatures || ["platform features"],
+    };
+  }
+
+  /**
+   * Generate tutorial response
+   */
+  private generateTutorialResponse(
+    tutorial: any,
+    user: User,
+    analysis?: ConversationAnalysis,
+  ): IntelligentAIResponse {
+    const encouragement = this.getRandomItem(
+      this.personalityTraits.encouragement,
+    );
+
+    const firstSteps = tutorial.steps
+      .slice(0, 3)
+      .map(
+        (step: any) => `**${step.step}. ${step.title}:** ${step.description}`,
+      )
+      .join("\n\n");
+
+    return {
+      message: `${encouragement} I have the perfect tutorial for you: **${tutorial.title}**!\n\n📚 **Overview:** ${tutorial.description}\n⏱️ **Time needed:** ${tutorial.estimatedTime}\n🎯 **Difficulty:** ${tutorial.difficulty}\n\n**Here are the first steps:**\n\n${firstSteps}\n\nReady to dive in? I can guide you through each step!`,
+      confidence: 95,
+      sources: ["SoftChat Tutorials"],
+      category: "education",
+      suggestedActions: [
+        {
+          id: "start-tutorial",
+          label: "Start Tutorial",
+          action: "navigate",
+          url: "/ai-assistant",
+        },
+      ],
+      followUpQuestions: [
+        "Walk me through step 1 in detail",
+        "What do I need before starting?",
+        "Show me all the steps",
+        "What comes after this tutorial?",
+      ],
+      relatedTopics: ["tutorials", "learning", "step-by-step"],
+    };
+  }
+
+  /**
+   * Generate FAQ response
+   */
+  private generateFAQResponse(
+    faq: any,
+    user: User,
+    analysis?: ConversationAnalysis,
+  ): IntelligentAIResponse {
+    const casual = this.getRandomItem(this.personalityTraits.casual);
+
+    return {
+      message: `Great question! This is ${casual} something many people ask about.\n\n**Q: ${faq.question}**\n\n**A:** ${faq.answer}\n\nDoes this answer your question, or would you like me to go deeper into any part?`,
+      confidence: 90,
+      sources: ["SoftChat FAQ"],
+      category: "support",
+      suggestedActions: [],
+      followUpQuestions: [
+        "Can you explain this in more detail?",
+        "What are some related topics?",
+        "How do I get started with this?",
+      ],
+      relatedTopics: [faq.category, "frequently asked questions"],
+    };
+  }
+
+  /**
+   * Get feature URL from key
+   */
+  private getFeatureUrl(featureKey: string): string {
+    const urlMap: Record<string, string> = {
+      "social-feed": "/feed",
+      "crypto-trading": "/crypto",
+      marketplace: "/marketplace",
+      "freelance-platform": "/freelance",
+      "wallet-system": "/wallet",
+      "rewards-system": "/rewards",
+      "ai-assistant": "/ai-assistant",
+    };
+
+    return urlMap[featureKey] || "/explore";
   }
 
   /**
