@@ -230,10 +230,13 @@ const AppRoutes = () => {
           <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
-          <Route path="messages" element={<Navigate to="/chat" replace />} />
+          <Route
+            path="messages"
+            element={<Navigate to="/app/chat" replace />}
+          />
           <Route
             path="messages/:threadId"
-            element={<Navigate to="/chat/:threadId" replace />}
+            element={<Navigate to="/app/chat/:threadId" replace />}
           />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
