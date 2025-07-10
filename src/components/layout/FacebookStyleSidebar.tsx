@@ -299,24 +299,24 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
                 Privacy
               </Link>
               <span>·</span>
-              <Link to="/terms" className="hover:underline">
+              <Link to="/app/terms" className="hover:underline">
                 Terms
               </Link>
               <span>·</span>
-              <Link to="/advertising" className="hover:underline">
+              <Link to="/app/advertising" className="hover:underline">
                 Advertising
               </Link>
               <span>·</span>
-              <Link to="/ad-choices" className="hover:underline">
+              <Link to="/app/ad-choices" className="hover:underline">
                 Ad Choices
               </Link>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link to="/cookies" className="hover:underline">
+              <Link to="/app/cookies" className="hover:underline">
                 Cookies
               </Link>
               <span>·</span>
-              <Link to="/help" className="hover:underline">
+              <Link to="/app/help" className="hover:underline">
                 More
               </Link>
               <span>·</span>
