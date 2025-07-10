@@ -20,12 +20,12 @@ const SecondaryNav = () => {
 
   // Only show on profile and settings related pages
   const showSecondaryNav = [
-    "/profile",
-    "/settings",
-    "/wallet",
-    "/notifications",
-    "/chat",
-    "/rewards",
+    "/app/profile",
+    "/app/settings",
+    "/app/wallet",
+    "/app/notifications",
+    "/app/chat",
+    "/app/rewards",
   ].some((path) => location.pathname.startsWith(path));
 
   if (isMobile || !showSecondaryNav) return null;
@@ -34,39 +34,40 @@ const SecondaryNav = () => {
     {
       icon: User,
       label: "Profile",
-      href: "/profile",
-      active: location.pathname === "/profile",
+      href: "/app/profile",
+      active: location.pathname === "/app/profile",
     },
     {
       icon: Settings,
       label: "Settings",
-      href: "/settings",
-      active: location.pathname === "/settings",
+      href: "/app/settings",
+      active: location.pathname === "/app/settings",
     },
     {
       icon: Wallet,
       label: "Wallet",
-      href: "/wallet",
-      active: location.pathname === "/wallet",
+      href: "/app/wallet",
+      active: location.pathname === "/app/wallet",
     },
     {
       icon: Award,
       label: "Rewards",
-      href: "/rewards",
-      active: location.pathname === "/rewards",
+      href: "/app/rewards",
+      active: location.pathname === "/app/rewards",
     },
     {
       icon: Bell,
       label: "Notifications",
-      href: "/notifications",
-      active: location.pathname === "/notifications",
+      href: "/app/notifications",
+      active: location.pathname === "/app/notifications",
     },
     {
       icon: MessageCircle,
       label: "Messages",
-      href: "/chat",
+      href: "/app/chat",
       active:
-        location.pathname === "/chat" || location.pathname.startsWith("/chat"),
+        location.pathname === "/app/chat" ||
+        location.pathname.startsWith("/app/chat"),
     },
   ];
 
