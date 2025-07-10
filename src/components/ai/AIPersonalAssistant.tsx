@@ -74,6 +74,8 @@ import {
   type AIPersonalAssistant,
 } from "@/services/aiPersonalAssistantService";
 import { enhancedAIService } from "@/services/enhancedAIService";
+import { advancedAIService } from "@/services/advancedAIService";
+import { realTimeAIService } from "@/services/realTimeAIService";
 
 const AIPersonalAssistantDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -183,10 +185,22 @@ const AIPersonalAssistantDashboard: React.FC = () => {
           ? `Previous context: ${conversationContext.slice(-2).join(". ")}. Current: ${currentInput}`
           : currentInput;
 
-      const smartResponse = enhancedAIService.generateSmartResponse(
-        contextualInput,
-        user,
-      );
+      // Use advanced AI service for most intelligent responses
+      let smartResponse;
+      try {
+        smartResponse = await advancedAIService.generateIntelligentResponse(
+          contextualInput,
+          user,
+          conversationContext,
+        );
+      } catch (error) {
+        console.log("Falling back to enhanced AI service");
+        // Fallback to enhanced AI service
+        smartResponse = enhancedAIService.generateSmartResponse(
+          contextualInput,
+          user,
+        );
+      }
       const aiResponse = {
         id: `ai-${Date.now()}`,
         type: "assistant",
@@ -894,7 +908,7 @@ const AIPersonalAssistantDashboard: React.FC = () => {
                 <Input
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Ask me anything about your content, trading, or performance..."
+                  placeholder="Ask me anything - I'm your intelligent friend and advisor! 🤖💙"
                   className="flex-1"
                 />
                 <Button type="submit" size="sm">
