@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -26,10 +25,13 @@ const AuthForm = () => {
     setTimeout(() => {
       setIsLoading(false);
       toast({
-        title: mode === "signin" ? "Signed in successfully!" : "Account created successfully!",
+        title:
+          mode === "signin"
+            ? "Signed in successfully!"
+            : "Account created successfully!",
         description: "Welcome to Softchat",
       });
-      navigate("/");
+      navigate("/app/feed");
     }, 1500);
   };
 
@@ -44,7 +46,11 @@ const AuthForm = () => {
         </p>
       </div>
 
-      <Tabs value={mode} onValueChange={(v) => setMode(v as AuthMode)} className="w-full">
+      <Tabs
+        value={mode}
+        onValueChange={(v) => setMode(v as AuthMode)}
+        className="w-full"
+      >
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="signin">Sign In</TabsTrigger>
           <TabsTrigger value="signup">Sign Up</TabsTrigger>
