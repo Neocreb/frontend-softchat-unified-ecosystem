@@ -88,8 +88,9 @@ const FeaturesSection = () => {
             Experience the <span className="gradient-text">Full Suite</span>
           </h2>
           <p className="body-md text-gray-600">
-            Four powerful tools in one seamless experience. Softchat redefines
-            what an app can do in emerging markets.
+            Six powerful tools in one seamless experience. From social
+            networking to freelancing, e-commerce to crypto trading, rewards to
+            analytics - Softchat redefines what an app can do.
           </p>
         </div>
 
