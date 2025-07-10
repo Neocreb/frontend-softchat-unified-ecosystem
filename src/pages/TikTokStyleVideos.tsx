@@ -383,7 +383,10 @@ const VideoCard: React.FC<{
   };
 
   return (
-    <div className="relative h-screen w-full bg-black snap-start snap-always">
+    <div
+      className="relative h-screen w-full bg-black snap-start snap-always"
+      data-video-id={video.id}
+    >
       {/* Video */}
       <video
         ref={videoRef}
