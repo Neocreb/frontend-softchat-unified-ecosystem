@@ -165,7 +165,9 @@ const AppRoutes = () => {
       {/* Auth route - redirects to feed if already authenticated */}
       <Route
         path="/auth"
-        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
+        element={
+          isAuthenticated ? <Navigate to="/app/feed" replace /> : <Auth />
+        }
       />
 
       {/* Public Blog routes - accessible to everyone */}
