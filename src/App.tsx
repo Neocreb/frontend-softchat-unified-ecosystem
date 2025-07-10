@@ -173,7 +173,7 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   }
 
   if (!isAdmin()) {
-    return <Navigate to="/feed" replace />;
+    return <Navigate to="/app/feed" replace />;
   }
 
   return <>{children}</>;
@@ -202,13 +202,15 @@ const AppRoutes = () => {
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
-        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
+        element={
+          isAuthenticated ? <Navigate to="/app/feed" replace /> : <Auth />
+        }
       />
 
       {/* Protected routes - only render when not loading */}
       {!isLoading && (
         <Route
-          path="/"
+          path="/app"
           element={
             <ProtectedRoute>
               <WalletProvider>
@@ -228,10 +230,13 @@ const AppRoutes = () => {
           <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
-          <Route path="messages" element={<Navigate to="/chat" replace />} />
+          <Route
+            path="messages"
+            element={<Navigate to="/app/chat" replace />}
+          />
           <Route
             path="messages/:threadId"
-            element={<Navigate to="/chat/:threadId" replace />}
+            element={<Navigate to="/app/chat/:threadId" replace />}
           />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />

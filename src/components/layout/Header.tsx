@@ -57,48 +57,48 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
     {
       icon: Home,
       label: "Feed",
-      href: "/feed",
-      active: location.pathname === "/" || location.pathname === "/feed",
+      href: "/app/feed",
+      active: location.pathname === "/app" || location.pathname === "/app/feed",
     },
     {
       icon: Search,
       label: "Explore",
-      href: "/explore",
-      active: location.pathname === "/explore",
+      href: "/app/explore",
+      active: location.pathname === "/app/explore",
     },
     {
       icon: Video,
       label: "Videos",
-      href: "/videos",
-      active: location.pathname === "/videos",
+      href: "/app/videos",
+      active: location.pathname === "/app/videos",
     },
     {
       icon: ShoppingBag,
       label: "Market",
-      href: "/marketplace",
+      href: "/app/marketplace",
       active:
-        location.pathname === "/marketplace" ||
-        location.pathname.startsWith("/marketplace"),
+        location.pathname === "/app/marketplace" ||
+        location.pathname.startsWith("/app/marketplace"),
     },
     {
       icon: Briefcase,
       label: "Freelance",
-      href: "/freelance",
+      href: "/app/freelance",
       active:
-        location.pathname === "/freelance" ||
-        location.pathname.startsWith("/freelance"),
+        location.pathname === "/app/freelance" ||
+        location.pathname.startsWith("/app/freelance"),
     },
     {
       icon: Coins,
       label: "Crypto",
-      href: "/crypto",
-      active: location.pathname === "/crypto",
+      href: "/app/crypto",
+      active: location.pathname === "/app/crypto",
     },
     {
       icon: Gift,
       label: "Rewards",
-      href: "/rewards",
-      active: location.pathname === "/rewards",
+      href: "/app/rewards",
+      active: location.pathname === "/app/rewards",
     },
   ];
 
@@ -122,7 +122,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/explore?q=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/app/explore?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     }
   };
@@ -141,7 +141,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
             <Menu className="h-5 w-5" />
           </Button>
 
-          <Link to="/feed" className="flex items-center gap-2">
+          <Link to="/app/feed" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               SoftChat
@@ -190,7 +190,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           <Button
             variant="default"
             size="sm"
-            onClick={() => navigate("/create")}
+            onClick={() => navigate("/app/create")}
             className="hidden sm:flex items-center gap-2"
           >
             <Plus className="h-4 w-4" />
@@ -201,7 +201,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/notifications")}
+            onClick={() => navigate("/app/notifications")}
             className="relative"
           >
             <Bell className="h-5 w-5" />
@@ -216,7 +216,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/chat")}
+            onClick={() => navigate("/app/chat")}
             className="relative"
           >
             <MessageSquare className="h-5 w-5" />
@@ -251,35 +251,35 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
                 </div>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate("/profile")}>
+              <DropdownMenuItem onClick={() => navigate("/app/profile")}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/ai-assistant")}>
+              <DropdownMenuItem onClick={() => navigate("/app/ai-assistant")}>
                 <Bot className="mr-2 h-4 w-4" />
                 AI Assistant
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/settings")}>
+              <DropdownMenuItem onClick={() => navigate("/app/settings")}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/wallet")}>
+              <DropdownMenuItem onClick={() => navigate("/app/wallet")}>
                 <Wallet className="mr-2 h-4 w-4" />
                 Wallet
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/chat")}>
+              <DropdownMenuItem onClick={() => navigate("/app/chat")}>
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Messages
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/premium")}>
+              <DropdownMenuItem onClick={() => navigate("/app/premium")}>
                 <Crown className="mr-2 h-4 w-4 text-purple-600" />
                 <span className="text-purple-600">Premium</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/kyc")}>
+              <DropdownMenuItem onClick={() => navigate("/app/kyc")}>
                 <ShieldCheck className="mr-2 h-4 w-4" />
                 KYC Verification
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/notifications")}>
+              <DropdownMenuItem onClick={() => navigate("/app/notifications")}>
                 <Bell className="mr-2 h-4 w-4" />
                 Notifications
               </DropdownMenuItem>

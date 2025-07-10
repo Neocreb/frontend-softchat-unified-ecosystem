@@ -15,7 +15,7 @@ const AppLayout = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Video pages should have full-screen experience
-  const isVideoPage = location.pathname === "/videos";
+  const isVideoPage = location.pathname === "/app/videos";
 
   if (isVideoPage) {
     return (
