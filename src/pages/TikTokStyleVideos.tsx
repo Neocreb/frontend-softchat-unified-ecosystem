@@ -368,6 +368,14 @@ const VideoCard: React.FC<{
     if (navigator.vibrate) {
       navigator.vibrate(50);
     }
+    // Add heart animation class temporarily
+    const button = document.querySelector(
+      `[data-video-id="${video.id}"] .like-button`,
+    );
+    if (button) {
+      button.classList.add("tiktok-heart-animation");
+      setTimeout(() => button.classList.remove("tiktok-heart-animation"), 600);
+    }
   };
 
   const handleFollow = () => {
