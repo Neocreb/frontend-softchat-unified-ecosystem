@@ -195,13 +195,7 @@ export default function BlogRSSFeed({
             <Card
               key={post.id}
               className="cursor-pointer hover:shadow-lg transition-all duration-200 group overflow-hidden"
-              onClick={() =>
-                window.open(
-                  `/blog/${post.slug}`,
-                  "_blank",
-                  "noopener,noreferrer",
-                )
-              }
+              onClick={() => navigate(`/blog/${post.slug}`)}
             >
               {post.featuredImage && (
                 <div className="relative h-32 overflow-hidden">
