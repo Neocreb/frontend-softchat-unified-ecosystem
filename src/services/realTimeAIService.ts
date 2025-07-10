@@ -19,6 +19,15 @@ interface SoftChatKnowledge {
   troubleshooting: Record<string, any>;
 }
 
+interface ConversationAnalysis {
+  sentiment: "positive" | "negative" | "neutral";
+  intent: string;
+  topics: string[];
+  urgency: "low" | "medium" | "high";
+  emotionalContext: string;
+  previousContext: string[];
+}
+
 export class RealTimeAIService {
   private cache: Map<string, RealTimeData> = new Map();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -287,49 +296,108 @@ export class RealTimeAIService {
     const normalizedQuery = query.toLowerCase().trim();
 
     try {
+      // Enhanced conversation context understanding
+      const conversationAnalysis = this.analyzeConversationContext(
+        query,
+        context,
+      );
+
       // Check for real-time queries
       if (this.isTimeQuery(normalizedQuery)) {
-        return await this.handleTimeQuery(normalizedQuery);
+        return await this.handleTimeQuery(
+          normalizedQuery,
+          conversationAnalysis,
+        );
       }
 
       if (this.isCryptoQuery(normalizedQuery)) {
-        return await this.handleCryptoQuery(normalizedQuery);
+        return await this.handleCryptoQuery(
+          normalizedQuery,
+          conversationAnalysis,
+        );
       }
 
       if (this.isWeatherQuery(normalizedQuery)) {
-        return await this.handleWeatherQuery(normalizedQuery);
+        return await this.handleWeatherQuery(
+          normalizedQuery,
+          conversationAnalysis,
+        );
       }
 
       if (this.isNewsQuery(normalizedQuery)) {
-        return await this.handleNewsQuery(normalizedQuery);
+        return await this.handleNewsQuery(
+          normalizedQuery,
+          conversationAnalysis,
+        );
       }
 
       if (this.isMarketQuery(normalizedQuery)) {
-        return await this.handleMarketQuery(normalizedQuery);
+        return await this.handleMarketQuery(
+          normalizedQuery,
+          conversationAnalysis,
+        );
       }
 
       // Handle calculation queries
       if (this.isCalculationQuery(normalizedQuery)) {
-        return this.handleCalculationQuery(normalizedQuery);
+        return this.handleCalculationQuery(
+          normalizedQuery,
+          conversationAnalysis,
+        );
+      }
+
+      // Enhanced knowledge base queries
+      if (this.isKnowledgeQuery(normalizedQuery)) {
+        return await this.handleKnowledgeQuery(
+          normalizedQuery,
+          user,
+          conversationAnalysis,
+        );
       }
 
       // Handle SoftChat platform queries
       if (this.isSoftChatQuery(normalizedQuery)) {
-        return this.handleSoftChatQuery(normalizedQuery, user);
+        return this.handleSoftChatQuery(
+          normalizedQuery,
+          user,
+          conversationAnalysis,
+        );
       }
 
-      // Handle personal/emotional queries
+      // Handle personal/emotional queries with enhanced empathy
       if (this.isPersonalQuery(normalizedQuery)) {
-        return this.handlePersonalQuery(normalizedQuery, user);
+        return this.handlePersonalQuery(
+          normalizedQuery,
+          user,
+          conversationAnalysis,
+        );
       }
 
-      // Handle casual conversation
+      // Handle casual conversation with personality
       if (this.isCasualQuery(normalizedQuery)) {
-        return this.handleCasualQuery(normalizedQuery, user);
+        return this.handleCasualQuery(
+          normalizedQuery,
+          user,
+          conversationAnalysis,
+        );
       }
 
-      // Fall back to friendly contextual AI response
-      return this.generateFriendlyResponse(query, user, context);
+      // Enhanced problem-solving capabilities
+      if (this.isProblemSolvingQuery(normalizedQuery)) {
+        return this.handleProblemSolvingQuery(
+          normalizedQuery,
+          user,
+          conversationAnalysis,
+        );
+      }
+
+      // Fall back to advanced contextual AI response
+      return this.generateAdvancedResponse(
+        query,
+        user,
+        context,
+        conversationAnalysis,
+      );
     } catch (error) {
       console.error("Error generating real-time response:", error);
       return this.generateFallbackResponse(query, user);
