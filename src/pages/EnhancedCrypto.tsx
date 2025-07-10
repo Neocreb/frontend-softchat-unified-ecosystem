@@ -56,6 +56,7 @@ import BlogRSSFeed from "@/components/crypto/BlogRSSFeed";
 import { cn } from "@/lib/utils";
 
 export default function EnhancedCrypto() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [cryptos, setCryptos] = useState<Cryptocurrency[]>([]);
   const [marketData, setMarketData] = useState<MarketData | null>(null);
