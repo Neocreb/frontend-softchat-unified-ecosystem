@@ -252,15 +252,26 @@ export class RealTimeAIService {
     },
   };
 
-  // Personality traits for friendly conversation
+  // Enhanced personality traits for intelligent conversation
   private personalityTraits = {
-    greeting: ["Hey there!", "Hi friend!", "Hello!", "Hey!", "Hi there!"],
+    greeting: [
+      "Hey there!",
+      "Hi friend!",
+      "Hello!",
+      "Hey!",
+      "Hi there!",
+      "Good to see you!",
+      "Welcome back!",
+    ],
     enthusiasm: [
       "That's awesome!",
       "How exciting!",
       "That sounds great!",
       "Wonderful!",
       "Amazing!",
+      "Fantastic!",
+      "That's incredible!",
+      "Love that energy!",
     ],
     support: [
       "I'm here for you",
@@ -268,6 +279,9 @@ export class RealTimeAIService {
       "I believe in you",
       "Don't worry, we'll figure it out",
       "I'm always here to help",
+      "We can work through this together",
+      "You're stronger than you think",
+      "I'm in your corner",
     ],
     casual: [
       "totally",
@@ -275,6 +289,9 @@ export class RealTimeAIService {
       "absolutely",
       "for sure",
       "absolutely right",
+      "exactly",
+      "spot on",
+      "you got it",
     ],
     empathy: [
       "I understand how you feel",
@@ -282,7 +299,53 @@ export class RealTimeAIService {
       "I hear you",
       "That makes sense",
       "I can relate to that",
+      "Your feelings are valid",
+      "That sounds really challenging",
+      "I'm here to listen",
     ],
+    encouragement: [
+      "You're making great progress!",
+      "Keep up the amazing work!",
+      "You're on the right track!",
+      "That's a smart approach!",
+      "You're learning so fast!",
+      "I'm proud of you!",
+    ],
+    curiosity: [
+      "Tell me more about that!",
+      "That sounds fascinating!",
+      "I'd love to hear more!",
+      "What's that like?",
+      "How did that make you feel?",
+      "That's really interesting!",
+    ],
+  };
+
+  // Advanced knowledge base for general topics
+  private knowledgeBase = {
+    technology: {
+      ai: "Artificial Intelligence is transforming how we interact with technology, making systems smarter and more helpful.",
+      blockchain:
+        "Blockchain technology provides secure, decentralized record-keeping that powers cryptocurrencies and many other applications.",
+      programming:
+        "Programming is the art of giving instructions to computers to solve problems and create amazing digital experiences.",
+    },
+    lifestyle: {
+      productivity:
+        "Productivity is about working smarter, not harder - finding systems and habits that help you achieve your goals efficiently.",
+      wellness:
+        "Wellness encompasses physical health, mental wellbeing, and finding balance in all aspects of life.",
+      learning:
+        "Continuous learning keeps your mind sharp and opens new opportunities - every day is a chance to grow!",
+    },
+    business: {
+      entrepreneurship:
+        "Entrepreneurship is about identifying problems and creating innovative solutions that provide value to others.",
+      marketing:
+        "Marketing is the art of connecting with your audience and communicating the value of what you offer.",
+      finance:
+        "Financial literacy is crucial for making smart money decisions and building long-term wealth.",
+    },
   };
 
   /**
@@ -1512,6 +1575,410 @@ export class RealTimeAIService {
       "earn softpoints": "/rewards",
     };
     return urlMap[topic] || "/explore";
+  }
+
+  /**
+   * Analyze conversation context for better responses
+   */
+  private analyzeConversationContext(
+    query: string,
+    context?: string[],
+  ): ConversationAnalysis {
+    const sentiment = this.analyzeSentiment(query);
+    const intent = this.analyzeIntent(query);
+    const topics = this.extractTopics(query);
+    const urgency = this.analyzeUrgency(query);
+    const emotionalContext = this.analyzeEmotionalContext(query);
+
+    return {
+      sentiment,
+      intent,
+      topics,
+      urgency,
+      emotionalContext,
+      previousContext: context || [],
+    };
+  }
+
+  /**
+   * Analyze sentiment of the query
+   */
+  private analyzeSentiment(query: string): "positive" | "negative" | "neutral" {
+    const positiveWords = [
+      "happy",
+      "excited",
+      "great",
+      "awesome",
+      "amazing",
+      "love",
+      "wonderful",
+      "fantastic",
+      "good",
+      "excellent",
+    ];
+    const negativeWords = [
+      "sad",
+      "angry",
+      "frustrated",
+      "worried",
+      "stressed",
+      "confused",
+      "problem",
+      "issue",
+      "help",
+      "trouble",
+    ];
+
+    const lowercaseQuery = query.toLowerCase();
+    const positiveCount = positiveWords.filter((word) =>
+      lowercaseQuery.includes(word),
+    ).length;
+    const negativeCount = negativeWords.filter((word) =>
+      lowercaseQuery.includes(word),
+    ).length;
+
+    if (positiveCount > negativeCount) return "positive";
+    if (negativeCount > positiveCount) return "negative";
+    return "neutral";
+  }
+
+  /**
+   * Analyze intent of the query
+   */
+  private analyzeIntent(query: string): string {
+    const lowercaseQuery = query.toLowerCase();
+
+    if (lowercaseQuery.includes("how") && lowercaseQuery.includes("?"))
+      return "question";
+    if (lowercaseQuery.includes("help") || lowercaseQuery.includes("assist"))
+      return "help_request";
+    if (lowercaseQuery.includes("show") || lowercaseQuery.includes("tell"))
+      return "information_request";
+    if (
+      lowercaseQuery.includes("feeling") ||
+      lowercaseQuery.includes("emotion")
+    )
+      return "emotional_sharing";
+    if (
+      lowercaseQuery.includes("thank") ||
+      lowercaseQuery.includes("appreciate")
+    )
+      return "gratitude";
+    if (lowercaseQuery.includes("problem") || lowercaseQuery.includes("issue"))
+      return "problem_solving";
+
+    return "general_conversation";
+  }
+
+  /**
+   * Extract topics from query
+   */
+  private extractTopics(query: string): string[] {
+    const topics = [];
+    const lowercaseQuery = query.toLowerCase();
+
+    // Technology topics
+    if (lowercaseQuery.match(/crypto|bitcoin|ethereum|blockchain/))
+      topics.push("cryptocurrency");
+    if (lowercaseQuery.match(/ai|artificial intelligence|machine learning/))
+      topics.push("artificial_intelligence");
+    if (lowercaseQuery.match(/programming|coding|development/))
+      topics.push("programming");
+
+    // Platform topics
+    if (lowercaseQuery.match(/social|post|feed|content/))
+      topics.push("social_media");
+    if (lowercaseQuery.match(/marketplace|sell|buy|product/))
+      topics.push("marketplace");
+    if (lowercaseQuery.match(/freelance|work|job|project/))
+      topics.push("freelancing");
+    if (lowercaseQuery.match(/wallet|money|payment/)) topics.push("finance");
+
+    // Personal topics
+    if (lowercaseQuery.match(/feeling|emotion|mood|sad|happy/))
+      topics.push("emotions");
+    if (lowercaseQuery.match(/learn|study|education|knowledge/))
+      topics.push("learning");
+    if (lowercaseQuery.match(/health|wellness|fitness/))
+      topics.push("wellness");
+
+    return topics.length > 0 ? topics : ["general"];
+  }
+
+  /**
+   * Analyze urgency level
+   */
+  private analyzeUrgency(query: string): "low" | "medium" | "high" {
+    const urgentWords = [
+      "urgent",
+      "emergency",
+      "asap",
+      "immediately",
+      "quickly",
+      "fast",
+      "now",
+    ];
+    const moderateWords = ["soon", "today", "help", "problem", "issue"];
+
+    const lowercaseQuery = query.toLowerCase();
+
+    if (urgentWords.some((word) => lowercaseQuery.includes(word)))
+      return "high";
+    if (moderateWords.some((word) => lowercaseQuery.includes(word)))
+      return "medium";
+    return "low";
+  }
+
+  /**
+   * Analyze emotional context
+   */
+  private analyzeEmotionalContext(query: string): string {
+    const lowercaseQuery = query.toLowerCase();
+
+    if (lowercaseQuery.match(/excited|happy|joy|amazing|awesome/))
+      return "joyful";
+    if (lowercaseQuery.match(/sad|down|depressed|upset/)) return "melancholic";
+    if (lowercaseQuery.match(/angry|frustrated|annoyed/)) return "frustrated";
+    if (lowercaseQuery.match(/worried|anxious|nervous|stressed/))
+      return "anxious";
+    if (lowercaseQuery.match(/confused|lost|uncertain/)) return "confused";
+    if (lowercaseQuery.match(/grateful|thank|appreciate/)) return "grateful";
+
+    return "neutral";
+  }
+
+  /**
+   * Check if query is asking for general knowledge
+   */
+  private isKnowledgeQuery(query: string): boolean {
+    const knowledgeKeywords = [
+      "what is",
+      "explain",
+      "define",
+      "meaning",
+      "about",
+      "tell me about",
+      "how does",
+      "why",
+      "difference between",
+      "compare",
+      "versus",
+    ];
+    return knowledgeKeywords.some((keyword) => query.includes(keyword));
+  }
+
+  /**
+   * Handle general knowledge queries
+   */
+  private async handleKnowledgeQuery(
+    query: string,
+    user: User,
+    analysis: ConversationAnalysis,
+  ): Promise<IntelligentAIResponse> {
+    const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+    const curiosity = this.getRandomItem(this.personalityTraits.curiosity);
+
+    // Try to find relevant knowledge
+    for (const [category, topics] of Object.entries(this.knowledgeBase)) {
+      for (const [topic, explanation] of Object.entries(topics)) {
+        if (query.toLowerCase().includes(topic)) {
+          return {
+            message: `${enthusiasm} I'd love to explain ${topic} to you! ${explanation}\n\n${curiosity} Is there a specific aspect you'd like to dive deeper into?`,
+            confidence: 90,
+            sources: ["Knowledge Base"],
+            category: "education",
+            suggestedActions: [
+              {
+                id: "learn-more",
+                label: "Learn More",
+                action: "external",
+                url: `https://www.google.com/search?q=${encodeURIComponent(topic)}`,
+              },
+            ],
+            followUpQuestions: [
+              `How can I apply ${topic} practically?`,
+              `What are the benefits of ${topic}?`,
+              `Tell me more about ${topic} trends`,
+            ],
+            relatedTopics: [category, topic, "learning", "knowledge"],
+          };
+        }
+      }
+    }
+
+    // Fallback for general knowledge queries
+    return {
+      message: `That's a great question! While I might not have specific details about that topic, I'm always eager to help you learn! 🎓\n\nI excel at helping with SoftChat features, real-time data like crypto prices and weather, calculations, and friendly conversation. For complex topics, I'd recommend checking reliable sources online.\n\nIs there something specific about SoftChat or real-time information I can help you with instead?`,
+      confidence: 70,
+      sources: ["General AI"],
+      category: "education",
+      suggestedActions: [
+        {
+          id: "search",
+          label: "Search Online",
+          action: "external",
+          url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+        },
+      ],
+      followUpQuestions: [
+        "What SoftChat features interest you?",
+        "Want to check current crypto prices?",
+        "Need help with anything else?",
+      ],
+      relatedTopics: ["learning", "knowledge", "education"],
+    };
+  }
+
+  /**
+   * Check if query is problem-solving related
+   */
+  private isProblemSolvingQuery(query: string): boolean {
+    const problemKeywords = [
+      "problem",
+      "issue",
+      "error",
+      "bug",
+      "not working",
+      "broken",
+      "can't",
+      "won't",
+      "doesn't work",
+      "stuck",
+      "trouble",
+    ];
+    return problemKeywords.some((keyword) => query.includes(keyword));
+  }
+
+  /**
+   * Handle problem-solving queries
+   */
+  private handleProblemSolvingQuery(
+    query: string,
+    user: User,
+    analysis: ConversationAnalysis,
+  ): Promise<IntelligentAIResponse> {
+    const support = this.getRandomItem(this.personalityTraits.support);
+    const empathy = this.getRandomItem(this.personalityTraits.empathy);
+
+    // Check for common SoftChat problems
+    for (const [problem, solution] of Object.entries(
+      this.softchatKnowledge.troubleshooting,
+    )) {
+      if (query.toLowerCase().includes(problem.replace(" ", ""))) {
+        const solutionData = solution as any;
+        const solutionsList = solutionData.solutions
+          .map((sol: string, i: number) => `${i + 1}. ${sol}`)
+          .join("\n");
+
+        return Promise.resolve({
+          message: `${empathy} - I can definitely help you with ${problem}! ${support}\n\n🔧 **Troubleshooting Steps:**\n${solutionsList}\n\n💡 **Quick Tip:** ${solutionData.common}\n\nTry these steps and let me know if you're still having trouble! I'm here to help until we get it sorted out. 😊`,
+          confidence: 95,
+          sources: ["SoftChat Support"],
+          category: "troubleshooting",
+          suggestedActions: [
+            {
+              id: "contact-support",
+              label: "Contact Support",
+              action: "navigate",
+              url: "/support",
+            },
+          ],
+          followUpQuestions: [
+            "Did that solution work?",
+            "Are you still experiencing the issue?",
+            "Need help with anything else?",
+          ],
+          relatedTopics: ["troubleshooting", "support", problem],
+        });
+      }
+    }
+
+    // General problem-solving approach
+    return Promise.resolve({
+      message: `${empathy} - I can see you're dealing with an issue, and ${support}! 💪\n\nLet's work through this together step by step:\n\n1. **Describe the problem** - What exactly is happening?\n2. **When did it start** - Was it working before?\n3. **What you've tried** - Have you attempted any solutions?\n4. **Your goal** - What are you trying to accomplish?\n\nWith these details, I can provide much better guidance! Don't worry, most issues have simple solutions. 🔧`,
+      confidence: 85,
+      sources: ["Problem Solving AI"],
+      category: "troubleshooting",
+      suggestedActions: [
+        {
+          id: "help-center",
+          label: "Visit Help Center",
+          action: "navigate",
+          url: "/help",
+        },
+      ],
+      followUpQuestions: [
+        "Can you describe the problem in more detail?",
+        "When did this issue first occur?",
+        "What were you trying to do when it happened?",
+      ],
+      relatedTopics: ["problem solving", "troubleshooting", "support"],
+    });
+  }
+
+  /**
+   * Generate advanced contextual response
+   */
+  private generateAdvancedResponse(
+    query: string,
+    user: User,
+    context?: string[],
+    analysis?: ConversationAnalysis,
+  ): IntelligentAIResponse {
+    const greeting = this.getRandomItem(this.personalityTraits.greeting);
+    const support = this.getRandomItem(this.personalityTraits.support);
+    const curiosity = this.getRandomItem(this.personalityTraits.curiosity);
+
+    // Customize response based on sentiment and context
+    let personalizedMessage = "";
+
+    if (analysis?.sentiment === "positive") {
+      const enthusiasm = this.getRandomItem(this.personalityTraits.enthusiasm);
+      personalizedMessage = `${enthusiasm} I love your positive energy! `;
+    } else if (analysis?.sentiment === "negative") {
+      const empathy = this.getRandomItem(this.personalityTraits.empathy);
+      personalizedMessage = `${empathy}. ${support} `;
+    }
+
+    // Add context awareness
+    let contextMessage = "";
+    if (context && context.length > 0) {
+      contextMessage = `I remember we were talking about ${context.slice(-1)[0]}. `;
+    }
+
+    return {
+      message: `${greeting} ${user.name || "friend"}! ${personalizedMessage}${contextMessage}I'm Edith, your intelligent AI companion! 🤖✨\n\nI'm here to help with:\n• 🕒 Real-time information (time, crypto, weather, news)\n• 🧮 Calculations and problem-solving\n• 💬 SoftChat platform guidance\n• 🎯 Friendly conversation and support\n• 📚 General knowledge and learning\n\n${curiosity} What's on your mind today?`,
+      confidence: 80,
+      sources: ["Advanced AI Assistant"],
+      category: "general",
+      suggestedActions: [
+        {
+          id: "explore",
+          label: "Explore SoftChat",
+          action: "navigate",
+          url: "/explore",
+        },
+        {
+          id: "chat",
+          label: "Continue Chatting",
+          action: "navigate",
+          url: "/chat",
+        },
+      ],
+      followUpQuestions: [
+        "What's the current crypto market like?",
+        "How can I make the most of SoftChat?",
+        "Tell me something interesting!",
+        "What's new and exciting today?",
+      ],
+      relatedTopics: [
+        "friendship",
+        "assistance",
+        "platform help",
+        "real-time data",
+        "intelligent conversation",
+      ],
+    };
   }
 
   /**
