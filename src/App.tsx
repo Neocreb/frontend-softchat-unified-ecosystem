@@ -208,7 +208,7 @@ const AppRoutes = () => {
       {/* Protected routes - only render when not loading */}
       {!isLoading && (
         <Route
-          path="/"
+          path="/app"
           element={
             <ProtectedRoute>
               <WalletProvider>
