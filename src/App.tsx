@@ -157,7 +157,7 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      {/* Root path shows original feature-rich landing page */}
+      {/* Public routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
@@ -174,7 +174,7 @@ const AppRoutes = () => {
 
       {/* Protected routes inside app layout */}
       <Route
-        path="/"
+        path="/app"
         element={
           <ProtectedRoute>
             <MarketplaceProvider>
