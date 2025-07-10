@@ -1,4 +1,3 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 
@@ -7,7 +6,7 @@ const Home = () => {
 
   // Redirect authenticated users to feed, others to landing
   if (isAuthenticated) {
-    return <Navigate to="/feed" replace />;
+    return <Navigate to="/app/feed" replace />;
   }
 
   return <Navigate to="/" replace />;
