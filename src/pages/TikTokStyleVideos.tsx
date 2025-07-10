@@ -960,10 +960,10 @@ const TikTokStyleVideos: React.FC = () => {
 
       {/* Navigation hint */}
       {showControls && currentVideos.length > 1 && (
-        <div className="absolute bottom-32 md:bottom-16 left-1/2 transform -translate-x-1/2 z-40">
-          <div className="flex flex-col items-center gap-2 text-white/60">
-            <ChevronUp className="w-6 h-6 animate-bounce" />
-            <span className="text-sm">Swipe up for more</span>
+        <div className="absolute bottom-36 md:bottom-20 left-1/2 transform -translate-x-1/2 z-30">
+          <div className="flex flex-col items-center gap-1 text-white/50">
+            <ChevronUp className="w-5 h-5 animate-bounce" />
+            <span className="text-xs">Swipe up</span>
           </div>
         </div>
       )}
