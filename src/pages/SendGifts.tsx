@@ -160,34 +160,42 @@ const SendGifts = () => {
 
   const loadVirtualGiftsData = async () => {
     try {
-      const [gifts, giftHistory, tipHistory] = await Promise.all([
-        virtualGiftsService.getAvailableGifts(),
-        virtualGiftsService.getGiftHistory(user?.id || ""),
-        virtualGiftsService.getTipHistory(user?.id || ""),
-      ]);
-
+      // Use static gifts for immediate availability
+      const gifts = virtualGiftsService.getAvailableGifts();
       setAvailableGifts(gifts);
 
-      // Add display properties to gift history
-      const enhancedGiftHistory = giftHistory.map((gift) => ({
-        ...gift,
-        giftName:
-          gifts.find((g) => g.id === gift.giftId)?.name || "Unknown Gift",
-        giftEmoji: gifts.find((g) => g.id === gift.giftId)?.emoji || "🎁",
-        recipientName: "Unknown User", // In real app, would fetch from user service
-      }));
+      // Load history asynchronously
+      try {
+        const [giftHistory, tipHistory] = await Promise.all([
+          virtualGiftsService.getGiftHistory(user?.id || ""),
+          virtualGiftsService.getTipHistory(user?.id || ""),
+        ]);
 
-      // Add display properties to tip history
-      const enhancedTipHistory = tipHistory.map((tip) => ({
-        ...tip,
-        recipientName: "Unknown User", // In real app, would fetch from user service
-      }));
+        // Add display properties to gift history
+        const enhancedGiftHistory = giftHistory.map((gift) => ({
+          ...gift,
+          giftName:
+            gifts.find((g) => g.id === gift.giftId)?.name || "Unknown Gift",
+          giftEmoji: gifts.find((g) => g.id === gift.giftId)?.emoji || "🎁",
+          recipientName: "Sample User", // Mock name for demo
+        }));
 
-      setRecentGifts(enhancedGiftHistory);
-      setRecentTips(enhancedTipHistory);
+        // Add display properties to tip history
+        const enhancedTipHistory = tipHistory.map((tip) => ({
+          ...tip,
+          recipientName: "Sample User", // Mock name for demo
+        }));
+
+        setRecentGifts(enhancedGiftHistory);
+        setRecentTips(enhancedTipHistory);
+      } catch (error) {
+        console.error("Error loading history:", error);
+        setRecentGifts([]);
+        setRecentTips([]);
+      }
     } catch (error) {
       console.error("Error loading virtual gifts data:", error);
-      // Load with mock data if service fails
+      // Load with mock data if everything fails
       setAvailableGifts(VIRTUAL_GIFTS || []);
       setRecentGifts([]);
       setRecentTips([]);
