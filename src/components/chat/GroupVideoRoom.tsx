@@ -672,6 +672,7 @@ export const GroupVideoRoom: React.FC<GroupVideoRoomProps> = ({
                   {showChat ? "Hide Chat" : "Show Chat"}
                 </Button>
               </div>
+
               <div className="flex items-center gap-3">
                 {/* Audio toggle */}
                 <TooltipProvider>
@@ -791,7 +792,12 @@ export const GroupVideoRoom: React.FC<GroupVideoRoomProps> = ({
                   <PhoneOff className="w-5 h-5" />
                 </Button>
               </div>
-              <div className="w-24" /> {/* Spacer for balance */}
+
+              <div className="flex items-center gap-2 w-24">
+                <span className="text-xs text-gray-400">
+                  {participants.length} online
+                </span>
+              </div>
             </div>
           </div>
         </div>
