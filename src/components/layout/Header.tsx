@@ -57,48 +57,48 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
     {
       icon: Home,
       label: "Feed",
-      href: "/app/feed",
-      active: location.pathname === "/app" || location.pathname === "/app/feed",
+      href: "/feed",
+      active: location.pathname === "/feed",
     },
     {
       icon: Search,
       label: "Explore",
-      href: "/app/explore",
-      active: location.pathname === "/app/explore",
+      href: "/explore",
+      active: location.pathname === "/explore",
     },
     {
       icon: Video,
       label: "Videos",
-      href: "/app/videos",
-      active: location.pathname === "/app/videos",
+      href: "/videos",
+      active: location.pathname === "/videos",
     },
     {
       icon: ShoppingBag,
       label: "Market",
-      href: "/app/marketplace",
+      href: "/marketplace",
       active:
-        location.pathname === "/app/marketplace" ||
-        location.pathname.startsWith("/app/marketplace"),
+        location.pathname === "/marketplace" ||
+        location.pathname.startsWith("/marketplace"),
     },
     {
       icon: Briefcase,
       label: "Freelance",
-      href: "/app/freelance",
+      href: "/freelance",
       active:
-        location.pathname === "/app/freelance" ||
-        location.pathname.startsWith("/app/freelance"),
+        location.pathname === "/freelance" ||
+        location.pathname.startsWith("/freelance"),
     },
     {
       icon: Coins,
       label: "Crypto",
-      href: "/app/crypto",
-      active: location.pathname === "/app/crypto",
+      href: "/crypto",
+      active: location.pathname === "/crypto",
     },
     {
       icon: Gift,
       label: "Rewards",
-      href: "/app/rewards",
-      active: location.pathname === "/app/rewards",
+      href: "/rewards",
+      active: location.pathname === "/rewards",
     },
   ];
 
@@ -122,7 +122,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/app/explore?q=${encodeURIComponent(searchQuery.trim())}`);
+      navigate(`/explore?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     }
   };
@@ -141,7 +141,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
             <Menu className="h-5 w-5" />
           </Button>
 
-          <Link to="/app/feed" className="flex items-center gap-2">
+          <Link to="/feed" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               SoftChat
