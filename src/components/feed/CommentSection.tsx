@@ -18,6 +18,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface CommentSectionProps {
   postId: string;
