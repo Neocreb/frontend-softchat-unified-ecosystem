@@ -1177,50 +1177,39 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                             </ScrollArea>
                           </CardContent>
 
-                          <div
-                            className={`border-t flex-shrink-0 ${
-                              isMobile ? "p-2.5" : "p-3"
-                            }`}
-                          >
-                            <form
-                              onSubmit={handleSendMessage}
-                              className="flex w-full gap-2"
-                            >
-                              <Input
-                                placeholder={
-                                  isMobile
-                                    ? "Type message..."
-                                    : "Type a message..."
-                                }
-                                value={messageInput}
-                                onChange={(e) =>
-                                  setMessageInput(e.target.value)
-                                }
-                                className={cn(
-                                  "flex-1",
-                                  isMobile ? "h-11 chat-input-mobile" : "h-10",
-                                )}
-                                autoComplete="off"
-                                autoFocus={!isMobile} // Don't auto-focus on mobile to prevent keyboard popup
-                              />
+                          {/* Reply indicator */}
+                          {replyToMessage && (
+                            <div className="border-t border-b bg-muted/30 p-3 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="w-1 h-8 bg-primary rounded-full" />
+                                <div className="min-w-0">
+                                  <p className="text-xs font-medium text-primary">
+                                    Replying to {replyToMessage.senderName}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground truncate max-w-48">
+                                    {replyToMessage.content}
+                                  </p>
+                                </div>
+                              </div>
                               <Button
-                                type="submit"
-                                size={isMobile ? "default" : "default"}
-                                className={cn(
-                                  "touch-optimized",
-                                  isMobile
-                                    ? "px-4 min-w-[50px] h-11"
-                                    : "px-4 h-10", // Larger touch target on mobile
-                                )}
-                                disabled={!messageInput.trim()}
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6"
+                                onClick={() => setReplyToMessage(null)}
                               >
-                                <Send className="h-4 w-4" />
-                                {!isMobile && (
-                                  <span className="ml-1">Send</span>
-                                )}
+                                <X className="h-3 w-3" />
                               </Button>
-                            </form>
-                          </div>
+                            </div>
+                          )}
+
+                          {/* Enhanced Chat Input */}
+                          <EnhancedChatInput
+                            messageInput={messageInput}
+                            setMessageInput={setMessageInput}
+                            onSendMessage={handleSendEnhancedMessage}
+                            isMobile={isMobile}
+                            disabled={loading}
+                          />
                         </>
                       ) : (
                         <div className="flex-1 flex flex-col items-center justify-center p-4">
