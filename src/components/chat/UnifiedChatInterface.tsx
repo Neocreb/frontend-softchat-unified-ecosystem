@@ -138,6 +138,200 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
     });
   }, [conversations]);
 
+  // Call handling functions
+  const handleStartVoiceCall = () => {
+    if (!selectedChat || !user) return;
+
+    const mockParticipant = {
+      id: selectedChat.participants?.[0]?.id || "participant-1",
+      name: selectedChat.participants?.[0]?.name || selectedChat.title,
+      avatar: selectedChat.participants?.[0]?.avatar,
+      isAudioMuted: false,
+      isVideoEnabled: false,
+      isScreenSharing: false,
+      connectionQuality: "excellent" as const,
+    };
+
+    const currentUserParticipant = {
+      id: user.id,
+      name: user.profile?.full_name || user.email,
+      avatar: user.profile?.avatar_url,
+      isAudioMuted: isAudioMuted,
+      isVideoEnabled: false,
+      isScreenSharing: isScreenSharing,
+      connectionQuality: "excellent" as const,
+    };
+
+    setActiveCall({
+      type: "voice",
+      participants: [mockParticipant],
+      currentUser: currentUserParticipant,
+      chatInfo: selectedChat,
+    });
+
+    toast({
+      title: "Voice Call Started",
+      description: `Calling ${selectedChat.title}...`,
+    });
+  };
+
+  const handleStartVideoCall = () => {
+    if (!selectedChat || !user) return;
+
+    const mockParticipant = {
+      id: selectedChat.participants?.[0]?.id || "participant-1",
+      name: selectedChat.participants?.[0]?.name || selectedChat.title,
+      avatar: selectedChat.participants?.[0]?.avatar,
+      isAudioMuted: false,
+      isVideoEnabled: true,
+      isScreenSharing: false,
+      connectionQuality: "excellent" as const,
+    };
+
+    const currentUserParticipant = {
+      id: user.id,
+      name: user.profile?.full_name || user.email,
+      avatar: user.profile?.avatar_url,
+      isAudioMuted: isAudioMuted,
+      isVideoEnabled: isVideoEnabled,
+      isScreenSharing: isScreenSharing,
+      connectionQuality: "excellent" as const,
+    };
+
+    setActiveCall({
+      type: "video",
+      participants: [mockParticipant],
+      currentUser: currentUserParticipant,
+      chatInfo: selectedChat,
+    });
+
+    toast({
+      title: "Video Call Started",
+      description: `Starting video call with ${selectedChat.title}...`,
+    });
+  };
+
+  const handleStartGroupVideo = () => {
+    if (!selectedChat || !user) return;
+
+    // Mock group participants
+    const mockParticipants = [
+      {
+        id: user.id,
+        name: user.profile?.full_name || user.email,
+        avatar: user.profile?.avatar_url,
+        role: "host" as const,
+        isVideoEnabled: isVideoEnabled,
+        isAudioEnabled: !isAudioMuted,
+        isScreenSharing: isScreenSharing,
+        handRaised: false,
+        joinedAt: new Date().toISOString(),
+        connectionQuality: "excellent" as const,
+      },
+      {
+        id: "participant-2",
+        name: "Sarah Chen",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+        role: "participant" as const,
+        isVideoEnabled: true,
+        isAudioEnabled: true,
+        isScreenSharing: false,
+        handRaised: false,
+        joinedAt: new Date().toISOString(),
+        connectionQuality: "good" as const,
+      },
+      {
+        id: "participant-3",
+        name: "Mike Johnson",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
+        role: "speaker" as const,
+        isVideoEnabled: false,
+        isAudioEnabled: true,
+        isScreenSharing: true,
+        handRaised: false,
+        joinedAt: new Date().toISOString(),
+        connectionQuality: "excellent" as const,
+      },
+    ];
+
+    setGroupVideoRoom({
+      roomId: `room-${selectedChat.id}`,
+      roomName: selectedChat.title,
+      roomType:
+        selectedChat.type === "freelance"
+          ? "freelance_collab"
+          : selectedChat.type === "marketplace"
+            ? "marketplace_demo"
+            : selectedChat.type === "crypto"
+              ? "crypto_discussion"
+              : "community_event",
+      participants: mockParticipants,
+      currentUser: mockParticipants[0],
+    });
+
+    toast({
+      title: "Group Video Room Created",
+      description: `Starting group video session for ${selectedChat.title}`,
+    });
+  };
+
+  const handleEndCall = () => {
+    setActiveCall(null);
+    setIncomingCall(null);
+    toast({
+      title: "Call Ended",
+      description: "The call has been ended.",
+    });
+  };
+
+  const handleToggleAudio = () => {
+    setIsAudioMuted(!isAudioMuted);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isAudioMuted: !isAudioMuted,
+        },
+      });
+    }
+  };
+
+  const handleToggleVideo = () => {
+    setIsVideoEnabled(!isVideoEnabled);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isVideoEnabled: !isVideoEnabled,
+        },
+      });
+    }
+  };
+
+  const handleToggleScreenShare = () => {
+    setIsScreenSharing(!isScreenSharing);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isScreenSharing: !isScreenSharing,
+        },
+      });
+    }
+
+    toast({
+      title: isScreenSharing
+        ? "Screen Sharing Stopped"
+        : "Screen Sharing Started",
+      description: isScreenSharing
+        ? "You stopped sharing your screen"
+        : "You are now sharing your screen",
+    });
+  };
+
   // Filter conversations based on active tab and search
   const filteredConversations = useMemo(() => {
     let filtered = conversations;
