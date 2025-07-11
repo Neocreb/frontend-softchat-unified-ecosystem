@@ -609,6 +609,24 @@ const VideoCard: React.FC<{
             </span>
           </div>
 
+          {/* Gift button */}
+          <div className="flex flex-col items-center gap-1">
+            <VirtualGiftsAndTips
+              recipientId={video.user.id}
+              recipientName={video.user.displayName}
+              trigger={
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
+                >
+                  <Gift className="w-6 h-6" />
+                </Button>
+              }
+            />
+            <span className="text-white text-xs font-medium">Gift</span>
+          </div>
+
           {/* Live Events Icon */}
           {video.isLiveStream ? (
             <div className="flex flex-col items-center gap-1">
