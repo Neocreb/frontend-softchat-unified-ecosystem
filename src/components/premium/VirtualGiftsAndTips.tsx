@@ -288,7 +288,13 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        console.log("Dialog state changing to:", open);
+        setIsOpen(open);
+      }}
+    >
       <DialogTrigger asChild>
         {trigger || (
           <Button variant="outline" className="flex items-center gap-2">
