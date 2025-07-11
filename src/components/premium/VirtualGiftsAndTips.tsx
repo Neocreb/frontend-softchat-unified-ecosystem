@@ -287,36 +287,38 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
     {} as Record<string, VirtualGift[]>,
   );
 
-  return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(open) => {
-        console.log("Dialog state changing to:", open);
-        setIsOpen(open);
-      }}
-    >
-      <DialogTrigger asChild>
-        {trigger ? (
-          React.cloneElement(trigger as React.ReactElement, {
-            onClick: (e: any) => {
-              console.log("Gift trigger clicked");
-              // Call original onClick if it exists
-              if ((trigger as any).props?.onClick) {
-                (trigger as any).props.onClick(e);
-              }
-            },
-          })
-        ) : (
-          <Button
-            variant="outline"
-            className="flex items-center gap-2"
-            onClick={() => console.log("Default gift button clicked")}
-          >
-            <Gift className="h-4 w-4" />
-            Send Gift
-          </Button>
-        )}
-      </DialogTrigger>
+    return (
+    <>
+      {trigger ? (
+        React.cloneElement(trigger as React.ReactElement, {
+          onClick: (e: any) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Gift trigger clicked, opening dialog");
+            setIsOpen(true);
+          }
+        })
+      ) : (
+        <Button
+          variant="outline"
+          className="flex items-center gap-2"
+          onClick={() => {
+            console.log("Default gift button clicked");
+            setIsOpen(true);
+          }}
+        >
+          <Gift className="h-4 w-4" />
+          Send Gift
+        </Button>
+      )}
+
+      <Dialog
+        open={isOpen}
+        onOpenChange={(open) => {
+          console.log("Dialog state changing to:", open);
+          setIsOpen(open);
+        }}
+      >
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
