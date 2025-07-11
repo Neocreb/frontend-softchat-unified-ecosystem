@@ -167,10 +167,30 @@ const SendGifts = () => {
       ]);
 
       setAvailableGifts(gifts);
-      setRecentGifts(giftHistory);
-      setRecentTips(tipHistory);
+
+      // Add display properties to gift history
+      const enhancedGiftHistory = giftHistory.map((gift) => ({
+        ...gift,
+        giftName:
+          gifts.find((g) => g.id === gift.giftId)?.name || "Unknown Gift",
+        giftEmoji: gifts.find((g) => g.id === gift.giftId)?.emoji || "🎁",
+        recipientName: "Unknown User", // In real app, would fetch from user service
+      }));
+
+      // Add display properties to tip history
+      const enhancedTipHistory = tipHistory.map((tip) => ({
+        ...tip,
+        recipientName: "Unknown User", // In real app, would fetch from user service
+      }));
+
+      setRecentGifts(enhancedGiftHistory);
+      setRecentTips(enhancedTipHistory);
     } catch (error) {
       console.error("Error loading virtual gifts data:", error);
+      // Load with mock data if service fails
+      setAvailableGifts(VIRTUAL_GIFTS || []);
+      setRecentGifts([]);
+      setRecentTips([]);
     }
   };
 
