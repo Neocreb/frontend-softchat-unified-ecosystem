@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -32,9 +31,9 @@ const Header = () => {
     >
       <div className="container-wide flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <a href="/" className="flex items-center">
           <span className="text-2xl font-bold text-softchat-700">Softchat</span>
-        </Link>
+        </a>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
@@ -87,7 +86,7 @@ const Header = () => {
 // NavLinks component for reusability between desktop and mobile
 const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
   const links = [
-    { text: "Home", href: "/ " },
+    { text: "Home", href: "/" },
     { text: "Features", href: "#features" },
     { text: "Why Softchat", href: "#why-softchat" },
     { text: "Blog", href: "/blog" },
