@@ -1274,7 +1274,7 @@ export default function EnhancedFeed() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => navigate("/premium")}
+                  onClick={() => navigate("/app/premium")}
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   <Star className="w-4 h-4 mr-2" />
@@ -1303,7 +1303,7 @@ export default function EnhancedFeed() {
                   </div>
                 </div>
                 <Button
-                  onClick={() => navigate("/kyc")}
+                  onClick={() => navigate("/app/kyc")}
                   variant="outline"
                   className="border-green-600 text-green-600 hover:bg-green-50"
                 >
@@ -1326,13 +1326,13 @@ export default function EnhancedFeed() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => navigate("/live-streaming")}
+                      onClick={() => navigate("/app/live-streaming")}
                     >
                       View All
                     </Button>
                     <Button
                       size="sm"
-                      onClick={() => navigate("/live-streaming")}
+                      onClick={() => navigate("/app/live-streaming")}
                       className="bg-red-600 hover:bg-red-700 text-white"
                     >
                       Go Live
