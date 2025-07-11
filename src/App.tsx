@@ -100,14 +100,14 @@ import SubscriptionManager from "./components/premium/SubscriptionManager";
 import VirtualGiftsAndTips from "./components/premium/VirtualGiftsAndTips";
 import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
 import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
+import Groups from "./pages/Groups";
+import Pages from "./pages/Pages";
 import {
   FriendsPage,
-  GroupsPage,
   AdsPage,
   MemoriesPage,
   SavedPage,
   SupportPage,
-  PagesPage,
   PrivacyPage,
   TermsPage,
   AdvertisingPage,
@@ -319,12 +319,12 @@ const AppRoutes = () => {
 
           {/* Facebook-style navigation pages */}
           <Route path="friends" element={<FriendsPage />} />
-          <Route path="groups" element={<GroupsPage />} />
+          <Route path="groups" element={<Groups />} />
           <Route path="ads" element={<AdsPage />} />
           <Route path="memories" element={<MemoriesPage />} />
           <Route path="saved" element={<SavedPage />} />
           <Route path="support" element={<SupportPage />} />
-          <Route path="pages" element={<PagesPage />} />
+          <Route path="pages" element={<Pages />} />
           <Route path="privacy" element={<PrivacyPage />} />
           <Route path="terms" element={<TermsPage />} />
           <Route path="advertising" element={<AdvertisingPage />} />

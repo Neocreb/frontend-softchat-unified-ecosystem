@@ -53,13 +53,13 @@ export default function Blog() {
   const loadBlogData = async () => {
     setIsLoading(true);
     try {
-      const [postsData, categoriesData, statsData] = await Promise.all([
+      const [postsResponse, categoriesData, statsData] = await Promise.all([
         blogService.getBlogPosts({}),
         blogService.getCategories(),
         blogService.getBlogStats(),
       ]);
 
-      setPosts(postsData);
+      setPosts(postsResponse.posts || []);
       setCategories(categoriesData);
       setStats(statsData);
     } catch (error) {
