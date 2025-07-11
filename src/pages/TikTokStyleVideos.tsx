@@ -577,20 +577,20 @@ const VideoCard: React.FC<{
               variant="ghost"
               onClick={handleLike}
               className={cn(
-                "like-button w-11 h-11 rounded-full transition-all duration-200",
+                "like-button w-12 h-12 rounded-full transition-all duration-200",
                 isLiked
-                  ? "bg-red-500/20 text-red-500 scale-110"
-                  : "bg-black/40 text-white hover:bg-black/60",
+                  ? "bg-red-500/20 text-red-500 scale-105"
+                  : "bg-black/30 text-white hover:bg-black/50 backdrop-blur-sm",
               )}
             >
               <Heart
                 className={cn(
-                  "w-6 h-6",
+                  "w-7 h-7",
                   isLiked ? "fill-red-500 text-red-500" : "",
                 )}
               />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-xs font-semibold">
               {formatNumber(video.stats.likes + (isLiked ? 1 : 0))}
             </span>
           </div>
