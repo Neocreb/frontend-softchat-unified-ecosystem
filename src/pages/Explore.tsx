@@ -227,7 +227,7 @@ const Explore = () => {
 
         {/* Desktop tabs */}
         <div className="hidden sm:block">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="discover" className="flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
               <span>Discover</span>
