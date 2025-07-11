@@ -272,6 +272,21 @@ export function EnhancedCommentsSection({
                     Reply
                   </Button>
 
+                  <VirtualGiftsAndTips
+                    recipientId={comment.userId}
+                    recipientName={comment.userName}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-auto p-0 text-xs text-gray-500"
+                      >
+                        <Gift className="w-3 h-3 mr-1" />
+                        Gift
+                      </Button>
+                    }
+                  />
+
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
