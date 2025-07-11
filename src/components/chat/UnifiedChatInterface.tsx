@@ -139,6 +139,65 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
     });
   }, [conversations]);
 
+  // Add some mock enhanced messages when a chat is selected for demo purposes
+  useEffect(() => {
+    if (
+      selectedChat &&
+      (!messages[selectedChat.id] || messages[selectedChat.id].length === 0)
+    ) {
+      const mockMessages: EnhancedChatMessage[] = [
+        {
+          id: "1",
+          senderId: "other-user",
+          senderName: selectedChat.participant_profile?.name || "Other User",
+          senderAvatar: selectedChat.participant_profile?.avatar,
+          content: "Hey! How are you doing today?",
+          type: "text",
+          timestamp: new Date(Date.now() - 600000).toISOString(),
+          status: "read",
+          reactions: [],
+        },
+        {
+          id: "2",
+          senderId: user?.id || "current-user",
+          senderName: user?.profile?.full_name || user?.email || "You",
+          senderAvatar: user?.profile?.avatar_url,
+          content:
+            "I'm doing great! Just working on some exciting new features 🚀",
+          type: "text",
+          timestamp: new Date(Date.now() - 480000).toISOString(),
+          status: "read",
+          reactions: [
+            {
+              userId: "other-user",
+              emoji: "👍",
+              timestamp: new Date(Date.now() - 470000).toISOString(),
+            },
+          ],
+        },
+        {
+          id: "3",
+          senderId: "other-user",
+          senderName: selectedChat.participant_profile?.name || "Other User",
+          senderAvatar: selectedChat.participant_profile?.avatar,
+          content: "😊",
+          type: "sticker",
+          timestamp: new Date(Date.now() - 360000).toISOString(),
+          status: "read",
+          reactions: [],
+          metadata: {
+            stickerName: "Happy",
+          },
+        },
+      ];
+
+      setMessages((prev) => ({
+        ...prev,
+        [selectedChat.id]: mockMessages,
+      }));
+    }
+  }, [selectedChat, messages, user]);
+
   // Call handling functions
   const handleStartVoiceCall = () => {
     if (!selectedChat || !user) return;
