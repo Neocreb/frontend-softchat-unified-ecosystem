@@ -320,7 +320,7 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
           setIsOpen(open);
         }}
       >
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] overflow-y-auto sm:w-full">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-purple-500" />
