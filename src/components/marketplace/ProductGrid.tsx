@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Product } from "@/types/marketplace";
@@ -20,45 +19,44 @@ interface ProductGridProps {
   products?: Product[]; // Make 'products' prop optional
 }
 
-const ProductGrid = ({ 
-  category = "all", 
-  searchQuery = "", 
+const ProductGrid = ({
+  category = "all",
+  searchQuery = "",
   sortBy,
-  onAddToCart, 
+  onAddToCart,
   onAddToWishlist,
   limit,
-  products: propProducts // Rename to avoid conflict with context products
+  products: propProducts, // Rename to avoid conflict with context products
 }: ProductGridProps) => {
   const [loading, setLoading] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { products: contextProducts, setActiveProduct } = useMarketplace();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  
+
   // Use the products prop if provided, otherwise use products from context
   const sourceProducts = propProducts || contextProducts;
-  
+
   useEffect(() => {
     // Simulate API fetch delay
     const timer = setTimeout(() => {
       let filtered = [...sourceProducts];
-      
+
       // Filter by category if not "all"
       if (category !== "all") {
-        filtered = filtered.filter(
-          product => product.category === category
-        );
+        filtered = filtered.filter((product) => product.category === category);
       }
-      
+
       // Filter by search query
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         filtered = filtered.filter(
-          product => 
-            product.name.toLowerCase().includes(query) || 
+          (product) =>
+            product.name.toLowerCase().includes(query) ||
             product.description.toLowerCase().includes(query) ||
             product.category.toLowerCase().includes(query) ||
-            (product.tags && product.tags.some(tag => tag.toLowerCase().includes(query)))
+            (product.tags &&
+              product.tags.some((tag) => tag.toLowerCase().includes(query))),
         );
       }
 
@@ -66,16 +64,30 @@ const ProductGrid = ({
       if (sortBy) {
         switch (sortBy) {
           case "recent":
-            filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            filtered.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime(),
+            );
             break;
           case "popular":
-            filtered.sort((a, b) => (b.rating * (b.reviewCount || 1)) - (a.rating * (a.reviewCount || 1)));
+            filtered.sort(
+              (a, b) =>
+                b.rating * (b.reviewCount || 1) -
+                a.rating * (a.reviewCount || 1),
+            );
             break;
           case "price-low":
-            filtered.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
+            filtered.sort(
+              (a, b) =>
+                (a.discountPrice || a.price) - (b.discountPrice || b.price),
+            );
             break;
           case "price-high":
-            filtered.sort((a, b) => (b.discountPrice || b.price) - (a.discountPrice || a.price));
+            filtered.sort(
+              (a, b) =>
+                (b.discountPrice || b.price) - (a.discountPrice || a.price),
+            );
             break;
         }
       }
@@ -84,11 +96,11 @@ const ProductGrid = ({
       if (limit && limit > 0) {
         filtered = filtered.slice(0, limit);
       }
-      
+
       setFilteredProducts(filtered);
       setLoading(false);
     }, 800);
-    
+
     return () => clearTimeout(timer);
   }, [category, searchQuery, sortBy, sourceProducts, limit]);
 
@@ -100,13 +112,13 @@ const ProductGrid = ({
 
   const handleMessageSeller = (sellerId: string, productId: string) => {
     if (!isAuthenticated) {
-      navigate('/auth');
+      navigate("/auth");
       return;
     }
-    
-    navigate('/chat');
+
+    navigate("/app/chat");
   };
-  
+
   if (loading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -129,7 +141,7 @@ const ProductGrid = ({
       </div>
     );
   }
-  
+
   if (filteredProducts.length === 0) {
     return (
       <div className="text-center py-10 border rounded-lg bg-gray-50 p-8">
@@ -137,11 +149,11 @@ const ProductGrid = ({
         <p className="text-muted-foreground mt-2 mb-6">
           Try changing your search or filter criteria
         </p>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={() => {
             // Reset filters
-            navigate('/marketplace');
+            navigate("/app/marketplace");
           }}
         >
           Browse all products
@@ -149,14 +161,14 @@ const ProductGrid = ({
       </div>
     );
   }
-  
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {filteredProducts.map((product) => (
-        <ProductCard 
-          key={product.id} 
-          product={product} 
-          onAddToCart={onAddToCart} 
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAddToCart={onAddToCart}
           onAddToWishlist={onAddToWishlist}
           onViewProduct={handleViewProduct}
           onMessageSeller={handleMessageSeller}
