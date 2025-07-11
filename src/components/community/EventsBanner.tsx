@@ -90,7 +90,7 @@ const EventsBanner = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link to="/events">
+              <Link to="/app/events">
                 <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white w-full sm:w-auto">
                   <Play className="w-4 h-4 mr-2" />
                   Explore Live Events
@@ -98,7 +98,7 @@ const EventsBanner = () => {
                 </Button>
               </Link>
 
-              <Link to="/events?tab=create">
+              <Link to="/app/events?tab=create">
                 <Button
                   variant="outline"
                   className="border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 w-full sm:w-auto"
