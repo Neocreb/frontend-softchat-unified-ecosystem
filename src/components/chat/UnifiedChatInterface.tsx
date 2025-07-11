@@ -1058,6 +1058,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                     variant="ghost"
                                     size="icon"
                                     className="h-8 w-8"
+                                    onClick={handleStartVoiceCall}
+                                    title="Start voice call"
                                   >
                                     <Phone className="h-4 w-4" />
                                   </Button>
@@ -1065,16 +1067,39 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                     variant="ghost"
                                     size="icon"
                                     className="h-8 w-8"
+                                    onClick={handleStartVideoCall}
+                                    title="Start video call"
                                   >
                                     <Video className="h-4 w-4" />
                                   </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                      >
+                                        <MoreVertical className="h-4 w-4" />
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                      <DropdownMenuItem
+                                        onClick={handleStartGroupVideo}
+                                      >
+                                        <Users className="w-4 h-4 mr-2" />
+                                        Start Group Video
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem>
+                                        <UserPlus className="w-4 h-4 mr-2" />
+                                        Add People
+                                      </DropdownMenuItem>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem>
+                                        <MessageSquare className="w-4 h-4 mr-2" />
+                                        Chat Info
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
                                 </div>
                               )}
                             </div>
