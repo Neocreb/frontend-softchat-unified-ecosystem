@@ -440,7 +440,7 @@ export const GroupVideoRoom: React.FC<GroupVideoRoomProps> = ({
                   {isRecording ? (
                     <StopCircle className="w-4 h-4" />
                   ) : (
-                    <Record className="w-4 h-4" />
+                    <Circle className="w-4 h-4 fill-red-500 text-red-500" />
                   )}
                 </Button>
               )}
