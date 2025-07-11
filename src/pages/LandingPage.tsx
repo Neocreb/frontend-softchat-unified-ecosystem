@@ -7,12 +7,10 @@ import ProblemSolutionSection from "@/home/ProblemSolutionSection";
 import WhySoftchatSection from "@/home/WhySoftchatSection";
 import ScreenshotCarousel from "@/home/ScreenshotCarousel";
 import NewsletterSection from "@/home/NewsletterSection";
-import RouterTest from "@/components/debug/RouterTest";
 
 const LandingPage = () => {
   return (
     <Layout>
-      <RouterTest />
       <HeroSection />
       <FeaturesSection />
       <AdvancedFeaturesSection />
