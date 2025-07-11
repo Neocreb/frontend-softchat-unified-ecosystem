@@ -1819,7 +1819,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/premium", "_blank")}
+                    onClick={() => window.open("/app/premium", "_blank")}
                   >
                     <Crown className="w-6 h-6 text-purple-600" />
                     <span className="font-medium">Subscription Manager</span>
@@ -1830,7 +1830,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/live-streaming", "_blank")}
+                    onClick={() => window.open("/app/live-streaming", "_blank")}
                   >
                     <Radio className="w-6 h-6 text-red-600" />
                     <span className="font-medium">Live Streaming</span>
@@ -1841,7 +1841,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/creator-studio", "_blank")}
+                    onClick={() => window.open("/app/creator-studio", "_blank")}
                   >
                     <BarChart3 className="w-6 h-6 text-blue-600" />
                     <span className="font-medium">Creator Analytics</span>
@@ -1882,7 +1882,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="border-green-600 text-green-600 hover:bg-green-50"
-                    onClick={() => window.open("/kyc", "_blank")}
+                    onClick={() => window.open("/app/kyc", "_blank")}
                   >
                     Start Verification
                   </Button>
