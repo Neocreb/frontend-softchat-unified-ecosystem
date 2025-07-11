@@ -25,6 +25,8 @@ interface SuggestedUsersProps {
   showTitle?: boolean;
   variant?: "card" | "list" | "grid";
   onUserClick?: (username: string) => void;
+  showGiftButton?: boolean;
+  onSendGift?: (user: any) => void;
 }
 
 export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
