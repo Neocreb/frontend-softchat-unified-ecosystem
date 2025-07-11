@@ -59,6 +59,7 @@ import {
   liveStreamingService,
   LiveStream,
 } from "@/services/liveStreamingService";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 // Mock data for stories
 const initialMockStories = [
@@ -1094,20 +1095,20 @@ const PostCard = ({
                 <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="text-xs sm:text-sm">{sharesCount}</span>
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center gap-1 p-1 h-auto touch-target text-yellow-600 hover:text-yellow-700"
-                onClick={() => {
-                  toast({
-                    title: "Send Gift",
-                    description: "Choose a gift to send to " + post.user.name,
-                  });
-                }}
-              >
-                <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-xs sm:text-sm">Gift</span>
-              </Button>
+              <VirtualGiftsAndTips
+                recipientId={post.user.id}
+                recipientName={post.user.name}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-1 p-1 h-auto touch-target text-yellow-600 hover:text-yellow-700"
+                  >
+                    <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-xs sm:text-sm">Gift</span>
+                  </Button>
+                }
+              />
             </div>
             <Button
               variant="ghost"
