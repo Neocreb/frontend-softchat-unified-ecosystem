@@ -600,11 +600,11 @@ const VideoCard: React.FC<{
             <Button
               size="icon"
               variant="ghost"
-              className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
+              className="w-12 h-12 rounded-full bg-black/30 text-white hover:bg-black/50 backdrop-blur-sm"
             >
-              <MessageCircle className="w-6 h-6" />
+              <MessageCircle className="w-7 h-7" />
             </Button>
-            <span className="text-white text-xs font-medium">
+            <span className="text-white text-xs font-semibold">
               {formatNumber(video.stats.comments)}
             </span>
           </div>
@@ -618,13 +618,13 @@ const VideoCard: React.FC<{
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
+                  className="w-12 h-12 rounded-full bg-black/30 text-white hover:bg-black/50 backdrop-blur-sm"
                 >
-                  <Gift className="w-6 h-6" />
+                  <Gift className="w-7 h-7" />
                 </Button>
               }
             />
-            <span className="text-white text-xs font-medium">Gift</span>
+            <span className="text-white text-xs font-semibold">Gift</span>
           </div>
 
           {/* Bookmark */}
