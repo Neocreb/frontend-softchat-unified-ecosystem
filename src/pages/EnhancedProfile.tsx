@@ -1304,6 +1304,29 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     </CardContent>
                   </Card>
                 </TabsContent>
+
+                {/* Studio Tab - Redirects to Creator Studio */}
+                <TabsContent value="studio" className="space-y-6 mt-0">
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <BarChart3 className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Creator Studio
+                    </h3>
+                    <p className="text-muted-foreground mb-6">
+                      Manage your content, analytics, and creator tools in one
+                      place
+                    </p>
+                    <Button
+                      onClick={() => navigate("/app/creator-studio")}
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                    >
+                      <BarChart3 className="h-4 w-4 mr-2" />
+                      Open Creator Studio
+                    </Button>
+                  </div>
+                </TabsContent>
               </div>
             </Tabs>
           </Card>
