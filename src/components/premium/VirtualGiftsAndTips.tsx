@@ -300,15 +300,16 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
         })
       ) : (
         <Button
-          variant="outline"
-          className="flex items-center gap-2"
+          variant="ghost"
+          size="sm"
+          className="h-auto p-0 text-xs text-gray-500 flex items-center gap-1"
           onClick={() => {
             console.log("Default gift button clicked");
             setIsOpen(true);
           }}
         >
-          <Gift className="h-4 w-4" />
-          Send Gift
+          <Gift className="w-3 h-3" />
+          Gift
         </Button>
       )}
 
