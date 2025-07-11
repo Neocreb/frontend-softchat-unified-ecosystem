@@ -754,6 +754,3 @@ class VirtualGiftsService {
 }
 
 export const virtualGiftsService = new VirtualGiftsService();
-
-// Export the VIRTUAL_GIFTS constant for use in components
-export { VIRTUAL_GIFTS };
