@@ -22,6 +22,7 @@ import {
   GiftTransaction,
   TipTransaction,
   CreatorTipSettings,
+  VIRTUAL_GIFTS,
 } from "@/services/virtualGiftsService";
 import {
   Gift,
