@@ -1,0 +1,483 @@
+import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import SuggestedUsers from "@/components/profile/SuggestedUsers";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import {
+  Gift,
+  Heart,
+  Star,
+  Trophy,
+  Crown,
+  Coffee,
+  Users,
+  Search,
+  TrendingUp,
+  DollarSign,
+  History,
+  ArrowLeft,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+
+const SendGifts = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [showGiftModal, setShowGiftModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("browse");
+
+  // Mock recent recipients
+  const recentRecipients = [
+    {
+      id: "1",
+      name: "Alice Johnson",
+      username: "alice_j",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108755-2616b612b06c?w=100&h=100&fit=crop&crop=face",
+      lastGift: "2 days ago",
+      totalGifts: 5,
+    },
+    {
+      id: "2",
+      name: "Bob Smith",
+      username: "bob_smith",
+      avatar:
+        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100&h=100&fit=crop&crop=face",
+      lastGift: "1 week ago",
+      totalGifts: 3,
+    },
+    {
+      id: "3",
+      name: "Carol White",
+      username: "carol_w",
+      avatar:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+      lastGift: "2 weeks ago",
+      totalGifts: 8,
+    },
+  ];
+
+  // Mock gift categories for quick actions
+  const giftCategories = [
+    {
+      id: "hearts",
+      name: "Hearts & Love",
+      icon: Heart,
+      color: "bg-red-500",
+      count: 12,
+      description: "Express your love and appreciation",
+    },
+    {
+      id: "achievements",
+      name: "Achievements",
+      icon: Trophy,
+      color: "bg-yellow-500",
+      count: 8,
+      description: "Celebrate their success",
+    },
+    {
+      id: "premium",
+      name: "Premium Gifts",
+      icon: Crown,
+      color: "bg-purple-500",
+      count: 15,
+      description: "Exclusive and special gifts",
+    },
+    {
+      id: "coffee",
+      name: "Buy a Coffee",
+      icon: Coffee,
+      color: "bg-orange-500",
+      count: 3,
+      description: "Support with a virtual coffee",
+    },
+    {
+      id: "seasonal",
+      name: "Seasonal",
+      icon: Sparkles,
+      color: "bg-green-500",
+      count: 6,
+      description: "Holiday and seasonal gifts",
+    },
+    {
+      id: "energy",
+      name: "Energy Boost",
+      icon: Zap,
+      color: "bg-blue-500",
+      count: 4,
+      description: "Give them an energy boost",
+    },
+  ];
+
+  const handleSendGift = (recipient: any) => {
+    setSelectedUser(recipient);
+    setShowGiftModal(true);
+  };
+
+  const handleGiftSent = () => {
+    toast({
+      title: "Gift Sent Successfully!",
+      description: `Your gift has been sent to ${selectedUser?.name}`,
+    });
+    setShowGiftModal(false);
+    setSelectedUser(null);
+  };
+
+  return (
+    <>
+      <Helmet>
+        <title>Send Gifts | SoftChat</title>
+        <meta
+          name="description"
+          content="Send virtual gifts and tips to show appreciation in the SoftChat community"
+        />
+      </Helmet>
+
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-6">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-4 mb-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </Button>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Gift className="h-8 w-8 text-white" />
+              </div>
+              <h1 className="text-3xl lg:text-4xl font-bold mb-2">
+                Send Virtual Gifts
+              </h1>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Show appreciation, celebrate achievements, and spread joy with
+                virtual gifts and tips
+              </p>
+            </div>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-purple-600">156</div>
+                <div className="text-sm text-muted-foreground">Gifts Sent</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-green-600">$234</div>
+                <div className="text-sm text-muted-foreground">Tips Given</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-blue-600">89</div>
+                <div className="text-sm text-muted-foreground">Recipients</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4 text-center">
+                <div className="text-2xl font-bold text-orange-600">4.9</div>
+                <div className="text-sm text-muted-foreground">
+                  Happiness Score
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="browse" className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Browse People
+              </TabsTrigger>
+              <TabsTrigger
+                value="categories"
+                className="flex items-center gap-2"
+              >
+                <Gift className="h-4 w-4" />
+                Gift Categories
+              </TabsTrigger>
+              <TabsTrigger value="history" className="flex items-center gap-2">
+                <History className="h-4 w-4" />
+                Gift History
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Browse People Tab */}
+            <TabsContent value="browse" className="space-y-6 mt-6">
+              {/* Search */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input
+                      placeholder="Search people to send gifts to..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Recent Recipients */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <History className="h-5 w-5" />
+                    Recent Recipients
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recentRecipients.map((recipient) => (
+                      <div
+                        key={recipient.id}
+                        className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage
+                              src={recipient.avatar}
+                              alt={recipient.name}
+                            />
+                            <AvatarFallback>
+                              {recipient.name
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="font-medium">{recipient.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              @{recipient.username}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              Last gift: {recipient.lastGift} •{" "}
+                              {recipient.totalGifts} total gifts
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => handleSendGift(recipient)}
+                          className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                        >
+                          <Gift className="h-4 w-4 mr-2" />
+                          Send Gift
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Suggested Users */}
+              <SuggestedUsers
+                title="Discover People to Gift"
+                variant="grid"
+                maxUsers={8}
+                showGiftButton={true}
+                onSendGift={handleSendGift}
+              />
+            </TabsContent>
+
+            {/* Gift Categories Tab */}
+            <TabsContent value="categories" className="space-y-6 mt-6">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold mb-2">Gift Categories</h2>
+                <p className="text-muted-foreground">
+                  Choose from our collection of virtual gifts
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {giftCategories.map((category) => (
+                  <Card
+                    key={category.id}
+                    className="hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                    onClick={() => {
+                      // Would open category selection
+                      toast({
+                        title: `${category.name} Selected`,
+                        description: category.description,
+                      });
+                    }}
+                  >
+                    <CardContent className="p-6 text-center">
+                      <div
+                        className={`w-16 h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}
+                      >
+                        <category.icon className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="font-semibold text-lg mb-2">
+                        {category.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {category.description}
+                      </p>
+                      <Badge variant="secondary">
+                        {category.count} gifts available
+                      </Badge>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Quick Actions */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Button
+                      variant="outline"
+                      className="h-20 flex flex-col items-center gap-2"
+                    >
+                      <Heart className="h-6 w-6 text-red-500" />
+                      <span className="text-xs">Send Love</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="h-20 flex flex-col items-center gap-2"
+                    >
+                      <Coffee className="h-6 w-6 text-orange-500" />
+                      <span className="text-xs">Buy Coffee</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="h-20 flex flex-col items-center gap-2"
+                    >
+                      <Star className="h-6 w-6 text-yellow-500" />
+                      <span className="text-xs">Give Star</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="h-20 flex flex-col items-center gap-2"
+                    >
+                      <DollarSign className="h-6 w-6 text-green-500" />
+                      <span className="text-xs">Send Tip</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Gift History Tab */}
+            <TabsContent value="history" className="space-y-6 mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <History className="h-5 w-5" />
+                    Your Gift History
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {/* Mock history items */}
+                    {[
+                      {
+                        id: 1,
+                        recipient: "Alice Johnson",
+                        gift: "❤️ Red Heart",
+                        amount: "$5.00",
+                        date: "2 hours ago",
+                        status: "delivered",
+                      },
+                      {
+                        id: 2,
+                        recipient: "Bob Smith",
+                        gift: "☕ Coffee",
+                        amount: "$3.00",
+                        date: "1 day ago",
+                        status: "delivered",
+                      },
+                      {
+                        id: 3,
+                        recipient: "Carol White",
+                        gift: "🏆 Trophy",
+                        amount: "$10.00",
+                        date: "3 days ago",
+                        status: "delivered",
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between p-4 rounded-lg border"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <Gift className="h-5 w-5 text-white" />
+                          </div>
+                          <div>
+                            <div className="font-medium">
+                              {item.gift} to {item.recipient}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {item.date}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-medium">{item.amount}</div>
+                          <Badge
+                            variant={
+                              item.status === "delivered"
+                                ? "default"
+                                : "secondary"
+                            }
+                            className="text-xs"
+                          >
+                            {item.status}
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+
+      {/* Gift Modal */}
+      {selectedUser && (
+        <VirtualGiftsAndTips
+          recipientId={selectedUser.id}
+          recipientName={selectedUser.name}
+          trigger={null}
+          onGiftSent={handleGiftSent}
+        />
+      )}
+    </>
+  );
+};
+
+export default SendGifts;
