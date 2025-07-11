@@ -385,18 +385,6 @@ const Explore = () => {
         <TabsContent value="pages" className="mt-6">
           <ExplorePages pages={filteredPages} />
         </TabsContent>
-
-        <TabsContent value="explore" className="mt-6">
-          <ExploreContent
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            filteredTopics={filteredTopics}
-            filteredUsers={filteredUsers}
-            filteredHashtags={filteredHashtags}
-            filteredGroups={filteredGroups}
-            filteredPages={filteredPages}
-          />
-        </TabsContent>
       </Tabs>
     </div>
   );
