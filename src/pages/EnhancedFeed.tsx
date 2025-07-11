@@ -1256,63 +1256,6 @@ export default function EnhancedFeed() {
           {/* Events Banner - New Feature Promotion */}
           <EventsBannerCard />
 
-          {/* Premium Features Promotion */}
-          <Card className="mb-6 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-blue-200">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Shield className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-blue-900">
-                      Get Verified
-                    </h3>
-                    <p className="text-sm text-blue-700">
-                      Get the blue checkmark and show everyone you're authentic
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => navigate("/premium")}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  <Star className="w-4 h-4 mr-2" />
-                  Verify Account
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* KYC Verification Promotion */}
-          <Card className="mb-6 bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-200">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
-                    <Shield className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-green-900">
-                      Complete KYC Verification
-                    </h3>
-                    <p className="text-sm text-green-700">
-                      Verify your identity for enhanced security and trading
-                      capabilities
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => navigate("/kyc")}
-                  variant="outline"
-                  className="border-green-600 text-green-600 hover:bg-green-50"
-                >
-                  Verify Now
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Live Streams Section */}
           {liveStreams.length > 0 && (
             <Card className="mb-6">
@@ -1326,13 +1269,13 @@ export default function EnhancedFeed() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => navigate("/live-streaming")}
+                      onClick={() => navigate("/app/live-streaming")}
                     >
                       View All
                     </Button>
                     <Button
                       size="sm"
-                      onClick={() => navigate("/live-streaming")}
+                      onClick={() => navigate("/app/live-streaming")}
                       className="bg-red-600 hover:bg-red-700 text-white"
                     >
                       Go Live

@@ -292,7 +292,7 @@ export function LiveStreamCreator({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/feed")}
+            onClick={() => navigate("/app/feed")}
             className="p-0 h-auto font-normal hover:text-foreground"
           >
             Feed
@@ -306,7 +306,7 @@ export function LiveStreamCreator({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate("/videos")}
+            onClick={() => navigate("/app/videos")}
             className="flex items-center gap-2"
           >
             <Video className="h-4 w-4" />
@@ -315,7 +315,7 @@ export function LiveStreamCreator({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate("/events")}
+            onClick={() => navigate("/app/events")}
             className="flex items-center gap-2"
           >
             <Calendar className="h-4 w-4" />
@@ -324,7 +324,7 @@ export function LiveStreamCreator({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate("/premium")}
+            onClick={() => navigate("/app/premium")}
             className="flex items-center gap-2 text-purple-600 border-purple-200 hover:bg-purple-50"
           >
             <Crown className="h-4 w-4" />
@@ -333,7 +333,7 @@ export function LiveStreamCreator({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate("/creator-studio")}
+            onClick={() => navigate("/app/creator-studio")}
             className="flex items-center gap-2"
           >
             <BarChart3 className="h-4 w-4" />

@@ -3,7 +3,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useParams,
+} from "react-router-dom";
 import { setupGlobalErrorHandlers } from "@/lib/error-handler";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { AdminProvider } from "./contexts/AdminContext";
@@ -155,6 +161,12 @@ interface LegacyAdminRouteProps {
   children: React.ReactNode;
 }
 
+// Messages redirect component to handle threadId parameter
+const MessagesRedirect = () => {
+  const { threadId } = useParams();
+  return <Navigate to={`/app/chat/${threadId}`} replace />;
+};
+
 const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
@@ -235,10 +247,7 @@ const AppRoutes = () => {
             path="messages"
             element={<Navigate to="/app/chat" replace />}
           />
-          <Route
-            path="messages/:threadId"
-            element={<Navigate to="/app/chat/:threadId" replace />}
-          />
+          <Route path="messages/:threadId" element={<MessagesRedirect />} />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
           <Route path="profile/:username" element={<EnhancedProfile />} />

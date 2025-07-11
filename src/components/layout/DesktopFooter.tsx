@@ -47,28 +47,28 @@ const DesktopFooter = () => {
             <h3 className="font-semibold text-sm">Platform</h3>
             <nav className="flex flex-col space-y-2">
               <Link
-                to="/feed"
+                to="/app/feed"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Home className="h-4 w-4" />
                 Feed
               </Link>
               <Link
-                to="/explore"
+                to="/app/explore"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Search className="h-4 w-4" />
                 Explore
               </Link>
               <Link
-                to="/videos"
+                to="/app/videos"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Video className="h-4 w-4" />
                 Videos
               </Link>
               <Link
-                to="/marketplace"
+                to="/app/marketplace"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <ShoppingCart className="h-4 w-4" />
@@ -82,28 +82,28 @@ const DesktopFooter = () => {
             <h3 className="font-semibold text-sm">Trading & Business</h3>
             <nav className="flex flex-col space-y-2">
               <Link
-                to="/crypto"
+                to="/app/crypto"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <TrendingUp className="h-4 w-4" />
                 Crypto Trading
               </Link>
               <Link
-                to="/create"
+                to="/app/create"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Briefcase className="h-4 w-4" />
                 Freelance
               </Link>
               <Link
-                to="/rewards"
+                to="/app/rewards"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Award className="h-4 w-4" />
                 Rewards
               </Link>
               <Link
-                to="/wallet"
+                to="/app/wallet"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Wallet className="h-4 w-4" />
@@ -117,28 +117,28 @@ const DesktopFooter = () => {
             <h3 className="font-semibold text-sm">Account & Support</h3>
             <nav className="flex flex-col space-y-2">
               <Link
-                to="/profile"
+                to="/app/profile"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <User className="h-4 w-4" />
                 Profile
               </Link>
               <Link
-                to="/settings"
+                to="/app/settings"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Settings className="h-4 w-4" />
                 Settings
               </Link>
               <Link
-                to="/notifications"
+                to="/app/notifications"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <Bell className="h-4 w-4" />
                 Notifications
               </Link>
               <Link
-                to="/chat"
+                to="/app/chat"
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
               >
                 <MessageCircle className="h-4 w-4" />
@@ -193,25 +193,25 @@ const DesktopFooter = () => {
 
           <div className="flex items-center gap-4">
             <Link
-              to="/profile"
+              to="/app/profile"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Profile
             </Link>
             <Link
-              to="/settings"
+              to="/app/settings"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Settings
             </Link>
             <Link
-              to="/help"
+              to="/app/help"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Help
             </Link>
             <Link
-              to="/privacy"
+              to="/app/privacy"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Privacy

@@ -237,7 +237,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
       case "trading":
         return (
           <div className="space-y-2">
-            <Link to="/crypto">
+            <Link to="/app/crypto">
               <Button variant="outline" size="sm" className="w-full">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Open Crypto Trading
@@ -252,7 +252,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
       case "marketplace":
         return (
           <div className="space-y-2">
-            <Link to="/marketplace">
+            <Link to="/app/marketplace">
               <Button variant="outline" size="sm" className="w-full">
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 Open Marketplace
@@ -271,7 +271,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
               <Monitor className="w-4 h-4 mr-2" />
               Screen Share
             </Button>
-            <Link to="/creator-studio">
+            <Link to="/app/creator-studio">
               <Button variant="outline" size="sm" className="w-full">
                 <Award className="w-4 h-4 mr-2" />
                 Creator Studio

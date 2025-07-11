@@ -1755,6 +1755,75 @@ const EnhancedSettings = () => {
 
           {/* Premium Settings */}
           <TabsContent value="premium" className="space-y-6">
+            {/* Enhanced Premium Features Promotion */}
+            <Card className="mb-6 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-blue-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-blue-100 rounded-xl">
+                      <Star className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-blue-900 text-lg">
+                        Get Verified & Stand Out
+                      </h3>
+                      <p className="text-sm text-blue-700 max-w-md">
+                        Get the blue checkmark, unlock premium features, and
+                        show everyone you're authentic and trusted
+                      </p>
+                      <div className="flex items-center gap-4 mt-2 text-sm text-blue-600">
+                        <span>✓ Verified badge</span>
+                        <span>✓ Priority support</span>
+                        <span>✓ Advanced tools</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => window.open("/app/premium", "_blank")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3"
+                  >
+                    <Crown className="w-4 h-4 mr-2" />
+                    Upgrade to Premium
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Enhanced KYC Verification Promotion */}
+            <Card className="mb-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-green-100 rounded-xl">
+                      <ShieldCheck className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-green-900 text-lg">
+                        Complete Identity Verification
+                      </h3>
+                      <p className="text-sm text-green-700 max-w-md">
+                        Verify your identity to unlock higher trading limits,
+                        enhanced security, and access to premium features
+                      </p>
+                      <div className="flex items-center gap-4 mt-2 text-sm text-green-600">
+                        <span>✓ Higher trading limits</span>
+                        <span>✓ Enhanced security</span>
+                        <span>✓ Faster withdrawals</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => window.open("/app/kyc", "_blank")}
+                    variant="outline"
+                    className="border-green-600 text-green-600 hover:bg-green-50 px-6 py-3"
+                  >
+                    <Shield className="w-4 h-4 mr-2" />
+                    Start Verification
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Premium Status Overview */}
             <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
               <CardHeader>
@@ -1819,7 +1888,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/premium", "_blank")}
+                    onClick={() => window.open("/app/premium", "_blank")}
                   >
                     <Crown className="w-6 h-6 text-purple-600" />
                     <span className="font-medium">Subscription Manager</span>
@@ -1830,7 +1899,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/live-streaming", "_blank")}
+                    onClick={() => window.open("/app/live-streaming", "_blank")}
                   >
                     <Radio className="w-6 h-6 text-red-600" />
                     <span className="font-medium">Live Streaming</span>
@@ -1841,7 +1910,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/creator-studio", "_blank")}
+                    onClick={() => window.open("/app/creator-studio", "_blank")}
                   >
                     <BarChart3 className="w-6 h-6 text-blue-600" />
                     <span className="font-medium">Creator Analytics</span>
@@ -1882,7 +1951,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="border-green-600 text-green-600 hover:bg-green-50"
-                    onClick={() => window.open("/kyc", "_blank")}
+                    onClick={() => window.open("/app/kyc", "_blank")}
                   >
                     Start Verification
                   </Button>

@@ -76,7 +76,7 @@ export const ProfileDemo: React.FC = () => {
   ];
 
   const handleViewProfile = (username: string) => {
-    navigate(`/profile/${username}`);
+    navigate(`/app/profile/${username}`);
   };
 
   return (
@@ -183,23 +183,23 @@ export const ProfileDemo: React.FC = () => {
         <div className="flex flex-wrap justify-center gap-2">
           <Button
             variant="outline"
-            onClick={() => navigate("/profile/john_doe")}
+            onClick={() => navigate("/app/profile/john_doe")}
           >
             Try: john_doe
           </Button>
           <Button
             variant="outline"
-            onClick={() => navigate("/profile/jane_smith")}
+            onClick={() => navigate("/app/profile/jane_smith")}
           >
             Try: jane_smith
           </Button>
           <Button
             variant="outline"
-            onClick={() => navigate("/profile/crypto_master")}
+            onClick={() => navigate("/app/profile/crypto_master")}
           >
             Try: crypto_master
           </Button>
-          <Button variant="outline" onClick={() => navigate("/explore")}>
+          <Button variant="outline" onClick={() => navigate("/app/explore")}>
             Explore More Users
           </Button>
         </div>

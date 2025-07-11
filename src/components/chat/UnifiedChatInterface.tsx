@@ -22,7 +22,14 @@ import {
   MessageSquare,
   Filter,
   ArrowLeft,
+  UserPlus,
+  VideoIcon,
+  X,
 } from "lucide-react";
+import { EnhancedChatInput } from "./EnhancedChatInput";
+import { VoiceVideoCall } from "./VoiceVideoCall";
+import { GroupVideoRoom } from "./GroupVideoRoom";
+import { EnhancedMessage, EnhancedChatMessage } from "./EnhancedMessage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   DropdownMenu,
@@ -64,10 +71,41 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
     null,
   );
   const [conversations, setConversations] = useState<UnifiedChatThread[]>([]);
-  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
+  const [messages, setMessages] = useState<
+    Record<string, EnhancedChatMessage[]>
+  >({});
   const [messageInput, setMessageInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+
+  // Voice/Video call state
+  const [activeCall, setActiveCall] = useState<{
+    type: "voice" | "video" | "group";
+    participants: any[];
+    currentUser: any;
+    chatInfo: any;
+  } | null>(null);
+  const [incomingCall, setIncomingCall] = useState<{
+    from: any;
+    type: "voice" | "video";
+    chatInfo: any;
+  } | null>(null);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
+
+  // Group video room state
+  const [groupVideoRoom, setGroupVideoRoom] = useState<{
+    roomId: string;
+    roomName: string;
+    roomType: string;
+    participants: any[];
+    currentUser: any;
+  } | null>(null);
+
+  // Reply functionality
+  const [replyToMessage, setReplyToMessage] =
+    useState<EnhancedChatMessage | null>(null);
 
   // Handle URL parameters for direct navigation
   useEffect(() => {
@@ -100,6 +138,259 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       };
     });
   }, [conversations]);
+
+  // Add some mock enhanced messages when a chat is selected for demo purposes
+  useEffect(() => {
+    if (
+      selectedChat &&
+      (!messages[selectedChat.id] || messages[selectedChat.id].length === 0)
+    ) {
+      const mockMessages: EnhancedChatMessage[] = [
+        {
+          id: "1",
+          senderId: "other-user",
+          senderName: selectedChat.participant_profile?.name || "Other User",
+          senderAvatar: selectedChat.participant_profile?.avatar,
+          content: "Hey! How are you doing today?",
+          type: "text",
+          timestamp: new Date(Date.now() - 600000).toISOString(),
+          status: "read",
+          reactions: [],
+        },
+        {
+          id: "2",
+          senderId: user?.id || "current-user",
+          senderName: user?.profile?.full_name || user?.email || "You",
+          senderAvatar: user?.profile?.avatar_url,
+          content:
+            "I'm doing great! Just working on some exciting new features 🚀",
+          type: "text",
+          timestamp: new Date(Date.now() - 480000).toISOString(),
+          status: "read",
+          reactions: [
+            {
+              userId: "other-user",
+              emoji: "👍",
+              timestamp: new Date(Date.now() - 470000).toISOString(),
+            },
+          ],
+        },
+        {
+          id: "3",
+          senderId: "other-user",
+          senderName: selectedChat.participant_profile?.name || "Other User",
+          senderAvatar: selectedChat.participant_profile?.avatar,
+          content: "😊",
+          type: "sticker",
+          timestamp: new Date(Date.now() - 360000).toISOString(),
+          status: "read",
+          reactions: [],
+          metadata: {
+            stickerName: "Happy",
+          },
+        },
+      ];
+
+      setMessages((prev) => ({
+        ...prev,
+        [selectedChat.id]: mockMessages,
+      }));
+    }
+  }, [selectedChat, messages, user]);
+
+  // Call handling functions
+  const handleStartVoiceCall = () => {
+    if (!selectedChat || !user) return;
+
+    const mockParticipant = {
+      id: selectedChat.participants?.[0]?.id || "participant-1",
+      name: selectedChat.participants?.[0]?.name || selectedChat.title,
+      avatar: selectedChat.participants?.[0]?.avatar,
+      isAudioMuted: false,
+      isVideoEnabled: false,
+      isScreenSharing: false,
+      connectionQuality: "excellent" as const,
+    };
+
+    const currentUserParticipant = {
+      id: user.id,
+      name: user.profile?.full_name || user.email,
+      avatar: user.profile?.avatar_url,
+      isAudioMuted: isAudioMuted,
+      isVideoEnabled: false,
+      isScreenSharing: isScreenSharing,
+      connectionQuality: "excellent" as const,
+    };
+
+    setActiveCall({
+      type: "voice",
+      participants: [mockParticipant],
+      currentUser: currentUserParticipant,
+      chatInfo: selectedChat,
+    });
+
+    toast({
+      title: "Voice Call Started",
+      description: `Calling ${selectedChat.title}...`,
+    });
+  };
+
+  const handleStartVideoCall = () => {
+    if (!selectedChat || !user) return;
+
+    const mockParticipant = {
+      id: selectedChat.participants?.[0]?.id || "participant-1",
+      name: selectedChat.participants?.[0]?.name || selectedChat.title,
+      avatar: selectedChat.participants?.[0]?.avatar,
+      isAudioMuted: false,
+      isVideoEnabled: true,
+      isScreenSharing: false,
+      connectionQuality: "excellent" as const,
+    };
+
+    const currentUserParticipant = {
+      id: user.id,
+      name: user.profile?.full_name || user.email,
+      avatar: user.profile?.avatar_url,
+      isAudioMuted: isAudioMuted,
+      isVideoEnabled: isVideoEnabled,
+      isScreenSharing: isScreenSharing,
+      connectionQuality: "excellent" as const,
+    };
+
+    setActiveCall({
+      type: "video",
+      participants: [mockParticipant],
+      currentUser: currentUserParticipant,
+      chatInfo: selectedChat,
+    });
+
+    toast({
+      title: "Video Call Started",
+      description: `Starting video call with ${selectedChat.title}...`,
+    });
+  };
+
+  const handleStartGroupVideo = () => {
+    if (!selectedChat || !user) return;
+
+    // Mock group participants
+    const mockParticipants = [
+      {
+        id: user.id,
+        name: user.profile?.full_name || user.email,
+        avatar: user.profile?.avatar_url,
+        role: "host" as const,
+        isVideoEnabled: isVideoEnabled,
+        isAudioEnabled: !isAudioMuted,
+        isScreenSharing: isScreenSharing,
+        handRaised: false,
+        joinedAt: new Date().toISOString(),
+        connectionQuality: "excellent" as const,
+      },
+      {
+        id: "participant-2",
+        name: "Sarah Chen",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+        role: "participant" as const,
+        isVideoEnabled: true,
+        isAudioEnabled: true,
+        isScreenSharing: false,
+        handRaised: false,
+        joinedAt: new Date().toISOString(),
+        connectionQuality: "good" as const,
+      },
+      {
+        id: "participant-3",
+        name: "Mike Johnson",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
+        role: "speaker" as const,
+        isVideoEnabled: false,
+        isAudioEnabled: true,
+        isScreenSharing: true,
+        handRaised: false,
+        joinedAt: new Date().toISOString(),
+        connectionQuality: "excellent" as const,
+      },
+    ];
+
+    setGroupVideoRoom({
+      roomId: `room-${selectedChat.id}`,
+      roomName: selectedChat.title,
+      roomType:
+        selectedChat.type === "freelance"
+          ? "freelance_collab"
+          : selectedChat.type === "marketplace"
+            ? "marketplace_demo"
+            : selectedChat.type === "crypto"
+              ? "crypto_discussion"
+              : "community_event",
+      participants: mockParticipants,
+      currentUser: mockParticipants[0],
+    });
+
+    toast({
+      title: "Group Video Room Created",
+      description: `Starting group video session for ${selectedChat.title}`,
+    });
+  };
+
+  const handleEndCall = () => {
+    setActiveCall(null);
+    setIncomingCall(null);
+    toast({
+      title: "Call Ended",
+      description: "The call has been ended.",
+    });
+  };
+
+  const handleToggleAudio = () => {
+    setIsAudioMuted(!isAudioMuted);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isAudioMuted: !isAudioMuted,
+        },
+      });
+    }
+  };
+
+  const handleToggleVideo = () => {
+    setIsVideoEnabled(!isVideoEnabled);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isVideoEnabled: !isVideoEnabled,
+        },
+      });
+    }
+  };
+
+  const handleToggleScreenShare = () => {
+    setIsScreenSharing(!isScreenSharing);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isScreenSharing: !isScreenSharing,
+        },
+      });
+    }
+
+    toast({
+      title: isScreenSharing
+        ? "Screen Sharing Stopped"
+        : "Screen Sharing Started",
+      description: isScreenSharing
+        ? "You stopped sharing your screen"
+        : "You are now sharing your screen",
+    });
+  };
 
   // Filter conversations based on active tab and search
   const filteredConversations = useMemo(() => {
@@ -155,9 +446,49 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       // Load messages for each conversation
       for (const thread of unifiedThreads) {
         const threadMessages = await chatService.getMessages(thread.id);
+
+        // Convert ChatMessage[] to EnhancedChatMessage[]
+        const enhancedMessages: EnhancedChatMessage[] = threadMessages.map(
+          (msg) => ({
+            id: msg.id,
+            senderId: msg.senderId,
+            senderName: msg.sender?.name || msg.sender?.full_name || "Unknown",
+            senderAvatar: msg.sender?.avatar || msg.sender?.avatar_url,
+            content: msg.content,
+            type:
+              msg.messageType === "voice"
+                ? "voice"
+                : msg.messageType === "image" || msg.messageType === "file"
+                  ? "media"
+                  : "text",
+            timestamp: msg.timestamp,
+            metadata:
+              msg.messageType === "voice"
+                ? { transcription: "Voice message" }
+                : msg.messageType === "image" || msg.messageType === "file"
+                  ? { fileName: "Attachment" }
+                  : undefined,
+            status: msg.readBy.includes(user?.id || "") ? "read" : "delivered",
+            reactions:
+              msg.reactions?.map((reaction) => ({
+                userId: reaction.userIds[0] || "unknown",
+                emoji: reaction.emoji,
+                timestamp: msg.timestamp,
+              })) || [],
+            isEdited: false,
+            replyTo: msg.replyTo
+              ? {
+                  messageId: msg.replyTo,
+                  content: "Replied message",
+                  senderName: "Unknown",
+                }
+              : undefined,
+          }),
+        );
+
         setMessages((prev) => ({
           ...prev,
-          [thread.id]: threadMessages,
+          [thread.id]: enhancedMessages,
         }));
       }
     } catch (error) {
@@ -191,44 +522,175 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
     }
   };
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!messageInput.trim() || !selectedChat || !user) return;
+  // Enhanced send message function with support for different message types
+  const handleSendEnhancedMessage = async (
+    type: "text" | "voice" | "sticker" | "media",
+    content: string,
+    metadata?: any,
+  ) => {
+    if (!selectedChat || !user) return;
 
     try {
-      const newMessage = await chatService.sendMessage({
-        threadId: selectedChat.id,
-        content: messageInput.trim(),
-        messageType: "text",
-      });
+      const newMessage: EnhancedChatMessage = {
+        id: Date.now().toString(),
+        senderId: user.id,
+        senderName: user.profile?.full_name || user.email,
+        senderAvatar: user.profile?.avatar_url,
+        content,
+        type,
+        timestamp: new Date().toISOString(),
+        metadata,
+        status: "sending",
+        reactions: [],
+        replyTo: replyToMessage
+          ? {
+              messageId: replyToMessage.id,
+              content: replyToMessage.content,
+              senderName: replyToMessage.senderName,
+            }
+          : undefined,
+      };
 
+      // Immediately add to UI
       setMessages((prev) => ({
         ...prev,
         [selectedChat.id]: [...(prev[selectedChat.id] || []), newMessage],
       }));
 
-      setMessageInput("");
+      // Clear reply
+      setReplyToMessage(null);
+
+      // Simulate API call
+      setTimeout(() => {
+        setMessages((prev) => ({
+          ...prev,
+          [selectedChat.id]:
+            prev[selectedChat.id]?.map((msg) =>
+              msg.id === newMessage.id
+                ? { ...msg, status: "delivered" as const }
+                : msg,
+            ) || [],
+        }));
+      }, 1000);
 
       // Update conversation last message
+      const lastMessageText =
+        type === "sticker"
+          ? "Sticker"
+          : type === "voice"
+            ? "Voice message"
+            : type === "media"
+              ? metadata?.fileName || "Media"
+              : content;
+
       setConversations((prev) =>
         prev.map((conv) =>
           conv.id === selectedChat.id
             ? {
                 ...conv,
-                lastMessage: messageInput.trim(),
+                lastMessage: lastMessageText,
                 lastMessageAt: newMessage.timestamp,
+                unreadCount: 0,
               }
             : conv,
         ),
       );
+
+      // Show success toast for special message types
+      if (type === "voice") {
+        toast({
+          title: "Voice Message Sent",
+          description: "Your voice message has been sent successfully.",
+        });
+      } else if (type === "media") {
+        toast({
+          title: "Media Sent",
+          description: `${metadata?.fileName || "File"} has been sent successfully.`,
+        });
+      }
     } catch (error) {
-      console.error("Error sending message:", error);
       toast({
         title: "Error",
-        description: "Failed to send message",
+        description: "Failed to send message. Please try again.",
         variant: "destructive",
       });
     }
+  };
+
+  // Legacy send message function for backward compatibility
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!messageInput.trim()) return;
+
+    await handleSendEnhancedMessage("text", messageInput.trim());
+    setMessageInput("");
+  };
+
+  // Message interaction handlers
+  const handleReplyToMessage = (message: EnhancedChatMessage) => {
+    setReplyToMessage(message);
+    toast({
+      title: "Replying to message",
+      description: `Replying to ${message.senderName}`,
+    });
+  };
+
+  const handleReactToMessage = (messageId: string, emoji: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat?.id || ""]:
+        prev[selectedChat?.id || ""]?.map((msg) =>
+          msg.id === messageId
+            ? {
+                ...msg,
+                reactions: [
+                  ...(msg.reactions || []),
+                  {
+                    userId: user?.id || "",
+                    emoji,
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+              }
+            : msg,
+        ) || [],
+    }));
+
+    toast({
+      title: "Reaction added",
+      description: `You reacted with ${emoji}`,
+    });
+  };
+
+  const handleEditMessage = (messageId: string, newContent: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat?.id || ""]:
+        prev[selectedChat?.id || ""]?.map((msg) =>
+          msg.id === messageId
+            ? { ...msg, content: newContent, isEdited: true }
+            : msg,
+        ) || [],
+    }));
+
+    toast({
+      title: "Message edited",
+      description: "Your message has been updated.",
+    });
+  };
+
+  const handleDeleteMessage = (messageId: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat?.id || ""]:
+        prev[selectedChat?.id || ""]?.filter((msg) => msg.id !== messageId) ||
+        [],
+    }));
+
+    toast({
+      title: "Message deleted",
+      description: "The message has been removed.",
+    });
   };
 
   const getContextInfo = (conversation: UnifiedChatThread) => {
@@ -696,6 +1158,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                     variant="ghost"
                                     size="icon"
                                     className="h-8 w-8"
+                                    onClick={handleStartVoiceCall}
+                                    title="Start voice call"
                                   >
                                     <Phone className="h-4 w-4" />
                                   </Button>
@@ -703,16 +1167,39 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                     variant="ghost"
                                     size="icon"
                                     className="h-8 w-8"
+                                    onClick={handleStartVideoCall}
+                                    title="Start video call"
                                   >
                                     <Video className="h-4 w-4" />
                                   </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8"
+                                      >
+                                        <MoreVertical className="h-4 w-4" />
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                      <DropdownMenuItem
+                                        onClick={handleStartGroupVideo}
+                                      >
+                                        <Users className="w-4 h-4 mr-2" />
+                                        Start Group Video
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem>
+                                        <UserPlus className="w-4 h-4 mr-2" />
+                                        Add People
+                                      </DropdownMenuItem>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem>
+                                        <MessageSquare className="w-4 h-4 mr-2" />
+                                        Chat Info
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
                                 </div>
                               )}
                             </div>
@@ -735,94 +1222,37 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                               >
                                 {messages[selectedChat.id] &&
                                 messages[selectedChat.id].length > 0 ? (
-                                  messages[selectedChat.id].map((msg) => (
-                                    <div
-                                      key={msg.id}
-                                      className={cn(
-                                        "flex",
-                                        msg.senderId === user.id
-                                          ? "justify-end"
-                                          : "justify-start",
-                                      )}
-                                    >
-                                      <div
-                                        className={cn(
-                                          "flex items-start gap-2",
-                                          isMobile
-                                            ? "max-w-[85%]"
-                                            : "max-w-[80%]",
-                                          msg.senderId === user.id
-                                            ? "flex-row-reverse"
-                                            : "",
-                                        )}
-                                      >
-                                        {msg.senderId !== user.id && (
-                                          <Avatar
-                                            className={
-                                              isMobile
-                                                ? "h-6 w-6 mt-1"
-                                                : "h-8 w-8"
-                                            }
-                                          >
-                                            <AvatarImage
-                                              src={msg.sender?.avatar}
-                                            />
-                                            <AvatarFallback
-                                              className={
-                                                isMobile ? "text-xs" : "text-sm"
-                                              }
-                                            >
-                                              {msg.sender?.name?.charAt(0) ||
-                                                "?"}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        )}
-                                        <div className="flex-1">
-                                          <div
-                                            className={cn(
-                                              "rounded-lg chat-message-bubble",
-                                              isMobile ? "p-2.5" : "p-3",
-                                              msg.senderId === user.id
-                                                ? "bg-primary text-primary-foreground"
-                                                : "bg-muted",
-                                            )}
-                                          >
-                                            <p
-                                              className={cn(
-                                                "text-responsive",
-                                                isMobile
-                                                  ? "text-sm leading-relaxed"
-                                                  : "text-sm",
-                                              )}
-                                            >
-                                              {msg.content}
-                                            </p>
-                                          </div>
-                                          <div
-                                            className={`flex items-center mt-1 gap-1 ${
-                                              msg.senderId === user.id
-                                                ? "justify-end"
-                                                : "justify-start"
-                                            }`}
-                                          >
-                                            <p className="text-xs text-muted-foreground">
-                                              {formatMessageDate(msg.timestamp)}
-                                            </p>
-                                            {msg.senderId === user.id && (
-                                              <CheckCheck
-                                                className={cn(
-                                                  "h-3 w-3",
-                                                  msg.readBy.length > 1
-                                                    ? "text-blue-500"
-                                                    : "text-muted-foreground",
-                                                )}
-                                              />
-                                            )}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))
+                                  messages[selectedChat.id].map(
+                                    (msg, index) => {
+                                      const prevMsg =
+                                        messages[selectedChat.id]?.[index - 1];
+                                      const isGrouped =
+                                        prevMsg &&
+                                        prevMsg.senderId === msg.senderId &&
+                                        new Date(msg.timestamp).getTime() -
+                                          new Date(
+                                            prevMsg.timestamp,
+                                          ).getTime() <
+                                          300000; // 5 minutes
+
+                                      return (
+                                        <EnhancedMessage
+                                          key={msg.id}
+                                          message={msg}
+                                          isCurrentUser={
+                                            msg.senderId === user.id
+                                          }
+                                          isMobile={isMobile}
+                                          onReply={handleReplyToMessage}
+                                          onReact={handleReactToMessage}
+                                          onEdit={handleEditMessage}
+                                          onDelete={handleDeleteMessage}
+                                          showAvatar={!isGrouped}
+                                          groupWithPrevious={isGrouped}
+                                        />
+                                      );
+                                    },
+                                  )
                                 ) : (
                                   <div
                                     className={`text-center text-muted-foreground ${
@@ -847,50 +1277,39 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                             </ScrollArea>
                           </CardContent>
 
-                          <div
-                            className={`border-t flex-shrink-0 ${
-                              isMobile ? "p-2.5" : "p-3"
-                            }`}
-                          >
-                            <form
-                              onSubmit={handleSendMessage}
-                              className="flex w-full gap-2"
-                            >
-                              <Input
-                                placeholder={
-                                  isMobile
-                                    ? "Type message..."
-                                    : "Type a message..."
-                                }
-                                value={messageInput}
-                                onChange={(e) =>
-                                  setMessageInput(e.target.value)
-                                }
-                                className={cn(
-                                  "flex-1",
-                                  isMobile ? "h-11 chat-input-mobile" : "h-10",
-                                )}
-                                autoComplete="off"
-                                autoFocus={!isMobile} // Don't auto-focus on mobile to prevent keyboard popup
-                              />
+                          {/* Reply indicator */}
+                          {replyToMessage && (
+                            <div className="border-t border-b bg-muted/30 p-3 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <div className="w-1 h-8 bg-primary rounded-full" />
+                                <div className="min-w-0">
+                                  <p className="text-xs font-medium text-primary">
+                                    Replying to {replyToMessage.senderName}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground truncate max-w-48">
+                                    {replyToMessage.content}
+                                  </p>
+                                </div>
+                              </div>
                               <Button
-                                type="submit"
-                                size={isMobile ? "default" : "default"}
-                                className={cn(
-                                  "touch-optimized",
-                                  isMobile
-                                    ? "px-4 min-w-[50px] h-11"
-                                    : "px-4 h-10", // Larger touch target on mobile
-                                )}
-                                disabled={!messageInput.trim()}
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6"
+                                onClick={() => setReplyToMessage(null)}
                               >
-                                <Send className="h-4 w-4" />
-                                {!isMobile && (
-                                  <span className="ml-1">Send</span>
-                                )}
+                                <X className="h-3 w-3" />
                               </Button>
-                            </form>
-                          </div>
+                            </div>
+                          )}
+
+                          {/* Enhanced Chat Input */}
+                          <EnhancedChatInput
+                            messageInput={messageInput}
+                            setMessageInput={setMessageInput}
+                            onSendMessage={handleSendEnhancedMessage}
+                            isMobile={isMobile}
+                            disabled={loading}
+                          />
                         </>
                       ) : (
                         <div className="flex-1 flex flex-col items-center justify-center p-4">
@@ -931,6 +1350,108 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Voice/Video Call Modal */}
+      {activeCall && (
+        <VoiceVideoCall
+          isOpen={!!activeCall}
+          onClose={handleEndCall}
+          callType={activeCall.type}
+          participants={activeCall.participants}
+          currentUser={activeCall.currentUser}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          onToggleScreenShare={handleToggleScreenShare}
+          onEndCall={handleEndCall}
+          chatName={activeCall.chatInfo?.title}
+        />
+      )}
+
+      {/* Incoming Call Modal */}
+      {incomingCall && (
+        <VoiceVideoCall
+          isOpen={!!incomingCall}
+          onClose={() => setIncomingCall(null)}
+          callType={incomingCall.type}
+          participants={[incomingCall.from]}
+          currentUser={{
+            id: user?.id || "",
+            name: user?.profile?.full_name || user?.email || "",
+            avatar: user?.profile?.avatar_url,
+            isAudioMuted: isAudioMuted,
+            isVideoEnabled:
+              incomingCall.type === "video" ? isVideoEnabled : false,
+            isScreenSharing: false,
+            connectionQuality: "excellent" as const,
+          }}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          onToggleScreenShare={handleToggleScreenShare}
+          onEndCall={handleEndCall}
+          chatName={incomingCall.chatInfo?.title}
+          isIncoming={true}
+          onAcceptCall={() => {
+            // Accept the call and start the regular call interface
+            setActiveCall({
+              type: incomingCall.type,
+              participants: [incomingCall.from],
+              currentUser: {
+                id: user?.id || "",
+                name: user?.profile?.full_name || user?.email || "",
+                avatar: user?.profile?.avatar_url,
+                isAudioMuted: isAudioMuted,
+                isVideoEnabled:
+                  incomingCall.type === "video" ? isVideoEnabled : false,
+                isScreenSharing: false,
+                connectionQuality: "excellent" as const,
+              },
+              chatInfo: incomingCall.chatInfo,
+            });
+            setIncomingCall(null);
+            toast({
+              title: "Call Connected",
+              description: "You are now connected to the call.",
+            });
+          }}
+          onDeclineCall={() => {
+            setIncomingCall(null);
+            toast({
+              title: "Call Declined",
+              description: "You declined the incoming call.",
+            });
+          }}
+        />
+      )}
+
+      {/* Group Video Room Modal */}
+      {groupVideoRoom && (
+        <GroupVideoRoom
+          isOpen={!!groupVideoRoom}
+          onClose={() => setGroupVideoRoom(null)}
+          roomId={groupVideoRoom.roomId}
+          roomName={groupVideoRoom.roomName}
+          roomType={groupVideoRoom.roomType as any}
+          participants={groupVideoRoom.participants}
+          currentUser={groupVideoRoom.currentUser}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          onToggleScreenShare={handleToggleScreenShare}
+          onLeaveRoom={() => {
+            setGroupVideoRoom(null);
+            toast({
+              title: "Left Video Room",
+              description: "You have left the group video room.",
+            });
+          }}
+          onInviteUsers={() => {
+            toast({
+              title: "Invite Feature",
+              description: "User invitation feature coming soon!",
+            });
+          }}
+          isHost={true}
+        />
+      )}
     </div>
   );
 };

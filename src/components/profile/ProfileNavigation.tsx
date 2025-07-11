@@ -18,21 +18,21 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
     {
       title: "Your Profile",
       description: "View and edit your profile",
-      path: "/profile",
+      path: "/app/profile",
       icon: <Users className="w-5 h-5" />,
       variant: "default" as const,
     },
     {
       title: "Profile Demo",
       description: "See the comprehensive profile system",
-      path: "/demo/profiles",
+      path: "/app/demo/profiles",
       icon: <Eye className="w-5 h-5" />,
       variant: "outline" as const,
     },
     {
       title: "Discover Users",
       description: "Explore other users on the platform",
-      path: "/explore",
+      path: "/app/explore",
       icon: <Star className="w-5 h-5" />,
       variant: "outline" as const,
     },
@@ -91,7 +91,7 @@ export const ProfileNavigation: React.FC<ProfileNavigationProps> = ({
                 variant="ghost"
                 size="sm"
                 className="h-auto p-2 flex flex-col items-start"
-                onClick={() => navigate(`/profile/${profile.username}`)}
+                onClick={() => navigate(`/app/profile/${profile.username}`)}
               >
                 <div className="font-medium text-xs">{profile.label}</div>
                 <div className="text-xs text-muted-foreground">

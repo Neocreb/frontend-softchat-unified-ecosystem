@@ -29,7 +29,7 @@ const CreatorStudioFAB: React.FC<CreatorStudioFABProps> = ({ className }) => {
   const location = useLocation();
 
   // Don't show on certain pages
-  const hiddenPaths = ["/creator-studio", "/auth", "/"];
+  const hiddenPaths = ["/app/creator-studio", "/auth", "/"];
   if (hiddenPaths.some((path) => location.pathname.startsWith(path))) {
     return null;
   }
@@ -51,23 +51,23 @@ const CreatorStudioFAB: React.FC<CreatorStudioFABProps> = ({ className }) => {
   const quickActions = [
     {
       label: "Full Analytics",
-      action: () => navigate("/creator-studio"),
+      action: () => navigate("/app/creator-studio"),
       icon: <BarChart3 className="w-4 h-4" />,
       primary: true,
     },
     {
       label: "Content Performance",
-      action: () => navigate("/creator-studio?tab=content"),
+      action: () => navigate("/app/creator-studio?tab=content"),
       icon: <TrendingUp className="w-4 h-4" />,
     },
     {
       label: "Revenue Tracking",
-      action: () => navigate("/creator-studio?tab=revenue"),
+      action: () => navigate("/app/creator-studio?tab=revenue"),
       icon: <DollarSign className="w-4 h-4" />,
     },
     {
       label: "AI Insights",
-      action: () => navigate("/creator-studio?tab=insights"),
+      action: () => navigate("/app/creator-studio?tab=insights"),
       icon: <Zap className="w-4 h-4" />,
     },
   ];
