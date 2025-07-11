@@ -35,6 +35,8 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
   showTitle = true,
   variant = "card",
   onUserClick,
+  showGiftButton = false,
+  onSendGift,
 }) => {
   const navigate = useNavigate();
 
