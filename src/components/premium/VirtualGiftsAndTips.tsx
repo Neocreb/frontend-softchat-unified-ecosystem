@@ -82,19 +82,63 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
 
   const loadData = async () => {
     try {
-      const [gifts, settings] = await Promise.all([
-        virtualGiftsService.getAvailableGifts(),
-        virtualGiftsService.getCreatorTipSettings(recipientId),
-      ]);
-
+      // Load static gifts immediately
+      const gifts = virtualGiftsService.getAvailableGifts();
       setAvailableGifts(gifts);
-      setTipSettings(settings);
 
-      if (settings?.suggestedAmounts && settings.suggestedAmounts.length > 0) {
-        setTipAmount(settings.suggestedAmounts[0]);
+      // Try to load settings asynchronously
+      try {
+        const settings =
+          await virtualGiftsService.getCreatorTipSettings(recipientId);
+        setTipSettings(settings);
+
+        if (
+          settings?.suggestedAmounts &&
+          settings.suggestedAmounts.length > 0
+        ) {
+          setTipAmount(settings.suggestedAmounts[0]);
+        }
+      } catch (error) {
+        console.log("Using default tip settings");
+        // Use default settings if service fails
+        setTipSettings({
+          id: "default",
+          userId: recipientId,
+          isEnabled: true,
+          minTipAmount: 1,
+          maxTipAmount: 1000,
+          suggestedAmounts: [1, 5, 10, 20, 50],
+          allowAnonymous: true,
+          createdAt: new Date().toISOString(),
+        });
       }
     } catch (error) {
       console.error("Error loading data:", error);
+      // Use fallback data
+      setAvailableGifts([
+        {
+          id: "heart",
+          name: "Heart",
+          emoji: "❤️",
+          description: "Show some love",
+          price: 0.99,
+          currency: "USD",
+          category: "basic",
+          rarity: "common",
+          available: true,
+        },
+        {
+          id: "coffee",
+          name: "Coffee",
+          emoji: "☕",
+          description: "Buy them a coffee!",
+          price: 1.99,
+          currency: "USD",
+          category: "basic",
+          rarity: "common",
+          available: true,
+        },
+      ]);
     }
   };
 
