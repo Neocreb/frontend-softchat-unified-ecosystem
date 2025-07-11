@@ -277,6 +277,10 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Messages
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/app/send-gifts")}>
+                <Gift className="mr-2 h-4 w-4 text-pink-600" />
+                <span className="text-pink-600">Send Gifts</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/app/premium")}>
                 <Crown className="mr-2 h-4 w-4 text-purple-600" />
                 <span className="text-purple-600">Premium</span>
