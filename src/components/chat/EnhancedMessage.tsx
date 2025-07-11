@@ -420,7 +420,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             <Avatar className="w-8 h-8 flex-shrink-0">
               <AvatarImage src={message.senderAvatar} />
               <AvatarFallback className="text-xs">
-                {message.senderName.charAt(0)}
+                {message.senderName?.charAt(0) || "?"}
               </AvatarFallback>
             </Avatar>
           )}
@@ -435,7 +435,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             {/* Sender name (for group chats) */}
             {!isCurrentUser && !groupWithPrevious && (
               <p className="text-xs text-gray-500 mb-1 px-3">
-                {message.senderName}
+                {message.senderName || "Unknown"}
               </p>
             )}
 
