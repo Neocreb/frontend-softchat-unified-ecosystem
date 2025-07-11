@@ -38,7 +38,7 @@ const EnhancedHeader = () => {
   const navigate = useNavigate();
 
   const handleChatClick = () => {
-    navigate("/app/chat");
+    navigate("/chat");
   };
 
   return (
@@ -59,49 +59,49 @@ const EnhancedHeader = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <Link
-            to="/app/feed"
+            to="/feed"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Home className="h-4 w-4" />
             <span>Feed</span>
           </Link>
           <Link
-            to="/app/marketplace"
+            to="/marketplace"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ShoppingCart className="h-4 w-4" />
             <span>Marketplace</span>
           </Link>
           <Link
-            to="/app/crypto"
+            to="/crypto"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <TrendingUp className="h-4 w-4" />
             <span>Crypto</span>
           </Link>
           <Link
-            to="/app/wallet"
+            to="/wallet"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Wallet className="h-4 w-4" />
             <span>Wallet</span>
           </Link>
           <Link
-            to="/app/events"
+            to="/events"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Calendar className="h-4 w-4" />
             <span>Events</span>
           </Link>
           <Link
-            to="/app/rewards"
+            to="/rewards"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Award className="h-4 w-4" />
             <span>Rewards</span>
           </Link>
           <Link
-            to="/app/achievements"
+            to="/achievements"
             className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Award className="h-4 w-4" />
@@ -126,16 +126,15 @@ const EnhancedHeader = () => {
                 // Handle navigation based on result type
                 if (result.type === "user")
                   navigate(
-                    `/app/user/${result.title.toLowerCase().replace(/\s+/g, "-")}`,
+                    `/user/${result.title.toLowerCase().replace(/\s+/g, "-")}`,
                   );
                 else if (result.type === "product")
-                  navigate(`/app/marketplace/product/${result.id}`);
+                  navigate(`/marketplace/product/${result.id}`);
                 else if (result.type === "service")
-                  navigate(`/app/freelance/service/${result.id}`);
-                else if (result.type === "post")
-                  navigate(`/app/post/${result.id}`);
+                  navigate(`/freelance/service/${result.id}`);
+                else if (result.type === "post") navigate(`/post/${result.id}`);
                 else if (result.type === "crypto")
-                  navigate(`/app/crypto/${result.title.toLowerCase()}`);
+                  navigate(`/crypto/${result.title.toLowerCase()}`);
               }}
             />
           </div>
@@ -179,26 +178,26 @@ const EnhancedHeader = () => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to="/app/profile" className="flex items-center w-full">
+                <Link to="/profile" className="flex items-center w-full">
                   <User className="mr-2 h-4 w-4" />
                   <span>Profile</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/app/wallet" className="flex items-center w-full">
+                <Link to="/wallet" className="flex items-center w-full">
                   <Wallet className="mr-2 h-4 w-4" />
                   <span>Wallet</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link to="/app/rewards" className="flex items-center w-full">
+                <Link to="/rewards" className="flex items-center w-full">
                   <Award className="mr-2 h-4 w-4" />
                   <span>Rewards</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to="/app/settings" className="flex items-center w-full">
+                <Link to="/settings" className="flex items-center w-full">
                   Settings
                 </Link>
               </DropdownMenuItem>
@@ -217,7 +216,7 @@ const EnhancedHeader = () => {
       >
         <div className="relative z-20 grid gap-6 rounded-md bg-background p-4">
           <Link
-            to="/app/feed"
+            to="/feed"
             className="flex items-center gap-2 text-lg font-semibold"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -225,7 +224,7 @@ const EnhancedHeader = () => {
             <span>Feed</span>
           </Link>
           <Link
-            to="/app/marketplace"
+            to="/marketplace"
             className="flex items-center gap-2 text-lg font-semibold"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -233,7 +232,7 @@ const EnhancedHeader = () => {
             <span>Marketplace</span>
           </Link>
           <Link
-            to="/app/crypto"
+            to="/crypto"
             className="flex items-center gap-2 text-lg font-semibold"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -241,7 +240,7 @@ const EnhancedHeader = () => {
             <span>Crypto</span>
           </Link>
           <Link
-            to="/app/wallet"
+            to="/wallet"
             className="flex items-center gap-2 text-lg font-semibold"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -249,7 +248,7 @@ const EnhancedHeader = () => {
             <span>Wallet</span>
           </Link>
           <Link
-            to="/app/rewards"
+            to="/rewards"
             className="flex items-center gap-2 text-lg font-semibold"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -257,7 +256,7 @@ const EnhancedHeader = () => {
             <span>Rewards</span>
           </Link>
           <Link
-            to="/app/chat"
+            to="/chat"
             className="flex items-center gap-2 text-lg font-semibold"
             onClick={() => setMobileMenuOpen(false)}
           >
