@@ -147,7 +147,7 @@ const EventsBanner = () => {
                 </div>
               ))}
 
-              <Link to="/events">
+              <Link to="/app/events">
                 <div className="text-center p-2 text-sm text-blue-600 hover:text-blue-700 font-medium cursor-pointer">
                   View all events →
                 </div>
