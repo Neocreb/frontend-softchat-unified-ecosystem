@@ -22,7 +22,13 @@ import {
   MessageSquare,
   Filter,
   ArrowLeft,
+  UserPlus,
+  VideoIcon,
 } from "lucide-react";
+import { EnhancedChatInput } from "./EnhancedChatInput";
+import { VoiceVideoCall } from "./VoiceVideoCall";
+import { GroupVideoRoom } from "./GroupVideoRoom";
+import { EnhancedMessage, EnhancedChatMessage } from "./EnhancedMessage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   DropdownMenu,
