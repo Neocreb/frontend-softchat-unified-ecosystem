@@ -672,9 +672,9 @@ const VideoCard: React.FC<{
           <Button
             size="icon"
             variant="ghost"
-            className="w-11 h-11 rounded-full bg-black/40 text-white hover:bg-black/60"
+            className="w-12 h-12 rounded-full bg-black/30 text-white hover:bg-black/50 backdrop-blur-sm"
           >
-            <MoreHorizontal className="w-5 h-5" />
+            <MoreHorizontal className="w-7 h-7" />
           </Button>
 
           {/* Rotating disc for music - TikTok style */}
