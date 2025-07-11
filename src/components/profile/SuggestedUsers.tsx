@@ -39,7 +39,7 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
     if (onUserClick) {
       onUserClick(username);
     } else {
-      navigate(`/profile/${username}`);
+      navigate(`/app/profile/${username}`);
     }
   };
 
