@@ -52,7 +52,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
 
-    // Main navigation items (like mobile footer but organized for desktop)
+  // Main navigation items (like mobile footer but organized for desktop)
   const mainNavItems = [
     {
       icon: Home,
@@ -121,7 +121,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-        if (searchQuery.trim()) {
+    if (searchQuery.trim()) {
       navigate(`/explore?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     }
@@ -141,7 +141,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
             <Menu className="h-5 w-5" />
           </Button>
 
-                    <Link to="/feed" className="flex items-center gap-2">
+          <Link to="/feed" className="flex items-center gap-2">
             <SoftchatLogo className="h-8 w-8" />
             <span className="font-bold text-xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               SoftChat
@@ -190,7 +190,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           <Button
             variant="default"
             size="sm"
-                        onClick={() => navigate("/create"))
+            onClick={() => navigate("/create")}
             className="hidden sm:flex items-center gap-2"
           >
             <Plus className="h-4 w-4" />
@@ -201,7 +201,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           <Button
             variant="ghost"
             size="sm"
-                        onClick={() => navigate("/notifications"))
+            onClick={() => navigate("/notifications")}
             className="relative"
           >
             <Bell className="h-5 w-5" />
@@ -216,7 +216,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
           <Button
             variant="ghost"
             size="sm"
-                        onClick={() => navigate("/chat"))
+            onClick={() => navigate("/chat")}
             className="relative"
           >
             <MessageSquare className="h-5 w-5" />
@@ -251,35 +251,35 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
                 </div>
               </div>
               <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => navigate("/profile")}>
+              <DropdownMenuItem onClick={() => navigate("/profile")}>
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/ai-assistant")}>
+              <DropdownMenuItem onClick={() => navigate("/ai-assistant")}>
                 <Bot className="mr-2 h-4 w-4" />
                 AI Assistant
               </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/settings")}>
+              <DropdownMenuItem onClick={() => navigate("/settings")}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/wallet")}>
+              <DropdownMenuItem onClick={() => navigate("/wallet")}>
                 <Wallet className="mr-2 h-4 w-4" />
                 Wallet
               </DropdownMenuItem>
-              <DropdownMenuItem             onClick={() => navigate("/chat"))>
+              <DropdownMenuItem onClick={() => navigate("/chat")}>
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Messages
               </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/premium")}>
+              <DropdownMenuItem onClick={() => navigate("/premium")}>
                 <Crown className="mr-2 h-4 w-4 text-purple-600" />
                 <span className="text-purple-600">Premium</span>
               </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/kyc")}>
+              <DropdownMenuItem onClick={() => navigate("/kyc")}>
                 <ShieldCheck className="mr-2 h-4 w-4" />
                 KYC Verification
               </DropdownMenuItem>
-              <DropdownMenuItem             onClick={() => navigate("/notifications"))>
+              <DropdownMenuItem onClick={() => navigate("/notifications")}>
                 <Bell className="mr-2 h-4 w-4" />
                 Notifications
               </DropdownMenuItem>
