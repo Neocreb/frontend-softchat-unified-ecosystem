@@ -640,14 +640,401 @@ const SendGifts = () => {
         </div>
       </div>
 
-      {/* Gift Modal */}
-      {selectedUser && (
-        <VirtualGiftsAndTips
-          recipientId={selectedUser.id}
-          recipientName={selectedUser.name}
-          trigger={null}
-          onGiftSent={handleGiftSent}
-        />
+      {/* Enhanced Gift Modal */}
+      {selectedUser && showGiftModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-purple-500" />
+                  <h2 className="text-xl font-bold">
+                    Send Gifts & Tips to {selectedUser.name}
+                  </h2>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowGiftModal(false)}
+                >
+                  ×
+                </Button>
+              </div>
+
+              <Tabs defaultValue="gifts" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="gifts">Virtual Gifts</TabsTrigger>
+                  <TabsTrigger value="tips">Send Tips</TabsTrigger>
+                  <TabsTrigger value="history">History</TabsTrigger>
+                </TabsList>
+
+                {/* Virtual Gifts Tab */}
+                <TabsContent value="gifts" className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    {/* Gift Selection */}
+                    <div className="lg:col-span-2 space-y-4">
+                      {Object.entries(groupedGifts).map(([category, gifts]) => (
+                        <Card key={category}>
+                          <CardHeader>
+                            <CardTitle className="flex items-center gap-2 capitalize">
+                              {getCategoryIcon(
+                                category as VirtualGift["category"],
+                              )}
+                              {category} Gifts
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                              {gifts.map((gift) => (
+                                <Card
+                                  key={gift.id}
+                                  className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
+                                    selectedGift?.id === gift.id
+                                      ? "ring-2 ring-primary"
+                                      : ""
+                                  }`}
+                                  onClick={() => setSelectedGift(gift)}
+                                >
+                                  <CardContent className="p-3 text-center">
+                                    <div className="text-3xl mb-2">
+                                      {gift.emoji}
+                                    </div>
+                                    <h3 className="font-medium text-sm">
+                                      {gift.name}
+                                    </h3>
+                                    <p className="text-xs text-muted-foreground mb-2">
+                                      ${gift.price}
+                                    </p>
+                                    <Badge
+                                      className={`text-xs ${getRarityColor(gift.rarity)} text-white`}
+                                    >
+                                      {gift.rarity}
+                                    </Badge>
+                                  </CardContent>
+                                </Card>
+                              ))}
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+
+                    {/* Gift Configuration */}
+                    <div className="space-y-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Selected Gift</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          {selectedGift ? (
+                            <>
+                              <div className="text-center p-4 border rounded-lg">
+                                <div className="text-4xl mb-2">
+                                  {selectedGift.emoji}
+                                </div>
+                                <h3 className="font-medium">
+                                  {selectedGift.name}
+                                </h3>
+                                <p className="text-sm text-muted-foreground">
+                                  ${selectedGift.price} each
+                                </p>
+                              </div>
+
+                              <div>
+                                <Label>Quantity</Label>
+                                <div className="flex items-center gap-2 mt-1">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() =>
+                                      setGiftQuantity(
+                                        Math.max(1, giftQuantity - 1),
+                                      )
+                                    }
+                                  >
+                                    -
+                                  </Button>
+                                  <span className="w-12 text-center">
+                                    {giftQuantity}
+                                  </span>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() =>
+                                      setGiftQuantity(giftQuantity + 1)
+                                    }
+                                  >
+                                    +
+                                  </Button>
+                                </div>
+                              </div>
+
+                              <div>
+                                <Label>Personal Message (Optional)</Label>
+                                <Textarea
+                                  placeholder="Add a personal message..."
+                                  value={message}
+                                  onChange={(e) => setMessage(e.target.value)}
+                                  rows={3}
+                                />
+                              </div>
+
+                              <div className="flex items-center justify-between">
+                                <Label>Send Anonymously</Label>
+                                <Switch
+                                  checked={isAnonymous}
+                                  onCheckedChange={setIsAnonymous}
+                                />
+                              </div>
+
+                              <Alert>
+                                <AlertDescription>
+                                  Total: $
+                                  {(selectedGift.price * giftQuantity).toFixed(
+                                    2,
+                                  )}
+                                </AlertDescription>
+                              </Alert>
+
+                              <Button
+                                onClick={handleSendVirtualGift}
+                                disabled={sending}
+                                className="w-full"
+                              >
+                                {sending ? (
+                                  "Sending..."
+                                ) : (
+                                  <>
+                                    <Send className="h-4 w-4 mr-2" />
+                                    Send Gift
+                                  </>
+                                )}
+                              </Button>
+                            </>
+                          ) : (
+                            <p className="text-center text-muted-foreground py-8">
+                              Select a gift to continue
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                {/* Tips Tab */}
+                <TabsContent value="tips" className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <DollarSign className="h-5 w-5" />
+                          Send Tip
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <Label>Tip Amount ($)</Label>
+                          <div className="flex gap-2 mt-2 mb-4">
+                            {[1, 5, 10, 20, 50].map((amount) => (
+                              <Button
+                                key={amount}
+                                variant={
+                                  tipAmount === amount ? "default" : "outline"
+                                }
+                                size="sm"
+                                onClick={() => setTipAmount(amount)}
+                              >
+                                ${amount}
+                              </Button>
+                            ))}
+                          </div>
+                          <Input
+                            type="number"
+                            value={tipAmount}
+                            onChange={(e) =>
+                              setTipAmount(Number(e.target.value))
+                            }
+                            min="1"
+                            max="1000"
+                          />
+                        </div>
+
+                        <div>
+                          <Label>Personal Message (Optional)</Label>
+                          <Textarea
+                            placeholder="Add a personal message..."
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            rows={3}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                          <Label>Send Anonymously</Label>
+                          <Switch
+                            checked={isAnonymous}
+                            onCheckedChange={setIsAnonymous}
+                          />
+                        </div>
+
+                        <Button
+                          onClick={handleSendTip}
+                          disabled={sending || tipAmount < 1}
+                          className="w-full"
+                        >
+                          {sending ? (
+                            "Sending..."
+                          ) : (
+                            <>
+                              <Send className="h-4 w-4 mr-2" />
+                              Send ${tipAmount} Tip
+                            </>
+                          )}
+                        </Button>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Tip Information</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Recipient:
+                            </span>
+                            <span className="font-medium">
+                              {selectedUser.name}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Amount:
+                            </span>
+                            <span className="font-medium">${tipAmount}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">
+                              Platform Fee:
+                            </span>
+                            <span className="font-medium">$0.00</span>
+                          </div>
+                          <div className="border-t pt-2 flex justify-between font-medium">
+                            <span>Total:</span>
+                            <span>${tipAmount}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+
+                {/* History Tab */}
+                <TabsContent value="history" className="space-y-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Gift className="h-5 w-5" />
+                          Recent Gifts
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {recentGifts.length > 0 ? (
+                            recentGifts.slice(0, 5).map((gift, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between p-3 rounded-lg border"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="text-2xl">
+                                    {gift.giftEmoji || "🎁"}
+                                  </div>
+                                  <div>
+                                    <p className="font-medium text-sm">
+                                      {gift.giftName}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      To: {gift.recipientName}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <p className="font-medium text-sm">
+                                    ${gift.totalAmount}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground">
+                                    {new Date(
+                                      gift.createdAt,
+                                    ).toLocaleDateString()}
+                                  </p>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-center text-muted-foreground py-8">
+                              No gifts sent yet
+                            </p>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <DollarSign className="h-5 w-5" />
+                          Recent Tips
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {recentTips.length > 0 ? (
+                            recentTips.slice(0, 5).map((tip, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between p-3 rounded-lg border"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                    <DollarSign className="h-4 w-4 text-green-600" />
+                                  </div>
+                                  <div>
+                                    <p className="font-medium text-sm">Tip</p>
+                                    <p className="text-xs text-muted-foreground">
+                                      To: {tip.recipientName}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <p className="font-medium text-sm">
+                                    ${tip.amount}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground">
+                                    {new Date(
+                                      tip.createdAt,
+                                    ).toLocaleDateString()}
+                                  </p>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-center text-muted-foreground py-8">
+                              No tips sent yet
+                            </p>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
