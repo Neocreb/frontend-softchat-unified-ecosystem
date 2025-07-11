@@ -48,6 +48,94 @@
     line-height: 1.5;
   }
 
+  /* Enhanced crypto page animations */
+  .crypto-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .crypto-card-hover:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Glassmorphism effect */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .glass-effect {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Smooth gradient animations */
+  .gradient-animation {
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Custom focus styles for crypto elements */
+  .crypto-focus:focus {
+    outline: 2px solid rgb(59 130 246);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  /* Price animation pulse */
+  .price-pulse {
+    animation: pricePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pricePulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  /* Mobile tab scroll indicator */
+  .mobile-tabs-indicator {
+    position: relative;
+  }
+
+  .mobile-tabs-indicator::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.8)
+    );
+    pointer-events: none;
+  }
+
+  .dark .mobile-tabs-indicator::after {
+    background: linear-gradient(to right, transparent, rgba(30, 41, 59, 0.8));
+  }
+
   /* Touch optimization utilities */
   .touch-optimized {
     touch-action: manipulation;
