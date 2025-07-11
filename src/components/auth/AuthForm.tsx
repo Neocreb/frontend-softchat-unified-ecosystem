@@ -31,7 +31,7 @@ const AuthForm = () => {
             : "Account created successfully!",
         description: "Welcome to Softchat",
       });
-      navigate("/app/feed");
+      navigate("/feed");
     }, 1500);
   };
 
