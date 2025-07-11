@@ -1122,94 +1122,37 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                               >
                                 {messages[selectedChat.id] &&
                                 messages[selectedChat.id].length > 0 ? (
-                                  messages[selectedChat.id].map((msg) => (
-                                    <div
-                                      key={msg.id}
-                                      className={cn(
-                                        "flex",
-                                        msg.senderId === user.id
-                                          ? "justify-end"
-                                          : "justify-start",
-                                      )}
-                                    >
-                                      <div
-                                        className={cn(
-                                          "flex items-start gap-2",
-                                          isMobile
-                                            ? "max-w-[85%]"
-                                            : "max-w-[80%]",
-                                          msg.senderId === user.id
-                                            ? "flex-row-reverse"
-                                            : "",
-                                        )}
-                                      >
-                                        {msg.senderId !== user.id && (
-                                          <Avatar
-                                            className={
-                                              isMobile
-                                                ? "h-6 w-6 mt-1"
-                                                : "h-8 w-8"
-                                            }
-                                          >
-                                            <AvatarImage
-                                              src={msg.sender?.avatar}
-                                            />
-                                            <AvatarFallback
-                                              className={
-                                                isMobile ? "text-xs" : "text-sm"
-                                              }
-                                            >
-                                              {msg.sender?.name?.charAt(0) ||
-                                                "?"}
-                                            </AvatarFallback>
-                                          </Avatar>
-                                        )}
-                                        <div className="flex-1">
-                                          <div
-                                            className={cn(
-                                              "rounded-lg chat-message-bubble",
-                                              isMobile ? "p-2.5" : "p-3",
-                                              msg.senderId === user.id
-                                                ? "bg-primary text-primary-foreground"
-                                                : "bg-muted",
-                                            )}
-                                          >
-                                            <p
-                                              className={cn(
-                                                "text-responsive",
-                                                isMobile
-                                                  ? "text-sm leading-relaxed"
-                                                  : "text-sm",
-                                              )}
-                                            >
-                                              {msg.content}
-                                            </p>
-                                          </div>
-                                          <div
-                                            className={`flex items-center mt-1 gap-1 ${
-                                              msg.senderId === user.id
-                                                ? "justify-end"
-                                                : "justify-start"
-                                            }`}
-                                          >
-                                            <p className="text-xs text-muted-foreground">
-                                              {formatMessageDate(msg.timestamp)}
-                                            </p>
-                                            {msg.senderId === user.id && (
-                                              <CheckCheck
-                                                className={cn(
-                                                  "h-3 w-3",
-                                                  msg.readBy.length > 1
-                                                    ? "text-blue-500"
-                                                    : "text-muted-foreground",
-                                                )}
-                                              />
-                                            )}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))
+                                  messages[selectedChat.id].map(
+                                    (msg, index) => {
+                                      const prevMsg =
+                                        messages[selectedChat.id]?.[index - 1];
+                                      const isGrouped =
+                                        prevMsg &&
+                                        prevMsg.senderId === msg.senderId &&
+                                        new Date(msg.timestamp).getTime() -
+                                          new Date(
+                                            prevMsg.timestamp,
+                                          ).getTime() <
+                                          300000; // 5 minutes
+
+                                      return (
+                                        <EnhancedMessage
+                                          key={msg.id}
+                                          message={msg}
+                                          isCurrentUser={
+                                            msg.senderId === user.id
+                                          }
+                                          isMobile={isMobile}
+                                          onReply={handleReplyToMessage}
+                                          onReact={handleReactToMessage}
+                                          onEdit={handleEditMessage}
+                                          onDelete={handleDeleteMessage}
+                                          showAvatar={!isGrouped}
+                                          groupWithPrevious={isGrouped}
+                                        />
+                                      );
+                                    },
+                                  )
                                 ) : (
                                   <div
                                     className={`text-center text-muted-foreground ${
