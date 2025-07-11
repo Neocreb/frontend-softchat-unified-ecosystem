@@ -367,15 +367,7 @@ const Explore = () => {
         </TabsContent>
 
         <TabsContent value="hashtags" className="mt-6">
-          <ExploreContent
-            activeTab="hashtags"
-            setActiveTab={setActiveTab}
-            filteredTopics={filteredTopics}
-            filteredUsers={filteredUsers}
-            filteredHashtags={filteredHashtags}
-            filteredGroups={filteredGroups}
-            filteredPages={filteredPages}
-          />
+          <PopularHashtags hashtags={filteredHashtags} />
         </TabsContent>
 
         <TabsContent value="groups" className="mt-6">
