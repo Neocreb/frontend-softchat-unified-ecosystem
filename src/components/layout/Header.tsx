@@ -100,6 +100,12 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
       href: "/app/rewards",
       active: location.pathname === "/app/rewards",
     },
+    {
+      icon: Gift,
+      label: "Send Gifts",
+      href: "/app/send-gifts",
+      active: location.pathname === "/app/send-gifts",
+    },
   ];
 
   const handleLogout = async () => {
