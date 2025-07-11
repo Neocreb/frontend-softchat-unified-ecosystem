@@ -64,6 +64,7 @@ import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface VideoData {
   id: string;
