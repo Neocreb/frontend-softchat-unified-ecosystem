@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,35 +49,18 @@ const Header = () => {
         </nav>
 
         {/* Mobile Navigation Toggle */}
-        <button
-          className="md:hidden p-2"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle Menu"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 px-6 animate-fade-in">
-          <nav className="flex flex-col space-y-4">
-            <NavLinks
-              mobile={true}
-              closeMenu={() => setIsMobileMenuOpen(false)}
-            />
-            <Button className="btn-primary w-full" asChild>
-              <a
-                href="https://app.softchat.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Launch App
-              </a>
-            </Button>
-          </nav>
+        <div className="md:hidden">
+          <Button className="btn-primary" asChild>
+            <a
+              href="https://app.softchat.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Launch App
+            </a>
+          </Button>
         </div>
-      )}
+      </div>
     </header>
   );
 };
