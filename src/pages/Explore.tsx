@@ -4,6 +4,7 @@ import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
 import ExploreGroups from "@/components/explore/ExploreGroups";
 import ExplorePages from "@/components/explore/ExplorePages";
+import PopularHashtags from "@/components/explore/PopularHashtags";
 import SuggestedUsers from "@/components/profile/SuggestedUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
