@@ -279,6 +279,21 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
                         <div className="text-muted-foreground">Rating</div>
                       </div>
                     </div>
+
+                    {showGiftButton && onSendGift && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSendGift(user);
+                        }}
+                        className="mt-3 w-full text-pink-600 border-pink-200 hover:bg-pink-50"
+                      >
+                        <Gift className="h-4 w-4 mr-2" />
+                        Send Gift
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>
