@@ -222,13 +222,6 @@ const Explore = () => {
               <Building className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">Pages</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="explore"
-              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
-            >
-              <Globe className="w-4 h-4 flex-shrink-0" />
-              <span className="text-[10px] leading-tight">More</span>
-            </TabsTrigger>
           </TabsList>
         </div>
 
