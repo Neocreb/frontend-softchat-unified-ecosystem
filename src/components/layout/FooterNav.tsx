@@ -45,10 +45,10 @@ const FooterNav = () => {
       active: location.pathname === "/app/videos",
     },
     {
-      icon: ShoppingCart,
-      label: "Market",
-      href: "/app/marketplace",
-      active: location.pathname === "/app/marketplace",
+      icon: Gift,
+      label: "Gifts",
+      href: "/app/send-gifts",
+      active: location.pathname === "/app/send-gifts",
     },
     {
       icon: TrendingUp,
