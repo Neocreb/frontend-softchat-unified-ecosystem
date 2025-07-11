@@ -252,7 +252,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
       case "marketplace":
         return (
           <div className="space-y-2">
-            <Link to="/marketplace">
+            <Link to="/app/marketplace">
               <Button variant="outline" size="sm" className="w-full">
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 Open Marketplace
