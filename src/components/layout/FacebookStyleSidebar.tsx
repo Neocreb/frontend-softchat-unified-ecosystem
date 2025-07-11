@@ -98,34 +98,34 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     {
       icon: <MessageCircle className="w-8 h-8 text-blue-600" />,
       label: "Messages",
-      href: "/app/chat",
+      href: "/chat",
       badge: "2",
     },
     {
       icon: <Calendar className="w-8 h-8 text-blue-600" />,
       label: "Events",
-      href: "/app/events",
+      href: "/events",
       badge: "3",
     },
     {
       icon: <Radio className="w-8 h-8 text-red-600" />,
       label: "Live",
-      href: "/app/live-streaming",
+      href: "/live-streaming",
     },
     {
       icon: <TrendingUp className="w-8 h-8 text-green-600" />,
       label: "Crypto",
-      href: "/app/crypto",
+      href: "/crypto",
     },
     {
       icon: <BarChart3 className="w-8 h-8 text-purple-600" />,
       label: "Creator Studio",
-      href: "/app/creator-studio",
+      href: "/creator-studio",
     },
     {
       icon: <Award className="w-8 h-8 text-blue-600" />,
       label: "Verification",
-      href: "/app/premium",
+      href: "/premium",
     },
   ];
 
@@ -133,67 +133,67 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     {
       icon: <Rss className="w-6 h-6 text-blue-600" />,
       label: "Feed",
-      href: "/app/feed",
+      href: "/feed",
     },
     {
       icon: <MessageCircle className="w-6 h-6 text-blue-600" />,
       label: "Messages",
-      href: "/app/chat",
+      href: "/chat",
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-purple-600" />,
       label: "Creator Studio",
-      href: "/app/creator-studio",
+      href: "/creator-studio",
     },
     {
       icon: <Video className="w-6 h-6 text-red-600" />,
       label: "Videos",
-      href: "/app/videos",
+      href: "/videos",
     },
     {
       icon: <Radio className="w-6 h-6 text-red-500" />,
       label: "Live Streaming",
-      href: "/app/live-streaming",
+      href: "/live-streaming",
     },
     {
       icon: <ShoppingCart className="w-6 h-6 text-blue-600" />,
       label: "Marketplace",
-      href: "/app/marketplace",
+      href: "/marketplace",
     },
     {
       icon: <TrendingUp className="w-6 h-6 text-green-600" />,
       label: "Crypto Trading",
-      href: "/app/crypto",
+      href: "/crypto",
     },
     {
       icon: <Briefcase className="w-6 h-6 text-blue-600" />,
       label: "Freelance",
-      href: "/app/freelance",
+      href: "/freelance",
     },
     {
       icon: <Calendar className="w-6 h-6 text-blue-500" />,
       label: "Events",
-      href: "/app/events",
+      href: "/events",
     },
     {
       icon: <Wallet className="w-6 h-6 text-green-600" />,
       label: "Wallet",
-      href: "/app/wallet",
+      href: "/wallet",
     },
     {
       icon: <Award className="w-6 h-6 text-purple-600" />,
       label: "Rewards",
-      href: "/app/rewards",
+      href: "/rewards",
     },
     {
       icon: <Award className="w-6 h-6 text-blue-600" />,
       label: "Get Verified",
-      href: "/app/premium",
+      href: "/premium",
     },
     {
       icon: <Settings className="w-6 h-6 text-gray-600" />,
       label: "Settings",
-      href: "/app/settings",
+      href: "/settings",
     },
   ];
 
@@ -235,7 +235,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
 
           {/* Profile Section */}
           <Link
-            to="/app/profile"
+            to="/profile"
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             onClick={handleLinkClick}
           >
@@ -295,28 +295,28 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
           {/* Privacy & Terms Footer */}
           <div className="text-xs text-gray-500 space-y-1 pb-4">
             <div className="flex flex-wrap gap-2">
-              <Link to="/app/privacy" className="hover:underline">
+              <Link to="/privacy" className="hover:underline">
                 Privacy
               </Link>
               <span>·</span>
-              <Link to="/app/terms" className="hover:underline">
+              <Link to="/terms" className="hover:underline">
                 Terms
               </Link>
               <span>·</span>
-              <Link to="/app/advertising" className="hover:underline">
+              <Link to="/advertising" className="hover:underline">
                 Advertising
               </Link>
               <span>·</span>
-              <Link to="/app/ad-choices" className="hover:underline">
+              <Link to="/ad-choices" className="hover:underline">
                 Ad Choices
               </Link>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link to="/app/cookies" className="hover:underline">
+              <Link to="/cookies" className="hover:underline">
                 Cookies
               </Link>
               <span>·</span>
-              <Link to="/app/help" className="hover:underline">
+              <Link to="/help" className="hover:underline">
                 More
               </Link>
               <span>·</span>
