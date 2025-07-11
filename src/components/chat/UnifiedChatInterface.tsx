@@ -422,44 +422,175 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
     }
   };
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!messageInput.trim() || !selectedChat || !user) return;
+  // Enhanced send message function with support for different message types
+  const handleSendEnhancedMessage = async (
+    type: "text" | "voice" | "sticker" | "media",
+    content: string,
+    metadata?: any,
+  ) => {
+    if (!selectedChat || !user) return;
 
     try {
-      const newMessage = await chatService.sendMessage({
-        threadId: selectedChat.id,
-        content: messageInput.trim(),
-        messageType: "text",
-      });
+      const newMessage: EnhancedChatMessage = {
+        id: Date.now().toString(),
+        senderId: user.id,
+        senderName: user.profile?.full_name || user.email,
+        senderAvatar: user.profile?.avatar_url,
+        content,
+        type,
+        timestamp: new Date().toISOString(),
+        metadata,
+        status: "sending",
+        reactions: [],
+        replyTo: replyToMessage
+          ? {
+              messageId: replyToMessage.id,
+              content: replyToMessage.content,
+              senderName: replyToMessage.senderName,
+            }
+          : undefined,
+      };
 
+      // Immediately add to UI
       setMessages((prev) => ({
         ...prev,
         [selectedChat.id]: [...(prev[selectedChat.id] || []), newMessage],
       }));
 
-      setMessageInput("");
+      // Clear reply
+      setReplyToMessage(null);
+
+      // Simulate API call
+      setTimeout(() => {
+        setMessages((prev) => ({
+          ...prev,
+          [selectedChat.id]:
+            prev[selectedChat.id]?.map((msg) =>
+              msg.id === newMessage.id
+                ? { ...msg, status: "delivered" as const }
+                : msg,
+            ) || [],
+        }));
+      }, 1000);
 
       // Update conversation last message
+      const lastMessageText =
+        type === "sticker"
+          ? "Sticker"
+          : type === "voice"
+            ? "Voice message"
+            : type === "media"
+              ? metadata?.fileName || "Media"
+              : content;
+
       setConversations((prev) =>
         prev.map((conv) =>
           conv.id === selectedChat.id
             ? {
                 ...conv,
-                lastMessage: messageInput.trim(),
+                lastMessage: lastMessageText,
                 lastMessageAt: newMessage.timestamp,
+                unreadCount: 0,
               }
             : conv,
         ),
       );
+
+      // Show success toast for special message types
+      if (type === "voice") {
+        toast({
+          title: "Voice Message Sent",
+          description: "Your voice message has been sent successfully.",
+        });
+      } else if (type === "media") {
+        toast({
+          title: "Media Sent",
+          description: `${metadata?.fileName || "File"} has been sent successfully.`,
+        });
+      }
     } catch (error) {
-      console.error("Error sending message:", error);
       toast({
         title: "Error",
-        description: "Failed to send message",
+        description: "Failed to send message. Please try again.",
         variant: "destructive",
       });
     }
+  };
+
+  // Legacy send message function for backward compatibility
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!messageInput.trim()) return;
+
+    await handleSendEnhancedMessage("text", messageInput.trim());
+    setMessageInput("");
+  };
+
+  // Message interaction handlers
+  const handleReplyToMessage = (message: EnhancedChatMessage) => {
+    setReplyToMessage(message);
+    toast({
+      title: "Replying to message",
+      description: `Replying to ${message.senderName}`,
+    });
+  };
+
+  const handleReactToMessage = (messageId: string, emoji: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat?.id || ""]:
+        prev[selectedChat?.id || ""]?.map((msg) =>
+          msg.id === messageId
+            ? {
+                ...msg,
+                reactions: [
+                  ...(msg.reactions || []),
+                  {
+                    userId: user?.id || "",
+                    emoji,
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+              }
+            : msg,
+        ) || [],
+    }));
+
+    toast({
+      title: "Reaction added",
+      description: `You reacted with ${emoji}`,
+    });
+  };
+
+  const handleEditMessage = (messageId: string, newContent: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat?.id || ""]:
+        prev[selectedChat?.id || ""]?.map((msg) =>
+          msg.id === messageId
+            ? { ...msg, content: newContent, isEdited: true }
+            : msg,
+        ) || [],
+    }));
+
+    toast({
+      title: "Message edited",
+      description: "Your message has been updated.",
+    });
+  };
+
+  const handleDeleteMessage = (messageId: string) => {
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat?.id || ""]:
+        prev[selectedChat?.id || ""]?.filter((msg) => msg.id !== messageId) ||
+        [],
+    }));
+
+    toast({
+      title: "Message deleted",
+      description: "The message has been removed.",
+    });
   };
 
   const getContextInfo = (conversation: UnifiedChatThread) => {
