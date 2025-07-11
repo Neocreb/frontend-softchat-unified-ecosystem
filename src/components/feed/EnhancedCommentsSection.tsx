@@ -19,6 +19,7 @@ import { Comment, feedService } from "@/services/feedService";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import {
   DropdownMenu,
   DropdownMenuContent,
