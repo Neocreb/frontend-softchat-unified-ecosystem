@@ -246,61 +246,130 @@ export default function EnhancedCrypto() {
   }
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-6">
-      <div className="space-y-4 sm:space-y-6">
-        {/* Header */}
-        <div className="flex flex-col gap-4 sm:gap-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">
-                Cryptocurrency Hub
-              </h1>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Trade, learn, and manage your crypto portfolio
-              </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+        <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+          {/* Enhanced Header */}
+          <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+                    <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Cryptocurrency Hub
+                    </h1>
+                    <p className="text-sm sm:text-base lg:text-lg text-muted-foreground">
+                      Trade, learn, and manage your crypto portfolio with
+                      professional tools
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <ApiStatusIndicator showDetails={true} />
+                <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs font-medium text-green-700 dark:text-green-300">
+                    Live Market
+                  </span>
+                </div>
+              </div>
             </div>
-            <ApiStatusIndicator showDetails={true} />
           </div>
 
-          {/* Tabs Navigation */}
-          <div className="border-b">
+          {/* Enhanced Tabs Navigation */}
+          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg overflow-hidden">
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 h-auto p-1">
-                <TabsTrigger
-                  value="overview"
-                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
-                >
-                  Overview
-                </TabsTrigger>
-                <TabsTrigger
-                  value="trading"
-                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
-                >
-                  Trading
-                </TabsTrigger>
-                <TabsTrigger
-                  value="p2p"
-                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
-                >
-                  P2P
-                </TabsTrigger>
-                <TabsTrigger
-                  value="portfolio"
-                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
-                >
-                  Portfolio
-                </TabsTrigger>
-                <TabsTrigger
-                  value="learn"
-                  className="text-xs sm:text-sm py-2 px-2 sm:px-4"
-                >
-                  Learn
-                </TabsTrigger>
-              </TabsList>
+              {/* Mobile Tabs - Horizontal Scroll */}
+              <div className="block sm:hidden">
+                <div className="flex overflow-x-auto scrollbar-hide">
+                  <TabsList className="flex min-w-max bg-transparent p-2 gap-1">
+                    <TabsTrigger
+                      value="overview"
+                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all"
+                    >
+                      <BarChart3 className="h-3 w-3" />
+                      Overview
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="trading"
+                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-green-500 data-[state=active]:text-white transition-all"
+                    >
+                      <ArrowUpDown className="h-3 w-3" />
+                      Trading
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="p2p"
+                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-purple-500 data-[state=active]:text-white transition-all"
+                    >
+                      <Users className="h-3 w-3" />
+                      P2P
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="portfolio"
+                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all"
+                    >
+                      <PieChart className="h-3 w-3" />
+                      Portfolio
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="learn"
+                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-indigo-500 data-[state=active]:text-white transition-all"
+                    >
+                      <BookOpen className="h-3 w-3" />
+                      Learn
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </div>
+
+              {/* Desktop Tabs - Grid Layout */}
+              <div className="hidden sm:block">
+                <TabsList className="grid w-full grid-cols-5 bg-gray-100 dark:bg-slate-700 p-1 rounded-lg m-2">
+                  <TabsTrigger
+                    value="overview"
+                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    <span className="hidden lg:inline">Overview</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="trading"
+                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+                  >
+                    <ArrowUpDown className="h-4 w-4" />
+                    <span className="hidden lg:inline">Trading</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="p2p"
+                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+                  >
+                    <Users className="h-4 w-4" />
+                    <span className="hidden lg:inline">P2P</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="portfolio"
+                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+                  >
+                    <PieChart className="h-4 w-4" />
+                    <span className="hidden lg:inline">Portfolio</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="learn"
+                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+                  >
+                    <BookOpen className="h-4 w-4" />
+                    <span className="hidden lg:inline">Learn</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               {/* Overview Tab */}
               <TabsContent
@@ -323,24 +392,24 @@ export default function EnhancedCrypto() {
                   </div>
                 </div>
 
-                {/* Global Market Stats */}
+                {/* Enhanced Global Market Stats */}
                 {marketData && (
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs sm:text-sm text-muted-foreground">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 hover:shadow-xl transition-all duration-300">
+                      <CardContent className="p-4 sm:p-5">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <p className="text-xs sm:text-sm text-blue-600/80 font-medium">
                               Market Cap
                             </p>
-                            <p className="text-lg sm:text-xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-800 dark:text-blue-200">
                               {formatCurrency(
                                 marketData.globalStats?.totalMarketCap || 0,
                               )}
                             </p>
                             <p
                               className={cn(
-                                "text-xs",
+                                "text-xs sm:text-sm font-semibold",
                                 getChangeColor(
                                   marketData.globalStats?.marketCapChange24h ||
                                     0,
@@ -352,45 +421,51 @@ export default function EnhancedCrypto() {
                               )}
                             </p>
                           </div>
-                          <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
+                          <div className="p-2 bg-blue-500/20 rounded-lg">
+                            <Globe className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
 
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs sm:text-sm text-muted-foreground">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 hover:shadow-xl transition-all duration-300">
+                      <CardContent className="p-4 sm:p-5">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <p className="text-xs sm:text-sm text-green-600/80 font-medium">
                               24h Volume
                             </p>
-                            <p className="text-lg sm:text-xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-800 dark:text-green-200">
                               {formatCurrency(
                                 marketData.globalStats?.totalVolume24h || 0,
                               )}
                             </p>
-                            <p className="text-xs text-green-600">+2.4%</p>
+                            <p className="text-xs sm:text-sm font-semibold text-green-600">
+                              +2.4%
+                            </p>
                           </div>
-                          <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-green-500" />
+                          <div className="p-2 bg-green-500/20 rounded-lg">
+                            <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
 
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs sm:text-sm text-muted-foreground">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 hover:shadow-xl transition-all duration-300">
+                      <CardContent className="p-4 sm:p-5">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <p className="text-xs sm:text-sm text-orange-600/80 font-medium">
                               BTC Dominance
                             </p>
-                            <p className="text-lg sm:text-xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-800 dark:text-orange-200">
                               {safeToFixed(
                                 marketData.globalStats?.btcDominance,
                                 1,
                               )}
                               %
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs sm:text-sm text-orange-600/70">
                               ETH{" "}
                               {safeToFixed(
                                 marketData.globalStats?.ethDominance,
@@ -399,92 +474,129 @@ export default function EnhancedCrypto() {
                               %
                             </p>
                           </div>
-                          <PieChart className="h-6 w-6 sm:h-8 sm:w-8 text-orange-500" />
+                          <div className="p-2 bg-orange-500/20 rounded-lg">
+                            <PieChart className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
 
-                    <Card>
-                      <CardContent className="p-3 sm:p-4">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-xs sm:text-sm text-muted-foreground">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 hover:shadow-xl transition-all duration-300">
+                      <CardContent className="p-4 sm:p-5">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-1">
+                            <p className="text-xs sm:text-sm text-purple-600/80 font-medium">
                               Fear & Greed
                             </p>
-                            <p className="text-lg sm:text-xl font-bold">
+                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-800 dark:text-purple-200">
                               {marketData.fearGreedIndex || 65}
                             </p>
-                            <p className="text-xs text-yellow-600">Greed</p>
+                            <p className="text-xs sm:text-sm font-semibold text-yellow-600">
+                              Greed
+                            </p>
                           </div>
-                          <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-purple-500" />
+                          <div className="p-2 bg-purple-500/20 rounded-lg">
+                            <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
                   </div>
                 )}
 
-                {/* Top Cryptocurrencies */}
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base sm:text-lg">
-                      Top Cryptocurrencies
-                    </CardTitle>
+                {/* Enhanced Top Cryptocurrencies */}
+                <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+                  <CardHeader className="pb-3 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-blue-500" />
+                        Top Cryptocurrencies
+                      </CardTitle>
+                      <Badge variant="outline" className="text-xs">
+                        Live Prices
+                      </Badge>
+                    </div>
                   </CardHeader>
-                  <CardContent className="p-2 sm:p-4">
-                    <div className="space-y-1 sm:space-y-2">
-                      {cryptos.slice(0, 10).map((crypto) => (
+                  <CardContent className="p-0">
+                    <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                      {cryptos.slice(0, 10).map((crypto, index) => (
                         <div
                           key={crypto.id}
                           onClick={() => {
                             setSelectedCrypto(crypto);
                             setIsCryptoDetailOpen(true);
                           }}
-                          className="flex items-center justify-between p-2 sm:p-3 rounded-lg border hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer touch-manipulation mobile-focus"
+                          className="flex items-center justify-between p-3 sm:p-4 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200 cursor-pointer group relative"
                         >
-                          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                            <img
-                              src={crypto.image}
-                              alt={crypto.name}
-                              className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"
-                            />
+                          {/* Rank Badge */}
+                          <div className="absolute left-1 top-1 sm:relative sm:left-auto sm:top-auto">
+                            <Badge
+                              variant="outline"
+                              className={cn(
+                                "text-xs px-1.5 py-0.5 font-bold",
+                                index < 3 &&
+                                  "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0",
+                                index >= 3 &&
+                                  index < 10 &&
+                                  "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+                              )}
+                            >
+                              #{crypto.market_cap_rank}
+                            </Badge>
+                          </div>
+
+                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 pl-12 sm:pl-0">
+                            <div className="relative">
+                              <img
+                                src={crypto.image}
+                                alt={crypto.name}
+                                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full flex-shrink-0 ring-2 ring-white dark:ring-gray-700 shadow-sm group-hover:ring-blue-200 transition-all"
+                              />
+                              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 hidden sm:block"></div>
+                            </div>
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-1 sm:gap-2">
-                                <p className="font-medium text-xs sm:text-sm truncate">
+                              <div className="flex items-center gap-2">
+                                <p className="font-semibold text-sm sm:text-base lg:text-lg truncate group-hover:text-blue-600 transition-colors">
                                   {crypto.name}
                                 </p>
-                                <span className="text-xs text-muted-foreground bg-muted px-1 py-0.5 rounded flex-shrink-0">
-                                  {crypto.symbol}
+                                <span className="text-xs sm:text-sm text-muted-foreground bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full font-medium flex-shrink-0">
+                                  {crypto.symbol.toUpperCase()}
                                 </span>
                               </div>
-                              <p className="text-xs text-muted-foreground hidden sm:block">
-                                Rank #{crypto.market_cap_rank}
+                              <p className="text-xs sm:text-sm text-muted-foreground mt-1 hidden sm:block">
+                                Market Cap:{" "}
+                                {formatCurrency(crypto.market_cap || 0)}
                               </p>
                             </div>
                           </div>
-                          <div className="text-right flex-shrink-0 min-w-0">
-                            <p className="font-medium text-xs sm:text-sm text-responsive">
+                          <div className="text-right flex-shrink-0 space-y-1">
+                            <p className="font-bold text-sm sm:text-base lg:text-lg">
                               {formatCurrency(crypto.current_price)}
                             </p>
                             <div
                               className={cn(
-                                "text-xs flex items-center gap-1 justify-end",
-                                getChangeColor(
-                                  crypto.price_change_percentage_24h,
-                                ),
+                                "flex items-center gap-1 justify-end px-2 py-1 rounded-full text-xs sm:text-sm font-semibold",
+                                crypto.price_change_percentage_24h >= 0
+                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
                               )}
                             >
                               {crypto.price_change_percentage_24h >= 0 ? (
-                                <TrendingUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 flex-shrink-0" />
+                                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                               ) : (
-                                <TrendingDown className="h-2.5 w-2.5 sm:h-3 sm:w-3 flex-shrink-0" />
+                                <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                               )}
-                              <span className="truncate">
-                                {Math.abs(
+                              <span>
+                                {formatPercentage(
                                   crypto.price_change_percentage_24h,
-                                ).toFixed(2)}
-                                %
+                                )}
                               </span>
                             </div>
+                          </div>
+
+                          {/* Hover Effect Arrow */}
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2">
+                            <ArrowUpDown className="h-4 w-4 text-blue-500" />
                           </div>
                         </div>
                       ))}
