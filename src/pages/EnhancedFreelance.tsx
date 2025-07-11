@@ -335,7 +335,7 @@ const EnhancedFreelance: React.FC = () => {
               Dashboard
             </Button>
             <Button
-              onClick={() => navigate("/freelance")}
+              onClick={() => navigate("/app/freelance")}
               className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
             >
               Try New System
