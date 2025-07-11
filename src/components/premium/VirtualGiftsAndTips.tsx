@@ -296,8 +296,22 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
       }}
     >
       <DialogTrigger asChild>
-        {trigger || (
-          <Button variant="outline" className="flex items-center gap-2">
+        {trigger ? (
+          React.cloneElement(trigger as React.ReactElement, {
+            onClick: (e: any) => {
+              console.log("Gift trigger clicked");
+              // Call original onClick if it exists
+              if ((trigger as any).props?.onClick) {
+                (trigger as any).props.onClick(e);
+              }
+            },
+          })
+        ) : (
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={() => console.log("Default gift button clicked")}
+          >
             <Gift className="h-4 w-4" />
             Send Gift
           </Button>
