@@ -31,7 +31,7 @@ import {
   Hand,
   UserPlus,
   Share,
-  Record,
+  Circle,
   StopCircle,
   Camera,
   CameraOff,
