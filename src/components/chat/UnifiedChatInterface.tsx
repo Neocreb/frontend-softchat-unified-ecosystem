@@ -1250,6 +1250,108 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Voice/Video Call Modal */}
+      {activeCall && (
+        <VoiceVideoCall
+          isOpen={!!activeCall}
+          onClose={handleEndCall}
+          callType={activeCall.type}
+          participants={activeCall.participants}
+          currentUser={activeCall.currentUser}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          onToggleScreenShare={handleToggleScreenShare}
+          onEndCall={handleEndCall}
+          chatName={activeCall.chatInfo?.title}
+        />
+      )}
+
+      {/* Incoming Call Modal */}
+      {incomingCall && (
+        <VoiceVideoCall
+          isOpen={!!incomingCall}
+          onClose={() => setIncomingCall(null)}
+          callType={incomingCall.type}
+          participants={[incomingCall.from]}
+          currentUser={{
+            id: user?.id || "",
+            name: user?.profile?.full_name || user?.email || "",
+            avatar: user?.profile?.avatar_url,
+            isAudioMuted: isAudioMuted,
+            isVideoEnabled:
+              incomingCall.type === "video" ? isVideoEnabled : false,
+            isScreenSharing: false,
+            connectionQuality: "excellent" as const,
+          }}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          onToggleScreenShare={handleToggleScreenShare}
+          onEndCall={handleEndCall}
+          chatName={incomingCall.chatInfo?.title}
+          isIncoming={true}
+          onAcceptCall={() => {
+            // Accept the call and start the regular call interface
+            setActiveCall({
+              type: incomingCall.type,
+              participants: [incomingCall.from],
+              currentUser: {
+                id: user?.id || "",
+                name: user?.profile?.full_name || user?.email || "",
+                avatar: user?.profile?.avatar_url,
+                isAudioMuted: isAudioMuted,
+                isVideoEnabled:
+                  incomingCall.type === "video" ? isVideoEnabled : false,
+                isScreenSharing: false,
+                connectionQuality: "excellent" as const,
+              },
+              chatInfo: incomingCall.chatInfo,
+            });
+            setIncomingCall(null);
+            toast({
+              title: "Call Connected",
+              description: "You are now connected to the call.",
+            });
+          }}
+          onDeclineCall={() => {
+            setIncomingCall(null);
+            toast({
+              title: "Call Declined",
+              description: "You declined the incoming call.",
+            });
+          }}
+        />
+      )}
+
+      {/* Group Video Room Modal */}
+      {groupVideoRoom && (
+        <GroupVideoRoom
+          isOpen={!!groupVideoRoom}
+          onClose={() => setGroupVideoRoom(null)}
+          roomId={groupVideoRoom.roomId}
+          roomName={groupVideoRoom.roomName}
+          roomType={groupVideoRoom.roomType as any}
+          participants={groupVideoRoom.participants}
+          currentUser={groupVideoRoom.currentUser}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          onToggleScreenShare={handleToggleScreenShare}
+          onLeaveRoom={() => {
+            setGroupVideoRoom(null);
+            toast({
+              title: "Left Video Room",
+              description: "You have left the group video room.",
+            });
+          }}
+          onInviteUsers={() => {
+            toast({
+              title: "Invite Feature",
+              description: "User invitation feature coming soon!",
+            });
+          }}
+          isHost={true}
+        />
+      )}
     </div>
   );
 };
