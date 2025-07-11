@@ -123,7 +123,7 @@ const forYouVideos: VideoData[] = [
       isFollowing: false,
     },
     description:
-      "Bitcoin to the moon! �� Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
+      "Bitcoin to the moon! 🚀 Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
     music: {
       title: "Crypto Anthem",
       artist: "Digital Dreams",
@@ -552,7 +552,7 @@ const VideoCard: React.FC<{
         </div>
 
         {/* Right side - Action buttons (TikTok style) */}
-        <div className="flex flex-col items-center justify-end gap-4 p-3 pb-32 md:pb-12 w-16">
+        <div className="flex flex-col items-center justify-end gap-3 p-2 pb-28 md:pb-8 w-14">
           {/* User avatar with follow button overlay */}
           <div className="relative mb-2">
             <Avatar className="w-12 h-12 border-2 border-white">
