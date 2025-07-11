@@ -37,7 +37,7 @@ export default function BlogPostPage() {
   const loadBlogPost = async (postSlug: string) => {
     setIsLoading(true);
     try {
-      const [postData, allPosts] = await Promise.all([
+      const [postData, postsResponse] = await Promise.all([
         blogService.getBlogPost(postSlug),
         blogService.getBlogPosts({}),
       ]);
@@ -46,6 +46,7 @@ export default function BlogPostPage() {
         setPost(postData);
 
         // Get related posts from same category
+        const allPosts = postsResponse.posts || [];
         const related = allPosts
           .filter(
             (p) =>
