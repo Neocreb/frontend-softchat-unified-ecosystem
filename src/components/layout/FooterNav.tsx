@@ -19,43 +19,43 @@ const FooterNav = () => {
     {
       icon: Home,
       label: "Feed",
-      href: "/app/feed",
-      active: location.pathname === "/app" || location.pathname === "/app/feed",
+      href: "/feed",
+      active: location.pathname === "/feed",
     },
     {
       icon: Search,
       label: "Explore",
-      href: "/app/explore",
-      active: location.pathname === "/app/explore",
+      href: "/explore",
+      active: location.pathname === "/explore",
     },
     {
       icon: Plus,
       label: "Freelance",
-      href: "/app/freelance",
+      href: "/freelance",
       active:
-        location.pathname === "/app/freelance" ||
-        location.pathname.startsWith("/app/freelance"),
+        location.pathname === "/freelance" ||
+        location.pathname.startsWith("/freelance"),
       special: true,
     },
     {
       icon: Video,
       label: "Videos",
-      href: "/app/videos",
-      active: location.pathname === "/app/videos",
+      href: "/videos",
+      active: location.pathname === "/videos",
     },
     {
       icon: ShoppingCart,
       label: "Market",
-      href: "/app/marketplace",
-      active: location.pathname === "/app/marketplace",
+      href: "/marketplace",
+      active: location.pathname === "/marketplace",
     },
     {
       icon: TrendingUp,
       label: "Crypto",
-      href: "/app/crypto",
+      href: "/crypto",
       active:
-        location.pathname === "/app/crypto" ||
-        location.pathname.startsWith("/app/crypto"),
+        location.pathname === "/crypto" ||
+        location.pathname.startsWith("/crypto"),
     },
   ];
 
