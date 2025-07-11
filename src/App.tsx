@@ -161,6 +161,12 @@ interface LegacyAdminRouteProps {
   children: React.ReactNode;
 }
 
+// Messages redirect component to handle threadId parameter
+const MessagesRedirect = () => {
+  const { threadId } = useParams();
+  return <Navigate to={`/app/chat/${threadId}`} replace />;
+};
+
 const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   const { isAuthenticated, isLoading, isAdmin } = useAuth();
 
