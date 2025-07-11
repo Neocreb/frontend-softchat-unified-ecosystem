@@ -32,6 +32,8 @@ import {
   Clock,
   Star,
   DollarSign,
+  Eye,
+  Heart,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
