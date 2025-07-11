@@ -554,8 +554,8 @@ const VideoCard: React.FC<{
         {/* Right side - Action buttons (TikTok style) */}
         <div className="flex flex-col items-center justify-end gap-3 p-2 pb-28 md:pb-8 w-14">
           {/* User avatar with follow button overlay */}
-          <div className="relative mb-2">
-            <Avatar className="w-12 h-12 border-2 border-white">
+          <div className="relative mb-3">
+            <Avatar className="w-10 h-10 border-2 border-white">
               <AvatarImage src={video.user.avatar} />
               <AvatarFallback>{video.user.displayName[0]}</AvatarFallback>
             </Avatar>
@@ -563,9 +563,9 @@ const VideoCard: React.FC<{
               <Button
                 size="sm"
                 onClick={handleFollow}
-                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-red-500 hover:bg-red-600 p-0 border-2 border-white"
+                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-red-500 hover:bg-red-600 p-0 border-2 border-white"
               >
-                <Plus className="w-3 h-3 text-white" />
+                <Plus className="w-2.5 h-2.5 text-white" />
               </Button>
             )}
           </div>
