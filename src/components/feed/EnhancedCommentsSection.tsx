@@ -13,6 +13,7 @@ import {
   Reply,
   ThumbsUp,
   Flag,
+  Gift,
 } from "lucide-react";
 import { Comment, feedService } from "@/services/feedService";
 import { useAuth } from "@/contexts/AuthContext";
