@@ -235,17 +235,7 @@ const AppRoutes = () => {
             path="messages"
             element={<Navigate to="/app/chat" replace />}
           />
-          <Route
-            path="messages/:threadId"
-            element={
-              <Navigate
-                to={(location) =>
-                  `/app/chat/${location.pathname.split("/").pop()}`
-                }
-                replace
-              />
-            }
-          />
+          <Route path="messages/:threadId" element={<MessagesRedirect />} />
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
           <Route path="profile/:username" element={<EnhancedProfile />} />
