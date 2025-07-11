@@ -180,9 +180,25 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
                 </div>
               </div>
 
-              <Button size="sm" variant="outline">
-                View
-              </Button>
+              <div className="flex items-center gap-2">
+                {showGiftButton && onSendGift && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSendGift(user);
+                    }}
+                    className="text-pink-600 border-pink-200 hover:bg-pink-50"
+                  >
+                    <Gift className="h-3 w-3 mr-1" />
+                    Gift
+                  </Button>
+                )}
+                <Button size="sm" variant="outline">
+                  View
+                </Button>
+              </div>
             </div>
           ))}
         </CardContent>
