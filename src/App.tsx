@@ -102,6 +102,7 @@ import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
 import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
 import Groups from "./pages/Groups";
 import Pages from "./pages/Pages";
+import SendGifts from "./pages/SendGifts";
 import {
   FriendsPage,
   AdsPage,
@@ -332,6 +333,7 @@ const AppRoutes = () => {
           <Route path="cookies" element={<CookiesPage />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
+          <Route path="send-gifts" element={<SendGifts />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
           <Route

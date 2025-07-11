@@ -100,6 +100,12 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
       href: "/app/rewards",
       active: location.pathname === "/app/rewards",
     },
+    {
+      icon: Gift,
+      label: "Send Gifts",
+      href: "/app/send-gifts",
+      active: location.pathname === "/app/send-gifts",
+    },
   ];
 
   const handleLogout = async () => {
@@ -270,6 +276,10 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
               <DropdownMenuItem onClick={() => navigate("/app/chat")}>
                 <MessageSquare className="mr-2 h-4 w-4" />
                 Messages
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/app/send-gifts")}>
+                <Gift className="mr-2 h-4 w-4 text-pink-600" />
+                <span className="text-pink-600">Send Gifts</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/app/premium")}>
                 <Crown className="mr-2 h-4 w-4 text-purple-600" />

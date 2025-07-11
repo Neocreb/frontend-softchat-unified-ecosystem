@@ -13,11 +13,13 @@ import {
   Reply,
   ThumbsUp,
   Flag,
+  Gift,
 } from "lucide-react";
 import { Comment, feedService } from "@/services/feedService";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -269,6 +271,11 @@ export function EnhancedCommentsSection({
                     <Reply className="w-3 h-3 mr-1" />
                     Reply
                   </Button>
+
+                  <VirtualGiftsAndTips
+                    recipientId={comment.userId}
+                    recipientName={comment.userName}
+                  />
 
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -327,7 +327,7 @@ const EnhancedFreelance: React.FC = () => {
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button
-              onClick={() => navigate("/freelance/dashboard")}
+              onClick={() => navigate("/app/freelance/dashboard")}
               variant="outline"
               className="w-full sm:w-auto border-green-600 text-green-600 hover:bg-green-50"
             >
@@ -335,7 +335,7 @@ const EnhancedFreelance: React.FC = () => {
               Dashboard
             </Button>
             <Button
-              onClick={() => navigate("/freelance")}
+              onClick={() => navigate("/app/freelance")}
               className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
             >
               Try New System

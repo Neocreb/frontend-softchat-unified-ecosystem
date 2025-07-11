@@ -14,6 +14,7 @@ import {
   Star,
   MapPin,
   Verified,
+  Gift,
 } from "lucide-react";
 import { mockUsers } from "@/data/mockUsers";
 import { UserProfile } from "@/types/user";
@@ -24,6 +25,8 @@ interface SuggestedUsersProps {
   showTitle?: boolean;
   variant?: "card" | "list" | "grid";
   onUserClick?: (username: string) => void;
+  showGiftButton?: boolean;
+  onSendGift?: (user: any) => void;
 }
 
 export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
@@ -32,6 +35,8 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
   showTitle = true,
   variant = "card",
   onUserClick,
+  showGiftButton = false,
+  onSendGift,
 }) => {
   const navigate = useNavigate();
 
@@ -175,9 +180,25 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
                 </div>
               </div>
 
-              <Button size="sm" variant="outline">
-                View
-              </Button>
+              <div className="flex items-center gap-2">
+                {showGiftButton && onSendGift && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSendGift(user);
+                    }}
+                    className="text-pink-600 border-pink-200 hover:bg-pink-50"
+                  >
+                    <Gift className="h-3 w-3 mr-1" />
+                    Gift
+                  </Button>
+                )}
+                <Button size="sm" variant="outline">
+                  View
+                </Button>
+              </div>
             </div>
           ))}
         </CardContent>
@@ -258,6 +279,21 @@ export const SuggestedUsers: React.FC<SuggestedUsersProps> = ({
                         <div className="text-muted-foreground">Rating</div>
                       </div>
                     </div>
+
+                    {showGiftButton && onSendGift && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSendGift(user);
+                        }}
+                        className="mt-3 w-full text-pink-600 border-pink-200 hover:bg-pink-50"
+                      >
+                        <Gift className="h-4 w-4 mr-2" />
+                        Send Gift
+                      </Button>
+                    )}
                   </div>
                 </div>
               </CardContent>

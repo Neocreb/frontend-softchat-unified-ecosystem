@@ -4,6 +4,7 @@ import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
 import ExploreGroups from "@/components/explore/ExploreGroups";
 import ExplorePages from "@/components/explore/ExplorePages";
+import PopularHashtags from "@/components/explore/PopularHashtags";
 import SuggestedUsers from "@/components/profile/SuggestedUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -222,19 +223,12 @@ const Explore = () => {
               <Building className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">Pages</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="explore"
-              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
-            >
-              <Globe className="w-4 h-4 flex-shrink-0" />
-              <span className="text-[10px] leading-tight">More</span>
-            </TabsTrigger>
           </TabsList>
         </div>
 
         {/* Desktop tabs */}
         <div className="hidden sm:block">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="discover" className="flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
               <span>Discover</span>
@@ -258,10 +252,6 @@ const Explore = () => {
             <TabsTrigger value="pages" className="flex items-center gap-2">
               <Building className="w-4 h-4" />
               <span>Pages</span>
-            </TabsTrigger>
-            <TabsTrigger value="explore" className="flex items-center gap-2">
-              <Globe className="w-4 h-4" />
-              <span>More</span>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -378,15 +368,7 @@ const Explore = () => {
         </TabsContent>
 
         <TabsContent value="hashtags" className="mt-6">
-          <ExploreContent
-            activeTab="hashtags"
-            setActiveTab={setActiveTab}
-            filteredTopics={filteredTopics}
-            filteredUsers={filteredUsers}
-            filteredHashtags={filteredHashtags}
-            filteredGroups={filteredGroups}
-            filteredPages={filteredPages}
-          />
+          <PopularHashtags hashtags={filteredHashtags} />
         </TabsContent>
 
         <TabsContent value="groups" className="mt-6">
@@ -395,18 +377,6 @@ const Explore = () => {
 
         <TabsContent value="pages" className="mt-6">
           <ExplorePages pages={filteredPages} />
-        </TabsContent>
-
-        <TabsContent value="explore" className="mt-6">
-          <ExploreContent
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            filteredTopics={filteredTopics}
-            filteredUsers={filteredUsers}
-            filteredHashtags={filteredHashtags}
-            filteredGroups={filteredGroups}
-            filteredPages={filteredPages}
-          />
         </TabsContent>
       </Tabs>
     </div>

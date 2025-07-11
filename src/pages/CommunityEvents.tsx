@@ -172,7 +172,7 @@ const CommunityEvents = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open("/videos", "_blank")}
+                    onClick={() => navigate("/app/videos")}
                     className="flex items-center gap-2"
                   >
                     <Video className="h-4 w-4" />
@@ -181,7 +181,7 @@ const CommunityEvents = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open("/live-streaming", "_blank")}
+                    onClick={() => navigate("/app/live-streaming")}
                     className="flex items-center gap-2 border-red-200 text-red-600 hover:bg-red-50"
                   >
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
@@ -190,7 +190,7 @@ const CommunityEvents = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open("/premium", "_blank")}
+                    onClick={() => navigate("/app/premium")}
                     className="flex items-center gap-2 border-purple-200 text-purple-600 hover:bg-purple-50"
                   >
                     <Crown className="h-4 w-4" />

@@ -683,6 +683,74 @@ class VirtualGiftsService {
       `Tip notification: ${fromUserId} tipped $${amount} to ${toUserId}`,
     );
   }
+
+  // Get user's gift history (mock data for demo)
+  async getGiftHistory(userId: string): Promise<GiftTransaction[]> {
+    try {
+      // Return mock data for development
+      return [
+        {
+          id: "1",
+          fromUserId: userId,
+          toUserId: "user2",
+          giftId: "heart",
+          quantity: 1,
+          totalAmount: 0.99,
+          message: "Great post!",
+          isAnonymous: false,
+          status: "completed",
+          createdAt: new Date().toISOString(),
+        },
+        {
+          id: "2",
+          fromUserId: userId,
+          toUserId: "user3",
+          giftId: "coffee",
+          quantity: 2,
+          totalAmount: 3.98,
+          isAnonymous: true,
+          status: "completed",
+          createdAt: new Date(Date.now() - 86400000).toISOString(),
+        },
+      ];
+    } catch (error) {
+      console.error("Error getting gift history:", error);
+      return [];
+    }
+  }
+
+  // Get user's tip history (mock data for demo)
+  async getTipHistory(userId: string): Promise<TipTransaction[]> {
+    try {
+      // Return mock data for development
+      return [
+        {
+          id: "1",
+          fromUserId: userId,
+          toUserId: "user2",
+          amount: 5.0,
+          currency: "USD",
+          message: "Thanks for the great content!",
+          isAnonymous: false,
+          status: "completed",
+          createdAt: new Date().toISOString(),
+        },
+        {
+          id: "2",
+          fromUserId: userId,
+          toUserId: "user4",
+          amount: 10.0,
+          currency: "USD",
+          isAnonymous: true,
+          status: "completed",
+          createdAt: new Date(Date.now() - 172800000).toISOString(),
+        },
+      ];
+    } catch (error) {
+      console.error("Error getting tip history:", error);
+      return [];
+    }
+  }
 }
 
 export const virtualGiftsService = new VirtualGiftsService();

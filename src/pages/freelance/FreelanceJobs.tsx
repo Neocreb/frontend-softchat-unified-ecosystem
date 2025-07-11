@@ -99,7 +99,9 @@ export const FreelanceJobs: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
               <Button
                 variant="outline"
-                onClick={() => (window.location.href = "/freelance/dashboard")}
+                onClick={() =>
+                  (window.location.href = "/app/freelance/dashboard")
+                }
                 className="w-full sm:w-auto"
               >
                 <Users className="w-4 h-4 mr-2" />

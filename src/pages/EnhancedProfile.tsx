@@ -705,14 +705,15 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {mockMedia.length}
                     </Badge>
                   </TabsTrigger>
-                  <button
-                    onClick={() => navigate("/creator-studio")}
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:border-blue-500 hover:text-blue-600 bg-transparent horizontal-tab-item min-w-0 transition-colors"
+                  <TabsTrigger
+                    value="studio"
+                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    onClick={() => navigate("/app/creator-studio")}
                   >
                     <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span className="hidden sm:inline">Creator Studio</span>
                     <span className="sm:hidden">Studio</span>
-                  </button>
+                  </TabsTrigger>
                   <TabsTrigger
                     value="activity"
                     className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
@@ -1302,6 +1303,29 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       </div>
                     </CardContent>
                   </Card>
+                </TabsContent>
+
+                {/* Studio Tab - Redirects to Creator Studio */}
+                <TabsContent value="studio" className="space-y-6 mt-0">
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <BarChart3 className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Creator Studio
+                    </h3>
+                    <p className="text-muted-foreground mb-6">
+                      Manage your content, analytics, and creator tools in one
+                      place
+                    </p>
+                    <Button
+                      onClick={() => navigate("/app/creator-studio")}
+                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                    >
+                      <BarChart3 className="h-4 w-4 mr-2" />
+                      Open Creator Studio
+                    </Button>
+                  </div>
                 </TabsContent>
               </div>
             </Tabs>

@@ -1,16 +1,24 @@
-
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PostComment } from "@/types/user";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, MessageCircle, ChevronDown, ChevronUp, ThumbsUp, Smile } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  ChevronDown,
+  ChevronUp,
+  ThumbsUp,
+  Smile,
+  Gift,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { 
+import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuItem
+  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface CommentSectionProps {
   postId: string;
@@ -18,11 +26,19 @@ interface CommentSectionProps {
   onAddComment: (postId: string, comment: string) => void;
 }
 
-const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps) => {
+const CommentSection = ({
+  postId,
+  comments,
+  onAddComment,
+}: CommentSectionProps) => {
   const [commentInput, setCommentInput] = useState("");
   const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
-  const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
-  const [showAllReplies, setShowAllReplies] = useState<Record<string, boolean>>({});
+  const [expandedComments, setExpandedComments] = useState<
+    Record<string, boolean>
+  >({});
+  const [showAllReplies, setShowAllReplies] = useState<Record<string, boolean>>(
+    {},
+  );
   const { user } = useAuth();
 
   const handleSubmit = () => {
@@ -31,38 +47,38 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
       setCommentInput("");
     }
   };
-  
+
   const handleReplySubmit = (commentId: string) => {
     if (replyInputs[commentId]?.trim()) {
       // In a real app, this would call an API to add a reply
       // For now, we'll just simulate it with a notification
       console.log(`Reply to comment ${commentId}: ${replyInputs[commentId]}`);
-      
+
       // Clear the input
       setReplyInputs({
         ...replyInputs,
-        [commentId]: ""
+        [commentId]: "",
       });
-      
+
       // Close the reply form
       setExpandedComments({
         ...expandedComments,
-        [commentId]: false
+        [commentId]: false,
       });
     }
   };
-  
+
   const toggleReplyForm = (commentId: string) => {
     setExpandedComments({
       ...expandedComments,
-      [commentId]: !expandedComments[commentId]
+      [commentId]: !expandedComments[commentId],
     });
   };
-  
+
   const toggleShowAllReplies = (commentId: string) => {
     setShowAllReplies({
       ...showAllReplies,
-      [commentId]: !showAllReplies[commentId]
+      [commentId]: !showAllReplies[commentId],
     });
   };
 
@@ -70,7 +86,7 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
     <div className="px-4 pb-2">
       {comments && comments.length > 0 && (
         <div className="py-2 space-y-3">
-          {comments.map(comment => {
+          {comments.map((comment) => {
             // Mock replies for demo purposes
             const mockReplies = [
               {
@@ -79,10 +95,10 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                 user: {
                   name: "Reply User 1",
                   avatar: "https://randomuser.me/api/portraits/women/22.jpg",
-                  is_verified: false
+                  is_verified: false,
                 },
                 created_at: "10m ago",
-                likes: 2
+                likes: 2,
               },
               {
                 id: `reply-2-${comment.id}`,
@@ -90,10 +106,10 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                 user: {
                   name: "Reply User 2",
                   avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-                  is_verified: true
+                  is_verified: true,
                 },
                 created_at: "5m ago",
-                likes: 1
+                likes: 1,
               },
               {
                 id: `reply-3-${comment.id}`,
@@ -101,48 +117,68 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                 user: {
                   name: "Reply User 3",
                   avatar: "https://randomuser.me/api/portraits/women/23.jpg",
-                  is_verified: false
+                  is_verified: false,
                 },
                 created_at: "1m ago",
-                likes: 0
-              }
+                likes: 0,
+              },
             ];
-            
-            const visibleReplies = showAllReplies[comment.id] 
-              ? mockReplies 
+
+            const visibleReplies = showAllReplies[comment.id]
+              ? mockReplies
               : mockReplies.slice(0, 2);
-            
+
             return (
               <div key={comment.id} className="space-y-2">
                 <div className="flex items-start gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={comment.user.avatar} alt={comment.user.name} />
-                    <AvatarFallback>{comment.user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                    <AvatarImage
+                      src={comment.user.avatar}
+                      alt={comment.user.name}
+                    />
+                    <AvatarFallback>
+                      {comment.user.name.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <div className="bg-muted rounded-2xl px-3 py-2">
                       <div className="flex items-center gap-1">
-                        <span className="font-medium text-sm">{comment.user.name}</span>
+                        <span className="font-medium text-sm">
+                          {comment.user.name}
+                        </span>
                         {comment.user.is_verified && (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3 w-3 text-blue-500"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         )}
                       </div>
                       <p className="text-sm">{comment.content}</p>
                     </div>
-                    
+
                     <div className="flex items-center gap-3 mt-1 ml-2 text-xs text-muted-foreground">
                       <button className="hover:text-foreground">Like</button>
-                      <button 
+                      <button
                         className="hover:text-foreground"
                         onClick={() => toggleReplyForm(comment.id)}
                       >
                         Reply
                       </button>
+                      <VirtualGiftsAndTips
+                        recipientId={comment.userId}
+                        recipientName={comment.username}
+                      />
                       <span>2h</span>
                     </div>
-                    
+
                     {/* Reactions */}
                     <div className="flex items-center mt-1 ml-2">
                       <div className="flex -space-x-1">
@@ -153,14 +189,20 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                           <Heart className="h-2 w-2 text-white" />
                         </div>
                       </div>
-                      <span className="text-xs text-muted-foreground ml-2">12</span>
+                      <span className="text-xs text-muted-foreground ml-2">
+                        12
+                      </span>
                     </div>
                   </div>
-                  
+
                   {/* Comment reaction button */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0 rounded-full">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 rounded-full"
+                      >
                         <Smile className="h-4 w-4 text-muted-foreground" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -178,50 +220,74 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-                
+
                 {/* Replies */}
                 {visibleReplies.length > 0 && (
                   <div className="ml-10 space-y-2">
-                    {visibleReplies.map(reply => (
+                    {visibleReplies.map((reply) => (
                       <div key={reply.id} className="flex items-start gap-2">
                         <Avatar className="h-6 w-6">
-                          <AvatarImage src={reply.user.avatar} alt={reply.user.name} />
-                          <AvatarFallback>{reply.user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
+                          <AvatarImage
+                            src={reply.user.avatar}
+                            alt={reply.user.name}
+                          />
+                          <AvatarFallback>
+                            {reply.user.name.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
                           <div className="bg-muted rounded-2xl px-3 py-2">
                             <div className="flex items-center gap-1">
-                              <span className="font-medium text-xs">{reply.user.name}</span>
+                              <span className="font-medium text-xs">
+                                {reply.user.name}
+                              </span>
                               {reply.user.is_verified && (
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-2.5 w-2.5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-2.5 w-2.5 text-blue-500"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
                                 </svg>
                               )}
                             </div>
                             <p className="text-xs">{reply.content}</p>
                           </div>
-                          
+
                           <div className="flex items-center gap-3 mt-1 ml-2 text-xs text-muted-foreground">
-                            <button className="hover:text-foreground text-[10px]">Like</button>
-                            <button className="hover:text-foreground text-[10px]">Reply</button>
-                            <span className="text-[10px]">{reply.created_at}</span>
+                            <button className="hover:text-foreground text-[10px]">
+                              Like
+                            </button>
+                            <button className="hover:text-foreground text-[10px]">
+                              Reply
+                            </button>
+                            <span className="text-[10px]">
+                              {reply.created_at}
+                            </span>
                           </div>
-                          
+
                           {/* Reply reactions */}
                           {reply.likes > 0 && (
                             <div className="flex items-center mt-1 ml-2">
                               <div className="h-3.5 w-3.5 rounded-full bg-blue-500 flex items-center justify-center">
                                 <ThumbsUp className="h-2 w-2 text-white" />
                               </div>
-                              <span className="text-xs text-muted-foreground ml-1">{reply.likes}</span>
+                              <span className="text-xs text-muted-foreground ml-1">
+                                {reply.likes}
+                              </span>
                             </div>
                           )}
                         </div>
                       </div>
                     ))}
-                    
+
                     {mockReplies.length > 2 && (
-                      <button 
+                      <button
                         className="ml-2 text-xs text-blue-500 flex items-center"
                         onClick={() => toggleShowAllReplies(comment.id)}
                       >
@@ -233,20 +299,26 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                         ) : (
                           <>
                             <ChevronDown className="h-3 w-3 mr-1" />
-                            View {mockReplies.length - 2} more {mockReplies.length - 2 === 1 ? 'reply' : 'replies'}
+                            View {mockReplies.length - 2} more{" "}
+                            {mockReplies.length - 2 === 1 ? "reply" : "replies"}
                           </>
                         )}
                       </button>
                     )}
                   </div>
                 )}
-                
+
                 {/* Reply form */}
                 {expandedComments[comment.id] && (
                   <div className="ml-10 flex items-center gap-2 mt-2">
                     <Avatar className="h-6 w-6">
-                      <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
-                      <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
+                      <AvatarImage
+                        src={user?.avatar || "/placeholder.svg"}
+                        alt={user?.name || "User"}
+                      />
+                      <AvatarFallback>
+                        {user?.name?.substring(0, 2).toUpperCase() || "U"}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="relative flex-1">
                       <input
@@ -254,11 +326,15 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
                         placeholder={`Reply to ${comment.user.name}...`}
                         className="w-full rounded-full bg-muted px-4 py-1.5 text-xs"
                         value={replyInputs[comment.id] || ""}
-                        onChange={(e) => setReplyInputs({
-                          ...replyInputs,
-                          [comment.id]: e.target.value
-                        })}
-                        onKeyDown={(e) => e.key === 'Enter' && handleReplySubmit(comment.id)}
+                        onChange={(e) =>
+                          setReplyInputs({
+                            ...replyInputs,
+                            [comment.id]: e.target.value,
+                          })
+                        }
+                        onKeyDown={(e) =>
+                          e.key === "Enter" && handleReplySubmit(comment.id)
+                        }
                       />
                       {replyInputs[comment.id]?.trim().length > 0 && (
                         <button
@@ -276,11 +352,16 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
           })}
         </div>
       )}
-      
+
       <div className="flex items-center gap-2 pt-1">
         <Avatar className="h-8 w-8">
-          <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
-          <AvatarFallback>{user?.name?.substring(0, 2).toUpperCase() || "U"}</AvatarFallback>
+          <AvatarImage
+            src={user?.avatar || "/placeholder.svg"}
+            alt={user?.name || "User"}
+          />
+          <AvatarFallback>
+            {user?.name?.substring(0, 2).toUpperCase() || "U"}
+          </AvatarFallback>
         </Avatar>
         <div className="relative flex-1">
           <input
@@ -289,7 +370,7 @@ const CommentSection = ({ postId, comments, onAddComment }: CommentSectionProps)
             className="w-full rounded-full bg-muted px-4 py-2 text-sm"
             value={commentInput}
             onChange={(e) => setCommentInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           />
           {commentInput.trim().length > 0 && (
             <button
