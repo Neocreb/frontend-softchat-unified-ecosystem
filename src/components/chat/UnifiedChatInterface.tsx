@@ -24,6 +24,7 @@ import {
   ArrowLeft,
   UserPlus,
   VideoIcon,
+  X,
 } from "lucide-react";
 import { EnhancedChatInput } from "./EnhancedChatInput";
 import { VoiceVideoCall } from "./VoiceVideoCall";
