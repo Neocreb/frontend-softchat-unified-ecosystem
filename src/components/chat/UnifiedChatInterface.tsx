@@ -446,9 +446,49 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
       // Load messages for each conversation
       for (const thread of unifiedThreads) {
         const threadMessages = await chatService.getMessages(thread.id);
+
+        // Convert ChatMessage[] to EnhancedChatMessage[]
+        const enhancedMessages: EnhancedChatMessage[] = threadMessages.map(
+          (msg) => ({
+            id: msg.id,
+            senderId: msg.senderId,
+            senderName: msg.sender?.name || msg.sender?.full_name || "Unknown",
+            senderAvatar: msg.sender?.avatar || msg.sender?.avatar_url,
+            content: msg.content,
+            type:
+              msg.messageType === "voice"
+                ? "voice"
+                : msg.messageType === "image" || msg.messageType === "file"
+                  ? "media"
+                  : "text",
+            timestamp: msg.timestamp,
+            metadata:
+              msg.messageType === "voice"
+                ? { transcription: "Voice message" }
+                : msg.messageType === "image" || msg.messageType === "file"
+                  ? { fileName: "Attachment" }
+                  : undefined,
+            status: msg.readBy.includes(user?.id || "") ? "read" : "delivered",
+            reactions:
+              msg.reactions?.map((reaction) => ({
+                userId: reaction.userIds[0] || "unknown",
+                emoji: reaction.emoji,
+                timestamp: msg.timestamp,
+              })) || [],
+            isEdited: false,
+            replyTo: msg.replyTo
+              ? {
+                  messageId: msg.replyTo,
+                  content: "Replied message",
+                  senderName: "Unknown",
+                }
+              : undefined,
+          }),
+        );
+
         setMessages((prev) => ({
           ...prev,
-          [thread.id]: threadMessages,
+          [thread.id]: enhancedMessages,
         }));
       }
     } catch (error) {
