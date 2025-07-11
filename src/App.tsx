@@ -174,7 +174,7 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   }
 
   if (!isAdmin()) {
-    return <Navigate to="/app/feed" replace />;
+    return <Navigate to="/feed" replace />;
   }
 
   return <>{children}</>;
@@ -203,149 +203,848 @@ const AppRoutes = () => {
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
-        element={
-          isAuthenticated ? <Navigate to="/app/feed" replace /> : <Auth />
-        }
+        element={isAuthenticated ? <Navigate to="/feed" replace /> : <Auth />}
       />
 
       {/* Protected routes - only render when not loading */}
       {!isLoading && (
-        <Route
-          path="/app"
-          element={
-            <ProtectedRoute>
-              <WalletProvider>
-                <MarketplaceProvider>
-                  <ChatProvider>
-                    <AppLayout />
-                  </ChatProvider>
-                </MarketplaceProvider>
-              </WalletProvider>
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Navigate to="feed" replace />} />
-          <Route path="feed" element={<EnhancedFeed />} />
-          <Route path="create" element={<EnhancedFreelance />} />
-          <Route path="freelance" element={<FreelanceJobs />} />
-          <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
-          <Route path="chat" element={<Chat />} />
-          <Route path="chat/:threadId" element={<ChatRoom />} />
+        <>
           <Route
-            path="messages"
-            element={<Navigate to="/app/chat" replace />}
+            path="/feed"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedFeed />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
           />
           <Route
-            path="messages/:threadId"
-            element={<Navigate to="/app/chat/:threadId" replace />}
+            path="/create"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedFreelance />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
           />
-          <Route path="chat-demo" element={<ChatDemo />} />
-          <Route path="profile" element={<EnhancedProfile />} />
-          <Route path="profile/:username" element={<EnhancedProfile />} />
-          <Route path="user/:username" element={<EnhancedProfile />} />
-          <Route path="demo/profiles" element={<ProfileDemo />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="notifications" element={<Notifications />} />
+          <Route
+            path="/freelance"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <FreelanceJobs />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/freelance/dashboard"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <FreelanceDashboard />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <Chat />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat/:threadId"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <ChatRoom />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/messages" element={<Navigate to="/chat" replace />} />
+          <Route
+            path="/messages/:threadId"
+            element={<Navigate to="/chat/:threadId" replace />}
+          />
+          <Route
+            path="/chat-demo"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <ChatDemo />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedProfile />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/:username"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedProfile />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/:username"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedProfile />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/demo/profiles"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <ProfileDemo />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/wallet"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <Wallet />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <Notifications />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Marketplace routes */}
-          <Route path="marketplace" element={<EnhancedMarketplace />} />
-          <Route path="marketplace/my" element={<MarketplaceDashboard />} />
-          <Route path="marketplace/list" element={<MarketplaceList />} />
           <Route
-            path="marketplace/seller/:username"
-            element={<MarketplaceSeller />}
+            path="/marketplace"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedMarketplace />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
           />
           <Route
-            path="marketplace/wishlist"
-            element={<MarketplaceWishlist />}
+            path="/marketplace/my"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MarketplaceDashboard />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
           />
-          <Route path="marketplace/cart" element={<MarketplaceCart />} />
           <Route
-            path="marketplace/checkout"
-            element={<MarketplaceCheckout />}
+            path="/marketplace/list"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MarketplaceList />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/marketplace/seller/:username"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MarketplaceSeller />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/marketplace/wishlist"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MarketplaceWishlist />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/marketplace/cart"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MarketplaceCart />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/marketplace/checkout"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MarketplaceCheckout />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
           />
 
-          <Route path="crypto" element={<EnhancedCrypto />} />
-          <Route path="rewards" element={<EnhancedRewards />} />
-          <Route path="videos" element={<TikTokStyleVideos />} />
-          <Route path="videos-improved" element={<ImprovedVideos />} />
-          <Route path="videos-enhanced" element={<EnhancedVideos />} />
-          <Route path="explore" element={<Explore />} />
-          <Route path="events" element={<CommunityEvents />} />
           <Route
-            path="premium"
+            path="/crypto"
             element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-4xl mx-auto">
-                  <SubscriptionManager />
-                  <div className="mt-8">
-                    <VirtualGiftsAndTips />
-                  </div>
-                </div>
-              </div>
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedCrypto />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
             }
           />
           <Route
-            path="kyc"
+            path="/rewards"
             element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-4xl mx-auto">
-                  <EnhancedKYCVerification />
-                </div>
-              </div>
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedRewards />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
             }
           />
           <Route
-            path="live-streaming"
+            path="/videos"
             element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-6xl mx-auto">
-                  <LiveStreamCreator />
-                </div>
-              </div>
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <TikTokStyleVideos />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
             }
           />
-          <Route path="settings" element={<EnhancedSettings />} />
-          <Route path="analytics" element={<AnalyticsDashboard />} />
+          <Route
+            path="/videos-improved"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <ImprovedVideos />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/videos-enhanced"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedVideos />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <Explore />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <CommunityEvents />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/premium"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <div className="container mx-auto px-4 py-6">
+                          <div className="max-w-4xl mx-auto">
+                            <SubscriptionManager />
+                            <div className="mt-8">
+                              <VirtualGiftsAndTips />
+                            </div>
+                          </div>
+                        </div>
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/kyc"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <div className="container mx-auto px-4 py-6">
+                          <div className="max-w-4xl mx-auto">
+                            <EnhancedKYCVerification />
+                          </div>
+                        </div>
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/live-streaming"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <div className="container mx-auto px-4 py-6">
+                          <div className="max-w-6xl mx-auto">
+                            <LiveStreamCreator />
+                          </div>
+                        </div>
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <EnhancedSettings />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <AnalyticsDashboard />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
 
           {/* Facebook-style navigation pages */}
-          <Route path="friends" element={<FriendsPage />} />
-          <Route path="groups" element={<GroupsPage />} />
-          <Route path="ads" element={<AdsPage />} />
-          <Route path="memories" element={<MemoriesPage />} />
-          <Route path="saved" element={<SavedPage />} />
-          <Route path="support" element={<SupportPage />} />
-          <Route path="pages" element={<PagesPage />} />
-          <Route path="privacy" element={<PrivacyPage />} />
-          <Route path="terms" element={<TermsPage />} />
-          <Route path="advertising" element={<AdvertisingPage />} />
-          <Route path="ad-choices" element={<AdChoicesPage />} />
-          <Route path="cookies" element={<CookiesPage />} />
-          <Route path="help" element={<HelpPage />} />
-          <Route path="creator-studio" element={<CreatorStudio />} />
-          <Route path="data" element={<DataManagement />} />
-          <Route path="achievements" element={<GamificationSystem />} />
           <Route
-            path="ai-assistant"
-            element={<AIPersonalAssistantDashboard />}
-          />
-          <Route
-            path="ai"
+            path="/friends"
             element={
-              <div className="space-y-6 p-6">
-                <h1 className="text-2xl font-bold">AI Features</h1>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <AIFeatures.SmartFeedCuration />
-                  <AIFeatures.AIContentAssistant />
-                </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <AIFeatures.SmartPricePrediction />
-                  <AIFeatures.AutoContentModeration />
-                </div>
-              </div>
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <FriendsPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
             }
           />
-        </Route>
+          <Route
+            path="/groups"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <GroupsPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ads"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <AdsPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/memories"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <MemoriesPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/saved"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <SavedPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/support"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <SupportPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pages"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <PagesPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <PrivacyPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <TermsPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/advertising"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <AdvertisingPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ad-choices"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <AdChoicesPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cookies"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <CookiesPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <HelpPage />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/creator-studio"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <CreatorStudio />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/data"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <DataManagement />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/achievements"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <GamificationSystem />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai-assistant"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <AIPersonalAssistantDashboard />
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai"
+            element={
+              <ProtectedRoute>
+                <WalletProvider>
+                  <MarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout>
+                        <div className="space-y-6 p-6">
+                          <h1 className="text-2xl font-bold">AI Features</h1>
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <AIFeatures.SmartFeedCuration />
+                            <AIFeatures.AIContentAssistant />
+                          </div>
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <AIFeatures.SmartPricePrediction />
+                            <AIFeatures.AutoContentModeration />
+                          </div>
+                        </div>
+                      </AppLayout>
+                    </ChatProvider>
+                  </MarketplaceProvider>
+                </WalletProvider>
+              </ProtectedRoute>
+            }
+          />
+        </>
       )}
 
       {/* Admin Routes */}
