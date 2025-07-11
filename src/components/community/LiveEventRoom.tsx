@@ -237,7 +237,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
       case "trading":
         return (
           <div className="space-y-2">
-            <Link to="/crypto">
+            <Link to="/app/crypto">
               <Button variant="outline" size="sm" className="w-full">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Open Crypto Trading
