@@ -172,6 +172,16 @@ const CommentSection = ({
                       >
                         Reply
                       </button>
+                      <VirtualGiftsAndTips
+                        recipientId={comment.userId}
+                        recipientName={comment.username}
+                        trigger={
+                          <button className="hover:text-foreground flex items-center gap-1">
+                            <Gift className="h-3 w-3" />
+                            Gift
+                          </button>
+                        }
+                      />
                       <span>2h</span>
                     </div>
 
