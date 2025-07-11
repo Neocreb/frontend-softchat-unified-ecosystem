@@ -46,16 +46,16 @@ const AIAssistantFAB: React.FC = () => {
 
   // Pages where the FAB should be visible
   const visiblePaths = [
-    "/feed",
-    "/create",
-    "/crypto",
-    "/marketplace",
-    "/videos",
-    "/profile",
+    "/app/feed",
+    "/app/create",
+    "/app/crypto",
+    "/app/marketplace",
+    "/app/videos",
+    "/app/profile",
   ];
 
   // Pages where the FAB should be hidden
-  const hiddenPaths = ["/ai-assistant", "/settings", "/auth"];
+  const hiddenPaths = ["/app/ai-assistant", "/app/settings", "/auth"];
 
   const shouldShow =
     visiblePaths.some((path) => location.pathname.startsWith(path)) &&
@@ -246,7 +246,7 @@ const AIAssistantFAB: React.FC = () => {
                   size="sm"
                   className="h-auto p-2 flex flex-col items-center gap-1"
                   onClick={() => {
-                    navigate("/create");
+                    navigate("/app/create");
                     setIsOpen(false);
                   }}
                 >
@@ -258,7 +258,7 @@ const AIAssistantFAB: React.FC = () => {
                   size="sm"
                   className="h-auto p-2 flex flex-col items-center gap-1"
                   onClick={() => {
-                    navigate("/crypto");
+                    navigate("/app/crypto");
                     setIsOpen(false);
                   }}
                 >
@@ -270,7 +270,7 @@ const AIAssistantFAB: React.FC = () => {
                   size="sm"
                   className="h-auto p-2 flex flex-col items-center gap-1"
                   onClick={() => {
-                    navigate("/analytics");
+                    navigate("/app/analytics");
                     setIsOpen(false);
                   }}
                 >
@@ -282,7 +282,7 @@ const AIAssistantFAB: React.FC = () => {
                   size="sm"
                   className="h-auto p-2 flex flex-col items-center gap-1"
                   onClick={() => {
-                    navigate("/creator-studio");
+                    navigate("/app/creator-studio");
                     setIsOpen(false);
                   }}
                 >
@@ -296,7 +296,7 @@ const AIAssistantFAB: React.FC = () => {
             <Button
               className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
               onClick={() => {
-                navigate("/ai-assistant");
+                navigate("/app/ai-assistant");
                 setIsOpen(false);
               }}
             >
