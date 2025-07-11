@@ -927,132 +927,188 @@ export default function EnhancedCrypto() {
                   </p>
                 </div>
 
-                {/* Blog RSS Feed Section */}
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-base sm:text-lg font-semibold flex items-center gap-2">
-                      <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
-                      Latest from SoftChat Blog
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm" asChild>
-                        <a
-                          href="/api/blog/rss"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs"
+                {/* Enhanced Blog RSS Feed Section */}
+                <div className="space-y-6 mb-8">
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-4 sm:p-6 border border-blue-200/50 dark:border-blue-700/50">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                      <div className="space-y-2">
+                        <h3 className="text-lg sm:text-xl font-bold flex items-center gap-3 text-blue-800 dark:text-blue-200">
+                          <div className="p-2 bg-blue-500 rounded-lg">
+                            <BookOpen className="h-5 w-5 text-white" />
+                          </div>
+                          Latest from SoftChat Blog
+                        </h3>
+                        <p className="text-sm text-blue-600/80 dark:text-blue-300/80">
+                          Stay updated with crypto insights, trading strategies,
+                          and market analysis
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/50 hover:bg-white"
+                          asChild
                         >
-                          📡 RSS Feed
-                        </a>
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <a
-                          href="/blog"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          <a
+                            href="/api/blog/rss"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-xs sm:text-sm"
+                          >
+                            <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                            RSS Feed
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-700"
+                          asChild
                         >
-                          View All Articles
-                        </a>
-                      </Button>
+                          <a
+                            href="/blog"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                          >
+                            View All Articles
+                            <ArrowUpDown className="h-3 w-3 rotate-45" />
+                          </a>
+                        </Button>
+                      </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {blogPosts && blogPosts.length > 0 ? (
-                      blogPosts.slice(0, 6).map((post) => (
+                      blogPosts.slice(0, 6).map((post, index) => (
                         <Card
                           key={post.id}
-                          className="cursor-pointer hover:shadow-lg transition-shadow group"
+                          className="cursor-pointer hover:shadow-xl transition-all duration-300 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden hover:scale-[1.02]"
                           onClick={() =>
                             window.open(`/blog/${post.slug}`, "_blank")
                           }
                         >
                           {post.featuredImage && (
-                            <div className="relative h-32 sm:h-40 overflow-hidden rounded-t-lg">
+                            <div className="relative h-40 sm:h-48 overflow-hidden">
                               <img
                                 src={post.featuredImage}
                                 alt={post.title}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                               />
-                              <div className="absolute top-2 right-2">
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/40 transition-all duration-300"></div>
+
+                              {/* Article Number Badge */}
+                              <div className="absolute top-3 left-3">
+                                <Badge className="bg-white/90 text-black font-bold text-xs px-2 py-1">
+                                  #{index + 1}
+                                </Badge>
+                              </div>
+
+                              <div className="absolute top-3 right-3">
                                 <Badge
                                   className={cn(
-                                    "text-white text-xs",
+                                    "text-white text-xs font-semibold shadow-lg",
                                     post.category.color,
                                   )}
                                 >
                                   {post.category.name}
                                 </Badge>
                               </div>
+
                               {post.difficulty && (
-                                <div className="absolute top-2 left-2">
+                                <div className="absolute bottom-3 left-3">
                                   <Badge
-                                    variant="secondary"
                                     className={cn(
-                                      "text-xs",
+                                      "text-xs font-semibold shadow-lg border-0",
                                       post.difficulty === "BEGINNER" &&
-                                        "bg-green-100 text-green-800",
+                                        "bg-green-500 text-white",
                                       post.difficulty === "INTERMEDIATE" &&
-                                        "bg-yellow-100 text-yellow-800",
+                                        "bg-yellow-500 text-white",
                                       post.difficulty === "ADVANCED" &&
-                                        "bg-red-100 text-red-800",
+                                        "bg-red-500 text-white",
                                     )}
                                   >
                                     {post.difficulty}
                                   </Badge>
                                 </div>
                               )}
+
+                              {/* Reading Time Badge */}
+                              <div className="absolute bottom-3 right-3">
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-white/90 text-black text-xs"
+                                >
+                                  <Clock className="w-3 h-3 mr-1" />
+                                  {post.readingTime}m
+                                </Badge>
+                              </div>
                             </div>
                           )}
-                          <CardContent className="p-4">
-                            <div className="space-y-3">
-                              <div className="space-y-2">
-                                <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-blue-600 transition-colors">
+                          <CardContent className="p-5">
+                            <div className="space-y-4">
+                              <div className="space-y-3">
+                                <h3 className="font-bold text-base sm:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
                                   {post.title}
                                 </h3>
-                                <p className="text-xs text-muted-foreground line-clamp-2">
+                                <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
                                   {post.excerpt}
                                 </p>
                               </div>
 
-                              {/* Tags */}
-                              <div className="flex flex-wrap gap-1">
-                                {post.tags.slice(0, 3).map((tag) => (
+                              {/* Enhanced Tags */}
+                              <div className="flex flex-wrap gap-1.5">
+                                {post.tags.slice(0, 2).map((tag) => (
                                   <Badge
                                     key={tag}
                                     variant="outline"
-                                    className="text-xs"
+                                    className="text-xs bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                                   >
                                     {tag}
                                   </Badge>
                                 ))}
-                                {post.tags.length > 3 && (
-                                  <Badge variant="outline" className="text-xs">
-                                    +{post.tags.length - 3}
+                                {post.tags.length > 2 && (
+                                  <Badge
+                                    variant="outline"
+                                    className="text-xs bg-gray-100 dark:bg-gray-700"
+                                  >
+                                    +{post.tags.length - 2} more
                                   </Badge>
                                 )}
                               </div>
 
-                              <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-2">
+                              {/* Enhanced Author and Meta */}
+                              <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
                                 <div className="flex items-center gap-2">
-                                  <img
-                                    src={post.author.avatar}
-                                    alt={post.author.name}
-                                    className="w-4 h-4 rounded-full"
-                                  />
-                                  <span className="truncate">
+                                  <div className="relative">
+                                    <img
+                                      src={post.author.avatar}
+                                      alt={post.author.name}
+                                      className="w-6 h-6 rounded-full ring-2 ring-gray-100 dark:ring-gray-700"
+                                    />
+                                    <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full border border-white dark:border-gray-800"></div>
+                                  </div>
+                                  <span className="text-sm font-medium truncate text-gray-700 dark:text-gray-300">
                                     {post.author.name}
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-3 flex-shrink-0">
+                                <div className="flex items-center gap-3 text-xs text-muted-foreground">
                                   <div className="flex items-center gap-1">
-                                    <Clock className="h-3 w-3" />
-                                    <span>{post.readingTime}m</span>
+                                    <Eye className="h-3 w-3" />
+                                    <span>{post.views}</span>
                                   </div>
-                                  <span>
+                                  <div className="flex items-center gap-1">
+                                    <Heart className="h-3 w-3" />
+                                    <span>{post.likes}</span>
+                                  </div>
+                                  <span className="hidden sm:inline">
                                     {new Date(
                                       post.publishedAt,
-                                    ).toLocaleDateString()}
+                                    ).toLocaleDateString("en-US", {
+                                      month: "short",
+                                      day: "numeric",
+                                    })}
                                   </span>
                                 </div>
                               </div>
