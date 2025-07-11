@@ -56,6 +56,20 @@ const SendGifts = () => {
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [activeTab, setActiveTab] = useState("browse");
 
+  // Virtual Gifts & Tips state
+  const [selectedGift, setSelectedGift] = useState<VirtualGift | null>(null);
+  const [giftQuantity, setGiftQuantity] = useState(1);
+  const [tipAmount, setTipAmount] = useState(5);
+  const [message, setMessage] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [availableGifts, setAvailableGifts] = useState<VirtualGift[]>([]);
+  const [recentGifts, setRecentGifts] = useState<GiftTransaction[]>([]);
+  const [recentTips, setRecentTips] = useState<TipTransaction[]>([]);
+  const [tipSettings, setTipSettings] = useState<CreatorTipSettings | null>(
+    null,
+  );
+
   // Mock recent recipients
   const recentRecipients = [
     {
