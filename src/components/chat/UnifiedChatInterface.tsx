@@ -70,10 +70,41 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
     null,
   );
   const [conversations, setConversations] = useState<UnifiedChatThread[]>([]);
-  const [messages, setMessages] = useState<Record<string, ChatMessage[]>>({});
+  const [messages, setMessages] = useState<
+    Record<string, EnhancedChatMessage[]>
+  >({});
   const [messageInput, setMessageInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+
+  // Voice/Video call state
+  const [activeCall, setActiveCall] = useState<{
+    type: "voice" | "video" | "group";
+    participants: any[];
+    currentUser: any;
+    chatInfo: any;
+  } | null>(null);
+  const [incomingCall, setIncomingCall] = useState<{
+    from: any;
+    type: "voice" | "video";
+    chatInfo: any;
+  } | null>(null);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
+
+  // Group video room state
+  const [groupVideoRoom, setGroupVideoRoom] = useState<{
+    roomId: string;
+    roomName: string;
+    roomType: string;
+    participants: any[];
+    currentUser: any;
+  } | null>(null);
+
+  // Reply functionality
+  const [replyToMessage, setReplyToMessage] =
+    useState<EnhancedChatMessage | null>(null);
 
   // Handle URL parameters for direct navigation
   useEffect(() => {
