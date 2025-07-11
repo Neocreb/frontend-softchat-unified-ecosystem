@@ -634,21 +634,21 @@ const VideoCard: React.FC<{
               variant="ghost"
               onClick={() => setIsBookmarked(!isBookmarked)}
               className={cn(
-                "w-11 h-11 rounded-full transition-all duration-200",
+                "w-12 h-12 rounded-full transition-all duration-200 backdrop-blur-sm",
                 isBookmarked
                   ? "bg-yellow-500/20 text-yellow-500"
-                  : "bg-black/40 text-white hover:bg-black/60",
+                  : "bg-black/30 text-white hover:bg-black/50",
               )}
             >
               <Bookmark
                 className={cn(
-                  "w-5 h-5",
+                  "w-7 h-7",
                   isBookmarked ? "fill-yellow-500 text-yellow-500" : "",
                 )}
               />
             </Button>
             {video.stats.saves && (
-              <span className="text-white text-xs font-medium">
+              <span className="text-white text-xs font-semibold">
                 {formatNumber(video.stats.saves)}
               </span>
             )}
