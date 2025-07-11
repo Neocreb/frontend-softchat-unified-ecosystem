@@ -57,6 +57,9 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
   trigger,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Debug log
+  console.log("VirtualGiftsAndTips rendered for:", recipientName);
   const [activeTab, setActiveTab] = useState("gifts");
   const [selectedGift, setSelectedGift] = useState<VirtualGift | null>(null);
   const [giftQuantity, setGiftQuantity] = useState(1);
