@@ -245,7 +245,7 @@ export default function EnhancedCrypto() {
     );
   }
 
-    return (
+  return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
@@ -262,7 +262,8 @@ export default function EnhancedCrypto() {
                       Cryptocurrency Hub
                     </h1>
                     <p className="text-sm sm:text-base lg:text-lg text-muted-foreground">
-                      Trade, learn, and manage your crypto portfolio with professional tools
+                      Trade, learn, and manage your crypto portfolio with
+                      professional tools
                     </p>
                   </div>
                 </div>
@@ -271,13 +272,15 @@ export default function EnhancedCrypto() {
                 <ApiStatusIndicator showDetails={true} />
                 <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-xs font-medium text-green-700 dark:text-green-300">Live Market</span>
+                  <span className="text-xs font-medium text-green-700 dark:text-green-300">
+                    Live Market
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
-                    {/* Enhanced Tabs Navigation */}
+          {/* Enhanced Tabs Navigation */}
           <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg overflow-hidden">
             <Tabs
               value={activeTab}
@@ -389,7 +392,7 @@ export default function EnhancedCrypto() {
                   </div>
                 </div>
 
-                                {/* Enhanced Global Market Stats */}
+                {/* Enhanced Global Market Stats */}
                 {marketData && (
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                     <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 hover:shadow-xl transition-all duration-300">
@@ -425,7 +428,7 @@ export default function EnhancedCrypto() {
                       </CardContent>
                     </Card>
 
-                                        <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 hover:shadow-xl transition-all duration-300">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 hover:shadow-xl transition-all duration-300">
                       <CardContent className="p-4 sm:p-5">
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
@@ -437,7 +440,9 @@ export default function EnhancedCrypto() {
                                 marketData.globalStats?.totalVolume24h || 0,
                               )}
                             </p>
-                            <p className="text-xs sm:text-sm font-semibold text-green-600">+2.4%</p>
+                            <p className="text-xs sm:text-sm font-semibold text-green-600">
+                              +2.4%
+                            </p>
                           </div>
                           <div className="p-2 bg-green-500/20 rounded-lg">
                             <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
@@ -446,7 +451,7 @@ export default function EnhancedCrypto() {
                       </CardContent>
                     </Card>
 
-                                        <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 hover:shadow-xl transition-all duration-300">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 hover:shadow-xl transition-all duration-300">
                       <CardContent className="p-4 sm:p-5">
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
@@ -476,7 +481,7 @@ export default function EnhancedCrypto() {
                       </CardContent>
                     </Card>
 
-                                        <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 hover:shadow-xl transition-all duration-300">
+                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 hover:shadow-xl transition-all duration-300">
                       <CardContent className="p-4 sm:p-5">
                         <div className="flex items-start justify-between">
                           <div className="space-y-1">
@@ -486,7 +491,9 @@ export default function EnhancedCrypto() {
                             <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-800 dark:text-purple-200">
                               {marketData.fearGreedIndex || 65}
                             </p>
-                            <p className="text-xs sm:text-sm font-semibold text-yellow-600">Greed</p>
+                            <p className="text-xs sm:text-sm font-semibold text-yellow-600">
+                              Greed
+                            </p>
                           </div>
                           <div className="p-2 bg-purple-500/20 rounded-lg">
                             <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
@@ -497,7 +504,7 @@ export default function EnhancedCrypto() {
                   </div>
                 )}
 
-                                {/* Enhanced Top Cryptocurrencies */}
+                {/* Enhanced Top Cryptocurrencies */}
                 <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
                   <CardHeader className="pb-3 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700">
                     <div className="flex items-center justify-between">
@@ -511,7 +518,7 @@ export default function EnhancedCrypto() {
                     </div>
                   </CardHeader>
                   <CardContent className="p-0">
-                                        <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                    <div className="divide-y divide-gray-100 dark:divide-gray-700">
                       {cryptos.slice(0, 10).map((crypto, index) => (
                         <div
                           key={crypto.id}
@@ -521,14 +528,17 @@ export default function EnhancedCrypto() {
                           }}
                           className="flex items-center justify-between p-3 sm:p-4 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200 cursor-pointer group relative"
                         >
-                                                    {/* Rank Badge */}
+                          {/* Rank Badge */}
                           <div className="absolute left-1 top-1 sm:relative sm:left-auto sm:top-auto">
                             <Badge
                               variant="outline"
                               className={cn(
                                 "text-xs px-1.5 py-0.5 font-bold",
-                                index < 3 && "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0",
-                                index >= 3 && index < 10 && "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                                index < 3 &&
+                                  "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0",
+                                index >= 3 &&
+                                  index < 10 &&
+                                  "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
                               )}
                             >
                               #{crypto.market_cap_rank}
@@ -554,11 +564,12 @@ export default function EnhancedCrypto() {
                                 </span>
                               </div>
                               <p className="text-xs sm:text-sm text-muted-foreground mt-1 hidden sm:block">
-                                Market Cap: {formatCurrency(crypto.market_cap || 0)}
+                                Market Cap:{" "}
+                                {formatCurrency(crypto.market_cap || 0)}
                               </p>
                             </div>
                           </div>
-                                                    <div className="text-right flex-shrink-0 space-y-1">
+                          <div className="text-right flex-shrink-0 space-y-1">
                             <p className="font-bold text-sm sm:text-base lg:text-lg">
                               {formatCurrency(crypto.current_price)}
                             </p>
@@ -567,7 +578,7 @@ export default function EnhancedCrypto() {
                                 "flex items-center gap-1 justify-end px-2 py-1 rounded-full text-xs sm:text-sm font-semibold",
                                 crypto.price_change_percentage_24h >= 0
                                   ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
                               )}
                             >
                               {crypto.price_change_percentage_24h >= 0 ? (
@@ -576,7 +587,9 @@ export default function EnhancedCrypto() {
                                 <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                               )}
                               <span>
-                                {formatPercentage(crypto.price_change_percentage_24h)}
+                                {formatPercentage(
+                                  crypto.price_change_percentage_24h,
+                                )}
                               </span>
                             </div>
                           </div>
@@ -744,7 +757,7 @@ export default function EnhancedCrypto() {
                   )}
                 </div>
 
-                                {/* Enhanced Trading Interface */}
+                {/* Enhanced Trading Interface */}
                 <Card className="overflow-hidden border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
                   <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700 border-b">
                     <div className="flex items-center justify-between">
@@ -761,7 +774,7 @@ export default function EnhancedCrypto() {
                   </CardHeader>
                   <CardContent className="p-4 sm:p-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                                            {/* Enhanced Buy Panel */}
+                      {/* Enhanced Buy Panel */}
                       <div className="space-y-4 p-4 sm:p-5 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border border-green-200/50 dark:border-green-700/30">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-green-500 rounded-lg">
@@ -777,7 +790,7 @@ export default function EnhancedCrypto() {
                           </div>
                         </div>
 
-                                                <div className="space-y-4">
+                        <div className="space-y-4">
                           <div>
                             <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300">
                               Order Type
@@ -852,7 +865,7 @@ export default function EnhancedCrypto() {
                         </div>
                       </div>
 
-                                            {/* Enhanced Sell Panel */}
+                      {/* Enhanced Sell Panel */}
                       <div className="space-y-4 p-4 sm:p-5 bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/20 rounded-xl border border-red-200/50 dark:border-red-700/30">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-red-500 rounded-lg">
@@ -868,7 +881,7 @@ export default function EnhancedCrypto() {
                           </div>
                         </div>
 
-                                                <div className="space-y-4">
+                        <div className="space-y-4">
                           <div>
                             <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300">
                               Order Type
@@ -976,7 +989,7 @@ export default function EnhancedCrypto() {
                   </p>
                 </div>
 
-                                {/* Enhanced Blog RSS Feed Section */}
+                {/* Enhanced Blog RSS Feed Section */}
                 <div className="space-y-6 mb-8">
                   <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-4 sm:p-6 border border-blue-200/50 dark:border-blue-700/50">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -988,11 +1001,17 @@ export default function EnhancedCrypto() {
                           Latest from SoftChat Blog
                         </h3>
                         <p className="text-sm text-blue-600/80 dark:text-blue-300/80">
-                          Stay updated with crypto insights, trading strategies, and market analysis
+                          Stay updated with crypto insights, trading strategies,
+                          and market analysis
                         </p>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <Button variant="outline" size="sm" className="bg-white/50 hover:bg-white" asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/50 hover:bg-white"
+                          asChild
+                        >
                           <a
                             href="/api/blog/rss"
                             target="_blank"
@@ -1003,7 +1022,11 @@ export default function EnhancedCrypto() {
                             RSS Feed
                           </a>
                         </Button>
-                        <Button size="sm" className="bg-blue-600 hover:bg-blue-700" asChild>
+                        <Button
+                          size="sm"
+                          className="bg-blue-600 hover:bg-blue-700"
+                          asChild
+                        >
                           <a
                             href="/blog"
                             target="_blank"
@@ -1018,7 +1041,7 @@ export default function EnhancedCrypto() {
                     </div>
                   </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {blogPosts && blogPosts.length > 0 ? (
                       blogPosts.slice(0, 6).map((post, index) => (
                         <Card
@@ -1028,7 +1051,7 @@ export default function EnhancedCrypto() {
                             window.open(`/blog/${post.slug}`, "_blank")
                           }
                         >
-                                                    {post.featuredImage && (
+                          {post.featuredImage && (
                             <div className="relative h-40 sm:h-48 overflow-hidden">
                               <img
                                 src={post.featuredImage}
@@ -1075,14 +1098,17 @@ export default function EnhancedCrypto() {
 
                               {/* Reading Time Badge */}
                               <div className="absolute bottom-3 right-3">
-                                <Badge variant="secondary" className="bg-white/90 text-black text-xs">
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-white/90 text-black text-xs"
+                                >
                                   <Clock className="w-3 h-3 mr-1" />
                                   {post.readingTime}m
                                 </Badge>
                               </div>
                             </div>
                           )}
-                                                    <CardContent className="p-5">
+                          <CardContent className="p-5">
                             <div className="space-y-4">
                               <div className="space-y-3">
                                 <h3 className="font-bold text-base sm:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
@@ -1105,7 +1131,10 @@ export default function EnhancedCrypto() {
                                   </Badge>
                                 ))}
                                 {post.tags.length > 2 && (
-                                  <Badge variant="outline" className="text-xs bg-gray-100 dark:bg-gray-700">
+                                  <Badge
+                                    variant="outline"
+                                    className="text-xs bg-gray-100 dark:bg-gray-700"
+                                  >
                                     +{post.tags.length - 2} more
                                   </Badge>
                                 )}
@@ -1138,7 +1167,10 @@ export default function EnhancedCrypto() {
                                   <span className="hidden sm:inline">
                                     {new Date(
                                       post.publishedAt,
-                                    ).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                    ).toLocaleDateString("en-US", {
+                                      month: "short",
+                                      day: "numeric",
+                                    })}
                                   </span>
                                 </div>
                               </div>
@@ -1240,7 +1272,6 @@ export default function EnhancedCrypto() {
               setSelectedCrypto(null);
             }}
           />
-                  </div>
         </div>
       </div>
     </div>
