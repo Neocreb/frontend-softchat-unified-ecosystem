@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -9,9 +8,9 @@ const Footer = () => {
       <div className="container-wide">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <Link to="/" className="text-2xl font-bold mb-4 block">
+            <a href="/" className="text-2xl font-bold mb-4 block">
               Softchat
-            </Link>
+            </a>
             <p className="text-gray-400 mt-2">
               One app for everything: Social, Crypto, Commerce, Rewards. Built
               for creators, traders, sellers, and dreamers.
@@ -38,12 +37,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <Link
-                  to="/blog"
+                <a
+                  href="/blog"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Blog
-                </Link>
+                </a>
               </li>
               <li>
                 <a
@@ -60,20 +59,20 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  to="/terms"
+                <a
+                  href="/terms"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Terms of Service
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  to="/privacy"
+                <a
+                  href="/privacy"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Privacy Policy
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
