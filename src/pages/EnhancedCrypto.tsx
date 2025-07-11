@@ -757,46 +757,77 @@ export default function EnhancedCrypto() {
                   )}
                 </div>
 
-                {/* Trading Interface */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base sm:text-lg">
-                      Place Order
-                    </CardTitle>
+                {/* Enhanced Trading Interface */}
+                <Card className="overflow-hidden border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700 border-b">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-2">
+                        <div className="p-2 bg-gradient-to-r from-green-500 to-red-500 rounded-lg">
+                          <ArrowUpDown className="h-5 w-5 text-white" />
+                        </div>
+                        Place Order
+                      </CardTitle>
+                      <Badge variant="outline" className="text-xs">
+                        Simulated Trading
+                      </Badge>
+                    </div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                      {/* Buy Panel */}
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-                          <h3 className="font-semibold text-green-600">
-                            Buy {selectedPair.replace("USDT", "")}
-                          </h3>
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+                      {/* Enhanced Buy Panel */}
+                      <div className="space-y-4 p-4 sm:p-5 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border border-green-200/50 dark:border-green-700/30">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-green-500 rounded-lg">
+                            <Plus className="w-4 h-4 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-green-700 dark:text-green-300 text-base sm:text-lg">
+                              Buy {selectedPair.replace("USDT", "")}
+                            </h3>
+                            <p className="text-xs text-green-600/70 dark:text-green-400/70">
+                              Long position
+                            </p>
+                          </div>
                         </div>
 
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           <div>
-                            <label className="text-xs font-medium mb-1 block">
+                            <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300">
                               Order Type
                             </label>
                             <Select
                               value={orderType}
                               onValueChange={setOrderType}
                             >
-                              <SelectTrigger>
+                              <SelectTrigger className="h-11 bg-white dark:bg-slate-800 border-green-200 dark:border-green-700">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="market">Market</SelectItem>
-                                <SelectItem value="limit">Limit</SelectItem>
-                                <SelectItem value="stop">Stop</SelectItem>
+                                <SelectItem value="market">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    Market Order
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="limit">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                    Limit Order
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="stop">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    Stop Order
+                                  </div>
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
 
                           <div>
-                            <label className="text-xs font-medium mb-1 block">
+                            <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300 flex items-center gap-2">
+                              <DollarSign className="w-4 h-4" />
                               Price (USDT)
                             </label>
                             <Input
@@ -806,11 +837,13 @@ export default function EnhancedCrypto() {
                               placeholder={safeToFixed(
                                 currentPair?.current_price,
                               )}
+                              className="h-11 bg-white dark:bg-slate-800 border-green-200 dark:border-green-700 focus:ring-green-500 focus:border-green-500"
                             />
                           </div>
 
                           <div>
-                            <label className="text-xs font-medium mb-1 block">
+                            <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300 flex items-center gap-2">
+                              <Banknote className="w-4 h-4" />
                               Amount ({selectedPair.replace("USDT", "")})
                             </label>
                             <Input
@@ -818,49 +851,74 @@ export default function EnhancedCrypto() {
                               value={amount}
                               onChange={(e) => setAmount(e.target.value)}
                               placeholder="0.00"
+                              className="h-11 bg-white dark:bg-slate-800 border-green-200 dark:border-green-700 focus:ring-green-500 focus:border-green-500"
                             />
                           </div>
 
                           <Button
-                            className="w-full bg-green-600 hover:bg-green-700 mobile-button-size"
+                            className="w-full h-12 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
                             onClick={handlePlaceOrder}
                           >
+                            <Plus className="w-4 h-4" />
                             Buy {selectedPair.replace("USDT", "")}
                           </Button>
                         </div>
                       </div>
 
-                      {/* Sell Panel */}
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-                          <h3 className="font-semibold text-red-600">
-                            Sell {selectedPair.replace("USDT", "")}
-                          </h3>
+                      {/* Enhanced Sell Panel */}
+                      <div className="space-y-4 p-4 sm:p-5 bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/20 rounded-xl border border-red-200/50 dark:border-red-700/30">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-500 rounded-lg">
+                            <Minus className="w-4 h-4 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-red-700 dark:text-red-300 text-base sm:text-lg">
+                              Sell {selectedPair.replace("USDT", "")}
+                            </h3>
+                            <p className="text-xs text-red-600/70 dark:text-red-400/70">
+                              Short position
+                            </p>
+                          </div>
                         </div>
 
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           <div>
-                            <label className="text-xs font-medium mb-1 block">
+                            <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300">
                               Order Type
                             </label>
                             <Select
                               value={orderType}
                               onValueChange={setOrderType}
                             >
-                              <SelectTrigger>
+                              <SelectTrigger className="h-11 bg-white dark:bg-slate-800 border-red-200 dark:border-red-700">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="market">Market</SelectItem>
-                                <SelectItem value="limit">Limit</SelectItem>
-                                <SelectItem value="stop">Stop</SelectItem>
+                                <SelectItem value="market">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    Market Order
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="limit">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                                    Limit Order
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="stop">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    Stop Order
+                                  </div>
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
 
                           <div>
-                            <label className="text-xs font-medium mb-1 block">
+                            <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300 flex items-center gap-2">
+                              <DollarSign className="w-4 h-4" />
                               Price (USDT)
                             </label>
                             <Input
@@ -870,11 +928,13 @@ export default function EnhancedCrypto() {
                               placeholder={safeToFixed(
                                 currentPair?.current_price,
                               )}
+                              className="h-11 bg-white dark:bg-slate-800 border-red-200 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
                             />
                           </div>
 
                           <div>
-                            <label className="text-xs font-medium mb-1 block">
+                            <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300 flex items-center gap-2">
+                              <Banknote className="w-4 h-4" />
                               Amount ({selectedPair.replace("USDT", "")})
                             </label>
                             <Input
@@ -882,13 +942,15 @@ export default function EnhancedCrypto() {
                               value={amount}
                               onChange={(e) => setAmount(e.target.value)}
                               placeholder="0.00"
+                              className="h-11 bg-white dark:bg-slate-800 border-red-200 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
                             />
                           </div>
 
                           <Button
-                            className="w-full bg-red-600 hover:bg-red-700 mobile-button-size"
+                            className="w-full h-12 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
                             onClick={handlePlaceOrder}
                           >
+                            <Minus className="w-4 h-4" />
                             Sell {selectedPair.replace("USDT", "")}
                           </Button>
                         </div>
