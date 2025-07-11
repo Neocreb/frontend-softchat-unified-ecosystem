@@ -17,6 +17,8 @@ import {
   Radio,
   X,
   MessageCircle,
+  UserCheck,
+  Building,
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -102,6 +104,16 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       badge: "2",
     },
     {
+      icon: <UserCheck className="w-8 h-8 text-blue-600" />,
+      label: "Groups",
+      href: "/app/groups",
+    },
+    {
+      icon: <Building className="w-8 h-8 text-blue-600" />,
+      label: "Pages",
+      href: "/app/pages",
+    },
+    {
       icon: <Calendar className="w-8 h-8 text-blue-600" />,
       label: "Events",
       href: "/app/events",
@@ -139,6 +151,16 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       icon: <MessageCircle className="w-6 h-6 text-blue-600" />,
       label: "Messages",
       href: "/app/chat",
+    },
+    {
+      icon: <UserCheck className="w-6 h-6 text-blue-600" />,
+      label: "Groups",
+      href: "/app/groups",
+    },
+    {
+      icon: <Building className="w-6 h-6 text-blue-600" />,
+      label: "Pages",
+      href: "/app/pages",
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-purple-600" />,
