@@ -153,19 +153,159 @@ const SendGifts = () => {
     },
   ];
 
+  // Load virtual gifts data
+  useEffect(() => {
+    loadVirtualGiftsData();
+  }, []);
+
+  const loadVirtualGiftsData = async () => {
+    try {
+      const [gifts, giftHistory, tipHistory] = await Promise.all([
+        virtualGiftsService.getAvailableGifts(),
+        virtualGiftsService.getGiftHistory(user?.id || ""),
+        virtualGiftsService.getTipHistory(user?.id || ""),
+      ]);
+
+      setAvailableGifts(gifts);
+      setRecentGifts(giftHistory);
+      setRecentTips(tipHistory);
+    } catch (error) {
+      console.error("Error loading virtual gifts data:", error);
+    }
+  };
+
+  const handleSendVirtualGift = async () => {
+    if (!user?.id || !selectedGift || !selectedUser) return;
+
+    setSending(true);
+    try {
+      const transaction = await virtualGiftsService.sendGift(
+        user.id,
+        selectedUser.id,
+        selectedGift.id,
+        giftQuantity,
+        message || undefined,
+        isAnonymous,
+      );
+
+      if (transaction) {
+        toast({
+          title: "Gift sent! 🎁",
+          description: `You sent ${giftQuantity}x ${selectedGift.name} to ${selectedUser.name}`,
+        });
+
+        // Reset form
+        setSelectedGift(null);
+        setGiftQuantity(1);
+        setMessage("");
+        setShowGiftModal(false);
+        setSelectedUser(null);
+
+        // Reload data
+        loadVirtualGiftsData();
+      } else {
+        throw new Error("Failed to send gift");
+      }
+    } catch (error) {
+      console.error("Error sending gift:", error);
+      toast({
+        title: "Failed to send gift",
+        description: "Please try again or contact support.",
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleSendTip = async () => {
+    if (!user?.id || !selectedUser) return;
+
+    setSending(true);
+    try {
+      const transaction = await virtualGiftsService.sendTip(
+        user.id,
+        selectedUser.id,
+        tipAmount,
+        message || undefined,
+        undefined,
+        isAnonymous,
+      );
+
+      if (transaction) {
+        toast({
+          title: "Tip sent! 💰",
+          description: `You tipped $${tipAmount} to ${selectedUser.name}`,
+        });
+
+        // Reset form
+        setTipAmount(5);
+        setMessage("");
+        setShowGiftModal(false);
+        setSelectedUser(null);
+
+        // Reload data
+        loadVirtualGiftsData();
+      } else {
+        throw new Error("Failed to send tip");
+      }
+    } catch (error) {
+      console.error("Error sending tip:", error);
+      toast({
+        title: "Failed to send tip",
+        description: "Please try again or contact support.",
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
+    }
+  };
+
   const handleSendGift = (recipient: any) => {
     setSelectedUser(recipient);
     setShowGiftModal(true);
   };
 
-  const handleGiftSent = () => {
-    toast({
-      title: "Gift Sent Successfully!",
-      description: `Your gift has been sent to ${selectedUser?.name}`,
-    });
-    setShowGiftModal(false);
-    setSelectedUser(null);
+  const getCategoryIcon = (category: VirtualGift["category"]) => {
+    switch (category) {
+      case "basic":
+        return <Coffee className="h-4 w-4" />;
+      case "premium":
+        return <Star className="h-4 w-4" />;
+      case "special":
+        return <Crown className="h-4 w-4" />;
+      case "seasonal":
+        return <Calendar className="h-4 w-4" />;
+      default:
+        return <Gift className="h-4 w-4" />;
+    }
   };
+
+  const getRarityColor = (rarity: VirtualGift["rarity"]) => {
+    switch (rarity) {
+      case "common":
+        return "bg-gray-500";
+      case "rare":
+        return "bg-blue-500";
+      case "epic":
+        return "bg-purple-500";
+      case "legendary":
+        return "bg-yellow-500";
+      default:
+        return "bg-gray-500";
+    }
+  };
+
+  const groupedGifts = availableGifts.reduce(
+    (acc, gift) => {
+      if (!acc[gift.category]) {
+        acc[gift.category] = [];
+      }
+      acc[gift.category].push(gift);
+      return acc;
+    },
+    {} as Record<string, VirtualGift[]>,
+  );
 
   return (
     <>
