@@ -14,6 +14,7 @@ import {
   Star,
   MapPin,
   Verified,
+  Gift,
 } from "lucide-react";
 import { mockUsers } from "@/data/mockUsers";
 import { UserProfile } from "@/types/user";
