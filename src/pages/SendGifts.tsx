@@ -530,16 +530,16 @@ const SendGifts = () => {
                       });
                     }}
                   >
-                    <CardContent className="p-6 text-center">
+                    <CardContent className="p-4 sm:p-6 text-center">
                       <div
-                        className={`w-16 h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}
+                        className={`w-12 h-12 sm:w-16 sm:h-16 ${category.color} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}
                       >
-                        <category.icon className="h-8 w-8 text-white" />
+                        <category.icon className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                       </div>
-                      <h3 className="font-semibold text-lg mb-2">
+                      <h3 className="font-semibold text-sm sm:text-lg mb-1 sm:mb-2">
                         {category.name}
                       </h3>
-                      <p className="text-sm text-muted-foreground mb-4">
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
                         {category.description}
                       </p>
                       <Badge variant="secondary">
