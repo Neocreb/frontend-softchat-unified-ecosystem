@@ -123,7 +123,7 @@ const forYouVideos: VideoData[] = [
       isFollowing: false,
     },
     description:
-      "Bitcoin to the moon! 🚀 Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
+      "Bitcoin to the moon! �� Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
     music: {
       title: "Crypto Anthem",
       artist: "Digital Dreams",
@@ -626,32 +626,6 @@ const VideoCard: React.FC<{
             />
             <span className="text-white text-xs font-medium">Gift</span>
           </div>
-
-          {/* Live Events Icon */}
-          {video.isLiveStream ? (
-            <div className="flex flex-col items-center gap-1">
-              <Button
-                size="icon"
-                variant="ghost"
-                className="w-11 h-11 rounded-full bg-red-500/30 text-red-400 hover:bg-red-500/40 animate-pulse"
-              >
-                <Zap className="w-6 h-6" />
-              </Button>
-              <span className="text-red-400 text-xs font-medium">LIVE</span>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-1">
-              <Button
-                size="icon"
-                variant="ghost"
-                className="w-11 h-11 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 hover:from-purple-500/30 hover:to-pink-500/30"
-                title="Live Events"
-              >
-                <Zap className="w-6 h-6" />
-              </Button>
-              <span className="text-purple-400 text-xs font-medium">Live</span>
-            </div>
-          )}
 
           {/* Bookmark */}
           <div className="flex flex-col items-center gap-1">
