@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import SearchBar from "@/components/explore/SearchBar";
 import ExploreContent from "@/components/explore/ExploreContent";
+import ExploreGroups from "@/components/explore/ExploreGroups";
+import ExplorePages from "@/components/explore/ExplorePages";
 import SuggestedUsers from "@/components/profile/SuggestedUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -24,6 +26,8 @@ import {
   Filter,
   MapPin,
   Calendar,
+  Building,
+  UserCheck,
 } from "lucide-react";
 
 const Explore = () => {
@@ -178,35 +182,49 @@ const Explore = () => {
           <TabsList className="flex w-full overflow-x-auto gap-1 p-1 h-auto min-h-[60px] mobile-tabs-scroll">
             <TabsTrigger
               value="discover"
-              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
             >
               <Sparkles className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">Discover</span>
             </TabsTrigger>
             <TabsTrigger
               value="trending"
-              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
             >
               <TrendingUp className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">Trending</span>
             </TabsTrigger>
             <TabsTrigger
               value="hashtags"
-              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
             >
               <Hash className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">Tags</span>
             </TabsTrigger>
             <TabsTrigger
               value="people"
-              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
             >
               <Users className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">People</span>
             </TabsTrigger>
             <TabsTrigger
+              value="groups"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
+            >
+              <UserCheck className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">Groups</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="pages"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
+            >
+              <Building className="w-4 h-4 flex-shrink-0" />
+              <span className="text-[10px] leading-tight">Pages</span>
+            </TabsTrigger>
+            <TabsTrigger
               value="explore"
-              className="flex flex-col items-center gap-1 text-xs min-w-[65px] h-auto py-2 px-2 mobile-tab-item touch-target"
+              className="flex flex-col items-center gap-1 text-xs min-w-[55px] h-auto py-2 px-1 mobile-tab-item touch-target"
             >
               <Globe className="w-4 h-4 flex-shrink-0" />
               <span className="text-[10px] leading-tight">More</span>
@@ -216,7 +234,7 @@ const Explore = () => {
 
         {/* Desktop tabs */}
         <div className="hidden sm:block">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="discover" className="flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
               <span>Discover</span>
@@ -233,9 +251,17 @@ const Explore = () => {
               <Users className="w-4 h-4" />
               <span>People</span>
             </TabsTrigger>
+            <TabsTrigger value="groups" className="flex items-center gap-2">
+              <UserCheck className="w-4 h-4" />
+              <span>Groups</span>
+            </TabsTrigger>
+            <TabsTrigger value="pages" className="flex items-center gap-2">
+              <Building className="w-4 h-4" />
+              <span>Pages</span>
+            </TabsTrigger>
             <TabsTrigger value="explore" className="flex items-center gap-2">
               <Globe className="w-4 h-4" />
-              <span>Explore</span>
+              <span>More</span>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -361,6 +387,14 @@ const Explore = () => {
             filteredGroups={filteredGroups}
             filteredPages={filteredPages}
           />
+        </TabsContent>
+
+        <TabsContent value="groups" className="mt-6">
+          <ExploreGroups groups={filteredGroups} />
+        </TabsContent>
+
+        <TabsContent value="pages" className="mt-6">
+          <ExplorePages pages={filteredPages} />
         </TabsContent>
 
         <TabsContent value="explore" className="mt-6">
