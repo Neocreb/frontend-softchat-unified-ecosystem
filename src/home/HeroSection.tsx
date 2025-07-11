@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -25,14 +24,14 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md sm:max-w-none mx-auto">
             {/* ✅ Launch App Button that redirects */}
-            <Link to="/auth" className="w-full sm:w-auto">
+            <a href="/auth" className="w-full sm:w-auto">
               <Button
                 size="lg"
                 className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded w-full sm:w-auto hover:bg-blue-700 transition-all duration-200"
               >
                 🚀 Launch App
               </Button>
-            </Link>
+            </a>
 
             {/* ✅ Join Waitlist Button */}
             <a href="#contact" className="w-full sm:w-auto">
