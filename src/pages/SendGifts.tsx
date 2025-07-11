@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,11 +6,24 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import SuggestedUsers from "@/components/profile/SuggestedUsers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import {
+  virtualGiftsService,
+  VIRTUAL_GIFTS,
+  VirtualGift,
+  GiftTransaction,
+  TipTransaction,
+  CreatorTipSettings,
+} from "@/services/virtualGiftsService";
 import {
   Gift,
   Heart,
@@ -26,6 +39,12 @@ import {
   ArrowLeft,
   Sparkles,
   Zap,
+  Send,
+  UserCheck,
+  Calendar,
+  Award,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 const SendGifts = () => {
