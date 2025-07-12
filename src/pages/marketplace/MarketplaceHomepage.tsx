@@ -10,7 +10,6 @@ import {
   Star,
   Eye,
   ArrowRight,
-  Menu,
   Bell,
   Globe,
   ChevronDown,
