@@ -311,28 +311,22 @@ const MarketplaceHomepage: React.FC = () => {
               </div>
 
               {/* Action Icons */}
-              <div className="flex items-center gap-4">
-                <Link to="/app/marketplace/wishlist">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <Link
+                  to="/app/marketplace/wishlist"
+                  className="hidden sm:block"
+                >
                   <Button variant="ghost" size="icon" className="relative">
-                    <Heart className="w-6 h-6" />
+                    <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
                     <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
                       5
                     </Badge>
                   </Button>
                 </Link>
 
-                <Link to="/app/notifications">
-                  <Button variant="ghost" size="icon" className="relative">
-                    <Bell className="w-6 h-6" />
-                    <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-blue-500 text-white text-xs">
-                      3
-                    </Badge>
-                  </Button>
-                </Link>
-
                 <Link to="/app/marketplace/cart">
                   <Button variant="ghost" size="icon" className="relative">
-                    <ShoppingCart className="w-6 h-6" />
+                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
                     <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
                       2
                     </Badge>
