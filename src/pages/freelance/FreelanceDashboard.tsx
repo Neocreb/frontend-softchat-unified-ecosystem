@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -355,20 +356,17 @@ export const FreelanceDashboard: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button
-              variant="outline"
-              onClick={() => (window.location.href = "/profile")}
-              className="w-full sm:w-auto"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Edit Profile
+            <Button variant="outline" asChild className="w-full sm:w-auto">
+              <Link to="/app/profile">
+                <Plus className="w-4 h-4 mr-2" />
+                Edit Profile
+              </Link>
             </Button>
-            <Button
-              onClick={() => (window.location.href = "/wallet")}
-              className="w-full sm:w-auto"
-            >
-              <Wallet className="w-4 h-4 mr-2" />
-              View Wallet
+            <Button asChild className="w-full sm:w-auto">
+              <Link to="/app/wallet">
+                <Wallet className="w-4 h-4 mr-2" />
+                View Wallet
+              </Link>
             </Button>
           </div>
         </div>
@@ -443,8 +441,8 @@ export const FreelanceDashboard: React.FC = () => {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Active Projects</CardTitle>
-                    <Button variant="outline" size="sm">
-                      View All
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to="/app/freelance">View All</Link>
                     </Button>
                   </CardHeader>
                   <CardContent>
@@ -469,7 +467,9 @@ export const FreelanceDashboard: React.FC = () => {
                         <p className="text-muted-foreground mb-4">
                           Start applying to jobs to see your projects here
                         </p>
-                        <Button>Browse Jobs</Button>
+                        <Button asChild>
+                          <Link to="/app/freelance">Browse Jobs</Link>
+                        </Button>
                       </div>
                     )}
                   </CardContent>
@@ -568,30 +568,42 @@ export const FreelanceDashboard: React.FC = () => {
                     <Button
                       variant="outline"
                       className="w-full justify-start"
-                      onClick={() => (window.location.href = "/wallet")}
+                      asChild
                     >
-                      <Wallet className="w-4 h-4 mr-2" />
-                      View Wallet
+                      <Link to="/app/wallet">
+                        <Wallet className="w-4 h-4 mr-2" />
+                        View Wallet
+                      </Link>
                     </Button>
                     <Button
                       variant="outline"
                       className="w-full justify-start"
-                      onClick={() => (window.location.href = "/profile")}
+                      asChild
                     >
-                      <Users className="w-4 h-4 mr-2" />
-                      Edit Profile
+                      <Link to="/app/profile">
+                        <Users className="w-4 h-4 mr-2" />
+                        Edit Profile
+                      </Link>
                     </Button>
                     <Button
                       variant="outline"
                       className="w-full justify-start"
-                      onClick={() => (window.location.href = "/settings")}
+                      asChild
                     >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Settings
+                      <Link to="/app/settings">
+                        <Settings className="w-4 h-4 mr-2" />
+                        Settings
+                      </Link>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <MessageCircle className="w-4 h-4 mr-2" />
-                      Contact Support
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link to="/app/support">
+                        <MessageCircle className="w-4 h-4 mr-2" />
+                        Contact Support
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -605,9 +617,15 @@ export const FreelanceDashboard: React.FC = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Brain className="w-4 h-4 mr-2" />
-                      AI Job Matching
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link to="/app/freelance">
+                        <Brain className="w-4 h-4 mr-2" />
+                        AI Job Matching
+                      </Link>
                     </Button>
                     <Button variant="outline" className="w-full justify-start">
                       <BarChart3 className="w-4 h-4 mr-2" />
@@ -616,10 +634,12 @@ export const FreelanceDashboard: React.FC = () => {
                     <Button
                       variant="outline"
                       className="w-full justify-start"
-                      onClick={() => (window.location.href = "/rewards")}
+                      asChild
                     >
-                      <Trophy className="w-4 h-4 mr-2" />
-                      Achievements
+                      <Link to="/app/rewards">
+                        <Trophy className="w-4 h-4 mr-2" />
+                        Achievements
+                      </Link>
                     </Button>
                     <Button variant="outline" className="w-full justify-start">
                       <Target className="w-4 h-4 mr-2" />
