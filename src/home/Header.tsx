@@ -40,13 +40,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-8">
           <NavLinks />
           <Button className="btn-primary" asChild>
-            <a
-              href="https://app.softchat.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Launch App
-            </a>
+            <Link to="/app/marketplace">Launch Marketplace</Link>
           </Button>
         </nav>
 
