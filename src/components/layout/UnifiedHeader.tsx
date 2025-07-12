@@ -64,6 +64,7 @@ import {
   Camera,
   Globe,
   ChevronDown,
+  ChevronRight,
   Users,
   FileText,
   BarChart3,
