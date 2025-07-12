@@ -592,10 +592,12 @@ export const FreelanceDashboard: React.FC = () => {
               {/* Sidebar */}
               <div className="space-y-6">
                 {/* Urgent Tasks */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-orange-500" />
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                        <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                      </div>
                       Urgent Tasks
                     </CardTitle>
                   </CardHeader>
@@ -630,9 +632,14 @@ export const FreelanceDashboard: React.FC = () => {
                 </Card>
 
                 {/* Quick Actions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                        <Zap className="w-6 h-6 text-green-600 dark:text-green-400" />
+                      </div>
+                      Quick Actions
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <Button
@@ -679,10 +686,12 @@ export const FreelanceDashboard: React.FC = () => {
                 </Card>
 
                 {/* Freelance-Specific Features */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-blue-600" />
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      </div>
                       Freelance Tools
                     </CardTitle>
                   </CardHeader>
@@ -719,9 +728,14 @@ export const FreelanceDashboard: React.FC = () => {
                 </Card>
 
                 {/* Performance Metrics */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>This Month</CardTitle>
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                        <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      This Month
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
