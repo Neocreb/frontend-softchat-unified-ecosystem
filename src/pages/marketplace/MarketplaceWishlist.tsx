@@ -1,5 +1,5 @@
 import React from "react";
-import { EnhancedWishlist } from "@/components/marketplace/EnhancedWishlist";
+import EnhancedWishlist from "@/components/marketplace/EnhancedWishlist";
 
 export default function MarketplaceWishlist() {
   return (
