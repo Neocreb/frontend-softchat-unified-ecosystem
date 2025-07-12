@@ -465,26 +465,26 @@ export const FreelanceDashboard: React.FC = () => {
                   title="Total Earnings"
                   value={`$${stats.totalEarnings.toLocaleString()}`}
                   change="+12% this month"
-                  icon={<DollarSign className="w-6 h-6 text-white" />}
-                  color="bg-green-500"
+                  icon={<DollarSign className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-green-500 to-emerald-600"
                 />
                 <StatCard
                   title="Active Projects"
                   value={stats.activeProjects}
-                  icon={<Briefcase className="w-6 h-6 text-white" />}
-                  color="bg-blue-500"
+                  icon={<Briefcase className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-blue-500 to-cyan-600"
                 />
                 <StatCard
                   title="Completed Projects"
                   value={stats.completedProjects}
-                  icon={<CheckCircle2 className="w-6 h-6 text-white" />}
-                  color="bg-purple-500"
+                  icon={<CheckCircle2 className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-purple-500 to-violet-600"
                 />
                 <StatCard
                   title="Success Rate"
                   value={`${stats.successRate}%`}
-                  icon={<Star className="w-6 h-6 text-white" />}
-                  color="bg-orange-500"
+                  icon={<Star className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-orange-500 to-amber-600"
                 />
               </div>
             ) : null}
