@@ -29,12 +29,16 @@ interface EnhancedProductCardProps {
   product: Product;
   onAddToCart: (productId: string) => void;
   onAddToWishlist: (productId: string) => void;
-  onViewProduct: (productId: string) => void;
+  onViewProduct: (product: Product) => void;
+  onMessageSeller?: (sellerId: string, productId: string) => void;
   inWishlist?: boolean;
   inCart?: boolean;
-  view?: "grid" | "list";
+  viewMode?: "grid" | "list";
+  view?: "grid" | "list"; // Deprecated, use viewMode
   showSellerInfo?: boolean;
   className?: string;
+  loading?: "eager" | "lazy";
+  priority?: boolean;
 }
 
 export default function EnhancedProductCard({
