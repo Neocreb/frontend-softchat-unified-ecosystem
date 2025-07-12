@@ -53,6 +53,7 @@ import MarketplaceCart from "./pages/marketplace/MarketplaceCart";
 import MarketplaceCheckout from "./pages/marketplace/MarketplaceCheckout";
 import MarketplaceList from "./pages/marketplace/MarketplaceList";
 import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
+import SellerDashboard from "./pages/marketplace/SellerDashboard";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
 import CryptoMarket from "./pages/CryptoMarket";
