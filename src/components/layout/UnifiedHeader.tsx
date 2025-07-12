@@ -76,7 +76,7 @@ import {
   Eye,
   Star,
   MapPin,
-  Switch,
+  ToggleLeft,
 } from "lucide-react";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
@@ -763,7 +763,7 @@ const UnifiedHeader = ({
                 onClick={toggleMarketplaceMode}
                 className="hidden md:flex items-center gap-2"
               >
-                <Switch className="h-4 w-4" />
+                <ToggleLeft className="h-4 w-4" />
                 <span className="text-xs">
                   {marketplaceMode === "buyer" ? "Buy" : "Sell"}
                 </span>
