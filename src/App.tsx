@@ -462,8 +462,6 @@ const App = () => {
                       <ReadingGuide />
                       <ConnectionStatus />
                       <PWAInstallPrompt />
-                      <MobileLayoutChecker />
-                      <PerformanceMonitor />
 
                       {/* Toasters */}
                       <Toaster />
