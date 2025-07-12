@@ -202,6 +202,8 @@ const MarketplaceContent = () => {
                 <TabsTrigger value="dashboard">Seller Dashboard</TabsTrigger>
                 <TabsTrigger value="list">List Product</TabsTrigger>
                 <TabsTrigger value="wishlist">My Wishlist</TabsTrigger>
+                <TabsTrigger value="cart">My Cart</TabsTrigger>
+                <TabsTrigger value="orders">My Orders</TabsTrigger>
                 <TabsTrigger value="analytics">Analytics</TabsTrigger>
               </>
             )}
