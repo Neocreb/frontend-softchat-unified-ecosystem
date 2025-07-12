@@ -230,9 +230,11 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <WalletProvider>
                 <MarketplaceProvider>
-                  <ChatProvider>
-                    <AppLayout />
-                  </ChatProvider>
+                  <EnhancedMarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout />
+                    </ChatProvider>
+                  </EnhancedMarketplaceProvider>
                 </MarketplaceProvider>
               </WalletProvider>
             </ProtectedRoute>
