@@ -903,46 +903,67 @@ const UnifiedHeader = ({
 
                 <DropdownMenuSeparator />
 
-                {/* Marketplace Section */}
+                {/* Marketplace Section - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Marketplace
-                  </DropdownMenuLabel>
                   <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace")}
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("marketplace")}
                   >
-                    <Store className="mr-2 h-4 w-4" />
-                    <span>Browse Products</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/cart")}
-                  >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    <span>Cart ({getCartItemsCount()})</span>
-                    {getCartTotal() > 0 && (
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        ${getCartTotal().toFixed(2)}
-                      </span>
+                    <div className="flex items-center">
+                      <Store className="mr-2 h-4 w-4" />
+                      <span>Marketplace</span>
+                    </div>
+                    {expandedSections.marketplace ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
                     )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/wishlist")}
-                  >
-                    <Heart className="mr-2 h-4 w-4" />
-                    <span>Wishlist ({wishlist.length})</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/my")}
-                  >
-                    <Package className="mr-2 h-4 w-4" />
-                    <span>My Orders</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/seller")}
-                  >
-                    <Store className="mr-2 h-4 w-4" />
-                    <span>Seller Dashboard</span>
-                  </DropdownMenuItem>
+
+                  {expandedSections.marketplace && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace")}
+                      >
+                        <Store className="mr-2 h-4 w-4" />
+                        <span>Browse</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/cart")}
+                      >
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        <span>Cart ({getCartItemsCount()})</span>
+                        {getCartTotal() > 0 && (
+                          <span className="ml-auto text-xs text-muted-foreground">
+                            ${getCartTotal().toFixed(2)}
+                          </span>
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/wishlist")}
+                      >
+                        <Heart className="mr-2 h-4 w-4" />
+                        <span>Wishlist ({wishlist.length})</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/my")}
+                      >
+                        <Package className="mr-2 h-4 w-4" />
+                        <span>Orders</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/seller")}
+                      >
+                        <BarChart3 className="mr-2 h-4 w-4" />
+                        <span>Seller Dashboard</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
