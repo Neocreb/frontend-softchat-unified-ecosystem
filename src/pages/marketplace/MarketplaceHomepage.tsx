@@ -446,6 +446,65 @@ const MarketplaceHomepage: React.FC = () => {
         </div>
       </header>
 
+      {/* Mobile Navigation Menu */}
+      {showMobileMenu && (
+        <div className="lg:hidden bg-white border-b border-gray-200 shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <nav className="space-y-3">
+              <Link
+                to="/app/marketplace"
+                className="block text-gray-900 hover:text-gray-600 py-2 border-b border-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/app/marketplace/list"
+                className="block text-gray-600 hover:text-gray-900 py-2 border-b border-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Sell Products
+              </Link>
+              <Link
+                to="/app/marketplace/my"
+                className="block text-gray-600 hover:text-gray-900 py-2 border-b border-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                My Account
+              </Link>
+              <Link
+                to="/app/marketplace/seller"
+                className="block text-gray-600 hover:text-gray-900 py-2 border-b border-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Seller Dashboard
+              </Link>
+              <Link
+                to="/app/marketplace/cart"
+                className="block text-gray-600 hover:text-gray-900 py-2 border-b border-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Shopping Cart (2)
+              </Link>
+              <Link
+                to="/app/marketplace/wishlist"
+                className="block text-gray-600 hover:text-gray-900 py-2 border-b border-gray-100"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Wishlist (5)
+              </Link>
+              <Link
+                to="/app/chat"
+                className="block text-gray-600 hover:text-gray-900 py-2"
+                onClick={() => setShowMobileMenu(false)}
+              >
+                Messages
+              </Link>
+            </nav>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
