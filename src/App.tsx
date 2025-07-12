@@ -416,6 +416,10 @@ const AppRoutes = () => {
         path="/marketplace/shop"
         element={<Navigate to="/app/marketplace" replace />}
       />
+      <Route
+        path="/marketplace/cart"
+        element={<Navigate to="/app/marketplace/cart" replace />}
+      />
       <Route path="/chat" element={<Navigate to="/app/chat" replace />} />
       <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
       <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
