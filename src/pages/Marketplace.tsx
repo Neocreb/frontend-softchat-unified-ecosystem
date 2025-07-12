@@ -160,6 +160,15 @@ const MarketplaceContent = () => {
     setActiveTab("dashboard");
   };
 
+  const handleProductSelect = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleFiltersChange = (filters: any) => {
+    // Handle filter changes from AdvancedSearchFilter
+    setFilter(filters);
+  };
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
