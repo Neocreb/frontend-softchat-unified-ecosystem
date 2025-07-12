@@ -816,7 +816,103 @@ export default function AdvancedSearchFilter({
                         </SheetDescription>
                       </SheetHeader>
                       <div className="mt-6 space-y-6">
-                        {/* Mobile filter content will go here */}
+                        {/* Mobile Categories */}
+                        <FilterSection
+                          title="Categories"
+                          icon={<Tag className="h-4 w-4" />}
+                          defaultOpen
+                        >
+                          <div className="space-y-2 max-h-40 overflow-y-auto">
+                            {filterOptions.categories.map((category) => (
+                              <label
+                                key={category}
+                                className="flex items-center space-x-2 cursor-pointer"
+                              >
+                                <Checkbox
+                                  checked={filters.categories.includes(
+                                    category,
+                                  )}
+                                  onCheckedChange={() =>
+                                    toggleArrayFilter("categories", category)
+                                  }
+                                />
+                                <span className="text-sm capitalize">
+                                  {category}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </FilterSection>
+
+                        {/* Mobile Price Range */}
+                        <FilterSection
+                          title="Price Range"
+                          icon={<DollarSign className="h-4 w-4" />}
+                          defaultOpen
+                        >
+                          <div className="space-y-3">
+                            <div className="px-2">
+                              <Slider
+                                value={filters.priceRange}
+                                onValueChange={(value) =>
+                                  updateFilters({
+                                    priceRange: value as [number, number],
+                                  })
+                                }
+                                max={1000}
+                                step={10}
+                                className="w-full"
+                              />
+                            </div>
+                            <div className="flex items-center justify-between text-sm text-gray-600">
+                              <span>{formatPrice(filters.priceRange[0])}</span>
+                              <span>{formatPrice(filters.priceRange[1])}</span>
+                            </div>
+                          </div>
+                        </FilterSection>
+
+                        {/* Mobile Quick Filters */}
+                        <FilterSection
+                          title="Quick Filters"
+                          icon={<Zap className="h-4 w-4" />}
+                          defaultOpen
+                        >
+                          <div className="space-y-2">
+                            <label className="flex items-center space-x-2 cursor-pointer">
+                              <Checkbox
+                                checked={filters.freeShippingOnly}
+                                onCheckedChange={(checked) =>
+                                  updateFilters({ freeShippingOnly: !!checked })
+                                }
+                              />
+                              <span className="text-sm">
+                                Free shipping only
+                              </span>
+                            </label>
+                            <label className="flex items-center space-x-2 cursor-pointer">
+                              <Checkbox
+                                checked={filters.verifiedSellersOnly}
+                                onCheckedChange={(checked) =>
+                                  updateFilters({
+                                    verifiedSellersOnly: !!checked,
+                                  })
+                                }
+                              />
+                              <span className="text-sm">
+                                Verified sellers only
+                              </span>
+                            </label>
+                            <label className="flex items-center space-x-2 cursor-pointer">
+                              <Checkbox
+                                checked={filters.onSaleOnly}
+                                onCheckedChange={(checked) =>
+                                  updateFilters({ onSaleOnly: !!checked })
+                                }
+                              />
+                              <span className="text-sm">On sale only</span>
+                            </label>
+                          </div>
+                        </FilterSection>
                       </div>
                     </SheetContent>
                   </Sheet>
