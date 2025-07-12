@@ -16,7 +16,7 @@ import { AdminProvider } from "./contexts/AdminContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { EnhancedMarketplaceProvider } from "./contexts/EnhancedMarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
-import { WalletProvider } from "./contexts/WalletProvider";
+import { WalletProvider } from "./contexts/WalletContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
 import ErrorBoundary from "./components/ui/error-boundary";
