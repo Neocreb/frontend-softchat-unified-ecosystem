@@ -328,42 +328,81 @@ const MarketplaceHomepage: React.FC = () => {
 
                   {/* Account Dropdown */}
                   {showAccountDropdown && (
-                    <div className="absolute right-0 mt-2 w-56 bg-black/90 backdrop-blur-lg rounded-lg shadow-xl border border-white/20 text-white z-50">
+                    <div className="absolute right-0 mt-2 w-64 bg-black/90 backdrop-blur-lg rounded-lg shadow-xl border border-white/20 text-white z-50">
                       <div className="p-4 space-y-3">
-                        <Link
-                          to="/marketplace/account"
-                          className="flex items-center gap-3 hover:bg-white/10 p-2 rounded"
-                        >
-                          <User className="w-5 h-5" />
-                          <span className="text-sm">Manage My Account</span>
-                        </Link>
-                        <Link
-                          to="/marketplace/orders"
-                          className="flex items-center gap-3 hover:bg-white/10 p-2 rounded"
-                        >
-                          <ShoppingCart className="w-5 h-5" />
-                          <span className="text-sm">My Order</span>
-                        </Link>
-                        <Link
-                          to="/marketplace/cancellations"
-                          className="flex items-center gap-3 hover:bg-white/10 p-2 rounded"
-                        >
-                          <div className="w-5 h-5 rounded-full border border-white flex items-center justify-center">
-                            <span className="text-xs">×</span>
-                          </div>
-                          <span className="text-sm">My Cancellations</span>
-                        </Link>
-                        <Link
-                          to="/marketplace/reviews"
-                          className="flex items-center gap-3 hover:bg-white/10 p-2 rounded"
-                        >
-                          <Star className="w-5 h-5" />
-                          <span className="text-sm">My Reviews</span>
-                        </Link>
-                        <button className="flex items-center gap-3 hover:bg-white/10 p-2 rounded w-full text-left">
-                          <ArrowRight className="w-5 h-5 rotate-180" />
-                          <span className="text-sm">Logout</span>
-                        </button>
+                        {/* Dashboards Section */}
+                        <div className="border-b border-white/20 pb-3">
+                          <h3 className="text-xs font-medium text-white/60 mb-2 uppercase tracking-wide">
+                            Dashboards
+                          </h3>
+                          <Link
+                            to="/app/marketplace/my"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <div className="w-5 h-5 rounded bg-blue-500 flex items-center justify-center">
+                              <User className="w-3 h-3" />
+                            </div>
+                            <span className="text-sm">Buyer Dashboard</span>
+                          </Link>
+                          <Link
+                            to="/app/marketplace/seller"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <div className="w-5 h-5 rounded bg-green-500 flex items-center justify-center">
+                              <div className="w-3 h-3 rounded-full border border-white"></div>
+                            </div>
+                            <span className="text-sm">Seller Dashboard</span>
+                          </Link>
+                        </div>
+
+                        {/* Account Management */}
+                        <div className="space-y-1">
+                          <Link
+                            to="/app/profile"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <User className="w-5 h-5" />
+                            <span className="text-sm">Manage My Account</span>
+                          </Link>
+                          <Link
+                            to="/app/marketplace/cart"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <ShoppingCart className="w-5 h-5" />
+                            <span className="text-sm">My Cart</span>
+                          </Link>
+                          <Link
+                            to="/app/marketplace/wishlist"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <Heart className="w-5 h-5" />
+                            <span className="text-sm">My Wishlist</span>
+                          </Link>
+                          <Link
+                            to="/app/marketplace/my"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <div className="w-5 h-5 rounded-full border border-white flex items-center justify-center">
+                              <span className="text-xs">×</span>
+                            </div>
+                            <span className="text-sm">My Orders</span>
+                          </Link>
+                          <Link
+                            to="/app/marketplace/my"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <Star className="w-5 h-5" />
+                            <span className="text-sm">My Reviews</span>
+                          </Link>
+                        </div>
+
+                        {/* Logout */}
+                        <div className="border-t border-white/20 pt-3">
+                          <button className="flex items-center gap-3 hover:bg-white/10 p-2 rounded w-full text-left transition-colors">
+                            <ArrowRight className="w-5 h-5 rotate-180" />
+                            <span className="text-sm">Logout</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
