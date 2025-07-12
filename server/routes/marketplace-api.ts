@@ -1215,4 +1215,677 @@ router.get("/seller/analytics", authenticateToken, async (req, res) => {
   }
 });
 
+// =============================================================================
+// WISHLIST API
+// =============================================================================
+
+// Get user's wishlists
+router.get("/wishlists", authenticateToken, async (req, res) => {
+  try {
+    const userWishlists = await db
+      .select()
+      .from(wishlists)
+      .where(eq(wishlists.userId, req.user.id))
+      .orderBy(desc(wishlists.createdAt));
+
+    res.json(userWishlists);
+  } catch (error) {
+    console.error("Error fetching wishlists:", error);
+    res.status(500).json({ error: "Failed to fetch wishlists" });
+  }
+});
+
+// Create new wishlist
+router.post("/wishlists", authenticateToken, async (req, res) => {
+  try {
+    const { name, description, isPublic = false } = req.body;
+
+    const [wishlist] = await db
+      .insert(wishlists)
+      .values({
+        userId: req.user.id,
+        name,
+        description,
+        isPublic,
+        itemCount: 0,
+      })
+      .returning();
+
+    res.status(201).json(wishlist);
+  } catch (error) {
+    console.error("Error creating wishlist:", error);
+    res.status(500).json({ error: "Failed to create wishlist" });
+  }
+});
+
+// Get wishlist items
+router.get(
+  "/wishlists/:wishlistId/items",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      // Verify ownership
+      const [wishlist] = await db
+        .select()
+        .from(wishlists)
+        .where(
+          and(
+            eq(wishlists.id, req.params.wishlistId),
+            eq(wishlists.userId, req.user.id),
+          ),
+        )
+        .limit(1);
+
+      if (!wishlist) {
+        return res.status(404).json({ error: "Wishlist not found" });
+      }
+
+      // Get wishlist items with product details
+      const items = await db
+        .select({
+          id: wishlistItems.id,
+          wishlistId: wishlistItems.wishlistId,
+          productId: wishlistItems.productId,
+          addedAt: wishlistItems.addedAt,
+          priority: wishlistItems.priority,
+          targetPrice: wishlistItems.targetPrice,
+          notes: wishlistItems.notes,
+          notifyOnSale: wishlistItems.notifyOnSale,
+          notifyOnRestock: wishlistItems.notifyOnRestock,
+          product: {
+            id: products.id,
+            name: products.name,
+            description: products.description,
+            price: products.price,
+            discountPrice: products.discountPrice,
+            images: products.images,
+            inStock: products.inStock,
+            averageRating: products.averageRating,
+            totalReviews: products.totalReviews,
+          },
+        })
+        .from(wishlistItems)
+        .innerJoin(products, eq(wishlistItems.productId, products.id))
+        .where(eq(wishlistItems.wishlistId, req.params.wishlistId))
+        .orderBy(desc(wishlistItems.addedAt));
+
+      res.json(items);
+    } catch (error) {
+      console.error("Error fetching wishlist items:", error);
+      res.status(500).json({ error: "Failed to fetch wishlist items" });
+    }
+  },
+);
+
+// Add item to wishlist
+router.post(
+  "/wishlists/:wishlistId/items",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const {
+        productId,
+        priority = "medium",
+        targetPrice,
+        notes,
+        notifyOnSale = true,
+        notifyOnRestock = true,
+      } = req.body;
+
+      // Verify wishlist ownership
+      const [wishlist] = await db
+        .select()
+        .from(wishlists)
+        .where(
+          and(
+            eq(wishlists.id, req.params.wishlistId),
+            eq(wishlists.userId, req.user.id),
+          ),
+        )
+        .limit(1);
+
+      if (!wishlist) {
+        return res.status(404).json({ error: "Wishlist not found" });
+      }
+
+      // Check if product exists
+      const [product] = await db
+        .select()
+        .from(products)
+        .where(eq(products.id, productId))
+        .limit(1);
+
+      if (!product) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      // Check if already in wishlist
+      const [existingItem] = await db
+        .select()
+        .from(wishlistItems)
+        .where(
+          and(
+            eq(wishlistItems.wishlistId, req.params.wishlistId),
+            eq(wishlistItems.productId, productId),
+          ),
+        )
+        .limit(1);
+
+      if (existingItem) {
+        return res.status(400).json({ error: "Product already in wishlist" });
+      }
+
+      const [item] = await db
+        .insert(wishlistItems)
+        .values({
+          wishlistId: req.params.wishlistId,
+          productId,
+          priority,
+          targetPrice,
+          notes,
+          notifyOnSale,
+          notifyOnRestock,
+        })
+        .returning();
+
+      // Update wishlist item count
+      await db
+        .update(wishlists)
+        .set({
+          itemCount: sql`${wishlists.itemCount} + 1`,
+          updatedAt: new Date().toISOString(),
+        })
+        .where(eq(wishlists.id, req.params.wishlistId));
+
+      res.status(201).json(item);
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+      res.status(500).json({ error: "Failed to add to wishlist" });
+    }
+  },
+);
+
+// Remove item from wishlist
+router.delete(
+  "/wishlists/:wishlistId/items/:itemId",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      // Verify ownership through wishlist
+      const [item] = await db
+        .select({
+          wishlistItem: wishlistItems,
+          wishlist: wishlists,
+        })
+        .from(wishlistItems)
+        .innerJoin(wishlists, eq(wishlistItems.wishlistId, wishlists.id))
+        .where(
+          and(
+            eq(wishlistItems.id, req.params.itemId),
+            eq(wishlists.userId, req.user.id),
+          ),
+        )
+        .limit(1);
+
+      if (!item) {
+        return res.status(404).json({ error: "Wishlist item not found" });
+      }
+
+      await db
+        .delete(wishlistItems)
+        .where(eq(wishlistItems.id, req.params.itemId));
+
+      // Update wishlist item count
+      await db
+        .update(wishlists)
+        .set({
+          itemCount: sql`${wishlists.itemCount} - 1`,
+          updatedAt: new Date().toISOString(),
+        })
+        .where(eq(wishlists.id, req.params.wishlistId));
+
+      res.json({ message: "Item removed from wishlist" });
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+      res.status(500).json({ error: "Failed to remove from wishlist" });
+    }
+  },
+);
+
+// =============================================================================
+// DISPUTES API
+// =============================================================================
+
+// Get user's disputes
+router.get("/disputes", authenticateToken, async (req, res) => {
+  try {
+    const { status, type, limit = 20, offset = 0 } = req.query;
+
+    let query = db
+      .select()
+      .from(marketplaceDisputes)
+      .where(
+        sql`${marketplaceDisputes.buyerId} = ${req.user.id} OR ${marketplaceDisputes.sellerId} = ${req.user.id}`,
+      )
+      .orderBy(desc(marketplaceDisputes.createdAt));
+
+    const conditions = [];
+    if (status)
+      conditions.push(eq(marketplaceDisputes.status, status as string));
+    if (type)
+      conditions.push(eq(marketplaceDisputes.disputeType, type as string));
+
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
+    }
+
+    const disputes = await query
+      .limit(parseInt(limit as string))
+      .offset(parseInt(offset as string));
+
+    res.json(disputes);
+  } catch (error) {
+    console.error("Error fetching disputes:", error);
+    res.status(500).json({ error: "Failed to fetch disputes" });
+  }
+});
+
+// Create dispute
+router.post("/disputes", authenticateToken, async (req, res) => {
+  try {
+    const {
+      orderId,
+      disputeType,
+      reason,
+      description,
+      evidenceUrls = [],
+      requestedResolution,
+      requestedAmount,
+    } = req.body;
+
+    // Verify order ownership
+    const [order] = await db
+      .select()
+      .from(marketplaceOrders)
+      .where(
+        and(
+          eq(marketplaceOrders.id, orderId),
+          eq(marketplaceOrders.buyerId, req.user.id),
+        ),
+      )
+      .limit(1);
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found or unauthorized" });
+    }
+
+    // Check if dispute already exists
+    const [existingDispute] = await db
+      .select()
+      .from(marketplaceDisputes)
+      .where(eq(marketplaceDisputes.orderId, orderId))
+      .limit(1);
+
+    if (existingDispute) {
+      return res
+        .status(400)
+        .json({ error: "Dispute already exists for this order" });
+    }
+
+    const [dispute] = await db
+      .insert(marketplaceDisputes)
+      .values({
+        orderId,
+        buyerId: req.user.id,
+        sellerId: order.sellerId,
+        disputeType,
+        reason,
+        description,
+        evidenceUrls,
+        requestedResolution,
+        requestedAmount,
+        status: "open",
+        adminAssignedTo: null,
+        buyerLastResponse: new Date().toISOString(),
+        sellerLastResponse: null,
+        adminLastResponse: null,
+        escalatedAt: null,
+        resolutionOfferedAt: null,
+        agreedResolutionAt: null,
+        finalDecisionAt: null,
+        refundProcessedAt: null,
+        buyerSatisfaction: null,
+        sellerSatisfaction: null,
+      })
+      .returning();
+
+    res.status(201).json(dispute);
+  } catch (error) {
+    console.error("Error creating dispute:", error);
+    res.status(500).json({ error: "Failed to create dispute" });
+  }
+});
+
+// Update dispute
+router.put("/disputes/:disputeId", authenticateToken, async (req, res) => {
+  try {
+    const { status, response, evidenceUrls } = req.body;
+
+    // Verify dispute involvement
+    const [dispute] = await db
+      .select()
+      .from(marketplaceDisputes)
+      .where(
+        and(
+          eq(marketplaceDisputes.id, req.params.disputeId),
+          sql`${marketplaceDisputes.buyerId} = ${req.user.id} OR ${marketplaceDisputes.sellerId} = ${req.user.id}`,
+        ),
+      )
+      .limit(1);
+
+    if (!dispute) {
+      return res
+        .status(404)
+        .json({ error: "Dispute not found or unauthorized" });
+    }
+
+    const updateData: any = {
+      updatedAt: new Date().toISOString(),
+    };
+
+    if (status) updateData.status = status;
+    if (response) {
+      updateData.messages = sql`${marketplaceDisputes.messages} || ${JSON.stringify(
+        [
+          {
+            from: req.user.id,
+            message: response,
+            timestamp: new Date().toISOString(),
+            evidenceUrls: evidenceUrls || [],
+          },
+        ],
+      )}`;
+
+      // Update last response timestamp
+      if (dispute.buyerId === req.user.id) {
+        updateData.buyerLastResponse = new Date().toISOString();
+      } else {
+        updateData.sellerLastResponse = new Date().toISOString();
+      }
+    }
+
+    const [updatedDispute] = await db
+      .update(marketplaceDisputes)
+      .set(updateData)
+      .where(eq(marketplaceDisputes.id, req.params.disputeId))
+      .returning();
+
+    res.json(updatedDispute);
+  } catch (error) {
+    console.error("Error updating dispute:", error);
+    res.status(500).json({ error: "Failed to update dispute" });
+  }
+});
+
+// =============================================================================
+// PRODUCT PRICE HISTORY API
+// =============================================================================
+
+// Get product price history
+router.get("/products/:productId/price-history", async (req, res) => {
+  try {
+    const { period = "6m" } = req.query;
+
+    let dateFilter = new Date();
+    switch (period) {
+      case "1m":
+        dateFilter.setMonth(dateFilter.getMonth() - 1);
+        break;
+      case "3m":
+        dateFilter.setMonth(dateFilter.getMonth() - 3);
+        break;
+      case "6m":
+        dateFilter.setMonth(dateFilter.getMonth() - 6);
+        break;
+      case "1y":
+        dateFilter.setFullYear(dateFilter.getFullYear() - 1);
+        break;
+      default:
+        dateFilter.setMonth(dateFilter.getMonth() - 6);
+    }
+
+    const priceHistory = await db
+      .select()
+      .from(productPriceHistory)
+      .where(
+        and(
+          eq(productPriceHistory.productId, req.params.productId),
+          gte(productPriceHistory.createdAt, dateFilter.toISOString()),
+        ),
+      )
+      .orderBy(asc(productPriceHistory.createdAt));
+
+    res.json(priceHistory);
+  } catch (error) {
+    console.error("Error fetching price history:", error);
+    res.status(500).json({ error: "Failed to fetch price history" });
+  }
+});
+
+// =============================================================================
+// PRODUCT RECOMMENDATIONS API
+// =============================================================================
+
+// Get product recommendations
+router.get("/products/:productId/recommendations", async (req, res) => {
+  try {
+    const { limit = 10 } = req.query;
+
+    const recommendations = await db
+      .select({
+        recommendedProduct: products,
+        score: productRecommendations.score,
+        reason: productRecommendations.reason,
+      })
+      .from(productRecommendations)
+      .innerJoin(
+        products,
+        eq(productRecommendations.recommendedProductId, products.id),
+      )
+      .where(eq(productRecommendations.productId, req.params.productId))
+      .orderBy(desc(productRecommendations.score))
+      .limit(parseInt(limit as string));
+
+    res.json(recommendations);
+  } catch (error) {
+    console.error("Error fetching recommendations:", error);
+    res.status(500).json({ error: "Failed to fetch recommendations" });
+  }
+});
+
+// =============================================================================
+// SEARCH API
+// =============================================================================
+
+// Advanced search
+router.post("/search", async (req, res) => {
+  try {
+    const {
+      query: searchQuery,
+      filters = {},
+      sortBy = "relevance",
+      page = 1,
+      limit = 20,
+    } = req.body;
+
+    let query = db.select().from(products);
+    const conditions = [];
+
+    // Search query
+    if (searchQuery) {
+      conditions.push(
+        sql`(
+          ${products.name} ILIKE ${"%" + searchQuery + "%"} OR
+          ${products.description} ILIKE ${"%" + searchQuery + "%"} OR
+          ${products.tags} ILIKE ${"%" + searchQuery + "%"}
+        )`,
+      );
+    }
+
+    // Apply filters
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        switch (key) {
+          case "category":
+            conditions.push(eq(products.category, value as string));
+            break;
+          case "minPrice":
+            conditions.push(gte(products.price, parseFloat(value as string)));
+            break;
+          case "maxPrice":
+            conditions.push(lte(products.price, parseFloat(value as string)));
+            break;
+          case "rating":
+            conditions.push(
+              gte(products.averageRating, parseFloat(value as string)),
+            );
+            break;
+          case "inStock":
+            conditions.push(eq(products.inStock, value as boolean));
+            break;
+          case "productType":
+            conditions.push(eq(products.productType, value as string));
+            break;
+        }
+      }
+    });
+
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
+    }
+
+    // Apply sorting
+    switch (sortBy) {
+      case "price-low":
+        query = query.orderBy(asc(products.price));
+        break;
+      case "price-high":
+        query = query.orderBy(desc(products.price));
+        break;
+      case "rating":
+        query = query.orderBy(desc(products.averageRating));
+        break;
+      case "popular":
+        query = query.orderBy(desc(products.totalSales));
+        break;
+      case "recent":
+        query = query.orderBy(desc(products.createdAt));
+        break;
+      case "relevance":
+      default:
+        // For relevance, we'd typically use full-text search scoring
+        query = query.orderBy(
+          desc(products.boostLevel),
+          desc(products.totalSales),
+        );
+        break;
+    }
+
+    // Apply pagination
+    const offset = (parseInt(page as string) - 1) * parseInt(limit as string);
+    query = query.limit(parseInt(limit as string)).offset(offset);
+
+    const results = await query;
+
+    // Get total count
+    const totalResult = await db
+      .select({ count: count() })
+      .from(products)
+      .where(conditions.length > 0 ? and(...conditions) : undefined);
+    const total = totalResult[0]?.count || 0;
+
+    res.json({
+      results,
+      pagination: {
+        page: parseInt(page as string),
+        limit: parseInt(limit as string),
+        total,
+        totalPages: Math.ceil(total / parseInt(limit as string)),
+      },
+      searchQuery,
+      appliedFilters: filters,
+    });
+  } catch (error) {
+    console.error("Error performing search:", error);
+    res.status(500).json({ error: "Failed to perform search" });
+  }
+});
+
+// =============================================================================
+// ADMIN ROUTES (for managing marketplace)
+// =============================================================================
+
+// Approve/reject campaign participation
+router.put(
+  "/admin/campaigns/:campaignId/products/:productId",
+  validateAdmin,
+  async (req, res) => {
+    try {
+      const { status, featuredOrder = 0 } = req.body;
+
+      const [participation] = await db
+        .update(campaignProducts)
+        .set({
+          status,
+          featuredOrder,
+          approvedAt: status === "approved" ? new Date().toISOString() : null,
+          approvedBy: status === "approved" ? req.user.id : null,
+          updatedAt: new Date().toISOString(),
+        })
+        .where(
+          and(
+            eq(campaignProducts.campaignId, req.params.campaignId),
+            eq(campaignProducts.productId, req.params.productId),
+          ),
+        )
+        .returning();
+
+      if (!participation) {
+        return res
+          .status(404)
+          .json({ error: "Campaign participation not found" });
+      }
+
+      res.json(participation);
+    } catch (error) {
+      console.error("Error updating campaign participation:", error);
+      res
+        .status(500)
+        .json({ error: "Failed to update campaign participation" });
+    }
+  },
+);
+
+// Get pending campaign requests
+router.get("/admin/campaigns/pending", validateAdmin, async (req, res) => {
+  try {
+    const pendingRequests = await db
+      .select({
+        campaignProduct: campaignProducts,
+        campaign: campaigns,
+        product: products,
+      })
+      .from(campaignProducts)
+      .innerJoin(campaigns, eq(campaignProducts.campaignId, campaigns.id))
+      .innerJoin(products, eq(campaignProducts.productId, products.id))
+      .where(eq(campaignProducts.status, "pending"))
+      .orderBy(desc(campaignProducts.createdAt));
+
+    res.json(pendingRequests);
+  } catch (error) {
+    console.error("Error fetching pending requests:", error);
+    res.status(500).json({ error: "Failed to fetch pending requests" });
+  }
+});
+
 export default router;
