@@ -63,7 +63,7 @@ import {
   Menu,
   ArrowUp,
   Bookmark,
-  Compare,
+  GitCompare as Compare,
   ScanLine,
   Camera,
   Mic,
