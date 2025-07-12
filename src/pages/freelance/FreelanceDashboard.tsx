@@ -167,23 +167,29 @@ export const FreelanceDashboard: React.FC = () => {
           </Badge>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Progress</span>
-            <span className="font-medium">75%</span>
+            <span className="text-muted-foreground font-medium">Progress</span>
+            <span className="font-bold text-blue-600 dark:text-blue-400">
+              75%
+            </span>
           </div>
-          <Progress value={75} className="h-2" />
+          <Progress value={75} className="h-3 bg-gray-100 dark:bg-gray-800" />
 
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <div className="text-muted-foreground">Budget</div>
-              <div className="font-medium">
+          <div className="grid grid-cols-2 gap-6 text-sm">
+            <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="text-muted-foreground font-medium mb-1">
+                Budget
+              </div>
+              <div className="font-bold text-lg text-gray-900 dark:text-white">
                 ${project.budget.agreed.toLocaleString()}
               </div>
             </div>
-            <div>
-              <div className="text-muted-foreground">Earned</div>
-              <div className="font-medium text-green-600">
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <div className="text-muted-foreground font-medium mb-1">
+                Earned
+              </div>
+              <div className="font-bold text-lg text-green-600 dark:text-green-400">
                 ${project.budget.paid.toLocaleString()}
               </div>
             </div>
