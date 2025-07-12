@@ -7,6 +7,7 @@ import ProblemSolutionSection from "@/home/ProblemSolutionSection";
 import WhySoftchatSection from "@/home/WhySoftchatSection";
 import ScreenshotCarousel from "@/home/ScreenshotCarousel";
 import NewsletterSection from "@/home/NewsletterSection";
+import MarketplaceAnnouncement from "@/components/marketplace/MarketplaceAnnouncement";
 
 const LandingPage = () => {
   return (
