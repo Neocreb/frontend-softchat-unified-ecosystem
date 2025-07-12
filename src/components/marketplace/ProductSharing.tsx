@@ -37,7 +37,7 @@ import {
 import { Product } from "@/types/marketplace";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import QRCode from "qrcode";
+// QRCode functionality with fallback
 
 interface ProductSharingProps {
   product: Product;
