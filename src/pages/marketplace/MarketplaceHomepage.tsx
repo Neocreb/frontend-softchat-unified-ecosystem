@@ -561,15 +561,17 @@ const MarketplaceHomepage: React.FC = () => {
             </div>
 
             {/* Flash Sales Section */}
-            <section className="mb-16">
-              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-8 gap-6">
+            <section className="mb-8 lg:mb-16">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-6 lg:mb-8 gap-4 lg:gap-6">
                 {/* Section Title */}
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-5 h-10 bg-red-500 rounded" />
-                    <span className="text-red-500 font-semibold">Today's</span>
+                <div className="space-y-4 lg:space-y-6">
+                  <div className="flex items-center gap-3 lg:gap-4">
+                    <div className="w-4 lg:w-5 h-8 lg:h-10 bg-red-500 rounded" />
+                    <span className="text-red-500 font-semibold text-sm lg:text-base">
+                      Today's
+                    </span>
                   </div>
-                  <h2 className="text-2xl lg:text-4xl font-semibold tracking-wide">
+                  <h2 className="text-xl sm:text-2xl lg:text-4xl font-semibold tracking-wide">
                     Flash Sales
                   </h2>
                 </div>
