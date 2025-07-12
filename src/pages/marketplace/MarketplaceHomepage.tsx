@@ -308,13 +308,25 @@ const MarketplaceHomepage: React.FC = () => {
                 <Link to="/app/marketplace/wishlist">
                   <Button variant="ghost" size="icon" className="relative">
                     <Heart className="w-6 h-6" />
+                    <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+                      5
+                    </Badge>
+                  </Button>
+                </Link>
+
+                <Link to="/app/notifications">
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Bell className="w-6 h-6" />
+                    <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-blue-500 text-white text-xs">
+                      3
+                    </Badge>
                   </Button>
                 </Link>
 
                 <Link to="/app/marketplace/cart">
                   <Button variant="ghost" size="icon" className="relative">
                     <ShoppingCart className="w-6 h-6" />
-                    <Badge className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+                    <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
                       2
                     </Badge>
                   </Button>
