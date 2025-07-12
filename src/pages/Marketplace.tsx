@@ -220,234 +220,269 @@ const MarketplaceContent = () => {
               >
                 ← Back to Products
               </Button>
-              <EnhancedProductDetail productId={selectedProduct} />
+              {useEnhancedMode ? (
+                <SuperEnhancedProductDetail
+                  productId={selectedProduct.id}
+                  onClose={() => setSelectedProduct(null)}
+                />
+              ) : (
+                <EnhancedProductDetail productId={selectedProduct.id} />
+              )}
             </div>
           ) : (
             <>
-              {/* Advanced Search Bar */}
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex flex-col lg:flex-row gap-4">
-                    <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        placeholder="Search products, brands, or categories..."
-                        value={searchQuery}
-                        onChange={(e) => handleSearch(e.target.value)}
-                        className="pl-10 h-12"
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Sort by" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="relevance">Best Match</SelectItem>
-                          <SelectItem value="price_low">
-                            Price: Low to High
-                          </SelectItem>
-                          <SelectItem value="price_high">
-                            Price: High to Low
-                          </SelectItem>
-                          <SelectItem value="rating">
-                            Customer Rating
-                          </SelectItem>
-                          <SelectItem value="newest">Newest First</SelectItem>
-                          <SelectItem value="bestselling">
-                            Best Selling
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        variant="outline"
-                        onClick={() =>
-                          setShowAdvancedFilters(!showAdvancedFilters)
-                        }
-                        className="flex items-center gap-2"
-                      >
-                        <SlidersHorizontal className="h-4 w-4" />
-                        Filters
-                      </Button>
-                      <div className="flex border rounded-lg">
-                        <Button
-                          variant={viewMode === "grid" ? "default" : "ghost"}
-                          size="sm"
-                          onClick={() => setViewMode("grid")}
-                        >
-                          <Grid className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant={viewMode === "list" ? "default" : "ghost"}
-                          size="sm"
-                          onClick={() => setViewMode("list")}
-                        >
-                          <List className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+              {useEnhancedMode ? (
+                <>
+                  {/* Advanced Search and Filters */}
+                  <AdvancedSearchFilter
+                    onFiltersChange={handleFiltersChange}
+                    showSaveSearch={isAuthenticated}
+                  />
 
-                  {/* Advanced Filters Panel */}
-                  {showAdvancedFilters && (
-                    <div className="mt-4 pt-4 border-t">
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">
-                            Price Range
-                          </label>
-                          <div className="flex gap-2">
-                            <Input
-                              placeholder="Min"
-                              value={priceRange.min}
-                              onChange={(e) =>
-                                setPriceRange((prev) => ({
-                                  ...prev,
-                                  min: e.target.value,
-                                }))
+                  {/* Enhanced Product Browser */}
+                  <EnhancedProductBrowser
+                    onProductSelect={handleProductSelect}
+                  />
+                </>
+              ) : (
+                <>
+                  {/* Legacy Search Bar */}
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex flex-col lg:flex-row gap-4">
+                        <div className="flex-1 relative">
+                          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                          <Input
+                            placeholder="Search products, brands, or categories..."
+                            value={searchQuery}
+                            onChange={(e) => handleSearch(e.target.value)}
+                            className="pl-10 h-12"
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Select value={sortBy} onValueChange={setSortBy}>
+                            <SelectTrigger className="w-[180px]">
+                              <SelectValue placeholder="Sort by" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="relevance">
+                                Best Match
+                              </SelectItem>
+                              <SelectItem value="price_low">
+                                Price: Low to High
+                              </SelectItem>
+                              <SelectItem value="price_high">
+                                Price: High to Low
+                              </SelectItem>
+                              <SelectItem value="rating">
+                                Customer Rating
+                              </SelectItem>
+                              <SelectItem value="newest">
+                                Newest First
+                              </SelectItem>
+                              <SelectItem value="bestselling">
+                                Best Selling
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            variant="outline"
+                            onClick={() =>
+                              setShowAdvancedFilters(!showAdvancedFilters)
+                            }
+                            className="flex items-center gap-2"
+                          >
+                            <SlidersHorizontal className="h-4 w-4" />
+                            Filters
+                          </Button>
+                          <div className="flex border rounded-lg">
+                            <Button
+                              variant={
+                                viewMode === "grid" ? "default" : "ghost"
                               }
-                            />
-                            <Input
-                              placeholder="Max"
-                              value={priceRange.max}
-                              onChange={(e) =>
-                                setPriceRange((prev) => ({
-                                  ...prev,
-                                  max: e.target.value,
-                                }))
+                              size="sm"
+                              onClick={() => setViewMode("grid")}
+                            >
+                              <Grid className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant={
+                                viewMode === "list" ? "default" : "ghost"
                               }
-                            />
+                              size="sm"
+                              onClick={() => setViewMode("list")}
+                            >
+                              <List className="h-4 w-4" />
+                            </Button>
                           </div>
                         </div>
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">
-                            Rating
-                          </label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Any rating" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="4">4+ Stars</SelectItem>
-                              <SelectItem value="3">3+ Stars</SelectItem>
-                              <SelectItem value="2">2+ Stars</SelectItem>
-                            </SelectContent>
-                          </Select>
+                      </div>
+
+                      {/* Advanced Filters Panel */}
+                      {showAdvancedFilters && (
+                        <div className="mt-4 pt-4 border-t">
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                              <label className="text-sm font-medium mb-2 block">
+                                Price Range
+                              </label>
+                              <div className="flex gap-2">
+                                <Input
+                                  placeholder="Min"
+                                  value={priceRange.min}
+                                  onChange={(e) =>
+                                    setPriceRange((prev) => ({
+                                      ...prev,
+                                      min: e.target.value,
+                                    }))
+                                  }
+                                />
+                                <Input
+                                  placeholder="Max"
+                                  value={priceRange.max}
+                                  onChange={(e) =>
+                                    setPriceRange((prev) => ({
+                                      ...prev,
+                                      max: e.target.value,
+                                    }))
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium mb-2 block">
+                                Rating
+                              </label>
+                              <Select>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Any rating" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="4">4+ Stars</SelectItem>
+                                  <SelectItem value="3">3+ Stars</SelectItem>
+                                  <SelectItem value="2">2+ Stars</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium mb-2 block">
+                                Condition
+                              </label>
+                              <Select>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Any condition" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="new">New</SelectItem>
+                                  <SelectItem value="used">Used</SelectItem>
+                                  <SelectItem value="refurbished">
+                                    Refurbished
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium mb-2 block">
+                                Shipping
+                              </label>
+                              <Select>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Any shipping" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="free">
+                                    Free Shipping
+                                  </SelectItem>
+                                  <SelectItem value="fast">
+                                    Fast Delivery
+                                  </SelectItem>
+                                  <SelectItem value="local">
+                                    Local Pickup
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">
-                            Condition
-                          </label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Any condition" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="new">New</SelectItem>
-                              <SelectItem value="used">Used</SelectItem>
-                              <SelectItem value="refurbished">
-                                Refurbished
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Trust & Security Banner */}
+                  <Card className="bg-blue-50 border-blue-200">
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-center gap-8 text-sm text-blue-800">
+                        <div className="flex items-center gap-2">
+                          <Shield className="h-4 w-4" />
+                          <span>Buyer Protection</span>
                         </div>
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">
-                            Shipping
-                          </label>
-                          <Select>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Any shipping" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="free">
-                                Free Shipping
-                              </SelectItem>
-                              <SelectItem value="fast">
-                                Fast Delivery
-                              </SelectItem>
-                              <SelectItem value="local">
-                                Local Pickup
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
+                        <div className="flex items-center gap-2">
+                          <Truck className="h-4 w-4" />
+                          <span>Fast Shipping</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="h-4 w-4" />
+                          <span>Secure Payment</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Star className="h-4 w-4" />
+                          <span>Verified Reviews</span>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
 
-              {/* Trust & Security Banner */}
-              <Card className="bg-blue-50 border-blue-200">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-center gap-8 text-sm text-blue-800">
-                    <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4" />
-                      <span>Buyer Protection</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Truck className="h-4 w-4" />
-                      <span>Fast Shipping</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="h-4 w-4" />
-                      <span>Secure Payment</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4" />
-                      <span>Verified Reviews</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {featuredProducts.length > 0 && (
-                <FeaturedProducts
-                  onAddToCart={handleAddToCart}
-                  onAddToWishlist={handleAddToWishlist}
-                />
-              )}
-
-              {sponsoredProducts.length > 0 && (
-                <SponsoredProducts
-                  onAddToCart={handleAddToCart}
-                  onAddToWishlist={handleAddToWishlist}
-                />
-              )}
-
-              <div className="flex flex-col md:flex-row gap-6">
-                <aside className="w-full md:w-64 shrink-0">
-                  <CategoryMenu
-                    activeCategory={activeCategory}
-                    onCategoryChange={handleCategoryChange}
-                  />
-                  <ProductFilters
-                    activeCategory={activeCategory}
-                    onCategoryChange={handleCategoryChange}
-                    onSearch={handleSearch}
-                  />
-                </aside>
-
-                <main className="flex-1">
-                  {isLoading ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {Array(6)
-                        .fill(0)
-                        .map((_, i) => (
-                          <Skeleton key={i} className="h-[320px] rounded-lg" />
-                        ))}
-                    </div>
-                  ) : (
-                    <ProductGrid
-                      category={activeCategory}
-                      searchQuery={searchQuery}
+                  {featuredProducts.length > 0 && (
+                    <FeaturedProducts
                       onAddToCart={handleAddToCart}
                       onAddToWishlist={handleAddToWishlist}
                     />
                   )}
-                </main>
-              </div>
+
+                  {sponsoredProducts.length > 0 && (
+                    <SponsoredProducts
+                      onAddToCart={handleAddToCart}
+                      onAddToWishlist={handleAddToWishlist}
+                    />
+                  )}
+
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <aside className="w-full md:w-64 shrink-0">
+                      <CategoryMenu
+                        activeCategory={activeCategory}
+                        onCategoryChange={handleCategoryChange}
+                      />
+                      <ProductFilters
+                        activeCategory={activeCategory}
+                        onCategoryChange={handleCategoryChange}
+                        onSearch={handleSearch}
+                      />
+                    </aside>
+
+                    <main className="flex-1">
+                      {isLoading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {Array(6)
+                            .fill(0)
+                            .map((_, i) => (
+                              <Skeleton
+                                key={i}
+                                className="h-[320px] rounded-lg"
+                              />
+                            ))}
+                        </div>
+                      ) : (
+                        <ProductGrid
+                          category={activeCategory}
+                          searchQuery={searchQuery}
+                          onAddToCart={handleAddToCart}
+                          onAddToWishlist={handleAddToWishlist}
+                        />
+                      )}
+                    </main>
+                  </div>
+                </>
+              )}
             </>
           )}
         </TabsContent>
