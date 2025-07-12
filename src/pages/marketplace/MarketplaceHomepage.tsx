@@ -47,6 +47,9 @@ const MarketplaceHomepage: React.FC = () => {
     minutes: 19,
     seconds: 56,
   });
+  const [selectedProduct, setSelectedProduct] =
+    useState<FlashSaleProduct | null>(null);
+  const [showQuickView, setShowQuickView] = useState(false);
 
   // Mock flash sale products
   const flashSaleProducts: FlashSaleProduct[] = [
