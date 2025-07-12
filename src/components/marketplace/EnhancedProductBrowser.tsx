@@ -59,7 +59,7 @@ import {
   RotateCcw,
   Bookmark,
   Share2,
-  Compare,
+  GitCompare as Compare,
   AlertCircle,
   Camera,
   Video,
