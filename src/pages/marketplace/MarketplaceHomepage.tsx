@@ -693,6 +693,25 @@ const MarketplaceHomepage: React.FC = () => {
                 }}
               />
             </section>
+
+            {/* Smart Recommendations Section */}
+            <section className="mb-16">
+              <SmartRecommendations
+                userId="user123"
+                recentlyViewed={flashSaleProducts.slice(0, 3)}
+                userPreferences={{
+                  categories: ["Electronics", "Fashion", "Home & Garden"],
+                  priceRange: [50, 500],
+                  brands: ["Apple", "Samsung", "Nike", "Sony"],
+                }}
+                onProductClick={handleProductQuickView}
+                onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                onAddToWishlist={handleAddToWishlist}
+                onQuickView={handleProductQuickView}
+                maxItems={8}
+                enableRealTimeUpdates={true}
+              />
+            </section>
           </div>
         </div>
       </div>
