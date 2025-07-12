@@ -512,7 +512,7 @@ const MarketplaceHomepage: React.FC = () => {
           </div>
 
           {/* Main Content Area */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 space-y-6 lg:space-y-8">
             {/* Hero Section */}
             <div className="relative bg-black rounded-lg overflow-hidden h-80 lg:h-96 mt-8 mb-16">
               <div className="flex h-full">
