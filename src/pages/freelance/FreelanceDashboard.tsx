@@ -373,25 +373,37 @@ export const FreelanceDashboard: React.FC = () => {
     <div className="container mx-auto px-4 py-6">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              Freelance Dashboard
-            </h1>
-            <p className="text-muted-foreground">
-              Manage your projects and track your progress
-            </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-2">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+              <Briefcase className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Freelance Dashboard
+              </h1>
+              <p className="text-muted-foreground text-lg font-medium">
+                Manage your projects and track your progress
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button variant="outline" asChild className="w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Button
+              variant="outline"
+              asChild
+              className="w-full sm:w-auto h-12 px-6 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+            >
               <Link to="/app/profile">
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-5 h-5 mr-2" />
                 Edit Profile
               </Link>
             </Button>
-            <Button asChild className="w-full sm:w-auto">
+            <Button
+              asChild
+              className="w-full sm:w-auto h-12 px-6 font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg"
+            >
               <Link to="/app/wallet">
-                <Wallet className="w-4 h-4 mr-2" />
+                <Wallet className="w-5 h-5 mr-2" />
                 View Wallet
               </Link>
             </Button>
