@@ -34,6 +34,17 @@ const HeroSection = () => {
               </Button>
             </Link>
 
+            {/* ✅ Marketplace Demo Button */}
+            <Link to="/app/marketplace" className="w-full sm:w-auto">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-green-200 hover:bg-green-50 text-green-700 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto transition-all duration-200"
+              >
+                🛒 Try Marketplace
+              </Button>
+            </Link>
+
             {/* ✅ Join Waitlist Button */}
             <a href="#contact" className="w-full sm:w-auto">
               <Button
