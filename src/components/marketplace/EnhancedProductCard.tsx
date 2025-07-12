@@ -318,6 +318,8 @@ export default function EnhancedProductCard({
               <img
                 src={product.image}
                 alt={product.name}
+                loading={loading}
+                decoding={priority ? "sync" : "async"}
                 className={cn(
                   "w-full h-full object-cover transition-all duration-300 group-hover:scale-105",
                   imageLoaded ? "opacity-100" : "opacity-0",
