@@ -698,30 +698,36 @@ export const FreelanceDashboard: React.FC = () => {
                   <CardContent className="space-y-2">
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
                       asChild
                     >
                       <Link to="/app/freelance">
-                        <Brain className="w-4 h-4 mr-2" />
+                        <Brain className="w-5 h-5 mr-3" />
                         AI Job Matching
                       </Link>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <BarChart3 className="w-4 h-4 mr-2" />
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <BarChart3 className="w-5 h-5 mr-3" />
                       Rate Calculator
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
                       asChild
                     >
                       <Link to="/app/rewards">
-                        <Trophy className="w-4 h-4 mr-2" />
+                        <Trophy className="w-5 h-5 mr-3" />
                         Achievements
                       </Link>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Target className="w-4 h-4 mr-2" />
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <Target className="w-5 h-5 mr-3" />
                       Project Planner
                     </Button>
                   </CardContent>
