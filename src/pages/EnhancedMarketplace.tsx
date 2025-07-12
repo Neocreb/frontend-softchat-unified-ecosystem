@@ -1,53 +1,5 @@
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Search,
-  Filter,
-  ShoppingCart,
-  Heart,
-  Package,
-  TrendingUp,
-  Users,
-  Star,
-  Shield,
-  Truck,
-  CreditCard,
-  Plus,
-  Grid,
-  List,
-  SlidersHorizontal,
-  MapPin,
-  Clock,
-  Award,
-  Zap,
-  Gift,
-  BarChart3,
-  Eye,
-  Settings,
-} from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useMarketplace } from "@/hooks/use-marketplace";
-import { useToast } from "@/components/ui/use-toast";
-import EnhancedProductCard from "@/components/marketplace/EnhancedProductCard";
-import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import React from "react";
+import { MarketplaceHomepage } from "./marketplace/MarketplaceHomepage";
 import EnhancedCheckoutFlow from "@/components/marketplace/EnhancedCheckoutFlow";
 import OrderManagement from "@/components/marketplace/OrderManagement";
 import SellerDashboard from "@/components/marketplace/SellerDashboard";
