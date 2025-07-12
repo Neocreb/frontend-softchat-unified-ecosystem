@@ -23,6 +23,8 @@ import { MobileProductCard } from "@/components/marketplace/MobileProductCard";
 import { MobileMarketplaceNav } from "@/components/marketplace/MobileMarketplaceNav";
 import ProductQuickView from "@/components/marketplace/ProductQuickView";
 import EnhancedSearch from "@/components/marketplace/EnhancedSearch";
+import ResponsiveProductCarousel from "@/components/marketplace/ResponsiveProductCarousel";
+import CategoryBrowser from "@/components/marketplace/CategoryBrowser";
 
 interface FlashSaleProduct {
   id: string;
