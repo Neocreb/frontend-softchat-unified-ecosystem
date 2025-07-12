@@ -34,6 +34,7 @@ import {
 } from "./components/mobile/MobileOptimizations";
 import MobileLayoutChecker from "./components/layout/MobileLayoutChecker";
 import PerformanceMonitor from "./components/debug/PerformanceMonitor";
+import MarketplaceNavigationHelper from "./components/marketplace/MarketplaceNavigationHelper";
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
