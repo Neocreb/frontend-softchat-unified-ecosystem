@@ -25,6 +25,7 @@ import ProductQuickView from "@/components/marketplace/ProductQuickView";
 import EnhancedSearch from "@/components/marketplace/EnhancedSearch";
 import ResponsiveProductCarousel from "@/components/marketplace/ResponsiveProductCarousel";
 import CategoryBrowser from "@/components/marketplace/CategoryBrowser";
+import SmartRecommendations from "@/components/marketplace/SmartRecommendations";
 
 interface FlashSaleProduct {
   id: string;
