@@ -169,10 +169,27 @@ const MarketplaceContent = () => {
     setFilter(filters);
   };
 
+  // Show mobile version on small screens
+  if (isMobile) {
+    return <MobileMarketplace onProductSelect={handleProductSelect} />;
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Marketplace</h1>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant={useEnhancedMode ? "default" : "outline"}
+            size="sm"
+            onClick={() => setUseEnhancedMode(!useEnhancedMode)}
+            className="flex items-center gap-2"
+          >
+            <Sparkles className="h-4 w-4" />
+            Enhanced Mode
+          </Button>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -185,6 +202,7 @@ const MarketplaceContent = () => {
                 <TabsTrigger value="dashboard">Seller Dashboard</TabsTrigger>
                 <TabsTrigger value="list">List Product</TabsTrigger>
                 <TabsTrigger value="wishlist">My Wishlist</TabsTrigger>
+                <TabsTrigger value="analytics">Analytics</TabsTrigger>
               </>
             )}
           </TabsList>
