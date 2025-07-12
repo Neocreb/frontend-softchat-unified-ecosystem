@@ -140,22 +140,29 @@ export const FreelanceDashboard: React.FC = () => {
       onClick={() => setSelectedProject(project)}
     >
       <CardContent className="pt-6 pb-6">
-        <div className="flex items-start justify-between mb-3">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold line-clamp-1 mb-1">
+            <h3 className="font-bold text-lg line-clamp-1 mb-2 text-gray-900 dark:text-white">
               {project.job.title}
             </h3>
-            <div className="flex items-center gap-2 mb-2">
-              <Avatar className="w-6 h-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Avatar className="w-8 h-8 ring-2 ring-white dark:ring-gray-800 shadow-sm">
                 <AvatarImage src={project.client.avatar} />
-                <AvatarFallback>{project.client.name[0]}</AvatarFallback>
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
+                  {project.client.name[0]}
+                </AvatarFallback>
               </Avatar>
-              <span className="text-sm text-muted-foreground">
-                {project.client.name}
-              </span>
+              <div>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  {project.client.name}
+                </span>
+                <div className="text-xs text-muted-foreground">Client</div>
+              </div>
             </div>
           </div>
-          <Badge className={getProjectStatusColor(project.status)}>
+          <Badge
+            className={`${getProjectStatusColor(project.status)} px-3 py-1 font-medium shadow-sm`}
+          >
             {project.status}
           </Badge>
         </div>
