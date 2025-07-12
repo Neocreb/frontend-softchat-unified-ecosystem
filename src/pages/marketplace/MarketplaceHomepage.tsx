@@ -364,6 +364,15 @@ const MarketplaceHomepage: React.FC = () => {
                             </div>
                             <span className="text-sm">Seller Dashboard</span>
                           </Link>
+                          <Link
+                            to="/app/marketplace/list"
+                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
+                          >
+                            <div className="w-5 h-5 rounded bg-purple-500 flex items-center justify-center">
+                              <div className="w-3 h-3">+</div>
+                            </div>
+                            <span className="text-sm">Sell Products</span>
+                          </Link>
                         </div>
 
                         {/* Account Management */}
