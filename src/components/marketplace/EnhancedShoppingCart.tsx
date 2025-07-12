@@ -749,7 +749,7 @@ const EnhancedShoppingCart: React.FC<EnhancedShoppingCartProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="w-full h-full sm:w-auto sm:h-auto sm:max-w-[600px] lg:max-w-[800px] max-h-[100vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ShoppingCart className="h-5 w-5" />
@@ -767,11 +767,11 @@ const EnhancedShoppingCart: React.FC<EnhancedShoppingCartProps> = ({
         </DialogHeader>
 
         {/* Progress Indicator */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4 md:mb-6 px-2">
           {["cart", "shipping", "payment", "review"].map((stepName, index) => (
             <div key={stepName} className="flex items-center">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium ${
                   step === stepName
                     ? "bg-blue-500 text-white"
                     : ["cart", "shipping", "payment", "review"].indexOf(step) >
@@ -784,7 +784,7 @@ const EnhancedShoppingCart: React.FC<EnhancedShoppingCartProps> = ({
               </div>
               {index < 3 && (
                 <div
-                  className={`w-12 h-1 mx-2 ${
+                  className={`w-6 md:w-12 h-1 mx-1 md:mx-2 ${
                     ["cart", "shipping", "payment", "review"].indexOf(step) >
                     index
                       ? "bg-green-500"
