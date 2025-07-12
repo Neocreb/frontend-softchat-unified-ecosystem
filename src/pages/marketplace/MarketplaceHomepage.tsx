@@ -244,7 +244,7 @@ const MarketplaceHomepage: React.FC = () => {
                 to="/marketplace"
                 className="text-2xl font-bold tracking-wider"
               >
-                Exclusive
+                Marketplace
               </Link>
 
               {/* Desktop Navigation */}
