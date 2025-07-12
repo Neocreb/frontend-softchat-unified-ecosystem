@@ -568,6 +568,23 @@ const MarketplaceContent = () => {
             </div>
           )}
         </TabsContent>
+
+        {/* Analytics Tab */}
+        <TabsContent value="analytics" className="space-y-4 pt-4">
+          {isAuthenticated ? (
+            <MarketplaceAnalytics showRecommendations={true} />
+          ) : (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-semibold mb-2">
+                Authentication Required
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Please sign in to view marketplace analytics
+              </p>
+              <Button onClick={() => navigate("/auth")}>Sign In</Button>
+            </div>
+          )}
+        </TabsContent>
       </Tabs>
     </div>
   );
