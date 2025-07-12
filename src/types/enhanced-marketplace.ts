@@ -1121,3 +1121,7 @@ export type MarketplaceContextType = {
   setPriceAlert: (productId: string, targetPrice: number) => Promise<boolean>;
   getPriceHistory: (productId: string) => Promise<any[]>;
 };
+
+// Type aliases for compatibility and validation
+export type MarketplaceOrder = Order;
+export { Campaign, CartItem, ProductBoost };
