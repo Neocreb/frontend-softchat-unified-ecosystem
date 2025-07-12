@@ -263,6 +263,11 @@ const AppRoutes = () => {
           {/* Marketplace routes */}
           <Route path="marketplace" element={<EnhancedMarketplace />} />
           <Route path="marketplace/my" element={<MarketplaceDashboard />} />
+          <Route path="marketplace/orders" element={<MarketplaceOrders />} />
+          <Route
+            path="marketplace/seller-dashboard"
+            element={<MarketplaceSellerDashboard />}
+          />
           <Route path="marketplace/list" element={<MarketplaceList />} />
           <Route
             path="marketplace/seller/:username"
