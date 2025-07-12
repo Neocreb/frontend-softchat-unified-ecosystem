@@ -281,7 +281,7 @@ export const FreelanceDashboard: React.FC = () => {
             </TabsTrigger>
             <TabsTrigger value="billing" className="text-xs sm:text-sm">
               <span className="hidden sm:inline">Billing</span>
-              <span className="sm:hidden">💰</span>
+              <span className="sm:hidden">���</span>
             </TabsTrigger>
           </TabsList>
 
@@ -644,41 +644,41 @@ export const FreelanceDashboard: React.FC = () => {
                   <CardContent className="space-y-2">
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
                       asChild
                     >
                       <Link to="/app/wallet">
-                        <Wallet className="w-4 h-4 mr-2" />
+                        <Wallet className="w-5 h-5 mr-3" />
                         View Wallet
                       </Link>
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
                       asChild
                     >
                       <Link to="/app/profile">
-                        <Users className="w-4 h-4 mr-2" />
+                        <Users className="w-5 h-5 mr-3" />
                         Edit Profile
                       </Link>
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
                       asChild
                     >
                       <Link to="/app/settings">
-                        <Settings className="w-4 h-4 mr-2" />
+                        <Settings className="w-5 h-5 mr-3" />
                         Settings
                       </Link>
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
                       asChild
                     >
                       <Link to="/app/support">
-                        <MessageCircle className="w-4 h-4 mr-2" />
+                        <MessageCircle className="w-5 h-5 mr-3" />
                         Contact Support
                       </Link>
                     </Button>
