@@ -249,36 +249,30 @@ const MarketplaceHomepage: React.FC = () => {
               </Link>
 
               {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center gap-12">
+              <nav className="hidden lg:flex items-center gap-8 xl:gap-12">
                 <Link
                   to="/app/marketplace"
-                  className="text-gray-900 hover:text-gray-600 border-b-2 border-black pb-1"
+                  className="text-gray-900 hover:text-gray-600 border-b-2 border-black pb-1 transition-colors"
                 >
                   Home
                 </Link>
                 <Link
                   to="/app/marketplace/list"
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Sell
                 </Link>
                 <Link
                   to="/app/marketplace/my"
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   My Account
                 </Link>
                 <Link
                   to="/app/marketplace/seller"
-                  className="text-gray-600 hover:text-gray-900"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Seller Hub
-                </Link>
-                <Link
-                  to="/app/chat"
-                  className="text-gray-600 hover:text-gray-900"
-                >
-                  Messages
                 </Link>
               </nav>
             </div>
