@@ -536,7 +536,7 @@ const MarketplaceHomepage: React.FC = () => {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
-                <div className="flex-1 relative">
+                <div className="flex-1 relative hidden lg:block">
                   <img
                     src="https://cdn.builder.io/api/v1/image/assets%2Fb10c564763a64f819a10cd7f992a4935%2F17b12f033e9547eeb4f7bc845b15ec73?format=webp&width=800"
                     alt="iPhone 14"
@@ -546,7 +546,7 @@ const MarketplaceHomepage: React.FC = () => {
               </div>
 
               {/* Carousel Indicators */}
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-3">
+              <div className="absolute bottom-3 lg:bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 lg:gap-3">
                 {[0, 1, 2, 3, 4].map((_, index) => (
                   <button
                     key={index}
