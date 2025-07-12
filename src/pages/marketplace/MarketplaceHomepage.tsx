@@ -239,11 +239,11 @@ const MarketplaceHomepage: React.FC = () => {
       <header className="border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-md z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-4 sm:gap-6">
-            {/* Logo */}
-            <div className="flex items-center gap-8">
+            {/* Logo and Navigation */}
+            <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
               <Link
                 to="/marketplace"
-                className="text-2xl font-bold tracking-wider"
+                className="text-xl sm:text-2xl font-bold tracking-wider flex-shrink-0"
               >
                 Marketplace
               </Link>
