@@ -300,7 +300,7 @@ const MarketplaceHomepage: React.FC = () => {
                     },
                     { id: "toys", name: "Toys & Games", productCount: 321 },
                   ]}
-                  showFilters={true}
+                  showFilters={false}
                 />
               </div>
 
