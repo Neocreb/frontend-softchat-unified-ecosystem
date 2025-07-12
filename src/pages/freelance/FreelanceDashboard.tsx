@@ -195,14 +195,18 @@ export const FreelanceDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t">
-            <div className="text-xs text-muted-foreground">
+          <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-800">
+            <div className="text-sm text-muted-foreground font-medium">
+              <Clock className="w-4 h-4 inline mr-1" />
               Due:{" "}
               {project.deadline
                 ? new Date(project.deadline).toLocaleDateString()
                 : "No deadline"}
             </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+              <span className="text-xs font-medium">View Details</span>
+              <ChevronRight className="w-4 h-4" />
+            </div>
           </div>
         </div>
       </CardContent>
