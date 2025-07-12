@@ -13,6 +13,14 @@ const LandingPage = () => {
   return (
     <Layout>
       <HeroSection />
+
+      {/* Enhanced Marketplace Announcement */}
+      <section className="py-8 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <MarketplaceAnnouncement />
+        </div>
+      </section>
+
       <FeaturesSection />
       <AdvancedFeaturesSection />
       <ProblemSolutionSection />
