@@ -55,6 +55,8 @@ import MarketplaceList from "./pages/marketplace/MarketplaceList";
 import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
+import MarketplaceOrders from "./pages/marketplace/MarketplaceOrders";
+import MarketplaceSellerDashboard from "./pages/marketplace/MarketplaceSellerDashboard";
 import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
 import NotFound from "./pages/NotFound";
