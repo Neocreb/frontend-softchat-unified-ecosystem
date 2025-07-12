@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -197,9 +196,7 @@ const MarketplaceList = () => {
               <h2 className="text-lg font-medium">Product Information</h2>
             </CardHeader>
             
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <CardContent className="space-y-6">
+                        <CardContent className="space-y-6">
                   <FormField
                     control={form.control}
                     name="name"
