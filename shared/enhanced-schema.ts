@@ -440,6 +440,303 @@ export const p2pDisputes = pgTable("p2p_disputes", {
 // ENHANCED MARKETPLACE SYSTEM
 // =============================================================================
 
+// Products table (Enhanced)
+export const products = pgTable("products", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sellerId: uuid("seller_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Basic product info
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  shortDescription: text("short_description"),
+
+  // Product type: physical, digital, service
+  productType: text("product_type").notNull().default("physical"), // 'physical', 'digital', 'service', 'freelance_service'
+
+  // Pricing
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  discountPrice: decimal("discount_price", { precision: 10, scale: 2 }),
+  discountPercentage: decimal("discount_percentage", {
+    precision: 5,
+    scale: 2,
+  }),
+
+  // Category and classification
+  category: text("category").notNull(),
+  subcategory: text("subcategory"),
+  tags: text("tags").array(),
+
+  // Media
+  images: text("images").array(), // Array of image URLs
+  videos: text("videos").array(), // Array of video URLs
+  thumbnailImage: text("thumbnail_image"),
+
+  // Inventory and availability
+  inStock: boolean("in_stock").default(true),
+  stockQuantity: integer("stock_quantity"),
+  limitedQuantity: boolean("limited_quantity").default(false),
+  allowBackorder: boolean("allow_backorder").default(false),
+
+  // Product status
+  status: text("status").default("active"), // 'active', 'draft', 'suspended', 'out_of_stock'
+  isDigital: boolean("is_digital").default(false),
+  isFeatured: boolean("is_featured").default(false),
+  isSponsored: boolean("is_sponsored").default(false),
+
+  // SEO and discovery
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  seoKeywords: text("seo_keywords").array(),
+
+  // Ratings and reviews
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default(
+    "0",
+  ),
+  totalReviews: integer("total_reviews").default(0),
+  totalSales: integer("total_sales").default(0),
+
+  // Shipping and delivery
+  shippingRequired: boolean("shipping_required").default(true),
+  shippingWeight: decimal("shipping_weight", { precision: 8, scale: 3 }),
+  shippingDimensions: jsonb("shipping_dimensions"), // {length, width, height, unit}
+  deliveryMethods: text("delivery_methods").array(), // ['standard', 'express', 'pickup', 'digital']
+
+  // Boost and campaign info
+  boostLevel: integer("boost_level").default(0), // 0=none, 1=basic, 2=featured, 3=premium
+  boostedUntil: timestamp("boosted_until"),
+  campaignIds: text("campaign_ids").array(), // Array of campaign IDs this product is part of
+
+  // Performance metrics
+  viewCount: integer("view_count").default(0),
+  clickCount: integer("click_count").default(0),
+  favoriteCount: integer("favorite_count").default(0),
+
+  // Digital product specific
+  downloadUrl: text("download_url"), // For digital products
+  licenseType: text("license_type"), // 'single', 'multiple', 'unlimited'
+  downloadLimit: integer("download_limit"),
+
+  // Service specific (for freelance services)
+  serviceDeliveryTime: text("service_delivery_time"), // "1-3 days", "1 week", etc.
+  serviceType: text("service_type"), // 'one_time', 'recurring', 'hourly'
+  hourlyRate: decimal("hourly_rate", { precision: 10, scale: 2 }),
+
+  // Metadata
+  metadata: jsonb("metadata"), // Additional flexible data
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Product variants (colors, sizes, etc.)
+export const productVariants = pgTable("product_variants", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  name: text("name").notNull(), // "Red XL", "Blue Medium", etc.
+  sku: text("sku").unique(),
+
+  // Variant-specific pricing
+  priceAdjustment: decimal("price_adjustment", {
+    precision: 10,
+    scale: 2,
+  }).default("0"),
+
+  // Variant attributes
+  attributes: jsonb("attributes").notNull(), // {color: 'red', size: 'xl', material: 'cotton'}
+
+  // Inventory
+  stockQuantity: integer("stock_quantity").default(0),
+  inStock: boolean("in_stock").default(true),
+
+  // Media
+  images: text("images").array(),
+
+  // Availability
+  isActive: boolean("is_active").default(true),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Product categories (hierarchical)
+export const productCategories = pgTable("product_categories", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+
+  // Hierarchy
+  parentId: uuid("parent_id").references(() => productCategories.id),
+  level: integer("level").default(0), // 0=root, 1=subcategory, etc.
+  path: text("path"), // "/electronics/smartphones"
+
+  // Display
+  icon: text("icon"),
+  image: text("image"),
+  color: text("color"),
+  sortOrder: integer("sort_order").default(0),
+
+  // SEO
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+
+  // Status
+  isActive: boolean("is_active").default(true),
+  isFeatured: boolean("is_featured").default(false),
+
+  // Stats
+  productCount: integer("product_count").default(0),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Campaigns system
+export const campaigns = pgTable("campaigns", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  // Campaign details
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+
+  // Campaign type
+  type: text("type").notNull(), // 'seasonal', 'flash_sale', 'featured', 'category_boost'
+
+  // Timing
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+
+  // Display
+  bannerImage: text("banner_image"),
+  bannerText: text("banner_text"),
+  backgroundColor: text("background_color"),
+  textColor: text("text_color"),
+
+  // Rules and criteria
+  eligibilityCriteria: jsonb("eligibility_criteria"), // Rules for product inclusion
+  discountType: text("discount_type"), // 'percentage', 'fixed_amount', 'buy_x_get_y'
+  discountValue: decimal("discount_value", { precision: 10, scale: 2 }),
+  maxDiscount: decimal("max_discount", { precision: 10, scale: 2 }),
+  minOrderAmount: decimal("min_order_amount", { precision: 10, scale: 2 }),
+
+  // Limits
+  maxParticipants: integer("max_participants"),
+  maxProductsPerSeller: integer("max_products_per_seller"),
+  usageLimit: integer("usage_limit"),
+  usageCount: integer("usage_count").default(0),
+
+  // Status
+  status: text("status").default("draft"), // 'draft', 'active', 'paused', 'ended'
+  isPublic: boolean("is_public").default(true),
+  requiresApproval: boolean("requires_approval").default(false),
+
+  // Admin info
+  createdBy: uuid("created_by")
+    .notNull()
+    .references(() => users.id),
+
+  // Performance tracking
+  viewCount: integer("view_count").default(0),
+  clickCount: integer("click_count").default(0),
+  conversionCount: integer("conversion_count").default(0),
+  totalRevenue: decimal("total_revenue", { precision: 15, scale: 2 }).default(
+    "0",
+  ),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Campaign product participation
+export const campaignProducts = pgTable("campaign_products", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  campaignId: uuid("campaign_id")
+    .notNull()
+    .references(() => campaigns.id, { onDelete: "cascade" }),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  // Participation details
+  requestedBy: uuid("requested_by")
+    .notNull()
+    .references(() => users.id),
+
+  // Status
+  status: text("status").default("pending"), // 'pending', 'approved', 'rejected', 'ended'
+  approvedBy: uuid("approved_by").references(() => users.id),
+  approvedAt: timestamp("approved_at"),
+
+  // Campaign-specific settings
+  customDiscount: decimal("custom_discount", { precision: 10, scale: 2 }),
+  featuredOrder: integer("featured_order").default(0), // Display order in campaign
+
+  // Performance within campaign
+  campaignViews: integer("campaign_views").default(0),
+  campaignClicks: integer("campaign_clicks").default(0),
+  campaignSales: integer("campaign_sales").default(0),
+  campaignRevenue: decimal("campaign_revenue", {
+    precision: 15,
+    scale: 2,
+  }).default("0"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Enhanced boost system for products and profiles
+export const productBoosts = pgTable("product_boosts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Boost configuration
+  boostType: text("boost_type").notNull(), // 'basic', 'featured', 'premium', 'homepage'
+  duration: integer("duration").notNull(), // Duration in hours
+  cost: decimal("cost", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").notNull(), // 'SOFT_POINTS', 'USDT', 'ETH', 'BTC'
+
+  // Payment details
+  paymentMethod: text("payment_method").notNull(), // 'wallet', 'premium_credits'
+  transactionId: uuid("transaction_id").references(() => walletTransactions.id),
+
+  // Status and timing
+  status: text("status").default("pending"), // 'pending', 'active', 'completed', 'cancelled', 'rejected'
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+
+  // Admin approval
+  requiresApproval: boolean("requires_approval").default(false),
+  approvedBy: uuid("approved_by").references(() => users.id),
+  approvedAt: timestamp("approved_at"),
+  rejectionReason: text("rejection_reason"),
+
+  // Performance metrics
+  impressions: integer("impressions").default(0),
+  clicks: integer("clicks").default(0),
+  conversions: integer("conversions").default(0),
+  conversionValue: decimal("conversion_value", {
+    precision: 15,
+    scale: 2,
+  }).default("0"),
+
+  // ROI tracking
+  roi: decimal("roi", { precision: 10, scale: 2 }), // Return on investment percentage
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const marketplaceOrders = pgTable("marketplace_orders", {
   id: uuid("id").primaryKey().defaultRandom(),
 
@@ -453,7 +750,8 @@ export const marketplaceOrders = pgTable("marketplace_orders", {
 
   // Order details
   orderNumber: text("order_number").notNull().unique(),
-  items: jsonb("items").notNull(), // Array of product items with quantities
+  orderType: text("order_type").default("marketplace"), // 'marketplace', 'digital', 'service'
+  items: jsonb("items").notNull(), // Array of {productId, variantId?, quantity, price, name}
 
   // Financial details
   subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
@@ -462,37 +760,267 @@ export const marketplaceOrders = pgTable("marketplace_orders", {
   ),
   tax: decimal("tax", { precision: 10, scale: 2 }).default("0"),
   discount: decimal("discount", { precision: 10, scale: 2 }).default("0"),
+  discountCode: text("discount_code"),
   total: decimal("total", { precision: 10, scale: 2 }).notNull(),
 
   // Payment and escrow
-  paymentMethod: text("payment_method").notNull(), // 'wallet', 'crypto', 'soft_points'
-  paymentStatus: text("payment_status").default("pending"), // 'pending', 'paid', 'failed', 'refunded'
+  paymentMethod: text("payment_method").notNull(), // 'wallet_usdt', 'wallet_eth', 'wallet_btc', 'soft_points'
+  paymentCurrency: text("payment_currency").notNull(), // 'USDT', 'ETH', 'BTC', 'SOFT_POINTS'
+  paymentStatus: text("payment_status").default("pending"), // 'pending', 'paid', 'failed', 'refunded', 'partial_refund'
   escrowId: uuid("escrow_id").references(() => escrowContracts.id),
+  paymentTransactionId: uuid("payment_transaction_id").references(
+    () => walletTransactions.id,
+  ),
 
-  // Shipping details
-  shippingAddress: jsonb("shipping_address").notNull(),
-  shippingMethod: text("shipping_method"),
+  // Shipping details (for physical products)
+  shippingAddress: jsonb("shipping_address"), // {name, address, city, state, zip, country, phone}
+  billingAddress: jsonb("billing_address"),
+  shippingMethod: text("shipping_method"), // 'standard', 'express', 'pickup', 'digital'
   trackingNumber: text("tracking_number"),
+  trackingUrl: text("tracking_url"),
   estimatedDelivery: timestamp("estimated_delivery"),
+  actualDelivery: timestamp("actual_delivery"),
+
+  // Digital delivery (for digital products)
+  downloadUrls: text("download_urls").array(),
+  downloadExpiresAt: timestamp("download_expires_at"),
+  downloadCount: integer("download_count").default(0),
+  downloadLimit: integer("download_limit"),
 
   // Order status
-  status: text("status").default("pending"), // 'pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'disputed'
+  status: text("status").default("pending"), // 'pending', 'confirmed', 'processing', 'shipped', 'delivered', 'completed', 'cancelled', 'disputed', 'refunded'
+
+  // Fulfillment tracking
+  fulfillmentStatus: text("fulfillment_status").default("pending"), // 'pending', 'processing', 'fulfilled', 'cancelled'
+  requiresShipping: boolean("requires_shipping").default(true),
+  autoCompleteAfterDays: integer("auto_complete_after_days").default(7),
 
   // Chat integration
   chatThreadId: uuid("chat_thread_id").references(() => chatThreads.id),
 
+  // Customer service
+  customerNotes: text("customer_notes"), // Buyer's notes
+  sellerNotes: text("seller_notes"), // Internal seller notes
+  adminNotes: text("admin_notes"), // Admin notes for disputes/issues
+
   // Timeline
   confirmedAt: timestamp("confirmed_at"),
+  processingAt: timestamp("processing_at"),
   shippedAt: timestamp("shipped_at"),
   deliveredAt: timestamp("delivered_at"),
+  completedAt: timestamp("completed_at"),
+  cancelledAt: timestamp("cancelled_at"),
 
-  // Platform fees
+  // Platform fees and revenue
   platformFee: decimal("platform_fee", { precision: 10, scale: 2 }).default(
     "0",
   ),
   feePercentage: decimal("fee_percentage", { precision: 5, scale: 2 }).default(
     "5.0",
   ),
+  sellerRevenue: decimal("seller_revenue", { precision: 10, scale: 2 }),
+
+  // Dispute handling
+  disputeId: uuid("dispute_id"),
+  disputeReason: text("dispute_reason"),
+
+  // Return/refund tracking
+  returnRequested: boolean("return_requested").default(false),
+  returnRequestedAt: timestamp("return_requested_at"),
+  returnReason: text("return_reason"),
+  returnStatus: text("return_status"), // 'requested', 'approved', 'denied', 'returned', 'refunded'
+  refundAmount: decimal("refund_amount", { precision: 10, scale: 2 }),
+  refundedAt: timestamp("refunded_at"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Order status history/logs
+export const orderStatusLogs = pgTable("order_status_logs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => marketplaceOrders.id, { onDelete: "cascade" }),
+
+  // Status change details
+  fromStatus: text("from_status"),
+  toStatus: text("to_status").notNull(),
+  reason: text("reason"),
+  notes: text("notes"),
+
+  // Who made the change
+  changedBy: uuid("changed_by")
+    .notNull()
+    .references(() => users.id),
+  changedByType: text("changed_by_type").notNull(), // 'buyer', 'seller', 'admin', 'system'
+
+  // Additional metadata
+  metadata: jsonb("metadata"), // Additional data about the status change
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Cart system for persistent shopping carts
+export const shoppingCarts = pgTable("shopping_carts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Cart metadata
+  sessionId: text("session_id"), // For guest carts
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const cartItems = pgTable("cart_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  cartId: uuid("cart_id")
+    .notNull()
+    .references(() => shoppingCarts.id, { onDelete: "cascade" }),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  variantId: uuid("variant_id").references(() => productVariants.id),
+
+  quantity: integer("quantity").notNull().default(1),
+
+  // Price at time of adding to cart
+  priceSnapshot: decimal("price_snapshot", {
+    precision: 10,
+    scale: 2,
+  }).notNull(),
+
+  // Custom options/notes
+  customOptions: jsonb("custom_options"), // Custom attributes for the item
+  notes: text("notes"), // Special instructions
+
+  addedAt: timestamp("added_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Wishlist system
+export const wishlists = pgTable("wishlists", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  name: text("name").default("My Wishlist"),
+  description: text("description"),
+  isPublic: boolean("is_public").default(false),
+  isDefault: boolean("is_default").default(true),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const wishlistItems = pgTable("wishlist_items", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  wishlistId: uuid("wishlist_id")
+    .notNull()
+    .references(() => wishlists.id, { onDelete: "cascade" }),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  // Preferences
+  preferredVariant: uuid("preferred_variant_id").references(
+    () => productVariants.id,
+  ),
+  notifyOnSale: boolean("notify_on_sale").default(false),
+  notifyOnRestock: boolean("notify_on_restock").default(false),
+  targetPrice: decimal("target_price", { precision: 10, scale: 2 }), // Price alert threshold
+
+  // Price tracking
+  priceWhenAdded: decimal("price_when_added", { precision: 10, scale: 2 }),
+  lowestPriceSeen: decimal("lowest_price_seen", { precision: 10, scale: 2 }),
+
+  notes: text("notes"),
+  priority: integer("priority").default(1), // 1=low, 5=high
+
+  addedAt: timestamp("added_at").defaultNow(),
+});
+
+// Product view/interaction tracking
+export const productAnalytics = pgTable("product_analytics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").references(() => users.id), // null for anonymous
+
+  // Event details
+  eventType: text("event_type").notNull(), // 'view', 'click', 'add_to_cart', 'add_to_wishlist', 'purchase', 'share'
+
+  // Context
+  referrerUrl: text("referrer_url"),
+  source: text("source"), // 'search', 'category', 'featured', 'sponsored', 'direct'
+  campaign: text("campaign"), // Campaign that led to this view
+
+  // Technical details
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  deviceType: text("device_type"), // 'desktop', 'mobile', 'tablet'
+
+  // Location (optional)
+  country: text("country"),
+  city: text("city"),
+
+  // Session info
+  sessionId: text("session_id"),
+  sessionDuration: integer("session_duration"), // Seconds on product page
+
+  // Additional metadata
+  metadata: jsonb("metadata"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Marketplace disputes
+export const marketplaceDisputes = pgTable("marketplace_disputes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => marketplaceOrders.id, { onDelete: "cascade" }),
+
+  // Dispute details
+  raisedBy: uuid("raised_by")
+    .notNull()
+    .references(() => users.id),
+  againstUserId: uuid("against_user_id")
+    .notNull()
+    .references(() => users.id),
+
+  // Dispute information
+  type: text("type").notNull(), // 'not_received', 'not_as_described', 'damaged', 'return_refused', 'refund_issue'
+  reason: text("reason").notNull(),
+  description: text("description").notNull(),
+
+  // Evidence
+  evidence: jsonb("evidence"), // Array of file URLs, screenshots, etc.
+
+  // Amounts in dispute
+  disputedAmount: decimal("disputed_amount", { precision: 10, scale: 2 }),
+  requestedResolution: text("requested_resolution"), // 'full_refund', 'partial_refund', 'replacement', 'return'
+
+  // Status tracking
+  status: text("status").default("open"), // 'open', 'investigating', 'mediation', 'resolved', 'closed'
+  priority: text("priority").default("medium"), // 'low', 'medium', 'high', 'urgent'
+
+  // Admin handling
+  assignedTo: uuid("assigned_to").references(() => users.id),
+  mediatorNotes: text("mediator_notes"),
+  resolution: text("resolution"),
+  resolutionType: text("resolution_type"), // 'buyer_favor', 'seller_favor', 'partial_refund', 'no_action'
+  resolutionAmount: decimal("resolution_amount", { precision: 10, scale: 2 }),
+
+  // Timeline
+  respondByDate: timestamp("respond_by_date"),
+  resolvedAt: timestamp("resolved_at"),
+  closedAt: timestamp("closed_at"),
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -515,37 +1043,116 @@ export const marketplaceReviews = pgTable("marketplace_reviews", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
 
-  // Ratings
-  overallRating: integer("overall_rating").notNull(), // 1-5 stars
-  qualityRating: integer("quality_rating").notNull(),
-  shippingRating: integer("shipping_rating").notNull(),
-  serviceRating: integer("service_rating").notNull(),
+  // Ratings (1-5 stars)
+  overallRating: integer("overall_rating").notNull(),
+  qualityRating: integer("quality_rating"),
+  valueRating: integer("value_rating"), // Value for money
+  shippingRating: integer("shipping_rating"),
+  serviceRating: integer("service_rating"),
+
+  // Detailed ratings for different product types
+  deliveryRating: integer("delivery_rating"), // For digital products
+  communicationRating: integer("communication_rating"), // For services
+  accuracyRating: integer("accuracy_rating"), // How accurate was product description
 
   // Review content
   title: text("title"),
-  comment: text("comment"),
+  comment: text("comment").notNull(),
   pros: text("pros").array(),
   cons: text("cons").array(),
+
+  // Purchase context
+  variantPurchased: text("variant_purchased"), // Which variant was purchased
+  useCase: text("use_case"), // How they used the product
+  wouldRecommend: boolean("would_recommend"),
 
   // Media
   images: text("images").array(),
   videos: text("videos").array(),
 
-  // Verification
+  // Verification and authenticity
   isVerifiedPurchase: boolean("is_verified_purchase").default(true),
+  purchaseVerified: boolean("purchase_verified").default(false), // Admin verified
+  reviewSource: text("review_source").default("marketplace"), // 'marketplace', 'imported', 'migrated'
 
-  // Moderation
+  // Moderation and quality
   isFlagged: boolean("is_flagged").default(false),
   flaggedReason: text("flagged_reason"),
-  moderationStatus: text("moderation_status").default("approved"), // 'pending', 'approved', 'rejected'
+  moderationStatus: text("moderation_status").default("approved"), // 'pending', 'approved', 'rejected', 'auto_approved'
+  moderatedBy: uuid("moderated_by").references(() => users.id),
+  moderatedAt: timestamp("moderated_at"),
 
-  // Helpful votes
+  // Quality scoring
+  helpfulnessScore: decimal("helpfulness_score", {
+    precision: 3,
+    scale: 2,
+  }).default("0"),
+  qualityScore: decimal("quality_score", { precision: 3, scale: 2 }).default(
+    "0",
+  ), // AI-computed quality
+
+  // Community interaction
   helpfulVotes: integer("helpful_votes").default(0),
   totalVotes: integer("total_votes").default(0),
+  reportCount: integer("report_count").default(0),
+
+  // Seller response
+  sellerResponseId: uuid("seller_response_id"),
+
+  // Incentivization
+  rewardEarned: decimal("reward_earned", { precision: 10, scale: 2 }).default(
+    "0",
+  ), // SoftPoints earned for review
+
+  // Additional metadata
+  metadata: jsonb("metadata"), // Additional flexible data
 
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+// Seller responses to reviews
+export const reviewResponses = pgTable("review_responses", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  reviewId: uuid("review_id")
+    .notNull()
+    .references(() => marketplaceReviews.id, { onDelete: "cascade" }),
+  sellerId: uuid("seller_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  response: text("response").notNull(),
+
+  // Moderation
+  moderationStatus: text("moderation_status").default("approved"),
+  moderatedBy: uuid("moderated_by").references(() => users.id),
+  moderatedAt: timestamp("moderated_at"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Review helpfulness tracking
+export const reviewHelpfulness = pgTable(
+  "review_helpfulness",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    reviewId: uuid("review_id")
+      .notNull()
+      .references(() => marketplaceReviews.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+
+    isHelpful: boolean("is_helpful").notNull(), // true = helpful, false = not helpful
+
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (table) => ({
+    // Unique constraint to prevent duplicate votes
+    unique: unique().on(table.reviewId, table.userId),
+  }),
+);
 
 // =============================================================================
 // PLATFORM EARNINGS & ANALYTICS
