@@ -46,11 +46,15 @@ export default function EnhancedProductCard({
   onAddToCart,
   onAddToWishlist,
   onViewProduct,
+  onMessageSeller,
   inWishlist = false,
   inCart = false,
-  view = "grid",
+  viewMode = "grid",
+  view = "grid", // Deprecated fallback
   showSellerInfo = true,
   className,
+  loading = "lazy",
+  priority = false,
 }: EnhancedProductCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
