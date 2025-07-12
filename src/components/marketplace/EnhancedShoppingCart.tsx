@@ -281,32 +281,50 @@ const EnhancedShoppingCart: React.FC<EnhancedShoppingCartProps> = ({
                           onClick={() =>
                             handleQuantityChange(item.id, item.quantity - 1)
                           }
+                          disabled={item.quantity <= 1}
+                          className="h-8 w-8"
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
+                        <span className="w-8 text-center text-sm">
+                          {item.quantity}
+                        </span>
                         <Button
                           variant="outline"
                           size="icon"
                           onClick={() =>
                             handleQuantityChange(item.id, item.quantity + 1)
                           }
+                          className="h-8 w-8"
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
-                      <p className="font-semibold">
-                        ${(item.priceSnapshot * item.quantity).toFixed(2)}
-                      </p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleMoveToWishlist(item.id)}
-                        className="text-xs"
-                      >
-                        <Heart className="h-3 w-3 mr-1" />
-                        Save for Later
-                      </Button>
+                      <div className="flex flex-col items-end order-1 sm:order-2 gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFromCart(item.id)}
+                          className="h-8 w-8"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                        <p className="font-semibold text-sm sm:text-base">
+                          ${(item.priceSnapshot * item.quantity).toFixed(2)}
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleMoveToWishlist(item.id)}
+                          className="text-xs p-1 h-auto"
+                        >
+                          <Heart className="h-3 w-3 mr-1" />
+                          <span className="hidden sm:inline">
+                            Save for Later
+                          </span>
+                          <span className="sm:hidden">Save</span>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                   {item.notes && (
