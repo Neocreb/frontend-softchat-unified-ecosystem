@@ -63,13 +63,7 @@ const Header = () => {
               closeMenu={() => setIsMobileMenuOpen(false)}
             />
             <Button className="btn-primary w-full" asChild>
-              <a
-                href="https://app.softchat.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Launch App
-              </a>
+              <Link to="/app/marketplace">Launch Marketplace</Link>
             </Button>
           </nav>
         </div>
