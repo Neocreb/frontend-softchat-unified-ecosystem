@@ -28,6 +28,9 @@ import {
   Truck,
   Shield,
   CreditCard,
+  BarChart,
+  Smartphone,
+  Sparkles,
 } from "lucide-react";
 import {
   MarketplaceProvider,
@@ -42,8 +45,14 @@ import SellerDashboard from "@/components/marketplace/SellerDashboard";
 import ListProductForm from "@/components/marketplace/ListProductForm";
 import WishlistProducts from "@/components/marketplace/WishlistProducts";
 import EnhancedProductDetail from "@/components/marketplace/EnhancedProductDetail";
+import EnhancedProductBrowser from "@/components/marketplace/EnhancedProductBrowser";
+import SuperEnhancedProductDetail from "@/components/marketplace/SuperEnhancedProductDetail";
+import AdvancedSearchFilter from "@/components/marketplace/AdvancedSearchFilter";
+import MobileMarketplace from "@/components/marketplace/MobileMarketplace";
+import MarketplaceAnalytics from "@/components/marketplace/MarketplaceAnalytics";
 import { useAuth } from "@/contexts/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Product } from "@/types/marketplace";
 
 const MarketplaceContent = () => {
   const [activeTab, setActiveTab] = useState("browse");
