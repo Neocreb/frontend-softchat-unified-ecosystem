@@ -305,16 +305,20 @@ const MarketplaceHomepage: React.FC = () => {
 
               {/* Action Icons */}
               <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" className="relative">
-                  <Heart className="w-6 h-6" />
-                </Button>
+                <Link to="/app/marketplace/wishlist">
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Heart className="w-6 h-6" />
+                  </Button>
+                </Link>
 
-                <Button variant="ghost" size="icon" className="relative">
-                  <ShoppingCart className="w-6 h-6" />
-                  <Badge className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
-                    2
-                  </Badge>
-                </Button>
+                <Link to="/app/marketplace/cart">
+                  <Button variant="ghost" size="icon" className="relative">
+                    <ShoppingCart className="w-6 h-6" />
+                    <Badge className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+                      2
+                    </Badge>
+                  </Button>
+                </Link>
 
                 <div className="relative">
                   <Button
