@@ -246,10 +246,13 @@ export interface ProductFilter {
   minPrice?: number;
   maxPrice?: number;
   rating?: number;
+  minRating?: number;
   condition?: "new" | "used" | "refurbished";
   brand?: string;
+  brands?: string[];
   freeShipping?: boolean;
   inStock?: boolean;
+  onSale?: boolean;
   tags?: string[];
   searchQuery?: string;
   sortBy?:
@@ -258,7 +261,13 @@ export interface ProductFilter {
     | "price-high"
     | "popular"
     | "rating"
-    | "reviews";
+    | "reviews"
+    | "relevance"
+    | "price"
+    | "newest"
+    | "popularity"
+    | "discount";
+  sortOrder?: "asc" | "desc";
   location?: string;
   sellerId?: string;
 }
