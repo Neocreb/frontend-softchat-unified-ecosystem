@@ -31,6 +31,10 @@ import {
   Bell,
   Zap,
   Settings,
+  ExternalLink,
+  TrendingDown,
+  Sparkles,
+  Layers,
 } from "lucide-react";
 import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
 import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
