@@ -636,7 +636,7 @@ const MarketplaceHomepage: React.FC = () => {
               </div>
 
               {/* Flash Sale Products Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                 {flashSaleProducts.map((product, index) => (
                   <div key={product.id} className="group">
                     <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square mb-4">
