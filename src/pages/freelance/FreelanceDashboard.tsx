@@ -136,10 +136,10 @@ export const FreelanceDashboard: React.FC = () => {
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <Card
-      className="hover:shadow-md transition-shadow cursor-pointer"
+      className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50"
       onClick={() => setSelectedProject(project)}
     >
-      <CardContent className="pt-4">
+      <CardContent className="pt-6 pb-6">
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold line-clamp-1 mb-1">
