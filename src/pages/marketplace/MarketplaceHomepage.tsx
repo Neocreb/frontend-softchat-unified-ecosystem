@@ -155,6 +155,20 @@ const MarketplaceHomepage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Quick view handlers
+  const handleProductQuickView = (product: FlashSaleProduct) => {
+    setSelectedProduct(product);
+    setShowQuickView(true);
+  };
+
+  const handleAddToCart = (productId: string, quantity: number = 1) => {
+    addToCart?.(productId, quantity);
+  };
+
+  const handleAddToWishlist = (productId: string) => {
+    addToWishlist?.(productId);
+  };
+
   const formatPrice = (price: number) => {
     return `$${price.toFixed(0)}`;
   };
