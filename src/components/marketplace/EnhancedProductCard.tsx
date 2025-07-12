@@ -112,7 +112,7 @@ export default function EnhancedProductCard({
     ));
   };
 
-  if (view === "list") {
+  if (currentViewMode === "list") {
     return (
       <Card
         className={cn(
