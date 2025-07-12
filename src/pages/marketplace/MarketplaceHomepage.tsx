@@ -250,28 +250,34 @@ const MarketplaceHomepage: React.FC = () => {
               {/* Desktop Navigation */}
               <nav className="hidden lg:flex items-center gap-12">
                 <Link
-                  to="/marketplace"
+                  to="/app/marketplace"
                   className="text-gray-900 hover:text-gray-600 border-b-2 border-black pb-1"
                 >
                   Home
                 </Link>
                 <Link
-                  to="/marketplace/contact"
+                  to="/app/marketplace/list"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  Contact
+                  Sell
                 </Link>
                 <Link
-                  to="/marketplace/about"
+                  to="/app/marketplace/my"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  About
+                  My Account
                 </Link>
                 <Link
-                  to="/auth/signup"
+                  to="/app/marketplace/seller"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  Sign Up
+                  Seller Hub
+                </Link>
+                <Link
+                  to="/app/chat"
+                  className="text-gray-600 hover:text-gray-900"
+                >
+                  Messages
                 </Link>
               </nav>
             </div>
