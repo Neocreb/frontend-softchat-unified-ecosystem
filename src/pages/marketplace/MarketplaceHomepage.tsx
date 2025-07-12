@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { MobileProductCard } from "@/components/marketplace/MobileProductCard";
-import { MobileMarketplaceNav } from "@/components/marketplace/MobileMarketplaceNav";
+
 import ProductQuickView from "@/components/marketplace/ProductQuickView";
 import EnhancedSearch from "@/components/marketplace/EnhancedSearch";
 import ResponsiveProductCarousel from "@/components/marketplace/ResponsiveProductCarousel";
@@ -776,14 +776,6 @@ const MarketplaceHomepage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Mobile Navigation */}
-      <MobileMarketplaceNav
-        cartItemCount={2}
-        wishlistItemCount={5}
-        unreadMessages={0}
-        isSellerMode={false}
-      />
 
       {/* Product Quick View Modal */}
       {selectedProduct && (
