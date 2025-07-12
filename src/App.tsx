@@ -451,6 +451,7 @@ const App = () => {
                       <PWAInstallPrompt />
                       <MobileLayoutChecker />
                       <PerformanceMonitor />
+                      <MarketplaceNavigationHelper />
 
                       {/* Toasters */}
                       <Toaster />
