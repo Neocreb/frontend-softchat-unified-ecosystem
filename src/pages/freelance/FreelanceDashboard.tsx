@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,10 @@ import {
   Bell,
   Zap,
   Settings,
+  ExternalLink,
+  TrendingDown,
+  Sparkles,
+  Layers,
 } from "lucide-react";
 import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
 import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
@@ -131,60 +136,77 @@ export const FreelanceDashboard: React.FC = () => {
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <Card
-      className="hover:shadow-md transition-shadow cursor-pointer"
+      className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50"
       onClick={() => setSelectedProject(project)}
     >
-      <CardContent className="pt-4">
-        <div className="flex items-start justify-between mb-3">
+      <CardContent className="pt-6 pb-6">
+        <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold line-clamp-1 mb-1">
+            <h3 className="font-bold text-lg line-clamp-1 mb-2 text-gray-900 dark:text-white">
               {project.job.title}
             </h3>
-            <div className="flex items-center gap-2 mb-2">
-              <Avatar className="w-6 h-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Avatar className="w-8 h-8 ring-2 ring-white dark:ring-gray-800 shadow-sm">
                 <AvatarImage src={project.client.avatar} />
-                <AvatarFallback>{project.client.name[0]}</AvatarFallback>
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
+                  {project.client.name[0]}
+                </AvatarFallback>
               </Avatar>
-              <span className="text-sm text-muted-foreground">
-                {project.client.name}
-              </span>
+              <div>
+                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  {project.client.name}
+                </span>
+                <div className="text-xs text-muted-foreground">Client</div>
+              </div>
             </div>
           </div>
-          <Badge className={getProjectStatusColor(project.status)}>
+          <Badge
+            className={`${getProjectStatusColor(project.status)} px-3 py-1 font-medium shadow-sm`}
+          >
             {project.status}
           </Badge>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Progress</span>
-            <span className="font-medium">75%</span>
+            <span className="text-muted-foreground font-medium">Progress</span>
+            <span className="font-bold text-blue-600 dark:text-blue-400">
+              75%
+            </span>
           </div>
-          <Progress value={75} className="h-2" />
+          <Progress value={75} className="h-3 bg-gray-100 dark:bg-gray-800" />
 
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <div className="text-muted-foreground">Budget</div>
-              <div className="font-medium">
+          <div className="grid grid-cols-2 gap-6 text-sm">
+            <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="text-muted-foreground font-medium mb-1">
+                Budget
+              </div>
+              <div className="font-bold text-lg text-gray-900 dark:text-white">
                 ${project.budget.agreed.toLocaleString()}
               </div>
             </div>
-            <div>
-              <div className="text-muted-foreground">Earned</div>
-              <div className="font-medium text-green-600">
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+              <div className="text-muted-foreground font-medium mb-1">
+                Earned
+              </div>
+              <div className="font-bold text-lg text-green-600 dark:text-green-400">
                 ${project.budget.paid.toLocaleString()}
               </div>
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t">
-            <div className="text-xs text-muted-foreground">
+          <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-800">
+            <div className="text-sm text-muted-foreground font-medium">
+              <Clock className="w-4 h-4 inline mr-1" />
               Due:{" "}
               {project.deadline
                 ? new Date(project.deadline).toLocaleDateString()
                 : "No deadline"}
             </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+              <span className="text-xs font-medium">View Details</span>
+              <ChevronRight className="w-4 h-4" />
+            </div>
           </div>
         </div>
       </CardContent>
@@ -198,20 +220,26 @@ export const FreelanceDashboard: React.FC = () => {
     icon: React.ReactNode;
     color: string;
   }> = ({ title, value, change, icon, color }) => (
-    <Card>
-      <CardContent className="pt-4">
+    <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 hover:shadow-lg transition-all duration-200">
+      <CardContent className="pt-6 pb-6">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold">{value}</p>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-muted-foreground mb-2">
+              {title}
+            </p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {value}
+            </p>
             {change && (
-              <p className="text-xs text-green-600">
-                <TrendingUp className="w-3 h-3 inline mr-1" />
-                {change}
+              <p className="text-sm font-medium">
+                <TrendingUp className="w-4 h-4 inline mr-1 text-green-500" />
+                <span className="text-green-600 dark:text-green-400">
+                  {change}
+                </span>
               </p>
             )}
           </div>
-          <div className={`p-3 rounded-lg ${color}`}>{icon}</div>
+          <div className={`p-4 rounded-xl ${color} shadow-lg`}>{icon}</div>
         </div>
       </CardContent>
     </Card>
@@ -253,7 +281,7 @@ export const FreelanceDashboard: React.FC = () => {
             </TabsTrigger>
             <TabsTrigger value="billing" className="text-xs sm:text-sm">
               <span className="hidden sm:inline">Billing</span>
-              <span className="sm:hidden">💰</span>
+              <span className="sm:hidden">���</span>
             </TabsTrigger>
           </TabsList>
 
@@ -345,50 +373,75 @@ export const FreelanceDashboard: React.FC = () => {
     <div className="container mx-auto px-4 py-6">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              Freelance Dashboard
-            </h1>
-            <p className="text-muted-foreground">
-              Manage your projects and track your progress
-            </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-2">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+              <Briefcase className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Freelance Dashboard
+              </h1>
+              <p className="text-muted-foreground text-lg font-medium">
+                Manage your projects and track your progress
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <Button
               variant="outline"
-              onClick={() => (window.location.href = "/profile")}
-              className="w-full sm:w-auto"
+              asChild
+              className="w-full sm:w-auto h-12 px-6 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
             >
-              <Plus className="w-4 h-4 mr-2" />
-              Edit Profile
+              <Link to="/app/profile">
+                <Plus className="w-5 h-5 mr-2" />
+                Edit Profile
+              </Link>
             </Button>
             <Button
-              onClick={() => (window.location.href = "/wallet")}
-              className="w-full sm:w-auto"
+              asChild
+              className="w-full sm:w-auto h-12 px-6 font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg"
             >
-              <Wallet className="w-4 h-4 mr-2" />
-              View Wallet
+              <Link to="/app/wallet">
+                <Wallet className="w-5 h-5 mr-2" />
+                View Wallet
+              </Link>
             </Button>
           </div>
         </div>
 
         {/* Advanced Features Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm">
+        <Tabs defaultValue="overview" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-xl h-auto">
+            <TabsTrigger
+              value="overview"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Overview</span>
               <span className="sm:hidden">📊</span>
             </TabsTrigger>
-            <TabsTrigger value="smart-matching" className="text-xs sm:text-sm">
+            <TabsTrigger
+              value="smart-matching"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <Brain className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">AI Matching</span>
               <span className="sm:hidden">🧠</span>
             </TabsTrigger>
-            <TabsTrigger value="business-intel" className="text-xs sm:text-sm">
+            <TabsTrigger
+              value="business-intel"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <TrendingUp className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Business Intelligence</span>
               <span className="sm:hidden">📈</span>
             </TabsTrigger>
-            <TabsTrigger value="collaboration" className="text-xs sm:text-sm">
+            <TabsTrigger
+              value="collaboration"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <Users className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Collaboration</span>
               <span className="sm:hidden">🤝</span>
             </TabsTrigger>
@@ -412,26 +465,26 @@ export const FreelanceDashboard: React.FC = () => {
                   title="Total Earnings"
                   value={`$${stats.totalEarnings.toLocaleString()}`}
                   change="+12% this month"
-                  icon={<DollarSign className="w-6 h-6 text-white" />}
-                  color="bg-green-500"
+                  icon={<DollarSign className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-green-500 to-emerald-600"
                 />
                 <StatCard
                   title="Active Projects"
                   value={stats.activeProjects}
-                  icon={<Briefcase className="w-6 h-6 text-white" />}
-                  color="bg-blue-500"
+                  icon={<Briefcase className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-blue-500 to-cyan-600"
                 />
                 <StatCard
                   title="Completed Projects"
                   value={stats.completedProjects}
-                  icon={<CheckCircle2 className="w-6 h-6 text-white" />}
-                  color="bg-purple-500"
+                  icon={<CheckCircle2 className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-purple-500 to-violet-600"
                 />
                 <StatCard
                   title="Success Rate"
                   value={`${stats.successRate}%`}
-                  icon={<Star className="w-6 h-6 text-white" />}
-                  color="bg-orange-500"
+                  icon={<Star className="w-7 h-7 text-white" />}
+                  color="bg-gradient-to-br from-orange-500 to-amber-600"
                 />
               </div>
             ) : null}
@@ -440,11 +493,24 @@ export const FreelanceDashboard: React.FC = () => {
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Active Projects */}
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle>Active Projects</CardTitle>
-                    <Button variant="outline" size="sm">
-                      View All
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="flex flex-row items-center justify-between pb-6">
+                    <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      Active Projects
+                    </CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      asChild
+                      className="font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <Link to="/app/freelance">
+                        View All
+                        <ExternalLink className="w-4 h-4 ml-1" />
+                      </Link>
                     </Button>
                   </CardHeader>
                   <CardContent>
@@ -469,17 +535,21 @@ export const FreelanceDashboard: React.FC = () => {
                         <p className="text-muted-foreground mb-4">
                           Start applying to jobs to see your projects here
                         </p>
-                        <Button>Browse Jobs</Button>
+                        <Button asChild>
+                          <Link to="/app/freelance">Browse Jobs</Link>
+                        </Button>
                       </div>
                     )}
                   </CardContent>
                 </Card>
 
                 {/* Recent Activity */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Activity className="w-5 h-5" />
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                        <Activity className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                      </div>
                       Recent Activity
                     </CardTitle>
                   </CardHeader>
@@ -522,10 +592,12 @@ export const FreelanceDashboard: React.FC = () => {
               {/* Sidebar */}
               <div className="space-y-6">
                 {/* Urgent Tasks */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <AlertTriangle className="w-5 h-5 text-orange-500" />
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                        <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                      </div>
                       Urgent Tasks
                     </CardTitle>
                   </CardHeader>
@@ -560,78 +632,116 @@ export const FreelanceDashboard: React.FC = () => {
                 </Card>
 
                 {/* Quick Actions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                        <Zap className="w-6 h-6 text-green-600 dark:text-green-400" />
+                      </div>
+                      Quick Actions
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => (window.location.href = "/wallet")}
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                      asChild
                     >
-                      <Wallet className="w-4 h-4 mr-2" />
-                      View Wallet
+                      <Link to="/app/wallet">
+                        <Wallet className="w-5 h-5 mr-3" />
+                        View Wallet
+                      </Link>
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => (window.location.href = "/profile")}
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                      asChild
                     >
-                      <Users className="w-4 h-4 mr-2" />
-                      Edit Profile
+                      <Link to="/app/profile">
+                        <Users className="w-5 h-5 mr-3" />
+                        Edit Profile
+                      </Link>
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => (window.location.href = "/settings")}
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                      asChild
                     >
-                      <Settings className="w-4 h-4 mr-2" />
-                      Settings
+                      <Link to="/app/settings">
+                        <Settings className="w-5 h-5 mr-3" />
+                        Settings
+                      </Link>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <MessageCircle className="w-4 h-4 mr-2" />
-                      Contact Support
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                      asChild
+                    >
+                      <Link to="/app/support">
+                        <MessageCircle className="w-5 h-5 mr-3" />
+                        Contact Support
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>
 
                 {/* Freelance-Specific Features */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-blue-600" />
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      </div>
                       Freelance Tools
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Brain className="w-4 h-4 mr-2" />
-                      AI Job Matching
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                      asChild
+                    >
+                      <Link to="/app/freelance">
+                        <Brain className="w-5 h-5 mr-3" />
+                        AI Job Matching
+                      </Link>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <BarChart3 className="w-4 h-4 mr-2" />
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <BarChart3 className="w-5 h-5 mr-3" />
                       Rate Calculator
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => (window.location.href = "/rewards")}
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                      asChild
                     >
-                      <Trophy className="w-4 h-4 mr-2" />
-                      Achievements
+                      <Link to="/app/rewards">
+                        <Trophy className="w-5 h-5 mr-3" />
+                        Achievements
+                      </Link>
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Target className="w-4 h-4 mr-2" />
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <Target className="w-5 h-5 mr-3" />
                       Project Planner
                     </Button>
                   </CardContent>
                 </Card>
 
                 {/* Performance Metrics */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>This Month</CardTitle>
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                        <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      This Month
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
