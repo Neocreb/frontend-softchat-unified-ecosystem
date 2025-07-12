@@ -581,6 +581,56 @@ const MarketplaceContent = () => {
           )}
         </TabsContent>
 
+        {/* Cart Tab */}
+        <TabsContent value="cart" className="space-y-4 pt-4">
+          {isAuthenticated ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-semibold mb-2">Shopping Cart</h3>
+              <p className="text-muted-foreground mb-4">
+                View and manage items in your cart
+              </p>
+              <Button onClick={() => navigate("/app/marketplace/cart")}>
+                Go to Cart
+              </Button>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-semibold mb-2">
+                Authentication Required
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Please sign in to view your cart
+              </p>
+              <Button onClick={() => navigate("/auth")}>Sign In</Button>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* Orders Tab */}
+        <TabsContent value="orders" className="space-y-4 pt-4">
+          {isAuthenticated ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-semibold mb-2">My Orders</h3>
+              <p className="text-muted-foreground mb-4">
+                Track and manage your marketplace orders
+              </p>
+              <Button onClick={() => navigate("/app/marketplace/orders")}>
+                View Orders
+              </Button>
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-semibold mb-2">
+                Authentication Required
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                Please sign in to view your orders
+              </p>
+              <Button onClick={() => navigate("/auth")}>Sign In</Button>
+            </div>
+          )}
+        </TabsContent>
+
         {/* Analytics Tab */}
         <TabsContent value="analytics" className="space-y-4 pt-4">
           {isAuthenticated ? (
