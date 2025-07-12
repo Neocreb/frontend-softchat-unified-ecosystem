@@ -1007,23 +1007,48 @@ const UnifiedHeader = ({
 
                 <DropdownMenuSeparator />
 
-                {/* Finance Section */}
+                {/* Finance Section - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Finance
-                  </DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => navigate("/app/wallet")}>
-                    <Wallet className="mr-2 h-4 w-4" />
-                    <span>Wallet</span>
+                  <DropdownMenuItem
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("finance")}
+                  >
+                    <div className="flex items-center">
+                      <Wallet className="mr-2 h-4 w-4" />
+                      <span>Finance</span>
+                    </div>
+                    {expandedSections.finance ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/crypto")}>
-                    <TrendingUp className="mr-2 h-4 w-4" />
-                    <span>Crypto</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/rewards")}>
-                    <Award className="mr-2 h-4 w-4" />
-                    <span>Rewards</span>
-                  </DropdownMenuItem>
+
+                  {expandedSections.finance && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/wallet")}
+                      >
+                        <Wallet className="mr-2 h-4 w-4" />
+                        <span>Wallet</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/crypto")}
+                      >
+                        <TrendingUp className="mr-2 h-4 w-4" />
+                        <span>Crypto</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/rewards")}
+                      >
+                        <Award className="mr-2 h-4 w-4" />
+                        <span>Rewards</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
