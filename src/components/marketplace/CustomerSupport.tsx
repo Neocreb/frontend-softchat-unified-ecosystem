@@ -678,7 +678,65 @@ const CustomerSupport = ({
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-4">{/* Ticket list would go here */}</div>
+            <div className="space-y-4">
+              {supportTickets.map((ticket) => (
+                <Card key={ticket.id}>
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold">{ticket.subject}</h4>
+                          <Badge
+                            className={cn(
+                              ticket.status === "open"
+                                ? "bg-blue-100 text-blue-800"
+                                : ticket.status === "in_progress"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : ticket.status === "resolved"
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-gray-100 text-gray-800",
+                            )}
+                          >
+                            {ticket.status.replace("_", " ")}
+                          </Badge>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              ticket.priority === "urgent"
+                                ? "border-red-200 text-red-800"
+                                : ticket.priority === "high"
+                                  ? "border-orange-200 text-orange-800"
+                                  : ticket.priority === "medium"
+                                    ? "border-yellow-200 text-yellow-800"
+                                    : "border-green-200 text-green-800",
+                            )}
+                          >
+                            {ticket.priority} priority
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          {ticket.description}
+                        </p>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <span>Ticket #{ticket.id}</span>
+                          <span>
+                            Created{" "}
+                            {new Date(ticket.createdAt).toLocaleDateString()}
+                          </span>
+                          <span>Category: {ticket.category}</span>
+                          {ticket.assignedAgent && (
+                            <span>Assigned to: {ticket.assignedAgent}</span>
+                          )}
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm">
+                        View Details
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           )}
         </TabsContent>
       </Tabs>
