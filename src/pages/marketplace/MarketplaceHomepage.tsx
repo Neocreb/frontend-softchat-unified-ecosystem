@@ -514,14 +514,16 @@ const MarketplaceHomepage: React.FC = () => {
           {/* Main Content Area */}
           <div className="lg:col-span-4 space-y-6 lg:space-y-8">
             {/* Hero Section */}
-            <div className="relative bg-black rounded-lg overflow-hidden h-80 lg:h-96 mt-8 mb-16">
-              <div className="flex h-full">
-                <div className="flex-1 flex flex-col justify-center px-8 lg:px-16 text-white">
-                  <div className="flex items-center gap-6 mb-6">
-                    <span className="text-3xl">🍎</span>
-                    <span className="text-white/80">iPhone 14 Series</span>
+            <div className="relative bg-black rounded-lg overflow-hidden h-64 sm:h-80 lg:h-96 mt-4 lg:mt-8 mb-8 lg:mb-16">
+              <div className="flex flex-col lg:flex-row h-full">
+                <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 lg:px-16 text-white py-6 lg:py-0">
+                  <div className="flex items-center gap-3 lg:gap-6 mb-4 lg:mb-6">
+                    <span className="text-2xl lg:text-3xl">🍎</span>
+                    <span className="text-white/80 text-sm lg:text-base">
+                      iPhone 14 Series
+                    </span>
                   </div>
-                  <h2 className="text-3xl lg:text-5xl font-semibold mb-8 leading-tight">
+                  <h2 className="text-2xl sm:text-3xl lg:text-5xl font-semibold mb-6 lg:mb-8 leading-tight">
                     Up to 10%
                     <br />
                     off Voucher
