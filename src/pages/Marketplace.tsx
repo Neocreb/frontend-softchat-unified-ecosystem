@@ -523,7 +523,17 @@ const MarketplaceContent = () => {
         {/* Seller Dashboard Tab */}
         <TabsContent value="dashboard" className="space-y-4 pt-4">
           {isAuthenticated ? (
-            <SellerDashboard />
+            <div className="text-center py-12">
+              <h3 className="text-lg font-semibold mb-2">Seller Dashboard</h3>
+              <p className="text-muted-foreground mb-4">
+                Manage your products, orders, and track your sales performance
+              </p>
+              <Button
+                onClick={() => navigate("/app/marketplace/seller-dashboard")}
+              >
+                Go to Seller Dashboard
+              </Button>
+            </div>
           ) : (
             <div className="text-center py-12">
               <h3 className="text-lg font-semibold mb-2">
