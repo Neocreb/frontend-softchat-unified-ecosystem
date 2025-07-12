@@ -14,6 +14,7 @@ import { setupGlobalErrorHandlers } from "@/lib/error-handler";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { AdminProvider } from "./contexts/AdminContext";
 import { MarketplaceProvider } from "./contexts/MarketplaceContext";
+import { EnhancedMarketplaceProvider } from "./contexts/EnhancedMarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { WalletProvider } from "./contexts/WalletContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
@@ -32,8 +33,7 @@ import {
   ConnectionStatus,
   PWAInstallPrompt,
 } from "./components/mobile/MobileOptimizations";
-import MobileLayoutChecker from "./components/layout/MobileLayoutChecker";
-import PerformanceMonitor from "./components/debug/PerformanceMonitor";
+
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
@@ -52,6 +52,7 @@ import MarketplaceCart from "./pages/marketplace/MarketplaceCart";
 import MarketplaceCheckout from "./pages/marketplace/MarketplaceCheckout";
 import MarketplaceList from "./pages/marketplace/MarketplaceList";
 import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
+import SellerDashboard from "./pages/marketplace/SellerDashboard";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
 import CryptoMarket from "./pages/CryptoMarket";
@@ -229,9 +230,11 @@ const AppRoutes = () => {
             <ProtectedRoute>
               <WalletProvider>
                 <MarketplaceProvider>
-                  <ChatProvider>
-                    <AppLayout />
-                  </ChatProvider>
+                  <EnhancedMarketplaceProvider>
+                    <ChatProvider>
+                      <AppLayout />
+                    </ChatProvider>
+                  </EnhancedMarketplaceProvider>
                 </MarketplaceProvider>
               </WalletProvider>
             </ProtectedRoute>
@@ -259,7 +262,20 @@ const AppRoutes = () => {
 
           {/* Marketplace routes */}
           <Route path="marketplace" element={<EnhancedMarketplace />} />
+          <Route
+            path="marketplace/browse"
+            element={<Navigate to="/app/marketplace" replace />}
+          />
+          <Route
+            path="marketplace/products"
+            element={<Navigate to="/app/marketplace" replace />}
+          />
+          <Route
+            path="marketplace/shop"
+            element={<Navigate to="/app/marketplace" replace />}
+          />
           <Route path="marketplace/my" element={<MarketplaceDashboard />} />
+          <Route path="marketplace/seller" element={<SellerDashboard />} />
           <Route path="marketplace/list" element={<MarketplaceList />} />
           <Route
             path="marketplace/seller/:username"
@@ -382,6 +398,52 @@ const AppRoutes = () => {
         <Route path="security" element={<AdminSecurity />} />
       </Route>
 
+      {/* Legacy route redirects */}
+      <Route path="/feed" element={<Navigate to="/app/feed" replace />} />
+      <Route
+        path="/marketplace"
+        element={<Navigate to="/app/marketplace" replace />}
+      />
+      <Route
+        path="/marketplace/browse"
+        element={<Navigate to="/app/marketplace" replace />}
+      />
+      <Route
+        path="/marketplace/products"
+        element={<Navigate to="/app/marketplace" replace />}
+      />
+      <Route
+        path="/marketplace/shop"
+        element={<Navigate to="/app/marketplace" replace />}
+      />
+      <Route
+        path="/marketplace/cart"
+        element={<Navigate to="/app/marketplace/cart" replace />}
+      />
+      <Route
+        path="/marketplace/wishlist"
+        element={<Navigate to="/app/marketplace/wishlist" replace />}
+      />
+      <Route
+        path="/marketplace/checkout"
+        element={<Navigate to="/app/marketplace/checkout" replace />}
+      />
+      <Route
+        path="/marketplace/my"
+        element={<Navigate to="/app/marketplace/my" replace />}
+      />
+      <Route
+        path="/marketplace/seller"
+        element={<Navigate to="/app/marketplace/seller" replace />}
+      />
+      <Route
+        path="/marketplace/list"
+        element={<Navigate to="/app/marketplace/list" replace />}
+      />
+      <Route path="/chat" element={<Navigate to="/app/chat" replace />} />
+      <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
+      <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -448,8 +510,6 @@ const App = () => {
                       <ReadingGuide />
                       <ConnectionStatus />
                       <PWAInstallPrompt />
-                      <MobileLayoutChecker />
-                      <PerformanceMonitor />
 
                       {/* Toasters */}
                       <Toaster />
