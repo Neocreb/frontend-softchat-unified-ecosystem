@@ -968,21 +968,41 @@ const UnifiedHeader = ({
 
                 <DropdownMenuSeparator />
 
-                {/* Freelance Section */}
+                {/* Freelance Section - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Freelance
-                  </DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => navigate("/app/freelance")}>
-                    <Briefcase className="mr-2 h-4 w-4" />
-                    <span>Browse Jobs</span>
-                  </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => navigate("/app/freelance/dashboard")}
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("freelance")}
                   >
-                    <BarChart3 className="mr-2 h-4 w-4" />
-                    <span>Dashboard</span>
+                    <div className="flex items-center">
+                      <Briefcase className="mr-2 h-4 w-4" />
+                      <span>Freelance</span>
+                    </div>
+                    {expandedSections.freelance ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
                   </DropdownMenuItem>
+
+                  {expandedSections.freelance && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/freelance")}
+                      >
+                        <Briefcase className="mr-2 h-4 w-4" />
+                        <span>Browse Jobs</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/freelance/dashboard")}
+                      >
+                        <BarChart3 className="mr-2 h-4 w-4" />
+                        <span>Dashboard</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
