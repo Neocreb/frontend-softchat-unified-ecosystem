@@ -411,21 +411,37 @@ export const FreelanceDashboard: React.FC = () => {
         </div>
 
         {/* Advanced Features Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm">
+        <Tabs defaultValue="overview" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-xl h-auto">
+            <TabsTrigger
+              value="overview"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Overview</span>
               <span className="sm:hidden">📊</span>
             </TabsTrigger>
-            <TabsTrigger value="smart-matching" className="text-xs sm:text-sm">
+            <TabsTrigger
+              value="smart-matching"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <Brain className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">AI Matching</span>
               <span className="sm:hidden">🧠</span>
             </TabsTrigger>
-            <TabsTrigger value="business-intel" className="text-xs sm:text-sm">
+            <TabsTrigger
+              value="business-intel"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <TrendingUp className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Business Intelligence</span>
               <span className="sm:hidden">📈</span>
             </TabsTrigger>
-            <TabsTrigger value="collaboration" className="text-xs sm:text-sm">
+            <TabsTrigger
+              value="collaboration"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <Users className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Collaboration</span>
               <span className="sm:hidden">🤝</span>
             </TabsTrigger>
