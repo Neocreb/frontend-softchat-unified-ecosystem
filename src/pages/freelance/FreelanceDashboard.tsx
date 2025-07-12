@@ -493,11 +493,24 @@ export const FreelanceDashboard: React.FC = () => {
               {/* Main Content */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Active Projects */}
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle>Active Projects</CardTitle>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link to="/app/freelance">View All</Link>
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="flex flex-row items-center justify-between pb-6">
+                    <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      Active Projects
+                    </CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      asChild
+                      className="font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <Link to="/app/freelance">
+                        View All
+                        <ExternalLink className="w-4 h-4 ml-1" />
+                      </Link>
                     </Button>
                   </CardHeader>
                   <CardContent>
