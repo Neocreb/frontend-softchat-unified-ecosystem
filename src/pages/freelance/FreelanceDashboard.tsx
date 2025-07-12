@@ -220,20 +220,26 @@ export const FreelanceDashboard: React.FC = () => {
     icon: React.ReactNode;
     color: string;
   }> = ({ title, value, change, icon, color }) => (
-    <Card>
-      <CardContent className="pt-4">
+    <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 hover:shadow-lg transition-all duration-200">
+      <CardContent className="pt-6 pb-6">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold">{value}</p>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-muted-foreground mb-2">
+              {title}
+            </p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              {value}
+            </p>
             {change && (
-              <p className="text-xs text-green-600">
-                <TrendingUp className="w-3 h-3 inline mr-1" />
-                {change}
+              <p className="text-sm font-medium">
+                <TrendingUp className="w-4 h-4 inline mr-1 text-green-500" />
+                <span className="text-green-600 dark:text-green-400">
+                  {change}
+                </span>
               </p>
             )}
           </div>
-          <div className={`p-3 rounded-lg ${color}`}>{icon}</div>
+          <div className={`p-4 rounded-xl ${color} shadow-lg`}>{icon}</div>
         </div>
       </CardContent>
     </Card>
