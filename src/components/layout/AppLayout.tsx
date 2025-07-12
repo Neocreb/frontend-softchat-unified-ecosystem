@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useState } from "react";
-import Header from "./Header";
+import UnifiedHeader from "./UnifiedHeader";
 import FooterNav from "./FooterNav";
 import DesktopFooter from "./DesktopFooter";
 import SecondaryNav from "./SecondaryNav";
@@ -29,7 +29,7 @@ const AppLayout = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Header
+      <UnifiedHeader
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
