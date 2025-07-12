@@ -17,6 +17,7 @@ import { fileURLToPath } from "url";
 import { registerEnhancedRoutes } from "./routes/enhanced";
 import comprehensiveApiRoutes from "./routes/comprehensive-api";
 import adminComprehensiveRoutes from "./routes/admin-comprehensive";
+import marketplaceApiRoutes from "./routes/marketplace-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
@@ -215,6 +216,9 @@ app.get("/status", async (req, res) => {
 
 // V1 API Routes (Comprehensive)
 app.use("/api/v1", comprehensiveApiRoutes);
+
+// Marketplace API Routes
+app.use("/api/marketplace", marketplaceApiRoutes);
 
 // Admin API Routes
 app.use("/api", adminComprehensiveRoutes);
