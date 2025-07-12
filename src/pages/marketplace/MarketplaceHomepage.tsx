@@ -278,9 +278,9 @@ const MarketplaceHomepage: React.FC = () => {
             </div>
 
             {/* Search and Actions */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
               {/* Enhanced Search Bar */}
-              <div className="hidden md:block max-w-md flex-1">
+              <div className="hidden lg:block max-w-sm xl:max-w-md flex-1">
                 <EnhancedSearch
                   placeholder="What are you looking for?"
                   onSearch={handleEnhancedSearch}
