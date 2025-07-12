@@ -22,6 +22,7 @@ import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { MobileProductCard } from "@/components/marketplace/MobileProductCard";
 import { MobileMarketplaceNav } from "@/components/marketplace/MobileMarketplaceNav";
 import ProductQuickView from "@/components/marketplace/ProductQuickView";
+import EnhancedSearch from "@/components/marketplace/EnhancedSearch";
 
 interface FlashSaleProduct {
   id: string;
