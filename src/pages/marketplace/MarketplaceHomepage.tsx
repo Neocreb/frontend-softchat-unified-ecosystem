@@ -256,15 +256,34 @@ const MarketplaceHomepage: React.FC = () => {
 
             {/* Search and Actions */}
             <div className="flex items-center gap-6">
-              {/* Search Bar */}
-              <div className="hidden md:flex items-center bg-gray-100 rounded-md px-4 py-2 max-w-md">
-                <Input
+              {/* Enhanced Search Bar */}
+              <div className="hidden md:block max-w-md flex-1">
+                <EnhancedSearch
                   placeholder="What are you looking for?"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="border-0 bg-transparent focus:ring-0 text-sm"
+                  onSearch={(query, filters) => {
+                    console.log("Search:", query, filters);
+                    // Implement search logic here
+                  }}
+                  onSuggestionSelect={(suggestion) => {
+                    console.log("Selected suggestion:", suggestion);
+                  }}
+                  categories={[
+                    {
+                      id: "electronics",
+                      name: "Electronics",
+                      productCount: 1234,
+                    },
+                    { id: "fashion", name: "Fashion", productCount: 856 },
+                    { id: "home", name: "Home & Garden", productCount: 632 },
+                    {
+                      id: "sports",
+                      name: "Sports & Outdoors",
+                      productCount: 445,
+                    },
+                    { id: "toys", name: "Toys & Games", productCount: 321 },
+                  ]}
+                  showFilters={true}
                 />
-                <Search className="w-5 h-5 text-gray-500 ml-2" />
               </div>
 
               {/* Action Icons */}
