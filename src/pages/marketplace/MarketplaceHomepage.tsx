@@ -21,6 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { MobileProductCard } from "@/components/marketplace/MobileProductCard";
 import { MobileMarketplaceNav } from "@/components/marketplace/MobileMarketplaceNav";
+import ProductQuickView from "@/components/marketplace/ProductQuickView";
 
 interface FlashSaleProduct {
   id: string;
