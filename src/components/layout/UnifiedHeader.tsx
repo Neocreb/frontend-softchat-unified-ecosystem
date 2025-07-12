@@ -1053,26 +1053,55 @@ const UnifiedHeader = ({
 
                 <DropdownMenuSeparator />
 
-                {/* Premium & Tools */}
+                {/* Premium & Tools - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate("/app/premium")}>
-                    <Crown className="mr-2 h-4 w-4 text-purple-600" />
-                    <span className="text-purple-600">Premium</span>
-                  </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => navigate("/app/ai-assistant")}
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("premiumTools")}
                   >
-                    <Bot className="mr-2 h-4 w-4 text-blue-600" />
-                    <span className="text-blue-600">AI Assistant</span>
+                    <div className="flex items-center">
+                      <Crown className="mr-2 h-4 w-4 text-purple-600" />
+                      <span>Premium & Tools</span>
+                    </div>
+                    {expandedSections.premiumTools ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/kyc")}>
-                    <ShieldCheck className="mr-2 h-4 w-4" />
-                    <span>KYC Verification</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/send-gifts")}>
-                    <Gift className="mr-2 h-4 w-4 text-pink-600" />
-                    <span className="text-pink-600">Send Gifts</span>
-                  </DropdownMenuItem>
+
+                  {expandedSections.premiumTools && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/premium")}
+                      >
+                        <Crown className="mr-2 h-4 w-4 text-purple-600" />
+                        <span className="text-purple-600">Premium</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/ai-assistant")}
+                      >
+                        <Bot className="mr-2 h-4 w-4 text-blue-600" />
+                        <span className="text-blue-600">AI Assistant</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/kyc")}
+                      >
+                        <ShieldCheck className="mr-2 h-4 w-4" />
+                        <span>KYC Verification</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/send-gifts")}
+                      >
+                        <Gift className="mr-2 h-4 w-4 text-pink-600" />
+                        <span className="text-pink-600">Send Gifts</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
