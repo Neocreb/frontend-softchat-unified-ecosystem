@@ -170,6 +170,25 @@ const MarketplaceHomepage: React.FC = () => {
     addToWishlist?.(productId);
   };
 
+  // Enhanced search handlers
+  const handleEnhancedSearch = (query: string, filters: any) => {
+    console.log("Enhanced search:", { query, filters });
+    setSearchQuery(query);
+    // Here you would integrate with your search API
+    // Example: searchProducts(query, filters);
+  };
+
+  const handleSearchSuggestionSelect = (suggestion: any) => {
+    console.log("Search suggestion selected:", suggestion);
+    setSearchQuery(suggestion.text);
+    // Navigate to appropriate page based on suggestion type
+    if (suggestion.type === "category") {
+      // Navigate to category page
+    } else if (suggestion.type === "product") {
+      // Search for the specific product
+    }
+  };
+
   const formatPrice = (price: number) => {
     return `$${price.toFixed(0)}`;
   };
