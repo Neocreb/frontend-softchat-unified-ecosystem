@@ -544,10 +544,12 @@ export const FreelanceDashboard: React.FC = () => {
                 </Card>
 
                 {/* Recent Activity */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Activity className="w-5 h-5" />
+                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+                  <CardHeader className="pb-6">
+                    <CardTitle className="flex items-center gap-3 text-xl font-bold">
+                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                        <Activity className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                      </div>
                       Recent Activity
                     </CardTitle>
                   </CardHeader>
