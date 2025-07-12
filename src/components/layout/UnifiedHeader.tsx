@@ -199,6 +199,21 @@ const UnifiedHeader = ({
   // Mobile search overlay state
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
+  // Collapsible sections state
+  const [expandedSections, setExpandedSections] = useState({
+    marketplace: false,
+    freelance: false,
+    finance: false,
+    premiumTools: false,
+  });
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
 
