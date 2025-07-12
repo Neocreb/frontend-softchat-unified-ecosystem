@@ -1,5 +1,83 @@
 // Enhanced marketplace types for full ecommerce functionality with campaigns, boosts, and multi-product support
 
+export interface EnhancedProduct {
+  id: string;
+
+  // Basic info
+  name: string;
+  description: string;
+  shortDescription?: string;
+
+  // Product type and classification
+  productType: "physical" | "digital" | "service" | "freelance_service";
+  category: string;
+  subcategory?: string;
+  tags?: string[];
+
+  // Pricing
+  price: number;
+  discountPrice?: number;
+  discountPercentage?: number;
+
+  // Media
+  image: string; // thumbnail/main image
+  images?: string[];
+  videos?: string[];
+  thumbnailImage?: string;
+
+  // Inventory and availability
+  inStock: boolean;
+  stockQuantity?: number;
+  limitedQuantity?: boolean;
+  allowBackorder?: boolean;
+
+  // Status and features
+  status: "active" | "draft" | "suspended" | "out_of_stock";
+  isDigital: boolean;
+  isFeatured: boolean;
+  isSponsored: boolean;
+
+  // SEO and discovery
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string[];
+
+  // Ratings and performance
+  rating: number;
+  averageRating: number;
+  reviewCount?: number;
+  totalReviews: number;
+  totalSales: number;
+  viewCount: number;
+  clickCount: number;
+  favoriteCount: number;
+
+  // Boost and campaign data
+  boostLevel: number;
+  boostedUntil?: string;
+  campaignIds?: string[];
+
+  // Seller info
+  sellerId: string;
+  sellerName?: string;
+  sellerRating?: number;
+
+  // Shipping and fulfillment
+  weight?: number;
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+  };
+  shippingClass?: string;
+  freeShipping?: boolean;
+  shippingTime?: string;
+
+  // Metadata
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Product {
   id: string;
 
