@@ -54,6 +54,7 @@ const MarketplaceHomepage: React.FC = () => {
   const [selectedProduct, setSelectedProduct] =
     useState<FlashSaleProduct | null>(null);
   const [showQuickView, setShowQuickView] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   // Mock flash sale products
   const flashSaleProducts: FlashSaleProduct[] = [
