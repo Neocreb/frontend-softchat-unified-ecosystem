@@ -387,6 +387,9 @@ const AppRoutes = () => {
         <Route path="security" element={<AdminSecurity />} />
       </Route>
 
+      {/* Legacy route redirects */}
+      <Route path="/feed" element={<Navigate to="/app/feed" replace />} />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
