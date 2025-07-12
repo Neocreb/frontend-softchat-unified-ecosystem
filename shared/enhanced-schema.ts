@@ -1362,6 +1362,197 @@ export const userSuspensions = pgTable("user_suspensions", {
 });
 
 // =============================================================================
+// SELLER PERFORMANCE & ANALYTICS
+// =============================================================================
+
+export const sellerAnalytics = pgTable("seller_analytics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sellerId: uuid("seller_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Date for this analytics record
+  analyticsDate: timestamp("analytics_date").notNull(),
+  period: text("period").notNull(), // 'daily', 'weekly', 'monthly', 'yearly'
+
+  // Sales metrics
+  totalOrders: integer("total_orders").default(0),
+  totalRevenue: decimal("total_revenue", { precision: 15, scale: 2 }).default(
+    "0",
+  ),
+  totalUnitsSold: integer("total_units_sold").default(0),
+  averageOrderValue: decimal("average_order_value", {
+    precision: 10,
+    scale: 2,
+  }).default("0"),
+
+  // Product metrics
+  totalProducts: integer("total_products").default(0),
+  activeProducts: integer("active_products").default(0),
+  outOfStockProducts: integer("out_of_stock_products").default(0),
+
+  // Customer metrics
+  uniqueCustomers: integer("unique_customers").default(0),
+  repeatCustomers: integer("repeat_customers").default(0),
+  customerRetentionRate: decimal("customer_retention_rate", {
+    precision: 5,
+    scale: 2,
+  }).default("0"),
+
+  // Engagement metrics
+  totalViews: integer("total_views").default(0),
+  totalClicks: integer("total_clicks").default(0),
+  conversionRate: decimal("conversion_rate", {
+    precision: 5,
+    scale: 2,
+  }).default("0"),
+
+  // Review metrics
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }).default(
+    "0",
+  ),
+  totalReviews: integer("total_reviews").default(0),
+  positiveReviewRate: decimal("positive_review_rate", {
+    precision: 5,
+    scale: 2,
+  }).default("0"),
+
+  // Response metrics
+  averageResponseTime: integer("average_response_time").default(0), // Minutes
+  responseRate: decimal("response_rate", { precision: 5, scale: 2 }).default(
+    "0",
+  ),
+
+  // Fulfillment metrics
+  onTimeDeliveryRate: decimal("on_time_delivery_rate", {
+    precision: 5,
+    scale: 2,
+  }).default("0"),
+  averageShippingTime: decimal("average_shipping_time", {
+    precision: 5,
+    scale: 2,
+  }).default("0"), // Days
+
+  // Dispute metrics
+  totalDisputes: integer("total_disputes").default(0),
+  disputeResolutionRate: decimal("dispute_resolution_rate", {
+    precision: 5,
+    scale: 2,
+  }).default("0"),
+
+  // Boost performance
+  totalBoosts: integer("total_boosts").default(0),
+  boostROI: decimal("boost_roi", { precision: 10, scale: 2 }).default("0"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Seller performance score tracking
+export const sellerScores = pgTable("seller_scores", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sellerId: uuid("seller_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Overall performance score (0-100)
+  overallScore: decimal("overall_score", { precision: 5, scale: 2 }).notNull(),
+
+  // Component scores
+  qualityScore: decimal("quality_score", { precision: 5, scale: 2 }).default(
+    "0",
+  ),
+  serviceScore: decimal("service_score", { precision: 5, scale: 2 }).default(
+    "0",
+  ),
+  deliveryScore: decimal("delivery_score", { precision: 5, scale: 2 }).default(
+    "0",
+  ),
+  communicationScore: decimal("communication_score", {
+    precision: 5,
+    scale: 2,
+  }).default("0"),
+
+  // Score factors
+  factors: jsonb("factors"), // Detailed breakdown of what influenced the score
+
+  // Badge/tier information
+  tier: text("tier").default("bronze"), // 'bronze', 'silver', 'gold', 'platinum'
+  badges: text("badges").array(), // ['fast_shipper', 'top_rated', 'excellent_service']
+
+  // Score history
+  previousScore: decimal("previous_score", { precision: 5, scale: 2 }),
+  scoreChange: decimal("score_change", { precision: 5, scale: 2 }).default("0"),
+
+  // Calculation metadata
+  calculatedAt: timestamp("calculated_at").defaultNow(),
+  nextCalculationDate: timestamp("next_calculation_date"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Price history tracking for products
+export const productPriceHistory = pgTable("product_price_history", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  // Price information
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  discountPrice: decimal("discount_price", { precision: 10, scale: 2 }),
+  discountPercentage: decimal("discount_percentage", {
+    precision: 5,
+    scale: 2,
+  }),
+
+  // Change context
+  changeReason: text("change_reason"), // 'manual', 'campaign', 'automatic', 'competitor_match'
+  changedBy: uuid("changed_by").references(() => users.id),
+
+  // Effective period
+  effectiveFrom: timestamp("effective_from").notNull(),
+  effectiveTo: timestamp("effective_to"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Product recommendations engine
+export const productRecommendations = pgTable("product_recommendations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Recommendation context
+  sourceProductId: uuid("source_product_id").references(() => products.id), // Product that triggered recommendation
+  recommendedProductId: uuid("recommended_product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  // Recommendation algorithm
+  algorithm: text("algorithm").notNull(), // 'collaborative_filtering', 'content_based', 'popular', 'recently_viewed'
+  confidence: decimal("confidence", { precision: 5, scale: 2 }).notNull(), // 0-100
+
+  // Context
+  context: text("context"), // 'product_page', 'checkout', 'home_feed', 'search_results'
+
+  // Performance tracking
+  shown: boolean("shown").default(false),
+  clicked: boolean("clicked").default(false),
+  purchased: boolean("purchased").default(false),
+
+  // Timing
+  shownAt: timestamp("shown_at"),
+  clickedAt: timestamp("clicked_at"),
+  purchasedAt: timestamp("purchased_at"),
+
+  // Expiry
+  expiresAt: timestamp("expires_at"), // When this recommendation becomes stale
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// =============================================================================
 // INDEXES FOR PERFORMANCE
 // =============================================================================
 
