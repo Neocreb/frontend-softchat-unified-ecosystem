@@ -234,18 +234,18 @@ const EnhancedShoppingCart: React.FC<EnhancedShoppingCartProps> = ({
       ) : (
         <>
           {/* Cart Items */}
-          <div className="space-y-3 max-h-[400px] overflow-y-auto">
+          <div className="space-y-3 max-h-[50vh] sm:max-h-[400px] overflow-y-auto">
             {cart.map((item) => (
               <Card key={item.id}>
-                <CardContent className="p-4">
-                  <div className="flex gap-4">
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <img
                       src={item.product?.image}
                       alt={item.product?.name}
-                      className="w-16 h-16 rounded object-cover"
+                      className="w-full sm:w-16 h-32 sm:h-16 rounded object-cover"
                     />
                     <div className="flex-1">
-                      <h4 className="font-medium line-clamp-2">
+                      <h4 className="font-medium text-sm sm:text-base line-clamp-2">
                         {item.product?.name}
                       </h4>
                       <p className="text-sm text-muted-foreground">
@@ -273,15 +273,8 @@ const EnhancedShoppingCart: React.FC<EnhancedShoppingCartProps> = ({
                           </div>
                         )}
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeFromCart(item.id)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                      <div className="flex items-center gap-2">
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2">
+                      <div className="flex items-center gap-2 order-2 sm:order-1">
                         <Button
                           variant="outline"
                           size="icon"
