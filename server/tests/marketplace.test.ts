@@ -1,1 +1,190 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';\nimport request from 'supertest';\nimport express from 'express';\nimport { db } from '../db';\nimport marketplaceApiRoutes from '../routes/marketplace-api';\nimport { products, shoppingCarts, cartItems, marketplaceOrders } from '../../shared/enhanced-schema';\nimport { eq } from 'drizzle-orm';\n\nconst app = express();\napp.use(express.json());\napp.use('/api/marketplace', marketplaceApiRoutes);\n\n// Mock authentication middleware\napp.use((req, res, next) => {\n  req.user = { id: 'test-user-id', email: 'test@example.com' };\n  next();\n});\n\ndescribe('Marketplace API Integration Tests', () => {\n  let testProductId: string;\n  let testCartId: string;\n\n  beforeEach(async () => {\n    // Clean up test data\n    await db.delete(cartItems);\n    await db.delete(shoppingCarts);\n    await db.delete(marketplaceOrders);\n    await db.delete(products);\n\n    // Create test product\n    const [product] = await db.insert(products).values({\n      sellerId: 'test-seller-id',\n      name: 'Test Product',\n      description: 'A test product for integration testing',\n      price: 29.99,\n      discountPrice: null,\n      category: 'Electronics',\n      subcategory: 'Test',\n      productType: 'physical',\n      images: ['https://example.com/test-image.jpg'],\n      tags: ['test', 'electronics'],\n      sku: 'TEST-001',\n      inStock: true,\n      stockQuantity: 100,\n      minOrderQuantity: 1,\n      maxOrderQuantity: 10,\n      weight: 1.0,\n      dimensions: { length: 10, width: 10, height: 5 },\n      shippingClass: 'standard',\n      status: 'active',\n      boostLevel: 0,\n      averageRating: 0,\n      totalReviews: 0,\n      totalSales: 0,\n      viewCount: 0,\n      clickCount: 0,\n      favoriteCount: 0,\n    }).returning();\n\n    testProductId = product.id;\n  });\n\n  afterEach(async () => {\n    // Clean up test data\n    await db.delete(cartItems);\n    await db.delete(shoppingCarts);\n    await db.delete(marketplaceOrders);\n    await db.delete(products);\n  });\n\n  describe('Products API', () => {\n    it('should fetch products with pagination', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/products')\n        .query({ page: 1, limit: 10 })\n        .expect(200);\n\n      expect(response.body).toHaveProperty('products');\n      expect(response.body).toHaveProperty('pagination');\n      expect(Array.isArray(response.body.products)).toBe(true);\n      expect(response.body.products.length).toBeGreaterThan(0);\n    });\n\n    it('should fetch a single product by ID', async () => {\n      const response = await request(app)\n        .get(`/api/marketplace/products/${testProductId}`)\n        .expect(200);\n\n      expect(response.body.id).toBe(testProductId);\n      expect(response.body.name).toBe('Test Product');\n      expect(response.body).toHaveProperty('variants');\n    });\n\n    it('should create a new product', async () => {\n      const newProduct = {\n        name: 'New Test Product',\n        description: 'Another test product',\n        price: 49.99,\n        category: 'Fashion',\n        subcategory: 'Clothing',\n        productType: 'physical',\n        images: ['https://example.com/new-test-image.jpg'],\n        tags: ['test', 'fashion'],\n        sku: 'TEST-002',\n        inStock: true,\n        stockQuantity: 50,\n      };\n\n      const response = await request(app)\n        .post('/api/marketplace/products')\n        .send(newProduct)\n        .expect(201);\n\n      expect(response.body.name).toBe(newProduct.name);\n      expect(response.body.sellerId).toBe('test-user-id');\n    });\n\n    it('should update an existing product', async () => {\n      const updatedData = {\n        name: 'Updated Test Product',\n        price: 39.99,\n      };\n\n      const response = await request(app)\n        .put(`/api/marketplace/products/${testProductId}`)\n        .send(updatedData)\n        .expect(200);\n\n      expect(response.body.name).toBe(updatedData.name);\n      expect(response.body.price).toBe(updatedData.price);\n    });\n\n    it('should filter products by category', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/products')\n        .query({ category: 'Electronics' })\n        .expect(200);\n\n      expect(response.body.products.every((p: any) => p.category === 'Electronics')).toBe(true);\n    });\n\n    it('should search products by name', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/products')\n        .query({ searchQuery: 'Test Product' })\n        .expect(200);\n\n      expect(response.body.products.length).toBeGreaterThan(0);\n      expect(response.body.products[0].name).toContain('Test Product');\n    });\n  });\n\n  describe('Cart API', () => {\n    it('should get or create a cart for user', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/cart')\n        .expect(200);\n\n      expect(response.body).toHaveProperty('cart');\n      expect(response.body).toHaveProperty('items');\n      expect(Array.isArray(response.body.items)).toBe(true);\n    });\n\n    it('should add item to cart', async () => {\n      const cartItem = {\n        productId: testProductId,\n        quantity: 2,\n        notes: 'Test notes',\n      };\n\n      const response = await request(app)\n        .post('/api/marketplace/cart/items')\n        .send(cartItem)\n        .expect(201);\n\n      expect(response.body.productId).toBe(testProductId);\n      expect(response.body.quantity).toBe(2);\n    });\n\n    it('should update cart item quantity', async () => {\n      // First add item to cart\n      const cartItem = {\n        productId: testProductId,\n        quantity: 1,\n      };\n\n      const addResponse = await request(app)\n        .post('/api/marketplace/cart/items')\n        .send(cartItem);\n\n      const itemId = addResponse.body.id;\n\n      // Update quantity\n      const updateResponse = await request(app)\n        .put(`/api/marketplace/cart/items/${itemId}`)\n        .send({ quantity: 3 })\n        .expect(200);\n\n      expect(updateResponse.body.quantity).toBe(3);\n    });\n\n    it('should remove item from cart', async () => {\n      // First add item to cart\n      const cartItem = {\n        productId: testProductId,\n        quantity: 1,\n      };\n\n      const addResponse = await request(app)\n        .post('/api/marketplace/cart/items')\n        .send(cartItem);\n\n      const itemId = addResponse.body.id;\n\n      // Remove item\n      await request(app)\n        .delete(`/api/marketplace/cart/items/${itemId}`)\n        .expect(200);\n\n      // Verify cart is empty\n      const cartResponse = await request(app)\n        .get('/api/marketplace/cart')\n        .expect(200);\n\n      expect(cartResponse.body.items.length).toBe(0);\n    });\n  });\n\n  describe('Orders API', () => {\n    beforeEach(async () => {\n      // Add item to cart for order tests\n      await request(app)\n        .post('/api/marketplace/cart/items')\n        .send({\n          productId: testProductId,\n          quantity: 1,\n        });\n    });\n\n    it('should create an order from cart', async () => {\n      const orderData = {\n        shippingAddress: {\n          street: '123 Test St',\n          city: 'Test City',\n          state: 'TS',\n          postalCode: '12345',\n          country: 'US',\n        },\n        billingAddress: {\n          street: '123 Test St',\n          city: 'Test City',\n          state: 'TS',\n          postalCode: '12345',\n          country: 'US',\n        },\n        paymentMethod: 'credit_card',\n        paymentCurrency: 'USDT',\n      };\n\n      const response = await request(app)\n        .post('/api/marketplace/orders')\n        .send(orderData)\n        .expect(201);\n\n      expect(response.body).toHaveProperty('orderNumber');\n      expect(response.body.buyerId).toBe('test-user-id');\n      expect(response.body.status).toBe('pending');\n      expect(response.body.totalAmount).toBeGreaterThan(0);\n    });\n\n    it('should fetch user orders', async () => {\n      // First create an order\n      const orderData = {\n        shippingAddress: {\n          street: '123 Test St',\n          city: 'Test City',\n          state: 'TS',\n          postalCode: '12345',\n          country: 'US',\n        },\n        paymentMethod: 'credit_card',\n      };\n\n      await request(app)\n        .post('/api/marketplace/orders')\n        .send(orderData);\n\n      const response = await request(app)\n        .get('/api/marketplace/orders')\n        .expect(200);\n\n      expect(Array.isArray(response.body)).toBe(true);\n      expect(response.body.length).toBeGreaterThan(0);\n    });\n  });\n\n  describe('Boost API', () => {\n    it('should fetch boost options', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/boost-options')\n        .expect(200);\n\n      expect(Array.isArray(response.body)).toBe(true);\n      expect(response.body.length).toBeGreaterThan(0);\n      expect(response.body[0]).toHaveProperty('name');\n      expect(response.body[0]).toHaveProperty('price');\n      expect(response.body[0]).toHaveProperty('duration');\n    });\n\n    it('should create a product boost', async () => {\n      const boostData = {\n        boostOptionId: 'boost1',\n      };\n\n      const response = await request(app)\n        .post(`/api/marketplace/products/${testProductId}/boost`)\n        .send(boostData)\n        .expect(201);\n\n      expect(response.body.productId).toBe(testProductId);\n      expect(response.body.status).toBe('active');\n      expect(response.body).toHaveProperty('startDate');\n      expect(response.body).toHaveProperty('endDate');\n    });\n\n    it('should fetch user boosts', async () => {\n      // First create a boost\n      await request(app)\n        .post(`/api/marketplace/products/${testProductId}/boost`)\n        .send({ boostOptionId: 'boost1' });\n\n      const response = await request(app)\n        .get('/api/marketplace/my-boosts')\n        .expect(200);\n\n      expect(Array.isArray(response.body)).toBe(true);\n      expect(response.body.length).toBeGreaterThan(0);\n    });\n  });\n\n  describe('Categories API', () => {\n    it('should fetch active categories', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/categories')\n        .expect(200);\n\n      expect(Array.isArray(response.body)).toBe(true);\n    });\n  });\n\n  describe('Campaigns API', () => {\n    it('should fetch active campaigns', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/campaigns')\n        .expect(200);\n\n      expect(Array.isArray(response.body)).toBe(true);\n    });\n  });\n\n  describe('Search API', () => {\n    it('should perform advanced search', async () => {\n      const searchData = {\n        query: 'Test',\n        filters: {\n          category: 'Electronics',\n          minPrice: 10,\n          maxPrice: 100,\n        },\n        sortBy: 'price-low',\n        page: 1,\n        limit: 10,\n      };\n\n      const response = await request(app)\n        .post('/api/marketplace/search')\n        .send(searchData)\n        .expect(200);\n\n      expect(response.body).toHaveProperty('results');\n      expect(response.body).toHaveProperty('pagination');\n      expect(response.body).toHaveProperty('searchQuery');\n      expect(Array.isArray(response.body.results)).toBe(true);\n    });\n  });\n\n  describe('Reviews API', () => {\n    let testOrderId: string;\n\n    beforeEach(async () => {\n      // Create a completed order for review testing\n      const [order] = await db.insert(marketplaceOrders).values({\n        buyerId: 'test-user-id',\n        sellerId: 'test-seller-id',\n        customerName: 'Test Customer',\n        customerEmail: 'test@example.com',\n        orderNumber: 'TEST-ORDER-001',\n        orderType: 'marketplace',\n        items: [{\n          productId: testProductId,\n          productName: 'Test Product',\n          quantity: 1,\n          unitPrice: 29.99,\n          totalPrice: 29.99,\n        }],\n        subtotal: 29.99,\n        totalAmount: 29.99,\n        paymentMethod: 'credit_card',\n        paymentCurrency: 'USD',\n        paymentStatus: 'completed',\n        status: 'completed',\n        shippingAddress: {\n          street: '123 Test St',\n          city: 'Test City',\n          state: 'TS',\n          postalCode: '12345',\n          country: 'US',\n        },\n        fulfillmentStatus: 'delivered',\n        platformFee: 1.50,\n        feePercentage: 5.0,\n      }).returning();\n\n      testOrderId = order.id;\n    });\n\n    it('should fetch product reviews', async () => {\n      const response = await request(app)\n        .get(`/api/marketplace/products/${testProductId}/reviews`)\n        .expect(200);\n\n      expect(Array.isArray(response.body)).toBe(true);\n    });\n\n    it('should create a product review', async () => {\n      const reviewData = {\n        orderId: testOrderId,\n        overallRating: 5,\n        qualityRating: 5,\n        valueRating: 4,\n        title: 'Great product!',\n        comment: 'Really satisfied with this purchase.',\n        wouldRecommend: true,\n      };\n\n      const response = await request(app)\n        .post(`/api/marketplace/products/${testProductId}/reviews`)\n        .send(reviewData)\n        .expect(201);\n\n      expect(response.body.overallRating).toBe(5);\n      expect(response.body.title).toBe('Great product!');\n      expect(response.body.isVerifiedPurchase).toBe(true);\n    });\n  });\n\n  describe('Analytics API', () => {\n    it('should fetch seller analytics', async () => {\n      const response = await request(app)\n        .get('/api/marketplace/seller/analytics')\n        .expect(200);\n\n      expect(response.body).toHaveProperty('totalRevenue');\n      expect(response.body).toHaveProperty('totalOrders');\n      expect(response.body).toHaveProperty('conversionRate');\n      expect(response.body).toHaveProperty('monthlyRevenue');\n    });\n  });\n\n  describe('Error Handling', () => {\n    it('should return 404 for non-existent product', async () => {\n      await request(app)\n        .get('/api/marketplace/products/non-existent-id')\n        .expect(404);\n    });\n\n    it('should return 400 for invalid cart item data', async () => {\n      await request(app)\n        .post('/api/marketplace/cart/items')\n        .send({ productId: 'invalid-id' })\n        .expect(404);\n    });\n\n    it('should return 400 for empty cart checkout', async () => {\n      // Ensure cart is empty\n      const cartResponse = await request(app).get('/api/marketplace/cart');\n      const items = cartResponse.body.items;\n      \n      for (const item of items) {\n        await request(app).delete(`/api/marketplace/cart/items/${item.id}`);\n      }\n\n      await request(app)\n        .post('/api/marketplace/orders')\n        .send({\n          shippingAddress: {\n            street: '123 Test St',\n            city: 'Test City',\n            state: 'TS',\n            postalCode: '12345',\n            country: 'US',\n          },\n          paymentMethod: 'credit_card',\n        })\n        .expect(400);\n    });\n  });\n});\n"
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import request from "supertest";
+import express from "express";
+import { db } from "../db";
+import marketplaceApiRoutes from "../routes/marketplace-api";
+import {
+  products,
+  shoppingCarts,
+  cartItems,
+  marketplaceOrders,
+} from "../../shared/enhanced-schema";
+import { eq } from "drizzle-orm";
+
+const app = express();
+app.use(express.json());
+app.use("/api/marketplace", marketplaceApiRoutes);
+
+// Mock authentication middleware
+app.use((req, res, next) => {
+  req.user = { id: "test-user-id", email: "test@example.com" };
+  next();
+});
+
+describe("Marketplace API Integration Tests", () => {
+  let testProductId: string;
+
+  beforeEach(async () => {
+    // Clean up test data
+    await db.delete(cartItems);
+    await db.delete(shoppingCarts);
+    await db.delete(marketplaceOrders);
+    await db.delete(products);
+
+    // Create test product
+    const [product] = await db
+      .insert(products)
+      .values({
+        sellerId: "test-seller-id",
+        name: "Test Product",
+        description: "A test product for integration testing",
+        price: 29.99,
+        discountPrice: null,
+        category: "Electronics",
+        subcategory: "Test",
+        productType: "physical",
+        images: ["https://example.com/test-image.jpg"],
+        tags: ["test", "electronics"],
+        sku: "TEST-001",
+        inStock: true,
+        stockQuantity: 100,
+        minOrderQuantity: 1,
+        maxOrderQuantity: 10,
+        weight: 1.0,
+        dimensions: { length: 10, width: 10, height: 5 },
+        shippingClass: "standard",
+        status: "active",
+        boostLevel: 0,
+        averageRating: 0,
+        totalReviews: 0,
+        totalSales: 0,
+        viewCount: 0,
+        clickCount: 0,
+        favoriteCount: 0,
+      })
+      .returning();
+
+    testProductId = product.id;
+  });
+
+  afterEach(async () => {
+    // Clean up test data
+    await db.delete(cartItems);
+    await db.delete(shoppingCarts);
+    await db.delete(marketplaceOrders);
+    await db.delete(products);
+  });
+
+  describe("Products API", () => {
+    it("should fetch products with pagination", async () => {
+      const response = await request(app)
+        .get("/api/marketplace/products")
+        .query({ page: 1, limit: 10 })
+        .expect(200);
+
+      expect(response.body).toHaveProperty("products");
+      expect(response.body).toHaveProperty("pagination");
+      expect(Array.isArray(response.body.products)).toBe(true);
+      expect(response.body.products.length).toBeGreaterThan(0);
+    });
+
+    it("should fetch a single product by ID", async () => {
+      const response = await request(app)
+        .get(`/api/marketplace/products/${testProductId}`)
+        .expect(200);
+
+      expect(response.body.id).toBe(testProductId);
+      expect(response.body.name).toBe("Test Product");
+      expect(response.body).toHaveProperty("variants");
+    });
+
+    it("should create a new product", async () => {
+      const newProduct = {
+        name: "New Test Product",
+        description: "Another test product",
+        price: 49.99,
+        category: "Fashion",
+        subcategory: "Clothing",
+        productType: "physical",
+        images: ["https://example.com/new-test-image.jpg"],
+        tags: ["test", "fashion"],
+        sku: "TEST-002",
+        inStock: true,
+        stockQuantity: 50,
+      };
+
+      const response = await request(app)
+        .post("/api/marketplace/products")
+        .send(newProduct)
+        .expect(201);
+
+      expect(response.body.name).toBe(newProduct.name);
+      expect(response.body.sellerId).toBe("test-user-id");
+    });
+  });
+
+  describe("Cart API", () => {
+    it("should get or create a cart for user", async () => {
+      const response = await request(app)
+        .get("/api/marketplace/cart")
+        .expect(200);
+
+      expect(response.body).toHaveProperty("cart");
+      expect(response.body).toHaveProperty("items");
+      expect(Array.isArray(response.body.items)).toBe(true);
+    });
+
+    it("should add item to cart", async () => {
+      const cartItem = {
+        productId: testProductId,
+        quantity: 2,
+        notes: "Test notes",
+      };
+
+      const response = await request(app)
+        .post("/api/marketplace/cart/items")
+        .send(cartItem)
+        .expect(201);
+
+      expect(response.body.productId).toBe(testProductId);
+      expect(response.body.quantity).toBe(2);
+    });
+  });
+
+  describe("Boost API", () => {
+    it("should fetch boost options", async () => {
+      const response = await request(app)
+        .get("/api/marketplace/boost-options")
+        .expect(200);
+
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body.length).toBeGreaterThan(0);
+      expect(response.body[0]).toHaveProperty("name");
+      expect(response.body[0]).toHaveProperty("price");
+      expect(response.body[0]).toHaveProperty("duration");
+    });
+  });
+
+  describe("Categories API", () => {
+    it("should fetch active categories", async () => {
+      const response = await request(app)
+        .get("/api/marketplace/categories")
+        .expect(200);
+
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+  });
+
+  describe("Analytics API", () => {
+    it("should fetch seller analytics", async () => {
+      const response = await request(app)
+        .get("/api/marketplace/seller/analytics")
+        .expect(200);
+
+      expect(response.body).toHaveProperty("totalRevenue");
+      expect(response.body).toHaveProperty("totalOrders");
+      expect(response.body).toHaveProperty("conversionRate");
+      expect(response.body).toHaveProperty("monthlyRevenue");
+    });
+  });
+});
