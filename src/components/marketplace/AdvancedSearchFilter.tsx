@@ -1218,7 +1218,105 @@ export default function AdvancedSearchFilter({
                 </FilterSection>
               </div>
 
-              {/* Additional filter sections can be added here */}
+              {/* Additional filter sections */}
+              <Separator />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {/* Brands */}
+                <FilterSection
+                  title="Brands"
+                  icon={<Award className="h-4 w-4" />}
+                >
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {filterOptions.brands.slice(0, 10).map((brand) => (
+                      <label
+                        key={brand}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <Checkbox
+                          checked={filters.brands.includes(brand)}
+                          onCheckedChange={() =>
+                            toggleArrayFilter("brands", brand)
+                          }
+                        />
+                        <span className="text-sm">{brand}</span>
+                      </label>
+                    ))}
+                  </div>
+                </FilterSection>
+
+                {/* Condition */}
+                <FilterSection
+                  title="Condition"
+                  icon={<Package className="h-4 w-4" />}
+                >
+                  <div className="space-y-2">
+                    {filterOptions.conditions.map((condition) => (
+                      <label
+                        key={condition}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <Checkbox
+                          checked={filters.condition.includes(condition)}
+                          onCheckedChange={() =>
+                            toggleArrayFilter("condition", condition)
+                          }
+                        />
+                        <span className="text-sm capitalize">{condition}</span>
+                      </label>
+                    ))}
+                  </div>
+                </FilterSection>
+
+                {/* Shipping Options */}
+                <FilterSection
+                  title="Shipping"
+                  icon={<Truck className="h-4 w-4" />}
+                >
+                  <div className="space-y-2">
+                    {filterOptions.shippingOptions.map((option) => (
+                      <label
+                        key={option}
+                        className="flex items-center space-x-2 cursor-pointer"
+                      >
+                        <Checkbox
+                          checked={filters.shipping.includes(option)}
+                          onCheckedChange={() =>
+                            toggleArrayFilter("shipping", option)
+                          }
+                        />
+                        <span className="text-sm">{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                </FilterSection>
+
+                {/* Location */}
+                <FilterSection
+                  title="Location"
+                  icon={<MapPin className="h-4 w-4" />}
+                >
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Enter location..."
+                      value={filters.location}
+                      onChange={(e) =>
+                        updateFilters({ location: e.target.value })
+                      }
+                      className="text-sm"
+                    />
+                    <label className="flex items-center space-x-2 cursor-pointer">
+                      <Checkbox
+                        checked={filters.localDeliveryOnly}
+                        onCheckedChange={(checked) =>
+                          updateFilters({ localDeliveryOnly: !!checked })
+                        }
+                      />
+                      <span className="text-sm">Local delivery only</span>
+                    </label>
+                  </div>
+                </FilterSection>
+              </div>
             </CardContent>
           </Card>
         )}
