@@ -339,6 +339,16 @@ const MarketplaceHomepage: React.FC = () => {
                   </Button>
                 </Link>
 
+                {/* Mobile Menu Button */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="lg:hidden"
+                  onClick={() => setShowMobileMenu(!showMobileMenu)}
+                >
+                  <Menu className="w-6 h-6" />
+                </Button>
+
                 <div className="relative">
                   <Button
                     variant="ghost"
