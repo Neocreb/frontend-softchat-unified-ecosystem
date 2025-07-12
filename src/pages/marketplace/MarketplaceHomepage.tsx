@@ -19,9 +19,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { MobileProductCard } from "@/components/marketplace/MobileProductCard";
-import { MobileMarketplaceNav } from "@/components/marketplace/MobileMarketplaceNav";
+
 import ProductQuickView from "@/components/marketplace/ProductQuickView";
-import EnhancedSearch from "@/components/marketplace/EnhancedSearch";
+
 import ResponsiveProductCarousel from "@/components/marketplace/ResponsiveProductCarousel";
 import CategoryBrowser from "@/components/marketplace/CategoryBrowser";
 import SmartRecommendations from "@/components/marketplace/SmartRecommendations";
@@ -42,7 +42,7 @@ const MarketplaceHomepage: React.FC = () => {
   const { products, categories, addToCart, addToWishlist } =
     useEnhancedMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 3,
@@ -172,25 +172,6 @@ const MarketplaceHomepage: React.FC = () => {
     addToWishlist?.(productId);
   };
 
-  // Enhanced search handlers
-  const handleEnhancedSearch = (query: string, filters: any) => {
-    console.log("Enhanced search:", { query, filters });
-    setSearchQuery(query);
-    // Here you would integrate with your search API
-    // Example: searchProducts(query, filters);
-  };
-
-  const handleSearchSuggestionSelect = (suggestion: any) => {
-    console.log("Search suggestion selected:", suggestion);
-    setSearchQuery(suggestion.text);
-    // Navigate to appropriate page based on suggestion type
-    if (suggestion.type === "category") {
-      // Navigate to category page
-    } else if (suggestion.type === "product") {
-      // Search for the specific product
-    }
-  };
-
   const formatPrice = (price: number) => {
     return `$${price.toFixed(0)}`;
   };
@@ -232,204 +213,6 @@ const MarketplaceHomepage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Main Header */}
-      <header className="border-b border-gray-200 sticky top-0 bg-white/80 backdrop-blur-md z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-          <div className="flex items-center justify-between gap-4 sm:gap-6">
-            {/* Logo and Navigation */}
-            <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
-              <Link
-                to="/marketplace"
-                className="text-xl sm:text-2xl font-bold tracking-wider flex-shrink-0"
-              >
-                Marketplace
-              </Link>
-
-              {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center gap-8 xl:gap-12">
-                <Link
-                  to="/app/marketplace"
-                  className="text-gray-900 hover:text-gray-600 border-b-2 border-black pb-1 transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/app/marketplace/list"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Sell
-                </Link>
-                <Link
-                  to="/app/marketplace/my"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  My Account
-                </Link>
-                <Link
-                  to="/app/marketplace/seller"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Seller Hub
-                </Link>
-              </nav>
-            </div>
-
-            {/* Search and Actions */}
-            <div className="flex items-center gap-3 sm:gap-4 lg:gap-6">
-              {/* Enhanced Search Bar */}
-              <div className="hidden lg:block max-w-sm xl:max-w-md flex-1">
-                <EnhancedSearch
-                  placeholder="What are you looking for?"
-                  onSearch={handleEnhancedSearch}
-                  onSuggestionSelect={handleSearchSuggestionSelect}
-                  categories={[
-                    {
-                      id: "electronics",
-                      name: "Electronics",
-                      productCount: 1234,
-                    },
-                    { id: "fashion", name: "Fashion", productCount: 856 },
-                    { id: "home", name: "Home & Garden", productCount: 632 },
-                    {
-                      id: "sports",
-                      name: "Sports & Outdoors",
-                      productCount: 445,
-                    },
-                    { id: "toys", name: "Toys & Games", productCount: 321 },
-                  ]}
-                  showFilters={false}
-                />
-              </div>
-
-              {/* Action Icons */}
-              <div className="flex items-center gap-3 sm:gap-4">
-                <Link
-                  to="/app/marketplace/wishlist"
-                  className="hidden sm:block"
-                >
-                  <Button variant="ghost" size="icon" className="relative">
-                    <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
-                    <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
-                      5
-                    </Badge>
-                  </Button>
-                </Link>
-
-                <Link to="/app/marketplace/cart">
-                  <Button variant="ghost" size="icon" className="relative">
-                    <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
-                    <Badge className="absolute -top-1 -right-1 w-4 h-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
-                      2
-                    </Badge>
-                  </Button>
-                </Link>
-
-                <div className="relative">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setShowAccountDropdown(!showAccountDropdown)}
-                    className="bg-red-500 text-white hover:bg-red-600 rounded-full"
-                  >
-                    <User className="w-5 h-5" />
-                  </Button>
-
-                  {/* Account Dropdown */}
-                  {showAccountDropdown && (
-                    <div className="absolute right-0 mt-2 w-64 bg-black/90 backdrop-blur-lg rounded-lg shadow-xl border border-white/20 text-white z-50">
-                      <div className="p-4 space-y-3">
-                        {/* Dashboards Section */}
-                        <div className="border-b border-white/20 pb-3">
-                          <h3 className="text-xs font-medium text-white/60 mb-2 uppercase tracking-wide">
-                            Dashboards
-                          </h3>
-                          <Link
-                            to="/app/marketplace/my"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <div className="w-5 h-5 rounded bg-blue-500 flex items-center justify-center">
-                              <User className="w-3 h-3" />
-                            </div>
-                            <span className="text-sm">Buyer Dashboard</span>
-                          </Link>
-                          <Link
-                            to="/app/marketplace/seller"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <div className="w-5 h-5 rounded bg-green-500 flex items-center justify-center">
-                              <div className="w-3 h-3 rounded-full border border-white"></div>
-                            </div>
-                            <span className="text-sm">Seller Dashboard</span>
-                          </Link>
-                          <Link
-                            to="/app/marketplace/list"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <div className="w-5 h-5 rounded bg-purple-500 flex items-center justify-center">
-                              <div className="w-3 h-3">+</div>
-                            </div>
-                            <span className="text-sm">Sell Products</span>
-                          </Link>
-                        </div>
-
-                        {/* Account Management */}
-                        <div className="space-y-1">
-                          <Link
-                            to="/app/profile"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <User className="w-5 h-5" />
-                            <span className="text-sm">Manage My Account</span>
-                          </Link>
-                          <Link
-                            to="/app/marketplace/cart"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <ShoppingCart className="w-5 h-5" />
-                            <span className="text-sm">My Cart</span>
-                          </Link>
-                          <Link
-                            to="/app/marketplace/wishlist"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <Heart className="w-5 h-5" />
-                            <span className="text-sm">My Wishlist</span>
-                          </Link>
-                          <Link
-                            to="/app/marketplace/my"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <div className="w-5 h-5 rounded-full border border-white flex items-center justify-center">
-                              <span className="text-xs">×</span>
-                            </div>
-                            <span className="text-sm">My Orders</span>
-                          </Link>
-                          <Link
-                            to="/app/marketplace/my"
-                            className="flex items-center gap-3 hover:bg-white/10 p-2 rounded transition-colors"
-                          >
-                            <Star className="w-5 h-5" />
-                            <span className="text-sm">My Reviews</span>
-                          </Link>
-                        </div>
-
-                        {/* Logout */}
-                        <div className="border-t border-white/20 pt-3">
-                          <button className="flex items-center gap-3 hover:bg-white/10 p-2 rounded w-full text-left transition-colors">
-                            <ArrowRight className="w-5 h-5 rotate-180" />
-                            <span className="text-sm">Logout</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -776,14 +559,6 @@ const MarketplaceHomepage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Mobile Navigation */}
-      <MobileMarketplaceNav
-        cartItemCount={2}
-        wishlistItemCount={5}
-        unreadMessages={0}
-        isSellerMode={false}
-      />
 
       {/* Product Quick View Modal */}
       {selectedProduct && (

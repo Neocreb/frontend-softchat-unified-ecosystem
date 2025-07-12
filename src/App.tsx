@@ -82,6 +82,7 @@ import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
 import Explore from "./pages/Explore";
+import GlobalSearch from "./pages/GlobalSearch";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
 import Notifications from "./pages/Notifications";
@@ -297,6 +298,7 @@ const AppRoutes = () => {
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="explore" element={<Explore />} />
+          <Route path="global-search" element={<GlobalSearch />} />
           <Route path="events" element={<CommunityEvents />} />
           <Route
             path="premium"
