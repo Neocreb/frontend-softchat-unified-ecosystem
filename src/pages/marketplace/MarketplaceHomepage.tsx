@@ -593,6 +593,105 @@ const MarketplaceHomepage: React.FC = () => {
                 ))}
               </div>
             </section>
+
+            {/* Category Browser Section */}
+            <section className="mb-16">
+              <div className="mb-8">
+                <h2 className="text-2xl lg:text-4xl font-semibold tracking-wide mb-4">
+                  Browse Categories
+                </h2>
+                <p className="text-gray-600">
+                  Discover products across our most popular categories
+                </p>
+              </div>
+              <CategoryBrowser
+                onCategorySelect={(category) => {
+                  console.log("Selected category:", category);
+                  // Navigate to category page or filter products
+                }}
+                showSubcategories={true}
+                layout="grid"
+              />
+            </section>
+
+            {/* Best Selling Products Carousel */}
+            <section className="mb-16">
+              <ResponsiveProductCarousel
+                title="Best Selling Products"
+                subtitle="Most popular items this month"
+                products={flashSaleProducts.map((product) => ({
+                  ...product,
+                  isFeatured: true,
+                  isNew: Math.random() > 0.7,
+                  category: "Electronics",
+                }))}
+                onProductClick={handleProductQuickView}
+                onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                onAddToWishlist={handleAddToWishlist}
+                onQuickView={handleProductQuickView}
+                autoplay={true}
+                autoplayInterval={4000}
+                itemsPerView={{
+                  mobile: 1.2,
+                  tablet: 2.5,
+                  desktop: 4,
+                }}
+              />
+            </section>
+
+            {/* New Arrivals Carousel */}
+            <section className="mb-16">
+              <ResponsiveProductCarousel
+                title="New Arrivals"
+                subtitle="Just landed - fresh products for you"
+                products={flashSaleProducts.slice(0, 8).map((product) => ({
+                  ...product,
+                  isNew: true,
+                  originalPrice: product.originalPrice + 50,
+                  salePrice: product.salePrice
+                    ? product.salePrice + 50
+                    : undefined,
+                  category: "Fashion",
+                }))}
+                onProductClick={handleProductQuickView}
+                onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                onAddToWishlist={handleAddToWishlist}
+                onQuickView={handleProductQuickView}
+                showPagination={true}
+                itemsPerView={{
+                  mobile: 1.5,
+                  tablet: 3,
+                  desktop: 5,
+                }}
+              />
+            </section>
+
+            {/* Featured Products Carousel */}
+            <section className="mb-16">
+              <ResponsiveProductCarousel
+                title="Featured Products"
+                subtitle="Handpicked by our experts"
+                products={flashSaleProducts.slice(2, 10).map((product) => ({
+                  ...product,
+                  isFeatured: true,
+                  originalPrice: product.originalPrice + 30,
+                  salePrice: product.salePrice
+                    ? product.salePrice + 30
+                    : undefined,
+                  category: "Home & Garden",
+                }))}
+                onProductClick={handleProductQuickView}
+                onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                onAddToWishlist={handleAddToWishlist}
+                onQuickView={handleProductQuickView}
+                autoplay={false}
+                itemsPerView={{
+                  mobile: 1.3,
+                  tablet: 2.8,
+                  desktop: 4.5,
+                }}
+              />
+            </section>
           </div>
         </div>
       </div>
