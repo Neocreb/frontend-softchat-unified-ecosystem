@@ -279,13 +279,8 @@ const MarketplaceHomepage: React.FC = () => {
               <div className="hidden md:block max-w-md flex-1">
                 <EnhancedSearch
                   placeholder="What are you looking for?"
-                  onSearch={(query, filters) => {
-                    console.log("Search:", query, filters);
-                    // Implement search logic here
-                  }}
-                  onSuggestionSelect={(suggestion) => {
-                    console.log("Selected suggestion:", suggestion);
-                  }}
+                  onSearch={handleEnhancedSearch}
+                  onSuggestionSelect={handleSearchSuggestionSelect}
                   categories={[
                     {
                       id: "electronics",
