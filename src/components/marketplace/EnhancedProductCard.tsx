@@ -78,8 +78,16 @@ export default function EnhancedProductCard({
   };
 
   const handleViewProduct = () => {
-    onViewProduct(product.id);
+    onViewProduct(product);
   };
+
+  const handleMessageSeller = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onMessageSeller?.(product.sellerId, product.id);
+  };
+
+  // Use viewMode prop with fallback to view for backward compatibility
+  const currentViewMode = viewMode || view;
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
