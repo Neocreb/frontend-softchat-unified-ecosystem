@@ -476,17 +476,10 @@ const MarketplaceHomepage: React.FC = () => {
               </Link>
               <Link
                 to="/app/marketplace/wishlist"
-                className="block text-gray-600 hover:text-gray-900 py-2 border-b border-gray-100"
-                onClick={() => setShowMobileMenu(false)}
-              >
-                Wishlist (5)
-              </Link>
-              <Link
-                to="/app/chat"
                 className="block text-gray-600 hover:text-gray-900 py-2"
                 onClick={() => setShowMobileMenu(false)}
               >
-                Messages
+                Wishlist (5)
               </Link>
             </nav>
           </div>
