@@ -64,6 +64,7 @@ import {
   Camera,
   Globe,
   ChevronDown,
+  ChevronRight,
   Users,
   FileText,
   BarChart3,
@@ -197,6 +198,21 @@ const UnifiedHeader = ({
 
   // Mobile search overlay state
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+
+  // Collapsible sections state
+  const [expandedSections, setExpandedSections] = useState({
+    marketplace: false,
+    freelance: false,
+    finance: false,
+    premiumTools: false,
+  });
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
 
   const searchRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
@@ -856,7 +872,11 @@ const UnifiedHeader = ({
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64" align="end" forceMount>
+              <DropdownMenuContent
+                className="w-72 max-h-[80vh] overflow-y-auto"
+                align="end"
+                forceMount
+              >
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">
@@ -883,110 +903,205 @@ const UnifiedHeader = ({
 
                 <DropdownMenuSeparator />
 
-                {/* Marketplace Section */}
+                {/* Marketplace Section - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Marketplace
-                  </DropdownMenuLabel>
                   <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace")}
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("marketplace")}
                   >
-                    <Store className="mr-2 h-4 w-4" />
-                    <span>Browse Products</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/cart")}
-                  >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    <span>Cart ({getCartItemsCount()})</span>
-                    {getCartTotal() > 0 && (
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        ${getCartTotal().toFixed(2)}
-                      </span>
+                    <div className="flex items-center">
+                      <Store className="mr-2 h-4 w-4" />
+                      <span>Marketplace</span>
+                    </div>
+                    {expandedSections.marketplace ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
                     )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/wishlist")}
-                  >
-                    <Heart className="mr-2 h-4 w-4" />
-                    <span>Wishlist ({wishlist.length})</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/my")}
-                  >
-                    <Package className="mr-2 h-4 w-4" />
-                    <span>My Orders</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => navigate("/app/marketplace/seller")}
-                  >
-                    <Store className="mr-2 h-4 w-4" />
-                    <span>Seller Dashboard</span>
-                  </DropdownMenuItem>
+
+                  {expandedSections.marketplace && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace")}
+                      >
+                        <Store className="mr-2 h-4 w-4" />
+                        <span>Browse</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/cart")}
+                      >
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        <span>Cart ({getCartItemsCount()})</span>
+                        {getCartTotal() > 0 && (
+                          <span className="ml-auto text-xs text-muted-foreground">
+                            ${getCartTotal().toFixed(2)}
+                          </span>
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/wishlist")}
+                      >
+                        <Heart className="mr-2 h-4 w-4" />
+                        <span>Wishlist ({wishlist.length})</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/my")}
+                      >
+                        <Package className="mr-2 h-4 w-4" />
+                        <span>Orders</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/marketplace/seller")}
+                      >
+                        <BarChart3 className="mr-2 h-4 w-4" />
+                        <span>Seller Dashboard</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
 
-                {/* Freelance Section */}
+                {/* Freelance Section - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Freelance
-                  </DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => navigate("/app/freelance")}>
-                    <Briefcase className="mr-2 h-4 w-4" />
-                    <span>Browse Jobs</span>
-                  </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => navigate("/app/freelance/dashboard")}
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("freelance")}
                   >
-                    <BarChart3 className="mr-2 h-4 w-4" />
-                    <span>Dashboard</span>
+                    <div className="flex items-center">
+                      <Briefcase className="mr-2 h-4 w-4" />
+                      <span>Freelance</span>
+                    </div>
+                    {expandedSections.freelance ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
                   </DropdownMenuItem>
+
+                  {expandedSections.freelance && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/freelance")}
+                      >
+                        <Briefcase className="mr-2 h-4 w-4" />
+                        <span>Browse Jobs</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/freelance/dashboard")}
+                      >
+                        <BarChart3 className="mr-2 h-4 w-4" />
+                        <span>Dashboard</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
 
-                {/* Finance Section */}
+                {/* Finance Section - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Finance
-                  </DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => navigate("/app/wallet")}>
-                    <Wallet className="mr-2 h-4 w-4" />
-                    <span>Wallet</span>
+                  <DropdownMenuItem
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("finance")}
+                  >
+                    <div className="flex items-center">
+                      <Wallet className="mr-2 h-4 w-4" />
+                      <span>Finance</span>
+                    </div>
+                    {expandedSections.finance ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/crypto")}>
-                    <TrendingUp className="mr-2 h-4 w-4" />
-                    <span>Crypto</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/rewards")}>
-                    <Award className="mr-2 h-4 w-4" />
-                    <span>Rewards</span>
-                  </DropdownMenuItem>
+
+                  {expandedSections.finance && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/wallet")}
+                      >
+                        <Wallet className="mr-2 h-4 w-4" />
+                        <span>Wallet</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/crypto")}
+                      >
+                        <TrendingUp className="mr-2 h-4 w-4" />
+                        <span>Crypto</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/rewards")}
+                      >
+                        <Award className="mr-2 h-4 w-4" />
+                        <span>Rewards</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
 
-                {/* Premium & Tools */}
+                {/* Premium & Tools - Collapsible */}
                 <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate("/app/premium")}>
-                    <Crown className="mr-2 h-4 w-4 text-purple-600" />
-                    <span className="text-purple-600">Premium</span>
-                  </DropdownMenuItem>
                   <DropdownMenuItem
-                    onClick={() => navigate("/app/ai-assistant")}
+                    className="justify-between cursor-pointer font-medium"
+                    onClick={() => toggleSection("premiumTools")}
                   >
-                    <Bot className="mr-2 h-4 w-4 text-blue-600" />
-                    <span className="text-blue-600">AI Assistant</span>
+                    <div className="flex items-center">
+                      <Crown className="mr-2 h-4 w-4 text-purple-600" />
+                      <span>Premium & Tools</span>
+                    </div>
+                    {expandedSections.premiumTools ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/kyc")}>
-                    <ShieldCheck className="mr-2 h-4 w-4" />
-                    <span>KYC Verification</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/app/send-gifts")}>
-                    <Gift className="mr-2 h-4 w-4 text-pink-600" />
-                    <span className="text-pink-600">Send Gifts</span>
-                  </DropdownMenuItem>
+
+                  {expandedSections.premiumTools && (
+                    <>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/premium")}
+                      >
+                        <Crown className="mr-2 h-4 w-4 text-purple-600" />
+                        <span className="text-purple-600">Premium</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/ai-assistant")}
+                      >
+                        <Bot className="mr-2 h-4 w-4 text-blue-600" />
+                        <span className="text-blue-600">AI Assistant</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/kyc")}
+                      >
+                        <ShieldCheck className="mr-2 h-4 w-4" />
+                        <span>KYC Verification</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
+                        onClick={() => navigate("/app/send-gifts")}
+                      >
+                        <Gift className="mr-2 h-4 w-4 text-pink-600" />
+                        <span className="text-pink-600">Send Gifts</span>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
