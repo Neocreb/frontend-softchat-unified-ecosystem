@@ -21,7 +21,7 @@ import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { MobileProductCard } from "@/components/marketplace/MobileProductCard";
 
 import ProductQuickView from "@/components/marketplace/ProductQuickView";
-import EnhancedSearch from "@/components/marketplace/EnhancedSearch";
+
 import ResponsiveProductCarousel from "@/components/marketplace/ResponsiveProductCarousel";
 import CategoryBrowser from "@/components/marketplace/CategoryBrowser";
 import SmartRecommendations from "@/components/marketplace/SmartRecommendations";
@@ -42,7 +42,7 @@ const MarketplaceHomepage: React.FC = () => {
   const { products, categories, addToCart, addToWishlist } =
     useEnhancedMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 3,
