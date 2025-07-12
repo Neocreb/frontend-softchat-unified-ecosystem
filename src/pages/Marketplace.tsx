@@ -58,11 +58,13 @@ const MarketplaceContent = () => {
   const [activeTab, setActiveTab] = useState("browse");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<string>("relevance");
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [useEnhancedMode, setUseEnhancedMode] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
@@ -73,7 +75,20 @@ const MarketplaceContent = () => {
     sponsoredProducts,
     featuredProducts,
     isLoading,
+    getProduct,
   } = useMarketplace();
+
+  // Check if mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   // Redirect to auth if trying to access protected tabs while not authenticated
   useEffect(() => {
