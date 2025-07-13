@@ -70,6 +70,9 @@ const MarketplaceContent = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
+  const marketplaceContext = useMarketplace();
+  console.log("🏪 Marketplace context:", marketplaceContext);
+
   const {
     addToCart,
     addToWishlist,
@@ -77,7 +80,31 @@ const MarketplaceContent = () => {
     sponsoredProducts,
     featuredProducts,
     isLoading,
-  } = useMarketplace();
+    cart,
+  } = marketplaceContext || {};
+
+  if (!marketplaceContext) {
+    console.error("❌ Marketplace context is not available!");
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="text-center py-12">
+          <h2 className="text-xl font-semibold text-red-600 mb-2">
+            Marketplace Unavailable
+          </h2>
+          <p className="text-gray-600">
+            The marketplace context is not properly initialized. Please refresh
+            the page.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Redirect to auth if trying to access protected tabs while not authenticated
   useEffect(() => {
