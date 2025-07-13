@@ -217,6 +217,17 @@ const MarketplaceContent = () => {
     setActiveTab("dashboard");
   };
 
+  // Debug state
+  console.log("🏪 Marketplace component state:", {
+    isAuthenticated,
+    user: user?.email || "not logged in",
+    cartLength: cart?.length || 0,
+    featuredProductsLength: featuredProducts?.length || 0,
+    sponsoredProductsLength: sponsoredProducts?.length || 0,
+    isLoading,
+    selectedProduct,
+  });
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
