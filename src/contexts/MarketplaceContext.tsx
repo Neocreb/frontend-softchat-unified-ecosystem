@@ -524,7 +524,9 @@ export const MarketplaceProvider = ({
 
   // Cart management
   const addToCart = (productId: string, quantity = 1) => {
+    console.log("🛒 addToCart called with:", { productId, quantity });
     const product = getProduct(productId);
+    console.log("🛒 Found product:", product);
 
     if (!product) {
       toast({
@@ -557,9 +559,14 @@ export const MarketplaceProvider = ({
       );
     } else {
       // Add new item to cart
+      console.log("🛒 Adding new item to cart");
       setCart([...cart, { productId, product, quantity }]);
     }
 
+    console.log("🛒 Cart after addition:", [
+      ...cart,
+      { productId, product, quantity },
+    ]);
     toast({
       title: "Added to Cart",
       description: `${product.name} added to your cart`,
