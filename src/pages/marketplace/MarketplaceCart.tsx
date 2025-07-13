@@ -24,8 +24,31 @@ import { useToast } from "@/components/ui/use-toast";
 import { Badge } from "@/components/ui/badge";
 
 const MarketplaceCart = () => {
+  const marketplaceContext = useMarketplace();
+
+  if (!marketplaceContext) {
+    return (
+      <div className="container py-6">
+        <div className="text-center py-12">
+          <h2 className="text-xl font-semibold text-red-600 mb-2">
+            Cart Unavailable
+          </h2>
+          <p className="text-gray-600">
+            The marketplace context is not available. Please refresh the page.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const { cart, updateCartQuantity, removeFromCart, clearCart, getCartTotal } =
-    useMarketplace();
+    marketplaceContext;
 
   console.log(
     "🛒 MarketplaceCart rendered with cart:",
