@@ -21,6 +21,9 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useMarketplace } from "@/contexts/MarketplaceContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface ProductImage {
   id: string;
@@ -71,6 +74,9 @@ interface EnhancedProductDetailProps {
 const EnhancedProductDetail: React.FC<EnhancedProductDetailProps> = ({
   productId,
 }) => {
+  const { addToCart, addToWishlist } = useMarketplace();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState("");
