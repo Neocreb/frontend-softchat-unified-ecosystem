@@ -39,6 +39,9 @@ const EnhancedHeader = () => {
   const { cart } = useMarketplace();
   const navigate = useNavigate();
 
+  // Debug cart state
+  console.log("🛒 Header cart state:", cart, "length:", cart?.length || 0);
+
   const handleChatClick = () => {
     navigate("/app/chat");
   };
