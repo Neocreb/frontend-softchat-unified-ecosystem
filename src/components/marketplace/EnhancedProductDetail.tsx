@@ -254,17 +254,56 @@ const EnhancedProductDetail: React.FC<EnhancedProductDetailProps> = ({
   };
 
   const handleAddToCart = () => {
-    toast({
-      title: "Added to Cart",
-      description: `${quantity} ${product.name} added to your cart`,
-    });
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to add items to your cart",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      addToCart(productId, quantity);
+      toast({
+        title: "Added to Cart",
+        description: `${quantity} ${product.name} added to your cart`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add product to cart",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleBuyNow = () => {
-    toast({
-      title: "Quick Purchase",
-      description: "Redirecting to checkout...",
-    });
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to make a purchase",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      addToCart(productId, quantity);
+      navigate("/app/marketplace/checkout");
+      toast({
+        title: "Proceeding to Checkout",
+        description: "Product added to cart and redirecting to checkout...",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to proceed to checkout",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleWishlist = () => {
