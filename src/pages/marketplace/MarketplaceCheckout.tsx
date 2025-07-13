@@ -149,12 +149,23 @@ const MarketplaceCheckout = () => {
     setIsProcessing(true);
 
     try {
-      await checkout();
-      navigate("/marketplace");
-      toast({
-        title: "Order Placed Successfully",
-        description: "Thank you for your purchase!",
-      });
+      // Simulate payment processing delay
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const success = await checkout();
+
+      if (success) {
+        toast({
+          title: "Order Placed Successfully!",
+          description:
+            "Thank you for your purchase! You will receive a confirmation email shortly.",
+        });
+
+        // Redirect to marketplace
+        navigate("/app/marketplace");
+      } else {
+        throw new Error("Checkout failed");
+      }
     } catch (error) {
       toast({
         title: "Checkout Failed",
@@ -182,7 +193,7 @@ const MarketplaceCheckout = () => {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate("/marketplace/cart")}
+          onClick={() => navigate("/app/marketplace/cart")}
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
