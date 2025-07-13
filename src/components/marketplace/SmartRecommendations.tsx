@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Sparkles,
   TrendingUp,
@@ -260,26 +260,32 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
   );
   const [activeTab, setActiveTab] = useState("all");
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Memoize the recommendations generation to prevent unnecessary recalculations
+  const memoizedRecommendations = useMemo(() => {
+    return generateRecommendations(
+      mockProducts,
+      userPreferences,
+      recentlyViewed,
+    ).slice(0, maxItems);
+  }, [userPreferences, recentlyViewed, maxItems]);
 
   useEffect(() => {
-    const generateAndSetRecommendations = () => {
+    if (!isInitialized) {
       setIsLoading(true);
-
-      // Simulate AI processing delay
-      setTimeout(() => {
-        const newRecommendations = generateRecommendations(
-          mockProducts,
-          userPreferences,
-          recentlyViewed,
-        ).slice(0, maxItems);
-
-        setRecommendations(newRecommendations);
+      // Only show loading on first load
+      const timer = setTimeout(() => {
+        setRecommendations(memoizedRecommendations);
         setIsLoading(false);
-      }, 500);
-    };
-
-    generateAndSetRecommendations();
-  }, [userPreferences, recentlyViewed, maxItems]);
+        setIsInitialized(true);
+      }, 300);
+      return () => clearTimeout(timer);
+    } else {
+      // For subsequent updates, update immediately without loading state
+      setRecommendations(memoizedRecommendations);
+    }
+  }, [memoizedRecommendations, isInitialized]);
 
   const getReasonIcon = (type: RecommendationReason["type"]) => {
     switch (type) {
@@ -427,7 +433,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                   {Array(4)
                     .fill(0)
                     .map((_, i) => (
-                      <div key={i} className="animate-pulse">
+                      <div key={`skeleton-${i}`} className="animate-pulse">
                         <div className="bg-gray-200 aspect-square rounded-lg mb-3"></div>
                         <div className="bg-gray-200 h-4 rounded mb-2"></div>
                         <div className="bg-gray-200 h-3 rounded w-3/4"></div>
@@ -438,7 +444,7 @@ export const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {filteredRecommendations.map((product) => (
                     <div
-                      key={product.id}
+                      key={`${product.id}-${activeTab}`}
                       className="group relative bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300"
                     >
                       {/* AI Reason Badge */}
