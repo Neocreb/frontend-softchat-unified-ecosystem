@@ -38,6 +38,7 @@ import ProductFilters from "@/components/marketplace/ProductFilters";
 import FeaturedProducts from "@/components/marketplace/FeaturedProducts";
 import SponsoredProducts from "@/components/marketplace/SponsoredProducts";
 import CategoryMenu from "@/components/marketplace/CategoryMenu";
+import CampaignsAndBoostingSystem from "@/components/marketplace/CampaignsAndBoostingSystem";
 import SellerDashboard from "@/components/marketplace/SellerDashboard";
 import ListProductForm from "@/components/marketplace/ListProductForm";
 import WishlistProducts from "@/components/marketplace/WishlistProducts";
@@ -102,11 +103,19 @@ const MarketplaceContent = () => {
       return;
     }
 
-    addToCart(productId);
-    toast({
-      title: "Added to cart",
-      description: "Product has been added to your cart",
-    });
+    try {
+      addToCart(productId);
+      toast({
+        title: "Added to cart",
+        description: "Product has been added to your cart",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add product to cart",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleAddToWishlist = (productId: string) => {
@@ -120,11 +129,19 @@ const MarketplaceContent = () => {
       return;
     }
 
-    addToWishlist(productId);
-    toast({
-      title: "Added to wishlist",
-      description: "Product has been added to your wishlist",
-    });
+    try {
+      addToWishlist(productId);
+      toast({
+        title: "Added to wishlist",
+        description: "Product has been added to your wishlist",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add product to wishlist",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleListProductSuccess = () => {
@@ -327,6 +344,70 @@ const MarketplaceContent = () => {
                 </CardContent>
               </Card>
 
+              {/* Campaign Banners */}
+              <div className="space-y-4">
+                {/* Black Friday Campaign Banner */}
+                <Card className="bg-gradient-to-r from-black to-gray-800 text-white overflow-hidden">
+                  <CardContent className="p-6 relative">
+                    <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1 text-sm font-bold transform rotate-12 translate-x-2">
+                      HOT DEAL
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-2xl font-bold mb-2">
+                          🔥 BLACK FRIDAY MEGA SALE
+                        </h2>
+                        <p className="text-gray-300 mb-3">
+                          Up to 70% OFF on electronics and fashion
+                        </p>
+                        <div className="flex items-center gap-4">
+                          <div className="bg-red-500 px-3 py-1 rounded text-sm font-bold">
+                            30% OFF
+                          </div>
+                          <div className="text-sm">
+                            Ends in:{" "}
+                            <span
+                              className="font-mono font-bold text-red-400"
+                              id="countdown-timer"
+                            >
+                              2d 14h 23m
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <Button className="bg-red-500 hover:bg-red-600 text-white">
+                        Shop Now
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Flash Sale Banner */}
+                <Card className="bg-gradient-to-r from-orange-500 to-red-500 text-white overflow-hidden">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="text-3xl">⚡</div>
+                        <div>
+                          <h3 className="text-lg font-bold">
+                            FLASH SALE - 50% OFF Digital Products!
+                          </h3>
+                          <p className="text-orange-100 text-sm">
+                            Limited time offer - Don't miss out!
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xl font-bold" id="flash-countdown">
+                          23:45:12
+                        </div>
+                        <p className="text-xs text-orange-100">Time left</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
               {/* Trust & Security Banner */}
               <Card className="bg-blue-50 border-blue-200">
                 <CardContent className="p-4">
@@ -393,6 +474,9 @@ const MarketplaceContent = () => {
                       searchQuery={searchQuery}
                       onAddToCart={handleAddToCart}
                       onAddToWishlist={handleAddToWishlist}
+                      onViewProduct={(product) =>
+                        setSelectedProduct(product.id)
+                      }
                     />
                   )}
                 </main>
