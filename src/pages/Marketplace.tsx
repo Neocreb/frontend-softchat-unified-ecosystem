@@ -215,13 +215,11 @@ const MarketplaceContent = () => {
     <div className="max-w-7xl mx-auto space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* Category Navigation Bar */}
-        <div className="bg-white border rounded-lg p-4 mb-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Browse Categories
-            </h2>
-            <div className="overflow-x-auto">
-              <TabsList className="min-w-max bg-gray-100">
+        <div className="bg-white border rounded-lg p-4 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <h2 className="text-lg font-semibold text-gray-900">Marketplace</h2>
+            <div className="w-full sm:w-auto overflow-x-auto">
+              <TabsList className="min-w-max bg-gray-100 w-full sm:w-auto">
                 <TabsTrigger value="browse" className="text-sm">
                   All Products
                 </TabsTrigger>
