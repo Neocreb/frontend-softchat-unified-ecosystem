@@ -307,13 +307,25 @@ const EnhancedProductDetail: React.FC<EnhancedProductDetailProps> = ({
   };
 
   const handleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
-    toast({
-      title: isWishlisted ? "Removed from Wishlist" : "Added to Wishlist",
-      description: isWishlisted
-        ? "Item removed from your wishlist"
-        : "Item saved to your wishlist",
-    });
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to add items to your wishlist",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    try {
+      addToWishlist(productId);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add product to wishlist",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSubmitReview = () => {
