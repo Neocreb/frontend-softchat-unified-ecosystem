@@ -212,24 +212,38 @@ const MarketplaceContent = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold">Marketplace</h1>
-      </div>
-
+    <div className="max-w-7xl mx-auto space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="overflow-x-auto pb-2">
-          <TabsList className="min-w-max">
-            <TabsTrigger value="browse">Browse Products</TabsTrigger>
-            <TabsTrigger value="sponsored">Boosted Products</TabsTrigger>
-            {isAuthenticated && (
-              <>
-                <TabsTrigger value="dashboard">Seller Dashboard</TabsTrigger>
-                <TabsTrigger value="list">List Product</TabsTrigger>
-                <TabsTrigger value="wishlist">My Wishlist</TabsTrigger>
-              </>
-            )}
-          </TabsList>
+        {/* Category Navigation Bar */}
+        <div className="bg-white border rounded-lg p-4 mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Browse Categories
+            </h2>
+            <div className="overflow-x-auto">
+              <TabsList className="min-w-max bg-gray-100">
+                <TabsTrigger value="browse" className="text-sm">
+                  All Products
+                </TabsTrigger>
+                <TabsTrigger value="sponsored" className="text-sm">
+                  Featured
+                </TabsTrigger>
+                {isAuthenticated && (
+                  <>
+                    <TabsTrigger value="dashboard" className="text-sm">
+                      My Store
+                    </TabsTrigger>
+                    <TabsTrigger value="list" className="text-sm">
+                      Sell
+                    </TabsTrigger>
+                    <TabsTrigger value="wishlist" className="text-sm">
+                      Wishlist
+                    </TabsTrigger>
+                  </>
+                )}
+              </TabsList>
+            </div>
+          </div>
         </div>
 
         {/* Browse Products Tab */}
