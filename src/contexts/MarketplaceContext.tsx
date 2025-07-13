@@ -488,6 +488,35 @@ export const MarketplaceProvider = ({
     }
   }, []); // Only run once on mount
 
+  // Separate effect to populate cart and wishlist with product data when products become available
+  useEffect(() => {
+    if (products.length > 0 && cart.some((item) => !item.product)) {
+      setCart(
+        (prevCart) =>
+          prevCart
+            .map((item) => ({
+              ...item,
+              product:
+                item.product || products.find((p) => p.id === item.productId),
+            }))
+            .filter((item) => item.product), // Remove items where product not found
+      );
+    }
+
+    if (products.length > 0 && wishlist.some((item) => !item.product)) {
+      setWishlist(
+        (prevWishlist) =>
+          prevWishlist
+            .map((item) => ({
+              ...item,
+              product:
+                item.product || products.find((p) => p.id === item.productId),
+            }))
+            .filter((item) => item.product), // Remove items where product not found
+      );
+    }
+  }, [products.length]); // Only depend on products length to avoid infinite loops
+
   // Save cart and wishlist to localStorage when they change
   useEffect(() => {
     if (cart.length > 0) {
