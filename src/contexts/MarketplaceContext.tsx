@@ -429,10 +429,19 @@ export const MarketplaceProvider = ({
   const [isLoading, setIsLoading] = useState(false);
   const [boostOptions] = useState<BoostOption[]>(mockBoostOptions);
 
-  // Calculate derived state
-  const sponsoredProducts = products.filter((p) => p.isSponsored);
-  const featuredProducts = products.filter((p) => p.isFeatured);
-  const myListings = products.filter((p) => user?.id === p.sellerId);
+  // Calculate derived state with memoization to prevent re-renders
+  const sponsoredProducts = useMemo(
+    () => products.filter((p) => p.isSponsored),
+    [products],
+  );
+  const featuredProducts = useMemo(
+    () => products.filter((p) => p.isFeatured),
+    [products],
+  );
+  const myListings = useMemo(
+    () => products.filter((p) => user?.id === p.sellerId),
+    [products, user?.id],
+  );
 
   // Load cart and wishlist from localStorage on component mount
   useEffect(() => {
@@ -471,7 +480,7 @@ export const MarketplaceProvider = ({
         console.error("Error loading wishlist from localStorage:", e);
       }
     }
-  }, [products]);
+  }, []); // Only run once on mount
 
   // Save cart and wishlist to localStorage when they change
   useEffect(() => {
