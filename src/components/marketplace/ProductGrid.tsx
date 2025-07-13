@@ -15,6 +15,7 @@ interface ProductGridProps {
   sortBy?: "recent" | "popular" | "price-low" | "price-high";
   onAddToCart: (productId: string) => void;
   onAddToWishlist: (productId: string) => void;
+  onViewProduct?: (product: Product) => void;
   limit?: number;
   products?: Product[]; // Make 'products' prop optional
 }
@@ -25,6 +26,7 @@ const ProductGrid = ({
   sortBy,
   onAddToCart,
   onAddToWishlist,
+  onViewProduct,
   limit,
   products: propProducts, // Rename to avoid conflict with context products
 }: ProductGridProps) => {
@@ -106,6 +108,9 @@ const ProductGrid = ({
 
   const handleViewProduct = (product: Product) => {
     setActiveProduct(product);
+    if (onViewProduct) {
+      onViewProduct(product);
+    }
     // TODO: Navigate to product detail page once created
     // navigate(`/marketplace/product/${product.id}`);
   };
