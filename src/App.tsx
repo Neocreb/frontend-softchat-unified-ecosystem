@@ -230,13 +230,9 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <WalletProvider>
-                <MarketplaceProvider>
-                  <EnhancedMarketplaceProvider>
-                    <ChatProvider>
-                      <AppLayout />
-                    </ChatProvider>
-                  </EnhancedMarketplaceProvider>
-                </MarketplaceProvider>
+                <ChatProvider>
+                  <AppLayout />
+                </ChatProvider>
               </WalletProvider>
             </ProtectedRoute>
           }
@@ -499,26 +495,30 @@ const App = () => {
           >
             <I18nProvider>
               <AuthProvider>
-                <AdminProvider>
-                  <AccessibilityProvider>
-                    <TooltipProvider>
-                      <AppRoutes />
+                <MarketplaceProvider>
+                  <EnhancedMarketplaceProvider>
+                    <AdminProvider>
+                      <AccessibilityProvider>
+                        <TooltipProvider>
+                          <AppRoutes />
 
-                      {/* Global Components */}
-                      <OnboardingTour />
-                      <NotificationSystem />
-                      <AccessibilityControlPanel />
-                      <KeyboardNavigationHelper />
-                      <ReadingGuide />
-                      <ConnectionStatus />
-                      <PWAInstallPrompt />
+                          {/* Global Components */}
+                          <OnboardingTour />
+                          <NotificationSystem />
+                          <AccessibilityControlPanel />
+                          <KeyboardNavigationHelper />
+                          <ReadingGuide />
+                          <ConnectionStatus />
+                          <PWAInstallPrompt />
 
-                      {/* Toasters */}
-                      <Toaster />
-                      <Sonner />
-                    </TooltipProvider>
-                  </AccessibilityProvider>
-                </AdminProvider>
+                          {/* Toasters */}
+                          <Toaster />
+                          <Sonner />
+                        </TooltipProvider>
+                      </AccessibilityProvider>
+                    </AdminProvider>
+                  </EnhancedMarketplaceProvider>
+                </MarketplaceProvider>
               </AuthProvider>
             </I18nProvider>
           </ErrorBoundary>
