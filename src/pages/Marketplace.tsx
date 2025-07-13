@@ -151,6 +151,10 @@ const MarketplaceContent = () => {
   };
 
   const handleAddToCart = (productId: string) => {
+    console.log(
+      "🛍️ Marketplace handleAddToCart called with productId:",
+      productId,
+    );
     if (!isAuthenticated) {
       toast({
         title: "Authentication required",
@@ -162,7 +166,9 @@ const MarketplaceContent = () => {
     }
 
     try {
+      console.log("🛍️ Calling addToCart from marketplace context");
       addToCart(productId);
+      console.log("🛍️ addToCart completed successfully");
       toast({
         title: "Added to cart",
         description: "Product has been added to your cart",
