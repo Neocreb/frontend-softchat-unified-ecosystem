@@ -55,6 +55,17 @@ const MarketplaceContent = () => {
   const [sortBy, setSortBy] = useState<string>("relevance");
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [countdownTime, setCountdownTime] = useState({
+    days: 2,
+    hours: 14,
+    minutes: 23,
+    seconds: 45,
+  });
+  const [flashCountdown, setFlashCountdown] = useState({
+    hours: 23,
+    minutes: 45,
+    seconds: 12,
+  });
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
@@ -81,6 +92,52 @@ const MarketplaceContent = () => {
       });
     }
   }, [isAuthenticated, activeTab, toast]);
+
+  // Countdown timer effect
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdownTime((prev) => {
+        let { days, hours, minutes, seconds } = prev;
+
+        if (seconds > 0) {
+          seconds--;
+        } else if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        } else if (days > 0) {
+          days--;
+          hours = 23;
+          minutes = 59;
+          seconds = 59;
+        }
+
+        return { days, hours, minutes, seconds };
+      });
+
+      setFlashCountdown((prev) => {
+        let { hours, minutes, seconds } = prev;
+
+        if (seconds > 0) {
+          seconds--;
+        } else if (minutes > 0) {
+          minutes--;
+          seconds = 59;
+        } else if (hours > 0) {
+          hours--;
+          minutes = 59;
+          seconds = 59;
+        }
+
+        return { hours, minutes, seconds };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -370,7 +427,8 @@ const MarketplaceContent = () => {
                               className="font-mono font-bold text-red-400"
                               id="countdown-timer"
                             >
-                              2d 14h 23m
+                              {countdownTime.days}d {countdownTime.hours}h{" "}
+                              {countdownTime.minutes}m
                             </span>
                           </div>
                         </div>
@@ -399,7 +457,9 @@ const MarketplaceContent = () => {
                       </div>
                       <div className="text-center">
                         <div className="text-xl font-bold" id="flash-countdown">
-                          23:45:12
+                          {String(flashCountdown.hours).padStart(2, "0")}:
+                          {String(flashCountdown.minutes).padStart(2, "0")}:
+                          {String(flashCountdown.seconds).padStart(2, "0")}
                         </div>
                         <p className="text-xs text-orange-100">Time left</p>
                       </div>
