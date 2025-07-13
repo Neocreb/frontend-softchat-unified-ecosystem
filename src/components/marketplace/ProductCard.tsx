@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMarketplace } from "@/contexts/MarketplaceContext";
 import {
   Card,
   CardContent,
@@ -45,11 +46,20 @@ const ProductCard = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  const { wishlist } = useMarketplace();
+
+  // Check if product is in wishlist
+  useEffect(() => {
+    const isInWishlist = wishlist.some((item) => item.productId === product.id);
+    setIsLiked(isInWishlist);
+  }, [wishlist, product.id]);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiked(!isLiked);
-    onAddToWishlist(product.id);
+    if (onAddToWishlist) {
+      onAddToWishlist(product.id);
+      // The isLiked state will be updated by the useEffect when wishlist changes
+    }
   };
 
   const handleAddToCart = (e: React.MouseEvent) => {
