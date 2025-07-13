@@ -434,7 +434,18 @@ const MarketplaceContent = () => {
                           </div>
                         </div>
                       </div>
-                      <Button className="bg-red-500 hover:bg-red-600 text-white">
+                      <Button
+                        className="bg-red-500 hover:bg-red-600 text-white"
+                        onClick={() => {
+                          setActiveCategory("electronics");
+                          setFilter({ category: "electronics" });
+                          toast({
+                            title: "Black Friday Sale!",
+                            description:
+                              "Browsing electronics with special discounts!",
+                          });
+                        }}
+                      >
                         Shop Now
                       </Button>
                     </div>
