@@ -258,34 +258,6 @@ const MarketplaceContent = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        {/* Debug Test Section */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-          <h3 className="text-sm font-semibold text-yellow-800 mb-2">
-            Debug Test Panel
-          </h3>
-          <div className="flex gap-2 text-xs">
-            <span>Cart Items: {cart?.length || 0}</span>
-            <span>|</span>
-            <span>Products: {featuredProducts?.length || 0}</span>
-            <span>|</span>
-            <span>Auth: {isAuthenticated ? "✓" : "✗"}</span>
-          </div>
-          <button
-            onClick={() => {
-              console.log("🧪 Testing addToCart function");
-              try {
-                addToCart?.("1"); // Test with product ID '1'
-                console.log("🧪 addToCart function called successfully");
-              } catch (error) {
-                console.error("❌ addToCart failed:", error);
-              }
-            }}
-            className="mt-2 px-3 py-1 bg-yellow-600 text-white text-xs rounded hover:bg-yellow-700"
-          >
-            Test Add to Cart
-          </button>
-        </div>
-
         {/* Category Navigation Bar */}
         <div className="bg-white border rounded-lg p-4 shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
