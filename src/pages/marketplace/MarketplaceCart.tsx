@@ -26,6 +26,13 @@ import { Badge } from "@/components/ui/badge";
 const MarketplaceCart = () => {
   const { cart, updateCartQuantity, removeFromCart, clearCart, getCartTotal } =
     useMarketplace();
+
+  console.log(
+    "🛒 MarketplaceCart rendered with cart:",
+    cart,
+    "total items:",
+    cart?.length || 0,
+  );
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
