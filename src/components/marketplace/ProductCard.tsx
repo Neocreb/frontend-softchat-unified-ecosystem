@@ -1,7 +1,11 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +14,7 @@ import {
   Star,
   MessageCircle,
   Eye,
-  Check
+  Check,
 } from "lucide-react";
 import { Product } from "@/types/marketplace";
 import { cn } from "@/utils/utils";
@@ -36,7 +40,7 @@ const ProductCard = ({
   className,
   showSellerInfo = false,
   featured = false,
-  sponsored = false
+  sponsored = false,
 }: ProductCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -53,7 +57,10 @@ const ProductCard = ({
     onAddToCart(product.id);
   };
 
-  const handleViewProduct = () => {
+  const handleViewProduct = (e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     if (onViewProduct) {
       onViewProduct(product);
     } else {
@@ -70,7 +77,9 @@ const ProductCard = ({
   };
 
   const discountPercentage = product.discountPrice
-    ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
+    ? Math.round(
+        ((product.price - product.discountPrice) / product.price) * 100,
+      )
     : 0;
 
   return (
@@ -79,7 +88,7 @@ const ProductCard = ({
         "overflow-hidden h-full flex flex-col transition-all duration-200 hover:shadow-md cursor-pointer relative",
         featured && "border-blue-300 shadow-md",
         sponsored && "border-amber-300 shadow-md",
-        className
+        className,
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -95,8 +104,9 @@ const ProductCard = ({
         <img
           src={product.image}
           alt={product.name}
-          className={`absolute inset-0 w-full h-full object-cover transition-transform duration-300 ${isHovered ? "scale-110" : "scale-100"
-            }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-transform duration-300 ${
+            isHovered ? "scale-110" : "scale-100"
+          }`}
         />
 
         {product.isNew && (
@@ -104,14 +114,19 @@ const ProductCard = ({
         )}
 
         {product.discountPrice && (
-          <Badge className="absolute top-2 right-2 bg-red-500">-{discountPercentage}%</Badge>
+          <Badge className="absolute top-2 right-2 bg-red-500">
+            -{discountPercentage}%
+          </Badge>
         )}
 
         <Button
           variant="outline"
           size="icon"
-          className={`absolute top-2 right-2 h-8 w-8 rounded-full ${product.discountPrice ? "right-16" : ""} ${isLiked ? "bg-red-100 text-red-500 border-red-200" : "bg-white/80 backdrop-blur-sm"
-            }`}
+          className={`absolute top-2 right-2 h-8 w-8 rounded-full ${product.discountPrice ? "right-16" : ""} ${
+            isLiked
+              ? "bg-red-100 text-red-500 border-red-200"
+              : "bg-white/80 backdrop-blur-sm"
+          }`}
           onClick={handleLike}
         >
           <Heart className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`} />
@@ -145,7 +160,9 @@ const ProductCard = ({
           <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
           <span>{product.rating.toFixed(1)}</span>
           {product.reviewCount && (
-            <span className="text-muted-foreground">({product.reviewCount})</span>
+            <span className="text-muted-foreground">
+              ({product.reviewCount})
+            </span>
           )}
         </div>
       </CardContent>
@@ -154,8 +171,12 @@ const ProductCard = ({
         <div>
           {product.discountPrice ? (
             <div className="flex items-center gap-2">
-              <span className="font-semibold">${product.discountPrice.toFixed(2)}</span>
-              <span className="text-sm text-muted-foreground line-through">${product.price.toFixed(2)}</span>
+              <span className="font-semibold">
+                ${product.discountPrice.toFixed(2)}
+              </span>
+              <span className="text-sm text-muted-foreground line-through">
+                ${product.price.toFixed(2)}
+              </span>
             </div>
           ) : (
             <span className="font-semibold">${product.price.toFixed(2)}</span>
@@ -173,6 +194,18 @@ const ProductCard = ({
               <MessageCircle className="h-4 w-4" />
             </Button>
           )}
+
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 px-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleViewProduct();
+            }}
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
 
           <Button
             size="sm"
