@@ -258,7 +258,7 @@ const AppRoutes = () => {
           <Route path="notifications" element={<Notifications />} />
 
           {/* Marketplace routes */}
-          <Route path="marketplace" element={<EnhancedMarketplace />} />
+          <Route path="marketplace" element={<Marketplace />} />
           <Route
             path="marketplace/browse"
             element={<Navigate to="/app/marketplace" replace />}
