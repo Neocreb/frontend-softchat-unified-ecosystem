@@ -598,6 +598,7 @@ const MarketplaceContent = () => {
                 products={sponsoredProducts}
                 onAddToCart={handleAddToCart}
                 onAddToWishlist={handleAddToWishlist}
+                onViewProduct={(product) => setSelectedProduct(product.id)}
               />
             </div>
           ) : (
