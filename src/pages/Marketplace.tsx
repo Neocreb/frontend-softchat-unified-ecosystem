@@ -39,6 +39,7 @@ import FeaturedProducts from "@/components/marketplace/FeaturedProducts";
 import SponsoredProducts from "@/components/marketplace/SponsoredProducts";
 import CategoryMenu from "@/components/marketplace/CategoryMenu";
 import CampaignsAndBoostingSystem from "@/components/marketplace/CampaignsAndBoostingSystem";
+import SmartRecommendations from "@/components/marketplace/SmartRecommendations";
 import SellerDashboard from "@/components/marketplace/SellerDashboard";
 import ListProductForm from "@/components/marketplace/ListProductForm";
 import WishlistProducts from "@/components/marketplace/WishlistProducts";
@@ -505,6 +506,16 @@ const MarketplaceContent = () => {
                   onAddToWishlist={handleAddToWishlist}
                 />
               )}
+
+              {/* AI Smart Recommendations */}
+              <SmartRecommendations
+                onProductClick={(product) => setSelectedProduct(product.id)}
+                onAddToCart={handleAddToCart}
+                onAddToWishlist={handleAddToWishlist}
+                onQuickView={(product) => setSelectedProduct(product.id)}
+                maxItems={8}
+                enableRealTimeUpdates={true}
+              />
 
               <div className="flex flex-col md:flex-row gap-6">
                 <aside className="w-full md:w-64 shrink-0">
