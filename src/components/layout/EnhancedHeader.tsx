@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
+import { useMarketplace } from "@/contexts/MarketplaceContext";
 import SoftchatLogo from "../shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
 
@@ -35,6 +36,7 @@ const EnhancedHeader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const { user, logout } = useAuth();
+  const { cart } = useMarketplace();
   const navigate = useNavigate();
 
   const handleChatClick = () => {
@@ -141,6 +143,22 @@ const EnhancedHeader = () => {
           </div>
 
           <NotificationsDropdown />
+
+          {/* Cart Icon */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Cart"
+            className="relative"
+            onClick={() => navigate("/app/marketplace/cart")}
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {cart.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {cart.length}
+              </span>
+            )}
+          </Button>
 
           <Button
             variant="ghost"
