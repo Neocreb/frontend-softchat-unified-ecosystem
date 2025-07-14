@@ -148,7 +148,7 @@ export const CampaignBanners: React.FC<CampaignBannersProps> = ({
         <div
           key={campaign.id}
           className={cn(
-            "relative overflow-hidden rounded-xl bg-gradient-to-r p-4 sm:p-6",
+            "relative overflow-hidden rounded-xl bg-gradient-to-r p-4 sm:p-6 w-full",
             campaign.bgColor,
             campaign.textColor,
           )}
@@ -170,7 +170,7 @@ export const CampaignBanners: React.FC<CampaignBannersProps> = ({
             </Button>
           )}
 
-          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full min-w-0">
             {/* Campaign Content */}
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
@@ -213,7 +213,7 @@ export const CampaignBanners: React.FC<CampaignBannersProps> = ({
             </div>
 
             {/* Right Side - Countdown & CTA */}
-            <div className="flex flex-col sm:items-end gap-3 w-full sm:w-auto">
+            <div className="flex flex-col sm:items-end gap-3 w-full sm:w-auto flex-shrink-0">
               {/* Countdown Timer */}
               {showCountdown && (
                 <div className="order-2 sm:order-1">
