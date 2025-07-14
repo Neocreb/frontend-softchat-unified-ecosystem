@@ -1,6 +1,6 @@
 import React from "react";
-import MarketplaceHomepage from "./marketplace/MarketplaceHomepage";
+import EnhancedMarketplaceHomepage from "./marketplace/EnhancedMarketplaceHomepage";
 
 export default function EnhancedMarketplace() {
-  return <MarketplaceHomepage />;
+  return <EnhancedMarketplaceHomepage />;
 }
