@@ -945,15 +945,35 @@ export const EnhancedMarketplaceProvider = ({
     createdAt: "",
     updatedAt: "",
   });
-  const addToWishlist = async () => ({
-    id: "",
-    wishlistId: "",
-    productId: "",
-    notifyOnSale: false,
-    notifyOnRestock: false,
-    priority: 1,
-    addedAt: "",
-  });
+  const addToWishlist = (productId: string) => {
+    const product = getProduct(productId);
+    if (!product) {
+      toast({
+        title: "Error",
+        description: "Product not found",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const wishlistItem: WishlistItem = {
+      id: `wishlist-${Date.now()}`,
+      wishlistId: `wishlist-${user?.id || "guest"}`,
+      productId,
+      notifyOnSale: false,
+      notifyOnRestock: false,
+      priority: 1,
+      addedAt: new Date().toISOString(),
+      product,
+    };
+
+    setWishlist([...wishlist, wishlistItem]);
+
+    toast({
+      title: "Added to Wishlist",
+      description: `${product.name} added to your wishlist`,
+    });
+  };
   const removeFromWishlist = () => {};
   const moveToCart = async () => false;
   const shareWishlist = async () => "";
