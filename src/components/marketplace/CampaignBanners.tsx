@@ -68,26 +68,26 @@ const Countdown: React.FC<CountdownProps> = ({ endDate, onExpire }) => {
   const formatTime = (time: number) => time.toString().padStart(2, "0");
 
   return (
-    <div className="flex items-center gap-1 sm:gap-2">
-      <Clock className="w-4 h-4 opacity-90" />
-      <div className="flex items-center gap-1 text-sm font-mono">
+    <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+      <Clock className="w-4 h-4 opacity-90 flex-shrink-0" />
+      <div className="flex items-center gap-1 text-sm font-mono flex-wrap">
         {timeLeft.days > 0 && (
           <>
-            <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs">
+            <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs whitespace-nowrap">
               {formatTime(timeLeft.days)}d
             </span>
             <span className="opacity-60">:</span>
           </>
         )}
-        <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs">
+        <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs whitespace-nowrap">
           {formatTime(timeLeft.hours)}h
         </span>
         <span className="opacity-60">:</span>
-        <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs">
+        <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs whitespace-nowrap">
           {formatTime(timeLeft.minutes)}m
         </span>
         <span className="opacity-60">:</span>
-        <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs">
+        <span className="bg-black/20 px-1.5 py-0.5 rounded text-xs whitespace-nowrap">
           {formatTime(timeLeft.seconds)}s
         </span>
       </div>
