@@ -86,10 +86,12 @@ export const EnhancedMarketplaceHeader: React.FC<
     <div className={cn("bg-white border-b border-gray-200", className)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header with Search */}
-        <div className="flex items-center justify-between py-4">
-          <h1 className="text-2xl font-bold text-gray-900">Marketplace</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex-shrink-0">
+            Marketplace
+          </h1>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 max-w-full">
             {/* Search Bar */}
             <form onSubmit={handleSearch} className="relative flex-1 max-w-md">
               <div className="relative">
@@ -99,24 +101,26 @@ export const EnhancedMarketplaceHeader: React.FC<
                   placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4"
+                  className="pl-10 pr-4 w-full"
                 />
               </div>
             </form>
 
             {/* Action Buttons */}
-            <Button variant="ghost" size="icon">
-              <Filter className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <MoreHorizontal className="h-5 w-5" />
-            </Button>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Button variant="ghost" size="icon">
+                <Filter className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <MoreHorizontal className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Category Filters */}
         <div className="pb-4">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-4 overflow-x-auto scrollbar-hide">
             {categoryFilters.map((category) => (
               <Button
                 key={category.id}
@@ -124,20 +128,20 @@ export const EnhancedMarketplaceHeader: React.FC<
                 size="sm"
                 onClick={() => handleCategoryClick(category.id)}
                 className={cn(
-                  "flex items-center gap-2 rounded-full px-4 py-2",
+                  "flex items-center gap-2 rounded-full px-4 py-2 whitespace-nowrap flex-shrink-0",
                   activeCategory === category.id
                     ? "bg-blue-600 text-white hover:bg-blue-700"
                     : "bg-gray-50 text-gray-700 hover:bg-gray-100",
                 )}
               >
                 {category.icon}
-                {category.name}
+                <span className="hidden sm:inline">{category.name}</span>
               </Button>
             ))}
           </div>
 
           {/* Feature Filters */}
-          <div className="flex items-center gap-2 flex-wrap overflow-x-auto">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {featureFilters.map((filter) => (
               <Button
                 key={filter.id}
@@ -147,14 +151,14 @@ export const EnhancedMarketplaceHeader: React.FC<
                 size="sm"
                 onClick={() => handleFilterClick(filter.id)}
                 className={cn(
-                  "flex items-center gap-2 rounded-full px-3 py-1.5 text-sm",
+                  "flex items-center gap-2 rounded-full px-3 py-1.5 text-sm whitespace-nowrap flex-shrink-0",
                   activeFilters.includes(filter.id)
                     ? "bg-gray-900 text-white hover:bg-gray-800"
                     : "bg-white text-gray-600 hover:bg-gray-50 border-gray-300",
                 )}
               >
                 {filter.icon}
-                {filter.name}
+                <span className="hidden sm:inline">{filter.name}</span>
               </Button>
             ))}
           </div>
