@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global layout fixes */
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
 /* Mobile optimizations and responsive utilities */
 @layer utilities {
   .scrollbar-hide {
