@@ -106,9 +106,6 @@ export const EnhancedMarketplaceHeader: React.FC<
 
             {/* Action Buttons */}
             <Button variant="ghost" size="icon">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
               <Filter className="h-5 w-5" />
             </Button>
             <Button variant="ghost" size="icon">
@@ -140,7 +137,7 @@ export const EnhancedMarketplaceHeader: React.FC<
           </div>
 
           {/* Feature Filters */}
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap overflow-x-auto">
             {featureFilters.map((filter) => (
               <Button
                 key={filter.id}
