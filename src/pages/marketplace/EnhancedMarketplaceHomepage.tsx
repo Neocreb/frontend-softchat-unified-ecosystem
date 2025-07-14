@@ -210,7 +210,7 @@ const EnhancedMarketplaceHomepage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Top Promotional Banner */}
       <div className="bg-black text-white py-3 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
@@ -243,7 +243,7 @@ const EnhancedMarketplaceHomepage: React.FC = () => {
       />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-8">
           {/* Sidebar Categories */}
           <div className="hidden lg:block lg:col-span-1 pt-6 lg:pt-8">
@@ -279,7 +279,7 @@ const EnhancedMarketplaceHomepage: React.FC = () => {
             </div>
 
             {/* Hero Section */}
-            <div className="relative bg-black rounded-lg overflow-hidden h-64 sm:h-80 lg:h-96 mb-8 lg:mb-16">
+            <div className="relative bg-black rounded-lg overflow-hidden h-64 sm:h-80 lg:h-96 mb-8 lg:mb-16 w-full">
               <div className="flex flex-col lg:flex-row h-full">
                 <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 lg:px-16 text-white py-6 lg:py-0">
                   <div className="flex items-center gap-3 lg:gap-6 mb-4 lg:mb-6">
@@ -301,11 +301,11 @@ const EnhancedMarketplaceHomepage: React.FC = () => {
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
-                <div className="flex-1 relative hidden lg:block">
+                <div className="flex-1 relative hidden lg:block overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600&h=400&fit=crop"
                     alt="iPhone 14"
-                    className="absolute right-0 top-1/2 transform -translate-y-1/2 h-full w-auto object-contain"
+                    className="absolute right-0 top-1/2 transform -translate-y-1/2 h-full w-auto object-contain max-w-full"
                   />
                 </div>
               </div>
