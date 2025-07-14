@@ -401,7 +401,7 @@ const EnhancedMarketplaceHomepage: React.FC = () => {
               </div>
 
               {/* Flash Sale Products Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 w-full">
                 {flashSaleProducts.map((product, index) => (
                   <div key={product.id} className="group">
                     <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square mb-4">
@@ -431,11 +431,11 @@ const EnhancedMarketplaceHomepage: React.FC = () => {
                       </div>
 
                       {/* Product Image */}
-                      <div className="p-8 h-full flex items-center justify-center">
+                      <div className="p-4 sm:p-8 h-full flex items-center justify-center overflow-hidden">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"
+                          className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                         />
                       </div>
 
