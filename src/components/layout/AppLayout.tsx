@@ -7,6 +7,7 @@ import SecondaryNav from "./SecondaryNav";
 import FacebookStyleSidebar from "./FacebookStyleSidebar";
 import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
 import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
+import FreelanceFAB from "@/components/freelance/FreelanceFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const AppLayout = () => {
