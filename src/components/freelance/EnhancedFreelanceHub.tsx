@@ -394,26 +394,14 @@ export const EnhancedFreelanceHub: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
-            {/* Search Bar */}
-            <Card className="shadow-sm">
-              <CardContent className="p-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <Input
-                    placeholder="Search jobs, skills, companies..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 h-12 text-lg"
-                  />
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <Button size="sm" className="shadow-sm">
-                      <Zap className="w-4 h-4 mr-1" />
-                      AI Search
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Advanced Search and Filters */}
+            <AdvancedFreelanceFilters
+              onFiltersChange={(newFilters) => {
+                setFilters(newFilters);
+                setSearchQuery(newFilters.searchQuery);
+              }}
+              initialFilters={{ searchQuery }}
+            />
 
             {/* Stats Overview */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
