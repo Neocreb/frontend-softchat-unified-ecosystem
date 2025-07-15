@@ -3,9 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
@@ -14,17 +12,6 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -38,22 +25,11 @@ import {
   Clock,
   CheckCircle2,
   AlertTriangle,
-  XCircle,
-  Timer,
   Lock,
   Unlock,
-  CreditCard,
-  History,
-  FileText,
-  Calendar,
-  TrendingUp,
-  Award,
-  Star,
-  Eye,
-  RefreshCw,
-  Zap,
+  Timer,
   Bell,
-  Settings,
+  Zap,
 } from "lucide-react";
 import { Project } from "@/types/freelance";
 import { useToast } from "@/hooks/use-toast";
@@ -62,55 +38,15 @@ import { formatDistanceToNow, addDays, differenceInHours } from "date-fns";
 interface EscrowContract {
   id: string;
   projectId: string;
-  clientId: string;
-  freelancerId: string;
   amount: number;
-  cryptoType: "USDT" | "BTC" | "ETH" | "SOFT_POINTS";
-  status: "pending" | "locked" | "released" | "disputed" | "refunded" | "auto_released";
-  contractAddress?: string;
-  transactionHash?: string;
+  cryptoType: "USDT" | "BTC" | "ETH";
+  status: "pending" | "locked" | "released" | "auto_released" | "disputed";
+  autoReleaseDate?: Date;
+  autoReleaseHours: number;
+  platformFee: number;
+  createdAt: Date;
   lockedAt?: Date;
   releasedAt?: Date;
-  autoReleaseDate?: Date;
-  autoReleaseHours: number; // Default 72 hours
-  milestoneId?: string;
-  disputeId?: string;
-  platformFee: number;
-  fees: {
-    platformFeePercentage: number;
-    processingFee: number;
-    networkFee: number;
-  };
-  conditions: {
-    requiresClientApproval: boolean;
-    allowDisputeAfterHours: number;
-    autoReleaseEnabled: boolean;
-    requiresMilestoneCompletion: boolean;
-  };
-  activities: {
-    id: string;
-    type: "created" | "locked" | "released" | "disputed" | "auto_released" | "refunded";
-    timestamp: Date;
-    actor: "client" | "freelancer" | "system" | "admin";
-    description: string;
-    transactionHash?: string;
-  }[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface DisputeData {
-  id: string;
-  escrowId: string;
-  raisedBy: "client" | "freelancer";
-  reason: string;
-  description: string;
-  evidence: string[];
-  status: "open" | "investigating" | "resolved" | "closed";
-  resolution?: string;
-  resolvedBy?: "admin" | "mutual_agreement";
-  createdAt: Date;
-  resolvedAt?: Date;
 }
 
 interface EnhancedEscrowSystemProps {
@@ -125,28 +61,14 @@ export const EnhancedEscrowSystem: React.FC<EnhancedEscrowSystemProps> = ({
   currentUserId,
 }) => {
   const [escrows, setEscrows] = useState<EscrowContract[]>([]);
-  const [selectedEscrow, setSelectedEscrow] = useState<EscrowContract | null>(null);
   const [showCreateEscrow, setShowCreateEscrow] = useState(false);
-  const [showDisputeDialog, setShowDisputeDialog] = useState(false);
-  const [showReleaseConfirm, setShowReleaseConfirm] = useState(false);
-  const [disputes, setDisputes] = useState<DisputeData[]>([]);
-  const [autoReleaseWarnings, setAutoReleaseWarnings] = useState<EscrowContract[]>([]);
+  const [autoReleaseWarnings, setAutoReleaseWarnings] = useState<
+    EscrowContract[]
+  >([]);
   const [escrowForm, setEscrowForm] = useState({
     amount: 0,
     cryptoType: "USDT" as const,
     autoReleaseHours: 72,
-    milestoneId: "",
-    conditions: {
-      requiresClientApproval: true,
-      allowDisputeAfterHours: 24,
-      autoReleaseEnabled: true,
-      requiresMilestoneCompletion: false,
-    },
-  });
-  const [disputeForm, setDisputeForm] = useState({
-    reason: "",
-    description: "",
-    evidence: [] as string[],
   });
   const [activeTab, setActiveTab] = useState("active");
 
@@ -158,15 +80,567 @@ export const EnhancedEscrowSystem: React.FC<EnhancedEscrowSystemProps> = ({
       {
         id: "escrow_1",
         projectId: project.id,
-        clientId: project.client.id,
-        freelancerId: project.freelancer.id,
         amount: 2500,
         cryptoType: "USDT",
         status: "locked",
-        contractAddress: "0x742d35Cc6634C0532925a3b8D81C3cd8Cc26",
-        transactionHash: "0x8f8e6c8c2e9f7e8b9a0d1c2d3e4f5a6b7c8d9e0f1",
-        lockedAt: new Date("2024-01-15T10:00:00Z"),
         autoReleaseDate: new Date("2024-01-18T10:00:00Z"),
         autoReleaseHours: 72,
-        milestoneId: "milestone_1",
-        platformFee: 125, // 5% of amount\n        fees: {\n          platformFeePercentage: 5,\n          processingFee: 25,\n          networkFee: 15,\n        },\n        conditions: {\n          requiresClientApproval: true,\n          allowDisputeAfterHours: 24,\n          autoReleaseEnabled: true,\n          requiresMilestoneCompletion: true,\n        },\n        activities: [\n          {\n            id: "act_1",\n            type: "created",\n            timestamp: new Date("2024-01-15T09:30:00Z"),\n            actor: "client",\n            description: "Escrow contract created",\n          },\n          {\n            id: "act_2",\n            type: "locked",\n            timestamp: new Date("2024-01-15T10:00:00Z"),\n            actor: "system",\n            description: "Funds locked in escrow",\n            transactionHash: "0x8f8e6c8c2e9f7e8b9a0d1c2d3e4f5a6b7c8d9e0f1",\n          },\n        ],\n        createdAt: new Date("2024-01-15T09:30:00Z"),\n        updatedAt: new Date("2024-01-15T10:00:00Z"),\n      },\n      {\n        id: "escrow_2",\n        projectId: project.id,\n        clientId: project.client.id,\n        freelancerId: project.freelancer.id,\n        amount: 1500,\n        cryptoType: "USDT",\n        status: "pending",\n        autoReleaseHours: 72,\n        milestoneId: "milestone_2",\n        platformFee: 75,\n        fees: {\n          platformFeePercentage: 5,\n          processingFee: 15,\n          networkFee: 10,\n        },\n        conditions: {\n          requiresClientApproval: true,\n          allowDisputeAfterHours: 24,\n          autoReleaseEnabled: true,\n          requiresMilestoneCompletion: false,\n        },\n        activities: [\n          {\n            id: "act_3",\n            type: "created",\n            timestamp: new Date("2024-01-16T14:00:00Z"),\n            actor: "client",\n            description: "Escrow contract created for milestone 2",\n          },\n        ],\n        createdAt: new Date("2024-01-16T14:00:00Z"),\n        updatedAt: new Date("2024-01-16T14:00:00Z"),\n      },\n    ];\n\n    setEscrows(mockEscrows);\n\n    // Check for auto-release warnings\n    const warnings = mockEscrows.filter((escrow) => {\n      if (!escrow.autoReleaseDate || escrow.status !== "locked") return false;\n      const hoursUntilRelease = differenceInHours(escrow.autoReleaseDate, new Date());\n      return hoursUntilRelease <= 24 && hoursUntilRelease > 0;\n    });\n    setAutoReleaseWarnings(warnings);\n  }, [project.id, project.client.id, project.freelancer.id]);\n\n  // Auto-release timer effect\n  useEffect(() => {\n    const interval = setInterval(() => {\n      setEscrows((prevEscrows) =>\n        prevEscrows.map((escrow) => {\n          if (\n            escrow.status === "locked" &&\n            escrow.conditions.autoReleaseEnabled &&\n            escrow.autoReleaseDate &&\n            new Date() >= escrow.autoReleaseDate\n          ) {\n            // Auto-release the escrow\n            const updatedEscrow = {\n              ...escrow,\n              status: "auto_released" as const,\n              releasedAt: new Date(),\n              updatedAt: new Date(),\n              activities: [\n                ...escrow.activities,\n                {\n                  id: `act_${Date.now()}`,\n                  type: "auto_released" as const,\n                  timestamp: new Date(),\n                  actor: "system" as const,\n                  description: "Funds automatically released after timeout period",\n                },\n              ],\n            };\n\n            toast({\n              title: "Auto-Release Executed",\n              description: `Escrow ${escrow.id} has been automatically released`,\n            });\n\n            return updatedEscrow;\n          }\n          return escrow;\n        }),\n      );\n    }, 60000); // Check every minute\n\n    return () => clearInterval(interval);\n  }, [toast]);\n\n  const getStatusColor = (status: EscrowContract["status"]) => {\n    switch (status) {\n      case "pending":\n        return "bg-yellow-100 text-yellow-800 border-yellow-200";\n      case "locked":\n        return "bg-blue-100 text-blue-800 border-blue-200";\n      case "released":\n        return "bg-green-100 text-green-800 border-green-200";\n      case "auto_released":\n        return "bg-emerald-100 text-emerald-800 border-emerald-200";\n      case "disputed":\n        return "bg-red-100 text-red-800 border-red-200";\n      case "refunded":\n        return "bg-gray-100 text-gray-800 border-gray-200";\n      default:\n        return "bg-gray-100 text-gray-800 border-gray-200";\n    }\n  };\n\n  const getStatusIcon = (status: EscrowContract["status"]) => {\n    switch (status) {\n      case "pending":\n        return <Clock className="w-4 h-4" />;\n      case "locked":\n        return <Lock className="w-4 h-4" />;\n      case "released":\n        return <CheckCircle2 className="w-4 h-4" />;\n      case "auto_released":\n        return <Zap className="w-4 h-4" />;\n      case "disputed":\n        return <AlertTriangle className="w-4 h-4" />;\n      case "refunded":\n        return <XCircle className="w-4 h-4" />;\n      default:\n        return <Shield className="w-4 h-4" />;\n    }\n  };\n\n  const handleCreateEscrow = async () => {\n    try {\n      const newEscrow: EscrowContract = {\n        id: `escrow_${Date.now()}`,\n        projectId: project.id,\n        clientId: project.client.id,\n        freelancerId: project.freelancer.id,\n        amount: escrowForm.amount,\n        cryptoType: escrowForm.cryptoType,\n        status: "pending",\n        autoReleaseHours: escrowForm.autoReleaseHours,\n        milestoneId: escrowForm.milestoneId,\n        platformFee: escrowForm.amount * 0.05, // 5% platform fee\n        fees: {\n          platformFeePercentage: 5,\n          processingFee: Math.max(10, escrowForm.amount * 0.01),\n          networkFee: 5,\n        },\n        conditions: escrowForm.conditions,\n        activities: [\n          {\n            id: `act_${Date.now()}`,\n            type: "created",\n            timestamp: new Date(),\n            actor: userRole,\n            description: "Escrow contract created",\n          },\n        ],\n        createdAt: new Date(),\n        updatedAt: new Date(),\n      };\n\n      setEscrows((prev) => [...prev, newEscrow]);\n      setShowCreateEscrow(false);\n      setEscrowForm({\n        amount: 0,\n        cryptoType: "USDT",\n        autoReleaseHours: 72,\n        milestoneId: "",\n        conditions: {\n          requiresClientApproval: true,\n          allowDisputeAfterHours: 24,\n          autoReleaseEnabled: true,\n          requiresMilestoneCompletion: false,\n        },\n      });\n\n      toast({\n        title: "Escrow Created",\n        description: "Escrow contract has been created successfully",\n      });\n\n      // Simulate locking after 3 seconds\n      setTimeout(() => {\n        setEscrows((prev) =>\n          prev.map((escrow) =>\n            escrow.id === newEscrow.id\n              ? {\n                  ...escrow,\n                  status: "locked",\n                  lockedAt: new Date(),\n                  autoReleaseDate: addDays(new Date(), escrowForm.autoReleaseHours / 24),\n                  contractAddress: `0x${Math.random().toString(16).substr(2, 32)}`,\n                  transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`,\n                  activities: [\n                    ...escrow.activities,\n                    {\n                      id: `act_${Date.now()}`,\n                      type: "locked",\n                      timestamp: new Date(),\n                      actor: "system",\n                      description: "Funds locked in smart contract",\n                      transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`,\n                    },\n                  ],\n                }\n              : escrow,\n          ),\n        );\n      }, 3000);\n    } catch (error) {\n      toast({\n        title: "Error",\n        description: "Failed to create escrow contract",\n        variant: "destructive",\n      });\n    }\n  };\n\n  const handleReleaseFunds = async (escrowId: string) => {\n    try {\n      setEscrows((prev) =>\n        prev.map((escrow) =>\n          escrow.id === escrowId\n            ? {\n                ...escrow,\n                status: "released",\n                releasedAt: new Date(),\n                updatedAt: new Date(),\n                activities: [\n                  ...escrow.activities,\n                  {\n                    id: `act_${Date.now()}`,\n                    type: "released",\n                    timestamp: new Date(),\n                    actor: userRole,\n                    description: "Funds released by client",\n                    transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`,\n                  },\n                ],\n              }\n            : escrow,\n        ),\n      );\n\n      setShowReleaseConfirm(false);\n      toast({\n        title: "Funds Released",\n        description: "Funds have been released to the freelancer",\n      });\n    } catch (error) {\n      toast({\n        title: "Error",\n        description: "Failed to release funds",\n        variant: "destructive",\n      });\n    }\n  };\n\n  const handleCreateDispute = async () => {\n    try {\n      if (!selectedEscrow) return;\n\n      const dispute: DisputeData = {\n        id: `dispute_${Date.now()}`,\n        escrowId: selectedEscrow.id,\n        raisedBy: userRole,\n        reason: disputeForm.reason,\n        description: disputeForm.description,\n        evidence: disputeForm.evidence,\n        status: "open",\n        createdAt: new Date(),\n      };\n\n      setDisputes((prev) => [...prev, dispute]);\n\n      setEscrows((prev) =>\n        prev.map((escrow) =>\n          escrow.id === selectedEscrow.id\n            ? {\n                ...escrow,\n                status: "disputed",\n                disputeId: dispute.id,\n                updatedAt: new Date(),\n                activities: [\n                  ...escrow.activities,\n                  {\n                    id: `act_${Date.now()}`,\n                    type: "disputed",\n                    timestamp: new Date(),\n                    actor: userRole,\n                    description: `Dispute raised: ${disputeForm.reason}`,\n                  },\n                ],\n              }\n            : escrow,\n        ),\n      );\n\n      setShowDisputeDialog(false);\n      setDisputeForm({ reason: "", description: "", evidence: [] });\n\n      toast({\n        title: "Dispute Created",\n        description: "Your dispute has been submitted for review",\n      });\n    } catch (error) {\n      toast({\n        title: "Error",\n        description: "Failed to create dispute",\n        variant: "destructive",\n      });\n    }\n  };\n\n  const EscrowCard: React.FC<{ escrow: EscrowContract }> = ({ escrow }) => {\n    const timeUntilAutoRelease = escrow.autoReleaseDate\n      ? differenceInHours(escrow.autoReleaseDate, new Date())\n      : null;\n\n    return (\n      <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedEscrow(escrow)}>\n        <CardContent className="pt-6">\n          <div className="space-y-4">\n            {/* Header */}\n            <div className="flex items-start justify-between">\n              <div className="flex items-center gap-3">\n                <div className="p-2 bg-blue-100 rounded-lg">\n                  {getStatusIcon(escrow.status)}\n                </div>\n                <div>\n                  <h3 className="font-semibold">Escrow #{escrow.id.slice(-6)}</h3>\n                  <p className="text-sm text-muted-foreground">\n                    {escrow.milestoneId ? `Milestone: ${escrow.milestoneId}` : "Full Project"}\n                  </p>\n                </div>\n              </div>\n              <Badge className={getStatusColor(escrow.status)}>\n                {escrow.status.replace('_', ' ')}\n              </Badge>\n            </div>\n\n            {/* Amount and Details */}\n            <div className="grid grid-cols-2 gap-4">\n              <div className="bg-green-50 p-3 rounded-lg">\n                <div className="text-green-600 font-semibold text-sm">Amount</div>\n                <div className="text-lg font-bold">${escrow.amount}</div>\n                <div className="text-xs text-green-600">{escrow.cryptoType}</div>\n              </div>\n              <div className="bg-blue-50 p-3 rounded-lg">\n                <div className="text-blue-600 font-semibold text-sm">Net Amount</div>\n                <div className="text-lg font-bold">\n                  ${(escrow.amount - escrow.platformFee - escrow.fees.processingFee).toFixed(2)}\n                </div>\n                <div className="text-xs text-blue-600">After fees</div>\n              </div>\n            </div>\n\n            {/* Auto-release warning */}\n            {escrow.status === "locked" && timeUntilAutoRelease !== null && timeUntilAutoRelease <= 24 && (\n              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">\n                <div className="flex items-center gap-2">\n                  <Timer className="w-4 h-4 text-yellow-600" />\n                  <span className="text-sm font-medium text-yellow-800">\n                    Auto-release in {timeUntilAutoRelease}h\n                  </span>\n                </div>\n                <div className="text-xs text-yellow-600 mt-1">\n                  Funds will be automatically released if no action is taken\n                </div>\n              </div>\n            )}\n\n            {/* Status specific info */}\n            {escrow.status === "locked" && (\n              <div className="text-sm text-muted-foreground">\n                Locked {formatDistanceToNow(escrow.lockedAt!, { addSuffix: true })}\n              </div>\n            )}\n\n            {escrow.status === "released" && (\n              <div className="text-sm text-green-600">\n                Released {formatDistanceToNow(escrow.releasedAt!, { addSuffix: true })}\n              </div>\n            )}\n\n            {escrow.status === "auto_released" && (\n              <div className="text-sm text-emerald-600 flex items-center gap-1">\n                <Zap className="w-4 h-4" />\n                Auto-released {formatDistanceToNow(escrow.releasedAt!, { addSuffix: true })}\n              </div>\n            )}\n\n            {/* Actions */}\n            <div className="flex gap-2 pt-2 border-t">\n              {userRole === "client" && escrow.status === "locked" && (\n                <Button\n                  size="sm"\n                  onClick={(e) => {\n                    e.stopPropagation();\n                    setSelectedEscrow(escrow);\n                    setShowReleaseConfirm(true);\n                  }}\n                >\n                  <Unlock className="w-4 h-4 mr-2" />\n                  Release Funds\n                </Button>\n              )}\n              \n              {escrow.status === "locked" && (\n                <Button\n                  size="sm"\n                  variant="outline"\n                  onClick={(e) => {\n                    e.stopPropagation();\n                    setSelectedEscrow(escrow);\n                    setShowDisputeDialog(true);\n                  }}\n                >\n                  <AlertTriangle className="w-4 h-4 mr-2" />\n                  Dispute\n                </Button>\n              )}\n              \n              <Button\n                size="sm"\n                variant="ghost"\n                onClick={(e) => {\n                  e.stopPropagation();\n                  setSelectedEscrow(escrow);\n                }}\n              >\n                <Eye className="w-4 h-4 mr-2" />\n                View Details\n              </Button>\n            </div>\n          </div>\n        </CardContent>\n      </Card>\n    );\n  };\n\n  const activeEscrows = escrows.filter((e) => ["pending", "locked"].includes(e.status));\n  const completedEscrows = escrows.filter((e) => ["released", "auto_released"].includes(e.status));\n  const disputedEscrows = escrows.filter((e) => e.status === "disputed");\n\n  return (\n    <div className="space-y-6">\n      {/* Auto-release warnings */}\n      {autoReleaseWarnings.length > 0 && (\n        <Card className="border-yellow-200 bg-yellow-50">\n          <CardHeader>\n            <CardTitle className="flex items-center gap-2 text-yellow-800">\n              <Bell className="w-5 h-5" />\n              Auto-Release Warnings\n            </CardTitle>\n          </CardHeader>\n          <CardContent>\n            <div className="space-y-2">\n              {autoReleaseWarnings.map((escrow) => {\n                const hoursLeft = differenceInHours(escrow.autoReleaseDate!, new Date());\n                return (\n                  <div key={escrow.id} className="flex items-center justify-between p-2 bg-white rounded border">\n                    <div>\n                      <span className="font-medium">Escrow #{escrow.id.slice(-6)}</span>\n                      <span className="text-sm text-muted-foreground ml-2">\n                        ${escrow.amount} • Auto-release in {hoursLeft}h\n                      </span>\n                    </div>\n                    {userRole === "client" && (\n                      <Button size="sm" onClick={() => handleReleaseFunds(escrow.id)}>\n                        Release Now\n                      </Button>\n                    )}\n                  </div>\n                );\n              })}\n            </div>\n          </CardContent>\n        </Card>\n      )}\n\n      {/* Header */}\n      <div className="flex items-center justify-between">\n        <div>\n          <h2 className="text-2xl font-bold">Escrow Management</h2>\n          <p className="text-muted-foreground">\n            Secure payment system with automatic release\n          </p>\n        </div>\n        {userRole === "client" && (\n          <Button onClick={() => setShowCreateEscrow(true)}>\n            <Shield className="w-4 h-4 mr-2" />\n            Create Escrow\n          </Button>\n        )}\n      </div>\n\n      {/* Statistics */}\n      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">\n        <Card>\n          <CardContent className="pt-6">\n            <div className="text-center">\n              <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />\n              <div className="text-2xl font-bold">{activeEscrows.length}</div>\n              <div className="text-sm text-muted-foreground">Active Escrows</div>\n            </div>\n          </CardContent>\n        </Card>\n        <Card>\n          <CardContent className="pt-6">\n            <div className="text-center">\n              <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-600" />\n              <div className="text-2xl font-bold\">\n                ${activeEscrows.reduce((sum, e) => sum + e.amount, 0)}\n              </div>\n              <div className="text-sm text-muted-foreground\">Locked Amount</div>\n            </div>\n          </CardContent>\n        </Card>\n        <Card>\n          <CardContent className="pt-6">\n            <div className="text-center">\n              <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-emerald-600" />\n              <div className="text-2xl font-bold\">{completedEscrows.length}</div>\n              <div className="text-sm text-muted-foreground\">Completed</div>\n            </div>\n          </CardContent>\n        </Card>\n        <Card>\n          <CardContent className="pt-6">\n            <div className="text-center">\n              <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-red-600" />\n              <div className="text-2xl font-bold\">{disputedEscrows.length}</div>\n              <div className="text-sm text-muted-foreground\">Disputes</div>\n            </div>\n          </CardContent>\n        </Card>\n      </div>\n\n      {/* Escrow List */}\n      <Tabs value={activeTab} onValueChange={setActiveTab}>\n        <TabsList>\n          <TabsTrigger value="active">Active ({activeEscrows.length})</TabsTrigger>\n          <TabsTrigger value="completed">Completed ({completedEscrows.length})</TabsTrigger>\n          <TabsTrigger value="disputed">Disputed ({disputedEscrows.length})</TabsTrigger>\n          <TabsTrigger value="all">All ({escrows.length})</TabsTrigger>\n        </TabsList>\n\n        <TabsContent value="active" className="space-y-4">\n          {activeEscrows.length > 0 ? (\n            activeEscrows.map((escrow) => <EscrowCard key={escrow.id} escrow={escrow} />)\n          ) : (\n            <div className="text-center py-12\">\n              <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />\n              <h3 className="text-lg font-medium\">No Active Escrows</h3>\n              <p className="text-muted-foreground\">Create an escrow to secure project payments</p>\n            </div>\n          )}\n        </TabsContent>\n\n        <TabsContent value="completed" className="space-y-4">\n          {completedEscrows.length > 0 ? (\n            completedEscrows.map((escrow) => <EscrowCard key={escrow.id} escrow={escrow} />)\n          ) : (\n            <div className="text-center py-12\">\n              <CheckCircle2 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />\n              <h3 className="text-lg font-medium\">No Completed Escrows</h3>\n              <p className="text-muted-foreground\">Completed escrows will appear here</p>\n            </div>\n          )}\n        </TabsContent>\n\n        <TabsContent value="disputed" className="space-y-4">\n          {disputedEscrows.length > 0 ? (\n            disputedEscrows.map((escrow) => <EscrowCard key={escrow.id} escrow={escrow} />)\n          ) : (\n            <div className="text-center py-12\">\n              <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />\n              <h3 className="text-lg font-medium\">No Disputed Escrows</h3>\n              <p className="text-muted-foreground\">Disputed escrows will appear here</p>\n            </div>\n          )}\n        </TabsContent>\n\n        <TabsContent value="all" className="space-y-4">\n          {escrows.length > 0 ? (\n            escrows.map((escrow) => <EscrowCard key={escrow.id} escrow={escrow} />)\n          ) : (\n            <div className="text-center py-12\">\n              <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />\n              <h3 className="text-lg font-medium\">No Escrows</h3>\n              <p className="text-muted-foreground\">Start by creating your first escrow contract</p>\n            </div>\n          )}\n        </TabsContent>\n      </Tabs>\n\n      {/* Create Escrow Dialog */}\n      <Dialog open={showCreateEscrow} onOpenChange={setShowCreateEscrow}>\n        <DialogContent className="sm:max-w-[625px]\">\n          <DialogHeader>\n            <DialogTitle>Create Escrow Contract</DialogTitle>\n          </DialogHeader>\n          <div className="space-y-4\">\n            <div className="grid grid-cols-2 gap-4\">\n              <div>\n                <Label htmlFor="amount\">Amount</Label>\n                <Input\n                  id="amount"\n                  type="number"\n                  value={escrowForm.amount}\n                  onChange={(e) =>\n                    setEscrowForm((prev) => ({\n                      ...prev,\n                      amount: parseFloat(e.target.value) || 0,\n                    }))\n                  }\n                  placeholder="0.00"\n                />\n              </div>\n              <div>\n                <Label htmlFor="crypto-type\">Currency</Label>\n                <Select\n                  value={escrowForm.cryptoType}\n                  onValueChange={(value) =>\n                    setEscrowForm((prev) => ({\n                      ...prev,\n                      cryptoType: value as any,\n                    }))\n                  }\n                >\n                  <SelectTrigger>\n                    <SelectValue />\n                  </SelectTrigger>\n                  <SelectContent>\n                    <SelectItem value="USDT\">USDT</SelectItem>\n                    <SelectItem value="BTC\">BTC</SelectItem>\n                    <SelectItem value="ETH\">ETH</SelectItem>\n                    <SelectItem value="SOFT_POINTS\">SoftPoints</SelectItem>\n                  </SelectContent>\n                </Select>\n              </div>\n            </div>\n            \n            <div>\n              <Label htmlFor="auto-release\">Auto-Release Hours</Label>\n              <Input\n                id="auto-release"\n                type="number"\n                value={escrowForm.autoReleaseHours}\n                onChange={(e) =>\n                  setEscrowForm((prev) => ({\n                    ...prev,\n                    autoReleaseHours: parseInt(e.target.value) || 72,\n                  }))\n                }\n                placeholder="72"\n              />\n              <div className="text-xs text-muted-foreground mt-1\">\n                Funds will be automatically released after this period if no action is taken\n              </div>\n            </div>\n\n            <div>\n              <Label htmlFor=\"milestone\">Milestone (Optional)</Label>\n              <Input\n                id=\"milestone\"\n                value={escrowForm.milestoneId}\n                onChange={(e) =>\n                  setEscrowForm((prev) => ({ ...prev, milestoneId: e.target.value }))\n                }\n                placeholder=\"milestone_1\"\n              />\n            </div>\n\n            {/* Fee breakdown */}\n            <div className="bg-gray-50 p-4 rounded-lg\">\n              <h4 className="font-medium mb-2\">Fee Breakdown</h4>\n              <div className=\"space-y-1 text-sm\">\n                <div className=\"flex justify-between\">\n                  <span>Escrow Amount:</span>\n                  <span>${escrowForm.amount}</span>\n                </div>\n                <div className=\"flex justify-between\">\n                  <span>Platform Fee (5%):</span>\n                  <span>${(escrowForm.amount * 0.05).toFixed(2)}</span>\n                </div>\n                <div className=\"flex justify-between\">\n                  <span>Processing Fee:</span>\n                  <span>${Math.max(10, escrowForm.amount * 0.01).toFixed(2)}</span>\n                </div>\n                <div className=\"flex justify-between\">\n                  <span>Network Fee:</span>\n                  <span>$5.00</span>\n                </div>\n                <div className=\"border-t pt-1 flex justify-between font-medium\">\n                  <span>Total Cost:</span>\n                  <span>\n                    $\n                    {\n                      escrowForm.amount +\n                      escrowForm.amount * 0.05 +\n                      Math.max(10, escrowForm.amount * 0.01) +\n                      5\n                    }\n                  </span>\n                </div>\n                <div className=\"flex justify-between text-green-600\">\n                  <span>Freelancer Receives:</span>\n                  <span>\n                    $\n                    {\n                      escrowForm.amount -\n                      escrowForm.amount * 0.05 -\n                      Math.max(10, escrowForm.amount * 0.01)\n                    }\n                  </span>\n                </div>\n              </div>\n            </div>\n          </div>\n          <DialogFooter>\n            <Button variant=\"outline\" onClick={() => setShowCreateEscrow(false)}>\n              Cancel\n            </Button>\n            <Button onClick={handleCreateEscrow}>\n              Create Escrow\n            </Button>\n          </DialogFooter>\n        </DialogContent>\n      </Dialog>\n\n      {/* Release Confirmation Dialog */}\n      <AlertDialog open={showReleaseConfirm} onOpenChange={setShowReleaseConfirm}>\n        <AlertDialogContent>\n          <AlertDialogHeader>\n            <AlertDialogTitle>Release Funds</AlertDialogTitle>\n            <AlertDialogDescription>\n              Are you sure you want to release the funds? This action cannot be undone.\n              The freelancer will receive ${selectedEscrow ? (selectedEscrow.amount - selectedEscrow.platformFee - selectedEscrow.fees.processingFee).toFixed(2) : 0} after fees.\n            </AlertDialogDescription>\n          </AlertDialogHeader>\n          <AlertDialogFooter>\n            <AlertDialogCancel>Cancel</AlertDialogCancel>\n            <AlertDialogAction\n              onClick={() => selectedEscrow && handleReleaseFunds(selectedEscrow.id)}\n            >\n              Release Funds\n            </AlertDialogAction>\n          </AlertDialogFooter>\n        </AlertDialogContent>\n      </AlertDialog>\n\n      {/* Dispute Dialog */}\n      <Dialog open={showDisputeDialog} onOpenChange={setShowDisputeDialog}>\n        <DialogContent>\n          <DialogHeader>\n            <DialogTitle>Create Dispute</DialogTitle>\n          </DialogHeader>\n          <div className=\"space-y-4\">\n            <div>\n              <Label htmlFor=\"dispute-reason\">Reason</Label>\n              <Select\n                value={disputeForm.reason}\n                onValueChange={(value) =>\n                  setDisputeForm((prev) => ({ ...prev, reason: value }))\n                }\n              >\n                <SelectTrigger>\n                  <SelectValue placeholder=\"Select a reason\" />\n                </SelectTrigger>\n                <SelectContent>\n                  <SelectItem value=\"work_not_delivered\">Work Not Delivered</SelectItem>\n                  <SelectItem value=\"work_not_as_described\">Work Not As Described</SelectItem>\n                  <SelectItem value=\"communication_issues\">Communication Issues</SelectItem>\n                  <SelectItem value=\"deadline_missed\">Deadline Missed</SelectItem>\n                  <SelectItem value=\"payment_issue\">Payment Issue</SelectItem>\n                  <SelectItem value=\"other\">Other</SelectItem>\n                </SelectContent>\n              </Select>\n            </div>\n            \n            <div>\n              <Label htmlFor=\"dispute-description\">Description</Label>\n              <Textarea\n                id=\"dispute-description\"\n                value={disputeForm.description}\n                onChange={(e) =>\n                  setDisputeForm((prev) => ({ ...prev, description: e.target.value }))\n                }\n                placeholder=\"Provide detailed information about the dispute...\"\n                rows={4}\n              />\n            </div>\n\n            <div className=\"bg-yellow-50 border border-yellow-200 rounded-lg p-3\">\n              <div className=\"flex items-start gap-2\">\n                <AlertTriangle className=\"w-5 h-5 text-yellow-600 mt-0.5\" />\n                <div>\n                  <h4 className=\"text-sm font-medium text-yellow-800\">Dispute Process</h4>\n                  <p className=\"text-sm text-yellow-700 mt-1\">\n                    Creating a dispute will freeze the escrow funds until the issue is resolved.\n                    Our team will review the case and contact both parties within 24 hours.\n                  </p>\n                </div>\n              </div>\n            </div>\n          </div>\n          <DialogFooter>\n            <Button variant=\"outline\" onClick={() => setShowDisputeDialog(false)}>\n              Cancel\n            </Button>\n            <Button\n              onClick={handleCreateDispute}\n              disabled={!disputeForm.reason || !disputeForm.description.trim()}\n            >\n              Create Dispute\n            </Button>\n          </DialogFooter>\n        </DialogContent>\n      </Dialog>\n\n      {/* Escrow Details Modal */}\n      {selectedEscrow && (\n        <Dialog open={!!selectedEscrow} onOpenChange={() => setSelectedEscrow(null)}>\n          <DialogContent className=\"max-w-4xl max-h-[90vh] overflow-y-auto\">\n            <DialogHeader>\n              <DialogTitle className=\"flex items-center gap-2\">\n                {getStatusIcon(selectedEscrow.status)}\n                Escrow #{selectedEscrow.id.slice(-6)} Details\n              </DialogTitle>\n            </DialogHeader>\n\n            <Tabs defaultValue=\"overview\" className=\"space-y-6\">\n              <TabsList>\n                <TabsTrigger value=\"overview\">Overview</TabsTrigger>\n                <TabsTrigger value=\"activity\">Activity ({selectedEscrow.activities.length})</TabsTrigger>\n                <TabsTrigger value=\"settings\">Settings</TabsTrigger>\n              </TabsList>\n\n              <TabsContent value=\"overview\" className=\"space-y-6\">\n                <div className=\"grid grid-cols-1 md:grid-cols-3 gap-4\">\n                  <Card>\n                    <CardContent className=\"pt-6\">\n                      <div className=\"text-center\">\n                        <DollarSign className=\"w-8 h-8 mx-auto mb-2 text-green-600\" />\n                        <div className=\"text-2xl font-bold\">${selectedEscrow.amount}</div>\n                        <div className=\"text-sm text-muted-foreground\">Escrow Amount</div>\n                      </div>\n                    </CardContent>\n                  </Card>\n                  <Card>\n                    <CardContent className=\"pt-6\">\n                      <div className=\"text-center\">\n                        <Badge className={getStatusColor(selectedEscrow.status)} />\n                        <div className=\"text-2xl font-bold\">{selectedEscrow.status}</div>\n                        <div className=\"text-sm text-muted-foreground\">Status</div>\n                      </div>\n                    </CardContent>\n                  </Card>\n                  <Card>\n                    <CardContent className=\"pt-6\">\n                      <div className=\"text-center\">\n                        <Timer className=\"w-8 h-8 mx-auto mb-2 text-blue-600\" />\n                        <div className=\"text-2xl font-bold\">{selectedEscrow.autoReleaseHours}h</div>\n                        <div className=\"text-sm text-muted-foreground\">Auto-Release Period</div>\n                      </div>\n                    </CardContent>\n                  </Card>\n                </div>\n\n                {/* Fee Breakdown */}\n                <Card>\n                  <CardHeader>\n                    <CardTitle>Fee Breakdown</CardTitle>\n                  </CardHeader>\n                  <CardContent>\n                    <div className=\"space-y-2\">\n                      <div className=\"flex justify-between\">\n                        <span>Escrow Amount:</span>\n                        <span className=\"font-medium\">${selectedEscrow.amount}</span>\n                      </div>\n                      <div className=\"flex justify-between\">\n                        <span>Platform Fee ({selectedEscrow.fees.platformFeePercentage}%):</span>\n                        <span className=\"font-medium\">-${selectedEscrow.platformFee}</span>\n                      </div>\n                      <div className=\"flex justify-between\">\n                        <span>Processing Fee:</span>\n                        <span className=\"font-medium\">-${selectedEscrow.fees.processingFee}</span>\n                      </div>\n                      <div className=\"flex justify-between\">\n                        <span>Network Fee:</span>\n                        <span className=\"font-medium\">-${selectedEscrow.fees.networkFee}</span>\n                      </div>\n                      <div className=\"border-t pt-2 flex justify-between text-green-600 font-semibold\">\n                        <span>Freelancer Receives:</span>\n                        <span>\n                          $\n                          {\n                            selectedEscrow.amount -\n                            selectedEscrow.platformFee -\n                            selectedEscrow.fees.processingFee\n                          }\n                        </span>\n                      </div>\n                    </div>\n                  </CardContent>\n                </Card>\n\n                {/* Contract Details */}\n                <Card>\n                  <CardHeader>\n                    <CardTitle>Contract Details</CardTitle>\n                  </CardHeader>\n                  <CardContent>\n                    <div className=\"grid grid-cols-2 gap-4 text-sm\">\n                      <div>\n                        <div className=\"text-muted-foreground\">Contract Address</div>\n                        <div className=\"font-mono\">\n                          {selectedEscrow.contractAddress || \"Not deployed\"}\n                        </div>\n                      </div>\n                      <div>\n                        <div className=\"text-muted-foreground\">Transaction Hash</div>\n                        <div className=\"font-mono\">\n                          {selectedEscrow.transactionHash || \"Pending\"}\n                        </div>\n                      </div>\n                      <div>\n                        <div className=\"text-muted-foreground\">Created</div>\n                        <div>{selectedEscrow.createdAt.toLocaleString()}</div>\n                      </div>\n                      <div>\n                        <div className=\"text-muted-foreground\">Last Updated</div>\n                        <div>{selectedEscrow.updatedAt.toLocaleString()}</div>\n                      </div>\n                    </div>\n                  </CardContent>\n                </Card>\n              </TabsContent>\n\n              <TabsContent value=\"activity\">\n                <Card>\n                  <CardHeader>\n                    <CardTitle>Activity Log</CardTitle>\n                  </CardHeader>\n                  <CardContent>\n                    <div className=\"space-y-4\">\n                      {selectedEscrow.activities.map((activity, index) => (\n                        <div key={activity.id} className=\"flex items-start gap-3\">\n                          <div className=\"flex-shrink-0\">\n                            <div className=\"w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center\">\n                              {getStatusIcon(activity.type as any)}\n                            </div>\n                          </div>\n                          <div className=\"flex-1\">\n                            <div className=\"flex items-center justify-between\">\n                              <span className=\"font-medium\">{activity.description}</span>\n                              <span className=\"text-xs text-muted-foreground\">\n                                {formatDistanceToNow(activity.timestamp, { addSuffix: true })}\n                              </span>\n                            </div>\n                            <div className=\"text-sm text-muted-foreground\">\n                              By {activity.actor} • {activity.timestamp.toLocaleString()}\n                            </div>\n                            {activity.transactionHash && (\n                              <div className=\"text-xs font-mono text-blue-600 mt-1\">\n                                Tx: {activity.transactionHash}\n                              </div>\n                            )}\n                          </div>\n                        </div>\n                      ))}\n                    </div>\n                  </CardContent>\n                </Card>\n              </TabsContent>\n\n              <TabsContent value=\"settings\">\n                <Card>\n                  <CardHeader>\n                    <CardTitle>Escrow Settings</CardTitle>\n                  </CardHeader>\n                  <CardContent>\n                    <div className=\"space-y-4\">\n                      <div className=\"grid grid-cols-2 gap-4\">\n                        <div>\n                          <div className=\"text-sm font-medium\">Auto-Release Enabled</div>\n                          <div className=\"text-sm text-muted-foreground\">\n                            {selectedEscrow.conditions.autoReleaseEnabled ? \"Yes\" : \"No\"}\n                          </div>\n                        </div>\n                        <div>\n                          <div className=\"text-sm font-medium\">Auto-Release Hours</div>\n                          <div className=\"text-sm text-muted-foreground\">\n                            {selectedEscrow.autoReleaseHours} hours\n                          </div>\n                        </div>\n                        <div>\n                          <div className=\"text-sm font-medium\">Requires Client Approval</div>\n                          <div className=\"text-sm text-muted-foreground\">\n                            {selectedEscrow.conditions.requiresClientApproval ? \"Yes\" : \"No\"}\n                          </div>\n                        </div>\n                        <div>\n                          <div className=\"text-sm font-medium\">Dispute Window</div>\n                          <div className=\"text-sm text-muted-foreground\">\n                            {selectedEscrow.conditions.allowDisputeAfterHours} hours after milestone\n                          </div>\n                        </div>\n                      </div>\n                    </div>\n                  </CardContent>\n                </Card>\n              </TabsContent>\n            </Tabs>\n\n            <DialogFooter>\n              <Button variant=\"outline\" onClick={() => setSelectedEscrow(null)}>\n                Close\n              </Button>\n            </DialogFooter>\n          </DialogContent>\n        </Dialog>\n      )}\n    </div>\n  );\n};\n\nexport default EnhancedEscrowSystem;\n
+        platformFee: 125,
+        lockedAt: new Date("2024-01-15T10:00:00Z"),
+        createdAt: new Date("2024-01-15T09:30:00Z"),
+      },
+      {
+        id: "escrow_2",
+        projectId: project.id,
+        amount: 1500,
+        cryptoType: "USDT",
+        status: "pending",
+        autoReleaseHours: 72,
+        platformFee: 75,
+        createdAt: new Date("2024-01-16T14:00:00Z"),
+      },
+    ];
+
+    setEscrows(mockEscrows);
+
+    // Check for auto-release warnings
+    const warnings = mockEscrows.filter((escrow) => {
+      if (!escrow.autoReleaseDate || escrow.status !== "locked") return false;
+      const hoursUntilRelease = differenceInHours(
+        escrow.autoReleaseDate,
+        new Date(),
+      );
+      return hoursUntilRelease <= 24 && hoursUntilRelease > 0;
+    });
+    setAutoReleaseWarnings(warnings);
+  }, [project.id]);
+
+  // Auto-release timer effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEscrows((prevEscrows) =>
+        prevEscrows.map((escrow) => {
+          if (
+            escrow.status === "locked" &&
+            escrow.autoReleaseDate &&
+            new Date() >= escrow.autoReleaseDate
+          ) {
+            toast({
+              title: "Auto-Release Executed",
+              description: `Escrow ${escrow.id} has been automatically released`,
+            });
+
+            return {
+              ...escrow,
+              status: "auto_released" as const,
+              releasedAt: new Date(),
+            };
+          }
+          return escrow;
+        }),
+      );
+    }, 60000); // Check every minute
+
+    return () => clearInterval(interval);
+  }, [toast]);
+
+  const getStatusColor = (status: EscrowContract["status"]) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "locked":
+        return "bg-blue-100 text-blue-800";
+      case "released":
+        return "bg-green-100 text-green-800";
+      case "auto_released":
+        return "bg-emerald-100 text-emerald-800";
+      case "disputed":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getStatusIcon = (status: EscrowContract["status"]) => {
+    switch (status) {
+      case "pending":
+        return <Clock className="w-4 h-4" />;
+      case "locked":
+        return <Lock className="w-4 h-4" />;
+      case "released":
+        return <CheckCircle2 className="w-4 h-4" />;
+      case "auto_released":
+        return <Zap className="w-4 h-4" />;
+      case "disputed":
+        return <AlertTriangle className="w-4 h-4" />;
+      default:
+        return <Shield className="w-4 h-4" />;
+    }
+  };
+
+  const handleCreateEscrow = async () => {
+    try {
+      const newEscrow: EscrowContract = {
+        id: `escrow_${Date.now()}`,
+        projectId: project.id,
+        amount: escrowForm.amount,
+        cryptoType: escrowForm.cryptoType,
+        status: "pending",
+        autoReleaseHours: escrowForm.autoReleaseHours,
+        platformFee: escrowForm.amount * 0.05,
+        createdAt: new Date(),
+      };
+
+      setEscrows((prev) => [...prev, newEscrow]);
+      setShowCreateEscrow(false);
+      setEscrowForm({
+        amount: 0,
+        cryptoType: "USDT",
+        autoReleaseHours: 72,
+      });
+
+      toast({
+        title: "Escrow Created",
+        description: "Escrow contract has been created successfully",
+      });
+
+      // Simulate locking after 3 seconds
+      setTimeout(() => {
+        setEscrows((prev) =>
+          prev.map((escrow) =>
+            escrow.id === newEscrow.id
+              ? {
+                  ...escrow,
+                  status: "locked",
+                  lockedAt: new Date(),
+                  autoReleaseDate: addDays(
+                    new Date(),
+                    escrowForm.autoReleaseHours / 24,
+                  ),
+                }
+              : escrow,
+          ),
+        );
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create escrow contract",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleReleaseFunds = async (escrowId: string) => {
+    try {
+      setEscrows((prev) =>
+        prev.map((escrow) =>
+          escrow.id === escrowId
+            ? {
+                ...escrow,
+                status: "released",
+                releasedAt: new Date(),
+              }
+            : escrow,
+        ),
+      );
+
+      toast({
+        title: "Funds Released",
+        description: "Funds have been released to the freelancer",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to release funds",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const EscrowCard: React.FC<{ escrow: EscrowContract }> = ({ escrow }) => {
+    const timeUntilAutoRelease = escrow.autoReleaseDate
+      ? differenceInHours(escrow.autoReleaseDate, new Date())
+      : null;
+
+    return (
+      <Card className="hover:shadow-md transition-shadow">
+        <CardContent className="pt-6">
+          <div className="space-y-4">
+            {/* Header */}
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  {getStatusIcon(escrow.status)}
+                </div>
+                <div>
+                  <h3 className="font-semibold">
+                    Escrow #{escrow.id.slice(-6)}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">Full Project</p>
+                </div>
+              </div>
+              <Badge className={getStatusColor(escrow.status)}>
+                {escrow.status.replace("_", " ")}
+              </Badge>
+            </div>
+
+            {/* Amount and Details */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-green-50 p-3 rounded-lg">
+                <div className="text-green-600 font-semibold text-sm">
+                  Amount
+                </div>
+                <div className="text-lg font-bold">${escrow.amount}</div>
+                <div className="text-xs text-green-600">
+                  {escrow.cryptoType}
+                </div>
+              </div>
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <div className="text-blue-600 font-semibold text-sm">
+                  Net Amount
+                </div>
+                <div className="text-lg font-bold">
+                  ${(escrow.amount - escrow.platformFee).toFixed(2)}
+                </div>
+                <div className="text-xs text-blue-600">After fees</div>
+              </div>
+            </div>
+
+            {/* Auto-release warning */}
+            {escrow.status === "locked" &&
+              timeUntilAutoRelease !== null &&
+              timeUntilAutoRelease <= 24 && (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                  <div className="flex items-center gap-2">
+                    <Timer className="w-4 h-4 text-yellow-600" />
+                    <span className="text-sm font-medium text-yellow-800">
+                      Auto-release in {timeUntilAutoRelease}h
+                    </span>
+                  </div>
+                  <div className="text-xs text-yellow-600 mt-1">
+                    Funds will be automatically released if no action is taken
+                  </div>
+                </div>
+              )}
+
+            {/* Status specific info */}
+            {escrow.status === "locked" && escrow.lockedAt && (
+              <div className="text-sm text-muted-foreground">
+                Locked{" "}
+                {formatDistanceToNow(escrow.lockedAt, { addSuffix: true })}
+              </div>
+            )}
+
+            {escrow.status === "released" && escrow.releasedAt && (
+              <div className="text-sm text-green-600">
+                Released{" "}
+                {formatDistanceToNow(escrow.releasedAt, { addSuffix: true })}
+              </div>
+            )}
+
+            {escrow.status === "auto_released" && escrow.releasedAt && (
+              <div className="text-sm text-emerald-600 flex items-center gap-1">
+                <Zap className="w-4 h-4" />
+                Auto-released{" "}
+                {formatDistanceToNow(escrow.releasedAt, { addSuffix: true })}
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex gap-2 pt-2 border-t">
+              {userRole === "client" && escrow.status === "locked" && (
+                <Button size="sm" onClick={() => handleReleaseFunds(escrow.id)}>
+                  <Unlock className="w-4 h-4 mr-2" />
+                  Release Funds
+                </Button>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  const activeEscrows = escrows.filter((e) =>
+    ["pending", "locked"].includes(e.status),
+  );
+  const completedEscrows = escrows.filter((e) =>
+    ["released", "auto_released"].includes(e.status),
+  );
+
+  return (
+    <div className="space-y-6">
+      {/* Auto-release warnings */}
+      {autoReleaseWarnings.length > 0 && (
+        <Card className="border-yellow-200 bg-yellow-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-yellow-800">
+              <Bell className="w-5 h-5" />
+              Auto-Release Warnings
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {autoReleaseWarnings.map((escrow) => {
+                const hoursLeft = differenceInHours(
+                  escrow.autoReleaseDate!,
+                  new Date(),
+                );
+                return (
+                  <div
+                    key={escrow.id}
+                    className="flex items-center justify-between p-2 bg-white rounded border"
+                  >
+                    <div>
+                      <span className="font-medium">
+                        Escrow #{escrow.id.slice(-6)}
+                      </span>
+                      <span className="text-sm text-muted-foreground ml-2">
+                        ${escrow.amount} • Auto-release in {hoursLeft}h
+                      </span>
+                    </div>
+                    {userRole === "client" && (
+                      <Button
+                        size="sm"
+                        onClick={() => handleReleaseFunds(escrow.id)}
+                      >
+                        Release Now
+                      </Button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Escrow Management</h2>
+          <p className="text-muted-foreground">
+            Secure payment system with automatic release
+          </p>
+        </div>
+        {userRole === "client" && (
+          <Button onClick={() => setShowCreateEscrow(true)}>
+            <Shield className="w-4 h-4 mr-2" />
+            Create Escrow
+          </Button>
+        )}
+      </div>
+
+      {/* Statistics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <Lock className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+              <div className="text-2xl font-bold">{activeEscrows.length}</div>
+              <div className="text-sm text-muted-foreground">
+                Active Escrows
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-600" />
+              <div className="text-2xl font-bold">
+                ${activeEscrows.reduce((sum, e) => sum + e.amount, 0)}
+              </div>
+              <div className="text-sm text-muted-foreground">Locked Amount</div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-emerald-600" />
+              <div className="text-2xl font-bold">
+                {completedEscrows.length}
+              </div>
+              <div className="text-sm text-muted-foreground">Completed</div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <Timer className="w-8 h-8 mx-auto mb-2 text-orange-600" />
+              <div className="text-2xl font-bold">72h</div>
+              <div className="text-sm text-muted-foreground">Auto-Release</div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Escrow List */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="active">
+            Active ({activeEscrows.length})
+          </TabsTrigger>
+          <TabsTrigger value="completed">
+            Completed ({completedEscrows.length})
+          </TabsTrigger>
+          <TabsTrigger value="all">All ({escrows.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active" className="space-y-4">
+          {activeEscrows.length > 0 ? (
+            activeEscrows.map((escrow) => (
+              <EscrowCard key={escrow.id} escrow={escrow} />
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium">No Active Escrows</h3>
+              <p className="text-muted-foreground">
+                Create an escrow to secure project payments
+              </p>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="completed" className="space-y-4">
+          {completedEscrows.length > 0 ? (
+            completedEscrows.map((escrow) => (
+              <EscrowCard key={escrow.id} escrow={escrow} />
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <CheckCircle2 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium">No Completed Escrows</h3>
+              <p className="text-muted-foreground">
+                Completed escrows will appear here
+              </p>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="all" className="space-y-4">
+          {escrows.length > 0 ? (
+            escrows.map((escrow) => (
+              <EscrowCard key={escrow.id} escrow={escrow} />
+            ))
+          ) : (
+            <div className="text-center py-12">
+              <Shield className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium">No Escrows</h3>
+              <p className="text-muted-foreground">
+                Start by creating your first escrow contract
+              </p>
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+
+      {/* Create Escrow Dialog */}
+      <Dialog open={showCreateEscrow} onOpenChange={setShowCreateEscrow}>
+        <DialogContent className="sm:max-w-[525px]">
+          <DialogHeader>
+            <DialogTitle>Create Escrow Contract</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="amount">Amount ($)</Label>
+                <Input
+                  id="amount"
+                  type="number"
+                  value={escrowForm.amount}
+                  onChange={(e) =>
+                    setEscrowForm((prev) => ({
+                      ...prev,
+                      amount: parseFloat(e.target.value) || 0,
+                    }))
+                  }
+                  placeholder="0.00"
+                />
+              </div>
+              <div>
+                <Label htmlFor="crypto-type">Currency</Label>
+                <Select
+                  value={escrowForm.cryptoType}
+                  onValueChange={(value) =>
+                    setEscrowForm((prev) => ({
+                      ...prev,
+                      cryptoType: value as any,
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USDT">USDT</SelectItem>
+                    <SelectItem value="BTC">BTC</SelectItem>
+                    <SelectItem value="ETH">ETH</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="auto-release">Auto-Release Hours</Label>
+              <Input
+                id="auto-release"
+                type="number"
+                value={escrowForm.autoReleaseHours}
+                onChange={(e) =>
+                  setEscrowForm((prev) => ({
+                    ...prev,
+                    autoReleaseHours: parseInt(e.target.value) || 72,
+                  }))
+                }
+                placeholder="72"
+              />
+              <div className="text-xs text-muted-foreground mt-1">
+                Funds will be automatically released after this period if no
+                action is taken
+              </div>
+            </div>
+
+            {/* Fee breakdown */}
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-medium mb-2">Fee Breakdown</h4>
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between">
+                  <span>Escrow Amount:</span>
+                  <span>${escrowForm.amount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Platform Fee (5%):</span>
+                  <span>${(escrowForm.amount * 0.05).toFixed(2)}</span>
+                </div>
+                <div className="border-t pt-1 flex justify-between font-medium">
+                  <span>Total Cost:</span>
+                  <span>${(escrowForm.amount * 1.05).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-green-600">
+                  <span>Freelancer Receives:</span>
+                  <span>${(escrowForm.amount * 0.95).toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowCreateEscrow(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleCreateEscrow}>Create Escrow</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default EnhancedEscrowSystem;
