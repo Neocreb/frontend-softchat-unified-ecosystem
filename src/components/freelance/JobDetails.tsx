@@ -486,7 +486,12 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
         >
           Submit Proposal
         </Button>
-        <Button variant="outline" size="lg" className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="lg"
+          className="flex items-center gap-2"
+          onClick={() => setShowMessageModal(true)}
+        >
           <MessageCircle className="w-4 h-4" />
           Contact Client
         </Button>
@@ -500,6 +505,17 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
           onSubmit={handleApplySuccess}
         />
       )}
+
+      {/* Message Client Modal */}
+      <MessageClientModal
+        job={job}
+        isOpen={showMessageModal}
+        onClose={() => setShowMessageModal(false)}
+        onSend={(message, subject) => {
+          console.log("Message sent:", { message, subject });
+          // Here you would typically call an API to send the message
+        }}
+      />
     </div>
   );
 };
