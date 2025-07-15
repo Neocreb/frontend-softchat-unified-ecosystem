@@ -139,6 +139,12 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       label: "Verification",
       href: "/app/premium",
     },
+    {
+      icon: <Briefcase className="w-8 h-8 text-orange-600" />,
+      label: "Freelance",
+      href: "/app/freelance",
+      badge: "New",
+    },
   ];
 
   const menuItems = [
