@@ -176,10 +176,11 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
 
   const handleApplySuccess = () => {
     setShowApplyModal(false);
-    onApply?.(jobId);
+    onApply?.(job?.id || jobId || "");
     toast({
-      title: "Application submitted",
-      description: "Your proposal has been sent to the client",
+      title: "🎉 Application Submitted Successfully!",
+      description: `Your proposal for "${job?.title}" has been sent to ${job?.client.name}. They typically respond within 24-48 hours.`,
+      duration: 5000,
     });
   };
 
