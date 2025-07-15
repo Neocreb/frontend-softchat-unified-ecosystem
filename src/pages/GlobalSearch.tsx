@@ -36,6 +36,7 @@ import {
   SortAsc,
   SortDesc,
   Clock,
+  UserCheck,
 } from "lucide-react";
 import { globalSearchService } from "@/services/globalSearchService";
 import { useToast } from "@/hooks/use-toast";
