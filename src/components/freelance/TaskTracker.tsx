@@ -484,8 +484,55 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
   const getTaskStatusColor = (status: TaskItem["status"]) => {
     switch (status) {
       case "completed":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 border-green-200";
       case "in-progress":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "pending":
+        return "bg-gray-100 text-gray-800 border-gray-200";
+      case "blocked":
+        return "bg-red-100 text-red-800 border-red-200";
+      case "review":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
+  const getPriorityColor = (priority: TaskItem["priority"]) => {
+    switch (priority) {
+      case "urgent":
+        return "bg-red-500 text-white";
+      case "high":
+        return "bg-orange-500 text-white";
+      case "medium":
+        return "bg-yellow-500 text-white";
+      case "low":
+        return "bg-green-500 text-white";
+      default:
+        return "bg-gray-500 text-white";
+    }
+  };
+
+  const getMilestoneStatusColor = (status: string) => {
+    switch (status) {
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "submitted":
+        return "bg-blue-100 text-blue-800";
+      case "in-progress":
+        return "bg-yellow-100 text-yellow-800";
+      case "pending":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getPaymentStatusColor = (status: string) => {
+    switch (status) {
+      case "released":
+        return "bg-green-100 text-green-800";
+      case "escrowed":
         return "bg-blue-100 text-blue-800";
       case "pending":
         return "bg-gray-100 text-gray-800";
