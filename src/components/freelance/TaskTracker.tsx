@@ -150,6 +150,141 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
     useFreelanceProject(projectId);
   const { toast } = useToast();
 
+  // Time tracking functions
+  const startTimeTracking = (taskId: string) => {
+    setTimeTracking((prev) => ({
+      ...prev,
+      [taskId]: {
+        start: new Date(),
+        duration: prev[taskId]?.duration || 0,
+        active: true,
+      },
+    }));
+  };
+
+  const stopTimeTracking = (taskId: string) => {
+    setTimeTracking((prev) => {
+      const current = prev[taskId];
+      if (!current?.active) return prev;
+
+      const sessionDuration = Date.now() - current.start.getTime();
+      return {
+        ...prev,
+        [taskId]: {
+          ...current,
+          duration: current.duration + sessionDuration,
+          active: false,
+        },
+      };
+    });
+  };
+
+  const formatDuration = (milliseconds: number) => {
+    const hours = Math.floor(milliseconds / (1000 * 60 * 60));
+    const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
+  };
+
+  // Task management functions
+  const updateTaskStatus = (taskId: string, status: TaskItem["status"]) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              status,
+              completedAt:
+                status === "completed" ? new Date().toISOString() : undefined,
+            }
+          : task,
+      ),
+    );
+
+    if (status === "completed") {
+      stopTimeTracking(taskId);
+      toast({
+        title: "Task Completed",
+        description: "Great job! Task marked as completed.",
+      });
+    }
+  };
+
+  const addTaskToChecklist = (taskId: string, checklistItem: string) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              checklist: [
+                ...(task.checklist || []),
+                {
+                  id: `check_${Date.now()}`,
+                  title: checklistItem,
+                  completed: false,
+                },
+              ],
+            }
+          : task,
+      ),
+    );
+  };
+
+  const toggleChecklistItem = (
+    taskId: string,
+    checklistId: string,
+    completed: boolean,
+  ) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              checklist: task.checklist?.map((item) =>
+                item.id === checklistId ? { ...item, completed } : item,
+              ),
+            }
+          : task,
+      ),
+    );
+  };
+
+  const submitMilestone = (milestoneId: string) => {
+    setMilestones((prev) =>
+      prev.map((milestone) =>
+        milestone.id === milestoneId
+          ? { ...milestone, status: "submitted" }
+          : milestone,
+      ),
+    );
+
+    toast({
+      title: "Milestone Submitted",
+      description:
+        "Milestone has been submitted for client review. You'll be notified when it's approved.",
+    });
+  };
+
+  const approveMilestone = (milestoneId: string) => {
+    if (userRole !== "client") return;
+
+    setMilestones((prev) =>
+      prev.map((milestone) =>
+        milestone.id === milestoneId
+          ? {
+              ...milestone,
+              status: "approved",
+              paymentStatus: "released",
+            }
+          : milestone,
+      ),
+    );
+
+    toast({
+      title: "Milestone Approved",
+      description: "Payment has been released to the freelancer.",
+    });
+  };
+
   // Mock tasks - in real app, these would come from the project data
   useEffect(() => {
     if (project) {
