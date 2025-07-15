@@ -23,6 +23,7 @@ import {
   Bot,
   ChevronLeft,
   ChevronRight,
+  DollarSign,
 } from "lucide-react";
 
 interface ModernSidebarProps {
@@ -100,11 +101,11 @@ const platformNavItems: NavItem[] = [
     description: "Trade cryptocurrencies",
   },
   {
-    label: "Rewards",
+    label: "Creator Economy",
     href: "/rewards",
-    icon: Gift,
+    icon: DollarSign,
     color: "text-purple-600",
-    description: "Earn and redeem points",
+    description: "Monetize your content",
   },
 ];
 
