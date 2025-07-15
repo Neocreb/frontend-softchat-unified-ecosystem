@@ -1258,6 +1258,9 @@ export default function EnhancedFeed() {
           {/* Events Banner - New Feature Promotion */}
           <EventsBannerCard />
 
+          {/* Freelance Job Recommendations */}
+          <FeedJobRecommendations />
+
           {/* Live Streams Section */}
           {liveStreams.length > 0 && (
             <Card className="mb-6">
