@@ -8,17 +8,20 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -34,10 +37,20 @@ import {
   TrendingUp,
   MessageCircle,
   Upload,
+  Edit,
+  Trash2,
+  Play,
+  Pause,
+  Archive,
+  Award,
+  Timer,
+  CheckSquare,
+  Flag,
 } from "lucide-react";
 import { Project, Milestone } from "@/types/freelance";
 import { useFreelanceProject } from "@/hooks/use-freelance";
 import { useToast } from "@/hooks/use-toast";
+import { formatDistanceToNow } from "date-fns";
 
 interface TaskTrackerProps {
   projectId: string;
@@ -48,11 +61,51 @@ interface TaskItem {
   id: string;
   title: string;
   description: string;
-  status: "pending" | "in-progress" | "completed";
+  status: "pending" | "in-progress" | "completed" | "blocked" | "review";
   assignedTo: "client" | "freelancer" | "both";
   dueDate?: string;
   completedAt?: string;
   milestoneId?: string;
+  priority: "low" | "medium" | "high" | "urgent";
+  estimatedHours?: number;
+  actualHours?: number;
+  dependencies?: string[];
+  tags?: string[];
+  files?: {
+    id: string;
+    name: string;
+    url: string;
+    uploadedAt: string;
+  }[];
+  comments?: {
+    id: string;
+    userId: string;
+    userName: string;
+    content: string;
+    createdAt: string;
+  }[];
+  checklist?: {
+    id: string;
+    title: string;
+    completed: boolean;
+  }[];
+}
+
+interface EnhancedMilestone extends Milestone {
+  tasks: TaskItem[];
+  progress: number;
+  estimatedHours: number;
+  actualHours: number;
+  paymentStatus: "pending" | "escrowed" | "released";
+  autoReleaseDate?: string;
+  deliverables: {
+    id: string;
+    title: string;
+    description: string;
+    fileUrl?: string;
+    status: "pending" | "submitted" | "approved" | "rejected";
+    feedback?: string;
+  }[];
 }
 
 export const TaskTracker: React.FC<TaskTrackerProps> = ({
