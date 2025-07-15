@@ -24,6 +24,7 @@ import {
 import { JobPosting } from "@/types/freelance";
 import { useFreelance } from "@/hooks/use-freelance";
 import { ApplyModal } from "./ApplyModal";
+import MessageClientModal from "./MessageClientModal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 
