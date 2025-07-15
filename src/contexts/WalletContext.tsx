@@ -47,7 +47,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
           total: 0,
           ecommerce: 0,
           crypto: 0,
-          rewards: 0,
+          creator_economy: 0,
           freelance: 0,
         };
       }
@@ -104,7 +104,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
           total: 0,
           ecommerce: 0,
           crypto: 0,
-          rewards: 0,
+          creator_economy: 0,
           freelance: 0,
         });
         setTransactions([]);
