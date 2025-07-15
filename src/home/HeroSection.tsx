@@ -14,13 +14,14 @@ const HeroSection = () => {
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="heading-xl mb-6">
             <span className="gradient-text">AI-Powered Everything:</span>{" "}
-            Social, Crypto, Commerce, Analytics & More.
+            Social, Crypto, Commerce, Freelance & More.
           </h1>
 
           <p className="body-lg mb-10 text-gray-600">
             The most advanced social platform with AI recommendations,
-            comprehensive analytics, gamification, and full accessibility. Built
-            for creators, traders, sellers, and innovators worldwide.
+            comprehensive analytics, gamification, and full accessibility.
+            Connect, trade, freelance, and innovate with secure crypto escrow
+            and intelligent matching.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md sm:max-w-none mx-auto">
