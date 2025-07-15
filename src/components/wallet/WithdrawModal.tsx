@@ -29,7 +29,7 @@ import {
   Wallet,
   ShoppingCart,
   Bitcoin,
-  Gift,
+  DollarSign,
   Briefcase,
 } from "lucide-react";
 
@@ -48,7 +48,7 @@ const WithdrawModal = ({
 }: WithdrawModalProps) => {
   const [amount, setAmount] = useState("");
   const [source, setSource] = useState<
-    "total" | "ecommerce" | "crypto" | "rewards" | "freelance"
+    "total" | "ecommerce" | "crypto" | "creator_economy" | "freelance"
   >("total");
   const [selectedBank, setSelectedBank] = useState("");
   const [description, setDescription] = useState("");
@@ -108,9 +108,9 @@ const WithdrawModal = ({
         icon: <Bitcoin className="w-4 h-4" />,
         color: "bg-orange-500",
       },
-      rewards: {
-        name: "Rewards System",
-        icon: <Gift className="w-4 h-4" />,
+      creator_economy: {
+        name: "Creator Economy",
+        icon: <DollarSign className="w-4 h-4" />,
         color: "bg-purple-500",
       },
       freelance: {
@@ -156,34 +156,28 @@ const WithdrawModal = ({
     }
 
     setIsLoading(true);
-
     try {
-      const result = await walletService.processWithdrawal({
+      await walletService.withdraw({
         amount: withdrawAmount,
         source,
-        bankAccount: selectedBank,
-        description: description || undefined,
+        bankAccountId: selectedBank,
+        description:
+          description.trim() || `Withdrawal from ${getSourceInfo().name}`,
       });
 
-      if (result.success) {
-        toast({
-          title: "Withdrawal Successful",
-          description: result.message,
-        });
-        onSuccess();
-        onClose();
-        resetForm();
-      } else {
-        toast({
-          title: "Withdrawal Failed",
-          description: result.message,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Withdrawal Initiated",
+        description: `$${withdrawAmount.toFixed(2)} withdrawal request submitted`,
+      });
+
+      onSuccess();
+      onClose();
+      setAmount("");
+      setDescription("");
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to process withdrawal",
+        title: "Withdrawal Failed",
+        description: "There was an error processing your withdrawal",
         variant: "destructive",
       });
     } finally {
@@ -198,102 +192,102 @@ const WithdrawModal = ({
     setSelectedBank("");
   };
 
-  const selectedBankAccount = bankAccounts.find(
-    (acc) => acc.id === selectedBank,
-  );
-  const sourceInfo = getSourceInfo();
-  const availableBalance = getAvailableBalance();
+  const handleClose = () => {
+    resetForm();
+    onClose();
+  };
 
-  // Don't render the modal content if walletBalance is null
-  if (!walletBalance) {
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <div className="p-2 rounded-full bg-red-100">
-                <CreditCard className="h-5 w-5 text-red-600" />
-              </div>
-              Withdraw Funds
-            </DialogTitle>
-          </DialogHeader>
-          <div className="flex items-center justify-center py-8">
-            <div className="flex items-center gap-2 text-gray-500">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Loading wallet data...
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  const availableBalance = getAvailableBalance();
+  const sourceInfo = getSourceInfo();
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <div className="p-2 rounded-full bg-red-100">
-              <CreditCard className="h-5 w-5 text-red-600" />
-            </div>
+            <CreditCard className="h-5 w-5" />
             Withdraw Funds
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Source Selection */}
-          <div className="space-y-3">
-            <Label htmlFor="source">Withdraw From</Label>
+          <div className="space-y-2">
+            <Label htmlFor="source">Source</Label>
             <Select
               value={source}
               onValueChange={(value: any) => setSource(value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select funding source" />
+                <SelectValue placeholder="Select withdrawal source" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="total">
-                  💰 Total Balance - ${walletBalance.total.toFixed(2)}
+                  <div className="flex items-center gap-2">
+                    <Wallet className="w-4 h-4" />
+                    Total Balance
+                  </div>
                 </SelectItem>
                 <SelectItem value="ecommerce">
-                  🛒 E-Commerce - ${walletBalance.ecommerce.toFixed(2)}
+                  <div className="flex items-center gap-2">
+                    <ShoppingCart className="w-4 h-4" />
+                    E-Commerce Earnings
+                  </div>
                 </SelectItem>
                 <SelectItem value="crypto">
-                  💹 Crypto Portfolio - ${walletBalance.crypto.toFixed(2)}
+                  <div className="flex items-center gap-2">
+                    <Bitcoin className="w-4 h-4" />
+                    Crypto Portfolio
+                  </div>
                 </SelectItem>
-                <SelectItem value="rewards">
-                  🎁 Rewards - ${walletBalance.rewards.toFixed(2)}
+                <SelectItem value="creator_economy">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" />
+                    Creator Economy
+                  </div>
                 </SelectItem>
                 <SelectItem value="freelance">
-                  💼 Freelance - ${walletBalance.freelance.toFixed(2)}
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="w-4 h-4" />
+                    Freelance Income
+                  </div>
                 </SelectItem>
               </SelectContent>
             </Select>
+          </div>
 
-            {/* Selected Source Info */}
-            <Card className="border-l-4 border-l-blue-500">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{sourceInfo.icon}</span>
-                    <span className="font-medium">{sourceInfo.name}</span>
+          {/* Available Balance Display */}
+          <Card>
+            <CardContent className="pt-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className={`p-2 rounded-full ${sourceInfo.color}`}>
+                    {sourceInfo.icon}
                   </div>
-                  <Badge
-                    variant="outline"
-                    className="text-green-600 border-green-200"
-                  >
-                    ${availableBalance.toFixed(2)} available
+                  <div>
+                    <p className="text-sm font-medium">{sourceInfo.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Available Balance
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-semibold">
+                    ${availableBalance.toFixed(2)}
+                  </p>
+                  <Badge variant="outline" className="text-xs">
+                    Available
                   </Badge>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="amount">Withdrawal Amount</Label>
+            <Label htmlFor="amount">Amount (USD)</Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
                 $
               </span>
               <Input
@@ -309,73 +303,58 @@ const WithdrawModal = ({
                 required
               />
             </div>
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>Minimum: $0.01</span>
-              <span>Maximum: ${availableBalance.toFixed(2)}</span>
-            </div>
+            {parseFloat(amount) > availableBalance && (
+              <div className="flex items-center gap-1 text-sm text-destructive">
+                <AlertCircle className="w-4 h-4" />
+                Insufficient funds
+              </div>
+            )}
           </div>
 
           {/* Bank Account Selection */}
-          <div className="space-y-3">
-            <Label htmlFor="bank">Withdraw To</Label>
+          <div className="space-y-2">
+            <Label htmlFor="bank">Bank Account</Label>
             {isLoadingBanks ? (
-              <div className="flex items-center justify-center p-4 border rounded-md">
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <div className="flex items-center gap-2 p-3 border rounded-md">
+                <Loader2 className="w-4 h-4 animate-spin" />
                 Loading bank accounts...
               </div>
-            ) : bankAccounts.length > 0 ? (
-              <Select value={selectedBank} onValueChange={setSelectedBank}>
+            ) : (
+              <Select
+                value={selectedBank}
+                onValueChange={setSelectedBank}
+                required
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select bank account" />
                 </SelectTrigger>
                 <SelectContent>
                   {bankAccounts.map((account) => (
                     <SelectItem key={account.id} value={account.id}>
-                      <div className="flex items-center justify-between w-full">
-                        <span>
-                          {account.name} - {account.accountNumber}
-                        </span>
-                        {account.isDefault && (
-                          <Badge variant="secondary" className="ml-2">
-                            Default
-                          </Badge>
-                        )}
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="w-4 h-4" />
+                        <div>
+                          <span className="font-medium">
+                            {account.bankName}
+                          </span>
+                          <span className="text-muted-foreground ml-2">
+                            •••• {account.accountNumber.slice(-4)}
+                          </span>
+                          {account.isDefault && (
+                            <Badge variant="secondary" className="ml-2 text-xs">
+                              Default
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            ) : (
-              <div className="flex items-center p-4 border rounded-md border-yellow-200 bg-yellow-50">
-                <AlertCircle className="h-4 w-4 text-yellow-600 mr-2" />
-                <span className="text-sm text-yellow-800">
-                  No bank accounts found. Please add a bank account first.
-                </span>
-              </div>
-            )}
-
-            {selectedBankAccount && (
-              <Card className="bg-gray-50">
-                <CardContent className="p-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-sm">
-                        {selectedBankAccount.bankName}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {selectedBankAccount.accountNumber}
-                      </p>
-                    </div>
-                    {selectedBankAccount.isDefault && (
-                      <Badge variant="secondary">Default</Badge>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
             )}
           </div>
 
-          {/* Description */}
+          {/* Description (Optional) */}
           <div className="space-y-2">
             <Label htmlFor="description">Description (Optional)</Label>
             <Textarea
@@ -387,28 +366,22 @@ const WithdrawModal = ({
             />
           </div>
 
-          <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              className="w-full sm:w-auto"
-            >
+          <DialogFooter className="gap-2">
+            <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
             <Button
               type="submit"
-              disabled={isLoading || !selectedBank || bankAccounts.length === 0}
-              className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
+              disabled={
+                isLoading ||
+                !amount ||
+                parseFloat(amount) <= 0 ||
+                parseFloat(amount) > availableBalance ||
+                !selectedBank
+              }
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Processing...
-                </>
-              ) : (
-                `Withdraw $${amount || "0.00"}`
-              )}
+              {isLoading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+              Withdraw ${amount || "0.00"}
             </Button>
           </DialogFooter>
         </form>
