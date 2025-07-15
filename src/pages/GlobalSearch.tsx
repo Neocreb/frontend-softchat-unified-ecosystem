@@ -106,7 +106,7 @@ const GlobalSearch = () => {
     { id: "users", label: "Users", icon: User },
     { id: "products", label: "Products", icon: ShoppingBag },
     { id: "services", label: "Services", icon: Briefcase },
-    { id: "jobs", label: "Jobs", icon: Briefcase },
+    { id: "jobs", label: "Freelance Jobs", icon: UserCheck },
     { id: "posts", label: "Posts", icon: FileText },
     { id: "videos", label: "Videos", icon: Video },
     { id: "crypto", label: "Crypto", icon: TrendingUp },
