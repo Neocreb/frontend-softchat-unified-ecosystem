@@ -59,6 +59,7 @@ export const FreelanceJobs: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-6">
         <JobDetails
+          job={selectedJob}
           jobId={selectedJob.id}
           onBack={handleBack}
           onApply={handleApply}
