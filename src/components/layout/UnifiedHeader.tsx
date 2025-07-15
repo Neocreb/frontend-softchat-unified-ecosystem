@@ -460,7 +460,7 @@ const UnifiedHeader = ({
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search everything..."
+                placeholder="Search products, users, jobs..."
                 className="pl-10 pr-20"
                 autoFocus
               />

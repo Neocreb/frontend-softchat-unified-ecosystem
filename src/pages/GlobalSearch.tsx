@@ -36,6 +36,7 @@ import {
   SortAsc,
   SortDesc,
   Clock,
+  UserCheck,
 } from "lucide-react";
 import { globalSearchService } from "@/services/globalSearchService";
 import { useToast } from "@/hooks/use-toast";
@@ -105,7 +106,7 @@ const GlobalSearch = () => {
     { id: "users", label: "Users", icon: User },
     { id: "products", label: "Products", icon: ShoppingBag },
     { id: "services", label: "Services", icon: Briefcase },
-    { id: "jobs", label: "Jobs", icon: Briefcase },
+    { id: "jobs", label: "Freelance Jobs", icon: UserCheck },
     { id: "posts", label: "Posts", icon: FileText },
     { id: "videos", label: "Videos", icon: Video },
     { id: "crypto", label: "Crypto", icon: TrendingUp },
@@ -249,8 +250,11 @@ const GlobalSearch = () => {
                   {result.description}
                 </p>
               </div>
-              <Badge variant="outline" className="ml-2 text-xs">
-                {result.type}
+              <Badge
+                variant={result.type === "job" ? "default" : "outline"}
+                className={`ml-2 text-xs ${result.type === "job" ? "bg-orange-500 hover:bg-orange-600" : ""}`}
+              >
+                {result.type === "job" ? "💼 Job" : result.type}
               </Badge>
             </div>
 
