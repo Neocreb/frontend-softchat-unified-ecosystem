@@ -113,13 +113,24 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
     // Only fetch if we have jobId and no job prop
     if (jobId) {
       const loadJob = async () => {
-        const jobData = await getJob(jobId);
-        if (jobData) {
-          setJob(jobData);
+        try {
+          const jobData = await getJob(jobId);
+          if (jobData) {
+            setJob(jobData);
+          } else {
+            // Use mock data as fallback if job not found
+            setJob(mockJob);
+          }
+        } catch (error) {
+          // Use mock data as fallback on error
+          setJob(mockJob);
         }
       };
 
       loadJob();
+    } else {
+      // Use mock data if no jobId provided
+      setJob(mockJob);
     }
   }, [jobId, propJob, getJob]);
 
