@@ -21,6 +21,7 @@ import TalentsList, { Talent } from "@/components/freelance/TalentsList";
 import TalentProfile from "@/components/freelance/TalentProfile";
 import { useFreelance } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
+import EnhancedFreelanceHub from "@/components/freelance/EnhancedFreelanceHub";
 
 export const FreelanceJobs: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
