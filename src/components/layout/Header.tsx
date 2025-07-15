@@ -34,6 +34,7 @@ import {
   Crown,
   ShieldCheck,
   CreditCard,
+  DollarSign,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
@@ -95,8 +96,8 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
       active: location.pathname === "/app/crypto",
     },
     {
-      icon: Gift,
-      label: "Rewards",
+      icon: DollarSign,
+      label: "Creator Economy",
       href: "/app/rewards",
       active: location.pathname === "/app/rewards",
     },
