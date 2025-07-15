@@ -60,7 +60,7 @@ import {
   LiveStream,
 } from "@/services/liveStreamingService";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
-import FeedJobRecommendations from "@/components/freelance/FeedJobRecommendations";
+import SponsoredContent from "@/components/feed/SponsoredContent";
 
 // Mock data for stories
 const initialMockStories = [
