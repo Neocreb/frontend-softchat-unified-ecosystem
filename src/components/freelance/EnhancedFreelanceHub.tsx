@@ -214,13 +214,13 @@ export const EnhancedFreelanceHub: React.FC = () => {
           </TabsTrigger>
         </TabsList>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <div className="flex items-center bg-white border rounded-lg shadow-sm">
             <Button
               variant={viewMode === "grid" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("grid")}
-              className="rounded-r-none"
+              className="rounded-r-none h-8 w-8 p-0"
             >
               <Grid3x3 className="w-4 h-4" />
             </Button>
@@ -228,7 +228,7 @@ export const EnhancedFreelanceHub: React.FC = () => {
               variant={viewMode === "list" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("list")}
-              className="rounded-l-none"
+              className="rounded-l-none h-8 w-8 p-0"
             >
               <List className="w-4 h-4" />
             </Button>
@@ -236,10 +236,10 @@ export const EnhancedFreelanceHub: React.FC = () => {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="shadow-sm">
-                <Filter className="w-4 h-4 mr-2" />
-                Filters
-                <ChevronDown className="w-4 h-4 ml-2" />
+              <Button variant="outline" size="sm" className="shadow-sm h-8">
+                <Filter className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Filters</span>
+                <ChevronDown className="w-4 h-4 ml-1 sm:ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
@@ -255,9 +255,9 @@ export const EnhancedFreelanceHub: React.FC = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button size="sm" className="shadow-sm">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Refresh
+          <Button size="sm" className="shadow-sm h-8">
+            <RefreshCw className="w-4 h-4 sm:mr-2" />
+            <span className="hidden sm:inline">Refresh</span>
           </Button>
         </div>
       </div>
