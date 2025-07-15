@@ -28,17 +28,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 
 interface JobDetailsProps {
-  jobId: string;
+  jobId?: string;
+  job?: JobPosting;
   onBack?: () => void;
   onApply?: (jobId: string) => void;
 }
 
 export const JobDetails: React.FC<JobDetailsProps> = ({
   jobId,
+  job: propJob,
   onBack,
   onApply,
 }) => {
-  const [job, setJob] = useState<JobPosting | null>(null);
+  const [job, setJob] = useState<JobPosting | null>(propJob || null);
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -46,9 +48,17 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    const loadJob = async () => {
-      const jobData = await getJob(jobId);
-      if (jobData) {
+    // If job is already provided as prop, don't fetch it
+    if (propJob) {
+      setJob(propJob);
+      return;
+    }
+
+    // Only fetch if we have jobId and no job prop
+    if (jobId) {
+      const loadJob = async () => {
+        const jobData = await getJob(jobId);
+        if (jobData) {
         setJob(jobData);
       }
     };
