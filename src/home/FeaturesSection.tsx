@@ -46,6 +46,16 @@ const FeaturesSection = () => {
         "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1280",
     },
     {
+      id: "freelance",
+      icon: <Briefcase className="h-6 w-6" />,
+      title: "Freelance & Escrow",
+      tagline: "Secure freelancing with crypto escrow",
+      description:
+        "Professional freelance marketplace with crypto escrow protection, milestone-based payments, real-time chat, and AI-powered job matching. Built for secure, transparent remote collaboration.",
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1280",
+    },
+    {
       id: "platform",
       icon: <Zap className="h-6 w-6" />,
       title: "Platform & Rewards",
