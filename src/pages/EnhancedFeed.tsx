@@ -62,6 +62,67 @@ import {
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import SponsoredContent from "@/components/feed/SponsoredContent";
 
+// Mock sponsored content
+const sponsoredItems = [
+  {
+    id: "sponsored-job-1",
+    type: "job" as const,
+    title: "Senior React Developer for E-commerce Platform",
+    client: {
+      name: "TechStart Inc.",
+      avatar: "https://api.dicebear.com/7.x/initials/svg?seed=TechStart",
+      rating: 4.9,
+      location: "USA",
+      verified: true,
+    },
+    budget: { min: 50, max: 80, type: "hourly" as const },
+    skills: ["React", "TypeScript", "Node.js", "AWS"],
+    postedTime: "2 hours ago",
+    proposalsCount: 3,
+    isUrgent: true,
+    description:
+      "Looking for an experienced React developer to build a modern e-commerce platform with advanced features.",
+  },
+  {
+    id: "sponsored-product-1",
+    type: "product" as const,
+    title: "Premium Wireless Bluetooth Headphones",
+    seller: {
+      name: "AudioTech Store",
+      avatar: "https://api.dicebear.com/7.x/initials/svg?seed=AudioTech",
+      rating: 4.8,
+      verified: true,
+    },
+    price: 129,
+    originalPrice: 199,
+    image:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop",
+    category: "Electronics",
+    inStock: true,
+    description:
+      "High-quality wireless headphones with noise cancellation and 30-hour battery life.",
+  },
+  {
+    id: "sponsored-service-1",
+    type: "service" as const,
+    title: "Professional Logo Design & Branding",
+    provider: {
+      name: "DesignPro Studio",
+      avatar: "https://api.dicebear.com/7.x/initials/svg?seed=DesignPro",
+      rating: 4.9,
+      reviewCount: 247,
+      verified: true,
+    },
+    startingPrice: 75,
+    deliveryTime: "3-5 days",
+    image:
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=300&h=300&fit=crop",
+    category: "Design",
+    description:
+      "Complete branding package including logo, business cards, and brand guidelines.",
+  },
+];
+
 // Mock data for stories
 const initialMockStories = [
   {
