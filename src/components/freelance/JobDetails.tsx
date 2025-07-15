@@ -42,10 +42,66 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
 }) => {
   const [job, setJob] = useState<JobPosting | null>(propJob || null);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const { getJob, loading } = useFreelance();
   const { toast } = useToast();
+
+  // Mock job data to prevent "job not found" error
+  const mockJob: JobPosting = {
+    id: jobId || "mock-job-1",
+    title: "Senior React Developer for E-commerce Platform",
+    description:
+      "We are looking for an experienced React developer to help us build a comprehensive e-commerce platform. The project involves creating a modern, responsive web application with advanced features including user authentication, product management, shopping cart functionality, and payment integration.\n\nKey responsibilities:\n- Develop responsive React components\n- Implement state management with Redux\n- Integrate with REST APIs\n- Ensure cross-browser compatibility\n- Write clean, maintainable code\n- Collaborate with the design team\n\nIdeal candidate will have:\n- 5+ years of React experience\n- Strong JavaScript/TypeScript skills\n- Experience with e-commerce platforms\n- Knowledge of payment gateway integration\n- Portfolio of similar projects",
+    client: {
+      id: "client-1",
+      name: "TechCommerce Inc.",
+      avatar: "https://api.dicebear.com/7.x/initials/svg?seed=TechCommerce",
+      rating: 4.9,
+      reviewsCount: 127,
+      location: "San Francisco, CA",
+      memberSince: "2019-03-15",
+      verified: true,
+      totalSpent: 125000,
+      jobsPosted: 23,
+      hireRate: 89,
+    },
+    budget: {
+      type: "hourly",
+      min: 50,
+      max: 80,
+      amount: 6000,
+    },
+    skills: [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "E-commerce",
+      "Redux",
+      "AWS",
+      "MongoDB",
+    ],
+    category: "Web Development",
+    subcategory: "Frontend Development",
+    experience: "expert",
+    duration: "3-6 months",
+    proposals: 12,
+    hired: 0,
+    postedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    status: "open",
+    featured: true,
+    urgent: true,
+    remote: true,
+    timezone: "PST",
+    attachments: [],
+    questions: [
+      "What is your experience with e-commerce platforms?",
+      "Can you provide examples of similar projects?",
+      "What is your availability for this project?",
+    ],
+  };
 
   useEffect(() => {
     // If job is already provided as prop, don't fetch it
