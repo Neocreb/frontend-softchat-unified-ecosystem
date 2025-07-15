@@ -59,12 +59,13 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
       const loadJob = async () => {
         const jobData = await getJob(jobId);
         if (jobData) {
-        setJob(jobData);
-      }
-    };
+          setJob(jobData);
+        }
+      };
 
-    loadJob();
-  }, [jobId, getJob]);
+      loadJob();
+    }
+  }, [jobId, propJob, getJob]);
 
   const formatBudget = (job: JobPosting) => {
     if (job.budget.type === "fixed") {
