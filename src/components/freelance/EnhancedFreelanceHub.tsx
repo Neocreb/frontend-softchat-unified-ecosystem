@@ -73,6 +73,7 @@ export const EnhancedFreelanceHub: React.FC = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({});
   const { user } = useAuth();
   const navigate = useNavigate();
 
