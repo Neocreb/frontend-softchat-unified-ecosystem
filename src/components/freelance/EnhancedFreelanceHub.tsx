@@ -348,37 +348,49 @@ export const EnhancedFreelanceHub: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Enhanced Header Section */}
       <div className="bg-white border-b shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Briefcase className="w-8 h-8 text-blue-600" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
+                  <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
                 </div>
-                Freelance Hub
+                <span className="truncate">Freelance Hub</span>
                 <Badge
                   variant="secondary"
-                  className="bg-green-100 text-green-800"
+                  className="bg-green-100 text-green-800 flex-shrink-0"
                 >
                   <Activity className="w-3 h-3 mr-1" />
                   Live
                 </Badge>
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-gray-600 mt-1 text-sm sm:text-base">
                 Connect with top talent and exciting opportunities worldwide
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
               {quickActions.map((action, index) => (
                 <Button
                   key={index}
                   variant={action.variant}
                   onClick={action.action}
-                  className="shadow-sm relative"
+                  className="shadow-sm relative text-sm"
+                  size="sm"
                 >
                   {action.icon}
-                  <span className="ml-2">{action.label}</span>
+                  <span className="ml-1 sm:ml-2 hidden sm:inline">
+                    {action.label}
+                  </span>
+                  <span className="ml-1 sm:hidden">
+                    {action.label === "Post a Job"
+                      ? "Post"
+                      : action.label === "AI Match"
+                        ? "AI"
+                        : action.label === "Dashboard"
+                          ? "Dashboard"
+                          : action.label}
+                  </span>
                   {action.premium && (
                     <Crown className="w-3 h-3 ml-1 text-yellow-500" />
                   )}
