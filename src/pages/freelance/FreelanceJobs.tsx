@@ -85,39 +85,7 @@ export const FreelanceJobs: React.FC = () => {
   }
 
     // Use the new enhanced freelance hub
-    return <EnhancedFreelanceHub />;
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold">Freelance Hub</h1>
-            <p className="text-muted-foreground">
-              Discover opportunities and talented freelancers
-            </p>
-          </div>
-
-          {user && (
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
-              <Button
-                variant="outline"
-                onClick={() =>
-                  (window.location.href = "/app/freelance/dashboard")
-                }
-                className="w-full sm:w-auto"
-              >
-                <Users className="w-4 h-4 mr-2" />
-                Dashboard
-              </Button>
-              <Button variant="outline" className="w-full sm:w-auto">
-                <Filter className="w-4 h-4 mr-2" />
-                Saved Jobs
-              </Button>
-              <Button className="w-full sm:w-auto">
-                <BookOpen className="w-4 h-4 mr-2" />
-                Job Alerts
-              </Button>
-            </div>
-          )}
-        </div>
+      return <EnhancedFreelanceHub />;
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
