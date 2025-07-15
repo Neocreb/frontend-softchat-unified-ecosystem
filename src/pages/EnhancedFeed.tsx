@@ -1425,8 +1425,27 @@ export default function EnhancedFeed() {
               >
                 <PostCard post={post} onPostUpdate={handlePostUpdate} />
 
-                {/* Insert AI recommendations between posts occasionally */}
+                {/* Insert sponsored content between posts */}
                 {index === 2 && (
+                  <div className="my-6">
+                    <SponsoredContent item={sponsoredItems[0]} />
+                  </div>
+                )}
+
+                {index === 5 && (
+                  <div className="my-6">
+                    <SponsoredContent item={sponsoredItems[1]} />
+                  </div>
+                )}
+
+                {index === 8 && (
+                  <div className="my-6">
+                    <SponsoredContent item={sponsoredItems[2]} />
+                  </div>
+                )}
+
+                {/* Insert AI recommendations between posts occasionally */}
+                {index === 10 && (
                   <SmartContentRecommendations
                     contentType="mixed"
                     availableContent={[...posts, ...stories]}
