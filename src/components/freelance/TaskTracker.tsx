@@ -285,9 +285,95 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
     });
   };
 
-  // Mock tasks - in real app, these would come from the project data
+  // Mock milestones and tasks - in real app, these would come from the project data
   useEffect(() => {
     if (project) {
+      const mockMilestones: EnhancedMilestone[] = [
+        {
+          id: "milestone_1",
+          title: "Project Setup & Planning",
+          description:
+            "Initial project setup, requirements review, and planning",
+          amount: 500,
+          dueDate: "2024-01-18",
+          status: "approved",
+          progress: 100,
+          estimatedHours: 20,
+          actualHours: 18,
+          paymentStatus: "released",
+          deliverables: [
+            {
+              id: "del_1",
+              title: "Requirements Document Review",
+              description: "Detailed analysis of project requirements",
+              status: "approved",
+            },
+            {
+              id: "del_2",
+              title: "Project Timeline",
+              description: "Detailed project timeline with milestones",
+              status: "approved",
+            },
+          ],
+          tasks: [],
+        },
+        {
+          id: "milestone_2",
+          title: "Design & Wireframes",
+          description: "Create wireframes and design mockups",
+          amount: 1200,
+          dueDate: "2024-01-25",
+          status: "in-progress",
+          progress: 65,
+          estimatedHours: 40,
+          actualHours: 26,
+          paymentStatus: "escrowed",
+          autoReleaseDate: "2024-01-27",
+          deliverables: [
+            {
+              id: "del_3",
+              title: "Wireframes",
+              description: "Complete wireframes for all pages",
+              status: "submitted",
+            },
+            {
+              id: "del_4",
+              title: "Design Mockups",
+              description: "High-fidelity design mockups",
+              status: "pending",
+            },
+          ],
+          tasks: [],
+        },
+        {
+          id: "milestone_3",
+          title: "Frontend Development",
+          description: "Build responsive frontend components",
+          amount: 2000,
+          dueDate: "2024-02-10",
+          status: "pending",
+          progress: 0,
+          estimatedHours: 80,
+          actualHours: 0,
+          paymentStatus: "pending",
+          deliverables: [
+            {
+              id: "del_5",
+              title: "React Components",
+              description: "Reusable React components",
+              status: "pending",
+            },
+            {
+              id: "del_6",
+              title: "Responsive Design",
+              description: "Mobile-responsive implementation",
+              status: "pending",
+            },
+          ],
+          tasks: [],
+        },
+      ];
+
       const mockTasks: TaskItem[] = [
         {
           id: "task_1",
@@ -299,6 +385,19 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
           dueDate: "2024-01-16",
           completedAt: "2024-01-15T14:30:00Z",
           milestoneId: "milestone_1",
+          priority: "high",
+          estimatedHours: 4,
+          actualHours: 3.5,
+          tags: ["planning", "requirements"],
+          checklist: [
+            { id: "check_1", title: "Read requirements doc", completed: true },
+            {
+              id: "check_2",
+              title: "Prepare clarification questions",
+              completed: true,
+            },
+            { id: "check_3", title: "Schedule kickoff call", completed: true },
+          ],
         },
         {
           id: "task_2",
@@ -310,6 +409,18 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
           dueDate: "2024-01-17",
           completedAt: "2024-01-16T10:00:00Z",
           milestoneId: "milestone_1",
+          priority: "medium",
+          estimatedHours: 2,
+          actualHours: 1,
+          tags: ["assets", "branding"],
+          files: [
+            {
+              id: "file_1",
+              name: "brand-guidelines.pdf",
+              url: "/files/brand-guidelines.pdf",
+              uploadedAt: "2024-01-16T10:00:00Z",
+            },
+          ],
         },
         {
           id: "task_3",
@@ -319,6 +430,20 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
           assignedTo: "freelancer",
           dueDate: "2024-01-20",
           milestoneId: "milestone_2",
+          priority: "high",
+          estimatedHours: 16,
+          actualHours: 12,
+          tags: ["design", "wireframes"],
+          checklist: [
+            { id: "check_4", title: "Homepage wireframe", completed: true },
+            { id: "check_5", title: "Product page wireframe", completed: true },
+            {
+              id: "check_6",
+              title: "User dashboard wireframe",
+              completed: false,
+            },
+            { id: "check_7", title: "Mobile wireframes", completed: false },
+          ],
         },
         {
           id: "task_4",
@@ -328,6 +453,10 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
           assignedTo: "client",
           dueDate: "2024-01-22",
           milestoneId: "milestone_2",
+          priority: "medium",
+          estimatedHours: 4,
+          tags: ["review", "approval"],
+          dependencies: ["task_3"],
         },
         {
           id: "task_5",
@@ -337,9 +466,18 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
           assignedTo: "freelancer",
           dueDate: "2024-01-28",
           milestoneId: "milestone_3",
+          priority: "high",
+          estimatedHours: 40,
+          tags: ["development", "react"],
+          dependencies: ["task_4"],
         },
       ];
+
+      setMilestones(mockMilestones);
       setTasks(mockTasks);
+      if (mockMilestones.length > 0) {
+        setSelectedMilestone(mockMilestones[0].id);
+      }
     }
   }, [project]);
 
