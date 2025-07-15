@@ -113,9 +113,7 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
   userRole,
 }) => {
   const [milestones, setMilestones] = useState<EnhancedMilestone[]>([]);
-  const [selectedMilestone, setSelectedMilestone] = useState<string | null>(
-    null,
-  );
+  const [selectedMilestone, setSelectedMilestone] = useState<string | null>(null);
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [showAddTask, setShowAddTask] = useState(false);
   const [showAddMilestone, setShowAddMilestone] = useState(false);
@@ -146,7 +144,7 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
     ],
   });
 
-  const { project, loading, updateProjectStatus } =
+    const { project, loading, updateProjectStatus } =
     useFreelanceProject(projectId);
   const { toast } = useToast();
 
@@ -181,7 +179,9 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
 
   const formatDuration = (milliseconds: number) => {
     const hours = Math.floor(milliseconds / (1000 * 60 * 60));
-    const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
+    const minutes = Math.floor(
+      (milliseconds % (1000 * 60 * 60)) / (1000 * 60),
+    );
     return `${hours}h ${minutes}m`;
   };
 
@@ -285,15 +285,14 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
     });
   };
 
-  // Mock milestones and tasks - in real app, these would come from the project data
+    // Mock milestones and tasks - in real app, these would come from the project data
   useEffect(() => {
     if (project) {
       const mockMilestones: EnhancedMilestone[] = [
         {
           id: "milestone_1",
           title: "Project Setup & Planning",
-          description:
-            "Initial project setup, requirements review, and planning",
+          description: "Initial project setup, requirements review, and planning",
           amount: 500,
           dueDate: "2024-01-18",
           status: "approved",
@@ -437,11 +436,7 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
           checklist: [
             { id: "check_4", title: "Homepage wireframe", completed: true },
             { id: "check_5", title: "Product page wireframe", completed: true },
-            {
-              id: "check_6",
-              title: "User dashboard wireframe",
-              completed: false,
-            },
+            { id: "check_6", title: "User dashboard wireframe", completed: false },
             { id: "check_7", title: "Mobile wireframes", completed: false },
           ],
         },
@@ -481,7 +476,7 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
     }
   }, [project]);
 
-  const getTaskStatusColor = (status: TaskItem["status"]) => {
+    const getTaskStatusColor = (status: TaskItem["status"]) => {
     switch (status) {
       case "completed":
         return "bg-green-100 text-green-800 border-green-200";
@@ -541,11 +536,927 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
     }
   };
 
-  const getTaskPriorityIcon = (dueDate?: string) => {
+    const getTaskPriorityIcon = (dueDate?: string, priority?: TaskItem["priority"]) => {
     if (!dueDate) return null;
 
     const due = new Date(dueDate);
     const now = new Date();
+    const hoursUntilDue = (due.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+    if (priority === "urgent" || hoursUntilDue < 24) {
+      return <AlertTriangle className="w-4 h-4 text-red-500" />;
+    }
+    if (priority === "high" || hoursUntilDue < 72) {
+      return <Flag className="w-4 h-4 text-orange-500" />;
+    }
+    if (hoursUntilDue < 168) {
+      return <Clock className="w-4 h-4 text-yellow-500" />;
+    }
+    return <Calendar className="w-4 h-4 text-gray-500" />;
+  };
+
+  const getTaskProgress = (task: TaskItem) => {
+    if (task.status === "completed") return 100;
+    if (task.status === "in-progress") {
+      const completed = task.checklist?.filter((item) => item.completed).length || 0;
+      const total = task.checklist?.length || 1;
+      return Math.round((completed / total) * 100);
+    }
+    return 0;
+  };
+
+  const selectedMilestoneData = milestones.find(
+    (m) => m.id === selectedMilestone,
+  );
+  const milestoneTasks = tasks.filter(
+    (task) => task.milestoneId === selectedMilestone,
+  );
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="h-8 bg-gray-200 rounded animate-pulse" />
+        <div className="h-32 bg-gray-200 rounded animate-pulse" />
+        <div className="h-48 bg-gray-200 rounded animate-pulse" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Project Management</h2>
+          <p className="text-muted-foreground">
+            Track milestones, manage tasks, and monitor progress
+          </p>
+        </div>
+        <div className="flex gap-2">
+          {userRole === "client" && (
+            <Button
+              onClick={() => setShowAddMilestone(true)}
+              className="flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Add Milestone
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={() => setShowAddTask(true)}
+            className="flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add Task
+          </Button>
+        </div>
+      </div>
+
+      {/* Milestones Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {milestones.map((milestone) => (
+          <Card
+            key={milestone.id}
+            className={`cursor-pointer transition-all ${
+              selectedMilestone === milestone.id
+                ? "ring-2 ring-blue-500 shadow-md"
+                : "hover:shadow-md"
+            }`}
+            onClick={() => setSelectedMilestone(milestone.id)}
+          >
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                {/* Milestone Header */}
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg line-clamp-1">
+                      {milestone.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {milestone.description}
+                    </p>
+                  </div>
+                  <Badge className={getMilestoneStatusColor(milestone.status)}>
+                    {milestone.status}
+                  </Badge>
+                </div>
+
+                {/* Progress */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Progress</span>
+                    <span className="font-medium">{milestone.progress}%</span>
+                  </div>
+                  <Progress value={milestone.progress} className="h-2" />
+                </div>
+
+                {/* Details */}
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <div className="text-muted-foreground">Amount</div>
+                    <div className="font-semibold">${milestone.amount}</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground">Due Date</div>
+                    <div className="font-semibold">
+                      {new Date(milestone.dueDate).toLocaleDateString()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment Status */}
+                <div className="flex items-center justify-between">
+                  <Badge className={getPaymentStatusColor(milestone.paymentStatus)}>
+                    {milestone.paymentStatus}
+                  </Badge>
+                  {milestone.autoReleaseDate && (
+                    <div className="text-xs text-muted-foreground">
+                      Auto-release: {formatDistanceToNow(new Date(milestone.autoReleaseDate), { addSuffix: true })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions */}
+                {milestone.status === "in-progress" && userRole === "freelancer" && (
+                  <Button
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      submitMilestone(milestone.id);
+                    }}
+                    className="w-full"
+                  >
+                    Submit for Review
+                  </Button>
+                )}
+
+                {milestone.status === "submitted" && userRole === "client" && (
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        approveMilestone(milestone.id);
+                      }}
+                      className="flex-1"
+                    >
+                      Approve & Pay
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Request changes
+                      }}
+                      className="flex-1"
+                    >
+                      Request Changes
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Detailed View */}
+      {selectedMilestoneData && (
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="milestones">Milestone Details</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks ({milestoneTasks.length})</TabsTrigger>
+            <TabsTrigger value="deliverables">Deliverables</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="milestones">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  {selectedMilestoneData.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Milestone Overview */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <div className="text-blue-600 font-semibold">Progress</div>
+                    <div className="text-2xl font-bold">
+                      {selectedMilestoneData.progress}%
+                    </div>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg">
+                    <div className="text-green-600 font-semibold">Amount</div>
+                    <div className="text-2xl font-bold">
+                      ${selectedMilestoneData.amount}
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <div className="text-purple-600 font-semibold">Est. Hours</div>
+                    <div className="text-2xl font-bold">
+                      {selectedMilestoneData.estimatedHours}h
+                    </div>
+                  </div>
+                  <div className="bg-orange-50 p-4 rounded-lg">
+                    <div className="text-orange-600 font-semibold">Actual Hours</div>
+                    <div className="text-2xl font-bold">
+                      {selectedMilestoneData.actualHours}h
+                    </div>
+                  </div>
+                </div>
+
+                {/* Time Efficiency */}
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    Time Efficiency
+                  </h4>
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="text-sm text-muted-foreground mb-1">
+                        Time Usage
+                      </div>
+                      <Progress
+                        value={
+                          (selectedMilestoneData.actualHours /
+                            selectedMilestoneData.estimatedHours) *
+                          100
+                        }
+                        className="h-2"
+                      />
+                    </div>
+                    <div className="text-sm">
+                      {
+                        selectedMilestoneData.actualHours <
+                        selectedMilestoneData.estimatedHours
+                          ? "Under budget"
+                          : selectedMilestoneData.actualHours ===
+                              selectedMilestoneData.estimatedHours
+                            ? "On target"
+                            : "Over budget"
+                      }
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="tasks">
+            <div className="space-y-4">
+              {milestoneTasks.map((task) => (
+                <Card key={task.id} className="overflow-hidden">
+                  <CardContent className="pt-6">
+                    <div className="space-y-4">
+                      {/* Task Header */}
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-semibold text-lg">{task.title}</h4>
+                            {getTaskPriorityIcon(task.dueDate, task.priority)}
+                            <Badge className={getPriorityColor(task.priority)} size="sm">
+                              {task.priority}
+                            </Badge>
+                          </div>
+                          <p className="text-muted-foreground">{task.description}</p>
+                          <div className="flex flex-wrap gap-1">
+                            {task.tags?.map((tag) => (
+                              <Badge key={tag} variant="outline" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge className={getTaskStatusColor(task.status)}>
+                            {task.status}
+                          </Badge>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreVertical className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                              {task.status !== "completed" && (
+                                <>
+                                  <DropdownMenuItem
+                                    onClick={() => updateTaskStatus(task.id, "in-progress")}
+                                  >
+                                    <Play className="w-4 h-4 mr-2" />
+                                    Start Task
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => updateTaskStatus(task.id, "completed")}
+                                  >
+                                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                                    Mark Complete
+                                  </DropdownMenuItem>
+                                  <DropdownMenuSeparator />
+                                </>
+                              )}
+                              <DropdownMenuItem>
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit Task
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <MessageCircle className="w-4 h-4 mr-2" />
+                                Add Comment
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progress</span>
+                          <span className="font-medium">{getTaskProgress(task)}%</span>
+                        </div>
+                        <Progress value={getTaskProgress(task)} className="h-2" />
+                      </div>
+
+                      {/* Time Tracking */}
+                      <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg">
+                        <div className="flex items-center gap-4">
+                          <div>
+                            <div className="text-sm font-medium">Time Tracked</div>
+                            <div className="text-xs text-muted-foreground">
+                              {timeTracking[task.id]
+                                ? formatDuration(timeTracking[task.id].duration)
+                                : "0h 0m"}
+                            </div>
+                          </div>
+                          {task.estimatedHours && (
+                            <div>
+                              <div className="text-sm font-medium">
+                                Est: {task.estimatedHours}h
+                              </div>
+                              {task.actualHours && (
+                                <div className="text-xs text-muted-foreground">
+                                  Actual: {task.actualHours}h
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          {timeTracking[task.id]?.active ? (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => stopTimeTracking(task.id)}
+                              className="flex items-center gap-2"
+                            >
+                              <Pause className="w-4 h-4" />
+                              Stop
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              onClick={() => startTimeTracking(task.id)}
+                              className="flex items-center gap-2"
+                            >
+                              <Timer className="w-4 h-4" />
+                              Start
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Checklist */}
+                      {task.checklist && task.checklist.length > 0 && (
+                        <div className="space-y-2">
+                          <h5 className="font-medium flex items-center gap-2">
+                            <CheckSquare className="w-4 h-4" />
+                            Checklist ({task.checklist.filter((item) => item.completed).length}/
+                            {task.checklist.length})
+                          </h5>
+                          <div className="space-y-2">
+                            {task.checklist.map((item) => (
+                              <div key={item.id} className="flex items-center gap-2">
+                                <input
+                                  type="checkbox"
+                                  checked={item.completed}
+                                  onChange={(e) =>
+                                    toggleChecklistItem(
+                                      task.id,
+                                      item.id,
+                                      e.target.checked,
+                                    )
+                                  }
+                                  className="rounded"
+                                />
+                                <span
+                                  className={`text-sm ${
+                                    item.completed
+                                      ? "line-through text-muted-foreground"
+                                      : ""
+                                  }`}
+                                >
+                                  {item.title}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Task Details */}
+                      <div className="grid grid-cols-2 gap-4 text-sm border-t pt-4">
+                        <div>
+                          <div className="text-muted-foreground">Assigned To</div>
+                          <div className="font-medium capitalize">
+                            {task.assignedTo}
+                          </div>
+                        </div>
+                        {task.dueDate && (
+                          <div>
+                            <div className="text-muted-foreground">Due Date</div>
+                            <div className="font-medium">
+                              {new Date(task.dueDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Files */}
+                      {task.files && task.files.length > 0 && (
+                        <div className="space-y-2">
+                          <h5 className="font-medium flex items-center gap-2">
+                            <FileText className="w-4 h-4" />
+                            Attachments ({task.files.length})
+                          </h5>
+                          <div className="flex flex-wrap gap-2">
+                            {task.files.map((file) => (
+                              <div
+                                key={file.id}
+                                className="flex items-center gap-2 bg-gray-50 p-2 rounded text-sm"
+                              >
+                                <FileText className="w-4 h-4" />
+                                <span>{file.name}</span>
+                                <Button size="icon" variant="ghost" className="h-6 w-6">
+                                  <Download className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="deliverables">
+            <Card>
+              <CardHeader>
+                <CardTitle>Milestone Deliverables</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {selectedMilestoneData.deliverables.map((deliverable) => (
+                    <div
+                      key={deliverable.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <h4 className="font-medium">{deliverable.title}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {deliverable.description}
+                        </p>
+                        {deliverable.feedback && (
+                          <div className="mt-2 p-2 bg-yellow-50 border-l-4 border-yellow-400">
+                            <p className="text-sm">{deliverable.feedback}</p>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={getTaskStatusColor(deliverable.status)}>
+                          {deliverable.status}
+                        </Badge>
+                        {deliverable.fileUrl && (
+                          <Button size="sm" variant="outline">
+                            <Download className="w-4 h-4 mr-2" />
+                            Download
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="w-5 h-5" />
+                    Performance Metrics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Tasks Completed</span>
+                      <span className="font-medium">
+                        {milestoneTasks.filter((t) => t.status === "completed").length}/
+                        {milestoneTasks.length}
+                      </span>
+                    </div>
+                    <Progress
+                      value={
+                        (milestoneTasks.filter((t) => t.status === "completed").length /
+                          milestoneTasks.length) *
+                        100
+                      }
+                      className="h-2"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span>Time Efficiency</span>
+                      <span className="font-medium">
+                        {selectedMilestoneData.actualHours}/
+                        {selectedMilestoneData.estimatedHours}h
+                      </span>
+                    </div>
+                    <Progress
+                      value={
+                        (selectedMilestoneData.actualHours /
+                          selectedMilestoneData.estimatedHours) *
+                        100
+                      }
+                      className="h-2"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5" />
+                    Timeline Analysis
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {Math.ceil(
+                        (new Date(selectedMilestoneData.dueDate).getTime() -
+                          new Date().getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      )}
+                    </div>
+                    <div className="text-sm text-blue-600">Days Remaining</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Milestone Progress</span>
+                      <span className="font-medium">
+                        {selectedMilestoneData.progress}%
+                      </span>
+                    </div>
+                    <Progress value={selectedMilestoneData.progress} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      )}
+
+      {/* Add Task Modal */}
+      <Dialog open={showAddTask} onOpenChange={setShowAddTask}>
+        <DialogContent className="sm:max-w-[525px]">
+          <DialogHeader>
+            <DialogTitle>Add New Task</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="task-title">Task Title</Label>
+              <Input
+                id="task-title"
+                value={newTask.title}
+                onChange={(e) =>
+                  setNewTask((prev) => ({ ...prev, title: e.target.value }))
+                }
+                placeholder="Enter task title"
+              />
+            </div>
+            <div>
+              <Label htmlFor="task-description">Description</Label>
+              <Textarea
+                id="task-description"
+                value={newTask.description}
+                onChange={(e) =>
+                  setNewTask((prev) => ({ ...prev, description: e.target.value }))
+                }
+                placeholder="Describe the task"
+                rows={3}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="task-milestone">Milestone</Label>
+                <select
+                  id="task-milestone"
+                  value={newTask.milestoneId}
+                  onChange={(e) =>
+                    setNewTask((prev) => ({ ...prev, milestoneId: e.target.value }))
+                  }
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="">Select milestone</option>
+                  {milestones.map((milestone) => (
+                    <option key={milestone.id} value={milestone.id}>
+                      {milestone.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="task-priority">Priority</Label>
+                <select
+                  id="task-priority"
+                  value={newTask.priority}
+                  onChange={(e) =>
+                    setNewTask((prev) => ({
+                      ...prev,
+                      priority: e.target.value as TaskItem["priority"],
+                    }))
+                  }
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="task-assigned">Assigned To</Label>
+                <select
+                  id="task-assigned"
+                  value={newTask.assignedTo}
+                  onChange={(e) =>
+                    setNewTask((prev) => ({
+                      ...prev,
+                      assignedTo: e.target.value as TaskItem["assignedTo"],
+                    }))
+                  }
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="freelancer">Freelancer</option>
+                  <option value="client">Client</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+              <div>
+                <Label htmlFor="task-due">Due Date</Label>
+                <Input
+                  id="task-due"
+                  type="date"
+                  value={newTask.dueDate}
+                  onChange={(e) =>
+                    setNewTask((prev) => ({ ...prev, dueDate: e.target.value }))
+                  }
+                />
+              </div>
+            </div>
+            <div>
+              <Label htmlFor="task-hours">Estimated Hours</Label>
+              <Input
+                id="task-hours"
+                type="number"
+                value={newTask.estimatedHours}
+                onChange={(e) =>
+                  setNewTask((prev) => ({
+                    ...prev,
+                    estimatedHours: parseInt(e.target.value) || 0,
+                  }))
+                }
+                placeholder="0"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddTask(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                const newTaskItem: TaskItem = {
+                  id: `task_${Date.now()}`,
+                  title: newTask.title,
+                  description: newTask.description,
+                  status: "pending",
+                  assignedTo: newTask.assignedTo,
+                  dueDate: newTask.dueDate,
+                  milestoneId: newTask.milestoneId,
+                  priority: newTask.priority,
+                  estimatedHours: newTask.estimatedHours,
+                  tags: newTask.tags,
+                };
+                setTasks((prev) => [...prev, newTaskItem]);
+                setNewTask({
+                  title: "",
+                  description: "",
+                  assignedTo: "freelancer",
+                  dueDate: "",
+                  priority: "medium",
+                  estimatedHours: 0,
+                  milestoneId: "",
+                  tags: [],
+                });
+                setShowAddTask(false);
+                toast({
+                  title: "Task Added",
+                  description: "New task has been added successfully.",
+                });
+              }}
+            >
+              Add Task
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Milestone Modal */}
+      <Dialog open={showAddMilestone} onOpenChange={setShowAddMilestone}>
+        <DialogContent className="sm:max-w-[625px]">
+          <DialogHeader>
+            <DialogTitle>Add New Milestone</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="milestone-title">Milestone Title</Label>
+              <Input
+                id="milestone-title"
+                value={newMilestone.title}
+                onChange={(e) =>
+                  setNewMilestone((prev) => ({ ...prev, title: e.target.value }))
+                }
+                placeholder="Enter milestone title"
+              />
+            </div>
+            <div>
+              <Label htmlFor="milestone-description">Description</Label>
+              <Textarea
+                id="milestone-description"
+                value={newMilestone.description}
+                onChange={(e) =>
+                  setNewMilestone((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+                placeholder="Describe the milestone"
+                rows={3}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="milestone-amount">Amount ($)</Label>
+                <Input
+                  id="milestone-amount"
+                  type="number"
+                  value={newMilestone.amount}
+                  onChange={(e) =>
+                    setNewMilestone((prev) => ({
+                      ...prev,
+                      amount: parseFloat(e.target.value) || 0,
+                    }))
+                  }
+                  placeholder="0"
+                />
+              </div>
+              <div>
+                <Label htmlFor="milestone-due">Due Date</Label>
+                <Input
+                  id="milestone-due"
+                  type="date"
+                  value={newMilestone.dueDate}
+                  onChange={(e) =>
+                    setNewMilestone((prev) => ({ ...prev, dueDate: e.target.value }))
+                  }
+                />
+              </div>
+            </div>
+            <div>
+              <Label>Deliverables</Label>
+              <div className="space-y-2">
+                {newMilestone.deliverables.map((deliverable, index) => (
+                  <div key={index} className="grid grid-cols-2 gap-2">
+                    <Input
+                      placeholder="Deliverable title"
+                      value={deliverable.title}
+                      onChange={(e) => {
+                        const updated = [...newMilestone.deliverables];
+                        updated[index].title = e.target.value;
+                        setNewMilestone((prev) => ({
+                          ...prev,
+                          deliverables: updated,
+                        }));
+                      }}
+                    />
+                    <Input
+                      placeholder="Description"
+                      value={deliverable.description}
+                      onChange={(e) => {
+                        const updated = [...newMilestone.deliverables];
+                        updated[index].description = e.target.value;
+                        setNewMilestone((prev) => ({
+                          ...prev,
+                          deliverables: updated,
+                        }));
+                      }}
+                    />
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                    setNewMilestone((prev) => ({
+                      ...prev,
+                      deliverables: [
+                        ...prev.deliverables,
+                        { title: "", description: "" },
+                      ],
+                    }))
+                  }
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Deliverable
+                </Button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddMilestone(false)}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                const newMilestoneItem: EnhancedMilestone = {
+                  id: `milestone_${Date.now()}`,
+                  title: newMilestone.title,
+                  description: newMilestone.description,
+                  amount: newMilestone.amount,
+                  dueDate: newMilestone.dueDate,
+                  status: "pending",
+                  progress: 0,
+                  estimatedHours: 40, // Default
+                  actualHours: 0,
+                  paymentStatus: "pending",
+                  deliverables: newMilestone.deliverables.map((del, index) => ({
+                    id: `del_${Date.now()}_${index}`,
+                    title: del.title,
+                    description: del.description,
+                    status: "pending",
+                  })),
+                  tasks: [],
+                };
+                setMilestones((prev) => [...prev, newMilestoneItem]);
+                setNewMilestone({
+                  title: "",
+                  description: "",
+                  amount: 0,
+                  dueDate: "",
+                  deliverables: [{ title: "", description: "" }],
+                });
+                setShowAddMilestone(false);
+                toast({
+                  title: "Milestone Added",
+                  description: "New milestone has been added successfully.",
+                });
+              }}
+            >
+              Add Milestone
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default TaskTracker;
     const daysDiff = Math.ceil(
       (due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
     );
