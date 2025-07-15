@@ -164,46 +164,52 @@ export const EnhancedFreelanceHub: React.FC = () => {
   const RenderTabs = () => (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <div className="flex items-center justify-between mb-6">
-        <TabsList className="bg-white border shadow-sm h-12">
+        <TabsList className="bg-white border shadow-sm h-auto flex-wrap sm:h-12 w-full justify-start">
           <TabsTrigger
             value="browse"
-            className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 px-6"
+            className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-700 px-3 sm:px-6 flex-shrink-0"
           >
-            <Briefcase className="w-4 h-4 mr-2" />
-            Browse Jobs
+            <Briefcase className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Browse Jobs</span>
+            <span className="sm:hidden">Jobs</span>
           </TabsTrigger>
           <TabsTrigger
             value="talents"
-            className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 px-6"
+            className="data-[state=active]:bg-green-50 data-[state=active]:text-green-700 px-3 sm:px-6 flex-shrink-0"
           >
-            <Users className="w-4 h-4 mr-2" />
-            Find Talent
+            <Users className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Find Talent</span>
+            <span className="sm:hidden">Talent</span>
           </TabsTrigger>
           <TabsTrigger
             value="proposals"
-            className="data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 px-6"
+            className="data-[state=active]:bg-purple-50 data-[state=active]:text-purple-700 px-3 sm:px-6 flex-shrink-0"
           >
-            <FileText className="w-4 h-4 mr-2" />
-            My Proposals
+            <FileText className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">My Proposals</span>
+            <span className="sm:hidden">Props</span>
           </TabsTrigger>
           <TabsTrigger
             value="saved"
-            className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700 px-6"
+            className="data-[state=active]:bg-orange-50 data-[state=active]:text-orange-700 px-3 sm:px-6 flex-shrink-0"
           >
-            <Bookmark className="w-4 h-4 mr-2" />
-            Saved
+            <Bookmark className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Saved</span>
+            <span className="sm:hidden">Save</span>
           </TabsTrigger>
           <TabsTrigger
             value="recommended"
-            className="data-[state=active]:bg-yellow-50 data-[state=active]:text-yellow-700 px-6"
+            className="data-[state=active]:bg-yellow-50 data-[state=active]:text-yellow-700 px-2 sm:px-6 flex-shrink-0"
           >
-            <Sparkles className="w-4 h-4 mr-2" />
-            AI Recommended
+            <Sparkles className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">AI Recommended</span>
+            <span className="sm:hidden">AI</span>
             <Badge
               variant="secondary"
-              className="ml-2 bg-yellow-100 text-yellow-800"
+              className="ml-1 sm:ml-2 bg-yellow-100 text-yellow-800 text-xs"
             >
-              Pro
+              <span className="hidden sm:inline">Pro</span>
+              <span className="sm:hidden">★</span>
             </Badge>
           </TabsTrigger>
         </TabsList>
