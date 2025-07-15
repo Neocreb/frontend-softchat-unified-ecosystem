@@ -82,6 +82,7 @@ const AppLayout = () => {
       {/* Floating Action Buttons */}
       <CreatorStudioFAB />
       <AIAssistantFAB />
+      <FreelanceFAB />
 
       {/* Desktop footer */}
       {!isMobile && <DesktopFooter />}
