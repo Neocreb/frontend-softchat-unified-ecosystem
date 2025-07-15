@@ -112,13 +112,38 @@ export const TaskTracker: React.FC<TaskTrackerProps> = ({
   projectId,
   userRole,
 }) => {
+  const [milestones, setMilestones] = useState<EnhancedMilestone[]>([]);
+  const [selectedMilestone, setSelectedMilestone] = useState<string | null>(
+    null,
+  );
   const [tasks, setTasks] = useState<TaskItem[]>([]);
   const [showAddTask, setShowAddTask] = useState(false);
+  const [showAddMilestone, setShowAddMilestone] = useState(false);
+  const [activeTab, setActiveTab] = useState("milestones");
+  const [timeTracking, setTimeTracking] = useState<{
+    [taskId: string]: { start: Date; duration: number; active: boolean };
+  }>({});
   const [newTask, setNewTask] = useState({
     title: "",
     description: "",
     assignedTo: "freelancer" as TaskItem["assignedTo"],
     dueDate: "",
+    priority: "medium" as TaskItem["priority"],
+    estimatedHours: 0,
+    milestoneId: "",
+    tags: [] as string[],
+  });
+  const [newMilestone, setNewMilestone] = useState({
+    title: "",
+    description: "",
+    amount: 0,
+    dueDate: "",
+    deliverables: [
+      {
+        title: "",
+        description: "",
+      },
+    ],
   });
 
   const { project, loading, updateProjectStatus } =
