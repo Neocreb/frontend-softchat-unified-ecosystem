@@ -64,6 +64,7 @@ import TalentProfile from "./TalentProfile";
 import { useFreelance } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AdvancedFreelanceFilters from "./AdvancedFreelanceFilters";
 
 export const EnhancedFreelanceHub: React.FC = () => {
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
