@@ -10,6 +10,7 @@ import {
   CreditCard,
   TrendingUp,
   Users,
+  DollarSign,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -50,8 +51,8 @@ const SecondaryNav = () => {
       active: location.pathname === "/app/wallet",
     },
     {
-      icon: Award,
-      label: "Rewards",
+      icon: DollarSign,
+      label: "Creator Economy",
       href: "/app/rewards",
       active: location.pathname === "/app/rewards",
     },
