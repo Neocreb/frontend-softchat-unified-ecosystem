@@ -16,7 +16,7 @@ import {
   Plus,
   Bell,
   Bot,
-  Award,
+  DollarSign,
 } from "lucide-react";
 
 interface MobileFreelanceNavigationProps {
@@ -141,8 +141,8 @@ export const MobileFreelanceNavigation: React.FC<
       color: "bg-purple-500 hover:bg-purple-600",
     },
     {
-      icon: Award,
-      label: "Rewards",
+      icon: DollarSign,
+      label: "Creator Economy",
       href: "/app/rewards",
       color: "bg-orange-500 hover:bg-orange-600",
     },
@@ -158,11 +158,12 @@ export const MobileFreelanceNavigation: React.FC<
               <Button
                 size="sm"
                 className={cn(
-                  "h-8 px-3 text-xs font-medium text-white shadow-lg",
+                  "h-8 px-3 text-xs font-medium transition-colors",
                   action.color,
+                  "text-white shadow-md",
                 )}
               >
-                <action.icon className="w-3 h-3 mr-1" />
+                <action.icon className="w-3 h-3 mr-1.5" />
                 {action.label}
               </Button>
             </Link>
@@ -170,99 +171,77 @@ export const MobileFreelanceNavigation: React.FC<
         </div>
       </div>
 
-      {/* Main Navigation */}
-      <div className="bg-background/95 backdrop-blur border-t border-border">
-        <div className="safe-area-pb">
-          <div
-            className={cn(
-              "grid h-16 px-1",
-              navItems.length === 5 ? "grid-cols-5" : "grid-cols-6",
-            )}
-          >
-            {navItems.map((item) => (
-              <Link key={item.href} to={item.href} className="w-full">
-                <Button
-                  variant="ghost"
-                  size="sm"
+      {/* Main Navigation Bar */}
+      <div className="bg-background/95 backdrop-blur border-t border-border/50">
+        <div className="grid grid-cols-5 items-center justify-center px-2 py-2">
+          {navItems.map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={cn(
+                  "flex flex-col items-center justify-center p-3 rounded-lg transition-all duration-200 relative",
+                  item.active
+                    ? "bg-primary/10 border border-primary/20"
+                    : "hover:bg-muted/60",
+                  item.special &&
+                    !item.active &&
+                    "bg-green-50 border border-green-200",
+                )}
+              >
+                <div className="relative">
+                  <IconComponent
+                    className={cn(
+                      "w-5 h-5 transition-colors",
+                      item.active
+                        ? "text-primary"
+                        : item.special
+                          ? "text-green-600"
+                          : item.color,
+                    )}
+                  />
+                  {item.badge && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center min-w-[16px]"
+                    >
+                      {item.badge > 9 ? "9+" : item.badge}
+                    </Badge>
+                  )}
+                </div>
+                <span
                   className={cn(
-                    "w-full h-full flex flex-col items-center justify-center p-1 rounded-none gap-1 relative",
+                    "text-xs font-medium mt-1 truncate w-full text-center",
                     item.active
-                      ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                    item.special && item.active && "bg-primary/10 text-primary",
+                      ? "text-primary"
+                      : item.special
+                        ? "text-green-600 font-semibold"
+                        : "text-muted-foreground",
                   )}
                 >
-                  <div className="relative">
-                    <item.icon
-                      className={cn(
-                        "h-5 w-5 transition-colors",
-                        item.active
-                          ? item.color || "text-primary"
-                          : "text-muted-foreground",
-                        item.special && "h-6 w-6",
-                      )}
-                    />
-                    {item.badge && (
-                      <Badge
-                        variant="destructive"
-                        className="absolute -top-2 -right-2 h-4 w-4 p-0 text-xs flex items-center justify-center"
-                      >
-                        {item.badge > 99 ? "99+" : item.badge}
-                      </Badge>
-                    )}
-                  </div>
-                  <span
-                    className={cn(
-                      "text-xs font-medium leading-none",
-                      item.active ? "text-primary" : "text-muted-foreground",
-                    )}
-                  >
-                    {item.label}
-                  </span>
-                  {item.active && (
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-primary rounded-full" />
-                  )}
-                </Button>
+                  {item.label}
+                </span>
               </Link>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Notification Bell (if enabled and has notifications) */}
+      {/* Notification Overlay (when enabled) */}
       {showNotifications && notificationCount > 0 && (
-        <div className="absolute top-2 right-4">
-          <Link to="/app/notifications">
-            <Button
-              size="sm"
-              className="h-8 w-8 p-0 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-lg"
-            >
-              <Bell className="w-4 h-4" />
-              <Badge
-                variant="secondary"
-                className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs bg-yellow-500 text-black"
-              >
-                {notificationCount > 9 ? "9+" : notificationCount}
-              </Badge>
-            </Button>
-          </Link>
+        <div className="absolute top-0 right-4">
+          <Button
+            size="sm"
+            className="h-7 px-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground shadow-lg"
+          >
+            <Bell className="w-3 h-3 mr-1" />
+            {notificationCount}
+          </Button>
         </div>
       )}
     </div>
   );
 };
-
-// Extended navigation for different platform sections
-export const FreelanceMobileNav: React.FC = () => (
-  <MobileFreelanceNavigation variant="freelance-focused" />
-);
-
-export const UnifiedMobileNav: React.FC = () => (
-  <MobileFreelanceNavigation variant="unified" />
-);
-
-export const DefaultMobileNav: React.FC = () => (
-  <MobileFreelanceNavigation variant="default" />
-);
 
 export default MobileFreelanceNavigation;
