@@ -19,6 +19,7 @@ import {
   MessageCircle,
   UserCheck,
   Building,
+  DollarSign,
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -209,8 +210,8 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       href: "/app/wallet",
     },
     {
-      icon: <Award className="w-6 h-6 text-purple-600" />,
-      label: "Rewards",
+      icon: <DollarSign className="w-6 h-6 text-purple-600" />,
+      label: "Creator Economy",
       href: "/app/rewards",
     },
     {
