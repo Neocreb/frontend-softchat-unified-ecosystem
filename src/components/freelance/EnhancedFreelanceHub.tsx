@@ -303,19 +303,11 @@ export const EnhancedFreelanceHub: React.FC = () => {
       </TabsContent>
 
       <TabsContent value="recommended" className="space-y-6">
-        <div className="text-center py-12">
-          <Sparkles className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            AI-Powered Recommendations
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Personalized job matches based on your skills and preferences
-          </p>
-          <Button onClick={() => setActiveTab("browse")}>
-            <Crown className="w-4 h-4 mr-2" />
-            Upgrade to Pro for AI Features
-          </Button>
-        </div>
+        <SmartRecommendations
+          userType="freelancer"
+          onJobSelect={handleJobSelect}
+          onFreelancerSelect={handleTalentSelect}
+        />
       </TabsContent>
     </Tabs>
   );
