@@ -250,8 +250,11 @@ const GlobalSearch = () => {
                   {result.description}
                 </p>
               </div>
-              <Badge variant="outline" className="ml-2 text-xs">
-                {result.type}
+              <Badge
+                variant={result.type === "job" ? "default" : "outline"}
+                className={`ml-2 text-xs ${result.type === "job" ? "bg-orange-500 hover:bg-orange-600" : ""}`}
+              >
+                {result.type === "job" ? "💼 Job" : result.type}
               </Badge>
             </div>
 
