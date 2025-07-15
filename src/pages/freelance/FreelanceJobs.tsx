@@ -85,8 +85,7 @@ export const FreelanceJobs: React.FC = () => {
   }
 
     // Use the new enhanced freelance hub
-  return <EnhancedFreelanceHub
-      <div className="space-y-6">
+    return <EnhancedFreelanceHub />;
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
