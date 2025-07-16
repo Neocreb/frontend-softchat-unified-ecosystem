@@ -11,6 +11,8 @@ import BoostManager from "@/components/rewards/BoostManager";
 import Subscribers from "@/components/rewards/Subscribers";
 import WithdrawEarnings from "@/components/rewards/WithdrawEarnings";
 import { PartnershipSystem } from "@/components/rewards/PartnershipSystem";
+import ActivityEconomyDashboard from "@/components/activity-economy/ActivityEconomyDashboard";
+import ReferralManager from "@/components/activity-economy/ReferralManager";
 // Import with fallback
 let fetchWithAuth: any;
 try {
@@ -145,6 +147,13 @@ export default function EnhancedRewards() {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold mb-2">Creator & Activity Economy</h1>
+        <p className="text-muted-foreground">
+          Comprehensive reward system for all your activities on Softchat
+        </p>
+      </div>
+
       <CreatorEconomyHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -183,6 +192,15 @@ export default function EnhancedRewards() {
 
         <TabsContent value="partnerships" className="mt-0">
           <PartnershipSystem />
+        </TabsContent>
+
+        {/* New Activity Economy 2.0 Tabs */}
+        <TabsContent value="activity" className="mt-0">
+          <ActivityEconomyDashboard />
+        </TabsContent>
+
+        <TabsContent value="referrals" className="mt-0">
+          <ReferralManager />
         </TabsContent>
       </Tabs>
     </div>
