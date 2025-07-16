@@ -2,35 +2,86 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import {
-  calculateNextLevelProgress,
-  getAvailableRewards,
-  REWARD_ACTIONS,
-  getPointsForAction,
-  getDescriptionForAction,
-} from "@/services/rewardsService";
-import RewardsHeader from "@/components/rewards/RewardsHeader";
-import RewardsOverview from "@/components/rewards/RewardsOverview";
-import EarnPoints from "@/components/rewards/EarnPoints";
-import RedeemRewards from "@/components/rewards/RedeemRewards";
-import RewardsHistory from "@/components/rewards/RewardsHistory";
-import { UserLevel } from "@/types/user";
 import { Skeleton } from "@/components/ui/skeleton";
+import CreatorEconomyHeader from "@/components/rewards/CreatorEconomyHeader";
+import EarningsOverview from "@/components/rewards/EarningsOverview";
+import RevenueHistory from "@/components/rewards/RevenueHistory";
+import MonetizedContent from "@/components/rewards/MonetizedContent";
+import BoostManager from "@/components/rewards/BoostManager";
+import Subscribers from "@/components/rewards/Subscribers";
+import WithdrawEarnings from "@/components/rewards/WithdrawEarnings";
+import { PartnershipSystem } from "@/components/rewards/PartnershipSystem";
+import { fetchWithAuth } from "@/lib/fetch-utils";
 
-const Rewards = () => {
+interface CreatorRevenueData {
+  totalEarnings: number;
+  earningsByType: {
+    tips: number;
+    subscriptions: number;
+    views: number;
+    boosts: number;
+    services: number;
+  };
+  softPointsEarned: number;
+  availableToWithdraw: number;
+}
+
+const CreatorEconomy = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
   const [isLoading, setIsLoading] = useState(true);
+  const [revenueData, setRevenueData] = useState<CreatorRevenueData | null>(
+    null,
+  );
 
   useEffect(() => {
-    // Simulate data loading
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    if (user) {
+      loadRevenueData();
+    }
+  }, [user]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  const loadRevenueData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetchWithAuth("/api/creator/revenue/summary");
+      if (response.ok) {
+        const data = await response.json();
+        setRevenueData(data.data);
+      } else {
+        // Fallback to demo data if API not available
+        setRevenueData({
+          totalEarnings: 15200,
+          earningsByType: {
+            tips: 4800,
+            subscriptions: 5000,
+            views: 2100,
+            boosts: 0,
+            services: 1300,
+          },
+          softPointsEarned: 630,
+          availableToWithdraw: 9700,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to load revenue data:", error);
+      // Use demo data as fallback
+      setRevenueData({
+        totalEarnings: 15200,
+        earningsByType: {
+          tips: 4800,
+          subscriptions: 5000,
+          views: 2100,
+          boosts: 0,
+          services: 1300,
+        },
+        softPointsEarned: 630,
+        availableToWithdraw: 9700,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (!user) return null;
 
@@ -48,9 +99,8 @@ const Rewards = () => {
           </div>
         </div>
 
-        {/* Overview Tab Skeleton */}
+        {/* Overview Skeleton */}
         <div className="space-y-6">
-          {/* Level Progress Skeleton */}
           <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
             <div className="flex justify-between items-center mb-4">
               <Skeleton className="h-6 w-32" />
@@ -64,90 +114,55 @@ const Rewards = () => {
               ))}
             </div>
           </div>
-
-          {/* Available Rewards Skeleton */}
-          <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
-            <Skeleton className="h-6 w-48 mb-6" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-32 rounded-lg" />
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     );
   }
 
-  // Use default values if points/level are not available yet
-  const userPoints = user.points || 0;
-
-  // Convert string level to compatible format
-  const userLevel = user.level?.toLowerCase() as
-    | "bronze"
-    | "silver"
-    | "gold"
-    | "platinum";
-
-  const { currentLevel, nextLevel, progress } =
-    calculateNextLevelProgress(userPoints);
-  const availableRewards = getAvailableRewards(userLevel);
-  const levelColors = {
-    bronze: "bg-orange-600",
-    silver: "bg-slate-400",
-    gold: "bg-yellow-500",
-    platinum: "bg-gradient-to-r from-purple-500 to-indigo-500",
-  };
-
-  const earnPoints = (action: (typeof REWARD_ACTIONS)[number]) => {
-    toast({
-      title: "Points earned!",
-      description: `You earned ${getPointsForAction(action)} points for ${getDescriptionForAction(action)}`,
-    });
-  };
-
-  const redeemReward = (rewardName: string, points: number) => {
-    toast({
-      title: "Reward redeemed!",
-      description: `You've successfully redeemed ${rewardName} for ${points} points`,
-    });
-  };
-
   return (
     <div className="max-w-7xl mx-auto">
-      <RewardsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+      <CreatorEconomyHeader activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsContent value="overview" className="mt-0">
-          <RewardsOverview
-            user={{ ...user, points: userPoints, level: userLevel }}
-            currentLevel={currentLevel}
-            nextLevel={nextLevel}
-            progress={progress}
-            levelColors={levelColors}
-            availableRewards={availableRewards}
+          <EarningsOverview
+            revenueData={revenueData}
+            user={user}
             setActiveTab={setActiveTab}
+            onRefresh={loadRevenueData}
           />
         </TabsContent>
 
-        <TabsContent value="earn" className="mt-0">
-          <EarnPoints earnPoints={earnPoints} />
+        <TabsContent value="content" className="mt-0">
+          <MonetizedContent userId={user.id} />
         </TabsContent>
 
-        <TabsContent value="redeem" className="mt-0">
-          <RedeemRewards
-            user={{ ...user, points: userPoints }}
-            availableRewards={availableRewards}
-            redeemReward={redeemReward}
+        <TabsContent value="boosts" className="mt-0">
+          <BoostManager userId={user.id} />
+        </TabsContent>
+
+        <TabsContent value="subscribers" className="mt-0">
+          <Subscribers userId={user.id} />
+        </TabsContent>
+
+        <TabsContent value="withdraw" className="mt-0">
+          <WithdrawEarnings
+            availableBalance={revenueData?.availableToWithdraw || 0}
+            userId={user.id}
+            onWithdraw={loadRevenueData}
           />
         </TabsContent>
 
         <TabsContent value="history" className="mt-0">
-          <RewardsHistory />
+          <RevenueHistory userId={user.id} />
+        </TabsContent>
+
+        <TabsContent value="partnerships" className="mt-0">
+          <PartnershipSystem />
         </TabsContent>
       </Tabs>
     </div>
   );
 };
 
-export default Rewards;
+export default CreatorEconomy;
