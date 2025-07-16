@@ -116,3 +116,24 @@ export async function safeJsonParse<T>(response: Response): Promise<T> {
 }
 
 import React from "react";
+
+// Authentication-aware fetch wrapper
+export async function fetchWithAuth(
+  url: string,
+  options: FetchOptions = {},
+): Promise<Response> {
+  // Get auth token from localStorage
+  const token = localStorage.getItem("token");
+
+  // Merge headers with auth token
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+    ...options.headers,
+  };
+
+  return fetchWithTimeout(url, {
+    ...options,
+    headers,
+  });
+}
