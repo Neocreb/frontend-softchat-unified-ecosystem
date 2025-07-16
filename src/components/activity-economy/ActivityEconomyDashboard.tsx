@@ -167,8 +167,13 @@ const ActivityEconomyDashboard: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setActivitySummary(data.data);
+        console.log("✅ Loaded real activity summary:", data.data);
       } else {
-        // Fallback to demo data
+        console.warn(
+          "⚠️ API failed, using demo data. Response:",
+          response.status,
+        );
+        // Fallback to demo data with lower values to show progression
         setActivitySummary({
           currentSoftPoints: 2450,
           currentWalletBalance: {
