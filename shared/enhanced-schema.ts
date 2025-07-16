@@ -1155,6 +1155,255 @@ export const reviewHelpfulness = pgTable(
 );
 
 // =============================================================================
+// CREATOR ECONOMY SYSTEM
+// =============================================================================
+
+export const creatorEarnings = pgTable("creator_earnings", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Revenue sources
+  sourceType: text("source_type").notNull(), // 'views', 'tips', 'subscriptions', 'boosts', 'services'
+  contentId: uuid("content_id"), // Reference to the content that generated revenue
+  contentType: text("content_type"), // 'post', 'video', 'story', 'reel'
+
+  // Earnings details
+  amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
+  currency: text("currency").notNull(), // 'USDT', 'SOFT_POINTS'
+  softPointsEarned: decimal("soft_points_earned", {
+    precision: 20,
+    scale: 2,
+  }).default("0"),
+
+  // Metrics that generated the earning
+  viewCount: integer("view_count").default(0),
+  tipAmount: decimal("tip_amount", { precision: 20, scale: 8 }).default("0"),
+  subscriptionAmount: decimal("subscription_amount", {
+    precision: 20,
+    scale: 8,
+  }).default("0"),
+
+  // Related user (who tipped, subscribed, etc.)
+  fromUserId: uuid("from_user_id").references(() => users.id),
+
+  // Status
+  status: text("status").default("pending"), // 'pending', 'confirmed', 'paid_out'
+  payoutId: uuid("payout_id"), // Reference to payout batch
+
+  // Metadata
+  description: text("description"),
+  metadata: jsonb("metadata"),
+
+  earnedAt: timestamp("earned_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const softPointsLog = pgTable("soft_points_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Transaction details
+  type: text("type").notNull(), // 'earned', 'spent', 'bonus', 'penalty'
+  amount: decimal("amount", { precision: 20, scale: 2 }).notNull(),
+  balanceAfter: decimal("balance_after", { precision: 20, scale: 2 }).notNull(),
+
+  // Source of points
+  sourceType: text("source_type").notNull(), // 'views', 'tips', 'subscriptions', 'boost_purchase', 'referral'
+  sourceId: uuid("source_id"), // Reference to the source
+
+  // Calculation details
+  calculationRule: text("calculation_rule"), // Description of how points were calculated
+  multiplier: decimal("multiplier", { precision: 5, scale: 2 }).default("1"),
+
+  // Status
+  status: text("status").default("confirmed"), // 'pending', 'confirmed', 'reversed'
+
+  description: text("description"),
+  metadata: jsonb("metadata"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const monetizedContent = pgTable("monetized_content", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Content details
+  contentId: uuid("content_id").notNull(), // Reference to post, video, etc.
+  contentType: text("content_type").notNull(), // 'post', 'video', 'story', 'reel'
+  title: text("title"),
+  description: text("description"),
+
+  // Monetization settings
+  isMonetized: boolean("is_monetized").default(true),
+  monetizationType: text("monetization_type").notNull(), // 'ad_revenue', 'tips', 'subscriptions', 'pay_per_view'
+  minTipAmount: decimal("min_tip_amount", { precision: 10, scale: 2 }).default(
+    "1",
+  ),
+  subscriptionPrice: decimal("subscription_price", { precision: 10, scale: 2 }),
+  payPerViewPrice: decimal("pay_per_view_price", { precision: 10, scale: 2 }),
+
+  // Performance metrics
+  totalViews: integer("total_views").default(0),
+  totalEarnings: decimal("total_earnings", { precision: 20, scale: 8 }).default(
+    "0",
+  ),
+  totalTips: decimal("total_tips", { precision: 20, scale: 8 }).default("0"),
+  totalSoftPoints: decimal("total_soft_points", {
+    precision: 20,
+    scale: 2,
+  }).default("0"),
+  tipCount: integer("tip_count").default(0),
+  subscriptionCount: integer("subscription_count").default(0),
+
+  // Revenue breakdown
+  revenueBreakdown: jsonb("revenue_breakdown"), // Detailed breakdown by source
+
+  // Admin approval
+  approvalStatus: text("approval_status").default("approved"), // 'pending', 'approved', 'rejected'
+  approvedBy: uuid("approved_by").references(() => adminUsers.id),
+  approvedAt: timestamp("approved_at"),
+  rejectionReason: text("rejection_reason"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const revenueHistory = pgTable("revenue_history", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Transaction details
+  transactionType: text("transaction_type").notNull(), // 'tip_received', 'view_payment', 'subscription_payment', 'boost_deduction'
+  amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
+  currency: text("currency").notNull(),
+  softPointsChange: decimal("soft_points_change", {
+    precision: 20,
+    scale: 2,
+  }).default("0"),
+
+  // Related entities
+  contentId: uuid("content_id"),
+  fromUserId: uuid("from_user_id").references(() => users.id),
+  toUserId: uuid("to_user_id").references(() => users.id),
+
+  // Revenue source details
+  sourceDetails: jsonb("source_details"), // Detailed information about the revenue source
+
+  // Platform fees
+  platformFee: decimal("platform_fee", { precision: 20, scale: 8 }).default(
+    "0",
+  ),
+  netAmount: decimal("net_amount", { precision: 20, scale: 8 }).notNull(),
+
+  description: text("description"),
+  metadata: jsonb("metadata"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  // Subscription parties
+  subscriberId: uuid("subscriber_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  creatorId: uuid("creator_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Subscription details
+  tier: text("tier").notNull(), // 'basic', 'premium', 'vip'
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").default("USDT"),
+  billingCycle: text("billing_cycle").default("monthly"), // 'monthly', 'yearly'
+
+  // Status and timing
+  status: text("status").default("active"), // 'active', 'cancelled', 'expired', 'paused'
+  startDate: timestamp("start_date").defaultNow(),
+  endDate: timestamp("end_date"),
+  nextBillingDate: timestamp("next_billing_date"),
+  lastPaymentDate: timestamp("last_payment_date"),
+
+  // Benefits
+  benefits: jsonb("benefits"), // What the subscriber gets
+  accessLevel: text("access_level").default("basic"), // 'basic', 'premium', 'exclusive'
+
+  // Payment tracking
+  totalPaid: decimal("total_paid", { precision: 20, scale: 8 }).default("0"),
+  paymentFailures: integer("payment_failures").default(0),
+  lastPaymentAttempt: timestamp("last_payment_attempt"),
+
+  // Cancellation
+  cancelledAt: timestamp("cancelled_at"),
+  cancellationReason: text("cancellation_reason"),
+  cancelledBy: uuid("cancelled_by").references(() => users.id),
+
+  // Auto-renewal
+  autoRenew: boolean("auto_renew").default(true),
+  renewalAttempts: integer("renewal_attempts").default(0),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const creatorPayouts = pgTable("creator_payouts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+
+  // Payout details
+  amount: decimal("amount", { precision: 20, scale: 8 }).notNull(),
+  currency: text("currency").notNull(),
+  softPointsAmount: decimal("soft_points_amount", {
+    precision: 20,
+    scale: 2,
+  }).default("0"),
+
+  // Period covered
+  periodStart: timestamp("period_start").notNull(),
+  periodEnd: timestamp("period_end").notNull(),
+
+  // Payment method
+  paymentMethod: text("payment_method").notNull(), // 'wallet', 'bank_transfer', 'crypto'
+  paymentDetails: jsonb("payment_details"), // Bank account, wallet address, etc.
+
+  // Status tracking
+  status: text("status").default("pending"), // 'pending', 'processing', 'completed', 'failed', 'cancelled'
+  processedAt: timestamp("processed_at"),
+  completedAt: timestamp("completed_at"),
+  failureReason: text("failure_reason"),
+
+  // Admin processing
+  processedBy: uuid("processed_by").references(() => adminUsers.id),
+  adminNotes: text("admin_notes"),
+
+  // Transaction references
+  transactionIds: text("transaction_ids").array(), // IDs of earnings included in this payout
+  externalTransactionId: text("external_transaction_id"), // Bank/payment processor reference
+
+  // Fees and deductions
+  processingFee: decimal("processing_fee", { precision: 10, scale: 2 }).default(
+    "0",
+  ),
+  netAmount: decimal("net_amount", { precision: 20, scale: 8 }).notNull(),
+
+  requestedAt: timestamp("requested_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// =============================================================================
 // PLATFORM EARNINGS & ANALYTICS
 // =============================================================================
 
@@ -1735,3 +1984,18 @@ export type InsertP2pTrade = typeof p2pTrades.$inferInsert;
 export type InsertMarketplaceOrder = typeof marketplaceOrders.$inferInsert;
 export type InsertContentReport = typeof contentReports.$inferInsert;
 export type InsertAdminUser = typeof adminUsers.$inferInsert;
+
+// Creator Economy types
+export type CreatorEarning = typeof creatorEarnings.$inferSelect;
+export type SoftPointsLog = typeof softPointsLog.$inferSelect;
+export type MonetizedContent = typeof monetizedContent.$inferSelect;
+export type RevenueHistory = typeof revenueHistory.$inferSelect;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type CreatorPayout = typeof creatorPayouts.$inferSelect;
+
+export type InsertCreatorEarning = typeof creatorEarnings.$inferInsert;
+export type InsertSoftPointsLog = typeof softPointsLog.$inferInsert;
+export type InsertMonetizedContent = typeof monetizedContent.$inferInsert;
+export type InsertRevenueHistory = typeof revenueHistory.$inferInsert;
+export type InsertSubscription = typeof subscriptions.$inferInsert;
+export type InsertCreatorPayout = typeof creatorPayouts.$inferInsert;
