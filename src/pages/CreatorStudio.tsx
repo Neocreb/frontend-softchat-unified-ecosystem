@@ -511,7 +511,7 @@ const CreatorStudio: React.FC = () => {
                 className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
               >
                 <DollarSign className="w-4 h-4" />
-                <span className="hidden sm:inline">Revenue</span>
+                <span className="hidden sm:inline">Creator Economy</span>
               </TabsTrigger>
               <TabsTrigger
                 value="analytics"
@@ -899,23 +899,136 @@ const CreatorStudio: React.FC = () => {
             </div>
           </TabsContent>
 
-          {/* Revenue Tab */}
+          {/* Creator Economy Tab */}
           <TabsContent value="revenue" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+              {/* Earnings Cards */}
+              <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-green-700">
+                        Total Earnings
+                      </p>
+                      <p className="text-2xl font-bold text-green-900">
+                        $15,240
+                      </p>
+                      <p className="text-xs text-green-600">
+                        +15.8% this month
+                      </p>
+                    </div>
+                    <div className="p-2 bg-green-200 rounded-full">
+                      <DollarSign className="w-5 h-5 text-green-700" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-purple-700">
+                        SoftPoints
+                      </p>
+                      <p className="text-2xl font-bold text-purple-900">630</p>
+                      <p className="text-xs text-purple-600">
+                        +23.5% this month
+                      </p>
+                    </div>
+                    <div className="p-2 bg-purple-200 rounded-full">
+                      <Star className="w-5 h-5 text-purple-700" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-blue-700">
+                        Subscribers
+                      </p>
+                      <p className="text-2xl font-bold text-blue-900">1,234</p>
+                      <p className="text-xs text-blue-600">+12.3% this month</p>
+                    </div>
+                    <div className="p-2 bg-blue-200 rounded-full">
+                      <Users className="w-5 h-5 text-blue-700" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-pink-700">
+                        Tips Received
+                      </p>
+                      <p className="text-2xl font-bold text-pink-900">$4,800</p>
+                      <p className="text-xs text-pink-600">+8.7% this month</p>
+                    </div>
+                    <div className="p-2 bg-pink-200 rounded-full">
+                      <Gift className="w-5 h-5 text-pink-700" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Revenue Streams */}
+              {/* Revenue Breakdown */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Revenue Breakdown</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5" />
+                    Revenue Breakdown
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {revenueStreams.map((stream) => (
+                    {[
+                      {
+                        source: "Subscriptions",
+                        amount: 5000,
+                        percentage: 33,
+                        color: "bg-blue-500",
+                      },
+                      {
+                        source: "Tips",
+                        amount: 4800,
+                        percentage: 31,
+                        color: "bg-pink-500",
+                      },
+                      {
+                        source: "View Rewards",
+                        amount: 2100,
+                        percentage: 14,
+                        color: "bg-green-500",
+                      },
+                      {
+                        source: "Services",
+                        amount: 1300,
+                        percentage: 9,
+                        color: "bg-yellow-500",
+                      },
+                      {
+                        source: "Boosts",
+                        amount: 2040,
+                        percentage: 13,
+                        color: "bg-purple-500",
+                      },
+                    ].map((stream) => (
                       <div
                         key={stream.source}
                         className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
                       >
                         <div className="flex items-center gap-3">
-                          {stream.icon}
+                          <div
+                            className={`w-3 h-3 rounded-full ${stream.color}`}
+                          ></div>
                           <div>
                             <div className="font-medium text-sm">
                               {stream.source}
@@ -929,17 +1042,6 @@ const CreatorStudio: React.FC = () => {
                           <div className="font-medium">
                             {formatNumber(stream.amount, "currency")}
                           </div>
-                          <div
-                            className={cn(
-                              "text-xs",
-                              stream.change > 0
-                                ? "text-green-500"
-                                : "text-red-500",
-                            )}
-                          >
-                            {stream.change > 0 ? "+" : ""}
-                            {stream.change}%
-                          </div>
                         </div>
                       </div>
                     ))}
@@ -947,35 +1049,138 @@ const CreatorStudio: React.FC = () => {
                 </CardContent>
               </Card>
 
-              {/* Earnings Forecast */}
+              {/* Quick Actions */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Earnings Forecast</CardTitle>
+                  <CardTitle>Creator Economy Actions</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-500">
-                        $15,680
+                <CardContent className="space-y-3">
+                  <Button
+                    className="w-full justify-start gap-3 h-12 bg-purple-600 hover:bg-purple-700"
+                    asChild
+                  >
+                    <a href="/app/rewards">
+                      <DollarSign className="w-5 h-5" />
+                      <div className="text-left">
+                        <p className="font-medium">Open Creator Economy</p>
+                        <p className="text-xs text-purple-200">
+                          Manage your earnings and withdrawals
+                        </p>
                       </div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        Projected next month
-                      </div>
+                    </a>
+                  </Button>
+
+                  <Button
+                    className="w-full justify-start gap-3 h-12"
+                    variant="outline"
+                  >
+                    <Zap className="w-5 h-5" />
+                    <div className="text-left">
+                      <p className="font-medium">Boost Content</p>
+                      <p className="text-xs text-muted-foreground">
+                        Increase reach and earnings
+                      </p>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Conservative</span>
-                        <span className="font-medium">$12,400</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Optimistic</span>
-                        <span className="font-medium">$18,900</span>
-                      </div>
+                  </Button>
+
+                  <Button
+                    className="w-full justify-start gap-3 h-12"
+                    variant="outline"
+                  >
+                    <Users className="w-5 h-5" />
+                    <div className="text-left">
+                      <p className="font-medium">Manage Subscribers</p>
+                      <p className="text-xs text-muted-foreground">
+                        View and manage your subscriber base
+                      </p>
                     </div>
-                  </div>
+                  </Button>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Recent Earnings */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  Recent Earnings
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {[
+                    {
+                      type: "Tip",
+                      amount: 25,
+                      from: "Alice Johnson",
+                      time: "2 hours ago",
+                      icon: Gift,
+                      color: "text-pink-500",
+                    },
+                    {
+                      type: "Subscription",
+                      amount: 9.99,
+                      from: "Bob Smith",
+                      time: "5 hours ago",
+                      icon: Users,
+                      color: "text-blue-500",
+                    },
+                    {
+                      type: "View Reward",
+                      amount: 0,
+                      from: "1,000 views",
+                      time: "1 day ago",
+                      icon: Eye,
+                      color: "text-green-500",
+                      softPoints: 5,
+                    },
+                  ].map((earning, index) => {
+                    const Icon = earning.icon;
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-muted rounded-full">
+                            <Icon className={`w-4 h-4 ${earning.color}`} />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">
+                              {earning.type}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              from {earning.from} • {earning.time}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          {earning.amount > 0 && (
+                            <p className="font-medium text-green-600">
+                              +${earning.amount}
+                            </p>
+                          )}
+                          {earning.softPoints && (
+                            <p className="text-xs text-purple-600 flex items-center gap-1">
+                              <Star className="w-3 h-3" />
+                              {earning.softPoints} SP
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 pt-4 border-t">
+                  <Button variant="outline" className="w-full" asChild>
+                    <a href="/app/rewards?tab=history">
+                      View All Earnings History
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Analytics Tab */}
