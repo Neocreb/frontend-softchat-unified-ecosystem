@@ -52,6 +52,7 @@ import {
   freelanceProposals,
   freelanceProjects,
   products,
+  p2pOffers,
 } from "../../shared/schema";
 
 const router = express.Router();
