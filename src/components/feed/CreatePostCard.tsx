@@ -19,7 +19,7 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const handlePost = () => {
+  const handlePost = async () => {
     if (!content.trim()) {
       toast({
         title: "Post cannot be empty",
@@ -30,17 +30,52 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
 
     setIsPosting(true);
 
-    // Call the onSubmit prop
-    onSubmit(content);
+    try {
+      // Call the onSubmit prop
+      onSubmit(content);
 
-    // Reset state
-    setIsPosting(false);
-    setContent("");
+      // Track reward for creating a post
+      if (user?.id) {
+        const postId = "post_" + Date.now(); // Generate temporary ID
+        const reward = await ActivityRewardService.logPostCreated(
+          user.id,
+          postId,
+          {
+            contentLength: content.length,
+            hasImage: false, // Could be updated based on actual image upload
+            hasLink: content.includes("http"),
+          },
+        );
 
-    toast({
-      title: "Post created!",
-      description: "Your post has been published",
-    });
+        if (reward.success && reward.softPoints > 0) {
+          toast({
+            title: "Post created!",
+            description: `Published and earned ${reward.softPoints} SoftPoints!`,
+          });
+        } else {
+          toast({
+            title: "Post created!",
+            description: "Your post has been published",
+          });
+        }
+      } else {
+        toast({
+          title: "Post created!",
+          description: "Your post has been published",
+        });
+      }
+
+      // Reset state
+      setContent("");
+    } catch (error) {
+      console.error("Failed to log post creation:", error);
+      toast({
+        title: "Post created!",
+        description: "Your post has been published",
+      });
+    } finally {
+      setIsPosting(false);
+    }
   };
 
   const handleFileUpload = () => {
