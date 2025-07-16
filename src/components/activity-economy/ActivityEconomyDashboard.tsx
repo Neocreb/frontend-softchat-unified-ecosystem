@@ -202,21 +202,34 @@ const ActivityEconomyDashboard: React.FC = () => {
 
   const loadActivityHistory = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("No auth token - starting with empty activity history");
+        setActivityHistory([]);
+        return;
+      }
+
       const response = await fetch(`/api/creator/reward-history?limit=50`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setActivityHistory(data.data);
+        console.log(
+          "✅ Loaded real activity history:",
+          data.data?.length || 0,
+          "items",
+        );
+        setActivityHistory(data.data || []);
       } else {
-        // Start with empty activity history - users will see it populate as they engage
+        console.warn("⚠️ Activity history API failed:", response.status);
         setActivityHistory([]);
       }
     } catch (error) {
       console.error("Error loading activity history:", error);
+      setActivityHistory([]);
     }
   };
 
