@@ -1,145 +1,67 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import CreatorEconomyHeader from "@/components/rewards/CreatorEconomyHeader";
-import EarningsOverview from "@/components/rewards/EarningsOverview";
-import RevenueHistory from "@/components/rewards/RevenueHistory";
-import MonetizedContent from "@/components/rewards/MonetizedContent";
-import BoostManager from "@/components/rewards/BoostManager";
-import Subscribers from "@/components/rewards/Subscribers";
-import WithdrawEarnings from "@/components/rewards/WithdrawEarnings";
-import { PartnershipSystem } from "@/components/rewards/PartnershipSystem";
-import ActivityEconomyDashboard from "@/components/activity-economy/ActivityEconomyDashboard";
-import ReferralManager from "@/components/activity-economy/ReferralManager";
-// Import with fallback
-let fetchWithAuth: any;
-try {
-  const fetchUtils = require("@/lib/fetch-utils");
-  fetchWithAuth = fetchUtils.fetchWithAuth;
-} catch (error) {
-  // Fallback fetch function
-  fetchWithAuth = async (url: string, options: any = {}) => {
-    const token =
-      typeof window !== "undefined" && window.localStorage
-        ? localStorage.getItem("token")
-        : null;
-
-    const headers = {
-      "Content-Type": "application/json",
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
-    };
-
-    return fetch(url, {
-      ...options,
-      headers,
-    });
-  };
-}
-
-interface CreatorRevenueData {
-  totalEarnings: number;
-  earningsByType: {
-    tips: number;
-    subscriptions: number;
-    views: number;
-    boosts: number;
-    services: number;
-  };
-  softPointsEarned: number;
-  availableToWithdraw: number;
-}
+import UnifiedCreatorEconomy from "@/components/creator-economy/UnifiedCreatorEconomy";
 
 export default function EnhancedRewards() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("overview");
   const [isLoading, setIsLoading] = useState(true);
-  const [revenueData, setRevenueData] = useState<CreatorRevenueData | null>(
-    null,
-  );
 
   useEffect(() => {
-    if (user) {
-      loadRevenueData();
-    }
-  }, [user]);
-
-  const loadRevenueData = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetchWithAuth("/api/creator/revenue/summary");
-      if (response.ok) {
-        const data = await response.json();
-        setRevenueData(data.data);
-      } else {
-        // Fallback to demo data if API not available
-        setRevenueData({
-          totalEarnings: 15200,
-          earningsByType: {
-            tips: 4800,
-            subscriptions: 5000,
-            views: 2100,
-            boosts: 0,
-            services: 1300,
-          },
-          softPointsEarned: 630,
-          availableToWithdraw: 9700,
-        });
-      }
-    } catch (error) {
-      console.error("Failed to load revenue data:", error);
-      // Use demo data as fallback
-      setRevenueData({
-        totalEarnings: 15200,
-        earningsByType: {
-          tips: 4800,
-          subscriptions: 5000,
-          views: 2100,
-          boosts: 0,
-          services: 1300,
-        },
-        softPointsEarned: 630,
-        availableToWithdraw: 9700,
-      });
-    } finally {
+    // Simulate loading time for smooth transition
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }
-  };
+    }, 1000);
 
-  if (!user) return null;
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!user) {
+    return (
+      <div className="max-w-7xl mx-auto p-4">
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-bold mb-4">Please Sign In</h2>
+          <p className="text-muted-foreground">
+            You need to be signed in to access the Creator Economy.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto p-4">
         {/* Header Skeleton */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-          <Skeleton className="h-8 w-48" />
+          <div>
+            <Skeleton className="h-8 w-64 mb-2" />
+            <Skeleton className="h-4 w-96" />
+          </div>
           <div className="flex gap-2">
-            <Skeleton className="h-10 w-24" />
-            <Skeleton className="h-10 w-24" />
-            <Skeleton className="h-10 w-24" />
-            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-8 w-32" />
+            <Skeleton className="h-8 w-20" />
           </div>
         </div>
 
-        {/* Overview Skeleton */}
+        {/* Metrics Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-32 rounded-xl" />
+          ))}
+        </div>
+
+        {/* Content Skeleton */}
         <div className="space-y-6">
-          <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
-            <div className="flex justify-between items-center mb-4">
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-6 w-24" />
-            </div>
-            <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-3/4" />
-            <div className="mt-6 grid grid-cols-4 gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <Skeleton key={i} className="h-24 rounded-lg" />
-              ))}
-            </div>
+          <Skeleton className="h-12 w-full" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Skeleton className="h-96 rounded-xl" />
+            <Skeleton className="h-96 rounded-xl" />
           </div>
+          <Skeleton className="h-64 rounded-xl" />
         </div>
       </div>
     );
@@ -147,62 +69,7 @@ export default function EnhancedRewards() {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Creator & Activity Economy</h1>
-        <p className="text-muted-foreground">
-          Comprehensive reward system for all your activities on Softchat
-        </p>
-      </div>
-
-      <CreatorEconomyHeader activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsContent value="overview" className="mt-0">
-          <EarningsOverview
-            revenueData={revenueData}
-            user={user}
-            setActiveTab={setActiveTab}
-            onRefresh={loadRevenueData}
-          />
-        </TabsContent>
-
-        <TabsContent value="content" className="mt-0">
-          <MonetizedContent userId={user.id} />
-        </TabsContent>
-
-        <TabsContent value="boosts" className="mt-0">
-          <BoostManager userId={user.id} />
-        </TabsContent>
-
-        <TabsContent value="subscribers" className="mt-0">
-          <Subscribers userId={user.id} />
-        </TabsContent>
-
-        <TabsContent value="withdraw" className="mt-0">
-          <WithdrawEarnings
-            availableBalance={revenueData?.availableToWithdraw || 0}
-            userId={user.id}
-            onWithdraw={loadRevenueData}
-          />
-        </TabsContent>
-
-        <TabsContent value="history" className="mt-0">
-          <RevenueHistory userId={user.id} />
-        </TabsContent>
-
-        <TabsContent value="partnerships" className="mt-0">
-          <PartnershipSystem />
-        </TabsContent>
-
-        {/* New Activity Economy 2.0 Tabs */}
-        <TabsContent value="activity" className="mt-0">
-          <ActivityEconomyDashboard />
-        </TabsContent>
-
-        <TabsContent value="referrals" className="mt-0">
-          <ReferralManager />
-        </TabsContent>
-      </Tabs>
+      <UnifiedCreatorEconomy />
     </div>
   );
 }
