@@ -41,7 +41,9 @@ const PostActions = ({
   const [liked, setLiked] = useState(initialLiked);
   const [saved, setSaved] = useState(initialSaved);
   const [likes, setLikes] = useState(initialLikes);
+  const [likeStartTime, setLikeStartTime] = useState<number | null>(null);
   const notification = useNotification();
+  const { user } = useAuth();
 
   const handleLike = () => {
     const newLikedState = !liked;
