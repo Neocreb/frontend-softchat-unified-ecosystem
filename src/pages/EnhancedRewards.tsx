@@ -11,7 +11,31 @@ import BoostManager from "@/components/rewards/BoostManager";
 import Subscribers from "@/components/rewards/Subscribers";
 import WithdrawEarnings from "@/components/rewards/WithdrawEarnings";
 import { PartnershipSystem } from "@/components/rewards/PartnershipSystem";
-import { fetchWithAuth } from "@/lib/fetch-utils";
+// Import with fallback
+let fetchWithAuth: any;
+try {
+  const fetchUtils = require("@/lib/fetch-utils");
+  fetchWithAuth = fetchUtils.fetchWithAuth;
+} catch (error) {
+  // Fallback fetch function
+  fetchWithAuth = async (url: string, options: any = {}) => {
+    const token =
+      typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("token")
+        : null;
+
+    const headers = {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options.headers,
+    };
+
+    return fetch(url, {
+      ...options,
+      headers,
+    });
+  };
+}
 
 interface CreatorRevenueData {
   totalEarnings: number;
