@@ -1,8 +1,15 @@
-
 import { useState } from "react";
-import { Heart, MessageCircle, Share, Bookmark, MoreHorizontal } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  Share,
+  Bookmark,
+  MoreHorizontal,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/hooks/use-notification";
+import { useAuth } from "@/contexts/AuthContext";
+import { ActivityRewardService } from "@/services/activityRewardService";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,7 +46,7 @@ const PostActions = ({
   const handleLike = () => {
     const newLikedState = !liked;
     setLiked(newLikedState);
-    setLikes(prevLikes => newLikedState ? prevLikes + 1 : prevLikes - 1);
+    setLikes((prevLikes) => (newLikedState ? prevLikes + 1 : prevLikes - 1));
     onLikeChange?.(newLikedState);
   };
 
@@ -48,38 +55,48 @@ const PostActions = ({
     setSaved(newSavedState);
     onSaveChange?.(newSavedState);
     notification.success(
-      newSavedState ? "Post saved" : "Post removed from saved items", 
-      { description: newSavedState ? "You can find this post in your saved items" : undefined }
+      newSavedState ? "Post saved" : "Post removed from saved items",
+      {
+        description: newSavedState
+          ? "You can find this post in your saved items"
+          : undefined,
+      },
     );
   };
 
   const handleShare = () => {
-    notification.info("Share post", { description: "Sharing options will be available soon!" });
+    notification.info("Share post", {
+      description: "Sharing options will be available soon!",
+    });
   };
 
   return (
     <div className="flex items-center justify-between pt-3 pb-1">
       <div className="flex items-center gap-4">
-        <Button 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          variant="ghost"
+          size="sm"
           className="flex items-center gap-1 px-2"
           onClick={handleLike}
         >
-          <Heart 
-            className={`h-4 w-4 ${liked ? "fill-red-500 text-red-500" : ""}`} 
+          <Heart
+            className={`h-4 w-4 ${liked ? "fill-red-500 text-red-500" : ""}`}
           />
           <span className="text-xs">{likes}</span>
         </Button>
-        
-        <Button variant="ghost" size="sm" className="flex items-center gap-1 px-2">
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center gap-1 px-2"
+        >
           <MessageCircle className="h-4 w-4" />
           <span className="text-xs">{initialComments}</span>
         </Button>
-        
-        <Button 
-          variant="ghost" 
-          size="sm" 
+
+        <Button
+          variant="ghost"
+          size="sm"
           className="flex items-center gap-1 px-2"
           onClick={handleShare}
         >
@@ -87,19 +104,12 @@ const PostActions = ({
           <span className="text-xs">{initialShares}</span>
         </Button>
       </div>
-      
+
       <div className="flex items-center gap-1">
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="px-2"
-          onClick={handleSave}
-        >
-          <Bookmark 
-            className={`h-4 w-4 ${saved ? "fill-current" : ""}`} 
-          />
+        <Button variant="ghost" size="sm" className="px-2" onClick={handleSave}>
+          <Bookmark className={`h-4 w-4 ${saved ? "fill-current" : ""}`} />
         </Button>
-        
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="px-2">
