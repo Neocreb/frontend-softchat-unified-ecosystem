@@ -87,7 +87,27 @@ const PostActions = ({
     );
   };
 
-  const handleShare = () => {
+  const handleShare = async () => {
+    // Track reward for sharing
+    if (user?.id) {
+      try {
+        const reward = await ActivityRewardService.logShare(
+          user.id,
+          postId,
+          "post",
+        );
+
+        if (reward.success && reward.softPoints > 0) {
+          notification.success(
+            `+${reward.softPoints} SoftPoints earned for sharing!`,
+            { description: "Thanks for spreading the word" },
+          );
+        }
+      } catch (error) {
+        console.error("Failed to log share activity:", error);
+      }
+    }
+
     notification.info("Share post", {
       description: "Sharing options will be available soon!",
     });
