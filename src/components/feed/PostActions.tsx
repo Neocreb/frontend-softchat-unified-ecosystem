@@ -121,6 +121,7 @@ const PostActions = ({
           size="sm"
           className="flex items-center gap-1 px-2"
           onClick={handleLike}
+          onMouseDown={() => setLikeStartTime(Date.now())}
         >
           <Heart
             className={`h-4 w-4 ${liked ? "fill-red-500 text-red-500" : ""}`}
