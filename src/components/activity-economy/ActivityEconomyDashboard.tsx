@@ -186,38 +186,7 @@ const ActivityEconomyDashboard: React.FC = () => {
             totalWalletBonusEarned: 0,
             totalActivities: 0,
           },
-          breakdown: [
-            {
-              actionType: "like_post",
-              softPointsEarned: 45,
-              walletBonusEarned: 0,
-              activityCount: 90,
-            },
-            {
-              actionType: "post_content",
-              softPointsEarned: 120,
-              walletBonusEarned: 0,
-              activityCount: 40,
-            },
-            {
-              actionType: "comment_post",
-              softPointsEarned: 67,
-              walletBonusEarned: 0,
-              activityCount: 134,
-            },
-            {
-              actionType: "purchase_product",
-              softPointsEarned: 75,
-              walletBonusEarned: 25.75,
-              activityCount: 3,
-            },
-            {
-              actionType: "daily_login",
-              softPointsEarned: 14,
-              walletBonusEarned: 0,
-              activityCount: 7,
-            },
-          ],
+          breakdown: [],
           trustScore: {
             current: 78.5,
             level: "gold",
