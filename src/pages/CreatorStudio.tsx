@@ -899,7 +899,7 @@ const CreatorStudio: React.FC = () => {
             </div>
           </TabsContent>
 
-          {/* Creator Economy Tab */}
+          {/* Creator & Activity Economy Tab */}
           <TabsContent value="revenue" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
               {/* Earnings Cards */}
@@ -931,7 +931,9 @@ const CreatorStudio: React.FC = () => {
                       <p className="text-sm font-medium text-purple-700">
                         SoftPoints
                       </p>
-                      <p className="text-2xl font-bold text-purple-900">630</p>
+                      <p className="text-2xl font-bold text-purple-900">
+                        2,450
+                      </p>
                       <p className="text-xs text-purple-600">
                         +23.5% this month
                       </p>
@@ -948,30 +950,32 @@ const CreatorStudio: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-blue-700">
-                        Subscribers
+                        Trust Score
                       </p>
-                      <p className="text-2xl font-bold text-blue-900">1,234</p>
-                      <p className="text-xs text-blue-600">+12.3% this month</p>
+                      <p className="text-2xl font-bold text-blue-900">78.5</p>
+                      <p className="text-xs text-blue-600">Gold Level</p>
                     </div>
                     <div className="p-2 bg-blue-200 rounded-full">
-                      <Users className="w-5 h-5 text-blue-700" />
+                      <Shield className="w-5 h-5 text-blue-700" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-r from-pink-50 to-pink-100 border-pink-200">
+              <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-pink-700">
-                        Tips Received
+                      <p className="text-sm font-medium text-orange-700">
+                        Activities
                       </p>
-                      <p className="text-2xl font-bold text-pink-900">$4,800</p>
-                      <p className="text-xs text-pink-600">+8.7% this month</p>
+                      <p className="text-2xl font-bold text-orange-900">
+                        1,247
+                      </p>
+                      <p className="text-xs text-orange-600">This month</p>
                     </div>
-                    <div className="p-2 bg-pink-200 rounded-full">
-                      <Gift className="w-5 h-5 text-pink-700" />
+                    <div className="p-2 bg-orange-200 rounded-full">
+                      <Activity className="w-5 h-5 text-orange-700" />
                     </div>
                   </div>
                 </CardContent>
@@ -1052,34 +1056,21 @@ const CreatorStudio: React.FC = () => {
               {/* Quick Actions */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Creator Economy Actions</CardTitle>
+                  <CardTitle>Creator & Activity Economy</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Button
-                    className="w-full justify-start gap-3 h-12 bg-purple-600 hover:bg-purple-700"
+                    className="w-full justify-start gap-3 h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                     asChild
                   >
                     <a href="/app/rewards">
                       <DollarSign className="w-5 h-5" />
                       <div className="text-left">
-                        <p className="font-medium">Open Creator Economy</p>
-                        <p className="text-xs text-purple-200">
-                          Manage your earnings and withdrawals
+                        <p className="font-medium">
+                          Creator & Activity Economy
                         </p>
-                      </div>
-                    </a>
-                  </Button>
-
-                  <Button
-                    className="w-full justify-start gap-3 h-12 bg-blue-600 hover:bg-blue-700"
-                    asChild
-                  >
-                    <a href="/app/rewards?tab=activity">
-                      <Activity className="w-5 h-5" />
-                      <div className="text-left">
-                        <p className="font-medium">Activity Economy 2.0</p>
-                        <p className="text-xs text-blue-200">
-                          Earn from every action you take
+                        <p className="text-xs text-purple-200">
+                          Complete monetization ecosystem
                         </p>
                       </div>
                     </a>
