@@ -17,7 +17,7 @@ import {
   DollarSign,
   Wallet,
   CreditCard,
-  Bank,
+  Building,
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
@@ -178,7 +178,7 @@ const WithdrawEarnings = ({
                 <SelectContent>
                   <SelectItem value="bank_transfer">
                     <div className="flex items-center gap-2">
-                      <Bank className="w-4 h-4" />
+                      <Building className="w-4 h-4" />
                       Bank Transfer
                     </div>
                   </SelectItem>
