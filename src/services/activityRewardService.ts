@@ -82,9 +82,11 @@ export class ActivityRewardService {
 
       const result = await response.json();
 
-      // Show reward notification if points were earned
+      // Log success for debugging
       if (result.success && result.softPoints > 0) {
-        this.showRewardNotification(result.softPoints, result.walletBonus);
+        console.log(
+          `🎉 Reward earned! +${result.softPoints} SoftPoints${result.walletBonus > 0 ? ` +$${result.walletBonus.toFixed(4)} wallet bonus` : ""}`,
+        );
       }
 
       return result;
