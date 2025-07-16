@@ -24,7 +24,12 @@ interface EarningsOverviewProps {
   onRefresh: () => void;
 }
 
-const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: EarningsOverviewProps) => {
+const EarningsOverview = ({
+  revenueData,
+  user,
+  setActiveTab,
+  onRefresh,
+}: EarningsOverviewProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleRefresh = async () => {
@@ -80,28 +85,44 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
     {
       source: "Subscriptions",
       amount: revenueData?.earningsByType?.subscriptions || 0,
-      percentage: Math.round(((revenueData?.earningsByType?.subscriptions || 0) / (revenueData?.totalEarnings || 1)) * 100),
+      percentage: Math.round(
+        ((revenueData?.earningsByType?.subscriptions || 0) /
+          (revenueData?.totalEarnings || 1)) *
+          100,
+      ),
       icon: Users,
       color: "bg-blue-500",
     },
     {
       source: "Tips",
       amount: revenueData?.earningsByType?.tips || 0,
-      percentage: Math.round(((revenueData?.earningsByType?.tips || 0) / (revenueData?.totalEarnings || 1)) * 100),
+      percentage: Math.round(
+        ((revenueData?.earningsByType?.tips || 0) /
+          (revenueData?.totalEarnings || 1)) *
+          100,
+      ),
       icon: Gift,
       color: "bg-pink-500",
     },
     {
       source: "View Rewards",
       amount: revenueData?.earningsByType?.views || 0,
-      percentage: Math.round(((revenueData?.earningsByType?.views || 0) / (revenueData?.totalEarnings || 1)) * 100),
+      percentage: Math.round(
+        ((revenueData?.earningsByType?.views || 0) /
+          (revenueData?.totalEarnings || 1)) *
+          100,
+      ),
       icon: Eye,
       color: "bg-green-500",
     },
     {
       source: "Services",
       amount: revenueData?.earningsByType?.services || 0,
-      percentage: Math.round(((revenueData?.earningsByType?.services || 0) / (revenueData?.totalEarnings || 1)) * 100),
+      percentage: Math.round(
+        ((revenueData?.earningsByType?.services || 0) /
+          (revenueData?.totalEarnings || 1)) *
+          100,
+      ),
       icon: Zap,
       color: "bg-yellow-500",
     },
@@ -113,8 +134,13 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {earningsCards.map((card) => {
           const Icon = card.icon;
+          const changeColorClass =
+            card.changeType === "positive" ? "text-green-600" : "text-red-600";
           return (
-            <Card key={card.title} className="hover:shadow-lg transition-shadow">
+            <Card
+              key={card.title}
+              className="hover:shadow-lg transition-shadow"
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -122,12 +148,13 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
                       {card.title}
                     </p>
                     <p className="text-2xl font-bold">
-                      {card.format === "currency" 
-                        ? formatCurrency(card.value) 
-                        : formatNumber(card.value)
-                      }
+                      {card.format === "currency"
+                        ? formatCurrency(card.value)
+                        : formatNumber(card.value)}
                     </p>
-                    <p className={`text-xs flex items-center gap-1 mt-1 ${\n                      card.changeType === "positive" ? "text-green-600" : "text-red-600"\n                    }`}>
+                    <p
+                      className={`text-xs flex items-center gap-1 mt-1 ${changeColorClass}`}
+                    >
                       <TrendingUp className="w-3 h-3" />
                       {card.change}
                     </p>
@@ -153,7 +180,9 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`w-4 h-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
+              />
               Refresh
             </Button>
           </CardHeader>
@@ -161,7 +190,10 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
             {revenueBreakdown.map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.source} className="flex items-center justify-between">
+                <div
+                  key={item.source}
+                  className="flex items-center justify-between"
+                >
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${item.color}`}>
                       <Icon className="w-4 h-4 text-white" />
@@ -175,7 +207,10 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
                   </div>
                   <div className="text-right">
                     <p className="font-medium">{formatCurrency(item.amount)}</p>
-                    <Progress value={item.percentage} className="w-16 h-2 mt-1" />
+                    <Progress
+                      value={item.percentage}
+                      className="w-16 h-2 mt-1"
+                    />
                   </div>
                 </div>
               );
@@ -189,8 +224,8 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button 
-              onClick={() => setActiveTab("withdraw")} 
+            <Button
+              onClick={() => setActiveTab("withdraw")}
               className="w-full justify-start gap-3 h-12"
               variant="outline"
             >
@@ -198,13 +233,14 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
               <div className="text-left">
                 <p className="font-medium">Withdraw Earnings</p>
                 <p className="text-xs text-muted-foreground">
-                  {formatCurrency(revenueData?.availableToWithdraw || 0)} available
+                  {formatCurrency(revenueData?.availableToWithdraw || 0)}{" "}
+                  available
                 </p>
               </div>
             </Button>
-            
-            <Button 
-              onClick={() => setActiveTab("boosts")} 
+
+            <Button
+              onClick={() => setActiveTab("boosts")}
               className="w-full justify-start gap-3 h-12"
               variant="outline"
             >
@@ -216,9 +252,9 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
                 </p>
               </div>
             </Button>
-            
-            <Button 
-              onClick={() => setActiveTab("content")} 
+
+            <Button
+              onClick={() => setActiveTab("content")}
               className="w-full justify-start gap-3 h-12"
               variant="outline"
             >
@@ -243,15 +279,23 @@ const EarningsOverview = ({ revenueData, user, setActiveTab, onRefresh }: Earnin
                 <Trophy className="w-6 h-6 text-purple-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-purple-900">Creator Program Member</h3>
+                <h3 className="font-semibold text-purple-900">
+                  Creator Program Member
+                </h3>
                 <p className="text-sm text-purple-700">
                   You're earning through the Softchat Creator Economy
                 </p>
                 <div className="flex items-center gap-4 mt-2">
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-purple-100 text-purple-800"
+                  >
                     Active Status
                   </Badge>
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-100 text-green-800"
+                  >
                     Tier: Gold
                   </Badge>
                 </div>
