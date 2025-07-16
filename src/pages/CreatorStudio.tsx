@@ -1071,6 +1071,21 @@ const CreatorStudio: React.FC = () => {
                   </Button>
 
                   <Button
+                    className="w-full justify-start gap-3 h-12 bg-blue-600 hover:bg-blue-700"
+                    asChild
+                  >
+                    <a href="/app/rewards?tab=activity">
+                      <Activity className="w-5 h-5" />
+                      <div className="text-left">
+                        <p className="font-medium">Activity Economy 2.0</p>
+                        <p className="text-xs text-blue-200">
+                          Earn from every action you take
+                        </p>
+                      </div>
+                    </a>
+                  </Button>
+
+                  <Button
                     className="w-full justify-start gap-3 h-12"
                     variant="outline"
                   >
