@@ -45,11 +45,32 @@ const PostActions = ({
   const notification = useNotification();
   const { user } = useAuth();
 
-  const handleLike = () => {
+  const handleLike = async () => {
     const newLikedState = !liked;
+    const timeSpent = likeStartTime ? Date.now() - likeStartTime : 0;
+
     setLiked(newLikedState);
     setLikes((prevLikes) => (newLikedState ? prevLikes + 1 : prevLikes - 1));
     onLikeChange?.(newLikedState);
+
+    // Track reward for liking a post
+    if (newLikedState && user?.id) {
+      try {
+        const reward = await ActivityRewardService.logPostLiked(
+          user.id,
+          postId,
+          timeSpent / 1000, // Convert to seconds
+        );
+
+        if (reward.success && reward.softPoints > 0) {
+          notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+            description: "Keep engaging to earn more rewards",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to log like activity:", error);
+      }
+    }
   };
 
   const handleSave = () => {
