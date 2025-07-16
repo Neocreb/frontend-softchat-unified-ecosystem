@@ -1656,4 +1656,291 @@ router.post("/premium/subscribe", authenticateToken, async (req, res, next) => {
   }
 });
 
+// =============================================================================
+// CREATOR ECONOMY SYSTEM
+// =============================================================================
+
+// Get Creator Revenue Summary
+router.get(
+  "/creator/revenue/summary",
+  authenticateToken,
+  async (req, res, next) => {
+    try {
+      const userId = req.user!.userId;
+      const { period = "all" } = req.query;
+
+      // Calculate date range based on period
+      let dateFilter;
+      const now = new Date();
+      if (period === "week") {
+        dateFilter = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      } else if (period === "month") {
+        dateFilter = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      } else if (period === "year") {
+        dateFilter = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+      }
+
+      // Get earnings by type
+      let earningsQuery = db
+        .select({
+          sourceType: creatorEarnings.sourceType,
+          totalAmount: sql<number>`sum(${creatorEarnings.amount})`,
+          totalSoftPoints: sql<number>`sum(${creatorEarnings.softPointsEarned})`,
+          count: sql<number>`count(*)`,
+        })
+        .from(creatorEarnings)
+        .where(
+          and(
+            eq(creatorEarnings.userId, userId),
+            eq(creatorEarnings.status, "confirmed"),
+            dateFilter ? gte(creatorEarnings.earnedAt, dateFilter) : undefined,
+          ),
+        )
+        .groupBy(creatorEarnings.sourceType);
+
+      const earningsByType = await earningsQuery;
+
+      // Calculate totals
+      const totalEarnings = earningsByType.reduce(
+        (sum, item) => sum + parseFloat(item.totalAmount.toString()),
+        0,
+      );
+      const softPointsEarned = earningsByType.reduce(
+        (sum, item) => sum + parseFloat(item.totalSoftPoints.toString()),
+        0,
+      );
+
+      // Get wallet balance
+      const [wallet] = await db
+        .select()
+        .from(wallets)
+        .where(eq(wallets.userId, userId))
+        .limit(1);
+
+      const availableToWithdraw = wallet ? parseFloat(wallet.usdtBalance) : 0;
+
+      // Format earnings by type
+      const earningsBreakdown = {
+        tips: 0,
+        subscriptions: 0,
+        views: 0,
+        boosts: 0,
+        services: 0,
+      };
+
+      earningsByType.forEach((item) => {
+        const amount = parseFloat(item.totalAmount.toString());
+        switch (item.sourceType) {
+          case "tips":
+            earningsBreakdown.tips = amount;
+            break;
+          case "subscriptions":
+            earningsBreakdown.subscriptions = amount;
+            break;
+          case "views":
+            earningsBreakdown.views = amount;
+            break;
+          case "boosts":
+            earningsBreakdown.boosts = amount;
+            break;
+          case "services":
+            earningsBreakdown.services = amount;
+            break;
+        }
+      });
+
+      res.json({
+        success: true,
+        data: {
+          totalEarnings,
+          earningsByType: earningsBreakdown,
+          softPointsEarned,
+          availableToWithdraw,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+// Get Creator Revenue History
+router.get(
+  "/creator/revenue/history",
+  authenticateToken,
+  async (req, res, next) => {
+    try {
+      const userId = req.user!.userId;
+      const { type = "all", page = 1, limit = 20 } = req.query;
+      const offset = (parseInt(page as string) - 1) * parseInt(limit as string);
+
+      let query = db
+        .select({
+          id: revenueHistory.id,
+          type: revenueHistory.transactionType,
+          amount: revenueHistory.amount,
+          currency: revenueHistory.currency,
+          softPoints: revenueHistory.softPointsChange,
+          date: revenueHistory.createdAt,
+          fromUser: {
+            id: profiles.userId,
+            name: profiles.fullName,
+            avatar: profiles.avatar,
+          },
+          description: revenueHistory.description,
+          status: "completed", // All history items are completed
+        })
+        .from(revenueHistory)
+        .leftJoin(profiles, eq(profiles.userId, revenueHistory.fromUserId))
+        .where(eq(revenueHistory.userId, userId))
+        .orderBy(desc(revenueHistory.createdAt))
+        .limit(parseInt(limit as string))
+        .offset(offset);
+
+      if (type !== "all") {
+        query = query.where(
+          and(
+            eq(revenueHistory.userId, userId),
+            like(revenueHistory.transactionType, `%${type}%`),
+          ),
+        );
+      }
+
+      const history = await query;
+
+      res.json({
+        success: true,
+        data: history,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+// Send Tip to Creator
+router.post("/creator/tip", authenticateToken, async (req, res, next) => {
+  try {
+    const userId = req.user!.userId;
+    const { creatorId, amount, currency, contentId, message } = req.body;
+
+    // Validate input
+    if (!creatorId || !amount || amount <= 0) {
+      throw new AppError("Invalid tip parameters", 400);
+    }
+
+    // Check sender wallet
+    const [senderWallet] = await db
+      .select()
+      .from(wallets)
+      .where(eq(wallets.userId, userId))
+      .limit(1);
+
+    if (!senderWallet) {
+      throw new AppError("Wallet not found", 404);
+    }
+
+    const senderBalance = parseFloat(
+      currency === "USDT"
+        ? senderWallet.usdtBalance
+        : senderWallet.softPointsBalance,
+    );
+
+    if (senderBalance < amount) {
+      throw new AppError("Insufficient balance", 400);
+    }
+
+    // Process tip transaction
+    await db.transaction(async (tx) => {
+      // Deduct from sender
+      const deductField =
+        currency === "USDT"
+          ? { usdtBalance: sql`usdt_balance - ${amount}` }
+          : { softPointsBalance: sql`soft_points_balance - ${amount}` };
+
+      await tx
+        .update(wallets)
+        .set(deductField)
+        .where(eq(wallets.userId, userId));
+
+      // Calculate platform fee (5% for tips)
+      const platformFeeRate = 0.05;
+      const platformFee = amount * platformFeeRate;
+      const netAmount = amount - platformFee;
+
+      // Credit creator
+      const creditField =
+        currency === "USDT"
+          ? { usdtBalance: sql`usdt_balance + ${netAmount}` }
+          : { softPointsBalance: sql`soft_points_balance + ${netAmount}` };
+
+      await tx
+        .update(wallets)
+        .set(creditField)
+        .where(eq(wallets.userId, creatorId));
+
+      // Record creator earning
+      await tx.insert(creatorEarnings).values({
+        userId: creatorId,
+        sourceType: "tips",
+        contentId,
+        contentType: "post",
+        amount: netAmount.toString(),
+        currency,
+        softPointsEarned: "1", // 1 SoftPoint per tip
+        tipAmount: netAmount.toString(),
+        fromUserId: userId,
+        description: message || `Received tip of ${amount} ${currency}`,
+      });
+
+      // Record revenue history
+      await tx.insert(revenueHistory).values({
+        userId: creatorId,
+        transactionType: "tip_received",
+        amount: netAmount.toString(),
+        currency,
+        softPointsChange: "1",
+        contentId,
+        fromUserId: userId,
+        toUserId: creatorId,
+        platformFee: platformFee.toString(),
+        netAmount: netAmount.toString(),
+        description: `Tip received: ${message || "No message"}`,
+      });
+
+      // Update SoftPoints for creator
+      await tx
+        .update(wallets)
+        .set({
+          softPointsBalance: sql`soft_points_balance + 1`,
+        })
+        .where(eq(wallets.userId, creatorId));
+
+      // Record platform earnings
+      await tx.insert(platformEarnings).values({
+        sourceType: "tips",
+        referenceId: contentId || creatorId,
+        userId: creatorId,
+        grossAmount: amount.toString(),
+        feeAmount: platformFee.toString(),
+        feePercentage: (platformFeeRate * 100).toString(),
+        currency,
+        description: "Tip platform fee",
+      });
+    });
+
+    res.json({
+      success: true,
+      message: "Tip sent successfully",
+      data: {
+        amount,
+        currency,
+        recipient: creatorId,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
