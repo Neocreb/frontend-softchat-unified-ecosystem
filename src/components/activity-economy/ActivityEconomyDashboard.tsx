@@ -212,39 +212,8 @@ const ActivityEconomyDashboard: React.FC = () => {
         const data = await response.json();
         setActivityHistory(data.data);
       } else {
-        // Fallback to demo data
-        setActivityHistory([
-          {
-            id: "1",
-            actionType: "post_content",
-            softPoints: 3.0,
-            walletBonus: 0,
-            currency: "USDT",
-            status: "confirmed",
-            qualityScore: 1.2,
-            createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          },
-          {
-            id: "2",
-            actionType: "purchase_product",
-            softPoints: 15.0,
-            walletBonus: 5.25,
-            currency: "USDT",
-            status: "confirmed",
-            qualityScore: 1.0,
-            createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-          },
-          {
-            id: "3",
-            actionType: "like_post",
-            softPoints: 0.5,
-            walletBonus: 0,
-            currency: "USDT",
-            status: "confirmed",
-            qualityScore: 0.8,
-            createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-          },
-        ]);
+        // Start with empty activity history - users will see it populate as they engage
+        setActivityHistory([]);
       }
     } catch (error) {
       console.error("Error loading activity history:", error);
