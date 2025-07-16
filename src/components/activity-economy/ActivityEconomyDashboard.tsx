@@ -175,16 +175,16 @@ const ActivityEconomyDashboard: React.FC = () => {
         );
         // Fallback to demo data with lower values to show progression
         setActivitySummary({
-          currentSoftPoints: 2450,
+          currentSoftPoints: 0,
           currentWalletBalance: {
-            usdt: 125.5,
-            eth: 0.08,
-            btc: 0.002,
+            usdt: 0,
+            eth: 0,
+            btc: 0,
           },
           period: {
-            totalSoftPointsEarned: 380,
-            totalWalletBonusEarned: 25.75,
-            totalActivities: 127,
+            totalSoftPointsEarned: 0,
+            totalWalletBonusEarned: 0,
+            totalActivities: 0,
           },
           breakdown: [
             {
