@@ -122,8 +122,17 @@ export async function fetchWithAuth(
   url: string,
   options: FetchOptions = {},
 ): Promise<Response> {
-  // Get auth token from localStorage
-  const token = localStorage.getItem("token");
+  // Get auth token from localStorage (with safe access)
+  let token: string | null = null;
+  try {
+    token =
+      typeof window !== "undefined" && window.localStorage
+        ? localStorage.getItem("token")
+        : null;
+  } catch (error) {
+    // Handle cases where localStorage is not available
+    console.warn("localStorage not available:", error);
+  }
 
   // Merge headers with auth token
   const headers = {
