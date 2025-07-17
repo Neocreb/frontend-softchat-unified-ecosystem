@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Image, Link, Smile } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { ActivityRewardService } from "@/services/activityRewardService";
 
 interface CreatePostCardProps {
   onSubmit: (content: string, image?: string) => void;
@@ -19,7 +19,7 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
   const { toast } = useToast();
   const { user } = useAuth();
 
-  const handlePost = () => {
+  const handlePost = async () => {
     if (!content.trim()) {
       toast({
         title: "Post cannot be empty",
@@ -29,23 +29,58 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
     }
 
     setIsPosting(true);
-    
-    // Call the onSubmit prop
-    onSubmit(content);
-    
-    // Reset state
-    setIsPosting(false);
-    setContent("");
-    
-    toast({
-      title: "Post created!",
-      description: "Your post has been published",
-    });
+
+    try {
+      // Call the onSubmit prop
+      onSubmit(content);
+
+      // Track reward for creating a post
+      if (user?.id) {
+        const postId = "post_" + Date.now(); // Generate temporary ID
+        const reward = await ActivityRewardService.logPostCreated(
+          user.id,
+          postId,
+          {
+            contentLength: content.length,
+            hasImage: false, // Could be updated based on actual image upload
+            hasLink: content.includes("http"),
+          },
+        );
+
+        if (reward.success && reward.softPoints > 0) {
+          toast({
+            title: "Post created!",
+            description: `Published and earned ${reward.softPoints} SoftPoints!`,
+          });
+        } else {
+          toast({
+            title: "Post created!",
+            description: "Your post has been published",
+          });
+        }
+      } else {
+        toast({
+          title: "Post created!",
+          description: "Your post has been published",
+        });
+      }
+
+      // Reset state
+      setContent("");
+    } catch (error) {
+      console.error("Failed to log post creation:", error);
+      toast({
+        title: "Post created!",
+        description: "Your post has been published",
+      });
+    } finally {
+      setIsPosting(false);
+    }
   };
 
   const handleFileUpload = () => {
     setIsUploading(true);
-    
+
     // Simulate file upload
     setTimeout(() => {
       setIsUploading(false);
@@ -61,7 +96,10 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
       <CardContent className="pt-4">
         <div className="flex space-x-3">
           <Avatar>
-            <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "@user"} />
+            <AvatarImage
+              src={user?.avatar || "/placeholder.svg"}
+              alt={user?.name || "@user"}
+            />
             <AvatarFallback>{user?.name?.charAt(0) || "U"}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
@@ -76,10 +114,10 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
       </CardContent>
       <CardFooter className="border-t pt-3 flex justify-between">
         <div className="flex space-x-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-muted-foreground" 
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground"
             onClick={handleFileUpload}
             disabled={isUploading}
           >
@@ -95,9 +133,9 @@ const CreatePostCard = ({ onSubmit }: CreatePostCardProps) => {
             Emoji
           </Button>
         </div>
-        <Button 
-          variant="default" 
-          size="sm" 
+        <Button
+          variant="default"
+          size="sm"
           onClick={handlePost}
           disabled={isPosting || !content.trim()}
         >

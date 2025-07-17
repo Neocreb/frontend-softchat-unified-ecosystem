@@ -167,52 +167,26 @@ const ActivityEconomyDashboard: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setActivitySummary(data.data);
+        console.log("✅ Loaded real activity summary:", data.data);
       } else {
-        // Fallback to demo data
+        console.warn(
+          "⚠️ API failed, using demo data. Response:",
+          response.status,
+        );
+        // Fallback to demo data with lower values to show progression
         setActivitySummary({
-          currentSoftPoints: 2450,
+          currentSoftPoints: 0,
           currentWalletBalance: {
-            usdt: 125.5,
-            eth: 0.08,
-            btc: 0.002,
+            usdt: 0,
+            eth: 0,
+            btc: 0,
           },
           period: {
-            totalSoftPointsEarned: 380,
-            totalWalletBonusEarned: 25.75,
-            totalActivities: 127,
+            totalSoftPointsEarned: 0,
+            totalWalletBonusEarned: 0,
+            totalActivities: 0,
           },
-          breakdown: [
-            {
-              actionType: "like_post",
-              softPointsEarned: 45,
-              walletBonusEarned: 0,
-              activityCount: 90,
-            },
-            {
-              actionType: "post_content",
-              softPointsEarned: 120,
-              walletBonusEarned: 0,
-              activityCount: 40,
-            },
-            {
-              actionType: "comment_post",
-              softPointsEarned: 67,
-              walletBonusEarned: 0,
-              activityCount: 134,
-            },
-            {
-              actionType: "purchase_product",
-              softPointsEarned: 75,
-              walletBonusEarned: 25.75,
-              activityCount: 3,
-            },
-            {
-              actionType: "daily_login",
-              softPointsEarned: 14,
-              walletBonusEarned: 0,
-              activityCount: 7,
-            },
-          ],
+          breakdown: [],
           trustScore: {
             current: 78.5,
             level: "gold",
@@ -228,52 +202,34 @@ const ActivityEconomyDashboard: React.FC = () => {
 
   const loadActivityHistory = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log("No auth token - starting with empty activity history");
+        setActivityHistory([]);
+        return;
+      }
+
       const response = await fetch(`/api/creator/reward-history?limit=50`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setActivityHistory(data.data);
+        console.log(
+          "✅ Loaded real activity history:",
+          data.data?.length || 0,
+          "items",
+        );
+        setActivityHistory(data.data || []);
       } else {
-        // Fallback to demo data
-        setActivityHistory([
-          {
-            id: "1",
-            actionType: "post_content",
-            softPoints: 3.0,
-            walletBonus: 0,
-            currency: "USDT",
-            status: "confirmed",
-            qualityScore: 1.2,
-            createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          },
-          {
-            id: "2",
-            actionType: "purchase_product",
-            softPoints: 15.0,
-            walletBonus: 5.25,
-            currency: "USDT",
-            status: "confirmed",
-            qualityScore: 1.0,
-            createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-          },
-          {
-            id: "3",
-            actionType: "like_post",
-            softPoints: 0.5,
-            walletBonus: 0,
-            currency: "USDT",
-            status: "confirmed",
-            qualityScore: 0.8,
-            createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-          },
-        ]);
+        console.warn("⚠️ Activity history API failed:", response.status);
+        setActivityHistory([]);
       }
     } catch (error) {
       console.error("Error loading activity history:", error);
+      setActivityHistory([]);
     }
   };
 
