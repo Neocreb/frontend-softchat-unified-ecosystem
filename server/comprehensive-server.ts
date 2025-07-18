@@ -26,6 +26,7 @@ import { cacheService } from "./services/cacheService";
 
 // Import database and security
 import { db } from "./db";
+import { sql } from "drizzle-orm";
 import {
   authenticateToken,
   requireRole,
