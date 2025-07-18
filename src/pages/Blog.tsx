@@ -25,10 +25,12 @@ import {
   List,
   ArrowLeft,
   Home,
+  AlertTriangle,
 } from "lucide-react";
 import { BlogPost, BlogCategory, BlogStats } from "@/types/blog";
 import { blogService } from "@/services/blogService";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
+import ErrorBoundary from "@/components/ui/error-boundary";
 import { cn } from "@/lib/utils";
 
 export default function Blog() {
@@ -41,6 +43,7 @@ export default function Blog() {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadBlogData();
@@ -52,6 +55,7 @@ export default function Blog() {
 
   const loadBlogData = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const [postsResponse, categoriesData, statsData] = await Promise.all([
         blogService.getBlogPosts({}),
@@ -64,35 +68,44 @@ export default function Blog() {
       setStats(statsData);
     } catch (error) {
       console.error("Error loading blog data:", error);
+      setError(
+        error instanceof Error ? error.message : "Failed to load blog data",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const filterPosts = async () => {
-    let filtered = [...posts];
+    try {
+      let filtered = [...posts];
 
-    // Search filter
-    if (searchQuery.trim()) {
-      const searchResults = await blogService.searchPosts(searchQuery);
-      filtered = searchResults;
+      // Search filter
+      if (searchQuery.trim()) {
+        const searchResults = await blogService.searchPosts(searchQuery);
+        filtered = searchResults;
+      }
+
+      // Category filter
+      if (selectedCategory !== "all") {
+        filtered = filtered.filter(
+          (post) => post.category && post.category.slug === selectedCategory,
+        );
+      }
+
+      // Difficulty filter
+      if (selectedDifficulty !== "all") {
+        filtered = filtered.filter(
+          (post) => post.difficulty === selectedDifficulty,
+        );
+      }
+
+      setFilteredPosts(filtered);
+    } catch (error) {
+      console.error("Error filtering posts:", error);
+      // Fallback to show all posts if filtering fails
+      setFilteredPosts(posts);
     }
-
-    // Category filter
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter(
-        (post) => post.category.slug === selectedCategory,
-      );
-    }
-
-    // Difficulty filter
-    if (selectedDifficulty !== "all") {
-      filtered = filtered.filter(
-        (post) => post.difficulty === selectedDifficulty,
-      );
-    }
-
-    setFilteredPosts(filtered);
   };
 
   const formatReadingTime = (minutes: number) => {
@@ -119,6 +132,21 @@ export default function Blog() {
         return "bg-gray-100 text-gray-800";
     }
   };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center p-8">
+          <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Error Loading Blog
+          </h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Button onClick={loadBlogData}>Try Again</Button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -321,19 +349,64 @@ export default function Blog() {
           </p>
         </div>
 
-        {/* AI Recommended Articles */}
-        <SmartContentRecommendations
-          contentType="blogs"
-          availableContent={posts}
-          onContentSelect={(post) => {
-            // Navigate to the selected post
-            window.location.href = `/blog/${post.slug}`;
-          }}
-          maxItems={4}
-          className="mb-8"
-          layout="grid"
-          showReasons={true}
-        />
+        {/* Featured Articles */}
+        {posts.length > 0 && (
+          <ErrorBoundary
+            fallback={
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-blue-500" />
+                    Featured Articles
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {posts.slice(0, 3).map((post) => (
+                      <Card
+                        key={post.id}
+                        className="hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() =>
+                          (window.location.href = `/blog/${post.slug}`)
+                        }
+                      >
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold text-sm line-clamp-2 mb-2">
+                            {post.title}
+                          </h3>
+                          <p className="text-xs text-gray-600 line-clamp-2 mb-2">
+                            {post.excerpt}
+                          </p>
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <span>{post.author?.name}</span>
+                            <span>{post.readingTime} min read</span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            }
+          >
+            <SmartContentRecommendations
+              contentType="blogs"
+              availableContent={posts}
+              onContentSelect={(post) => {
+                try {
+                  // Navigate to the selected post
+                  window.location.href = `/blog/${post.slug}`;
+                } catch (error) {
+                  console.error("Error navigating to post:", error);
+                }
+              }}
+              maxItems={4}
+              className="mb-8"
+              layout="grid"
+              showReasons={true}
+            />
+          </ErrorBoundary>
+        )}
 
         {/* Blog Posts */}
         {filteredPosts.length === 0 ? (
@@ -393,9 +466,13 @@ export default function Blog() {
                 <div className={cn(viewMode === "list" && "flex-1")}>
                   <CardHeader>
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge className={cn("text-white", post.category.color)}>
-                        {post.category.name}
-                      </Badge>
+                      {post.category && (
+                        <Badge
+                          className={cn("text-white", post.category.color)}
+                        >
+                          {post.category.name}
+                        </Badge>
+                      )}
                       <span className="text-sm text-gray-500">
                         {formatDate(post.publishedAt)}
                       </span>
@@ -428,12 +505,17 @@ export default function Blog() {
                     {/* Author and Stats */}
                     <div className="flex items-center justify-between text-sm text-gray-500">
                       <div className="flex items-center gap-2">
-                        <img
-                          src={post.author.avatar}
-                          alt={post.author.name}
-                          className="w-6 h-6 rounded-full"
-                        />
-                        <span>{post.author.name}</span>
+                        {post.author?.avatar && (
+                          <img
+                            src={post.author.avatar}
+                            alt={post.author?.name || "Author"}
+                            className="w-6 h-6 rounded-full"
+                            onError={(e) => {
+                              e.currentTarget.style.display = "none";
+                            }}
+                          />
+                        )}
+                        <span>{post.author?.name || "Unknown Author"}</span>
                       </div>
 
                       <div className="flex items-center gap-4">

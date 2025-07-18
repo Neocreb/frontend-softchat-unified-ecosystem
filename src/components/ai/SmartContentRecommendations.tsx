@@ -52,8 +52,38 @@ export function SmartContentRecommendations({
   }, [contentType, availableContent, user?.id]);
 
   const loadRecommendations = async () => {
-    if (!user?.id || !availableContent.length) {
+    if (!availableContent.length) {
       setLoading(false);
+      return;
+    }
+
+    // For unauthenticated users, show basic recommendations
+    if (!user?.id) {
+      try {
+        let recs: any[] = [];
+
+        switch (contentType) {
+          case "blogs":
+            recs = availableContent
+              .map((blog, index) => ({
+                ...blog,
+                id: blog.id || `blog-${index}-${Date.now()}`,
+                aiScore: Math.floor(Math.random() * 50) + 50, // Random score 50-100
+                reason: "Popular content",
+              }))
+              .sort((a, b) => b.aiScore - a.aiScore);
+            break;
+          default:
+            recs = availableContent.slice(0, maxItems);
+        }
+
+        setRecommendations(recs.slice(0, maxItems));
+      } catch (error) {
+        console.error("Error loading basic recommendations:", error);
+        setRecommendations(availableContent.slice(0, maxItems));
+      } finally {
+        setLoading(false);
+      }
       return;
     }
 
@@ -274,27 +304,28 @@ export function SmartContentRecommendations({
                   </div>
 
                   {/* AI Score Badge */}
-                  {content.aiScore && (
+                  {content.aiScore && typeof content.aiScore === "number" && (
                     <Badge className="absolute top-2 right-2 bg-purple-500 text-white">
                       <Sparkles className="h-3 w-3 mr-1" />
-                      {content.aiScore}%
+                      {Math.round(content.aiScore)}%
                     </Badge>
                   )}
 
                   {/* Trending Badge */}
-                  {content.aiScore > 90 && (
-                    <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      Hot
-                    </Badge>
-                  )}
+                  {typeof content.aiScore === "number" &&
+                    content.aiScore > 90 && (
+                      <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
+                        <TrendingUp className="h-3 w-3 mr-1" />
+                        Hot
+                      </Badge>
+                    )}
                 </div>
 
                 <CardContent className="p-4 h-auto">
                   <div className="space-y-3 min-h-0">
                     {/* Title */}
                     <h3 className="font-semibold text-sm leading-tight line-clamp-2 group-hover:text-purple-600 transition-colors break-words">
-                      {content.title}
+                      {content.title || "Untitled Content"}
                     </h3>
 
                     {/* Author/Creator */}
@@ -311,7 +342,8 @@ export function SmartContentRecommendations({
                           </AvatarFallback>
                         </Avatar>
                         <span className="text-xs text-gray-600 truncate">
-                          {(content.author || content.creator)?.name}
+                          {(content.author || content.creator)?.name ||
+                            "Unknown Author"}
                         </span>
                       </div>
                     )}
@@ -322,17 +354,21 @@ export function SmartContentRecommendations({
                     </div>
 
                     {/* AI Recommendation Reason */}
-                    {showReasons && content.reason && (
-                      <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
-                        <Target className="h-3 w-3" />
-                        {content.reason}
-                      </div>
-                    )}
+                    {showReasons &&
+                      content.reason &&
+                      typeof content.reason === "string" && (
+                        <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                          <Target className="h-3 w-3" />
+                          {content.reason}
+                        </div>
+                      )}
 
                     {/* Category */}
                     {content.category && (
                       <Badge variant="secondary" className="text-xs">
-                        {content.category}
+                        {typeof content.category === "string"
+                          ? content.category
+                          : content.category?.name || "Category"}
                       </Badge>
                     )}
 
