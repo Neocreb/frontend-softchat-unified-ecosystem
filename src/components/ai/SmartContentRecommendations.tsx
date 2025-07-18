@@ -52,8 +52,38 @@ export function SmartContentRecommendations({
   }, [contentType, availableContent, user?.id]);
 
   const loadRecommendations = async () => {
-    if (!user?.id || !availableContent.length) {
+    if (!availableContent.length) {
       setLoading(false);
+      return;
+    }
+
+    // For unauthenticated users, show basic recommendations
+    if (!user?.id) {
+      try {
+        let recs: any[] = [];
+
+        switch (contentType) {
+          case "blogs":
+            recs = availableContent
+              .map((blog, index) => ({
+                ...blog,
+                id: blog.id || `blog-${index}-${Date.now()}`,
+                aiScore: Math.floor(Math.random() * 50) + 50, // Random score 50-100
+                reason: "Popular content",
+              }))
+              .sort((a, b) => b.aiScore - a.aiScore);
+            break;
+          default:
+            recs = availableContent.slice(0, maxItems);
+        }
+
+        setRecommendations(recs.slice(0, maxItems));
+      } catch (error) {
+        console.error("Error loading basic recommendations:", error);
+        setRecommendations(availableContent.slice(0, maxItems));
+      } finally {
+        setLoading(false);
+      }
       return;
     }
 
