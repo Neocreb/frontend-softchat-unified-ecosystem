@@ -133,18 +133,24 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setIsLoading(true);
         setError(null);
 
-        // Get initial session
+        // Get initial session with timeout
+        const sessionPromise = supabase.auth.getSession();
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Auth timeout")), 5000),
+        );
+
         const {
           data: { session },
           error: sessionError,
-        } = await supabase.auth.getSession();
+        } = (await Promise.race([sessionPromise, timeoutPromise])) as any;
 
         // Only update state if component is still mounted
         if (!mounted) return;
 
         if (sessionError) {
           console.error("Error getting session:", sessionError);
-          setError(sessionError);
+          // Don't treat auth errors as fatal for public pages
+          setError(null);
         } else {
           setSession(session);
           setUser(enhanceUserData(session?.user || null));
@@ -152,7 +158,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       } catch (error) {
         console.error("Auth initialization error:", error);
         if (mounted) {
-          setError(error as Error);
+          // Don't treat auth initialization errors as fatal
+          setError(null);
         }
       } finally {
         if (mounted) {
@@ -164,29 +171,39 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     initializeAuth();
 
     // Listen for auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("Auth state changed:", event, session?.user?.id);
+    let subscription: any;
+    try {
+      const {
+        data: { subscription: authSubscription },
+      } = supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.id);
 
-      // Only update state if component is still mounted
-      if (!mounted) return;
+        // Only update state if component is still mounted
+        if (!mounted) return;
 
-      try {
-        setSession(session);
-        setUser(enhanceUserData(session?.user || null));
-        setError(null);
-      } catch (error) {
-        console.error("Auth state change error:", error);
-        if (mounted) {
-          setError(error as Error);
+        try {
+          setSession(session);
+          setUser(enhanceUserData(session?.user || null));
+          setError(null);
+        } catch (error) {
+          console.error("Auth state change error:", error);
+          // Don't set error state for auth issues on public pages
+          if (mounted) {
+            setError(null);
+          }
+        } finally {
+          if (mounted) {
+            setIsLoading(false);
+          }
         }
-      } finally {
-        if (mounted) {
-          setIsLoading(false);
-        }
+      });
+      subscription = authSubscription;
+    } catch (error) {
+      console.error("Error setting up auth listener:", error);
+      if (mounted) {
+        setIsLoading(false);
       }
-    });
+    }
 
     return () => {
       mounted = false;
