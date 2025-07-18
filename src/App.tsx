@@ -213,7 +213,14 @@ const AppRoutes = () => {
       <Route path="/home" element={<Home />} />
 
       {/* Public Blog routes - accessible to everyone */}
-      <Route path="/blog" element={<SimpleBlog />} />
+      <Route
+        path="/blog"
+        element={
+          <ErrorBoundary fallback={<SimpleBlog />}>
+            <Blog />
+          </ErrorBoundary>
+        }
+      />
       <Route path="/blog/:slug" element={<BlogPost />} />
 
       {/* Auth route - handle loading state and redirects */}
