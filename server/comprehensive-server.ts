@@ -231,6 +231,9 @@ app.get("/status", async (req, res) => {
 // V1 API Routes (Comprehensive)
 app.use("/api/v1", comprehensiveApiRoutes);
 
+// Activity Economy API Routes
+app.use("/api/v1", activityEconomyApiRoutes);
+
 // Marketplace API Routes
 app.use("/api/marketplace", marketplaceApiRoutes);
 
