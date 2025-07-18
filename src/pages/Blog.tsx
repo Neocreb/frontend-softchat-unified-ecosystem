@@ -349,42 +349,64 @@ export default function Blog() {
           </p>
         </div>
 
-        {/* AI Recommended Articles */}
-        <ErrorBoundary
-          fallback={
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                  Recommendations Unavailable
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  The AI recommendation system is temporarily unavailable.
-                  Please browse the articles below.
-                </p>
-              </CardContent>
-            </Card>
-          }
-        >
-          <SmartContentRecommendations
-            contentType="blogs"
-            availableContent={posts}
-            onContentSelect={(post) => {
-              try {
-                // Navigate to the selected post
-                window.location.href = `/blog/${post.slug}`;
-              } catch (error) {
-                console.error("Error navigating to post:", error);
-              }
-            }}
-            maxItems={4}
-            className="mb-8"
-            layout="grid"
-            showReasons={true}
-          />
-        </ErrorBoundary>
+        {/* Featured Articles */}
+        {posts.length > 0 && (
+          <ErrorBoundary
+            fallback={
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-blue-500" />
+                    Featured Articles
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {posts.slice(0, 3).map((post) => (
+                      <Card
+                        key={post.id}
+                        className="hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() =>
+                          (window.location.href = `/blog/${post.slug}`)
+                        }
+                      >
+                        <CardContent className="p-4">
+                          <h3 className="font-semibold text-sm line-clamp-2 mb-2">
+                            {post.title}
+                          </h3>
+                          <p className="text-xs text-gray-600 line-clamp-2 mb-2">
+                            {post.excerpt}
+                          </p>
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <span>{post.author?.name}</span>
+                            <span>{post.readingTime} min read</span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            }
+          >
+            <SmartContentRecommendations
+              contentType="blogs"
+              availableContent={posts}
+              onContentSelect={(post) => {
+                try {
+                  // Navigate to the selected post
+                  window.location.href = `/blog/${post.slug}`;
+                } catch (error) {
+                  console.error("Error navigating to post:", error);
+                }
+              }}
+              maxItems={4}
+              className="mb-8"
+              layout="grid"
+              showReasons={true}
+            />
+          </ErrorBoundary>
+        )}
 
         {/* Blog Posts */}
         {filteredPosts.length === 0 ? (
