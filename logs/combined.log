@@ -2227,3 +2227,5 @@
 {"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-07-18T08:13:23.720Z"}
 {"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-07-18T08:13:23.721Z"}
 {"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-07-18T08:13:23.721Z"}
+{"level":"error","message":"Health check failed: emailService.isConfigured is not a function","service":"softchat-comprehensive","stack":"TypeError: emailService.isConfigured is not a function\n    at <anonymous> (/app/code/server/comprehensive-server.ts:178:29)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","timestamp":"2025-07-18T08:13:33.321Z"}
+{"duration":"565ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":503,"timestamp":"2025-07-18T08:13:33.327Z","url":"/health","userAgent":"curl/7.88.1"}
