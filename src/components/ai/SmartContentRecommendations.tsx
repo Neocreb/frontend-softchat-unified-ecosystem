@@ -294,11 +294,25 @@ export function SmartContentRecommendations({
                 <div className="relative">
                   {/* Content Image/Thumbnail */}
                   <div className="aspect-video bg-gradient-to-br from-purple-100 to-blue-100 rounded-t-lg overflow-hidden">
-                    {content.thumbnail || content.image ? (
+                    {(content.thumbnail ||
+                      content.image ||
+                      content.featuredImage) &&
+                    typeof (
+                      content.thumbnail ||
+                      content.image ||
+                      content.featuredImage
+                    ) === "string" ? (
                       <img
-                        src={content.thumbnail || content.image}
-                        alt={content.title}
+                        src={
+                          content.thumbnail ||
+                          content.image ||
+                          content.featuredImage
+                        }
+                        alt={content.title || "Content image"}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
