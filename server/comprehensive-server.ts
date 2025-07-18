@@ -26,7 +26,13 @@ import { cacheService } from "./services/cacheService";
 
 // Import database and security
 import { db } from "./db";
-import { sql } from "drizzle-orm";
+import { sql, eq, or, lte } from "drizzle-orm";
+import {
+  freelanceJobs,
+  products,
+  adminSessions,
+  adminActivityLogs,
+} from "../shared/enhanced-schema";
 import {
   authenticateToken,
   requireRole,
