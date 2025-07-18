@@ -304,20 +304,21 @@ export function SmartContentRecommendations({
                   </div>
 
                   {/* AI Score Badge */}
-                  {content.aiScore && (
+                  {content.aiScore && typeof content.aiScore === "number" && (
                     <Badge className="absolute top-2 right-2 bg-purple-500 text-white">
                       <Sparkles className="h-3 w-3 mr-1" />
-                      {content.aiScore}%
+                      {Math.round(content.aiScore)}%
                     </Badge>
                   )}
 
                   {/* Trending Badge */}
-                  {content.aiScore > 90 && (
-                    <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      Hot
-                    </Badge>
-                  )}
+                  {typeof content.aiScore === "number" &&
+                    content.aiScore > 90 && (
+                      <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
+                        <TrendingUp className="h-3 w-3 mr-1" />
+                        Hot
+                      </Badge>
+                    )}
                 </div>
 
                 <CardContent className="p-4 h-auto">
@@ -362,7 +363,9 @@ export function SmartContentRecommendations({
                     {/* Category */}
                     {content.category && (
                       <Badge variant="secondary" className="text-xs">
-                        {content.category}
+                        {typeof content.category === "string"
+                          ? content.category
+                          : content.category?.name || "Category"}
                       </Badge>
                     )}
 
