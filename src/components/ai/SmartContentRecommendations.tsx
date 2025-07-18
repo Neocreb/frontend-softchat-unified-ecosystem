@@ -353,12 +353,14 @@ export function SmartContentRecommendations({
                     </div>
 
                     {/* AI Recommendation Reason */}
-                    {showReasons && content.reason && (
-                      <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
-                        <Target className="h-3 w-3" />
-                        {content.reason}
-                      </div>
-                    )}
+                    {showReasons &&
+                      content.reason &&
+                      typeof content.reason === "string" && (
+                        <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                          <Target className="h-3 w-3" />
+                          {content.reason}
+                        </div>
+                      )}
 
                     {/* Category */}
                     {content.category && (
