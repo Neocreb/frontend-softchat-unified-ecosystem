@@ -6,7 +6,11 @@ import postgres from "postgres";
 import { rewardRules } from "../shared/activity-economy-schema";
 
 // Use regular postgres connection for scripts to avoid WebSocket issues
-const connectionString = process.env.DATABASE_URL;
+// Explicitly use the Neon database URL for this script
+const connectionString =
+  process.env.DATABASE_URL ||
+  "postgresql://neondb_owner:npg_GWUcF3OZCph6@ep-long-hat-adb36p2f-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require";
+
 if (!connectionString) {
   throw new Error("DATABASE_URL is required");
 }
