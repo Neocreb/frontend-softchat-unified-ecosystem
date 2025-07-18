@@ -111,12 +111,19 @@ export function SmartContentRecommendations({
           break;
         case "blogs":
           recs = availableContent
-            .map((blog) => ({
+            .filter((blog) => blog && typeof blog === "object")
+            .map((blog, index) => ({
               ...blog,
+              id: blog.id || `blog-${index}-${Date.now()}`,
+              title: blog.title || "Untitled",
               aiScore: Math.floor(Math.random() * 100),
               reason: "Based on your interests",
+              category:
+                typeof blog.category === "string"
+                  ? blog.category
+                  : blog.category?.name || "General",
             }))
-            .sort((a, b) => b.aiScore - a.aiScore);
+            .sort((a, b) => (b.aiScore || 0) - (a.aiScore || 0));
           break;
         case "mixed":
           recs = await aiRecommendationService.getSmartFeed(
