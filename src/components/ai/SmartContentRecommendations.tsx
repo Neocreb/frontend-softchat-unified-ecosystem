@@ -111,19 +111,12 @@ export function SmartContentRecommendations({
           break;
         case "blogs":
           recs = availableContent
-            .filter((blog) => blog && typeof blog === "object")
-            .map((blog, index) => ({
+            .map((blog) => ({
               ...blog,
-              id: blog.id || `blog-${index}-${Date.now()}`,
-              title: blog.title || "Untitled",
               aiScore: Math.floor(Math.random() * 100),
               reason: "Based on your interests",
-              category:
-                typeof blog.category === "string"
-                  ? blog.category
-                  : blog.category?.name || "General",
             }))
-            .sort((a, b) => (b.aiScore || 0) - (a.aiScore || 0));
+            .sort((a, b) => b.aiScore - a.aiScore);
           break;
         case "mixed":
           recs = await aiRecommendationService.getSmartFeed(
@@ -190,14 +183,10 @@ export function SmartContentRecommendations({
 
   const formatContentStats = (content: any) => {
     const stats = [];
-    if (content.likes && typeof content.likes === "number")
-      stats.push(`${content.likes} likes`);
-    if (content.views && typeof content.views === "number")
-      stats.push(`${content.views} views`);
-    if (content.comments && typeof content.comments === "number")
-      stats.push(`${content.comments} comments`);
-    if (content.rating && typeof content.rating === "number")
-      stats.push(`${content.rating}⭐`);
+    if (content.likes) stats.push(`${content.likes} likes`);
+    if (content.views) stats.push(`${content.views} views`);
+    if (content.comments) stats.push(`${content.comments} comments`);
+    if (content.rating) stats.push(`${content.rating}⭐`);
     return stats.join(" • ");
   };
 
@@ -285,146 +274,110 @@ export function SmartContentRecommendations({
             layout === "carousel" && "flex gap-6 overflow-x-auto pb-4 px-2",
           )}
         >
-          {recommendations
-            .filter((content) => content && typeof content === "object")
-            .map((content, index) => {
-              const safeId = content.id || `generated-${index}-${Date.now()}`;
-              const safeTitle = content.title || "Untitled Content";
-
-              return (
-                <div
-                  key={`${safeId}-${index}-${contentType}`}
-                  className={cn(
-                    "group cursor-pointer transition-all duration-200 hover:scale-105",
-                    layout === "carousel" && "flex-shrink-0 w-80",
-                  )}
-                  onClick={() => handleContentClick(content)}
-                >
-                  <Card
-                    key={`card-${content.id}-${index}`}
-                    className="h-full border-0 shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="relative">
-                      {/* Content Image/Thumbnail */}
-                      <div className="aspect-video bg-gradient-to-br from-purple-100 to-blue-100 rounded-t-lg overflow-hidden">
-                        {(content.thumbnail ||
-                          content.image ||
-                          content.featuredImage) &&
-                        typeof (
-                          content.thumbnail ||
-                          content.image ||
-                          content.featuredImage
-                        ) === "string" ? (
-                          <img
-                            src={
-                              content.thumbnail ||
-                              content.image ||
-                              content.featuredImage
-                            }
-                            alt={content.title || "Content image"}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.currentTarget.style.display = "none";
-                            }}
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            {getContentIcon(contentType)}
-                          </div>
-                        )}
+          {recommendations.map((content, index) => (
+            <div
+              key={`${content.id}-${index}-${contentType}`}
+              className={cn(
+                "group cursor-pointer transition-all duration-200 hover:scale-105",
+                layout === "carousel" && "flex-shrink-0 w-80",
+              )}
+              onClick={() => handleContentClick(content)}
+            >
+              <Card
+                key={`card-${content.id}-${index}`}
+                className="h-full border-0 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="relative">
+                  {/* Content Image/Thumbnail */}
+                  <div className="aspect-video bg-gradient-to-br from-purple-100 to-blue-100 rounded-t-lg overflow-hidden">
+                    {content.thumbnail || content.image ? (
+                      <img
+                        src={content.thumbnail || content.image}
+                        alt={content.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        {getContentIcon(contentType)}
                       </div>
+                    )}
+                  </div>
 
-                      {/* AI Score Badge */}
-                      {content.aiScore &&
-                        typeof content.aiScore === "number" && (
-                          <Badge className="absolute top-2 right-2 bg-purple-500 text-white">
-                            <Sparkles className="h-3 w-3 mr-1" />
-                            {Math.round(content.aiScore)}%
-                          </Badge>
-                        )}
+                  {/* AI Score Badge */}
+                  {content.aiScore && (
+                    <Badge className="absolute top-2 right-2 bg-purple-500 text-white">
+                      <Sparkles className="h-3 w-3 mr-1" />
+                      {content.aiScore}%
+                    </Badge>
+                  )}
 
-                      {/* Trending Badge */}
-                      {typeof content.aiScore === "number" &&
-                        content.aiScore > 90 && (
-                          <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
-                            <TrendingUp className="h-3 w-3 mr-1" />
-                            Hot
-                          </Badge>
-                        )}
+                  {/* Trending Badge */}
+                  {content.aiScore > 90 && (
+                    <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
+                      <TrendingUp className="h-3 w-3 mr-1" />
+                      Hot
+                    </Badge>
+                  )}
+                </div>
+
+                <CardContent className="p-4 h-auto">
+                  <div className="space-y-3 min-h-0">
+                    {/* Title */}
+                    <h3 className="font-semibold text-sm leading-tight line-clamp-2 group-hover:text-purple-600 transition-colors break-words">
+                      {content.title}
+                    </h3>
+
+                    {/* Author/Creator */}
+                    {(content.author || content.creator) && (
+                      <div className="flex items-center gap-2 overflow-hidden">
+                        <Avatar className="h-6 w-6 flex-shrink-0">
+                          <AvatarImage
+                            src={(content.author || content.creator)?.avatar}
+                          />
+                          <AvatarFallback className="text-xs">
+                            {(
+                              (content.author || content.creator)?.name || "U"
+                            ).charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className="text-xs text-gray-600 truncate">
+                          {(content.author || content.creator)?.name}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Stats */}
+                    <div className="text-xs text-gray-500">
+                      {formatContentStats(content)}
                     </div>
 
-                    <CardContent className="p-4 h-auto">
-                      <div className="space-y-3 min-h-0">
-                        {/* Title */}
-                        <h3 className="font-semibold text-sm leading-tight line-clamp-2 group-hover:text-purple-600 transition-colors break-words">
-                          {content.title || "Untitled Content"}
-                        </h3>
-
-                        {/* Author/Creator */}
-                        {(content.author || content.creator) && (
-                          <div className="flex items-center gap-2 overflow-hidden">
-                            <Avatar className="h-6 w-6 flex-shrink-0">
-                              <AvatarImage
-                                src={
-                                  (content.author || content.creator)?.avatar
-                                }
-                              />
-                              <AvatarFallback className="text-xs">
-                                {(
-                                  (content.author || content.creator)?.name ||
-                                  "U"
-                                )
-                                  .charAt(0)
-                                  .toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span className="text-xs text-gray-600 truncate">
-                              {(content.author || content.creator)?.name ||
-                                "Unknown Author"}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Stats */}
-                        <div className="text-xs text-gray-500">
-                          {formatContentStats(content)}
-                        </div>
-
-                        {/* AI Recommendation Reason */}
-                        {showReasons &&
-                          content.reason &&
-                          typeof content.reason === "string" && (
-                            <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
-                              <Target className="h-3 w-3" />
-                              {content.reason}
-                            </div>
-                          )}
-
-                        {/* Category */}
-                        {content.category && (
-                          <Badge variant="secondary" className="text-xs">
-                            {typeof content.category === "string"
-                              ? content.category
-                              : content.category?.name || "Unknown"}
-                          </Badge>
-                        )}
-
-                        {/* Time */}
-                        {content.createdAt && (
-                          <div className="flex items-center gap-1 text-xs text-gray-400">
-                            <Clock className="h-3 w-3" />
-                            {typeof content.createdAt === "string" ||
-                            content.createdAt instanceof Date
-                              ? new Date(content.createdAt).toLocaleDateString()
-                              : "Unknown Date"}
-                          </div>
-                        )}
+                    {/* AI Recommendation Reason */}
+                    {showReasons && content.reason && (
+                      <div className="flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                        <Target className="h-3 w-3" />
+                        {content.reason}
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              );
-            })}
+                    )}
+
+                    {/* Category */}
+                    {content.category && (
+                      <Badge variant="secondary" className="text-xs">
+                        {content.category}
+                      </Badge>
+                    )}
+
+                    {/* Time */}
+                    {content.createdAt && (
+                      <div className="flex items-center gap-1 text-xs text-gray-400">
+                        <Clock className="h-3 w-3" />
+                        {new Date(content.createdAt).toLocaleDateString()}
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          ))}
         </div>
 
         {/* See More Button */}

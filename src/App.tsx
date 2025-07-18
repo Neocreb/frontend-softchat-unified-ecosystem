@@ -97,7 +97,6 @@ import AIFeatures from "./components/ai/AIFeatures";
 import AIPersonalAssistantDashboard from "./components/ai/AIPersonalAssistant";
 import Blog from "./pages/Blog";
 import SimpleBlog from "./pages/SimpleBlog";
-import TestBlog from "./pages/TestBlog";
 import BlogPost from "./pages/BlogPost";
 import CommunityEvents from "./pages/CommunityEvents";
 import SubscriptionManager from "./components/premium/SubscriptionManager";
@@ -214,7 +213,14 @@ const AppRoutes = () => {
       <Route path="/home" element={<Home />} />
 
       {/* Public Blog routes - accessible to everyone */}
-      <Route path="/blog" element={<TestBlog />} />
+      <Route
+        path="/blog"
+        element={
+          <ErrorBoundary fallback={<SimpleBlog />}>
+            <Blog />
+          </ErrorBoundary>
+        }
+      />
       <Route path="/blog/:slug" element={<BlogPost />} />
 
       {/* Auth route - handle loading state and redirects */}
