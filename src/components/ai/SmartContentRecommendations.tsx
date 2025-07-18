@@ -325,7 +325,7 @@ export function SmartContentRecommendations({
                   <div className="space-y-3 min-h-0">
                     {/* Title */}
                     <h3 className="font-semibold text-sm leading-tight line-clamp-2 group-hover:text-purple-600 transition-colors break-words">
-                      {content.title}
+                      {content.title || "Untitled Content"}
                     </h3>
 
                     {/* Author/Creator */}
@@ -342,7 +342,8 @@ export function SmartContentRecommendations({
                           </AvatarFallback>
                         </Avatar>
                         <span className="text-xs text-gray-600 truncate">
-                          {(content.author || content.creator)?.name}
+                          {(content.author || content.creator)?.name ||
+                            "Unknown Author"}
                         </span>
                       </div>
                     )}
