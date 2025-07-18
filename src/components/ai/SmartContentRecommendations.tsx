@@ -340,9 +340,9 @@ export function SmartContentRecommendations({
                             src={(content.author || content.creator)?.avatar}
                           />
                           <AvatarFallback className="text-xs">
-                            {(
-                              (content.author || content.creator)?.name || "U"
-                            ).charAt(0)}
+                            {((content.author || content.creator)?.name || "U")
+                              .charAt(0)
+                              .toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
                         <span className="text-xs text-gray-600 truncate">
