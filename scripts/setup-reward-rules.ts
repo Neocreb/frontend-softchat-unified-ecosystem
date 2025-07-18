@@ -11,6 +11,11 @@ if (!connectionString) {
   throw new Error("DATABASE_URL is required");
 }
 
+console.log(
+  "Database URL configured:",
+  connectionString.replace(/:[^:]*@/, ":****@"),
+);
+
 const sql = postgres(connectionString);
 const db = drizzle({ client: sql });
 
