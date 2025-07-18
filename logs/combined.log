@@ -2264,3 +2264,9 @@
 {"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-07-18T08:16:42.551Z"}
 {"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-07-18T08:16:42.552Z"}
 {"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-07-18T08:16:42.552Z"}
+{"duration":"9ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-07-18T08:16:52.503Z","url":"/status","userAgent":"node"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.533Z","url":"/creator/reward-summary","userAgent":"node"}
+{"duration":"10ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-18T08:16:52.544Z","url":"/api/docs","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.547Z","url":"/creator/reward-summary","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.551Z","url":"/creator/reward-history","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.554Z","url":"/creator/trust-score","userAgent":"node"}
