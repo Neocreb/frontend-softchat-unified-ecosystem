@@ -2240,3 +2240,4 @@
 {"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-07-18T08:13:59.958Z"}
 {"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-07-18T08:13:59.958Z"}
 {"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-07-18T08:13:59.958Z"}
+{"level":"error","message":"Unhandled Rejection at:","service":"softchat-comprehensive","timestamp":"2025-07-18T08:14:10.021Z"}
