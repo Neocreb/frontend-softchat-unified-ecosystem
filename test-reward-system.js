@@ -38,7 +38,7 @@ async function testRewardSystem() {
       console.log("❌ reward_rules table doesn't exist");
       console.log("🔧 Creating basic reward_rules table...");
 
-      // Create a simple reward_rules table
+      // Create the complete reward_rules table structure
       await sql`
         CREATE TABLE IF NOT EXISTS reward_rules (
           id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -52,13 +52,19 @@ async function testRewardSystem() {
           weekly_limit INTEGER,
           monthly_limit INTEGER,
           minimum_trust_score DECIMAL(5,2) DEFAULT 0,
+          minimum_value DECIMAL(15,2),
           decay_enabled BOOLEAN DEFAULT true,
           decay_start INTEGER DEFAULT 1,
           decay_rate DECIMAL(5,4) DEFAULT 0.1,
           min_multiplier DECIMAL(3,2) DEFAULT 0.1,
           requires_moderation BOOLEAN DEFAULT false,
           quality_threshold DECIMAL(3,2) DEFAULT 0,
+          conditions JSONB,
           is_active BOOLEAN DEFAULT true,
+          active_from TIMESTAMP,
+          active_to TIMESTAMP,
+          created_by UUID,
+          last_modified_by UUID,
           created_at TIMESTAMP DEFAULT NOW(),
           updated_at TIMESTAMP DEFAULT NOW()
         );
