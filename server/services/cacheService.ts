@@ -93,6 +93,21 @@ class CacheService {
     return this.isConnected && this.redis !== null;
   }
 
+  // Ping Redis to check connection
+  async ping(): Promise<boolean> {
+    if (!this.isConnected || !this.redis) {
+      return false;
+    }
+
+    try {
+      const result = await this.redis.ping();
+      return result === "PONG";
+    } catch (error) {
+      console.error("Cache ping error:", error);
+      return false;
+    }
+  }
+
   // Get value from cache
   async get<T>(key: string): Promise<T | null> {
     if (!this.isAvailable()) return null;

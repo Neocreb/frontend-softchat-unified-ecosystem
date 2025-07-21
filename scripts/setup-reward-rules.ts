@@ -1,5 +1,27 @@
-import { db } from "../server/db";
+import dotenv from "dotenv";
+dotenv.config();
+
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { rewardRules } from "../shared/activity-economy-schema";
+
+// Use regular postgres connection for scripts to avoid WebSocket issues
+// Explicitly use the Neon database URL for this script
+const connectionString =
+  process.env.DATABASE_URL ||
+  "postgresql://neondb_owner:npg_GWUcF3OZCph6@ep-long-hat-adb36p2f-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require";
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL is required");
+}
+
+console.log(
+  "Database URL configured:",
+  connectionString.replace(/:[^:]*@/, ":****@"),
+);
+
+const sql = postgres(connectionString);
+const db = drizzle({ client: sql });
 
 const defaultRewardRules = [
   {
@@ -186,7 +208,8 @@ async function setupRewardRules() {
   }
 }
 
-if (require.main === module) {
+// Check if this is the main module
+if (import.meta.url === new URL(process.argv[1], "file://").href) {
   setupRewardRules()
     .then(() => {
       console.log("🎉 Reward rules setup completed!");

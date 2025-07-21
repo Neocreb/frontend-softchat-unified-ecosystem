@@ -13,7 +13,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { users, profiles } from "./schema";
+import { users, profiles, p2pOffers } from "./schema";
 
 // =============================================================================
 // WALLET & TRANSACTION SYSTEM

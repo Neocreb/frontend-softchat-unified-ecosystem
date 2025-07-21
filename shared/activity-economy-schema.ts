@@ -218,7 +218,7 @@ export const referralLinks = pgTable("referral_links", {
     precision: 10,
     scale: 2,
   }).default("10"),
-  refereeReward: decimal("referee_reward", { precision: 10, scale }).default(
+  refereeReward: decimal("referee_reward", { precision: 10, scale: 2 }).default(
     "5",
   ),
   revenueSharePercentage: decimal("revenue_share_percentage", {
@@ -395,7 +395,7 @@ export const rewardRules = pgTable("reward_rules", {
   // Decay Configuration
   decayEnabled: boolean("decay_enabled").default(true),
   decayStart: integer("decay_start").default(1), // After how many actions decay starts
-  decayRate: decimal("decay_rate", { precision: 5, scale }).default("0.1"), // Exponential decay rate
+  decayRate: decimal("decay_rate", { precision: 5, scale: 4 }).default("0.1"), // Exponential decay rate
   minMultiplier: decimal("min_multiplier", { precision: 3, scale: 2 }).default(
     "0.1",
   ), // Minimum decay multiplier
@@ -492,7 +492,7 @@ export const boostShopItems = pgTable("boost_shop_items", {
 
   // Boost Effects
   boostType: text("boost_type").notNull(), // multiplier, reach, visibility, etc.
-  boostValue: decimal("boost_value", { precision: 10, scale }).notNull(),
+  boostValue: decimal("boost_value", { precision: 10, scale: 4 }).notNull(),
   duration: integer("duration"), // Duration in hours, null = permanent
 
   // Availability

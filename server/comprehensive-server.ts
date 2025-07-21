@@ -18,6 +18,7 @@ import { registerEnhancedRoutes } from "./routes/enhanced";
 import comprehensiveApiRoutes from "./routes/comprehensive-api";
 import adminComprehensiveRoutes from "./routes/admin-comprehensive";
 import marketplaceApiRoutes from "./routes/marketplace-api";
+import activityEconomyApiRoutes from "./routes/activity-economy-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
@@ -26,6 +27,9 @@ import { cacheService } from "./services/cacheService";
 
 // Import database and security
 import { db } from "./db";
+import { sql, eq, or, lte } from "drizzle-orm";
+import { freelanceJobs, products } from "../shared/schema";
+import { adminSessions, adminActivityLogs } from "../shared/enhanced-schema";
 import {
   authenticateToken,
   requireRole,
@@ -156,38 +160,48 @@ app.use((req, res, next) => {
 // =============================================================================
 
 app.get("/health", async (req, res) => {
+  let dbStatus = "disconnected";
+  let cacheStatus = false;
+  let overallHealthy = true;
+
+  // Check database connection
   try {
-    // Check database connection
     await db.execute(sql`SELECT 1`);
-
-    // Check cache service
-    const cacheStatus = await cacheService.ping();
-
-    res.json({
-      status: "healthy",
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      version: process.env.npm_package_version || "1.0.0",
-      environment: process.env.NODE_ENV || "development",
-      services: {
-        database: "connected",
-        cache: cacheStatus ? "connected" : "disconnected",
-        email: emailService.isConfigured() ? "configured" : "not_configured",
-      },
-      memory: {
-        used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
-        total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
-        rss: Math.round(process.memoryUsage().rss / 1024 / 1024),
-      },
-    });
+    dbStatus = "connected";
   } catch (error) {
-    logger.error("Health check failed:", error);
-    res.status(503).json({
-      status: "unhealthy",
-      timestamp: new Date().toISOString(),
-      error: "Service unavailable",
-    });
+    logger.error("Database health check failed:", error);
+    dbStatus = "disconnected";
+    overallHealthy = false;
   }
+
+  // Check cache service (non-critical)
+  try {
+    cacheStatus = await cacheService.ping();
+  } catch (error) {
+    logger.error("Cache health check failed:", error);
+    cacheStatus = false;
+    // Cache is non-critical, don't fail health check
+  }
+
+  const response = {
+    status: overallHealthy ? "healthy" : "unhealthy",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: process.env.npm_package_version || "1.0.0",
+    environment: process.env.NODE_ENV || "development",
+    services: {
+      database: dbStatus,
+      cache: cacheStatus ? "connected" : "disconnected",
+      email: emailService.isConfigured() ? "configured" : "not_configured",
+    },
+    memory: {
+      used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+      total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+      rss: Math.round(process.memoryUsage().rss / 1024 / 1024),
+    },
+  };
+
+  res.status(overallHealthy ? 200 : 503).json(response);
 });
 
 app.get("/status", async (req, res) => {
@@ -216,6 +230,9 @@ app.get("/status", async (req, res) => {
 
 // V1 API Routes (Comprehensive)
 app.use("/api/v1", comprehensiveApiRoutes);
+
+// Activity Economy API Routes
+app.use("/api/v1", activityEconomyApiRoutes);
 
 // Marketplace API Routes
 app.use("/api/marketplace", marketplaceApiRoutes);
