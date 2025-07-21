@@ -1,5 +1,3 @@
-# 🚀 Softchat Platform - Production-Ready Backend
-
 A comprehensive AI-powered social media and marketplace platform with crypto trading, freelancing, and advanced analytics features.
 
 ## ✨ Features
