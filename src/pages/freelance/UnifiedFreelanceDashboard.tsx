@@ -109,7 +109,7 @@ const UnifiedFreelanceDashboard: React.FC = () => {
     );
   }
 
-  // If user has both roles, show role selector
+  // If user is new or needs to choose role, show role selector
   if (selectedView === "both") {
     return (
       <div className="container mx-auto px-4 py-6">
