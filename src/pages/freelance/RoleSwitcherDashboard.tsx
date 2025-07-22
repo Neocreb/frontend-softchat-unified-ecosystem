@@ -65,17 +65,21 @@ const RoleSwitcherDashboard: React.FC = () => {
           </div>
           
           {/* Role Description */}
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <div className={`mt-4 p-4 rounded-lg border-2 ${
+            activeRole === "freelancer"
+              ? "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800"
+              : "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
+          }`}>
             <div className="text-center">
               <h3 className="font-semibold text-lg mb-2">
                 {activeRole === "freelancer" ? (
                   <>
-                    <Users className="w-5 h-5 inline mr-2 text-blue-500" />
+                    <Users className="w-5 h-5 inline mr-2 text-blue-600" />
                     Freelancer Dashboard
                   </>
                 ) : (
                   <>
-                    <UserCheck className="w-5 h-5 inline mr-2 text-green-500" />
+                    <UserCheck className="w-5 h-5 inline mr-2 text-green-600" />
                     Client Dashboard
                   </>
                 )}
@@ -87,6 +91,17 @@ const RoleSwitcherDashboard: React.FC = () => {
                   "Post jobs, hire talented freelancers, and manage your projects"
                 )}
               </p>
+              <div className="mt-3 flex justify-center">
+                <Badge
+                  className={`${
+                    activeRole === "freelancer"
+                      ? "bg-blue-500 text-white"
+                      : "bg-green-500 text-white"
+                  } px-3 py-1`}
+                >
+                  Active: {activeRole === "freelancer" ? "Freelancer Mode" : "Client Mode"}
+                </Badge>
+              </div>
             </div>
           </div>
         </div>
