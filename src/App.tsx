@@ -40,7 +40,7 @@ import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
 import FreelanceJobs from "./pages/freelance/FreelanceJobs";
-import UnifiedFreelanceDashboard from "./pages/freelance/UnifiedFreelanceDashboard";
+import RoleSwitcherDashboard from "./pages/freelance/RoleSwitcherDashboard";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
