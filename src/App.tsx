@@ -112,13 +112,13 @@ import {
   MemoriesPage,
   SavedPage,
   SupportPage,
-  PrivacyPage,
-  TermsPage,
-  AdvertisingPage,
-  AdChoicesPage,
-  CookiesPage,
   HelpPage,
 } from "./pages/PlaceholderPages";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiesPolicy from "./pages/CookiesPolicy";
+import AdvertisingPolicy from "./pages/AdvertisingPolicy";
+import AdChoices from "./pages/AdChoices";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -352,11 +352,11 @@ const AppRoutes = () => {
           <Route path="saved" element={<SavedPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="pages" element={<Pages />} />
-          <Route path="privacy" element={<PrivacyPage />} />
-          <Route path="terms" element={<TermsPage />} />
-          <Route path="advertising" element={<AdvertisingPage />} />
-          <Route path="ad-choices" element={<AdChoicesPage />} />
-          <Route path="cookies" element={<CookiesPage />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="terms" element={<TermsOfService />} />
+          <Route path="advertising" element={<AdvertisingPolicy />} />
+          <Route path="ad-choices" element={<AdChoices />} />
+          <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
