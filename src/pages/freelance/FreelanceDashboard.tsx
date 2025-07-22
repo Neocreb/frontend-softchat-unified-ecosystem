@@ -729,13 +729,17 @@ export const FreelanceDashboard: React.FC = () => {
                         Achievements
                       </Link>
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      <Target className="w-5 h-5 mr-3" />
-                      Project Planner
-                    </Button>
+                    <ProjectPlanner
+                      trigger={
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                        >
+                          <Target className="w-5 h-5 mr-3" />
+                          Project Planner
+                        </Button>
+                      }
+                    />
                   </CardContent>
                 </Card>
 
