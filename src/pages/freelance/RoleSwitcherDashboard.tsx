@@ -113,40 +113,56 @@ const RoleSwitcherDashboard: React.FC = () => {
           <div className="flex flex-wrap justify-center gap-2">
             {activeRole === "freelancer" ? (
               <>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <Search className="w-3 h-3 mr-1" />
-                  Browse Jobs
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/browse-jobs">
+                    <Search className="w-3 h-3 mr-1" />
+                    Browse Jobs
+                  </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <Star className="w-3 h-3 mr-1" />
-                  Update Profile
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/update-profile">
+                    <Star className="w-3 h-3 mr-1" />
+                    Update Profile
+                  </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <MessageCircle className="w-3 h-3 mr-1" />
-                  Messages
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/chat">
+                    <MessageCircle className="w-3 h-3 mr-1" />
+                    Messages
+                  </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <DollarSign className="w-3 h-3 mr-1" />
-                  Earnings
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/earnings">
+                    <DollarSign className="w-3 h-3 mr-1" />
+                    Earnings
+                  </Link>
                 </Button>
               </>
             ) : (
               <>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <Plus className="w-3 h-3 mr-1" />
-                  Post Job
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/post-job">
+                    <Plus className="w-3 h-3 mr-1" />
+                    Post Job
+                  </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <Users className="w-3 h-3 mr-1" />
-                  Find Freelancers
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/find-freelancers">
+                    <Users className="w-3 h-3 mr-1" />
+                    Find Freelancers
+                  </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <Eye className="w-3 h-3 mr-1" />
-                  Manage Projects
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/manage-projects">
+                    <Eye className="w-3 h-3 mr-1" />
+                    Manage Projects
+                  </Link>
                 </Button>
-                <Button size="sm" variant="outline" className="text-xs">
-                  <CheckCircle2 className="w-3 h-3 mr-1" />
-                  Approve Work
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/approve-work">
+                    <CheckCircle2 className="w-3 h-3 mr-1" />
+                    Approve Work
+                  </Link>
                 </Button>
               </>
             )}
