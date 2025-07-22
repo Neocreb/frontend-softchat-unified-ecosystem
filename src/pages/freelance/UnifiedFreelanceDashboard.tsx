@@ -267,32 +267,50 @@ const UnifiedFreelanceDashboard: React.FC = () => {
     );
   }
 
-  // Show the selected dashboard
+  // Show the selected dashboard with permanent role switcher
   return (
     <div>
-      {/* Role Switcher */}
-      {(userRole.hasFreelancerProfile && userRole.hasClientProjects) && (
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-center">
-            <Tabs value={selectedView} onValueChange={(value: string) => setSelectedView(value as "freelancer" | "client")}>
-              <TabsList className="grid w-full grid-cols-3 max-w-md">
-                <TabsTrigger value="freelancer" className="flex items-center gap-2">
-                  <Users className="w-4 h-4" />
-                  Freelancer
-                </TabsTrigger>
-                <TabsTrigger value="client" className="flex items-center gap-2">
-                  <UserCheck className="w-4 h-4" />
-                  Client
-                </TabsTrigger>
-                <TabsTrigger value="both" className="flex items-center gap-2">
-                  <Briefcase className="w-4 h-4" />
-                  Both
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
+      {/* Always Show Role Switcher */}
+      <div className="container mx-auto px-4 py-4 border-b bg-gray-50/50 dark:bg-gray-900/50">
+        <div className="flex justify-center">
+          <Tabs
+            value={selectedView === "both" ? userRole?.preferredRole || "freelancer" : selectedView}
+            onValueChange={(value: string) => setSelectedView(value as "freelancer" | "client")}
+          >
+            <TabsList className="grid w-full grid-cols-2 max-w-sm bg-white dark:bg-gray-800 shadow-sm">
+              <TabsTrigger value="freelancer" className="flex items-center gap-2 data-[state=active]:bg-blue-500 data-[state=active]:text-white">
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">Freelancer</span>
+                <span className="sm:hidden">Work</span>
+                {userRole && userRole.activeFreelanceProjects > 0 && (
+                  <Badge className="ml-1 bg-blue-600 text-white text-xs px-1.5 py-0.5">
+                    {userRole.activeFreelanceProjects}
+                  </Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="client" className="flex items-center gap-2 data-[state=active]:bg-green-500 data-[state=active]:text-white">
+                <UserCheck className="w-4 h-4" />
+                <span className="hidden sm:inline">Client</span>
+                <span className="sm:hidden">Hire</span>
+                {userRole && userRole.activeClientProjects > 0 && (
+                  <Badge className="ml-1 bg-green-600 text-white text-xs px-1.5 py-0.5">
+                    {userRole.activeClientProjects}
+                  </Badge>
+                )}
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
-      )}
+        <div className="text-center mt-2">
+          <p className="text-sm text-muted-foreground">
+            {selectedView === "freelancer" ? (
+              "Manage your freelance projects and find work"
+            ) : (
+              "Hire freelancers and manage your projects"
+            )}
+          </p>
+        </div>
+      </div>
 
       {/* Dashboard Content */}
       {selectedView === "freelancer" && <FreelanceDashboard />}
