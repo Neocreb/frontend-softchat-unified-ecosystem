@@ -94,13 +94,8 @@ const RoleSwitcherDashboard: React.FC = () => {
 
       {/* Dashboard Content */}
       <div className="container mx-auto">
-        <TabsContent value="freelancer" className="mt-0">
-          {activeRole === "freelancer" && <FreelanceDashboard />}
-        </TabsContent>
-        
-        <TabsContent value="client" className="mt-0">
-          {activeRole === "client" && <ClientDashboard />}
-        </TabsContent>
+        {activeRole === "freelancer" && <FreelanceDashboard />}
+        {activeRole === "client" && <ClientDashboard />}
       </div>
 
       {/* Quick Role Preview Cards - shown only when switching */}
