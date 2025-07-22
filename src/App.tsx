@@ -261,6 +261,13 @@ const AppRoutes = () => {
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
           <Route path="freelance/dashboard" element={<RoleSwitcherDashboard />} />
+          <Route path="freelance/update-profile" element={<UpdateProfile />} />
+          <Route path="freelance/browse-jobs" element={<BrowseJobs />} />
+          <Route path="freelance/earnings" element={<Earnings />} />
+          <Route path="freelance/post-job" element={<PostJob />} />
+          <Route path="freelance/find-freelancers" element={<FindFreelancers />} />
+          <Route path="freelance/manage-projects" element={<ManageProjects />} />
+          <Route path="freelance/approve-work" element={<ApproveWork />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
