@@ -41,6 +41,7 @@ import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceB
 import { FreelanceCollaborationTools } from "@/components/freelance/FreelanceCollaborationTools";
 import RateCalculator from "@/components/freelance/RateCalculator";
 import ProjectPlanner from "@/components/freelance/ProjectPlanner";
+import FileUpload from "@/components/freelance/FileUpload";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
