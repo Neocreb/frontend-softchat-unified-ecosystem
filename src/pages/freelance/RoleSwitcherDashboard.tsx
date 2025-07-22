@@ -107,6 +107,53 @@ const RoleSwitcherDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Quick Action Bar */}
+      <div className="bg-white dark:bg-gray-800 border-b">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex flex-wrap justify-center gap-2">
+            {activeRole === "freelancer" ? (
+              <>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <Search className="w-3 h-3 mr-1" />
+                  Browse Jobs
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <Star className="w-3 h-3 mr-1" />
+                  Update Profile
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <MessageCircle className="w-3 h-3 mr-1" />
+                  Messages
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <DollarSign className="w-3 h-3 mr-1" />
+                  Earnings
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <Plus className="w-3 h-3 mr-1" />
+                  Post Job
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <Users className="w-3 h-3 mr-1" />
+                  Find Freelancers
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <Eye className="w-3 h-3 mr-1" />
+                  Manage Projects
+                </Button>
+                <Button size="sm" variant="outline" className="text-xs">
+                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                  Approve Work
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Dashboard Content */}
       <div className="container mx-auto">
         {activeRole === "freelancer" && <FreelanceDashboard />}
