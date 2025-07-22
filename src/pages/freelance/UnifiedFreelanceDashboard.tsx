@@ -66,7 +66,7 @@ const UnifiedFreelanceDashboard: React.FC = () => {
         setUserRole(role);
       } catch (error) {
         console.error("Error detecting user role:", error);
-        // Default setup - always show both options
+        // Default setup
         setUserRole({
           hasFreelancerProfile: false,
           hasClientProjects: false,
@@ -74,7 +74,7 @@ const UnifiedFreelanceDashboard: React.FC = () => {
           activeClientProjects: 0,
           preferredRole: "freelancer",
         });
-        setSelectedView("both");
+        setSelectedView("freelancer");
       } finally {
         setLoading(false);
       }
