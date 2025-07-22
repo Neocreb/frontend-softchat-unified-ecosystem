@@ -55,6 +55,7 @@ import TaskTracker from "@/components/freelance/TaskTracker";
 import NegotiationChat from "@/components/freelance/NegotiationChat";
 import ReviewForm from "@/components/freelance/ReviewForm";
 import CreateJobModal from "@/components/freelance/CreateJobModal";
+import FileUpload from "@/components/freelance/FileUpload";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface ClientStats {
