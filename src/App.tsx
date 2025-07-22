@@ -253,7 +253,7 @@ const AppRoutes = () => {
           <Route path="feed" element={<EnhancedFeed />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
-          <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
+          <Route path="freelance/dashboard" element={<UnifiedFreelanceDashboard />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
