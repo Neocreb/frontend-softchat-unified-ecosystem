@@ -39,6 +39,9 @@ import {
 import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
 import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
 import { FreelanceCollaborationTools } from "@/components/freelance/FreelanceCollaborationTools";
+import RateCalculator from "@/components/freelance/RateCalculator";
+import ProjectPlanner from "@/components/freelance/ProjectPlanner";
+import FileUpload from "@/components/freelance/FileUpload";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
@@ -310,20 +313,20 @@ export const FreelanceDashboard: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="files">
-            <Card>
-              <CardHeader>
-                <CardTitle>Project Files</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-medium">No files yet</h3>
-                  <p className="text-muted-foreground">
-                    Upload project files and deliverables here
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <FileUpload
+              projectId={selectedProject.id}
+              allowedTypes={['*']}
+              maxSize={25}
+              multiple={true}
+              onFileUploaded={(file) => {
+                console.log('File uploaded:', file);
+                // Here you would typically update the project's file list
+              }}
+              onFileDeleted={(fileId) => {
+                console.log('File deleted:', fileId);
+                // Here you would typically remove the file from the project
+              }}
+            />
           </TabsContent>
 
           <TabsContent value="billing">
@@ -706,13 +709,17 @@ export const FreelanceDashboard: React.FC = () => {
                         AI Job Matching
                       </Link>
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      <BarChart3 className="w-5 h-5 mr-3" />
-                      Rate Calculator
-                    </Button>
+                    <RateCalculator
+                      trigger={
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                        >
+                          <BarChart3 className="w-5 h-5 mr-3" />
+                          Rate Calculator
+                        </Button>
+                      }
+                    />
                     <Button
                       variant="outline"
                       className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -723,13 +730,17 @@ export const FreelanceDashboard: React.FC = () => {
                         Achievements
                       </Link>
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      <Target className="w-5 h-5 mr-3" />
-                      Project Planner
-                    </Button>
+                    <ProjectPlanner
+                      trigger={
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
+                        >
+                          <Target className="w-5 h-5 mr-3" />
+                          Project Planner
+                        </Button>
+                      }
+                    />
                   </CardContent>
                 </Card>
 

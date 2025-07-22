@@ -40,7 +40,14 @@ import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
 import FreelanceJobs from "./pages/freelance/FreelanceJobs";
-import FreelanceDashboard from "./pages/freelance/FreelanceDashboard";
+import RoleSwitcherDashboard from "./pages/freelance/RoleSwitcherDashboard";
+import UpdateProfile from "./pages/freelance/UpdateProfile";
+import BrowseJobs from "./pages/freelance/BrowseJobs";
+import Earnings from "./pages/freelance/Earnings";
+import PostJob from "./pages/freelance/PostJob";
+import FindFreelancers from "./pages/freelance/FindFreelancers";
+import ManageProjects from "./pages/freelance/ManageProjects";
+import ApproveWork from "./pages/freelance/ApproveWork";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
@@ -112,13 +119,13 @@ import {
   MemoriesPage,
   SavedPage,
   SupportPage,
-  PrivacyPage,
-  TermsPage,
-  AdvertisingPage,
-  AdChoicesPage,
-  CookiesPage,
   HelpPage,
 } from "./pages/PlaceholderPages";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import CookiesPolicy from "./pages/CookiesPolicy";
+import AdvertisingPolicy from "./pages/AdvertisingPolicy";
+import AdChoices from "./pages/AdChoices";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -253,7 +260,14 @@ const AppRoutes = () => {
           <Route path="feed" element={<EnhancedFeed />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
-          <Route path="freelance/dashboard" element={<FreelanceDashboard />} />
+          <Route path="freelance/dashboard" element={<RoleSwitcherDashboard />} />
+          <Route path="freelance/update-profile" element={<UpdateProfile />} />
+          <Route path="freelance/browse-jobs" element={<BrowseJobs />} />
+          <Route path="freelance/earnings" element={<Earnings />} />
+          <Route path="freelance/post-job" element={<PostJob />} />
+          <Route path="freelance/find-freelancers" element={<FindFreelancers />} />
+          <Route path="freelance/manage-projects" element={<ManageProjects />} />
+          <Route path="freelance/approve-work" element={<ApproveWork />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
@@ -352,11 +366,11 @@ const AppRoutes = () => {
           <Route path="saved" element={<SavedPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="pages" element={<Pages />} />
-          <Route path="privacy" element={<PrivacyPage />} />
-          <Route path="terms" element={<TermsPage />} />
-          <Route path="advertising" element={<AdvertisingPage />} />
-          <Route path="ad-choices" element={<AdChoicesPage />} />
-          <Route path="cookies" element={<CookiesPage />} />
+          <Route path="privacy" element={<PrivacyPolicy />} />
+          <Route path="terms" element={<TermsOfService />} />
+          <Route path="advertising" element={<AdvertisingPolicy />} />
+          <Route path="ad-choices" element={<AdChoices />} />
+          <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
