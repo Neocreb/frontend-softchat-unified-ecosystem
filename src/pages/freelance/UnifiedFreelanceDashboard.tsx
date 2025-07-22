@@ -313,7 +313,7 @@ const UnifiedFreelanceDashboard: React.FC = () => {
       </div>
 
       {/* Dashboard Content */}
-      {selectedView === "freelancer" && <FreelanceDashboard />}
+      {(selectedView === "freelancer" || selectedView === "both") && <FreelanceDashboard />}
       {selectedView === "client" && <ClientDashboard />}
     </div>
   );
