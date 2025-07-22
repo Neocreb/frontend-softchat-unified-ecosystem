@@ -51,17 +51,16 @@ const UnifiedFreelanceDashboard: React.FC = () => {
           activeClientProjects: (clientProjects || []).filter((p: Project) => p.status === "active").length,
         };
 
-        // Always allow users to choose their preferred role
-        // Don't auto-select based on existing projects
-        if (role.hasFreelancerProfile && role.hasClientProjects) {
-          role.preferredRole = role.activeFreelanceProjects >= role.activeClientProjects ? "freelancer" : "client";
-          setSelectedView("both"); // Show role selector
-        } else if (role.hasClientProjects && !role.hasFreelancerProfile) {
+        // Set preferred role but always start with role selection
+        if (role.hasClientProjects && !role.hasFreelancerProfile) {
           role.preferredRole = "client";
-          setSelectedView("both"); // Still show both options
+          setSelectedView("client");
+        } else if (role.hasFreelancerProfile && role.hasClientProjects) {
+          role.preferredRole = role.activeFreelanceProjects >= role.activeClientProjects ? "freelancer" : "client";
+          setSelectedView(role.preferredRole);
         } else {
           role.preferredRole = "freelancer";
-          setSelectedView("both"); // Always show both options for choice
+          setSelectedView("freelancer");
         }
 
         setUserRole(role);
