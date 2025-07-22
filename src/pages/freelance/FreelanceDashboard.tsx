@@ -39,6 +39,8 @@ import {
 import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
 import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
 import { FreelanceCollaborationTools } from "@/components/freelance/FreelanceCollaborationTools";
+import RateCalculator from "@/components/freelance/RateCalculator";
+import ProjectPlanner from "@/components/freelance/ProjectPlanner";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
