@@ -474,24 +474,20 @@ export const ClientDashboard: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="files">
-            <Card>
-              <CardHeader>
-                <CardTitle>Project Files</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <FileText className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-medium">No files yet</h3>
-                  <p className="text-muted-foreground">
-                    Project files and deliverables will appear here
-                  </p>
-                  <Button className="mt-4">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Files
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <FileUpload
+              projectId={selectedProject.id}
+              allowedTypes={['*']}
+              maxSize={25}
+              multiple={true}
+              onFileUploaded={(file) => {
+                console.log('File uploaded:', file);
+                // Here you would typically update the project's file list
+              }}
+              onFileDeleted={(fileId) => {
+                console.log('File deleted:', fileId);
+                // Here you would typically remove the file from the project
+              }}
+            />
           </TabsContent>
 
           <TabsContent value="billing">
