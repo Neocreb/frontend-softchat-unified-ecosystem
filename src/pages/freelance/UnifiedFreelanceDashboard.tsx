@@ -28,7 +28,7 @@ interface UserRole {
 const UnifiedFreelanceDashboard: React.FC = () => {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedView, setSelectedView] = useState<"freelancer" | "client" | "both">("both");
+  const [selectedView, setSelectedView] = useState<"freelancer" | "client" | "both">("freelancer");
   const { user } = useAuth();
   const { getProjects } = useFreelance();
 
@@ -40,7 +40,7 @@ const UnifiedFreelanceDashboard: React.FC = () => {
       try {
         // Get projects where user is freelancer
         const freelancerProjects = await getProjects(user.id, "freelancer").catch(() => []);
-        
+
         // Get projects where user is client
         const clientProjects = await getProjects(user.id, "client").catch(() => []);
 
@@ -51,27 +51,23 @@ const UnifiedFreelanceDashboard: React.FC = () => {
           activeClientProjects: (clientProjects || []).filter((p: Project) => p.status === "active").length,
         };
 
-        // Determine preferred role based on activity
-        if (role.hasFreelancerProfile && !role.hasClientProjects) {
-          role.preferredRole = "freelancer";
-          setSelectedView("freelancer");
+        // Always allow users to choose their preferred role
+        // Don't auto-select based on existing projects
+        if (role.hasFreelancerProfile && role.hasClientProjects) {
+          role.preferredRole = role.activeFreelanceProjects >= role.activeClientProjects ? "freelancer" : "client";
+          setSelectedView("both"); // Show role selector
         } else if (role.hasClientProjects && !role.hasFreelancerProfile) {
           role.preferredRole = "client";
-          setSelectedView("client");
-        } else if (role.hasFreelancerProfile && role.hasClientProjects) {
-          // User has both roles, determine based on recent activity
-          role.preferredRole = role.activeFreelanceProjects >= role.activeClientProjects ? "freelancer" : "client";
-          setSelectedView("both");
+          setSelectedView("both"); // Still show both options
         } else {
-          // New user with no projects
           role.preferredRole = "freelancer";
-          setSelectedView("freelancer");
+          setSelectedView("both"); // Always show both options for choice
         }
 
         setUserRole(role);
       } catch (error) {
         console.error("Error detecting user role:", error);
-        // Default to freelancer view on error
+        // Default setup - always show both options
         setUserRole({
           hasFreelancerProfile: false,
           hasClientProjects: false,
@@ -79,7 +75,7 @@ const UnifiedFreelanceDashboard: React.FC = () => {
           activeClientProjects: 0,
           preferredRole: "freelancer",
         });
-        setSelectedView("freelancer");
+        setSelectedView("both");
       } finally {
         setLoading(false);
       }
