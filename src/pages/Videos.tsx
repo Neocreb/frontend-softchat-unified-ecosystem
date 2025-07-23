@@ -603,6 +603,7 @@ const VideoCard: React.FC<{
           onAdComplete={handleAdComplete}
           onSkip={handleAdSkip}
           onRewardEarned={handleRewardEarned}
+          userId={user?.id || 'guest'}
         />
       )}
     </div>
