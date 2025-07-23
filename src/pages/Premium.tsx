@@ -109,6 +109,12 @@ const Premium: React.FC = () => {
   const isStorageLow = storagePercentage > 80;
   const isVideoLimitNear = videoLimitPercentage > 80;
 
+  // Get real wallet balance
+  const currentWalletBalance = walletBalance?.total || 0;
+
+  // Check KYC status - level 2 or higher is considered verified for premium
+  const isKYCVerified = kycLevel >= 2;
+
   const freePlanFeatures = [
     { feature: "Monetization tools", included: true },
     { feature: "Ad Manager", included: true },
@@ -440,7 +446,7 @@ const Premium: React.FC = () => {
                   {userPremium.kycStatus === 'verified' && (
                     <Badge className="bg-green-100 text-green-800">
                       <CheckCircle2 className="h-4 w-4 mr-1" />
-                      Verified ��
+                      Verified ✓
                     </Badge>
                   )}
                 </div>
