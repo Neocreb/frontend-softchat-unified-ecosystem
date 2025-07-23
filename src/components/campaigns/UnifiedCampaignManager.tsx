@@ -423,8 +423,8 @@ export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
       <CampaignCreationWizard
         isOpen={showCreateWizard}
         onClose={() => setShowCreateWizard(false)}
-        onCampaignCreated={(campaign) => {
-          setCampaigns(prev => [...prev, campaign]);
+        onCampaignCreated={(campaignData) => {
+          const campaign = campaignSyncService.createCampaign(campaignData);
           setShowCreateWizard(false);
           toast({
             title: "Campaign Created",
