@@ -610,7 +610,7 @@ const VideoCard: React.FC<{
 
 const Videos: React.FC = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [videos, setVideos] = useState<VideoData[]>(mockVideos);
+  const [videos, setVideos] = useState<VideoData[]>([]);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
@@ -621,6 +621,28 @@ const Videos: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Create video list with interstitial ads
+  useEffect(() => {
+    const videosWithAds = [];
+    let adCounter = 0;
+
+    for (let i = 0; i < mockVideos.length; i++) {
+      videosWithAds.push(mockVideos[i]);
+
+      // Insert interstitial ad after every 4 videos
+      if ((i + 1) % adSettings.interstitialFrequency === 0 && adSettings.enableAds) {
+        adCounter++;
+        videosWithAds.push({
+          id: `interstitial-ad-${adCounter}`,
+          isAd: true,
+          adType: 'interstitial'
+        } as any);
+      }
+    }
+
+    setVideos(videosWithAds);
+  }, []);
 
   // Auto-hide controls after inactivity
   useEffect(() => {
