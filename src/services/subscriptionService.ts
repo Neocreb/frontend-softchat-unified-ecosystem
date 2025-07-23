@@ -500,6 +500,7 @@ class SubscriptionService {
       return {
         id: `sub-payment-${Date.now()}`,
         creatorId: creatorId,
+        contentId: "", // Not specific to content
         subscriberId: subscriberId,
         type: "subscription",
         amount,
@@ -507,7 +508,6 @@ class SubscriptionService {
         description: "Monthly subscription payment",
         status: "completed",
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       };
     } catch (error) {
       console.error(
