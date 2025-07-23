@@ -1046,15 +1046,15 @@ const UnifiedCreatorEconomy: React.FC = () => {
                     </Button>
                     <Button
                       variant={
-                        selectedPaymentMethod === "paypal"
+                        selectedPaymentMethod === "wallet"
                           ? "default"
                           : "outline"
                       }
                       className="justify-start gap-2"
-                      onClick={() => setSelectedPaymentMethod("paypal")}
+                      onClick={() => setSelectedPaymentMethod("wallet")}
                     >
-                      <CreditCard className="w-4 h-4" />
-                      PayPal
+                      <Wallet className="w-4 h-4" />
+                      Unified Wallet
                     </Button>
                   </div>
                 </div>
