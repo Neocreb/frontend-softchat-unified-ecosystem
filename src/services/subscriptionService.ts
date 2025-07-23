@@ -181,19 +181,27 @@ class SubscriptionService {
   // Get user's current subscription
   async getUserSubscription(userId: string): Promise<UserSubscription | null> {
     try {
-      const { data, error } = await (supabase as any)
-        .from("user_subscriptions")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("status", "active")
-        .single();
+      const response = await fetch(`/api/premium/subscription/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (!response.ok) {
+        if (response.status === 404) {
+          // No subscription found, this is normal
+          return null;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error(
         "Error getting user subscription:",
-        error instanceof Error ? error.message : error,
+        error instanceof Error ? error.message : String(error),
       );
       return null;
     }
