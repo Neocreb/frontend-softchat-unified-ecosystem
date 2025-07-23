@@ -1,10 +1,12 @@
 // components/stories/Stories.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlusCircle } from "lucide-react";
 import { useNotification } from "@/hooks/use-notification";
 import { CreateStoryModal } from "./CreateStory";
 import { useAuth } from "@/contexts/AuthContext";
+import { SponsoredStory } from "@/components/ads/SponsoredStory";
+import { adSettings } from "../../../config/adSettings";
 
 
 export type Story = {
