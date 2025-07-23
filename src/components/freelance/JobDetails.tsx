@@ -464,7 +464,16 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                       >
                         <FileText className="w-4 h-4 text-muted-foreground" />
                         <span className="text-sm">{attachment.name || attachment}</span>
-                        <Button variant="ghost" size="sm" className="ml-auto">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="ml-auto"
+                          onClick={() => {
+                            if (attachment.url) {
+                              window.open(attachment.url, '_blank');
+                            }
+                          }}
+                        >
                           <ExternalLink className="w-4 h-4" />
                         </Button>
                       </div>
