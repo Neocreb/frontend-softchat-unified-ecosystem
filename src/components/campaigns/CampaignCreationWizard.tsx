@@ -69,9 +69,14 @@ import AudienceTargeting from "./AudienceTargeting";
 import CampaignPayment from "./CampaignPayment";
 
 interface CampaignCreationWizardProps {
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
   onCampaignCreated: (campaign: any) => void;
+  context?: "seller" | "freelancer" | "client";
+  entityId?: string;
+  entityType?: "product" | "profile" | "job" | "service";
+  // Legacy prop for backwards compatibility
+  open?: boolean;
 }
 
 // Available content types for boosting
