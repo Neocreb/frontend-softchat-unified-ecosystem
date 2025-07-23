@@ -92,11 +92,14 @@ const mockPremiumUser: PremiumUser = {
 const Premium: React.FC = () => {
   const { toast } = useToast();
   const { user } = useAuth();
+  const { walletBalance, refreshWallet } = useWalletContext();
+  const navigate = useNavigate();
   const [userPremium, setUserPremium] = useState<PremiumUser>(mockPremiumUser);
   const [showKYC, setShowKYC] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
+  const [showDepositModal, setShowDepositModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [kycLevel, setKycLevel] = useState(user?.profile?.kyc_level || 0);
 
   // Calculate storage percentage
   const storagePercentage = (userPremium.storageUsed / userPremium.storageLimit) * 100;
@@ -437,7 +440,7 @@ const Premium: React.FC = () => {
                   {userPremium.kycStatus === 'verified' && (
                     <Badge className="bg-green-100 text-green-800">
                       <CheckCircle2 className="h-4 w-4 mr-1" />
-                      Verified ✓
+                      Verified ��
                     </Badge>
                   )}
                 </div>
