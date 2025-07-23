@@ -57,6 +57,7 @@ import ReviewForm from "@/components/freelance/ReviewForm";
 import CreateJobModal from "@/components/freelance/CreateJobModal";
 import FileUpload from "@/components/freelance/FileUpload";
 import { Skeleton } from "@/components/ui/skeleton";
+import { UnifiedCampaignManager } from "@/components/campaigns/UnifiedCampaignManager";
 
 interface ClientStats {
   totalSpent: number;
@@ -896,6 +897,28 @@ export const ClientDashboard: React.FC = () => {
                   </span>
                   <span className="text-sm font-medium">15% saved</span>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Campaigns & Promotions */}
+            <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
+              <CardHeader className="pb-6">
+                <CardTitle className="flex items-center gap-3 text-lg font-bold">
+                  <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  Campaigns & Boosts
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <UnifiedCampaignManager
+                  context="client"
+                  entityId={user?.id}
+                  entityType="job"
+                  showCreateButton={true}
+                  compact={true}
+                  maxCampaigns={3}
+                />
               </CardContent>
             </Card>
           </div>

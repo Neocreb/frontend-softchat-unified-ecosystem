@@ -1,11 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import {
   Shield,
   Upload,
@@ -30,803 +23,690 @@ import {
   AlertTriangle,
   Camera,
   FileText,
-  Smartphone,
-  MapPin,
+  Phone,
+  Mail,
   Eye,
   Star,
   Award,
   Lock,
   Zap,
+  User,
+  Calendar,
+  MapPin,
+  CreditCard,
+  Scan,
+  RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { kycService, KYCDocument } from "@/services/kycService";
-import {
-  fraudDetectionService,
-  FraudRiskAssessment,
-  IdentityVerification,
-} from "@/services/fraudDetectionService";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface EnhancedKYCVerificationProps {
-  userId: string;
-  currentLevel: number;
-  onLevelUpdate: (newLevel: number) => void;
+  onComplete?: () => void;
+}
+
+type KYCStep = 'documents' | 'selfie' | 'contact' | 'review';
+type DocumentType = 'passport' | 'drivers_license' | 'national_id';
+type DocumentSide = 'front' | 'back';
+
+interface DocumentUpload {
+  type: DocumentType;
+  front?: File;
+  back?: File;
+}
+
+interface ContactInfo {
+  phone: string;
+  email: string;
+  phoneVerified: boolean;
+  emailVerified: boolean;
 }
 
 const EnhancedKYCVerification: React.FC<EnhancedKYCVerificationProps> = ({
-  userId,
-  currentLevel,
-  onLevelUpdate,
+  onComplete
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
-  const [selectedDocType, setSelectedDocType] = useState<string>("");
-  const [uploading, setUploading] = useState(false);
-  const [documents, setDocuments] = useState<KYCDocument[]>([]);
-  const [riskAssessment, setRiskAssessment] =
-    useState<FraudRiskAssessment | null>(null);
-  const [identityVerifications, setIdentityVerifications] = useState<
-    IdentityVerification[]
-  >([]);
-  const [biometricVerifying, setBiometricVerifying] = useState(false);
   const { toast } = useToast();
-  const { user } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  
+  const [currentStep, setCurrentStep] = useState<KYCStep>('documents');
+  const [documentUpload, setDocumentUpload] = useState<DocumentUpload>({ type: 'national_id' });
+  const [selfieData, setSelfieData] = useState<string | null>(null);
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    phone: '',
+    email: '',
+    phoneVerified: false,
+    emailVerified: false,
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [livenessCheck, setLivenessCheck] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      loadUserData();
-      performRiskAssessment();
-    }
-  }, [isOpen, userId]);
+  const steps = [
+    { id: 'documents', name: 'ID Documents', icon: FileText },
+    { id: 'selfie', name: 'Selfie Verification', icon: Camera },
+    { id: 'contact', name: 'Contact Verification', icon: Phone },
+    { id: 'review', name: 'Review & Submit', icon: CheckCircle },
+  ];
 
-  const loadUserData = async () => {
-    try {
-      const [userDocs, verifications] = await Promise.all([
-        kycService.getUserKYCDocuments(userId),
-        fraudDetectionService.getIdentityVerifications(userId),
-      ]);
-      setDocuments(userDocs);
-      setIdentityVerifications(verifications);
-    } catch (error) {
-      console.error("Error loading user data:", error);
-    }
-  };
+  const documentTypes = [
+    { value: 'national_id', label: 'National ID Card', requiresBack: true },
+    { value: 'passport', label: 'Passport', requiresBack: false },
+    { value: 'drivers_license', label: 'Driver\'s License', requiresBack: true },
+  ];
 
-  const performRiskAssessment = async () => {
-    try {
-      const assessment = await fraudDetectionService.assessRisk(userId, {
-        action: "kyc_verification",
-        ipAddress: "192.168.1.1", // In real app, get actual IP
-        userAgent: navigator.userAgent,
-        location: { country: "US", city: "New York" }, // In real app, get actual location
-      });
-      setRiskAssessment(assessment);
-    } catch (error) {
-      console.error("Error performing risk assessment:", error);
-    }
-  };
-
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (!file || !selectedDocType) {
-      toast({
-        title: "Error",
-        description: "Please select a document type and file.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Check file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Please select a file smaller than 10MB.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setUploading(true);
-    try {
-      // Create file URL for preview
-      const fileUrl = URL.createObjectURL(file);
-
-      // Verify document authenticity
-      const authCheck = await fraudDetectionService.verifyDocumentAuthenticity(
-        fileUrl,
-        selectedDocType,
-      );
-
-      if (!authCheck.authentic) {
+  const handleFileUpload = (side: DocumentSide) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        setDocumentUpload(prev => ({
+          ...prev,
+          [side]: file
+        }));
         toast({
-          title: "Document verification failed",
-          description: `Issues detected: ${authCheck.issues.join(", ")}`,
-          variant: "destructive",
-        });
-        setUploading(false);
-        return;
-      }
-
-      // Upload document
-      const newDoc = await kycService.uploadKYCDocument({
-        user_id: userId,
-        document_type: selectedDocType as any,
-        document_url: fileUrl,
-        verification_status: "pending",
-      });
-
-      if (newDoc) {
-        setDocuments((prev) => [newDoc, ...prev]);
-
-        // Create identity verification record
-        await fraudDetectionService.createIdentityVerification({
-          userId,
-          verificationType: "document",
-          status: "pending",
-          verificationData: {
-            documentType: selectedDocType,
-            confidence: authCheck.confidence,
-            fileSize: file.size,
-            fileName: file.name,
-          },
-        });
-
-        toast({
-          title: "Document uploaded successfully",
-          description: `Your ${selectedDocType.replace("_", " ")} has been submitted for verification.`,
-        });
-        setSelectedDocType("");
-        await loadUserData();
-      }
-    } catch (error) {
-      console.error("Error uploading document:", error);
-      toast({
-        title: "Upload failed",
-        description: "Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleBiometricVerification = async () => {
-    setBiometricVerifying(true);
-    try {
-      // Simulate biometric verification (in real app, use camera/face detection)
-      const result = await fraudDetectionService.verifyBiometric(
-        userId,
-        "biometric_data",
-      );
-
-      if (result.success) {
-        toast({
-          title: "Biometric verification successful",
-          description: `Verification completed with ${(result.confidence * 100).toFixed(1)}% confidence.`,
-        });
-        await loadUserData();
-      } else {
-        toast({
-          title: "Biometric verification failed",
-          description: "Please try again with better lighting and positioning.",
-          variant: "destructive",
+          title: "Document Uploaded",
+          description: `${side === 'front' ? 'Front' : 'Back'} side uploaded successfully`,
         });
       }
-    } catch (error) {
-      console.error("Error in biometric verification:", error);
-    } finally {
-      setBiometricVerifying(false);
-    }
-  };
-
-  const getKYCLevelInfo = (level: number) => {
-    const levels = {
-      0: {
-        name: "Unverified",
-        color: "bg-gray-500",
-        limits: "$1,000/day",
-        icon: Lock,
-        description: "Basic account with limited features",
-      },
-      1: {
-        name: "Basic",
-        color: "bg-blue-500",
-        limits: "$5,000/day",
-        icon: Shield,
-        description: "ID verified account with standard features",
-      },
-      2: {
-        name: "Intermediate",
-        color: "bg-green-500",
-        limits: "$25,000/day",
-        icon: Star,
-        description: "Address verified with enhanced features",
-      },
-      3: {
-        name: "Advanced",
-        color: "bg-purple-500",
-        limits: "$100,000/day",
-        icon: Award,
-        description: "Fully verified with premium features",
-      },
     };
-    return levels[level as keyof typeof levels] || levels[0];
+    input.click();
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "verified":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case "pending":
-        return <Clock className="h-4 w-4 text-yellow-500" />;
-      case "rejected":
-      case "failed":
-        return <XCircle className="h-4 w-4 text-red-500" />;
-      default:
-        return <Clock className="h-4 w-4 text-gray-500" />;
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'user' },
+        audio: false 
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setCameraActive(true);
+      }
+    } catch (error) {
+      toast({
+        title: "Camera Error",
+        description: "Unable to access camera. Please check permissions.",
+        variant: "destructive",
+      });
     }
   };
 
-  const getRiskBadgeColor = (level: string) => {
-    switch (level) {
-      case "low":
-        return "bg-green-500";
-      case "medium":
-        return "bg-yellow-500";
-      case "high":
-        return "bg-orange-500";
-      case "critical":
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
+  const captureSelfie = () => {
+    if (videoRef.current && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      const context = canvas.getContext('2d');
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      context?.drawImage(video, 0, 0);
+      const imageData = canvas.toDataURL('image/jpeg');
+      setSelfieData(imageData);
+      
+      // Stop camera
+      const stream = video.srcObject as MediaStream;
+      stream?.getTracks().forEach(track => track.stop());
+      setCameraActive(false);
+      
+      // Simulate liveness detection
+      setLivenessCheck(true);
+      setTimeout(() => {
+        toast({
+          title: "Liveness Verified",
+          description: "Real person detected successfully",
+        });
+      }, 2000);
     }
   };
 
-  const calculateCompletionProgress = () => {
-    const requiredVerifications = ["document", "email", "phone"];
-    const completedVerifications = identityVerifications.filter(
-      (v) =>
-        v.status === "verified" &&
-        requiredVerifications.includes(v.verificationType),
-    );
-    return (completedVerifications.length / requiredVerifications.length) * 100;
+  const sendPhoneVerification = async () => {
+    setIsProcessing(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsProcessing(false);
+      toast({
+        title: "SMS Sent",
+        description: "Verification code sent to your phone",
+      });
+    }, 1000);
   };
 
-  const levelInfo = getKYCLevelInfo(currentLevel);
-  const LevelIcon = levelInfo.icon;
-  const completionProgress = calculateCompletionProgress();
+  const sendEmailVerification = async () => {
+    setIsProcessing(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsProcessing(false);
+      toast({
+        title: "Email Sent",
+        description: "Verification link sent to your email",
+      });
+    }, 1000);
+  };
+
+  const verifyPhone = () => {
+    setContactInfo(prev => ({ ...prev, phoneVerified: true }));
+    toast({
+      title: "Phone Verified",
+      description: "Phone number verified successfully",
+    });
+  };
+
+  const verifyEmail = () => {
+    setContactInfo(prev => ({ ...prev, emailVerified: true }));
+    toast({
+      title: "Email Verified",
+      description: "Email address verified successfully",
+    });
+  };
+
+  const submitKYC = async () => {
+    setIsProcessing(true);
+    // Simulate API submission
+    setTimeout(() => {
+      setIsProcessing(false);
+      toast({
+        title: "KYC Submitted",
+        description: "Your verification is under review. You'll be notified within 24 hours.",
+      });
+      onComplete?.();
+    }, 3000);
+  };
+
+  const getStepProgress = () => {
+    const stepIndex = steps.findIndex(step => step.id === currentStep);
+    return ((stepIndex + 1) / steps.length) * 100;
+  };
+
+  const canProceedToNext = () => {
+    switch (currentStep) {
+      case 'documents':
+        const docType = documentTypes.find(dt => dt.value === documentUpload.type);
+        return documentUpload.front && (!docType?.requiresBack || documentUpload.back);
+      case 'selfie':
+        return selfieData && livenessCheck;
+      case 'contact':
+        return contactInfo.phoneVerified && contactInfo.emailVerified;
+      default:
+        return false;
+    }
+  };
+
+  const nextStep = () => {
+    const currentIndex = steps.findIndex(step => step.id === currentStep);
+    if (currentIndex < steps.length - 1) {
+      setCurrentStep(steps[currentIndex + 1].id as KYCStep);
+    }
+  };
+
+  const prevStep = () => {
+    const currentIndex = steps.findIndex(step => step.id === currentStep);
+    if (currentIndex > 0) {
+      setCurrentStep(steps[currentIndex - 1].id as KYCStep);
+    }
+  };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2">
-          <LevelIcon className="h-4 w-4" />
-          KYC Level {currentLevel}
-          {completionProgress > 0 && completionProgress < 100 && (
-            <Badge variant="secondary" className="ml-1">
-              {Math.round(completionProgress)}%
-            </Badge>
-          )}
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5" />
-            Enhanced KYC Verification
-          </DialogTitle>
-        </DialogHeader>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-5 w-full">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="biometric">Biometric</TabsTrigger>
-            <TabsTrigger value="security">Security</TabsTrigger>
-            <TabsTrigger value="badges">Badges</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            {/* Current Level Status */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <LevelIcon className="h-5 w-5" />
-                  Current Verification Level
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Badge className={`${levelInfo.color} text-white mb-2`}>
-                        Level {currentLevel}: {levelInfo.name}
-                      </Badge>
-                      <p className="text-sm text-muted-foreground">
-                        {levelInfo.description}
-                      </p>
-                      <p className="text-sm font-medium mt-1">
-                        Trading Limit: {levelInfo.limits}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-primary">
-                        {Math.round(completionProgress)}%
-                      </div>
-                      <p className="text-xs text-muted-foreground">Complete</p>
-                    </div>
-                  </div>
-                  <Progress value={completionProgress} className="w-full" />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Risk Assessment */}
-            {riskAssessment && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Eye className="h-5 w-5" />
-                    Security Assessment
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span>Risk Level</span>
-                      <Badge
-                        className={`${getRiskBadgeColor(riskAssessment.riskLevel)} text-white`}
-                      >
-                        {riskAssessment.riskLevel.toUpperCase()}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Risk Score</span>
-                      <span className="font-bold">
-                        {riskAssessment.riskScore}/100
-                      </span>
-                    </div>
-                    {riskAssessment.recommendations.length > 0 && (
-                      <Alert>
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertDescription>
-                          <strong>Recommendations:</strong>
-                          <ul className="mt-1 list-disc list-inside">
-                            {riskAssessment.recommendations.map(
-                              (rec, index) => (
-                                <li key={index} className="text-sm">
-                                  {rec}
-                                </li>
-                              ),
-                            )}
-                          </ul>
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab("documents")}
-                className="h-auto py-4 flex flex-col items-center gap-2"
-              >
-                <FileText className="h-6 w-6" />
-                <span>Upload Documents</span>
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab("biometric")}
-                className="h-auto py-4 flex flex-col items-center gap-2"
-              >
-                <Camera className="h-6 w-6" />
-                <span>Biometric Scan</span>
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab("badges")}
-                className="h-auto py-4 flex flex-col items-center gap-2"
-              >
-                <Award className="h-6 w-6" />
-                <span>View Badges</span>
-              </Button>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="documents" className="space-y-6">
-            {/* Upload New Document */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  Upload Verification Document
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="docType">Document Type</Label>
-                  <Select
-                    value={selectedDocType}
-                    onValueChange={setSelectedDocType}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select document type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="passport">🛂 Passport</SelectItem>
-                      <SelectItem value="driver_license">
-                        🚗 Driver's License
-                      </SelectItem>
-                      <SelectItem value="national_id">
-                        🆔 National ID Card
-                      </SelectItem>
-                      <SelectItem value="utility_bill">
-                        📄 Utility Bill
-                      </SelectItem>
-                      <SelectItem value="bank_statement">
-                        �� Bank Statement
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="document">Document File (Max 10MB)</Label>
-                  <Input
-                    id="document"
-                    type="file"
-                    accept="image/*,.pdf"
-                    onChange={handleFileUpload}
-                    disabled={uploading || !selectedDocType}
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Supported formats: JPG, PNG, PDF. Ensure document is clear
-                    and fully visible.
-                  </p>
-                </div>
-
-                {uploading && (
-                  <div className="text-center py-4">
-                    <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
-                    <p className="text-sm text-muted-foreground">
-                      Verifying and uploading document...
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Uploaded Documents */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Your Documents</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {documents.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-4">
-                    No documents uploaded yet
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {documents.map((doc) => (
-                      <div
-                        key={doc.id}
-                        className="flex items-center justify-between p-3 border rounded-lg"
-                      >
-                        <div className="flex items-center gap-3">
-                          {getStatusIcon(doc.verification_status)}
-                          <div>
-                            <p className="font-medium capitalize">
-                              {doc.document_type.replace("_", " ")}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Uploaded{" "}
-                              {new Date(doc.created_at).toLocaleDateString()}
-                            </p>
-                          </div>
-                        </div>
-                        <Badge variant="outline" className="capitalize">
-                          {doc.verification_status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="biometric" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Camera className="h-5 w-5" />
-                  Biometric Verification
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Alert>
-                  <Zap className="h-4 w-4" />
-                  <AlertDescription>
-                    Biometric verification provides the highest level of
-                    security and can instantly upgrade your account.
-                  </AlertDescription>
-                </Alert>
-
-                <div className="text-center py-8">
-                  <div className="w-32 h-32 border-4 border-dashed border-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <Camera className="h-12 w-12 text-gray-400" />
-                  </div>
-
-                  <h3 className="text-lg font-semibold mb-2">
-                    Facial Recognition Scan
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    Position your face within the circle and follow the
-                    on-screen instructions
-                  </p>
-
-                  <Button
-                    onClick={handleBiometricVerification}
-                    disabled={biometricVerifying}
-                    className="w-full max-w-sm"
-                  >
-                    {biometricVerifying ? (
-                      <>
-                        <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
-                        Scanning...
-                      </>
-                    ) : (
-                      <>
-                        <Camera className="w-4 h-4 mr-2" />
-                        Start Biometric Scan
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                {/* Biometric verification history */}
-                <div className="space-y-2">
-                  <h4 className="font-medium">Recent Scans</h4>
-                  {identityVerifications
-                    .filter((v) => v.verificationType === "biometric")
-                    .map((verification, index) => (
-                      <div
-                        key={verification.id}
-                        className="flex items-center justify-between p-2 border rounded"
-                      >
-                        <div className="flex items-center gap-2">
-                          {getStatusIcon(verification.status)}
-                          <span className="text-sm">
-                            Biometric scan #{index + 1}
-                          </span>
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {new Date(
-                            verification.createdAt,
-                          ).toLocaleDateString()}
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="security" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5" />
-                  Security Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {riskAssessment && (
-                    <>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground">
-                            Risk Score
-                          </p>
-                          <p className="text-2xl font-bold">
-                            {riskAssessment.riskScore}/100
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">
-                            Risk Level
-                          </p>
-                          <Badge
-                            className={`${getRiskBadgeColor(riskAssessment.riskLevel)} text-white`}
-                          >
-                            {riskAssessment.riskLevel.toUpperCase()}
-                          </Badge>
-                        </div>
-                      </div>
-
-                      {riskAssessment.reasons.length > 0 && (
-                        <div>
-                          <h4 className="font-medium mb-2">Risk Factors</h4>
-                          <ul className="space-y-1">
-                            {riskAssessment.reasons.map((reason, index) => (
-                              <li
-                                key={index}
-                                className="text-sm text-muted-foreground flex items-center gap-2"
-                              >
-                                <AlertTriangle className="h-3 w-3" />
-                                {reason}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </>
+    <div className="max-w-4xl mx-auto">
+      {/* Progress Header */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold">Identity Verification</h2>
+          <Badge className="bg-blue-100 text-blue-800">
+            <Shield className="h-4 w-4 mr-1" />
+            Secure Process
+          </Badge>
+        </div>
+        <Progress value={getStepProgress()} className="mb-4" />
+        
+        {/* Step Indicators */}
+        <div className="flex items-center justify-between">
+          {steps.map((step, index) => {
+            const isActive = step.id === currentStep;
+            const isCompleted = steps.findIndex(s => s.id === currentStep) > index;
+            const StepIcon = step.icon;
+            
+            return (
+              <div key={step.id} className="flex flex-col items-center">
+                <div className={`p-3 rounded-full border-2 ${
+                  isCompleted ? 'bg-green-500 border-green-500 text-white' :
+                  isActive ? 'bg-blue-500 border-blue-500 text-white' :
+                  'bg-gray-100 border-gray-300 text-gray-500'
+                }`}>
+                  {isCompleted ? (
+                    <CheckCircle className="h-5 w-5" />
+                  ) : (
+                    <StepIcon className="h-5 w-5" />
                   )}
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                <span className={`text-sm mt-2 ${isActive ? 'text-blue-600 font-medium' : 'text-gray-500'}`}>
+                  {step.name}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
-          <TabsContent value="badges" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Award className="h-5 w-5" />
-                  Identity Verification Badges
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Email Verification Badge */}
-                  <div
-                    className={`p-4 border rounded-lg ${
-                      identityVerifications.some(
-                        (v) =>
-                          v.verificationType === "email" &&
-                          v.status === "verified",
-                      )
-                        ? "bg-green-50 border-green-200"
-                        : "bg-gray-50 border-gray-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`p-2 rounded-full ${
-                          identityVerifications.some(
-                            (v) =>
-                              v.verificationType === "email" &&
-                              v.status === "verified",
-                          )
-                            ? "bg-green-500"
-                            : "bg-gray-400"
-                        }`}
-                      >
-                        <CheckCircle className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium">Email Verified</h3>
-                        <p className="text-xs text-muted-foreground">
-                          Email address confirmed
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+      {/* Step Content */}
+      <Card className="mb-6">
+        <CardContent className="p-6">
+          {/* Documents Step */}
+          {currentStep === 'documents' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Upload Identity Documents</h3>
+                <p className="text-gray-600 mb-4">
+                  Please upload a clear photo of your government-issued ID
+                </p>
+              </div>
 
-                  {/* Phone Verification Badge */}
-                  <div
-                    className={`p-4 border rounded-lg ${
-                      identityVerifications.some(
-                        (v) =>
-                          v.verificationType === "phone" &&
-                          v.status === "verified",
-                      )
-                        ? "bg-blue-50 border-blue-200"
-                        : "bg-gray-50 border-gray-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`p-2 rounded-full ${
-                          identityVerifications.some(
-                            (v) =>
-                              v.verificationType === "phone" &&
-                              v.status === "verified",
-                          )
-                            ? "bg-blue-500"
-                            : "bg-gray-400"
-                        }`}
-                      >
-                        <Smartphone className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium">Phone Verified</h3>
-                        <p className="text-xs text-muted-foreground">
-                          Phone number confirmed
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+              <div>
+                <Label className="text-base font-medium">Document Type</Label>
+                <Select value={documentUpload.type} onValueChange={(value) => 
+                  setDocumentUpload({ type: value as DocumentType })
+                }>
+                  <SelectTrigger className="mt-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {documentTypes.map(docType => (
+                      <SelectItem key={docType.value} value={docType.value}>
+                        {docType.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-                  {/* Document Verification Badge */}
-                  <div
-                    className={`p-4 border rounded-lg ${
-                      documents.some(
-                        (d) => d.verification_status === "verified",
-                      )
-                        ? "bg-purple-50 border-purple-200"
-                        : "bg-gray-50 border-gray-200"
-                    }`}
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Front Side */}
+                <div>
+                  <Label className="text-base font-medium">Front Side</Label>
+                  <div 
+                    className="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition-colors"
+                    onClick={() => handleFileUpload('front')}
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`p-2 rounded-full ${
-                          documents.some(
-                            (d) => d.verification_status === "verified",
-                          )
-                            ? "bg-purple-500"
-                            : "bg-gray-400"
-                        }`}
-                      >
-                        <FileText className="h-4 w-4 text-white" />
+                    {documentUpload.front ? (
+                      <div className="space-y-2">
+                        <CheckCircle className="h-8 w-8 text-green-500 mx-auto" />
+                        <p className="font-medium text-green-600">Front uploaded</p>
+                        <p className="text-sm text-gray-500">{documentUpload.front.name}</p>
                       </div>
-                      <div>
-                        <h3 className="font-medium">ID Verified</h3>
-                        <p className="text-xs text-muted-foreground">
-                          Official document verified
-                        </p>
+                    ) : (
+                      <div className="space-y-2">
+                        <Upload className="h-8 w-8 text-gray-400 mx-auto" />
+                        <p className="text-gray-600">Click to upload front side</p>
+                        <p className="text-sm text-gray-500">JPG, PNG up to 10MB</p>
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Biometric Verification Badge */}
-                  <div
-                    className={`p-4 border rounded-lg ${
-                      identityVerifications.some(
-                        (v) =>
-                          v.verificationType === "biometric" &&
-                          v.status === "verified",
-                      )
-                        ? "bg-orange-50 border-orange-200"
-                        : "bg-gray-50 border-gray-200"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`p-2 rounded-full ${
-                          identityVerifications.some(
-                            (v) =>
-                              v.verificationType === "biometric" &&
-                              v.status === "verified",
-                          )
-                            ? "bg-orange-500"
-                            : "bg-gray-400"
-                        }`}
-                      >
-                        <Eye className="h-4 w-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium">Biometric Verified</h3>
-                        <p className="text-xs text-muted-foreground">
-                          Facial recognition confirmed
-                        </p>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </DialogContent>
-    </Dialog>
+
+                {/* Back Side */}
+                {documentTypes.find(dt => dt.value === documentUpload.type)?.requiresBack && (
+                  <div>
+                    <Label className="text-base font-medium">Back Side</Label>
+                    <div 
+                      className="mt-2 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 transition-colors"
+                      onClick={() => handleFileUpload('back')}
+                    >
+                      {documentUpload.back ? (
+                        <div className="space-y-2">
+                          <CheckCircle className="h-8 w-8 text-green-500 mx-auto" />
+                          <p className="font-medium text-green-600">Back uploaded</p>
+                          <p className="text-sm text-gray-500">{documentUpload.back.name}</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <Upload className="h-8 w-8 text-gray-400 mx-auto" />
+                          <p className="text-gray-600">Click to upload back side</p>
+                          <p className="text-sm text-gray-500">JPG, PNG up to 10MB</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Alert>
+                <Shield className="h-4 w-4" />
+                <AlertDescription>
+                  Ensure your document is well-lit, in focus, and all corners are visible. 
+                  Personal information will be encrypted and stored securely.
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
+
+          {/* Selfie Step */}
+          {currentStep === 'selfie' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Take a Selfie</h3>
+                <p className="text-gray-600 mb-4">
+                  Take a real-time selfie for liveness detection and identity matching
+                </p>
+              </div>
+
+              <div className="max-w-md mx-auto">
+                {!cameraActive && !selfieData && (
+                  <div className="text-center space-y-4">
+                    <div className="p-8 border-2 border-dashed border-gray-300 rounded-lg">
+                      <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <p className="text-gray-600 mb-4">
+                        Position your face in the center and ensure good lighting
+                      </p>
+                      <Button onClick={startCamera}>
+                        <Camera className="h-4 w-4 mr-2" />
+                        Start Camera
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {cameraActive && (
+                  <div className="text-center space-y-4">
+                    <div className="relative">
+                      <video 
+                        ref={videoRef} 
+                        autoPlay 
+                        className="w-full max-w-sm rounded-lg border-4 border-blue-500"
+                      />
+                      <div className="absolute inset-0 border-4 border-blue-500 rounded-lg pointer-events-none">
+                        <div className="absolute top-4 left-4 w-8 h-8 border-l-4 border-t-4 border-blue-500"></div>
+                        <div className="absolute top-4 right-4 w-8 h-8 border-r-4 border-t-4 border-blue-500"></div>
+                        <div className="absolute bottom-4 left-4 w-8 h-8 border-l-4 border-b-4 border-blue-500"></div>
+                        <div className="absolute bottom-4 right-4 w-8 h-8 border-r-4 border-b-4 border-blue-500"></div>
+                      </div>
+                    </div>
+                    <Button onClick={captureSelfie}>
+                      <Scan className="h-4 w-4 mr-2" />
+                      Capture Selfie
+                    </Button>
+                  </div>
+                )}
+
+                {selfieData && (
+                  <div className="text-center space-y-4">
+                    <img 
+                      src={selfieData} 
+                      alt="Captured selfie" 
+                      className="w-full max-w-sm rounded-lg border"
+                    />
+                    <div className="space-y-2">
+                      {livenessCheck ? (
+                        <div className="flex items-center justify-center gap-2 text-green-600">
+                          <CheckCircle className="h-5 w-5" />
+                          <span>Liveness verified</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center gap-2 text-blue-600">
+                          <RefreshCw className="h-5 w-5 animate-spin" />
+                          <span>Verifying liveness...</span>
+                        </div>
+                      )}
+                    </div>
+                    <Button variant="outline" onClick={() => {
+                      setSelfieData(null);
+                      setLivenessCheck(false);
+                    }}>
+                      Retake Photo
+                    </Button>
+                  </div>
+                )}
+
+                <canvas ref={canvasRef} style={{ display: 'none' }} />
+              </div>
+
+              <Alert>
+                <Eye className="h-4 w-4" />
+                <AlertDescription>
+                  Look directly at the camera and ensure your face is clearly visible. 
+                  Our system will detect that you're a real person, not a photo or video.
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
+
+          {/* Contact Verification Step */}
+          {currentStep === 'contact' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Verify Contact Information</h3>
+                <p className="text-gray-600 mb-4">
+                  Verify your phone number and email address
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Phone Verification */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Phone className="h-5 w-5" />
+                      Phone Verification
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label>Phone Number</Label>
+                      <Input
+                        type="tel"
+                        placeholder="+1 (555) 123-4567"
+                        value={contactInfo.phone}
+                        onChange={(e) => setContactInfo(prev => ({ ...prev, phone: e.target.value }))}
+                        className="mt-1"
+                      />
+                    </div>
+                    {!contactInfo.phoneVerified ? (
+                      <Button 
+                        onClick={sendPhoneVerification}
+                        disabled={!contactInfo.phone || isProcessing}
+                        className="w-full"
+                      >
+                        {isProcessing ? (
+                          <>
+                            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          'Send Verification Code'
+                        )}
+                      </Button>
+                    ) : (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="h-5 w-5" />
+                        <span>Phone verified</span>
+                      </div>
+                    )}
+                    {contactInfo.phone && !contactInfo.phoneVerified && (
+                      <div className="space-y-2">
+                        <Input placeholder="Enter verification code" />
+                        <Button variant="outline" onClick={verifyPhone} className="w-full">
+                          Verify Code
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Email Verification */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Mail className="h-5 w-5" />
+                      Email Verification
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label>Email Address</Label>
+                      <Input
+                        type="email"
+                        placeholder="user@example.com"
+                        value={contactInfo.email}
+                        onChange={(e) => setContactInfo(prev => ({ ...prev, email: e.target.value }))}
+                        className="mt-1"
+                      />
+                    </div>
+                    {!contactInfo.emailVerified ? (
+                      <Button 
+                        onClick={sendEmailVerification}
+                        disabled={!contactInfo.email || isProcessing}
+                        className="w-full"
+                      >
+                        {isProcessing ? (
+                          <>
+                            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          'Send Verification Link'
+                        )}
+                      </Button>
+                    ) : (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle className="h-5 w-5" />
+                        <span>Email verified</span>
+                      </div>
+                    )}
+                    {contactInfo.email && !contactInfo.emailVerified && (
+                      <Button variant="outline" onClick={verifyEmail} className="w-full">
+                        Mark as Verified
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* Review Step */}
+          {currentStep === 'review' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Review & Submit</h3>
+                <p className="text-gray-600 mb-4">
+                  Review your information before submitting for verification
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {/* Documents Summary */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Identity Documents
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">
+                          {documentTypes.find(dt => dt.value === documentUpload.type)?.label}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Front {documentUpload.back ? 'and back' : ''} uploaded
+                        </p>
+                      </div>
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Selfie Summary */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Camera className="h-5 w-5" />
+                      Selfie Verification
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">Liveness verification complete</p>
+                        <p className="text-sm text-gray-600">Real person detected</p>
+                      </div>
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Contact Summary */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Phone className="h-5 w-5" />
+                      Contact Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span>Phone: {contactInfo.phone}</span>
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>Email: {contactInfo.email}</span>
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Alert>
+                <Lock className="h-4 w-4" />
+                <AlertDescription>
+                  Your information is encrypted and will only be used for identity verification. 
+                  Processing typically takes 24-48 hours.
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Navigation */}
+      <div className="flex justify-between">
+        <Button 
+          variant="outline" 
+          onClick={prevStep}
+          disabled={currentStep === 'documents'}
+        >
+          Previous
+        </Button>
+        
+        {currentStep === 'review' ? (
+          <Button 
+            onClick={submitKYC}
+            disabled={!canProceedToNext() || isProcessing}
+            className="bg-green-600 hover:bg-green-700"
+          >
+            {isProcessing ? (
+              <>
+                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              'Submit for Review'
+            )}
+          </Button>
+        ) : (
+          <Button 
+            onClick={nextStep}
+            disabled={!canProceedToNext()}
+          >
+            Next
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 

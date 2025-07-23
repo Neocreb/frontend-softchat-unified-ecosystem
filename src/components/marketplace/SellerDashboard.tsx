@@ -69,6 +69,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UnifiedCampaignManager } from "@/components/campaigns/UnifiedCampaignManager";
 
 interface Order {
   id: string;
@@ -263,12 +264,15 @@ const SellerDashboard = () => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 h-auto">
           <TabsTrigger value="overview" className="text-xs md:text-sm">
             Overview
           </TabsTrigger>
           <TabsTrigger value="products" className="text-xs md:text-sm">
             Products
+          </TabsTrigger>
+          <TabsTrigger value="campaigns" className="text-xs md:text-sm">
+            Campaigns
           </TabsTrigger>
           <TabsTrigger value="orders" className="text-xs md:text-sm">
             Orders
@@ -543,6 +547,16 @@ const SellerDashboard = () => {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        {/* Campaigns Tab */}
+        <TabsContent value="campaigns" className="space-y-6">
+          <UnifiedCampaignManager
+            context="seller"
+            entityType="product"
+            showCreateButton={true}
+            compact={false}
+          />
         </TabsContent>
 
         {/* Orders Tab */}

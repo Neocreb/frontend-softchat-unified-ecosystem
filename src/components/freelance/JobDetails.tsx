@@ -389,11 +389,11 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                     </div>
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      {job.client.rating} ({job.client.hireRate}% hire rate)
+                      {job.client.rating || 0} ({(job.client.hireRate || job.client.hire_rate || 0)}% hire rate)
                     </div>
                     <div className="flex items-center gap-1">
                       <TrendingUp className="w-4 h-4" />$
-                      {job.client.totalSpent.toLocaleString()} spent
+                      {(job.client.totalSpent || job.client.total_spent || 0).toLocaleString()} spent
                     </div>
                   </div>
 
@@ -401,19 +401,19 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                     <div>
                       <div className="font-medium">Jobs Posted</div>
                       <div className="text-muted-foreground">
-                        {job.client.jobsPosted}
+                        {job.client.jobsPosted || job.client.jobs_posted || 0}
                       </div>
                     </div>
                     <div>
                       <div className="font-medium">Payment Verified</div>
                       <div
                         className={
-                          job.client.paymentVerified
+                          (job.client.paymentVerified || job.client.payment_verified)
                             ? "text-green-600"
                             : "text-red-600"
                         }
                       >
-                        {job.client.paymentVerified ? "Yes" : "No"}
+                        {(job.client.paymentVerified || job.client.payment_verified) ? "Yes" : "No"}
                       </div>
                     </div>
                   </div>
@@ -463,8 +463,24 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                         className="flex items-center gap-2 p-2 border rounded"
                       >
                         <FileText className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm">{attachment}</span>
-                        <Button variant="ghost" size="sm" className="ml-auto">
+                        <div className="flex-1">
+                          <span className="text-sm">{attachment.name || attachment}</span>
+                          {attachment.size && (
+                            <span className="text-xs text-muted-foreground ml-2">
+                              ({attachment.size})
+                            </span>
+                          )}
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="ml-auto"
+                          onClick={() => {
+                            if (attachment.url) {
+                              window.open(attachment.url, '_blank');
+                            }
+                          }}
+                        >
                           <ExternalLink className="w-4 h-4" />
                         </Button>
                       </div>

@@ -48,6 +48,7 @@ import PostJob from "./pages/freelance/PostJob";
 import FindFreelancers from "./pages/freelance/FindFreelancers";
 import ManageProjects from "./pages/freelance/ManageProjects";
 import ApproveWork from "./pages/freelance/ApproveWork";
+import JobDetailPage from "./pages/freelance/JobDetailPage";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
@@ -126,6 +127,9 @@ import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
 import AdvertisingPolicy from "./pages/AdvertisingPolicy";
 import AdChoices from "./pages/AdChoices";
+import MonetizationPolicy from "./pages/MonetizationPolicy";
+import Premium from "./pages/Premium";
+import CampaignCenter from "./components/campaigns/CampaignCenter";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -268,6 +272,7 @@ const AppRoutes = () => {
           <Route path="freelance/find-freelancers" element={<FindFreelancers />} />
           <Route path="freelance/manage-projects" element={<ManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
+          <Route path="freelance/job/:jobId" element={<JobDetailPage />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
@@ -315,6 +320,7 @@ const AppRoutes = () => {
           />
 
           <Route path="crypto" element={<EnhancedCrypto />} />
+          <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<TikTokStyleVideos />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
@@ -322,25 +328,16 @@ const AppRoutes = () => {
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />
           <Route path="events" element={<CommunityEvents />} />
-          <Route
-            path="premium"
-            element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-4xl mx-auto">
-                  <SubscriptionManager />
-                  <div className="mt-8">
-                    <VirtualGiftsAndTips />
-                  </div>
-                </div>
-              </div>
-            }
-          />
+          <Route path="premium" element={<Premium />} />
           <Route
             path="kyc"
             element={
               <div className="container mx-auto px-4 py-6">
                 <div className="max-w-4xl mx-auto">
-                  <EnhancedKYCVerification />
+                  <EnhancedKYCVerification onComplete={() => {
+                    // Handle completion - could navigate back or show success
+                    window.history.back();
+                  }} />
                 </div>
               </div>
             }
@@ -370,6 +367,7 @@ const AppRoutes = () => {
           <Route path="terms" element={<TermsOfService />} />
           <Route path="advertising" element={<AdvertisingPolicy />} />
           <Route path="ad-choices" element={<AdChoices />} />
+          <Route path="monetization-policy" element={<MonetizationPolicy />} />
           <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />

@@ -182,10 +182,10 @@ const WithdrawEarnings = ({
                       Bank Transfer
                     </div>
                   </SelectItem>
-                  <SelectItem value="paypal">
+                  <SelectItem value="unified_wallet">
                     <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      PayPal
+                      <Wallet className="w-4 h-4" />
+                      Unified Wallet
                     </div>
                   </SelectItem>
                   <SelectItem value="crypto_wallet">
@@ -202,7 +202,7 @@ const WithdrawEarnings = ({
               <Label htmlFor="account-details">Account Details</Label>
               <Textarea
                 id="account-details"
-                placeholder="Enter your account details (bank account number, PayPal email, wallet address, etc.)"
+                placeholder="Enter your account details (bank account number, unified wallet ID, crypto wallet address, etc.)"
                 value={accountDetails}
                 onChange={(e) => setAccountDetails(e.target.value)}
                 className="mt-1"

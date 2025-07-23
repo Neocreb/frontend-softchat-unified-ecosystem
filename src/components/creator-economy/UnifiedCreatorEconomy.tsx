@@ -166,7 +166,7 @@ const UnifiedCreatorEconomy: React.FC = () => {
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("bank");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("wallet");
 
   useEffect(() => {
     if (user) {
@@ -375,10 +375,10 @@ const UnifiedCreatorEconomy: React.FC = () => {
       return;
     }
 
-    // In production, this would call the withdrawal API
+    // In production, this would call the withdrawal API with unified wallet integration
     toast({
       title: "Withdrawal Requested",
-      description: `$${withdrawAmount} withdrawal request submitted`,
+      description: `$${withdrawAmount} withdrawal to ${selectedPaymentMethod === "wallet" ? "Unified Wallet" : "Bank Account"} submitted. Check your wallet rewards tab for transaction history.`,
     });
     setWithdrawAmount("");
   };
@@ -1046,15 +1046,15 @@ const UnifiedCreatorEconomy: React.FC = () => {
                     </Button>
                     <Button
                       variant={
-                        selectedPaymentMethod === "paypal"
+                        selectedPaymentMethod === "wallet"
                           ? "default"
                           : "outline"
                       }
                       className="justify-start gap-2"
-                      onClick={() => setSelectedPaymentMethod("paypal")}
+                      onClick={() => setSelectedPaymentMethod("wallet")}
                     >
-                      <CreditCard className="w-4 h-4" />
-                      PayPal
+                      <Wallet className="w-4 h-4" />
+                      Unified Wallet
                     </Button>
                   </div>
                 </div>
@@ -1065,14 +1065,14 @@ const UnifiedCreatorEconomy: React.FC = () => {
                   </h4>
                   <ul className="text-xs text-muted-foreground space-y-1">
                     <li>
-                      • Processing fee: 2% ($
-                      {(parseFloat(withdrawAmount) * 0.02).toFixed(2) || "0.00"}
+                      • Processing fee: {selectedPaymentMethod === "wallet" ? "0.5%" : "2%"} ($
+                      {(parseFloat(withdrawAmount) * (selectedPaymentMethod === "wallet" ? 0.005 : 0.02)).toFixed(2) || "0.00"}
                       )
                     </li>
-                    <li>• Processing time: 2-5 business days</li>
+                    <li>• Processing time: {selectedPaymentMethod === "wallet" ? "Instant" : "2-5 business days"}</li>
                     <li>
                       • You'll receive: $
-                      {(parseFloat(withdrawAmount) * 0.98 || 0).toFixed(2)}
+                      {(parseFloat(withdrawAmount) * (selectedPaymentMethod === "wallet" ? 0.995 : 0.98) || 0).toFixed(2)}
                     </li>
                   </ul>
                 </div>

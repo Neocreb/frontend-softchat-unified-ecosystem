@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Heart,
   MessageCircle,
@@ -33,6 +34,12 @@ import {
   Star,
   Shield,
   Gift,
+  Sparkles,
+  Zap,
+  TrendingUp,
+  Compass,
+  Clock,
+  Target,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -288,6 +295,118 @@ const initialMockPosts = [
     likes: 1234,
     comments: 156,
     shares: 78,
+    isLiked: false,
+    isSaved: false,
+    privacy: "public" as const,
+  },
+  {
+    id: "4",
+    user: {
+      id: "4",
+      name: "Alex Rodriguez",
+      username: "alex_crypto",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+      isVerified: true,
+    },
+    content:
+      "Bitcoin just hit a new resistance level! 📈 My analysis shows we might see a breakout to $68k soon. DCA strategy has been working perfectly this quarter. #Bitcoin #CryptoAnalysis",
+    media: [],
+    timestamp: "3 hours ago",
+    likes: 892,
+    comments: 167,
+    shares: 94,
+    isLiked: false,
+    isSaved: true,
+    privacy: "public" as const,
+  },
+  {
+    id: "5",
+    user: {
+      id: "5",
+      name: "Emma Tech",
+      username: "emma_dev",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma",
+      isVerified: false,
+    },
+    content:
+      "Just deployed my first AI-powered React app! 🚀 Used TypeScript, Next.js 14, and integrated OpenAI API. The learning curve was steep but so worth it. Code is on GitHub!",
+    media: [
+      {
+        type: "image" as const,
+        url: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop",
+        alt: "Coding setup",
+      },
+    ],
+    timestamp: "6 hours ago",
+    likes: 445,
+    comments: 73,
+    shares: 28,
+    isLiked: true,
+    isSaved: false,
+    privacy: "public" as const,
+  },
+  {
+    id: "6",
+    user: {
+      id: "6",
+      name: "David Trader",
+      username: "david_trades",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=david",
+      isVerified: true,
+    },
+    content:
+      "MASSIVE Ethereum move incoming! 🔥 Smart money is accumulating heavily. My technical analysis shows bullish divergence on the 4H chart. ETH to $4000 soon? 🚀",
+    media: [],
+    timestamp: "5 hours ago",
+    likes: 1567,
+    comments: 298,
+    shares: 156,
+    isLiked: false,
+    isSaved: false,
+    privacy: "public" as const,
+  },
+  {
+    id: "7",
+    user: {
+      id: "7",
+      name: "Lisa Johnson",
+      username: "lisa_codes",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=lisa",
+      isVerified: false,
+    },
+    content:
+      "Finally mastered React Server Components! 💡 The performance improvements are incredible. Here's what I learned about data fetching patterns and caching strategies...",
+    media: [],
+    timestamp: "8 hours ago",
+    likes: 234,
+    comments: 45,
+    shares: 12,
+    isLiked: true,
+    isSaved: true,
+    privacy: "public" as const,
+  },
+  {
+    id: "8",
+    user: {
+      id: "8",
+      name: "Coffee Lover",
+      username: "coffee_daily",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=coffee",
+      isVerified: false,
+    },
+    content:
+      "Perfect morning brew ☕️ This new Ethiopian blend is absolutely divine! The floral notes are incredible. What's everyone's favorite coffee origin?",
+    media: [
+      {
+        type: "image" as const,
+        url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=600&fit=crop",
+        alt: "Coffee cup",
+      },
+    ],
+    timestamp: "2 hours ago",
+    likes: 89,
+    comments: 23,
+    shares: 5,
     isLiked: false,
     isSaved: false,
     privacy: "public" as const,
@@ -827,7 +946,7 @@ const CreatePost = ({
                 >
                   <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 flex-shrink-0" />
                   <span className="hidden xs:inline">Location</span>
-                  <span className="sm:hidden">📍</span>
+                  <span className="sm:hidden">���</span>
                 </Button>
               </div>
             </>
@@ -1214,6 +1333,9 @@ export default function EnhancedFeed() {
   const [selectedLiveStream, setSelectedLiveStream] =
     useState<LiveStream | null>(null);
 
+  // Personalized feed state
+  const [activeFeedTab, setActiveFeedTab] = useState("for-you");
+
   // Story modal states
   const [showStoryCreation, setShowStoryCreation] = useState(false);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
@@ -1235,6 +1357,122 @@ export default function EnhancedFeed() {
 
   const handlePostCreated = (newPost: Post) => {
     setPosts((prev) => [newPost, ...prev]);
+  };
+
+  // Get post count for a specific tab
+  const getPostCountForTab = (tab: string) => {
+    switch (tab) {
+      case "for-you":
+        return posts.length;
+      case "following":
+        return posts.filter(post => post.user.isVerified).length;
+      case "trending":
+        return posts.filter(post => (post.likes || 0) > 200 || (post.comments || 0) > 50).length;
+      case "crypto":
+        const cryptoKeywords = ['crypto', 'bitcoin', 'ethereum', 'trading', 'btc', 'eth', 'blockchain', 'defi', 'nft'];
+        return posts.filter(post =>
+          cryptoKeywords.some(keyword =>
+            post.content.toLowerCase().includes(keyword) ||
+            post.user.username.toLowerCase().includes(keyword)
+          )
+        ).length;
+      case "tech":
+        const techKeywords = ['tech', 'code', 'react', 'javascript', 'typescript', 'ai', 'development', 'programming', 'github'];
+        return posts.filter(post =>
+          techKeywords.some(keyword =>
+            post.content.toLowerCase().includes(keyword) ||
+            post.user.username.toLowerCase().includes(keyword)
+          )
+        ).length;
+      case "saved":
+        return posts.filter(post => post.isSaved).length;
+      default:
+        return 0;
+    }
+  };
+
+  // Filter posts based on active tab
+  const getFilteredPosts = () => {
+    switch (activeFeedTab) {
+      case "for-you":
+        // AI-powered personalized feed - mix of trending, interests, and engagement
+        return posts.sort((a, b) => {
+          // Sophisticated AI scoring algorithm
+          const timeDecay = (timestamp: string) => {
+            const hours = parseFloat(timestamp.split(' ')[0]) || 1;
+            return Math.exp(-hours / 24); // Exponential decay over 24 hours
+          };
+
+          const scoreA = (
+            (a.likes || 0) * 0.3 +
+            (a.comments || 0) * 0.5 +
+            (a.shares || 0) * 0.2 +
+            (a.isLiked ? 50 : 0) + // Boost if user liked
+            (a.user.isVerified ? 25 : 0) + // Boost verified users
+            timeDecay(a.timestamp) * 100 // Recent content boost
+          );
+
+          const scoreB = (
+            (b.likes || 0) * 0.3 +
+            (b.comments || 0) * 0.5 +
+            (b.shares || 0) * 0.2 +
+            (b.isLiked ? 50 : 0) +
+            (b.user.isVerified ? 25 : 0) +
+            timeDecay(b.timestamp) * 100
+          );
+
+          return scoreB - scoreA;
+        });
+
+      case "following":
+        // Posts from users you follow (mock: verified users for demo)
+        return posts
+          .filter(post => post.user.isVerified)
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+      case "trending":
+        // Trending posts based on high engagement
+        return posts
+          .filter(post => (post.likes || 0) > 200 || (post.comments || 0) > 50)
+          .sort((a, b) => {
+            const engagementA = (a.likes || 0) + (a.comments || 0) * 3 + (a.shares || 0) * 5;
+            const engagementB = (b.likes || 0) + (b.comments || 0) * 3 + (b.shares || 0) * 5;
+            return engagementB - engagementA;
+          });
+
+      case "crypto":
+        // Crypto and finance related posts
+        const cryptoKeywords = ['crypto', 'bitcoin', 'ethereum', 'trading', 'btc', 'eth', 'blockchain', 'defi', 'nft'];
+        return posts
+          .filter(post =>
+            cryptoKeywords.some(keyword =>
+              post.content.toLowerCase().includes(keyword) ||
+              post.user.username.toLowerCase().includes(keyword)
+            )
+          )
+          .sort((a, b) => (b.likes || 0) - (a.likes || 0));
+
+      case "tech":
+        // Technology and development posts
+        const techKeywords = ['tech', 'code', 'react', 'javascript', 'typescript', 'ai', 'development', 'programming', 'github'];
+        return posts
+          .filter(post =>
+            techKeywords.some(keyword =>
+              post.content.toLowerCase().includes(keyword) ||
+              post.user.username.toLowerCase().includes(keyword)
+            )
+          )
+          .sort((a, b) => (b.likes || 0) - (a.likes || 0));
+
+      case "saved":
+        // Saved/bookmarked posts
+        return posts
+          .filter(post => post.isSaved)
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+
+      default:
+        return posts;
+    }
   };
 
   const handlePostUpdate = (updatedPost: Post) => {
@@ -1319,6 +1557,39 @@ export default function EnhancedFeed() {
           {/* Events Banner - New Feature Promotion */}
           <EventsBannerCard />
 
+          {/* Personalized Feed Tabs */}
+          <Card className="mb-6 sticky top-0 z-10 bg-white/95 backdrop-blur-sm">
+            <CardContent className="p-0">
+              <Tabs value={activeFeedTab} onValueChange={setActiveFeedTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-3 h-auto bg-transparent p-1">
+                  <TabsTrigger
+                    value="for-you"
+                    className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    <span className="text-xs font-medium">For You</span>
+                  </TabsTrigger>
+
+                  <TabsTrigger
+                    value="following"
+                    className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-green-50 data-[state=active]:text-green-600"
+                  >
+                    <Users className="h-4 w-4" />
+                    <span className="text-xs font-medium">Following</span>
+                  </TabsTrigger>
+
+                  <TabsTrigger
+                    value="saved"
+                    className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-pink-50 data-[state=active]:text-pink-600"
+                  >
+                    <Bookmark className="h-4 w-4" />
+                    <span className="text-xs font-medium">Saved</span>
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </CardContent>
+          </Card>
+
           {/* Live Streams Section */}
           {liveStreams.length > 0 && (
             <Card className="mb-6">
@@ -1393,18 +1664,30 @@ export default function EnhancedFeed() {
             </Card>
           )}
 
-          {/* AI Content Recommendations */}
-          <SmartContentRecommendations
-            contentType="posts"
-            availableContent={posts}
-            onContentSelect={(post) => {
-              // Scroll to selected post or handle selection
-              console.log("Selected recommended post:", post);
-            }}
-            maxItems={4}
-            className="mb-6"
-            layout="grid"
-          />
+          {/* Empty State for Tab Content */}
+          {getFilteredPosts().length === 0 && (
+            <Card className="mb-6">
+              <CardContent className="p-8 text-center">
+                <div className="space-y-4">
+                  {activeFeedTab === "following" && (
+                    <>
+                      <Users className="h-12 w-12 text-gray-400 mx-auto" />
+                      <h3 className="text-lg font-semibold text-gray-600">No posts from following</h3>
+                      <p className="text-gray-500">Follow more people to see their posts here!</p>
+                      <Button onClick={() => navigate("/app/explore")}>Discover People</Button>
+                    </>
+                  )}
+                  {activeFeedTab === "saved" && (
+                    <>
+                      <Bookmark className="h-12 w-12 text-gray-400 mx-auto" />
+                      <h3 className="text-lg font-semibold text-gray-600">No saved posts</h3>
+                      <p className="text-gray-500">Bookmark posts you want to read later!</p>
+                    </>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Posts Feed with Infinite Scroll */}
           <InfiniteScroll
@@ -1413,7 +1696,7 @@ export default function EnhancedFeed() {
             onLoadMore={loadMorePosts}
             className="space-y-6"
           >
-            {posts.map((post, index) => (
+            {getFilteredPosts().map((post, index) => (
               <SwipeDetector
                 key={post.id}
                 onSwipeLeft={() =>
@@ -1432,9 +1715,43 @@ export default function EnhancedFeed() {
                   </div>
                 )}
 
+                {/* Insert AI recommendations between posts - First set */}
+                {index === 3 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="posts"
+                      availableContent={posts}
+                      onContentSelect={(post) => {
+                        console.log("Selected recommended post:", post);
+                      }}
+                      maxItems={2}
+                      className=""
+                      layout="carousel"
+                      showReasons={true}
+                    />
+                  </div>
+                )}
+
                 {index === 5 && (
                   <div className="my-6">
                     <SponsoredContent item={sponsoredItems[1]} />
+                  </div>
+                )}
+
+                {/* Insert AI recommendations between posts - Second set */}
+                {index === 7 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="mixed"
+                      availableContent={[...posts, ...stories]}
+                      onContentSelect={(content) => {
+                        console.log("Selected mixed content:", content);
+                      }}
+                      maxItems={3}
+                      className=""
+                      layout="grid"
+                      showReasons={false}
+                    />
                   </div>
                 )}
 
@@ -1444,19 +1761,38 @@ export default function EnhancedFeed() {
                   </div>
                 )}
 
-                {/* Insert AI recommendations between posts occasionally */}
-                {index === 10 && (
-                  <SmartContentRecommendations
-                    contentType="mixed"
-                    availableContent={[...posts, ...stories]}
-                    onContentSelect={(content) => {
-                      console.log("Selected mixed content:", content);
-                    }}
-                    maxItems={3}
-                    className="my-6"
-                    layout="carousel"
-                    showReasons={true}
-                  />
+                {/* Insert AI recommendations between posts - Third set */}
+                {index === 12 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="posts"
+                      availableContent={posts}
+                      onContentSelect={(post) => {
+                        console.log("Selected recommended post:", post);
+                      }}
+                      maxItems={4}
+                      className=""
+                      layout="grid"
+                      showReasons={true}
+                    />
+                  </div>
+                )}
+
+                {/* Insert AI recommendations between posts - Fourth set */}
+                {index === 16 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="mixed"
+                      availableContent={[...posts, ...stories]}
+                      onContentSelect={(content) => {
+                        console.log("Selected mixed content:", content);
+                      }}
+                      maxItems={2}
+                      className=""
+                      layout="carousel"
+                      showReasons={false}
+                    />
+                  </div>
                 )}
               </SwipeDetector>
             ))}

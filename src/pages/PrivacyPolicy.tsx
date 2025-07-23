@@ -71,8 +71,34 @@ const PrivacyPolicy = () => {
                 <li>Name, email address, and contact information</li>
                 <li>Profile information including bio, interests, and preferences</li>
                 <li>Authentication credentials (securely hashed)</li>
-                <li>KYC verification documents for financial services</li>
                 <li>Payment and banking information for marketplace transactions</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">KYC Verification Data (Premium Users)</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Government-issued photo identification documents (front and back)</li>
+                <li>Real-time selfie images with liveness detection data</li>
+                <li>Phone number and email verification records</li>
+                <li>Identity verification status and compliance records</li>
+                <li>Biometric data derived from selfie verification (securely processed and stored)</li>
+              </ul>
+              <p className="text-sm mt-2 text-gray-600">
+                KYC data is encrypted, stored separately from general user data, and only used for
+                identity verification and compliance purposes. This data is retained as required by
+                applicable laws and regulations.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Storage & Content Data</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Uploaded videos, images, and media files</li>
+                <li>Content metadata including upload dates and file sizes</li>
+                <li>Storage usage analytics and retention schedules</li>
+                <li>Content expiration dates (90 days for free users, unlimited for premium)</li>
+                <li>Backup and recovery data for premium users</li>
               </ul>
             </div>
             

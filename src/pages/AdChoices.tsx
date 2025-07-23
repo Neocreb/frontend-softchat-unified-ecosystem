@@ -503,6 +503,57 @@ const AdChoices = () => {
           </CardContent>
         </Card>
 
+        {/* Verified Badge Impact */}
+        <Card className="border-yellow-200 bg-yellow-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-yellow-800">
+              <Users className="w-5 h-5" />
+              Verified Badge Impact on Visibility
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold text-yellow-800 mb-2">How Verification Affects Your Ad Experience</h4>
+              <p className="text-sm text-yellow-700 mb-3">
+                Verified Premium users with blue badges experience enhanced visibility and targeting in our advertising ecosystem.
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <h5 className="font-medium text-yellow-800">Verified User Benefits:</h5>
+                  <ul className="list-disc list-inside space-y-1 text-sm text-yellow-700">
+                    <li>Higher ad placement priority</li>
+                    <li>Premium brand partnership opportunities</li>
+                    <li>Verified-only sponsored content access</li>
+                    <li>Enhanced trust signals in marketplace ads</li>
+                    <li>Priority in freelance service promotions</li>
+                  </ul>
+                </div>
+
+                <div className="space-y-2">
+                  <h5 className="font-medium text-yellow-800">Trust & Safety:</h5>
+                  <ul className="list-disc list-inside space-y-1 text-sm text-yellow-700">
+                    <li>KYC-verified advertisers show verified badge</li>
+                    <li>Reduced exposure to unverified content</li>
+                    <li>Higher quality ad recommendations</li>
+                    <li>Protected from fraudulent advertisers</li>
+                    <li>Premium advertiser collaboration tools</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-3 bg-white rounded-lg border border-yellow-300">
+              <h5 className="font-medium text-yellow-800 mb-1">Verification Status Impact</h5>
+              <p className="text-xs text-yellow-600">
+                Your verified status influences which ads you see and how your content is promoted.
+                Verified users see more premium, high-quality advertisements and receive preferential
+                treatment in our algorithm for content discovery and ad placement.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Data and Privacy */}
         <Card>
           <CardHeader>
