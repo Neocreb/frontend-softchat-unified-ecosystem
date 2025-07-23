@@ -156,15 +156,15 @@ const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
       {/* Header with Filters */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Campaign Analytics</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl md:text-2xl font-bold">Campaign Analytics</h2>
+          <p className="text-muted-foreground text-sm">
             Track performance and optimize your campaigns
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full md:w-auto">
           <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-full sm:w-48">
               <SelectValue placeholder="Select campaign" />
             </SelectTrigger>
             <SelectContent>
@@ -177,123 +177,126 @@ const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
             </SelectContent>
           </Select>
 
-          <Select value={selectedTimeRange} onValueChange={setSelectedTimeRange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1d">Today</SelectItem>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 90 days</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2 sm:gap-3">
+            <Select value={selectedTimeRange} onValueChange={setSelectedTimeRange}>
+              <SelectTrigger className="w-full sm:w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1d">Today</SelectItem>
+                <SelectItem value="7d">Last 7 days</SelectItem>
+                <SelectItem value="30d">Last 30 days</SelectItem>
+                <SelectItem value="90d">Last 90 days</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
+            <Button variant="outline" size="sm" className="hidden sm:flex">
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
 
-          <Button variant="outline" size="sm">
-            <RefreshCw className="h-4 w-4" />
-          </Button>
+            <Button variant="outline" size="sm">
+              <RefreshCw className="h-4 w-4" />
+              <span className="sm:hidden ml-2">Refresh</span>
+            </Button>
+          </div>
         </div>
       </div>
 
       {/* Key Metrics Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-4">
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Impressions</p>
-                <p className="text-2xl font-bold">{totalImpressions.toLocaleString()}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-muted-foreground">Impressions</p>
+                <p className="text-lg md:text-2xl font-bold truncate">{totalImpressions.toLocaleString()}</p>
                 <div className="flex items-center text-xs text-green-600">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +12.5%
                 </div>
               </div>
-              <Eye className="h-8 w-8 text-blue-500" />
+              <Eye className="h-6 md:h-8 w-6 md:w-8 text-blue-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Clicks</p>
-                <p className="text-2xl font-bold">{totalClicks.toLocaleString()}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-muted-foreground">Clicks</p>
+                <p className="text-lg md:text-2xl font-bold truncate">{totalClicks.toLocaleString()}</p>
                 <div className="flex items-center text-xs text-green-600">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +8.7%
                 </div>
               </div>
-              <MousePointer className="h-8 w-8 text-purple-500" />
+              <MousePointer className="h-6 md:h-8 w-6 md:w-8 text-purple-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Conversions</p>
-                <p className="text-2xl font-bold">{totalConversions}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-muted-foreground">Conversions</p>
+                <p className="text-lg md:text-2xl font-bold truncate">{totalConversions}</p>
                 <div className="flex items-center text-xs text-green-600">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +15.3%
                 </div>
               </div>
-              <ShoppingCart className="h-8 w-8 text-green-500" />
+              <ShoppingCart className="h-6 md:h-8 w-6 md:w-8 text-green-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">CTR</p>
-                <p className="text-2xl font-bold">{formatPercentage(ctr)}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-muted-foreground">CTR</p>
+                <p className="text-lg md:text-2xl font-bold truncate">{formatPercentage(ctr)}</p>
                 <div className="flex items-center text-xs text-green-600">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +2.1%
                 </div>
               </div>
-              <Target className="h-8 w-8 text-orange-500" />
+              <Target className="h-6 md:h-8 w-6 md:w-8 text-orange-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Cost/Click</p>
-                <p className="text-2xl font-bold">{formatCurrency(costPerClick)}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-muted-foreground">Cost/Click</p>
+                <p className="text-lg md:text-2xl font-bold truncate">{formatCurrency(costPerClick)}</p>
                 <div className="flex items-center text-xs text-red-600">
                   <TrendingDown className="h-3 w-3 mr-1" />
                   -5.2%
                 </div>
               </div>
-              <DollarSign className="h-8 w-8 text-red-500" />
+              <DollarSign className="h-6 md:h-8 w-6 md:w-8 text-red-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-4">
+          <CardContent className="p-3 md:p-4">
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">ROI</p>
-                <p className="text-2xl font-bold">{formatPercentage(roi, 0)}</p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm text-muted-foreground">ROI</p>
+                <p className="text-lg md:text-2xl font-bold truncate">{formatPercentage(roi, 0)}</p>
                 <div className="flex items-center text-xs text-green-600">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   +18.9%
                 </div>
               </div>
-              <Award className="h-8 w-8 text-pink-500" />
+              <Award className="h-6 md:h-8 w-6 md:w-8 text-pink-500 flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
