@@ -290,21 +290,48 @@ class SubscriptionService {
     try {
       const currentPeriod = new Date().toISOString().slice(0, 7); // YYYY-MM
 
-      const { data, error } = await (supabase as any)
-        .from("subscription_usage")
-        .select("*")
-        .eq("user_id", userId)
-        .eq("period", currentPeriod)
-        .single();
+      const response = await fetch(`/api/premium/usage/${userId}?period=${currentPeriod}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (!response.ok) {
+        if (response.status === 404) {
+          // No usage data found, return empty usage
+          return {
+            id: '',
+            userId,
+            period: currentPeriod,
+            videoUploads: 0,
+            storageUsed: 0,
+            aiCreditsUsed: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error(
         "Error getting subscription usage:",
-        error instanceof Error ? error.message : error,
+        error instanceof Error ? error.message : String(error),
       );
-      return null;
+      // Return default empty usage on error
+      return {
+        id: '',
+        userId,
+        period: new Date().toISOString().slice(0, 7),
+        videoUploads: 0,
+        storageUsed: 0,
+        aiCreditsUsed: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
     }
   }
 
