@@ -389,7 +389,7 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                     </div>
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      {job.client.rating} ({job.client.hireRate}% hire rate)
+                      {job.client.rating || 0} ({(job.client.hireRate || job.client.hire_rate || 0)}% hire rate)
                     </div>
                     <div className="flex items-center gap-1">
                       <TrendingUp className="w-4 h-4" />$
