@@ -51,13 +51,12 @@ export const BannerAd: React.FC<BannerAdProps> = ({
       </div>
 
       {/* Future SDK Container */}
-      <div 
+      <div
         id={`banner-ad-${position}`}
         className="absolute inset-0 hidden"
         data-ad-slot="banner"
         data-position={position}
       >
-        {/* Real ad content will be inserted here by SDK */}
       </div>
     </div>
   );
