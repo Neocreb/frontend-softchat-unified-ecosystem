@@ -1528,7 +1528,7 @@ export default function EnhancedFeed() {
             onLoadMore={loadMorePosts}
             className="space-y-6"
           >
-            {posts.map((post, index) => (
+            {getFilteredPosts().map((post, index) => (
               <SwipeDetector
                 key={post.id}
                 onSwipeLeft={() =>
