@@ -666,43 +666,30 @@ const Premium: React.FC = () => {
         </Card>
       </div>
 
-      {/* KYC Modal */}
-      <Dialog open={showKYC} onOpenChange={setShowKYC}>
-        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Identity Verification</DialogTitle>
-            <DialogDescription>
-              Complete KYC verification to activate your verified badge
-            </DialogDescription>
-          </DialogHeader>
-          <EnhancedKYCVerification onComplete={handleKYCComplete} />
-        </DialogContent>
-      </Dialog>
+      {/* KYC Modal - Using existing system */}
+      {showKYC && (
+        <KYCVerificationModal
+          userId={user?.id || ""}
+          currentLevel={kycLevel}
+          onLevelUpdate={handleKYCComplete}
+        />
+      )}
 
-      {/* Payment Modal */}
-      <Dialog open={showPayment} onOpenChange={setShowPayment}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Funds to Wallet</DialogTitle>
-            <DialogDescription>
-              Add funds to your unified wallet to complete the Premium upgrade
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="text-center">
-              <p className="text-2xl font-bold">
-                Need: ${selectedPlan === 'monthly' ? '9.99' : '99.99'}
-              </p>
-              <p className="text-gray-600">
-                Current balance: ${userPremium.walletBalance.toFixed(2)}
-              </p>
-            </div>
-            <Button className="w-full" onClick={() => setShowPayment(false)}>
-              Add Funds & Continue
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Deposit Modal - Using existing unified wallet system */}
+      <DepositModal
+        isOpen={showDepositModal}
+        onClose={() => setShowDepositModal(false)}
+        onSuccess={async () => {
+          await refreshWallet();
+          setShowDepositModal(false);
+          toast({
+            title: "Funds Added",
+            description: "Your wallet has been updated. You can now upgrade to Premium.",
+          });
+        }}
+        requiredAmount={selectedPlan === 'monthly' ? 9.99 : 99.99}
+        currentBalance={currentWalletBalance}
+      />
     </div>
   );
 };
