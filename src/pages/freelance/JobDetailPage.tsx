@@ -22,9 +22,11 @@ const mockJobs: JobPosting[] = [
       location: "USA",
       verified: true,
       reviews: 156,
-      jobs_posted: 45,
-      total_spent: 125000,
-      member_since: "2020-03-15"
+      jobsPosted: 45,
+      totalSpent: 125000,
+      memberSince: "2020-03-15",
+      hireRate: 95,
+      paymentVerified: true
     },
     budget: { 
       min: 50, 
