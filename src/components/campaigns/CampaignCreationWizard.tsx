@@ -890,32 +890,36 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
           )}
         </div>
 
-        <DialogFooter className="flex justify-between">
-          <div className="flex gap-2">
+        <DialogFooter className="flex flex-col sm:flex-row justify-between gap-3">
+          <div className="flex gap-2 order-2 sm:order-1">
             {currentStep > 1 && (
-              <Button variant="outline" onClick={prevStep}>
+              <Button variant="outline" onClick={prevStep} className="flex-1 sm:flex-none">
                 <ChevronLeft className="h-4 w-4 mr-2" />
-                Previous
+                <span className="hidden sm:inline">Previous</span>
+                <span className="sm:hidden">Back</span>
               </Button>
             )}
           </div>
 
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={onClose}>
+          <div className="flex gap-2 order-1 sm:order-2">
+            <Button variant="outline" onClick={onClose} className="flex-1 sm:flex-none">
               Cancel
             </Button>
-            
+
             {currentStep < totalSteps ? (
-              <Button onClick={nextStep}>
-                Next
+              <Button onClick={nextStep} className="flex-1 sm:flex-none">
+                <span className="hidden sm:inline">Next</span>
+                <span className="sm:hidden">Next</span>
                 <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             ) : (
-              <Button 
+              <Button
                 onClick={handleCreateCampaign}
                 disabled={!campaignData.payment.agreesToTerms}
+                className="flex-1 sm:flex-none"
               >
-                Create Campaign
+                <span className="hidden sm:inline">Create Campaign</span>
+                <span className="sm:hidden">Create</span>
               </Button>
             )}
           </div>
