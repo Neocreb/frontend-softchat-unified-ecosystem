@@ -805,14 +805,32 @@ const Videos: React.FC = () => {
         }}
         onClick={() => setShowControls(!showControls)}
       >
-        {videos.map((video, index) => (
-          <VideoCard
-            key={video.id}
-            video={video}
-            isActive={index === currentVideoIndex}
-            showControls={showControls}
-          />
-        ))}
+        {videos.map((video, index) => {
+          // Render interstitial ad
+          if ((video as any).isAd) {
+            return (
+              <div key={video.id} className="h-screen w-full bg-black snap-start snap-always flex items-center justify-center p-4">
+                <VideoInterstitialAd
+                  onClick={() => {
+                    console.log('Interstitial ad clicked');
+                    // Handle ad click
+                  }}
+                  className="max-w-md w-full"
+                />
+              </div>
+            );
+          }
+
+          // Render regular video
+          return (
+            <VideoCard
+              key={video.id}
+              video={video}
+              isActive={index === currentVideoIndex}
+              showControls={showControls}
+            />
+          );
+        })}
       </div>
 
       {/* Enhanced Create Button Group */}
