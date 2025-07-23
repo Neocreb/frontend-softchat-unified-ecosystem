@@ -83,9 +83,11 @@ const mockJobs: JobPosting[] = [
       location: "Canada",
       verified: true,
       reviews: 89,
-      jobs_posted: 23,
-      total_spent: 67000,
-      member_since: "2021-07-22"
+      jobsPosted: 23,
+      totalSpent: 67000,
+      memberSince: "2021-07-22",
+      hireRate: 87,
+      paymentVerified: true
     },
     budget: { 
       min: 3000, 
