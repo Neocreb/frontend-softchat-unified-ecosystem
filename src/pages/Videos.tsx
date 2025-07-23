@@ -344,6 +344,36 @@ const VideoCard: React.FC<{
     await togglePlayback(video, isPlaying, setIsPlaying);
   }, [isPlaying, togglePlayback]);
 
+  const handleAdComplete = () => {
+    setShowInVideoAd(false);
+    setAdWatchTimer(0);
+    // Resume main video
+    const video = videoRef.current;
+    if (video && isActive) {
+      safePlay(video);
+      setIsPlaying(true);
+    }
+  };
+
+  const handleAdSkip = () => {
+    setShowInVideoAd(false);
+    setAdWatchTimer(0);
+    // Resume main video
+    const video = videoRef.current;
+    if (video && isActive) {
+      safePlay(video);
+      setIsPlaying(true);
+    }
+  };
+
+  const handleRewardEarned = () => {
+    if (!hasEarnedReward) {
+      setHasEarnedReward(true);
+      // Add SoftPoints reward logic here
+      console.log(`+${adSettings.adRewardPoints} SoftPoints earned for watching ad!`);
+    }
+  };
+
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + "M";
