@@ -1065,8 +1065,8 @@ const UnifiedCreatorEconomy: React.FC = () => {
                   </h4>
                   <ul className="text-xs text-muted-foreground space-y-1">
                     <li>
-                      • Processing fee: 2% ($
-                      {(parseFloat(withdrawAmount) * 0.02).toFixed(2) || "0.00"}
+                      • Processing fee: {selectedPaymentMethod === "wallet" ? "0.5%" : "2%"} ($
+                      {(parseFloat(withdrawAmount) * (selectedPaymentMethod === "wallet" ? 0.005 : 0.02)).toFixed(2) || "0.00"}
                       )
                     </li>
                     <li>• Processing time: {selectedPaymentMethod === "wallet" ? "Instant" : "2-5 business days"}</li>
