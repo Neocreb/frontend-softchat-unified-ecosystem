@@ -343,7 +343,7 @@ export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
               </DialogDescription>
             </DialogHeader>
             {selectedCampaign && (
-              <CampaignAnalyticsDashboard campaignId={selectedCampaign.id} />
+              <CampaignAnalyticsDashboard campaigns={[selectedCampaign]} />
             )}
           </DialogContent>
         </Dialog>
