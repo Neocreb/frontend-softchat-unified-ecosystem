@@ -610,6 +610,7 @@ const VideoCard: React.FC<{
 };
 
 const Videos: React.FC = () => {
+  const { user } = useAuth();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [videos, setVideos] = useState<VideoData[]>([]);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
