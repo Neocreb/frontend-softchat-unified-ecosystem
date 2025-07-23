@@ -277,6 +277,9 @@ const VideoCard: React.FC<{
   const [showMore, setShowMore] = useState(false);
   const [isPlaying, setIsPlaying] = useState(isActive);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showInVideoAd, setShowInVideoAd] = useState(false);
+  const [adWatchTimer, setAdWatchTimer] = useState(0);
+  const [hasEarnedReward, setHasEarnedReward] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
