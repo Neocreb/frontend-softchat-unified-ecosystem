@@ -120,7 +120,7 @@ export const JobDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const [job, setJob] = useState<JobPosting | null>(null);
   const [loading, setLoading] = useState(true);
-  const { getJobById } = useFreelance();
+  const { getJob } = useFreelance();
 
   useEffect(() => {
     const loadJob = async () => {
