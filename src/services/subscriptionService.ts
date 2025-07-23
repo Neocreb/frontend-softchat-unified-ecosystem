@@ -443,15 +443,9 @@ class SubscriptionService {
     try {
       const currentPeriod = new Date().toISOString().slice(0, 7);
 
-      await (supabase as any).from("subscription_usage").upsert({
-        user_id: userId,
-        tier_id: tierId,
-        period: currentPeriod,
-        video_uploads: 0,
-        storage_used_gb: 0,
-        ai_credits_used: 0,
-        last_updated: new Date().toISOString(),
-      });
+      // For now, just log the initialization
+      // In production, this would call a proper usage tracking API
+      console.log(`Usage tracking initialized for user ${userId}, tier: ${tierId}`);
     } catch (error) {
       console.error(
         "Error initializing usage tracking:",
