@@ -7,7 +7,8 @@ import { adRewardService } from '@/services/adRewardService';
 interface InVideoAdProps {
   onAdComplete: () => void;
   onSkip: () => void;
-  onRewardEarned?: () => void;
+  onRewardEarned?: (rewardAmount: number, message: string) => void;
+  userId?: string;
   className?: string;
 }
 
