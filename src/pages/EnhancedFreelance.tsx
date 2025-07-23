@@ -47,6 +47,7 @@ import { adSettings } from "../../config/adSettings";
 
 const EnhancedFreelance: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState("browse-jobs");
   const [jobs, setJobs] = useState<JobPosting[]>([]);
   const [freelancers, setFreelancers] = useState<FreelancerProfile[]>([]);
