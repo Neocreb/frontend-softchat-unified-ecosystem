@@ -19,6 +19,8 @@ import {
   MessageCircle,
   UserCheck,
   Building,
+  Megaphone,
+  Target,
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -144,6 +146,12 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       label: "Freelance",
       href: "/app/freelance",
       badge: "New",
+    },
+    {
+      icon: <Megaphone className="w-8 h-8 text-pink-600" />,
+      label: "Campaigns",
+      href: "/app/campaigns",
+      badge: "Hot",
     },
   ];
 
