@@ -1561,7 +1561,7 @@ export default function EnhancedFeed() {
           <Card className="mb-6 sticky top-0 z-10 bg-white/95 backdrop-blur-sm">
             <CardContent className="p-0">
               <Tabs value={activeFeedTab} onValueChange={setActiveFeedTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-6 h-auto bg-transparent p-1">
+                <TabsList className="grid w-full grid-cols-3 h-auto bg-transparent p-1">
                   <TabsTrigger
                     value="for-you"
                     className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600"
@@ -1579,30 +1579,6 @@ export default function EnhancedFeed() {
                   </TabsTrigger>
 
                   <TabsTrigger
-                    value="trending"
-                    className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-red-50 data-[state=active]:text-red-600"
-                  >
-                    <TrendingUp className="h-4 w-4" />
-                    <span className="text-xs font-medium">Trending</span>
-                  </TabsTrigger>
-
-                  <TabsTrigger
-                    value="crypto"
-                    className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-orange-50 data-[state=active]:text-orange-600"
-                  >
-                    <Zap className="h-4 w-4" />
-                    <span className="text-xs font-medium">Crypto</span>
-                  </TabsTrigger>
-
-                  <TabsTrigger
-                    value="tech"
-                    className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-purple-50 data-[state=active]:text-purple-600"
-                  >
-                    <Compass className="h-4 w-4" />
-                    <span className="text-xs font-medium">Tech</span>
-                  </TabsTrigger>
-
-                  <TabsTrigger
                     value="saved"
                     className="flex flex-col items-center gap-1 p-2 data-[state=active]:bg-pink-50 data-[state=active]:text-pink-600"
                   >
@@ -1611,23 +1587,6 @@ export default function EnhancedFeed() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-
-              {/* Tab Description with Post Count */}
-              <div className="px-4 pb-3">
-                <div className="text-xs text-gray-500 text-center space-y-1">
-                  <div>
-                    {activeFeedTab === "for-you" && "✨ AI-powered personalized content just for you"}
-                    {activeFeedTab === "following" && "👥 Latest posts from people you follow"}
-                    {activeFeedTab === "trending" && "🔥 What's hot and trending right now"}
-                    {activeFeedTab === "crypto" && "💰 Cryptocurrency and trading discussions"}
-                    {activeFeedTab === "tech" && "🚀 Technology and development updates"}
-                    {activeFeedTab === "saved" && "🔖 Your bookmarked posts and content"}
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    {getFilteredPosts().length} posts available
-                  </div>
-                </div>
-              </div>
             </CardContent>
           </Card>
 
