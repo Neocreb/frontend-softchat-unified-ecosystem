@@ -415,7 +415,7 @@ export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
         </TabsContent>
 
         <TabsContent value="analytics">
-          <CampaignAnalyticsDashboard />
+          <CampaignAnalyticsDashboard campaigns={filteredCampaigns} />
         </TabsContent>
       </Tabs>
 
