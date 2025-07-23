@@ -549,6 +549,16 @@ const SellerDashboard = () => {
           )}
         </TabsContent>
 
+        {/* Campaigns Tab */}
+        <TabsContent value="campaigns" className="space-y-6">
+          <UnifiedCampaignManager
+            context="seller"
+            entityType="product"
+            showCreateButton={true}
+            compact={false}
+          />
+        </TabsContent>
+
         {/* Orders Tab */}
         <TabsContent value="orders" className="space-y-6">
           <Card>
