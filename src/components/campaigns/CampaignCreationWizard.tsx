@@ -672,26 +672,26 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                   <Label>
                     {campaignData.budget.type === "daily" ? "Daily" : "Total"} Budget Amount
                   </Label>
-                  <div className="flex gap-3 mt-2">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-2">
                     <div className="flex-1">
                       <Input
                         type="number"
                         min="1"
                         value={campaignData.budget.amount}
-                        onChange={(e) => setCampaignData(prev => ({ 
-                          ...prev, 
+                        onChange={(e) => setCampaignData(prev => ({
+                          ...prev,
                           budget: { ...prev.budget, amount: parseFloat(e.target.value) || 0 }
                         }))}
                       />
                     </div>
                     <Select
                       value={campaignData.budget.currency}
-                      onValueChange={(value) => setCampaignData(prev => ({ 
-                        ...prev, 
+                      onValueChange={(value) => setCampaignData(prev => ({
+                        ...prev,
                         budget: { ...prev.budget, currency: value }
                       }))}
                     >
-                      <SelectTrigger className="w-32">
+                      <SelectTrigger className="w-full sm:w-32">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -706,7 +706,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                 {/* Boost Speed */}
                 <div>
                   <Label>Boost Speed</Label>
-                  <div className="grid grid-cols-3 gap-3 mt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-2">
                     {[
                       { id: "slow", name: "Slow", multiplier: "0.8x cost", description: "Gradual promotion" },
                       { id: "standard", name: "Standard", multiplier: "1.0x cost", description: "Balanced approach" },
@@ -722,8 +722,8 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                           budget: { ...prev.budget, boostSpeed: speed.id }
                         }))}
                       >
-                        <CardContent className="p-3 text-center">
-                          <h4 className="font-medium">{speed.name}</h4>
+                        <CardContent className="p-2 sm:p-3 text-center">
+                          <h4 className="font-medium text-sm">{speed.name}</h4>
                           <p className="text-xs text-muted-foreground">{speed.description}</p>
                           <Badge variant="outline" className="text-xs mt-1">
                             {speed.multiplier}
@@ -735,7 +735,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                 </div>
 
                 {/* Schedule */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label>Start Date</Label>
                     <Popover>
@@ -743,7 +743,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-full justify-start text-left font-normal mt-2",
+                            "w-full justify-start text-left font-normal mt-2 text-sm",
                             !campaignData.schedule.startDate && "text-muted-foreground"
                           )}
                         >
@@ -776,7 +776,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                         <Button
                           variant="outline"
                           className={cn(
-                            "w-full justify-start text-left font-normal mt-2",
+                            "w-full justify-start text-left font-normal mt-2 text-sm",
                             !campaignData.schedule.endDate && "text-muted-foreground"
                           )}
                         >
