@@ -163,7 +163,7 @@ const initialMockStories = [
       username: "mike_chen",
     },
     type: "text" as const,
-    textContent: "Having an amazing day! ☀️",
+    textContent: "Having an amazing day! ��️",
     backgroundColor: "bg-gradient-to-br from-blue-400 to-purple-600",
     textColor: "text-white",
     timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
@@ -1221,6 +1221,9 @@ export default function EnhancedFeed() {
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
   const [selectedLiveStream, setSelectedLiveStream] =
     useState<LiveStream | null>(null);
+
+  // Personalized feed state
+  const [activeFeedTab, setActiveFeedTab] = useState("for-you");
 
   // Story modal states
   const [showStoryCreation, setShowStoryCreation] = useState(false);
