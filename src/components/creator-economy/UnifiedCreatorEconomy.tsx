@@ -1069,7 +1069,7 @@ const UnifiedCreatorEconomy: React.FC = () => {
                       {(parseFloat(withdrawAmount) * 0.02).toFixed(2) || "0.00"}
                       )
                     </li>
-                    <li>• Processing time: 2-5 business days</li>
+                    <li>• Processing time: {selectedPaymentMethod === "wallet" ? "Instant" : "2-5 business days"}</li>
                     <li>
                       • You'll receive: $
                       {(parseFloat(withdrawAmount) * 0.98 || 0).toFixed(2)}
