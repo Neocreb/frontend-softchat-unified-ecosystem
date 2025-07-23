@@ -526,6 +526,17 @@ const MarketplaceContent = () => {
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Bottom Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="flex justify-center pt-8 border-t border-gray-200 dark:border-gray-800">
+          <BannerAd
+            position="bottom"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
     </div>
   );
 };
