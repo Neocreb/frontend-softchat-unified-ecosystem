@@ -404,7 +404,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={isOpen || open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto mx-4">
         <DialogHeader>
           <DialogTitle>Create New Campaign</DialogTitle>
