@@ -101,11 +101,16 @@ const mockInterestData = [
 ];
 
 const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
-  campaigns,
+  campaigns = [],
 }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState("7d");
   const [selectedCampaign, setSelectedCampaign] = useState("all");
   const [selectedMetric, setSelectedMetric] = useState("impressions");
+
+  // Ensure campaigns is an array and filter out any invalid entries
+  const validCampaigns = Array.isArray(campaigns) ? campaigns.filter(campaign =>
+    campaign && typeof campaign === 'object' && campaign.name
+  ) : [];
 
   // Calculate key metrics
   const totalImpressions = mockPerformanceData.reduce((sum, data) => sum + data.impressions, 0);
