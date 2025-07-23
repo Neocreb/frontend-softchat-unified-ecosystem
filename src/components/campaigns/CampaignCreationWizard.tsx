@@ -194,7 +194,11 @@ const PAYMENT_METHODS = [
 ];
 
 const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
-  open,
+  isOpen,
+  open, // Legacy prop
+  context = "seller",
+  entityId,
+  entityType,
   onClose,
   onCampaignCreated,
 }) => {
