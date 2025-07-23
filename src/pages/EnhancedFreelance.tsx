@@ -41,9 +41,13 @@ import ProjectDashboard from "@/components/freelance/ProjectDashboard";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { BannerAd } from "@/components/ads/BannerAd";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { adSettings } from "../../config/adSettings";
 
 const EnhancedFreelance: React.FC = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState("browse-jobs");
   const [jobs, setJobs] = useState<JobPosting[]>([]);
   const [freelancers, setFreelancers] = useState<FreelancerProfile[]>([]);
@@ -308,6 +312,17 @@ const EnhancedFreelance: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto bg-white">
+      {/* Top Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="mb-6 flex justify-center">
+          <BannerAd
+            position="top"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
+
       {/* Upgrade Notice */}
       <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -497,14 +512,30 @@ const EnhancedFreelance: React.FC = () => {
                 </CardContent>
               </Card>
             ) : (
-              jobs.map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  onApply={handleJobApplication}
-                  onViewDetails={handleJobDetails}
-                />
-              ))
+              <>
+                {jobs.map((job, index) => (
+                  <React.Fragment key={job.id}>
+                    <JobCard
+                      job={job}
+                      onApply={handleJobApplication}
+                      onViewDetails={handleJobDetails}
+                    />
+
+                    {/* Insert banner ad after every 15 jobs */}
+                    {adSettings.enableAds &&
+                     (index + 1) % adSettings.freelanceAdFrequency === 0 &&
+                     index < jobs.length - 1 && (
+                      <div className="flex justify-center py-4">
+                        <BannerAd
+                          position="center"
+                          isMobile={isMobile}
+                          className="w-full max-w-2xl"
+                        />
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </>
             )}
           </div>
         </TabsContent>
@@ -858,6 +889,17 @@ const EnhancedFreelance: React.FC = () => {
         onSubmit={handleSubmitProposal}
         freelancerId={user?.id || "1"}
       />
+
+      {/* Footer Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="mt-8 pt-6 border-t border-gray-200 flex justify-center">
+          <BannerAd
+            position="bottom"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
     </div>
   );
 };

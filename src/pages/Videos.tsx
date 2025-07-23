@@ -54,6 +54,10 @@ import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
+import { useAuth } from "@/contexts/AuthContext";
+import { InVideoAd } from "@/components/ads/InVideoAd";
+import { VideoInterstitialAd } from "@/components/ads/VideoInterstitialAd";
+import { adSettings } from "../../config/adSettings";
 
 interface VideoData {
   id: string;
@@ -274,6 +278,9 @@ const VideoCard: React.FC<{
   const [showMore, setShowMore] = useState(false);
   const [isPlaying, setIsPlaying] = useState(isActive);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [showInVideoAd, setShowInVideoAd] = useState(false);
+  const [adWatchTimer, setAdWatchTimer] = useState(0);
+  const [hasEarnedReward, setHasEarnedReward] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
@@ -308,12 +315,65 @@ const VideoCard: React.FC<{
     };
   }, [isActive, isPlaying, safePlay, safePause]);
 
+  // In-video ad timer
+  useEffect(() => {
+    if (!isActive || !isPlaying || showInVideoAd || !adSettings.enableAds) return;
+
+    const timer = setInterval(() => {
+      setAdWatchTimer(prev => {
+        const newTime = prev + 1;
+        if (newTime >= adSettings.inVideoAdDelay && !showInVideoAd) {
+          setShowInVideoAd(true);
+          // Pause the main video when ad starts
+          const video = videoRef.current;
+          if (video) {
+            safePause(video);
+          }
+          return 0;
+        }
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isActive, isPlaying, showInVideoAd, safePause]);
+
   const togglePlay = useCallback(async () => {
     const video = videoRef.current;
     if (!video) return;
 
     await togglePlayback(video, isPlaying, setIsPlaying);
   }, [isPlaying, togglePlayback]);
+
+  const handleAdComplete = () => {
+    setShowInVideoAd(false);
+    setAdWatchTimer(0);
+    // Resume main video
+    const video = videoRef.current;
+    if (video && isActive) {
+      safePlay(video);
+      setIsPlaying(true);
+    }
+  };
+
+  const handleAdSkip = () => {
+    setShowInVideoAd(false);
+    setAdWatchTimer(0);
+    // Resume main video
+    const video = videoRef.current;
+    if (video && isActive) {
+      safePlay(video);
+      setIsPlaying(true);
+    }
+  };
+
+  const handleRewardEarned = (rewardAmount: number, message: string) => {
+    if (!hasEarnedReward) {
+      setHasEarnedReward(true);
+      console.log(`Reward earned: ${message}`);
+      // You could show a toast notification here
+    }
+  };
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
@@ -536,13 +596,24 @@ const VideoCard: React.FC<{
           {video.stats.views} views
         </Badge>
       </div>
+
+      {/* In-Video Ad Overlay */}
+      {showInVideoAd && (
+        <InVideoAd
+          onAdComplete={handleAdComplete}
+          onSkip={handleAdSkip}
+          onRewardEarned={handleRewardEarned}
+          userId={user?.id || 'guest'}
+        />
+      )}
     </div>
   );
 };
 
 const Videos: React.FC = () => {
+  const { user } = useAuth();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [videos, setVideos] = useState<VideoData[]>(mockVideos);
+  const [videos, setVideos] = useState<VideoData[]>([]);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
@@ -553,6 +624,28 @@ const Videos: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Create video list with interstitial ads
+  useEffect(() => {
+    const videosWithAds = [];
+    let adCounter = 0;
+
+    for (let i = 0; i < mockVideos.length; i++) {
+      videosWithAds.push(mockVideos[i]);
+
+      // Insert interstitial ad after every 4 videos
+      if ((i + 1) % adSettings.interstitialFrequency === 0 && adSettings.enableAds) {
+        adCounter++;
+        videosWithAds.push({
+          id: `interstitial-ad-${adCounter}`,
+          isAd: true,
+          adType: 'interstitial'
+        } as any);
+      }
+    }
+
+    setVideos(videosWithAds);
+  }, []);
 
   // Auto-hide controls after inactivity
   useEffect(() => {
@@ -715,14 +808,32 @@ const Videos: React.FC = () => {
         }}
         onClick={() => setShowControls(!showControls)}
       >
-        {videos.map((video, index) => (
-          <VideoCard
-            key={video.id}
-            video={video}
-            isActive={index === currentVideoIndex}
-            showControls={showControls}
-          />
-        ))}
+        {videos.map((video, index) => {
+          // Render interstitial ad
+          if ((video as any).isAd) {
+            return (
+              <div key={video.id} className="h-screen w-full bg-black snap-start snap-always flex items-center justify-center p-4">
+                <VideoInterstitialAd
+                  onClick={() => {
+                    console.log('Interstitial ad clicked');
+                    // Handle ad click
+                  }}
+                  className="max-w-md w-full"
+                />
+              </div>
+            );
+          }
+
+          // Render regular video
+          return (
+            <VideoCard
+              key={video.id}
+              video={video}
+              isActive={index === currentVideoIndex}
+              showControls={showControls}
+            />
+          );
+        })}
       </div>
 
       {/* Enhanced Create Button Group */}

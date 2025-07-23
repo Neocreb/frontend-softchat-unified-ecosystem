@@ -44,6 +44,10 @@ import WishlistProducts from "@/components/marketplace/WishlistProducts";
 import EnhancedProductDetail from "@/components/marketplace/EnhancedProductDetail";
 import { useAuth } from "@/contexts/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BannerAd } from "@/components/ads/BannerAd";
+import { SponsoredProductCard } from "@/components/ads/SponsoredProductCard";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { adSettings } from "../../config/adSettings";
 
 const MarketplaceContent = () => {
   const [activeTab, setActiveTab] = useState("browse");
@@ -57,6 +61,7 @@ const MarketplaceContent = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
+  const isMobile = useIsMobile();
   const {
     addToCart,
     addToWishlist,
@@ -141,6 +146,17 @@ const MarketplaceContent = () => {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Marketplace</h1>
       </div>
+
+      {/* Top Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="flex justify-center">
+          <BannerAd
+            position="top"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="overflow-x-auto pb-2">
@@ -388,12 +404,39 @@ const MarketplaceContent = () => {
                         ))}
                     </div>
                   ) : (
-                    <ProductGrid
-                      category={activeCategory}
-                      searchQuery={searchQuery}
-                      onAddToCart={handleAddToCart}
-                      onAddToWishlist={handleAddToWishlist}
-                    />
+                    <div className="space-y-6">
+                      <ProductGrid
+                        category={activeCategory}
+                        searchQuery={searchQuery}
+                        onAddToCart={handleAddToCart}
+                        onAddToWishlist={handleAddToWishlist}
+                      />
+
+                      {/* Sponsored Product Ads */}
+                      {adSettings.enableAds && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+                          <div className="col-span-full mb-4">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              Sponsored Products
+                            </h3>
+                          </div>
+                          {Array(3).fill(0).map((_, i) => (
+                            <SponsoredProductCard
+                              key={`sponsored-${i}`}
+                              title={`Premium Product ${i + 1}`}
+                              price={`$${29.99 + i * 10}`}
+                              originalPrice={`$${39.99 + i * 10}`}
+                              rating={4.5 + (i * 0.2)}
+                              reviewCount={127 + i * 50}
+                              onClick={() => {
+                                console.log(`Sponsored product ${i + 1} clicked`);
+                                // Handle sponsored product click
+                              }}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </main>
               </div>
@@ -483,6 +526,17 @@ const MarketplaceContent = () => {
           )}
         </TabsContent>
       </Tabs>
+
+      {/* Bottom Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="flex justify-center pt-8 border-t border-gray-200 dark:border-gray-800">
+          <BannerAd
+            position="bottom"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
     </div>
   );
 };

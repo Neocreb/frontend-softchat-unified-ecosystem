@@ -1,10 +1,12 @@
 // components/stories/Stories.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlusCircle } from "lucide-react";
 import { useNotification } from "@/hooks/use-notification";
 import { CreateStoryModal } from "./CreateStory";
 import { useAuth } from "@/contexts/AuthContext";
+import { SponsoredStory } from "@/components/ads/SponsoredStory";
+import { adSettings } from "../../../config/adSettings";
 
 
 export type Story = {
@@ -23,8 +25,43 @@ interface StoriesProps {
 
 const Stories = ({ stories, onViewStory, onCreateStory }: StoriesProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [storiesWithAds, setStoriesWithAds] = useState<(Story | { id: string; type: 'sponsored_story' | 'ad_story' })[]>([]);
   const notification = useNotification();
   const { user } = useAuth();
+
+  // Create stories list with ads
+  useEffect(() => {
+    const createStoriesWithAds = () => {
+      const storyItems = [];
+      let sponsoredAdCounter = 0;
+      let nativeAdCounter = 0;
+
+      // Add Softchat sponsored story as first item if ads are enabled
+      if (adSettings.enableAds) {
+        storyItems.push({
+          id: 'softchat-sponsored-story',
+          type: 'sponsored_story' as const
+        });
+      }
+
+      for (let i = 0; i < stories.length; i++) {
+        storyItems.push(stories[i]);
+
+        // Insert story ad every 5th story
+        if ((i + 1) % adSettings.storyAdFrequency === 0 && adSettings.enableAds) {
+          nativeAdCounter++;
+          storyItems.push({
+            id: `story-ad-${nativeAdCounter}`,
+            type: 'ad_story' as const
+          });
+        }
+      }
+
+      return storyItems;
+    };
+
+    setStoriesWithAds(createStoriesWithAds());
+  }, [stories]);
 
   const handleCreateStory = async (content: {
     text?: string;
@@ -76,24 +113,56 @@ const Stories = ({ stories, onViewStory, onCreateStory }: StoriesProps) => {
             <span className="text-xs">Create Story</span>
           </div>
 
-          {/* Other stories */}
-          {stories.map((story) => (
-            <div key={story.id} className="flex flex-col items-center space-y-1 min-w-[70px]">
-              <div
-                className={`relative ${story.hasNewStory
-                  ? 'bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 p-[2px]'
-                  : 'bg-gray-200 p-[2px]'
-                  } rounded-full cursor-pointer`}
-                onClick={() => onViewStory(story.id)}
-              >
-                <Avatar className="h-16 w-16 border-2 border-white">
-                  <AvatarImage src={story.avatar} />
-                  <AvatarFallback>{story.username.substring(0, 2).toUpperCase()}</AvatarFallback>
-                </Avatar>
+          {/* Stories with ads */}
+          {storiesWithAds.map((item) => {
+            if ('type' in item) {
+              if (item.type === 'sponsored_story') {
+                return (
+                  <SponsoredStory
+                    key={item.id}
+                    title="Softchat"
+                    isInternal={true}
+                    onClick={() => {
+                      console.log('Sponsored story clicked');
+                      // Handle sponsored story click
+                    }}
+                  />
+                );
+              } else if (item.type === 'ad_story') {
+                return (
+                  <SponsoredStory
+                    key={item.id}
+                    title="Advertisement"
+                    isInternal={false}
+                    onClick={() => {
+                      console.log('Ad story clicked');
+                      // Handle ad story click
+                    }}
+                  />
+                );
+              }
+            }
+
+            // Regular story
+            const story = item as Story;
+            return (
+              <div key={story.id} className="flex flex-col items-center space-y-1 min-w-[70px]">
+                <div
+                  className={`relative ${story.hasNewStory
+                    ? 'bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 p-[2px]'
+                    : 'bg-gray-200 p-[2px]'
+                    } rounded-full cursor-pointer`}
+                  onClick={() => onViewStory(story.id)}
+                >
+                  <Avatar className="h-16 w-16 border-2 border-white">
+                    <AvatarImage src={story.avatar} />
+                    <AvatarFallback>{story.username.substring(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                </div>
+                <span className="text-xs">{story.username}</span>
               </div>
-              <span className="text-xs">{story.username}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
