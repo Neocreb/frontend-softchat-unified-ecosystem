@@ -469,6 +469,7 @@ class SubscriptionService {
       return {
         id: `tip-${Date.now()}`,
         creatorId: toCreatorId,
+        contentId: "", // Not specific to content
         subscriberId: fromUserId,
         type: "tip",
         amount,
@@ -476,7 +477,6 @@ class SubscriptionService {
         description: message || "Tip from supporter",
         status: "completed",
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       };
     } catch (error) {
       console.error(
