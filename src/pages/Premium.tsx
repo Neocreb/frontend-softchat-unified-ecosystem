@@ -149,17 +149,21 @@ const Premium: React.FC = () => {
   ];
 
   const handleUpgrade = async () => {
-    if (userPremium.walletBalance < (selectedPlan === 'monthly' ? 9.99 : 99.99)) {
+    const requiredAmount = selectedPlan === 'monthly' ? 9.99 : 99.99;
+
+    // Check wallet balance
+    if (currentWalletBalance < requiredAmount) {
       toast({
         title: "Insufficient Balance",
-        description: "Please add funds to your unified wallet to proceed with the upgrade.",
+        description: `You need $${requiredAmount.toFixed(2)} but only have $${currentWalletBalance.toFixed(2)} in your wallet.`,
         variant: "destructive",
       });
-      setShowPayment(true);
+      setShowDepositModal(true);
       return;
     }
 
-    if (userPremium.kycStatus !== 'verified') {
+    // Check KYC verification status
+    if (!isKYCVerified) {
       toast({
         title: "KYC Verification Required",
         description: "Complete identity verification to activate your verified badge.",
@@ -170,9 +174,10 @@ const Premium: React.FC = () => {
     }
 
     setIsProcessing(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+
+    // Simulate API call for premium upgrade
+    setTimeout(async () => {
+      // Update user premium status
       setUserPremium(prev => ({
         ...prev,
         isPremium: true,
@@ -180,9 +185,11 @@ const Premium: React.FC = () => {
         subscriptionExpiry: new Date(Date.now() + (selectedPlan === 'monthly' ? 30 : 365) * 24 * 60 * 60 * 1000),
         nextBillingDate: new Date(Date.now() + (selectedPlan === 'monthly' ? 30 : 365) * 24 * 60 * 60 * 1000),
         storageLimit: 100,
-        walletBalance: prev.walletBalance - (selectedPlan === 'monthly' ? 9.99 : 99.99)
       }));
-      
+
+      // Refresh wallet to reflect payment
+      await refreshWallet();
+
       setIsProcessing(false);
       toast({
         title: "Welcome to Premium!",
