@@ -65,6 +65,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { CAMPAIGN_GOALS } from "./CampaignCenter";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import AudienceTargeting from "./AudienceTargeting";
+import CampaignPayment from "./CampaignPayment";
 
 interface CampaignCreationWizardProps {
   open: boolean;
@@ -122,7 +124,7 @@ const BOOSTABLE_CONTENT = {
 const AUDIENCE_LOCATIONS = [
   { id: "ng", name: "Nigeria", flag: "🇳🇬" },
   { id: "gh", name: "Ghana", flag: "🇬🇭" },
-  { id: "ke", name: "Kenya", flag: "����🇪" },
+  { id: "ke", name: "Kenya", flag: "🇰🇪" },
   { id: "za", name: "South Africa", flag: "🇿🇦" },
   { id: "us", name: "United States", flag: "🇺🇸" },
   { id: "uk", name: "United Kingdom", flag: "🇬🇧" },
@@ -213,6 +215,13 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
       ageGroups: [] as string[],
       gender: "all", // all, male, female
       deviceTypes: [] as string[], // mobile, desktop, tablet
+      languages: [] as string[],
+      incomeLevel: "any",
+      education: "any",
+      employmentStatus: "any",
+      relationshipStatus: "any",
+      behaviors: [] as string[],
+      customAudiences: [] as string[],
     },
     
     // Step 4: Budget & Schedule
@@ -235,6 +244,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
     }
   });
 
+  const [estimatedReach, setEstimatedReach] = useState(50000);
   const [mockUserContent] = useState([
     {
       id: "1",
@@ -361,7 +371,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
       currency: campaignData.budget.currency.replace("_", " ").toUpperCase(),
       createdAt: new Date().toISOString().split('T')[0],
       targeting: campaignData.targeting,
-      estimatedReach: calculateEstimatedReach(),
+      estimatedReach: estimatedReach,
     };
 
     onCampaignCreated(newCampaign);
@@ -590,139 +600,14 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                 </p>
               </div>
 
-              <div className="space-y-6">
-                {/* Location Targeting */}
-                <div>
-                  <Label className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    Target Locations
-                  </Label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2">
-                    {AUDIENCE_LOCATIONS.map((location) => (
-                      <div
-                        key={location.id}
-                        className={`p-3 border rounded-lg cursor-pointer transition-all text-center ${
-                          campaignData.targeting.locations.includes(location.id)
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'hover:border-gray-300'
-                        }`}
-                        onClick={() => {
-                          setCampaignData(prev => ({
-                            ...prev,
-                            targeting: {
-                              ...prev.targeting,
-                              locations: prev.targeting.locations.includes(location.id)
-                                ? prev.targeting.locations.filter(l => l !== location.id)
-                                : [...prev.targeting.locations, location.id]
-                            }
-                          }));
-                        }}
-                      >
-                        <div className="text-lg mb-1">{location.flag}</div>
-                        <div className="text-sm font-medium">{location.name}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Interest Targeting */}
-                <div>
-                  <Label className="flex items-center gap-2">
-                    <Heart className="h-4 w-4" />
-                    Interests & Categories
-                  </Label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {AUDIENCE_INTERESTS.map((interest) => (
-                      <Badge
-                        key={interest.id}
-                        variant={campaignData.targeting.interests.includes(interest.id) ? "default" : "outline"}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setCampaignData(prev => ({
-                            ...prev,
-                            targeting: {
-                              ...prev.targeting,
-                              interests: prev.targeting.interests.includes(interest.id)
-                                ? prev.targeting.interests.filter(i => i !== interest.id)
-                                : [...prev.targeting.interests, interest.id]
-                            }
-                          }));
-                        }}
-                      >
-                        {interest.name}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Demographics */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label>Age Groups</Label>
-                    <div className="space-y-2 mt-2">
-                      {AGE_GROUPS.map((age) => (
-                        <label key={age.id} className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={campaignData.targeting.ageGroups.includes(age.id)}
-                            onChange={(e) => {
-                              setCampaignData(prev => ({
-                                ...prev,
-                                targeting: {
-                                  ...prev.targeting,
-                                  ageGroups: e.target.checked
-                                    ? [...prev.targeting.ageGroups, age.id]
-                                    : prev.targeting.ageGroups.filter(a => a !== age.id)
-                                }
-                              }));
-                            }}
-                            className="rounded"
-                          />
-                          <span className="text-sm">{age.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label>Gender</Label>
-                    <Select
-                      value={campaignData.targeting.gender}
-                      onValueChange={(value) => {
-                        setCampaignData(prev => ({
-                          ...prev,
-                          targeting: { ...prev.targeting, gender: value }
-                        }));
-                      }}
-                    >
-                      <SelectTrigger className="mt-2">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All genders</SelectItem>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                {/* Estimated Reach */}
-                <Card className="bg-blue-50 border-blue-200">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Target className="h-5 w-5 text-blue-600" />
-                      <span className="font-medium">Estimated Reach</span>
-                    </div>
-                    <div className="text-2xl font-bold text-blue-600">
-                      {calculateEstimatedReach().toLocaleString()}
-                    </div>
-                    <p className="text-sm text-blue-700">
-                      people might see your campaign based on your targeting
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              <AudienceTargeting
+                targeting={campaignData.targeting}
+                onTargetingChange={(newTargeting) => {
+                  setCampaignData(prev => ({ ...prev, targeting: newTargeting }));
+                }}
+                estimatedReach={estimatedReach}
+                onEstimatedReachChange={setEstimatedReach}
+              />
             </div>
           )}
 
@@ -954,85 +839,26 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                 </p>
               </div>
 
-              <div className="space-y-4">
-                {PAYMENT_METHODS.map((method) => (
-                  <Card
-                    key={method.id}
-                    className={`cursor-pointer transition-all ${
-                      campaignData.payment.method === method.id ? 'border-blue-500 bg-blue-50' : ''
-                    } ${!method.available ? 'opacity-50' : ''}`}
-                    onClick={() => {
-                      if (method.available) {
-                        setCampaignData(prev => ({ 
-                          ...prev, 
-                          payment: { ...prev.payment, method: method.id }
-                        }));
-                      }
-                    }}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                          <method.icon className="h-5 w-5" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-medium">{method.name}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {method.description}
-                          </p>
-                          {method.balance !== undefined && (
-                            <p className="text-sm font-medium text-green-600 mt-1">
-                              Balance: ${method.balance.toFixed(2)}
-                            </p>
-                          )}
-                          {method.bonus && (
-                            <Badge className="text-xs mt-1 bg-yellow-100 text-yellow-800">
-                              {method.bonus}
-                            </Badge>
-                          )}
-                        </div>
-                        {campaignData.payment.method === method.id && (
-                          <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {/* Final Summary */}
-              <Card className="bg-blue-50 border-blue-200">
-                <CardContent className="p-4">
-                  <h4 className="font-medium mb-3">Campaign Summary</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span>Campaign Goal:</span>
-                      <span>{campaignData.goal?.name}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Content Items:</span>
-                      <span>{campaignData.selectedContent.length} items</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Target Locations:</span>
-                      <span>{campaignData.targeting.locations.length || "All"} locations</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Estimated Reach:</span>
-                      <span>{calculateEstimatedReach().toLocaleString()} people</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Payment Method:</span>
-                      <span>{getSelectedPaymentMethod()?.name}</span>
-                    </div>
-                    <Separator />
-                    <div className="flex justify-between font-medium text-lg">
-                      <span>Total Cost:</span>
-                      <span>${calculateTotalCost().toFixed(2)}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <CampaignPayment
+                campaignCost={calculateTotalCost()}
+                currency={campaignData.budget.currency}
+                estimatedReach={estimatedReach}
+                estimatedROI={250} // Mock ROI
+                onPaymentSuccess={(paymentData) => {
+                  setCampaignData(prev => ({
+                    ...prev,
+                    payment: { ...prev.payment, agreesToTerms: true, paymentData }
+                  }));
+                  handleCreateCampaign();
+                }}
+                onPaymentError={(error) => {
+                  toast({
+                    title: "Payment Error",
+                    description: error,
+                    variant: "destructive",
+                  });
+                }}
+              />
 
               {/* Terms and Conditions */}
               <div className="flex items-start gap-2">
@@ -1040,8 +866,8 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                   type="checkbox"
                   id="terms"
                   checked={campaignData.payment.agreesToTerms}
-                  onChange={(e) => setCampaignData(prev => ({ 
-                    ...prev, 
+                  onChange={(e) => setCampaignData(prev => ({
+                    ...prev,
                     payment: { ...prev.payment, agreesToTerms: e.target.checked }
                   }))}
                   className="mt-1"
