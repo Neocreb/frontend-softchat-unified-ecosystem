@@ -408,12 +408,12 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                       <div className="font-medium">Payment Verified</div>
                       <div
                         className={
-                          job.client.paymentVerified
+                          (job.client.paymentVerified || job.client.payment_verified)
                             ? "text-green-600"
                             : "text-red-600"
                         }
                       >
-                        {job.client.paymentVerified ? "Yes" : "No"}
+                        {(job.client.paymentVerified || job.client.payment_verified) ? "Yes" : "No"}
                       </div>
                     </div>
                   </div>
