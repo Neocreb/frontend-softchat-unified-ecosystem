@@ -671,21 +671,7 @@ const Premium: React.FC = () => {
         />
       )}
 
-      {/* Deposit Modal - Using existing unified wallet system */}
-      <DepositModal
-        isOpen={showDepositModal}
-        onClose={() => setShowDepositModal(false)}
-        onSuccess={async () => {
-          await refreshWallet();
-          setShowDepositModal(false);
-          toast({
-            title: "Funds Added",
-            description: "Your wallet has been updated. You can now upgrade to Premium.",
-          });
-        }}
-      />
-
-      {/* Required Amount Info Dialog */}
+      {/* Add Funds Dialog */}
       <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
         <DialogContent>
           <DialogHeader>
@@ -698,7 +684,7 @@ const Premium: React.FC = () => {
             <div className="text-center p-4 bg-blue-50 rounded-lg">
               <p className="text-sm text-gray-600 mb-2">Required amount:</p>
               <p className="text-2xl font-bold text-blue-600">
-                ${selectedPlan === 'monthly' ? '9.99' : '99.99'}
+                ${(selectedPlan === 'monthly' ? 9.99 : 99.99).toFixed(2)}
               </p>
               <p className="text-sm text-gray-600 mt-2">
                 Current balance: ${currentWalletBalance.toFixed(2)}
@@ -709,7 +695,10 @@ const Premium: React.FC = () => {
             </div>
             <div className="flex gap-2">
               <Button
-                onClick={() => navigate('/wallet')}
+                onClick={() => {
+                  setShowDepositModal(false);
+                  navigate('/wallet');
+                }}
                 className="flex-1"
               >
                 <Wallet className="h-4 w-4 mr-2" />
