@@ -396,7 +396,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto mx-4">
         <DialogHeader>
           <DialogTitle>Create New Campaign</DialogTitle>
           <DialogDescription>
@@ -405,17 +405,20 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
         </DialogHeader>
 
         {/* Progress Steps */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 px-2">
           {[1, 2, 3, 4, 5].map((step) => (
             <div key={step} className="flex items-center">
               <div className="flex flex-col items-center">
                 {getStepIcon(step)}
-                <span className={`text-xs mt-1 ${currentStep >= step ? 'text-blue-600' : 'text-gray-400'}`}>
+                <span className={`text-xs mt-1 ${currentStep >= step ? 'text-blue-600' : 'text-gray-400'} hidden sm:block`}>
                   Step {step}
+                </span>
+                <span className={`text-xs mt-1 ${currentStep >= step ? 'text-blue-600' : 'text-gray-400'} sm:hidden`}>
+                  {step}
                 </span>
               </div>
               {step < 5 && (
-                <div className={`w-12 h-px mx-2 ${currentStep > step ? 'bg-green-600' : 'bg-gray-300'}`} />
+                <div className={`w-6 sm:w-12 h-px mx-1 sm:mx-2 ${currentStep > step ? 'bg-green-600' : 'bg-gray-300'}`} />
               )}
             </div>
           ))}
@@ -433,7 +436,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {Object.values(CAMPAIGN_GOALS).map((goal) => (
                   <Card 
                     key={goal.id}
@@ -478,7 +481,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
               {campaignData.goal && (
                 <div className="mt-6">
                   <Label>What type of content do you want to boost?</Label>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-2">
                     {Object.values(BOOSTABLE_CONTENT).map((type) => (
                       <div
                         key={type.id}
@@ -538,7 +541,7 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
 
               <div>
                 <Label>Your Content</Label>
-                <div className="space-y-3 mt-2 max-h-60 overflow-y-auto">
+                <div className="space-y-3 mt-2 max-h-48 sm:max-h-60 overflow-y-auto">
                   {filteredContent.map((content) => (
                     <Card 
                       key={content.id}
