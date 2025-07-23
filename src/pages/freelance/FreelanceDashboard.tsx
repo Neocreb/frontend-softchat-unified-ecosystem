@@ -416,7 +416,7 @@ export const FreelanceDashboard: React.FC = () => {
 
         {/* Advanced Features Tabs */}
         <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-xl h-auto">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-xl h-auto">
             <TabsTrigger
               value="overview"
               className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
@@ -424,6 +424,14 @@ export const FreelanceDashboard: React.FC = () => {
               <BarChart3 className="w-4 h-4 mr-2" />
               <span className="hidden sm:inline">Overview</span>
               <span className="sm:hidden">📊</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="campaigns"
+              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              <span className="hidden sm:inline">Campaigns</span>
+              <span className="sm:hidden">🎯</span>
             </TabsTrigger>
             <TabsTrigger
               value="smart-matching"
