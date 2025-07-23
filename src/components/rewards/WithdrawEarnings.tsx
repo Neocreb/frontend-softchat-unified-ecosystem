@@ -182,10 +182,10 @@ const WithdrawEarnings = ({
                       Bank Transfer
                     </div>
                   </SelectItem>
-                  <SelectItem value="paypal">
+                  <SelectItem value="unified_wallet">
                     <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      PayPal
+                      <Wallet className="w-4 h-4" />
+                      Unified Wallet
                     </div>
                   </SelectItem>
                   <SelectItem value="crypto_wallet">
