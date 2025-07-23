@@ -483,7 +483,7 @@ const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
       </div>
 
       {/* Campaign Comparison */}
-      {campaigns.length > 1 && (
+      {validCampaigns.length > 1 && (
         <Card>
           <CardHeader>
             <h3 className="text-lg font-semibold">Campaign Comparison</h3>
@@ -491,7 +491,7 @@ const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
           <CardContent>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={campaigns.map(campaign => ({
+                <BarChart data={validCampaigns.map(campaign => ({
                   name: campaign.name.substring(0, 15) + "...",
                   impressions: campaign.metrics?.impressions || 0,
                   clicks: campaign.metrics?.clicks || 0,
