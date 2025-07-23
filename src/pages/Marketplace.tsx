@@ -44,6 +44,10 @@ import WishlistProducts from "@/components/marketplace/WishlistProducts";
 import EnhancedProductDetail from "@/components/marketplace/EnhancedProductDetail";
 import { useAuth } from "@/contexts/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BannerAd } from "@/components/ads/BannerAd";
+import { SponsoredProductCard } from "@/components/ads/SponsoredProductCard";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { adSettings } from "../../config/adSettings";
 
 const MarketplaceContent = () => {
   const [activeTab, setActiveTab] = useState("browse");
