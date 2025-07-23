@@ -156,6 +156,23 @@ const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
     return `${value.toFixed(decimals)}%`;
   };
 
+  // Show empty state if no valid campaigns
+  if (validCampaigns.length === 0) {
+    return (
+      <div className="space-y-4 md:space-y-6 px-4 md:px-0">
+        <Card>
+          <CardContent className="p-8 text-center">
+            <BarChart3 className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+            <h3 className="text-lg font-semibold mb-2">No Campaign Data</h3>
+            <p className="text-muted-foreground">
+              Create some campaigns to start viewing analytics and performance metrics.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 md:space-y-6 px-4 md:px-0">
       {/* Header with Filters */}
