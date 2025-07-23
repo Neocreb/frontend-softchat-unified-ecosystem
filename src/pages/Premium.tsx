@@ -60,7 +60,10 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import EnhancedKYCVerification from "@/components/kyc/EnhancedKYCVerification";
+import { useWalletContext } from "@/contexts/WalletContext";
+import { useNavigate } from "react-router-dom";
+import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
+import DepositModal from "@/components/wallet/DepositModal";
 
 interface PremiumUser {
   id: string;
