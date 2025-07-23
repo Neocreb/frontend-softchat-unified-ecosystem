@@ -323,12 +323,12 @@ class SubscriptionService {
       return {
         id: '',
         userId,
+        tierId: "free",
         period: new Date().toISOString().slice(0, 7),
         videoUploads: 0,
-        storageUsed: 0,
+        storageUsedGB: 0,
         aiCreditsUsed: 0,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        lastUpdated: new Date().toISOString(),
       };
     }
   }
