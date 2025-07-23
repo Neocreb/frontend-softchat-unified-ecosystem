@@ -38,7 +38,6 @@ import {
   Zap,
   TrendingUp,
   Compass,
-  Bookmark,
   Clock,
   Target,
 } from "lucide-react";
