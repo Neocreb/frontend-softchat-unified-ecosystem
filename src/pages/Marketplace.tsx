@@ -61,6 +61,7 @@ const MarketplaceContent = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
+  const isMobile = useIsMobile();
   const {
     addToCart,
     addToWishlist,
