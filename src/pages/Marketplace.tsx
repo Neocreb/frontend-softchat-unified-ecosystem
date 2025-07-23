@@ -147,6 +147,17 @@ const MarketplaceContent = () => {
         <h1 className="text-2xl font-bold">Marketplace</h1>
       </div>
 
+      {/* Top Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="flex justify-center">
+          <BannerAd
+            position="top"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
+
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="overflow-x-auto pb-2">
           <TabsList className="min-w-max">
