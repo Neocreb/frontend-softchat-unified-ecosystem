@@ -163,7 +163,7 @@ const initialMockStories = [
       username: "mike_chen",
     },
     type: "text" as const,
-    textContent: "Having an amazing day! ��️",
+    textContent: "Having an amazing day! ☀️",
     backgroundColor: "bg-gradient-to-br from-blue-400 to-purple-600",
     textColor: "text-white",
     timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
@@ -1246,6 +1246,54 @@ export default function EnhancedFeed() {
 
   const handlePostCreated = (newPost: Post) => {
     setPosts((prev) => [newPost, ...prev]);
+  };
+
+  // Filter posts based on active tab
+  const getFilteredPosts = () => {
+    switch (activeFeedTab) {
+      case "for-you":
+        // AI-powered personalized feed - mix of trending, interests, and engagement
+        return posts.sort((a, b) => {
+          const scoreA = (a.likes || 0) * 0.3 + (a.comments || 0) * 0.5 + (a.shares || 0) * 0.2;
+          const scoreB = (b.likes || 0) * 0.3 + (b.comments || 0) * 0.5 + (b.shares || 0) * 0.2;
+          return scoreB - scoreA;
+        });
+
+      case "following":
+        // Posts from users you follow (mock: verified users for demo)
+        return posts.filter(post => post.user.isVerified);
+
+      case "trending":
+        // Trending posts based on engagement
+        return posts
+          .filter(post => (post.likes || 0) > 50 || (post.comments || 0) > 10)
+          .sort((a, b) => ((b.likes || 0) + (b.comments || 0) * 2) - ((a.likes || 0) + (a.comments || 0) * 2));
+
+      case "crypto":
+        // Crypto and finance related posts
+        return posts.filter(post =>
+          post.content.toLowerCase().includes('crypto') ||
+          post.content.toLowerCase().includes('trading') ||
+          post.content.toLowerCase().includes('bitcoin') ||
+          post.content.toLowerCase().includes('finance')
+        );
+
+      case "tech":
+        // Technology and development posts
+        return posts.filter(post =>
+          post.content.toLowerCase().includes('tech') ||
+          post.content.toLowerCase().includes('code') ||
+          post.content.toLowerCase().includes('development') ||
+          post.content.toLowerCase().includes('ai')
+        );
+
+      case "saved":
+        // Saved/bookmarked posts
+        return posts.filter(post => post.isSaved);
+
+      default:
+        return posts;
+    }
   };
 
   const handlePostUpdate = (updatedPost: Post) => {
