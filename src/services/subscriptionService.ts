@@ -181,7 +181,7 @@ class SubscriptionService {
   // Get user's current subscription
   async getUserSubscription(userId: string): Promise<UserSubscription | null> {
     try {
-      const response = await fetch(`/api/premium/subscription/${userId}`, {
+      const response = await fetch('/api/premium/status', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -189,15 +189,32 @@ class SubscriptionService {
       });
 
       if (!response.ok) {
-        if (response.status === 404) {
-          // No subscription found, this is normal
+        if (response.status === 404 || response.status === 401) {
+          // No subscription found or not authenticated, this is normal
           return null;
         }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      return data;
+
+      if (data.success && data.subscription) {
+        // Convert the API response to match our UserSubscription interface
+        return {
+          id: data.subscription.id,
+          userId: userId,
+          tierId: data.subscription.tier,
+          status: data.subscription.status,
+          startDate: new Date().toISOString(), // API doesn't provide this
+          endDate: data.subscription.endDate,
+          autoRenew: true, // Default value
+          paymentMethodId: '', // API doesn't provide this
+          createdAt: new Date().toISOString(), // API doesn't provide this
+          updatedAt: new Date().toISOString(), // API doesn't provide this
+        };
+      }
+
+      return null;
     } catch (error) {
       console.error(
         "Error getting user subscription:",
