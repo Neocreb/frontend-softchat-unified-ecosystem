@@ -43,12 +43,77 @@ const TermsOfService = () => {
               These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered 
               social media and marketplace platform that includes social networking, 
               marketplace functionality, freelancing services, cryptocurrency trading, 
-              and advanced analytics features.
+              verified premium subscriptions, and advanced analytics features.
             </p>
             <p>
-              By accessing or using SoftChat, you agree to be bound by these Terms. 
+              By accessing or using SoftChat, you agree to be bound by these Terms.
               If you disagree with any part of these terms, you may not access the Service.
             </p>
+          </CardContent>
+        </Card>
+
+        {/* Premium Subscription Terms */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="w-5 h-5 text-yellow-600" />
+              Premium Subscription & Verified Badge
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold mb-2">Free vs Premium Plans</h4>
+              <p className="text-sm">
+                SoftChat offers both free and premium subscription tiers. Free users have access to all
+                core features with certain limitations (10 video uploads/month, 5GB storage, 90-day content
+                retention). Premium users ($9.99/month or $99.99/year) receive enhanced features including
+                verified badges, unlimited uploads, 100GB storage, and priority support.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">KYC Verification Requirements</h4>
+              <p className="text-sm mb-2">
+                To receive a verified badge, Premium users must complete Know Your Customer (KYC) verification:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-sm ml-4">
+                <li>Upload valid government-issued photo identification (front and back)</li>
+                <li>Complete real-time selfie verification with liveness detection</li>
+                <li>Verify phone number and email address</li>
+                <li>Provide accurate personal information</li>
+              </ul>
+              <p className="text-sm mt-2">
+                KYC verification is mandatory for verified badge activation. False or misleading information
+                may result in account suspension or termination.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Billing & Payment</h4>
+              <p className="text-sm">
+                Premium subscriptions are billed through your unified wallet. Sufficient funds must be
+                available at renewal time. Failed payments result in a 5-day grace period before
+                downgrade to free tier. Users receive notifications 3 days before subscription expiration.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Content Retention & Storage</h4>
+              <p className="text-sm">
+                Free users: Content is automatically deleted after 90 days. Premium users: No automatic
+                deletion. Storage limits apply (5GB free, 100GB premium). Users approaching storage
+                limits will receive upgrade prompts.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Verified Badge Usage</h4>
+              <p className="text-sm">
+                The verified badge indicates identity verification and premium status. Misrepresenting
+                verification status or impersonating verified users is prohibited. The badge appears
+                across all platform features including profiles, posts, marketplace listings, and chat.
+              </p>
+            </div>
           </CardContent>
         </Card>
 
