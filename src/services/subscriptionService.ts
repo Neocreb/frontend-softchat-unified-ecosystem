@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase/client";
+// Note: This service now uses API calls instead of direct database access
 
 export interface SubscriptionTier {
   id: string;
