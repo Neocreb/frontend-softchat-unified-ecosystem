@@ -578,8 +578,13 @@ const Premium: React.FC = () => {
                 <p className="text-sm text-gray-600">Current balance available for subscription</p>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold">${userPremium.walletBalance.toFixed(2)}</div>
-                <Button variant="outline" size="sm" className="mt-1">
+                <div className="text-2xl font-bold">${currentWalletBalance.toFixed(2)}</div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-1"
+                  onClick={() => setShowDepositModal(true)}
+                >
                   Add Funds
                 </Button>
               </div>
