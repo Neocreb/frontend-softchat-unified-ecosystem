@@ -162,28 +162,16 @@ export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
   const handleCampaignAction = (action: string, campaign: Campaign) => {
     switch (action) {
       case "pause":
-        setCampaigns(prev => 
-          prev.map(c => 
-            c.id === campaign.id 
-              ? { ...c, status: "paused" as const }
-              : c
-          )
-        );
+        campaignSyncService.updateCampaignStatus(campaign.id, "paused");
         toast({
           title: "Campaign Paused",
           description: `${campaign.name} has been paused.`,
         });
         break;
       case "resume":
-        setCampaigns(prev => 
-          prev.map(c => 
-            c.id === campaign.id 
-              ? { ...c, status: "active" as const }
-              : c
-          )
-        );
+        campaignSyncService.updateCampaignStatus(campaign.id, "active");
         toast({
-          title: "Campaign Resumed", 
+          title: "Campaign Resumed",
           description: `${campaign.name} has been resumed.`,
         });
         break;
