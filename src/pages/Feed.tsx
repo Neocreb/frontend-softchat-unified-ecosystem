@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostCard from "@/components/feed/PostCard";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
 import FeedSidebar from "@/components/feed/FeedSidebar";
+import { FeedNativeAdCard } from "@/components/ads/FeedNativeAdCard";
+import { SponsoredPostCard } from "@/components/ads/SponsoredPostCard";
+import { adSettings } from "../../config/adSettings";
 
 // Define the Post type to match what PostCard expects
 export type Post = {
