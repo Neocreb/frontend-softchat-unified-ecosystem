@@ -132,7 +132,7 @@ export const JobDetailPage: React.FC = () => {
       setLoading(true);
       try {
         // Try to fetch from API first
-        const fetchedJob = await getJobById(jobId);
+        const fetchedJob = await getJob(jobId);
         if (fetchedJob) {
           setJob(fetchedJob);
         } else {
