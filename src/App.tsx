@@ -332,7 +332,10 @@ const AppRoutes = () => {
             element={
               <div className="container mx-auto px-4 py-6">
                 <div className="max-w-4xl mx-auto">
-                  <EnhancedKYCVerification />
+                  <EnhancedKYCVerification onComplete={() => {
+                    // Handle completion - could navigate back or show success
+                    window.history.back();
+                  }} />
                 </div>
               </div>
             }
