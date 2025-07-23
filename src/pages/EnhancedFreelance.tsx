@@ -512,14 +512,30 @@ const EnhancedFreelance: React.FC = () => {
                 </CardContent>
               </Card>
             ) : (
-              jobs.map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  onApply={handleJobApplication}
-                  onViewDetails={handleJobDetails}
-                />
-              ))
+              <>
+                {jobs.map((job, index) => (
+                  <React.Fragment key={job.id}>
+                    <JobCard
+                      job={job}
+                      onApply={handleJobApplication}
+                      onViewDetails={handleJobDetails}
+                    />
+
+                    {/* Insert banner ad after every 15 jobs */}
+                    {adSettings.enableAds &&
+                     (index + 1) % adSettings.freelanceAdFrequency === 0 &&
+                     index < jobs.length - 1 && (
+                      <div className="flex justify-center py-4">
+                        <BannerAd
+                          position="center"
+                          isMobile={isMobile}
+                          className="w-full max-w-2xl"
+                        />
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </>
             )}
           </div>
         </TabsContent>
