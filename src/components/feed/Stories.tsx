@@ -25,8 +25,43 @@ interface StoriesProps {
 
 const Stories = ({ stories, onViewStory, onCreateStory }: StoriesProps) => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [storiesWithAds, setStoriesWithAds] = useState<(Story | { id: string; type: 'sponsored_story' | 'ad_story' })[]>([]);
   const notification = useNotification();
   const { user } = useAuth();
+
+  // Create stories list with ads
+  useEffect(() => {
+    const createStoriesWithAds = () => {
+      const storyItems = [];
+      let sponsoredAdCounter = 0;
+      let nativeAdCounter = 0;
+
+      // Add Softchat sponsored story as first item if ads are enabled
+      if (adSettings.enableAds) {
+        storyItems.push({
+          id: 'softchat-sponsored-story',
+          type: 'sponsored_story' as const
+        });
+      }
+
+      for (let i = 0; i < stories.length; i++) {
+        storyItems.push(stories[i]);
+
+        // Insert story ad every 5th story
+        if ((i + 1) % adSettings.storyAdFrequency === 0 && adSettings.enableAds) {
+          nativeAdCounter++;
+          storyItems.push({
+            id: `story-ad-${nativeAdCounter}`,
+            type: 'ad_story' as const
+          });
+        }
+      }
+
+      return storyItems;
+    };
+
+    setStoriesWithAds(createStoriesWithAds());
+  }, [stories]);
 
   const handleCreateStory = async (content: {
     text?: string;
