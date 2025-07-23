@@ -42,6 +42,7 @@ import { useNavigate } from "react-router-dom";
 import CampaignCreationWizard from "./CampaignCreationWizard";
 import { CampaignAnalyticsDashboard } from "./CampaignAnalyticsDashboard";
 import { SmartBoostSuggestions } from "./SmartBoostSuggestions";
+import { campaignSyncService } from "@/services/campaignSyncService";
 
 export interface Campaign {
   id: string;
