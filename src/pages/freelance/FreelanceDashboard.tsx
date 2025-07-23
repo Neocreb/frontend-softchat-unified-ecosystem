@@ -797,6 +797,16 @@ export const FreelanceDashboard: React.FC = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="campaigns">
+            <UnifiedCampaignManager
+              context="freelancer"
+              entityId={user?.id}
+              entityType="profile"
+              showCreateButton={true}
+              compact={false}
+            />
+          </TabsContent>
+
           <TabsContent value="smart-matching">
             <SmartFreelanceMatching userType="freelancer" />
           </TabsContent>
