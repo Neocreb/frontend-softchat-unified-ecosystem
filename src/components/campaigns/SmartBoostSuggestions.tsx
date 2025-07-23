@@ -253,7 +253,17 @@ const mockSuggestions: SmartBoostSuggestion[] = [
   },
 ];
 
-const SmartBoostSuggestions: React.FC = () => {
+interface SmartBoostSuggestionsProps {
+  context?: "seller" | "freelancer" | "client";
+  entityId?: string;
+  entityType?: "product" | "profile" | "job" | "service";
+}
+
+const SmartBoostSuggestions: React.FC<SmartBoostSuggestionsProps> = ({
+  context = "seller",
+  entityId,
+  entityType,
+}) => {
   const { toast } = useToast();
   const [suggestions] = useState<SmartBoostSuggestion[]>(mockSuggestions);
   const [selectedSuggestion, setSelectedSuggestion] = useState<SmartBoostSuggestion | null>(null);
