@@ -211,15 +211,15 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
       {/* Targeting Overview */}
       <Card className="bg-gradient-to-r from-blue-50 to-purple-50">
         <CardContent className="p-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h3 className="font-semibold text-lg">Estimated Reach</h3>
-              <p className="text-2xl font-bold text-blue-600">
+              <p className="text-xl sm:text-2xl font-bold text-blue-600">
                 {estimatedReach.toLocaleString()}
               </p>
               <p className="text-sm text-muted-foreground">people might see your campaign</p>
             </div>
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <Badge className={specificity.color}>
                 {specificity.level} Targeting
               </Badge>
@@ -241,19 +241,19 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {LOCATIONS.map((location) => (
                 <div
                   key={location.id}
-                  className={`p-3 border rounded-lg cursor-pointer transition-all text-center ${
+                  className={`p-2 sm:p-3 border rounded-lg cursor-pointer transition-all text-center ${
                     targeting.locations.includes(location.id)
                       ? 'border-blue-500 bg-blue-50'
                       : 'hover:border-gray-300'
                   }`}
                   onClick={() => toggleArrayItem('locations', location.id)}
                 >
-                  <div className="text-lg mb-1">{location.flag}</div>
-                  <div className="text-sm font-medium">{location.name}</div>
+                  <div className="text-base sm:text-lg mb-1">{location.flag}</div>
+                  <div className="text-xs sm:text-sm font-medium">{location.name}</div>
                   <div className="text-xs text-muted-foreground">
                     {(location.population / 1000000).toFixed(0)}M people
                   </div>
@@ -290,7 +290,7 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {INTERESTS.map((interest) => (
                 <div
                   key={interest.id}
