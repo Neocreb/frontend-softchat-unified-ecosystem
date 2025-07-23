@@ -1419,9 +1419,43 @@ export default function EnhancedFeed() {
                   </div>
                 )}
 
+                {/* Insert AI recommendations between posts - First set */}
+                {index === 3 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="posts"
+                      availableContent={posts}
+                      onContentSelect={(post) => {
+                        console.log("Selected recommended post:", post);
+                      }}
+                      maxItems={2}
+                      className=""
+                      layout="carousel"
+                      showReasons={true}
+                    />
+                  </div>
+                )}
+
                 {index === 5 && (
                   <div className="my-6">
                     <SponsoredContent item={sponsoredItems[1]} />
+                  </div>
+                )}
+
+                {/* Insert AI recommendations between posts - Second set */}
+                {index === 7 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="mixed"
+                      availableContent={[...posts, ...stories]}
+                      onContentSelect={(content) => {
+                        console.log("Selected mixed content:", content);
+                      }}
+                      maxItems={3}
+                      className=""
+                      layout="grid"
+                      showReasons={false}
+                    />
                   </div>
                 )}
 
@@ -1431,19 +1465,38 @@ export default function EnhancedFeed() {
                   </div>
                 )}
 
-                {/* Insert AI recommendations between posts occasionally */}
-                {index === 10 && (
-                  <SmartContentRecommendations
-                    contentType="mixed"
-                    availableContent={[...posts, ...stories]}
-                    onContentSelect={(content) => {
-                      console.log("Selected mixed content:", content);
-                    }}
-                    maxItems={3}
-                    className="my-6"
-                    layout="carousel"
-                    showReasons={true}
-                  />
+                {/* Insert AI recommendations between posts - Third set */}
+                {index === 12 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="posts"
+                      availableContent={posts}
+                      onContentSelect={(post) => {
+                        console.log("Selected recommended post:", post);
+                      }}
+                      maxItems={4}
+                      className=""
+                      layout="grid"
+                      showReasons={true}
+                    />
+                  </div>
+                )}
+
+                {/* Insert AI recommendations between posts - Fourth set */}
+                {index === 16 && (
+                  <div className="my-6">
+                    <SmartContentRecommendations
+                      contentType="mixed"
+                      availableContent={[...posts, ...stories]}
+                      onContentSelect={(content) => {
+                        console.log("Selected mixed content:", content);
+                      }}
+                      maxItems={2}
+                      className=""
+                      layout="carousel"
+                      showReasons={false}
+                    />
+                  </div>
                 )}
               </SwipeDetector>
             ))}
