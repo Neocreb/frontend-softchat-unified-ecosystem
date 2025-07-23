@@ -401,7 +401,7 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                     <div>
                       <div className="font-medium">Jobs Posted</div>
                       <div className="text-muted-foreground">
-                        {job.client.jobsPosted}
+                        {job.client.jobsPosted || job.client.jobs_posted || 0}
                       </div>
                     </div>
                     <div>
