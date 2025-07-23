@@ -375,10 +375,10 @@ const UnifiedCreatorEconomy: React.FC = () => {
       return;
     }
 
-    // In production, this would call the withdrawal API
+    // In production, this would call the withdrawal API with unified wallet integration
     toast({
       title: "Withdrawal Requested",
-      description: `$${withdrawAmount} withdrawal request submitted`,
+      description: `$${withdrawAmount} withdrawal to ${selectedPaymentMethod === "wallet" ? "Unified Wallet" : "Bank Account"} submitted. Check your wallet rewards tab for transaction history.`,
     });
     setWithdrawAmount("");
   };
