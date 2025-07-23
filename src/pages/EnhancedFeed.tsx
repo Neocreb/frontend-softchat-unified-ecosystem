@@ -1393,19 +1393,6 @@ export default function EnhancedFeed() {
             </Card>
           )}
 
-          {/* AI Content Recommendations */}
-          <SmartContentRecommendations
-            contentType="posts"
-            availableContent={posts}
-            onContentSelect={(post) => {
-              // Scroll to selected post or handle selection
-              console.log("Selected recommended post:", post);
-            }}
-            maxItems={4}
-            className="mb-6"
-            layout="grid"
-          />
-
           {/* Posts Feed with Infinite Scroll */}
           <InfiniteScroll
             hasMore={hasMorePosts}
