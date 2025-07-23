@@ -41,6 +41,9 @@ import ProjectDashboard from "@/components/freelance/ProjectDashboard";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { BannerAd } from "@/components/ads/BannerAd";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { adSettings } from "../../config/adSettings";
 
 const EnhancedFreelance: React.FC = () => {
   const navigate = useNavigate();
