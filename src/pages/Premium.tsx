@@ -70,23 +70,19 @@ interface PremiumUser {
   isVerified: boolean;
   isPremium: boolean;
   subscriptionExpiry?: Date;
-  kycStatus: 'pending' | 'verified' | 'rejected' | 'not_started';
   storageUsed: number; // in GB
   storageLimit: number; // in GB
   videosUploadedThisMonth: number;
   nextBillingDate?: Date;
-  walletBalance: number;
 }
 
 const mockPremiumUser: PremiumUser = {
   id: "user123",
   isVerified: false,
   isPremium: false,
-  kycStatus: 'not_started',
   storageUsed: 3.2,
   storageLimit: 5,
   videosUploadedThisMonth: 7,
-  walletBalance: 45.50
 };
 
 const Premium: React.FC = () => {
