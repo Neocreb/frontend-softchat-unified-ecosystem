@@ -166,7 +166,7 @@ const UnifiedCreatorEconomy: React.FC = () => {
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("bank");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("wallet");
 
   useEffect(() => {
     if (user) {
