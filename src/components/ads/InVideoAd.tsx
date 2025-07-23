@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Play } from 'lucide-react';
 import { adSettings } from '../../../config/adSettings';
 import { cn } from '@/lib/utils';
+import { adRewardService } from '@/services/adRewardService';
 
 interface InVideoAdProps {
   onAdComplete: () => void;
