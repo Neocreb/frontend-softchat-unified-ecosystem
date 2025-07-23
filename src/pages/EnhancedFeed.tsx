@@ -34,6 +34,13 @@ import {
   Star,
   Shield,
   Gift,
+  Sparkles,
+  Zap,
+  TrendingUp,
+  Compass,
+  Bookmark,
+  Clock,
+  Target,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
