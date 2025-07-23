@@ -246,26 +246,27 @@ class SubscriptionService {
       // Cancel existing subscription
       await this.cancelSubscription(userId);
 
-      // Create new subscription
-      const { data, error } = await (supabase as any)
-        .from("user_subscriptions")
-        .insert({
-          user_id: userId,
-          tier_id: tierId,
-          status: tier.price === 0 ? "active" : "trial",
-          start_date: startDate.toISOString(),
-          end_date: endDate.toISOString(),
-          auto_renew: true,
-          payment_method_id: paymentMethodId,
-          trial_ends_at:
-            tier.price > 0
-              ? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-              : null, // 7 day trial
-        })
-        .select("*")
-        .single();
+      // Create new subscription using API
+      const response = await fetch('/api/premium/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tier: tierId,
+          billingType: tier.interval,
+        }),
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(`Failed to create subscription: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message || 'Failed to create subscription');
+      }
 
       // Initialize usage tracking
       await this.initializeUsageTracking(userId, tierId);
