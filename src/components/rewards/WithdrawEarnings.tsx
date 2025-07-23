@@ -202,7 +202,7 @@ const WithdrawEarnings = ({
               <Label htmlFor="account-details">Account Details</Label>
               <Textarea
                 id="account-details"
-                placeholder="Enter your account details (bank account number, PayPal email, wallet address, etc.)"
+                placeholder="Enter your account details (bank account number, unified wallet ID, crypto wallet address, etc.)"
                 value={accountDetails}
                 onChange={(e) => setAccountDetails(e.target.value)}
                 className="mt-1"
