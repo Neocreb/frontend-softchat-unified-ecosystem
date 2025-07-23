@@ -1677,27 +1677,6 @@ export default function EnhancedFeed() {
                       <Button onClick={() => navigate("/app/explore")}>Discover People</Button>
                     </>
                   )}
-                  {activeFeedTab === "trending" && (
-                    <>
-                      <TrendingUp className="h-12 w-12 text-gray-400 mx-auto" />
-                      <h3 className="text-lg font-semibold text-gray-600">No trending posts</h3>
-                      <p className="text-gray-500">Be the first to create viral content!</p>
-                    </>
-                  )}
-                  {activeFeedTab === "crypto" && (
-                    <>
-                      <Zap className="h-12 w-12 text-gray-400 mx-auto" />
-                      <h3 className="text-lg font-semibold text-gray-600">No crypto posts</h3>
-                      <p className="text-gray-500">Share your trading insights and crypto discussions!</p>
-                    </>
-                  )}
-                  {activeFeedTab === "tech" && (
-                    <>
-                      <Compass className="h-12 w-12 text-gray-400 mx-auto" />
-                      <h3 className="text-lg font-semibold text-gray-600">No tech posts</h3>
-                      <p className="text-gray-500">Share your latest projects and tech discoveries!</p>
-                    </>
-                  )}
                   {activeFeedTab === "saved" && (
                     <>
                       <Bookmark className="h-12 w-12 text-gray-400 mx-auto" />
