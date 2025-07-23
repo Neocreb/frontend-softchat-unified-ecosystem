@@ -1366,42 +1366,78 @@ export default function EnhancedFeed() {
       case "for-you":
         // AI-powered personalized feed - mix of trending, interests, and engagement
         return posts.sort((a, b) => {
-          const scoreA = (a.likes || 0) * 0.3 + (a.comments || 0) * 0.5 + (a.shares || 0) * 0.2;
-          const scoreB = (b.likes || 0) * 0.3 + (b.comments || 0) * 0.5 + (b.shares || 0) * 0.2;
+          // Sophisticated AI scoring algorithm
+          const timeDecay = (timestamp: string) => {
+            const hours = parseFloat(timestamp.split(' ')[0]) || 1;
+            return Math.exp(-hours / 24); // Exponential decay over 24 hours
+          };
+
+          const scoreA = (
+            (a.likes || 0) * 0.3 +
+            (a.comments || 0) * 0.5 +
+            (a.shares || 0) * 0.2 +
+            (a.isLiked ? 50 : 0) + // Boost if user liked
+            (a.user.isVerified ? 25 : 0) + // Boost verified users
+            timeDecay(a.timestamp) * 100 // Recent content boost
+          );
+
+          const scoreB = (
+            (b.likes || 0) * 0.3 +
+            (b.comments || 0) * 0.5 +
+            (b.shares || 0) * 0.2 +
+            (b.isLiked ? 50 : 0) +
+            (b.user.isVerified ? 25 : 0) +
+            timeDecay(b.timestamp) * 100
+          );
+
           return scoreB - scoreA;
         });
 
       case "following":
         // Posts from users you follow (mock: verified users for demo)
-        return posts.filter(post => post.user.isVerified);
+        return posts
+          .filter(post => post.user.isVerified)
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
       case "trending":
-        // Trending posts based on engagement
+        // Trending posts based on high engagement
         return posts
-          .filter(post => (post.likes || 0) > 50 || (post.comments || 0) > 10)
-          .sort((a, b) => ((b.likes || 0) + (b.comments || 0) * 2) - ((a.likes || 0) + (a.comments || 0) * 2));
+          .filter(post => (post.likes || 0) > 200 || (post.comments || 0) > 50)
+          .sort((a, b) => {
+            const engagementA = (a.likes || 0) + (a.comments || 0) * 3 + (a.shares || 0) * 5;
+            const engagementB = (b.likes || 0) + (b.comments || 0) * 3 + (b.shares || 0) * 5;
+            return engagementB - engagementA;
+          });
 
       case "crypto":
         // Crypto and finance related posts
-        return posts.filter(post =>
-          post.content.toLowerCase().includes('crypto') ||
-          post.content.toLowerCase().includes('trading') ||
-          post.content.toLowerCase().includes('bitcoin') ||
-          post.content.toLowerCase().includes('finance')
-        );
+        const cryptoKeywords = ['crypto', 'bitcoin', 'ethereum', 'trading', 'btc', 'eth', 'blockchain', 'defi', 'nft'];
+        return posts
+          .filter(post =>
+            cryptoKeywords.some(keyword =>
+              post.content.toLowerCase().includes(keyword) ||
+              post.user.username.toLowerCase().includes(keyword)
+            )
+          )
+          .sort((a, b) => (b.likes || 0) - (a.likes || 0));
 
       case "tech":
         // Technology and development posts
-        return posts.filter(post =>
-          post.content.toLowerCase().includes('tech') ||
-          post.content.toLowerCase().includes('code') ||
-          post.content.toLowerCase().includes('development') ||
-          post.content.toLowerCase().includes('ai')
-        );
+        const techKeywords = ['tech', 'code', 'react', 'javascript', 'typescript', 'ai', 'development', 'programming', 'github'];
+        return posts
+          .filter(post =>
+            techKeywords.some(keyword =>
+              post.content.toLowerCase().includes(keyword) ||
+              post.user.username.toLowerCase().includes(keyword)
+            )
+          )
+          .sort((a, b) => (b.likes || 0) - (a.likes || 0));
 
       case "saved":
         // Saved/bookmarked posts
-        return posts.filter(post => post.isSaved);
+        return posts
+          .filter(post => post.isSaved)
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
       default:
         return posts;
