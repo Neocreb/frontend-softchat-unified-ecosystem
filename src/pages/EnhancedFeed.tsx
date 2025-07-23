@@ -1360,6 +1360,38 @@ export default function EnhancedFeed() {
     setPosts((prev) => [newPost, ...prev]);
   };
 
+  // Get post count for a specific tab
+  const getPostCountForTab = (tab: string) => {
+    switch (tab) {
+      case "for-you":
+        return posts.length;
+      case "following":
+        return posts.filter(post => post.user.isVerified).length;
+      case "trending":
+        return posts.filter(post => (post.likes || 0) > 200 || (post.comments || 0) > 50).length;
+      case "crypto":
+        const cryptoKeywords = ['crypto', 'bitcoin', 'ethereum', 'trading', 'btc', 'eth', 'blockchain', 'defi', 'nft'];
+        return posts.filter(post =>
+          cryptoKeywords.some(keyword =>
+            post.content.toLowerCase().includes(keyword) ||
+            post.user.username.toLowerCase().includes(keyword)
+          )
+        ).length;
+      case "tech":
+        const techKeywords = ['tech', 'code', 'react', 'javascript', 'typescript', 'ai', 'development', 'programming', 'github'];
+        return posts.filter(post =>
+          techKeywords.some(keyword =>
+            post.content.toLowerCase().includes(keyword) ||
+            post.user.username.toLowerCase().includes(keyword)
+          )
+        ).length;
+      case "saved":
+        return posts.filter(post => post.isSaved).length;
+      default:
+        return 0;
+    }
+  };
+
   // Filter posts based on active tab
   const getFilteredPosts = () => {
     switch (activeFeedTab) {
