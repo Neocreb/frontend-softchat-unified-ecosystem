@@ -98,6 +98,18 @@ export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Subscribe to campaign updates
+  useEffect(() => {
+    const unsubscribe = campaignSyncService.subscribe((updatedCampaigns) => {
+      setCampaigns(updatedCampaigns);
+    });
+
+    // Load initial campaigns
+    setCampaigns(campaignSyncService.getCampaignsByContext(context, entityId));
+
+    return unsubscribe;
+  }, [context, entityId]);
+
   // Filter campaigns based on context and entity
   const filteredCampaigns = campaigns.filter((campaign) => {
     // Add logic to filter campaigns based on context
