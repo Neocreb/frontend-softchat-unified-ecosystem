@@ -488,10 +488,10 @@ const CampaignAnalyticsDashboard: React.FC<CampaignAnalyticsDashboardProps> = ({
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={campaigns.map(campaign => ({
                   name: campaign.name.substring(0, 15) + "...",
-                  impressions: campaign.performance.impressions,
-                  clicks: campaign.performance.clicks,
-                  conversions: campaign.performance.conversions,
-                  roi: campaign.performance.roi,
+                  impressions: campaign.metrics?.impressions || 0,
+                  clicks: campaign.metrics?.clicks || 0,
+                  conversions: campaign.metrics?.conversions || 0,
+                  roi: campaign.metrics?.roas || 0,
                 }))}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
