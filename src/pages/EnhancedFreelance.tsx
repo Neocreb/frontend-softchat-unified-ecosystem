@@ -312,6 +312,17 @@ const EnhancedFreelance: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto bg-white">
+      {/* Top Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="mb-6 flex justify-center">
+          <BannerAd
+            position="top"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
+
       {/* Upgrade Notice */}
       <div className="mb-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
