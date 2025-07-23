@@ -246,79 +246,82 @@ const CampaignCenter: React.FC = () => {
   };
 
   return (
-    <div className="container py-6 space-y-6">
+    <div className="container px-4 py-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Campaign Center</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold">Campaign Center</h1>
+          <p className="text-muted-foreground text-sm md:text-base">
             Promote your content, products, and services to reach more people
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full md:w-auto">
           <Button
             variant="outline"
             onClick={() => setShowIncentives(true)}
+            className="w-full sm:w-auto"
           >
             <Gift className="h-4 w-4 mr-2" />
-            Incentives
+            <span className="hidden sm:inline">Incentives</span>
+            <span className="sm:hidden">Bonuses</span>
           </Button>
-          <Button onClick={() => setShowCreationWizard(true)}>
+          <Button onClick={() => setShowCreationWizard(true)} className="w-full sm:w-auto">
             <PlusCircle className="h-4 w-4 mr-2" />
-            Create Campaign
+            <span className="hidden sm:inline">Create Campaign</span>
+            <span className="sm:hidden">Create</span>
           </Button>
         </div>
       </div>
 
       {/* Quick Stats Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">
+          <CardContent className="p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-blue-600">
               {activeCampaigns.length}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs md:text-sm text-muted-foreground">
               Active Campaigns
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">
+          <CardContent className="p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-green-600">
               ${totalSpent.toFixed(2)}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs md:text-sm text-muted-foreground">
               Total Spent
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-purple-600">
+          <CardContent className="p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-purple-600">
               {totalImpressions.toLocaleString()}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs md:text-sm text-muted-foreground">
               Total Reach
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-orange-600">
+          <CardContent className="p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-orange-600">
               {totalConversions}
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs md:text-sm text-muted-foreground">
               Conversions
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-pink-600">
+          <CardContent className="p-3 md:p-4 text-center">
+            <div className="text-xl md:text-2xl font-bold text-pink-600">
               {avgROI.toFixed(0)}%
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-xs md:text-sm text-muted-foreground">
               Average ROI
             </div>
           </CardContent>
@@ -326,11 +329,11 @@ const CampaignCenter: React.FC = () => {
       </div>
 
       <Tabs defaultValue="active-campaigns" className="w-full">
-        <TabsList className="mb-6">
-          <TabsTrigger value="active-campaigns">Active Campaigns</TabsTrigger>
-          <TabsTrigger value="smart-suggestions">Smart Suggestions</TabsTrigger>
-          <TabsTrigger value="analytics">Performance Analytics</TabsTrigger>
-          <TabsTrigger value="campaign-goals">Campaign Goals</TabsTrigger>
+        <TabsList className="mb-6 grid grid-cols-2 md:grid-cols-4 h-auto">
+          <TabsTrigger value="active-campaigns" className="text-xs md:text-sm px-2 py-2">Active</TabsTrigger>
+          <TabsTrigger value="smart-suggestions" className="text-xs md:text-sm px-2 py-2">Suggestions</TabsTrigger>
+          <TabsTrigger value="analytics" className="text-xs md:text-sm px-2 py-2">Analytics</TabsTrigger>
+          <TabsTrigger value="campaign-goals" className="text-xs md:text-sm px-2 py-2">Goals</TabsTrigger>
         </TabsList>
 
         {/* Active Campaigns */}
@@ -361,16 +364,17 @@ const CampaignCenter: React.FC = () => {
               <div className="space-y-4">
                 {activeCampaigns.map((campaign) => (
                   <Card key={campaign.id} className="overflow-hidden">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
+                    <CardContent className="p-4 md:p-6">
+                      <div className="flex flex-col md:flex-row items-start justify-between mb-4 gap-3">
+                        <div className="flex items-center gap-3 flex-1">
                           <div className={`w-3 h-3 rounded-full ${getCampaignStatusColor(campaign.status)}`} />
-                          <div>
-                            <h3 className="font-semibold text-lg">{campaign.name}</h3>
-                            <div className="flex items-center gap-2 mt-1">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-base md:text-lg">{campaign.name}</h3>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mt-1">
                               <Badge variant="outline" className="text-xs">
                                 {getGoalIcon(campaign.goal)}
-                                <span className="ml-1">{campaign.goal.name}</span>
+                                <span className="ml-1 hidden sm:inline">{campaign.goal.name}</span>
+                                <span className="ml-1 sm:hidden">{campaign.goal.name.split(' ')[0]}</span>
                               </Badge>
                               <span className="text-sm text-muted-foreground">
                                 {campaign.timeLeft} remaining
@@ -417,9 +421,9 @@ const CampaignCenter: React.FC = () => {
 
                       {/* Budget Progress */}
                       <div className="mb-4">
-                        <div className="flex justify-between text-sm mb-2">
+                        <div className="flex flex-col sm:flex-row justify-between text-sm mb-2 gap-1">
                           <span>Budget Progress</span>
-                          <span>
+                          <span className="text-xs sm:text-sm">
                             ${campaign.spent.toFixed(2)} / ${campaign.budget.toFixed(2)} {campaign.currency}
                           </span>
                         </div>
@@ -432,39 +436,39 @@ const CampaignCenter: React.FC = () => {
                       </div>
 
                       {/* Performance Metrics */}
-                      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-4">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mb-4">
                         <div className="text-center">
-                          <div className="text-lg font-semibold">
+                          <div className="text-sm md:text-lg font-semibold">
                             {campaign.performance.impressions.toLocaleString()}
                           </div>
                           <div className="text-xs text-muted-foreground">Impressions</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-lg font-semibold">
+                          <div className="text-sm md:text-lg font-semibold">
                             {campaign.performance.clicks.toLocaleString()}
                           </div>
                           <div className="text-xs text-muted-foreground">Clicks</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-lg font-semibold">
+                          <div className="text-sm md:text-lg font-semibold">
                             {campaign.performance.conversions}
                           </div>
                           <div className="text-xs text-muted-foreground">Conversions</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-lg font-semibold">
+                          <div className="text-sm md:text-lg font-semibold">
                             {campaign.performance.ctr}%
                           </div>
                           <div className="text-xs text-muted-foreground">CTR</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-lg font-semibold">
+                          <div className="text-sm md:text-lg font-semibold">
                             ${campaign.performance.costPerClick}
                           </div>
                           <div className="text-xs text-muted-foreground">CPC</div>
                         </div>
                         <div className="text-center">
-                          <div className={`text-lg font-semibold ${campaign.performance.roi > 100 ? 'text-green-600' : 'text-red-600'}`}>
+                          <div className={`text-sm md:text-lg font-semibold ${campaign.performance.roi > 100 ? 'text-green-600' : 'text-red-600'}`}>
                             {campaign.performance.roi}%
                           </div>
                           <div className="text-xs text-muted-foreground">ROI</div>
@@ -472,18 +476,22 @@ const CampaignCenter: React.FC = () => {
                       </div>
 
                       {/* Boosted Items */}
-                      <div className="flex items-center gap-3">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
                         <span className="text-sm text-muted-foreground">Boosting:</span>
-                        {campaign.boostedItems.map((item, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <img 
-                              src={item.image} 
-                              alt={item.name}
-                              className="w-8 h-8 rounded-full object-cover"
-                            />
-                            <span className="text-sm font-medium">{item.name}</span>
-                          </div>
-                        ))}
+                        <div className="flex flex-wrap items-center gap-2">
+                          {campaign.boostedItems.map((item, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-6 sm:w-8 h-6 sm:h-8 rounded-full object-cover"
+                              />
+                              <span className="text-xs sm:text-sm font-medium truncate max-w-32 sm:max-w-none">
+                                {item.name}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -513,7 +521,7 @@ const CampaignCenter: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {Object.values(CAMPAIGN_GOALS).map((goal) => (
                 <Card 
                   key={goal.id}
@@ -567,7 +575,7 @@ const CampaignCenter: React.FC = () => {
 
       {/* Incentives Modal */}
       <Dialog open={showIncentives} onOpenChange={setShowIncentives}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto mx-4">
           <DialogHeader>
             <DialogTitle>🎁 Incentives & Bonuses</DialogTitle>
             <DialogDescription>
