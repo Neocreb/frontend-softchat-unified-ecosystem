@@ -536,6 +536,7 @@ class SubscriptionService {
         {
           id: "earn-1",
           creatorId,
+          contentId: "",
           subscriberId: "user-1",
           type: "tip",
           amount: 25.00,
@@ -543,11 +544,11 @@ class SubscriptionService {
           description: "Tip for great content",
           status: "completed",
           createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
         },
         {
           id: "earn-2",
           creatorId,
+          contentId: "",
           subscriberId: "user-2",
           type: "subscription",
           amount: 9.99,
@@ -555,7 +556,6 @@ class SubscriptionService {
           description: "Monthly subscription payment",
           status: "completed",
           createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
-          updatedAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
         },
       ];
 
