@@ -307,12 +307,12 @@ class SubscriptionService {
       return {
         id: `usage-${userId}-${currentPeriod}`,
         userId,
+        tierId: "silver", // Mock tier
         period: currentPeriod,
         videoUploads: 3, // Mock usage
-        storageUsed: 2.5, // GB
+        storageUsedGB: 2.5, // GB
         aiCreditsUsed: 150,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        lastUpdated: new Date().toISOString(),
       };
     } catch (error) {
       console.error(
