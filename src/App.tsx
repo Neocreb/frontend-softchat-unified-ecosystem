@@ -325,19 +325,7 @@ const AppRoutes = () => {
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />
           <Route path="events" element={<CommunityEvents />} />
-          <Route
-            path="premium"
-            element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-4xl mx-auto">
-                  <SubscriptionManager />
-                  <div className="mt-8">
-                    <VirtualGiftsAndTips />
-                  </div>
-                </div>
-              </div>
-            }
-          />
+          <Route path="premium" element={<Premium />} />
           <Route
             path="kyc"
             element={
