@@ -126,6 +126,7 @@ import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
 import AdvertisingPolicy from "./pages/AdvertisingPolicy";
 import AdChoices from "./pages/AdChoices";
+import CampaignCenter from "./components/campaigns/CampaignCenter";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -315,6 +316,7 @@ const AppRoutes = () => {
           />
 
           <Route path="crypto" element={<EnhancedCrypto />} />
+          <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<TikTokStyleVideos />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
