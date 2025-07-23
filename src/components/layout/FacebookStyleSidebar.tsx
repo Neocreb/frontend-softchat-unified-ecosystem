@@ -207,6 +207,11 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       href: "/app/freelance",
     },
     {
+      icon: <Target className="w-6 h-6 text-pink-600" />,
+      label: "Campaign Center",
+      href: "/app/campaigns",
+    },
+    {
       icon: <Calendar className="w-6 h-6 text-blue-500" />,
       label: "Events",
       href: "/app/events",
