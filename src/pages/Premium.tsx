@@ -683,9 +683,49 @@ const Premium: React.FC = () => {
             description: "Your wallet has been updated. You can now upgrade to Premium.",
           });
         }}
-        requiredAmount={selectedPlan === 'monthly' ? 9.99 : 99.99}
-        currentBalance={currentWalletBalance}
       />
+
+      {/* Required Amount Info Dialog */}
+      <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Funds for Premium Upgrade</DialogTitle>
+            <DialogDescription>
+              Add funds to your unified wallet to complete the Premium upgrade
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="text-center p-4 bg-blue-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">Required amount:</p>
+              <p className="text-2xl font-bold text-blue-600">
+                ${selectedPlan === 'monthly' ? '9.99' : '99.99'}
+              </p>
+              <p className="text-sm text-gray-600 mt-2">
+                Current balance: ${currentWalletBalance.toFixed(2)}
+              </p>
+              <p className="text-sm text-red-600 mt-1">
+                Need: ${Math.max(0, (selectedPlan === 'monthly' ? 9.99 : 99.99) - currentWalletBalance).toFixed(2)}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => navigate('/wallet')}
+                className="flex-1"
+              >
+                <Wallet className="h-4 w-4 mr-2" />
+                Go to Wallet
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowDepositModal(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
