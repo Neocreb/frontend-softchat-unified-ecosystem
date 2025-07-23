@@ -54,6 +54,9 @@ import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
+import { InVideoAd } from "@/components/ads/InVideoAd";
+import { VideoInterstitialAd } from "@/components/ads/VideoInterstitialAd";
+import { adSettings } from "../../config/adSettings";
 
 interface VideoData {
   id: string;
