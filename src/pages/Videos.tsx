@@ -595,6 +595,15 @@ const VideoCard: React.FC<{
           {video.stats.views} views
         </Badge>
       </div>
+
+      {/* In-Video Ad Overlay */}
+      {showInVideoAd && (
+        <InVideoAd
+          onAdComplete={handleAdComplete}
+          onSkip={handleAdSkip}
+          onRewardEarned={handleRewardEarned}
+        />
+      )}
     </div>
   );
 };
