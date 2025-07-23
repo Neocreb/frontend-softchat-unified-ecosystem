@@ -126,6 +126,7 @@ import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
 import AdvertisingPolicy from "./pages/AdvertisingPolicy";
 import AdChoices from "./pages/AdChoices";
+import Premium from "./pages/Premium";
 import CampaignCenter from "./components/campaigns/CampaignCenter";
 
 // Create a query client with retry configuration
