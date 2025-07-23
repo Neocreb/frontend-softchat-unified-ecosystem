@@ -404,12 +404,39 @@ const MarketplaceContent = () => {
                         ))}
                     </div>
                   ) : (
-                    <ProductGrid
-                      category={activeCategory}
-                      searchQuery={searchQuery}
-                      onAddToCart={handleAddToCart}
-                      onAddToWishlist={handleAddToWishlist}
-                    />
+                    <div className="space-y-6">
+                      <ProductGrid
+                        category={activeCategory}
+                        searchQuery={searchQuery}
+                        onAddToCart={handleAddToCart}
+                        onAddToWishlist={handleAddToWishlist}
+                      />
+
+                      {/* Sponsored Product Ads */}
+                      {adSettings.enableAds && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+                          <div className="col-span-full mb-4">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              Sponsored Products
+                            </h3>
+                          </div>
+                          {Array(3).fill(0).map((_, i) => (
+                            <SponsoredProductCard
+                              key={`sponsored-${i}`}
+                              title={`Premium Product ${i + 1}`}
+                              price={`$${29.99 + i * 10}`}
+                              originalPrice={`$${39.99 + i * 10}`}
+                              rating={4.5 + (i * 0.2)}
+                              reviewCount={127 + i * 50}
+                              onClick={() => {
+                                console.log(`Sponsored product ${i + 1} clicked`);
+                                // Handle sponsored product click
+                              }}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </main>
               </div>
