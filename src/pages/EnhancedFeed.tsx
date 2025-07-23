@@ -1581,15 +1581,20 @@ export default function EnhancedFeed() {
                 </TabsList>
               </Tabs>
 
-              {/* Tab Description */}
+              {/* Tab Description with Post Count */}
               <div className="px-4 pb-3">
-                <div className="text-xs text-gray-500 text-center">
-                  {activeFeedTab === "for-you" && "✨ AI-powered personalized content just for you"}
-                  {activeFeedTab === "following" && "👥 Latest posts from people you follow"}
-                  {activeFeedTab === "trending" && "🔥 What's hot and trending right now"}
-                  {activeFeedTab === "crypto" && "💰 Cryptocurrency and trading discussions"}
-                  {activeFeedTab === "tech" && "🚀 Technology and development updates"}
-                  {activeFeedTab === "saved" && "🔖 Your bookmarked posts and content"}
+                <div className="text-xs text-gray-500 text-center space-y-1">
+                  <div>
+                    {activeFeedTab === "for-you" && "✨ AI-powered personalized content just for you"}
+                    {activeFeedTab === "following" && "👥 Latest posts from people you follow"}
+                    {activeFeedTab === "trending" && "🔥 What's hot and trending right now"}
+                    {activeFeedTab === "crypto" && "💰 Cryptocurrency and trading discussions"}
+                    {activeFeedTab === "tech" && "🚀 Technology and development updates"}
+                    {activeFeedTab === "saved" && "🔖 Your bookmarked posts and content"}
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    {getFilteredPosts().length} posts available
+                  </div>
                 </div>
               </div>
             </CardContent>
