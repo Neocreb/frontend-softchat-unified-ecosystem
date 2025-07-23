@@ -393,7 +393,7 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                     </div>
                     <div className="flex items-center gap-1">
                       <TrendingUp className="w-4 h-4" />$
-                      {job.client.totalSpent.toLocaleString()} spent
+                      {(job.client.totalSpent || job.client.total_spent || 0).toLocaleString()} spent
                     </div>
                   </div>
 
