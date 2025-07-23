@@ -314,6 +314,29 @@ const VideoCard: React.FC<{
     };
   }, [isActive, isPlaying, safePlay, safePause]);
 
+  // In-video ad timer
+  useEffect(() => {
+    if (!isActive || !isPlaying || showInVideoAd || !adSettings.enableAds) return;
+
+    const timer = setInterval(() => {
+      setAdWatchTimer(prev => {
+        const newTime = prev + 1;
+        if (newTime >= adSettings.inVideoAdDelay && !showInVideoAd) {
+          setShowInVideoAd(true);
+          // Pause the main video when ad starts
+          const video = videoRef.current;
+          if (video) {
+            safePause(video);
+          }
+          return 0;
+        }
+        return newTime;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isActive, isPlaying, showInVideoAd, safePause]);
+
   const togglePlay = useCallback(async () => {
     const video = videoRef.current;
     if (!video) return;
