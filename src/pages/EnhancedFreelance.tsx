@@ -873,6 +873,17 @@ const EnhancedFreelance: React.FC = () => {
         onSubmit={handleSubmitProposal}
         freelancerId={user?.id || "1"}
       />
+
+      {/* Footer Banner Ad */}
+      {adSettings.enableAds && (
+        <div className="mt-8 pt-6 border-t border-gray-200 flex justify-center">
+          <BannerAd
+            position="bottom"
+            isMobile={isMobile}
+            className="w-full max-w-4xl"
+          />
+        </div>
+      )}
     </div>
   );
 };
