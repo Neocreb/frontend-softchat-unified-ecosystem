@@ -48,6 +48,7 @@ import PostJob from "./pages/freelance/PostJob";
 import FindFreelancers from "./pages/freelance/FindFreelancers";
 import ManageProjects from "./pages/freelance/ManageProjects";
 import ApproveWork from "./pages/freelance/ApproveWork";
+import JobDetailPage from "./pages/freelance/JobDetailPage";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
