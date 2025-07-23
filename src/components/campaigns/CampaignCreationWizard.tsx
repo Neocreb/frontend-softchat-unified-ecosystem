@@ -552,16 +552,16 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                       }`}
                       onClick={() => handleContentSelect(content)}
                     >
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <img 
+                      <CardContent className="p-3 sm:p-4">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          <img
                             src={content.image}
                             alt={content.name}
-                            className="w-12 h-12 rounded-lg object-cover"
+                            className="w-10 sm:w-12 h-10 sm:h-12 rounded-lg object-cover"
                           />
-                          <div className="flex-1">
-                            <h4 className="font-medium">{content.name}</h4>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-sm sm:text-base truncate">{content.name}</h4>
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                               {content.price && <span>${content.price}</span>}
                               {content.performance && (
                                 <span>
@@ -628,37 +628,37 @@ const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                 {/* Budget Type */}
                 <div>
                   <Label>Budget Type</Label>
-                  <div className="grid grid-cols-2 gap-3 mt-2">
-                    <Card 
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                    <Card
                       className={`cursor-pointer transition-all ${
                         campaignData.budget.type === "daily" ? 'border-blue-500 bg-blue-50' : ''
                       }`}
-                      onClick={() => setCampaignData(prev => ({ 
-                        ...prev, 
+                      onClick={() => setCampaignData(prev => ({
+                        ...prev,
                         budget: { ...prev.budget, type: "daily" }
                       }))}
                     >
-                      <CardContent className="p-4 text-center">
+                      <CardContent className="p-3 sm:p-4 text-center">
                         <Calendar className="h-6 w-6 mx-auto mb-2" />
-                        <h4 className="font-medium">Daily Budget</h4>
+                        <h4 className="font-medium text-sm sm:text-base">Daily Budget</h4>
                         <p className="text-sm text-muted-foreground">
                           Spend a fixed amount each day
                         </p>
                       </CardContent>
                     </Card>
 
-                    <Card 
+                    <Card
                       className={`cursor-pointer transition-all ${
                         campaignData.budget.type === "total" ? 'border-blue-500 bg-blue-50' : ''
                       }`}
-                      onClick={() => setCampaignData(prev => ({ 
-                        ...prev, 
+                      onClick={() => setCampaignData(prev => ({
+                        ...prev,
                         budget: { ...prev.budget, type: "total" }
                       }))}
                     >
-                      <CardContent className="p-4 text-center">
+                      <CardContent className="p-3 sm:p-4 text-center">
                         <DollarSign className="h-6 w-6 mx-auto mb-2" />
-                        <h4 className="font-medium">Total Budget</h4>
+                        <h4 className="font-medium text-sm sm:text-base">Total Budget</h4>
                         <p className="text-sm text-muted-foreground">
                           Set a lifetime campaign budget
                         </p>
