@@ -198,13 +198,20 @@ const Premium: React.FC = () => {
     }, 2000);
   };
 
-  const handleKYCComplete = () => {
-    setUserPremium(prev => ({ ...prev, kycStatus: 'verified' }));
+  const handleKYCComplete = (newLevel: number) => {
+    setKycLevel(newLevel);
     setShowKYC(false);
-    toast({
-      title: "KYC Verified!",
-      description: "Your identity has been verified. You can now upgrade to Premium.",
-    });
+    if (newLevel >= 2) {
+      toast({
+        title: "KYC Verified!",
+        description: "Your identity has been verified. You can now upgrade to Premium.",
+      });
+    }
+  };
+
+  const openKYCInSettings = () => {
+    // Navigate to settings with KYC tab or open existing KYC route
+    navigate('/kyc');
   };
 
   return (
