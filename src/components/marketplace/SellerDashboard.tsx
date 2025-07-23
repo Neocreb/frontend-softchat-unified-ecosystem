@@ -69,6 +69,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UnifiedCampaignManager } from "@/components/campaigns/UnifiedCampaignManager";
 
 interface Order {
   id: string;
