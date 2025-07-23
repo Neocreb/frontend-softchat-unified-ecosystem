@@ -82,94 +82,6 @@ interface UnifiedCampaignManagerProps {
   maxCampaigns?: number;
 }
 
-// Mock campaigns data - In real app, this would come from API
-const mockCampaigns: Campaign[] = [
-  {
-    id: "camp_1",
-    name: "Product Boost Campaign",
-    type: "boost",
-    status: "active",
-    budget: {
-      total: 500,
-      spent: 342,
-      remaining: 158,
-    },
-    metrics: {
-      impressions: 12450,
-      clicks: 623,
-      conversions: 47,
-      ctr: 5.0,
-      cpc: 0.55,
-      roas: 3.2,
-    },
-    startDate: "2024-01-10",
-    endDate: "2024-01-24",
-    targetAudience: {
-      demographics: ["18-35", "Tech enthusiasts"],
-      interests: ["Technology", "Gadgets"],
-      locations: ["USA", "Canada"],
-    },
-    createdAt: "2024-01-10T10:00:00Z",
-    updatedAt: "2024-01-15T14:30:00Z",
-  },
-  {
-    id: "camp_2",
-    name: "Brand Awareness Drive",
-    type: "brand_awareness",
-    status: "active",
-    budget: {
-      total: 750,
-      spent: 124,
-      remaining: 626,
-    },
-    metrics: {
-      impressions: 8920,
-      clicks: 267,
-      conversions: 12,
-      ctr: 3.0,
-      cpc: 0.46,
-      roas: 2.1,
-    },
-    startDate: "2024-01-12",
-    endDate: "2024-01-26",
-    targetAudience: {
-      demographics: ["25-45", "Professionals"],
-      interests: ["Business", "Productivity"],
-      locations: ["USA", "UK", "Australia"],
-    },
-    createdAt: "2024-01-12T09:15:00Z",
-    updatedAt: "2024-01-15T16:45:00Z",
-  },
-  {
-    id: "camp_3",
-    name: "Freelance Profile Promotion",
-    type: "promotion",
-    status: "paused",
-    budget: {
-      total: 300,
-      spent: 289,
-      remaining: 11,
-    },
-    metrics: {
-      impressions: 5670,
-      clicks: 178,
-      conversions: 8,
-      ctr: 3.1,
-      cpc: 1.62,
-      roas: 1.8,
-    },
-    startDate: "2024-01-08",
-    endDate: "2024-01-22",
-    targetAudience: {
-      demographics: ["25-55", "Business owners"],
-      interests: ["Hiring", "Freelance", "Business"],
-      locations: ["USA", "Canada", "UK"],
-    },
-    createdAt: "2024-01-08T11:30:00Z",
-    updatedAt: "2024-01-14T13:20:00Z",
-  },
-];
-
 export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
   context,
   entityId,
@@ -178,7 +90,7 @@ export const UnifiedCampaignManager: React.FC<UnifiedCampaignManagerProps> = ({
   compact = false,
   maxCampaigns,
 }) => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [showCreateWizard, setShowCreateWizard] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [showAnalytics, setShowAnalytics] = useState(false);
