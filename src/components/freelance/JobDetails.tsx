@@ -463,7 +463,14 @@ export const JobDetails: React.FC<JobDetailsProps> = ({
                         className="flex items-center gap-2 p-2 border rounded"
                       >
                         <FileText className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm">{attachment.name || attachment}</span>
+                        <div className="flex-1">
+                          <span className="text-sm">{attachment.name || attachment}</span>
+                          {attachment.size && (
+                            <span className="text-xs text-muted-foreground ml-2">
+                              ({attachment.size})
+                            </span>
+                          )}
+                        </div>
                         <Button
                           variant="ghost"
                           size="sm"
