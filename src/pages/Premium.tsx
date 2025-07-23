@@ -417,52 +417,71 @@ const Premium: React.FC = () => {
 
         {/* KYC Requirement Notice */}
         {!userPremium.isPremium && (
-          <Card className="mb-8 border-blue-200 bg-blue-50">
+          <Card className={`mb-8 ${isKYCVerified ? 'border-green-200 bg-green-50' : 'border-blue-200 bg-blue-50'}`}>
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-blue-100 rounded-full">
-                  <Shield className="h-6 w-6 text-blue-600" />
+                <div className={`p-2 rounded-full ${isKYCVerified ? 'bg-green-100' : 'bg-blue-100'}`}>
+                  <Shield className={`h-6 w-6 ${isKYCVerified ? 'text-green-600' : 'text-blue-600'}`} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-blue-800 mb-2">KYC Verification Required</h3>
-                  <p className="text-blue-600 mb-4">
-                    Before your verified badge activates, complete our secure identity verification process:
+                  <h3 className={`font-semibold mb-2 ${isKYCVerified ? 'text-green-800' : 'text-blue-800'}`}>
+                    {isKYCVerified ? 'KYC Verification Complete' : 'KYC Verification Required'}
+                  </h3>
+                  <p className={`mb-4 ${isKYCVerified ? 'text-green-600' : 'text-blue-600'}`}>
+                    {isKYCVerified
+                      ? 'Your identity has been verified! You can now upgrade to Premium and get your verified badge.'
+                      : 'Before your verified badge activates, complete our secure identity verification process:'
+                    }
                   </p>
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-sm text-blue-700">
-                      <FileText className="h-4 w-4" />
-                      Upload valid Government-issued ID (front & back)
+                  {!isKYCVerified && (
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm text-blue-700">
+                        <FileText className="h-4 w-4" />
+                        Upload valid Government-issued ID (front & back)
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-blue-700">
+                        <Camera className="h-4 w-4" />
+                        Real-time selfie with liveness detection
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-blue-700">
+                        <Phone className="h-4 w-4" />
+                        Phone and email verification
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-blue-700">
-                      <Camera className="h-4 w-4" />
-                      Real-time selfie with liveness detection
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-blue-700">
-                      <Phone className="h-4 w-4" />
-                      Phone and email verification
-                    </div>
+                  )}
+
+                  <div className="flex items-center gap-3">
+                    {kycLevel === 0 && (
+                      <Button
+                        variant="outline"
+                        onClick={openKYCInSettings}
+                        className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                      >
+                        Start Verification
+                      </Button>
+                    )}
+                    {kycLevel === 1 && (
+                      <>
+                        <Badge className="bg-yellow-100 text-yellow-800">
+                          <Clock className="h-4 w-4 mr-1" />
+                          Level {kycLevel} - In Progress
+                        </Badge>
+                        <Button
+                          variant="outline"
+                          onClick={openKYCInSettings}
+                          size="sm"
+                        >
+                          Continue Verification
+                        </Button>
+                      </>
+                    )}
+                    {kycLevel >= 2 && (
+                      <Badge className="bg-green-100 text-green-800">
+                        <CheckCircle2 className="h-4 w-4 mr-1" />
+                        Level {kycLevel} - Verified ✓
+                      </Badge>
+                    )}
                   </div>
-                  {userPremium.kycStatus === 'not_started' && (
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setShowKYC(true)}
-                      className="border-blue-300 text-blue-700 hover:bg-blue-100"
-                    >
-                      Start Verification
-                    </Button>
-                  )}
-                  {userPremium.kycStatus === 'pending' && (
-                    <Badge className="bg-yellow-100 text-yellow-800">
-                      <Clock className="h-4 w-4 mr-1" />
-                      Verification Pending
-                    </Badge>
-                  )}
-                  {userPremium.kycStatus === 'verified' && (
-                    <Badge className="bg-green-100 text-green-800">
-                      <CheckCircle2 className="h-4 w-4 mr-1" />
-                      Verified ✓
-                    </Badge>
-                  )}
                 </div>
               </div>
             </CardContent>
