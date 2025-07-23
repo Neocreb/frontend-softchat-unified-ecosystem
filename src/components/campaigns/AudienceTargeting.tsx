@@ -294,7 +294,7 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
               {INTERESTS.map((interest) => (
                 <div
                   key={interest.id}
-                  className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                  className={`p-2 sm:p-3 border rounded-lg cursor-pointer transition-all ${
                     targeting.interests.includes(interest.id)
                       ? 'border-blue-500 bg-blue-50'
                       : 'hover:border-gray-300'
@@ -342,7 +342,7 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Age Groups */}
             <div>
               <Label className="text-sm font-medium">Age Groups</Label>
@@ -387,7 +387,7 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
               {/* Languages */}
               <div className="mt-4">
                 <Label className="text-sm font-medium">Languages</Label>
-                <div className="grid grid-cols-2 gap-2 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                   {LANGUAGES.slice(0, 4).map((language) => (
                     <label key={language.id} className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -415,7 +415,7 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { id: "mobile", name: "Mobile", icon: Smartphone, usage: "68%" },
               { id: "desktop", name: "Desktop", icon: Monitor, usage: "25%" },
@@ -423,15 +423,15 @@ const AudienceTargeting: React.FC<AudienceTargetingProps> = ({
             ].map((device) => (
               <div
                 key={device.id}
-                className={`p-4 border rounded-lg cursor-pointer transition-all text-center ${
+                className={`p-3 sm:p-4 border rounded-lg cursor-pointer transition-all text-center ${
                   targeting.deviceTypes.includes(device.id)
                     ? 'border-blue-500 bg-blue-50'
                     : 'hover:border-gray-300'
                 }`}
                 onClick={() => toggleArrayItem('deviceTypes', device.id)}
               >
-                <device.icon className="h-8 w-8 mx-auto mb-2" />
-                <div className="font-medium">{device.name}</div>
+                <device.icon className="h-6 sm:h-8 w-6 sm:w-8 mx-auto mb-2" />
+                <div className="font-medium text-sm sm:text-base">{device.name}</div>
                 <div className="text-xs text-muted-foreground">{device.usage} of users</div>
               </div>
             ))}
