@@ -39,11 +39,28 @@ export const InVideoAd: React.FC<InVideoAdProps> = ({
         
         if (newProgress >= 100) {
           clearInterval(interval);
-          setShowReward(true);
-          setTimeout(() => {
-            onAdComplete();
-            onRewardEarned?.();
-          }, 2000);
+
+          // Track ad completion and reward
+          adRewardService.trackAdView(userId, adId, 'in_video', true)
+            .then(result => {
+              setRewardAmount(result.rewardEarned);
+              setRewardMessage(result.message);
+              setShowReward(true);
+
+              setTimeout(() => {
+                onAdComplete();
+                onRewardEarned?.(result.rewardEarned, result.message);
+              }, 2000);
+            })
+            .catch(error => {
+              console.error('Failed to track ad reward:', error);
+              setShowReward(true);
+              setTimeout(() => {
+                onAdComplete();
+                onRewardEarned?.(0, 'Failed to process reward');
+              }, 2000);
+            });
+
           return 100;
         }
         
