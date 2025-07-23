@@ -362,6 +362,7 @@ const AppRoutes = () => {
           <Route path="terms" element={<TermsOfService />} />
           <Route path="advertising" element={<AdvertisingPolicy />} />
           <Route path="ad-choices" element={<AdChoices />} />
+          <Route path="monetization-policy" element={<MonetizationPolicy />} />
           <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
