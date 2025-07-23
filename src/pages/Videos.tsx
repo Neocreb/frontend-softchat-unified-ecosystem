@@ -367,11 +367,11 @@ const VideoCard: React.FC<{
     }
   };
 
-  const handleRewardEarned = () => {
+  const handleRewardEarned = (rewardAmount: number, message: string) => {
     if (!hasEarnedReward) {
       setHasEarnedReward(true);
-      // Add SoftPoints reward logic here
-      console.log(`+${adSettings.adRewardPoints} SoftPoints earned for watching ad!`);
+      console.log(`Reward earned: ${message}`);
+      // You could show a toast notification here
     }
   };
 
