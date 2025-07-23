@@ -12,17 +12,21 @@ interface InVideoAdProps {
   className?: string;
 }
 
-export const InVideoAd: React.FC<InVideoAdProps> = ({ 
-  onAdComplete, 
-  onSkip, 
+export const InVideoAd: React.FC<InVideoAdProps> = ({
+  onAdComplete,
+  onSkip,
   onRewardEarned,
-  className 
+  userId = 'guest',
+  className
 }) => {
   // Placeholder – Replace with real AdSense/Adsterra/PropellerAds SDK
   const [adProgress, setAdProgress] = useState(0);
   const [canSkip, setCanSkip] = useState(false);
   const [showReward, setShowReward] = useState(false);
+  const [rewardMessage, setRewardMessage] = useState('');
+  const [rewardAmount, setRewardAmount] = useState(0);
   const adDuration = 15; // 15 second placeholder ad
+  const adId = React.useMemo(() => adRewardService.generateAdId('in_video'), []);
 
   useEffect(() => {
     const interval = setInterval(() => {
