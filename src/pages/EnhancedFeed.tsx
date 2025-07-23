@@ -300,6 +300,118 @@ const initialMockPosts = [
     isSaved: false,
     privacy: "public" as const,
   },
+  {
+    id: "4",
+    user: {
+      id: "4",
+      name: "Alex Rodriguez",
+      username: "alex_crypto",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+      isVerified: true,
+    },
+    content:
+      "Bitcoin just hit a new resistance level! 📈 My analysis shows we might see a breakout to $68k soon. DCA strategy has been working perfectly this quarter. #Bitcoin #CryptoAnalysis",
+    media: [],
+    timestamp: "3 hours ago",
+    likes: 892,
+    comments: 167,
+    shares: 94,
+    isLiked: false,
+    isSaved: true,
+    privacy: "public" as const,
+  },
+  {
+    id: "5",
+    user: {
+      id: "5",
+      name: "Emma Tech",
+      username: "emma_dev",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma",
+      isVerified: false,
+    },
+    content:
+      "Just deployed my first AI-powered React app! 🚀 Used TypeScript, Next.js 14, and integrated OpenAI API. The learning curve was steep but so worth it. Code is on GitHub!",
+    media: [
+      {
+        type: "image" as const,
+        url: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop",
+        alt: "Coding setup",
+      },
+    ],
+    timestamp: "6 hours ago",
+    likes: 445,
+    comments: 73,
+    shares: 28,
+    isLiked: true,
+    isSaved: false,
+    privacy: "public" as const,
+  },
+  {
+    id: "6",
+    user: {
+      id: "6",
+      name: "David Trader",
+      username: "david_trades",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=david",
+      isVerified: true,
+    },
+    content:
+      "MASSIVE Ethereum move incoming! 🔥 Smart money is accumulating heavily. My technical analysis shows bullish divergence on the 4H chart. ETH to $4000 soon? 🚀",
+    media: [],
+    timestamp: "5 hours ago",
+    likes: 1567,
+    comments: 298,
+    shares: 156,
+    isLiked: false,
+    isSaved: false,
+    privacy: "public" as const,
+  },
+  {
+    id: "7",
+    user: {
+      id: "7",
+      name: "Lisa Johnson",
+      username: "lisa_codes",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=lisa",
+      isVerified: false,
+    },
+    content:
+      "Finally mastered React Server Components! 💡 The performance improvements are incredible. Here's what I learned about data fetching patterns and caching strategies...",
+    media: [],
+    timestamp: "8 hours ago",
+    likes: 234,
+    comments: 45,
+    shares: 12,
+    isLiked: true,
+    isSaved: true,
+    privacy: "public" as const,
+  },
+  {
+    id: "8",
+    user: {
+      id: "8",
+      name: "Coffee Lover",
+      username: "coffee_daily",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=coffee",
+      isVerified: false,
+    },
+    content:
+      "Perfect morning brew ☕️ This new Ethiopian blend is absolutely divine! The floral notes are incredible. What's everyone's favorite coffee origin?",
+    media: [
+      {
+        type: "image" as const,
+        url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=600&fit=crop",
+        alt: "Coffee cup",
+      },
+    ],
+    timestamp: "2 hours ago",
+    likes: 89,
+    comments: 23,
+    shares: 5,
+    isLiked: false,
+    isSaved: false,
+    privacy: "public" as const,
+  },
 ];
 
 interface MediaItem {
