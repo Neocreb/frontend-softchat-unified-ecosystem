@@ -272,6 +272,7 @@ const AppRoutes = () => {
           <Route path="freelance/find-freelancers" element={<FindFreelancers />} />
           <Route path="freelance/manage-projects" element={<ManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
+          <Route path="freelance/job/:jobId" element={<JobDetailPage />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
