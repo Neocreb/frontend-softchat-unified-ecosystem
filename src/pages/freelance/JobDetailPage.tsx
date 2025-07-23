@@ -162,7 +162,7 @@ export const JobDetailPage: React.FC = () => {
     };
 
     loadJob();
-  }, [jobId, getJobById, navigate]);
+  }, [jobId, getJob, navigate]);
 
   if (loading) {
     return (
