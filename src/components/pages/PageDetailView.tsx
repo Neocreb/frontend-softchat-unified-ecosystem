@@ -275,6 +275,8 @@ const PageDetailView = () => {
     }
   };
 
+  const PageTypeIcon = getPageTypeIcon(extendedPage.pageType);
+
   const handleCreatePost = () => {
     if (!newPostContent.trim()) {
       toast({
