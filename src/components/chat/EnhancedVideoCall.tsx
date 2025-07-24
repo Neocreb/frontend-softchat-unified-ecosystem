@@ -421,16 +421,16 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
       )}
 
       {/* Voice call display */}
-      {callData.type === 'voice' && (
+      {safeCallData.type === 'voice' && (
         <div className="flex flex-col items-center justify-center h-full p-8 bg-gradient-to-br from-gray-800 to-gray-900 text-white">
           <Avatar className="w-32 h-32 mb-6 border-4 border-white">
-            <AvatarImage src={callData.participant?.avatar} />
+            <AvatarImage src={safeCallData.participant.avatar} />
             <AvatarFallback className="text-2xl">
-              {callData.participant?.name?.substring(0, 2) || "??"}
+              {safeCallData.participant.name.substring(0, 2) || "??"}
             </AvatarFallback>
           </Avatar>
           <h2 className="text-2xl font-bold mb-2">
-            {callData.isGroup ? callData.groupName : callData.participant?.name}
+            {safeCallData.isGroup ? safeCallData.groupName : safeCallData.participant.name}
           </h2>
           <p className="text-gray-300 mb-4">
             Voice call in progress
