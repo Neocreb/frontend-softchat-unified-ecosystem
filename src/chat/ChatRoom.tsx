@@ -493,6 +493,7 @@ export const ChatRoom: React.FC = () => {
               onClick={handleVoiceCall}
               title="Start voice call"
               className={isMobile ? "p-2" : ""}
+              disabled={!thread || !user || loading}
             >
               <Phone className="w-4 h-4" />
             </Button>
@@ -502,6 +503,7 @@ export const ChatRoom: React.FC = () => {
               onClick={handleVideoCall}
               title="Start video call"
               className={isMobile ? "p-2" : ""}
+              disabled={!thread || !user || loading}
             >
               <Video className="w-4 h-4" />
             </Button>
