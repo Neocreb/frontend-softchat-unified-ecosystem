@@ -412,20 +412,7 @@ const PageDetailView = () => {
     });
   };
 
-  const handleMessagePage = async () => {
-    // Find page owner/admin ID (in a real app, this would come from the page data)
-    const pageOwnerId = extendedPage.isOwner ? 'current-user' : 'page-owner-id';
 
-    await chatInitiationService.handleMessageButton({
-      type: 'page',
-      targetId: pageId!,
-      targetName: extendedPage.name,
-      ownerId: pageOwnerId,
-      context: 'page inquiry',
-      navigate,
-      toast
-    });
-  };
 
   const handleAddProduct = async (productData: any) => {
     try {
