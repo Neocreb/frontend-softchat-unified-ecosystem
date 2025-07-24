@@ -757,15 +757,19 @@ const PageDetailView = () => {
                   </>
                 )}
               </Button>
-              <Button
+              <QuickMessageButton
+                type="page"
+                targetId={pageId!}
+                targetName={extendedPage.name}
+                ownerId={extendedPage.isOwner ? 'current-user' : 'page-owner-id'}
+                context="page inquiry"
                 variant="outline"
-                className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30 text-sm sm:text-base"
-                onClick={handleMessagePage}
                 size="sm"
+                className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30 text-sm sm:text-base"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Message</span>
-              </Button>
+              </QuickMessageButton>
               {extendedPage.isOwner && (
                 <Button
                   variant="outline"
