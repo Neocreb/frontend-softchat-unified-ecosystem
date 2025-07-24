@@ -445,7 +445,7 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
       <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
         <div className="bg-black/50 rounded-lg p-3 text-white">
           <h3 className="font-semibold">
-            {callData.isGroup ? callData.groupName : callData.participant?.name}
+            {safeCallData.isGroup ? safeCallData.groupName : safeCallData.participant.name}
           </h3>
           {callState.isActive && (
             <p className="text-sm text-gray-300">
