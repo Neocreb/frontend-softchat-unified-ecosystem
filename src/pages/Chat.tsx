@@ -2,33 +2,9 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { UnifiedChatInterface } from "@/components/chat/UnifiedChatInterface";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "@/components/ui/button";
-import { Phone, Video } from "lucide-react";
-import { useIncomingCalls } from "@/hooks/useIncomingCalls";
 
 const Chat = () => {
   const isMobile = useIsMobile();
-  const { simulateIncomingCall } = useIncomingCalls();
-
-  const handleTestVoiceCall = () => {
-    simulateIncomingCall({
-      callerId: 'test-caller',
-      callerName: 'Sarah Johnson',
-      callerAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b2bab1d3?w=100',
-      type: 'voice',
-      isGroup: false,
-    });
-  };
-
-  const handleTestVideoCall = () => {
-    simulateIncomingCall({
-      callerId: 'test-caller-2',
-      callerName: 'Mike Chen',
-      callerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
-      type: 'video',
-      isGroup: false,
-    });
-  };
 
   return (
     <>
@@ -72,7 +48,7 @@ const Chat = () => {
                 </p>
               </div>
 
-              {/* Status indicator and demo call buttons - responsive */}
+              {/* Status indicator - responsive */}
               <div className="flex items-center gap-2 ml-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span
@@ -80,28 +56,6 @@ const Chat = () => {
                 >
                   {isMobile ? "" : "Online"}
                 </span>
-
-                {/* Demo call buttons for testing */}
-                {!isMobile && (
-                  <div className="flex gap-1 ml-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleTestVoiceCall}
-                      title="Test incoming voice call"
-                    >
-                      <Phone className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleTestVideoCall}
-                      title="Test incoming video call"
-                    >
-                      <Video className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
