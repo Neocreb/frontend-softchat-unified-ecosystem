@@ -504,7 +504,7 @@ const VideoCard: React.FC<{
               size="icon"
               onClick={handleLike}
               className={cn(
-                "w-12 h-12 rounded-full backdrop-blur-sm border",
+                "w-12 h-12 rounded-full backdrop-blur-sm border mobile-action-btn mobile-touch-target",
                 isLiked
                   ? "bg-red-500/20 border-red-500/50 text-red-400"
                   : "bg-black/30 border-white/20 text-white hover:bg-white/20"
