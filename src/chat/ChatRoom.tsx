@@ -48,6 +48,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import { EnhancedVideoCall } from "@/components/chat/EnhancedVideoCall";
 
 export const ChatRoom: React.FC = () => {
   const { threadId } = useParams<{ threadId: string }>();
