@@ -402,19 +402,19 @@ export const ChatRoom: React.FC = () => {
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
-      <div className="p-4 border-b bg-background/95 backdrop-blur">
+      <div className={`border-b bg-background/95 backdrop-blur ${isMobile ? "p-3" : "p-4"}`}>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate("/app/chat")}
-              className="md:hidden"
+              className={isMobile ? "p-1" : "md:hidden"}
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
 
-            <Avatar className="w-10 h-10">
+            <Avatar className={isMobile ? "w-9 h-9" : "w-10 h-10"}>
               <AvatarImage
                 src={
                   thread.groupAvatar ||
@@ -426,44 +426,50 @@ export const ChatRoom: React.FC = () => {
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
-                <h2 className="font-semibold truncate">{chatTitle}</h2>
-                <Badge
-                  className={`text-xs ${getChatTypeBadgeColor(thread.type)}`}
-                >
-                  {getChatTypeIcon(thread.type)} {getChatTypeLabel(thread.type)}
-                </Badge>
+                <h2 className={`font-semibold truncate ${isMobile ? "text-base" : "text-lg"}`}>{chatTitle}</h2>
+                {!isMobile && (
+                  <Badge
+                    className={`text-xs ${getChatTypeBadgeColor(thread.type)}`}
+                  >
+                    {getChatTypeIcon(thread.type)} {getChatTypeLabel(thread.type)}
+                  </Badge>
+                )}
               </div>
               {chatSubtitle && (
-                <p className="text-sm text-muted-foreground truncate">
+                <p className={`text-muted-foreground truncate ${isMobile ? "text-xs" : "text-sm"}`}>
                   {chatSubtitle}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
-              size="sm"
+              size={isMobile ? "sm" : "sm"}
               onClick={handleVoiceCall}
               title="Start voice call"
+              className={isMobile ? "p-2" : ""}
             >
               <Phone className="w-4 h-4" />
             </Button>
             <Button
               variant="ghost"
-              size="sm"
+              size={isMobile ? "sm" : "sm"}
               onClick={handleVideoCall}
               title="Start video call"
+              className={isMobile ? "p-2" : ""}
             >
               <Video className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="sm">
-              <Search className="w-4 h-4" />
-            </Button>
+            {!isMobile && (
+              <Button variant="ghost" size="sm">
+                <Search className="w-4 h-4" />
+              </Button>
+            )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size={isMobile ? "sm" : "sm"} className={isMobile ? "p-2" : ""}>
                   <MoreVertical className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
