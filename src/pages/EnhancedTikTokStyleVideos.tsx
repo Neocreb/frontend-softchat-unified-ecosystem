@@ -370,7 +370,7 @@ const VideoCard: React.FC<{
   };
 
   return (
-    <div className="relative h-screen w-full snap-start bg-black flex items-center justify-center">
+    <div className="relative h-screen w-full snap-start bg-black flex items-center justify-center video-card mobile-no-select">
       {/* Video */}
       <video
         ref={videoRef}
