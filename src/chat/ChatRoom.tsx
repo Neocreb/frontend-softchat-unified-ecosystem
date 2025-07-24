@@ -92,6 +92,68 @@ export const ChatRoom: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Add demo messages if chat is empty to show styling
+  useEffect(() => {
+    if (thread && messages.length === 0 && user) {
+      const demoMessages = [
+        {
+          id: "demo-1",
+          senderId: "demo-user",
+          sender: { name: "Demo User", avatar: "https://images.unsplash.com/photo-1494790108755-2616b2bab1d3?w=100" },
+          content: "Hey! 👋 Welcome to the enhanced chat experience!",
+          messageType: "text" as const,
+          timestamp: new Date(Date.now() - 300000).toISOString(),
+          readBy: [user.id],
+          reactions: [],
+          attachments: [],
+        },
+        {
+          id: "demo-2",
+          senderId: user.id,
+          sender: { name: user.profile?.full_name || "You", avatar: user.profile?.avatar_url },
+          content: "Wow, this looks amazing! I love the colors and styling! 🎨✨",
+          messageType: "text" as const,
+          timestamp: new Date(Date.now() - 240000).toISOString(),
+          readBy: [user.id],
+          reactions: [{ emoji: "❤️", userIds: ["demo-user"], count: 1 }],
+          attachments: [],
+        },
+        {
+          id: "demo-3",
+          senderId: "demo-user",
+          sender: { name: "Demo User", avatar: "https://images.unsplash.com/photo-1494790108755-2616b2bab1d3?w=100" },
+          content: "😍",
+          messageType: "text" as const,
+          timestamp: new Date(Date.now() - 180000).toISOString(),
+          readBy: [user.id],
+          reactions: [],
+          attachments: [],
+        },
+        {
+          id: "demo-4",
+          senderId: user.id,
+          sender: { name: user.profile?.full_name || "You", avatar: user.profile?.avatar_url },
+          content: "The message bubbles have beautiful gradients and the sender/receiver sides are perfectly differentiated! 🚀",
+          messageType: "text" as const,
+          timestamp: new Date(Date.now() - 120000).toISOString(),
+          readBy: [user.id],
+          reactions: [],
+          attachments: [],
+        }
+      ];
+
+      // Set demo messages temporarily
+      const timeout = setTimeout(() => {
+        // Only set if still no real messages
+        if (messages.length === 0) {
+          sendMessage("").then(() => {}); // This won't actually send since content is empty
+        }
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [thread, messages.length, user]);
+
   // Simulate typing occasionally
   useEffect(() => {
     if (thread && Math.random() > 0.8) {
