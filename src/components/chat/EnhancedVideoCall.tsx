@@ -109,8 +109,11 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
   });
 
   const [callDuration, setCallDuration] = useState(0);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [screenStream, setScreenStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const screenVideoRef = useRef<HTMLVideoElement>(null);
 
   // Call duration timer
   useEffect(() => {
@@ -139,19 +142,48 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
     return `${minutes}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleAcceptCall = () => {
-    setCallState(prev => ({
-      ...prev,
-      isActive: true,
-      isIncoming: false,
-      isOutgoing: false,
-      startTime: new Date(),
-    }));
-    onAccept?.();
-    toast({
-      title: "Call Connected",
-      description: `${callData.type === 'video' ? 'Video' : 'Voice'} call started`,
-    });
+  const handleAcceptCall = async () => {
+    try {
+      if (callData.type === 'video') {
+        // Request camera and microphone access
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        });
+        setLocalStream(stream);
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } else {
+        // Request microphone access only
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true
+        });
+        setLocalStream(stream);
+      }
+
+      setCallState(prev => ({
+        ...prev,
+        isActive: true,
+        isIncoming: false,
+        isOutgoing: false,
+        startTime: new Date(),
+      }));
+
+      onAccept?.();
+      toast({
+        title: "Call Connected",
+        description: `${callData.type === 'video' ? 'Video' : 'Voice'} call started`,
+      });
+    } catch (error) {
+      console.error('Error accessing media devices:', error);
+      toast({
+        title: "Media Access Error",
+        description: "Could not access camera/microphone. Please check permissions.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDeclineCall = () => {
@@ -170,12 +202,22 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
   };
 
   const handleEndCall = () => {
+    // Stop all media streams
+    if (localStream) {
+      localStream.getTracks().forEach(track => track.stop());
+      setLocalStream(null);
+    }
+    if (screenStream) {
+      screenStream.getTracks().forEach(track => track.stop());
+      setScreenStream(null);
+    }
+
     setCallState(prev => ({
       ...prev,
       isActive: false,
     }));
     onClose();
-    
+
     const duration = callDuration > 0 ? formatDuration(callDuration) : "0:00";
     toast({
       title: "Call Ended",
@@ -185,25 +227,81 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
 
   const toggleVideo = () => {
     const newState = !localControls.isVideoEnabled;
+
+    if (localStream) {
+      const videoTrack = localStream.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.enabled = newState;
+      }
+    }
+
     setLocalControls(prev => ({ ...prev, isVideoEnabled: newState }));
     onVideoToggle?.(newState);
   };
 
   const toggleAudio = () => {
     const newState = !localControls.isAudioEnabled;
+
+    if (localStream) {
+      const audioTrack = localStream.getAudioTracks()[0];
+      if (audioTrack) {
+        audioTrack.enabled = newState;
+      }
+    }
+
     setLocalControls(prev => ({ ...prev, isAudioEnabled: newState }));
     onMute?.(!newState);
   };
 
-  const toggleScreenShare = () => {
-    const newState = !localControls.isScreenSharing;
-    setLocalControls(prev => ({ ...prev, isScreenSharing: newState }));
-    onScreenShare?.(newState);
-    
-    toast({
-      title: newState ? "Screen Sharing Started" : "Screen Sharing Stopped",
-      description: newState ? "Your screen is now being shared" : "Screen sharing has stopped",
-    });
+  const toggleScreenShare = async () => {
+    try {
+      if (!localControls.isScreenSharing) {
+        // Start screen sharing
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true
+        });
+        setScreenStream(stream);
+
+        // Handle screen share ending
+        stream.getVideoTracks()[0].addEventListener('ended', () => {
+          setLocalControls(prev => ({ ...prev, isScreenSharing: false }));
+          setScreenStream(null);
+          toast({
+            title: "Screen Sharing Stopped",
+            description: "Screen sharing has ended",
+          });
+        });
+
+        setLocalControls(prev => ({ ...prev, isScreenSharing: true }));
+        onScreenShare?.(true);
+
+        toast({
+          title: "Screen Sharing Started",
+          description: "Your screen is now being shared",
+        });
+      } else {
+        // Stop screen sharing
+        if (screenStream) {
+          screenStream.getTracks().forEach(track => track.stop());
+          setScreenStream(null);
+        }
+        setLocalControls(prev => ({ ...prev, isScreenSharing: false }));
+        onScreenShare?.(false);
+
+        toast({
+          title: "Screen Sharing Stopped",
+          description: "Screen sharing has stopped",
+        });
+      }
+    } catch (error) {
+      console.error('Error sharing screen:', error);
+      toast({
+        title: "Screen Share Error",
+        description: "Could not share screen. Please check permissions.",
+        variant: "destructive",
+      });
+    }
   };
 
   const toggleSpeaker = () => {
@@ -286,13 +384,37 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
             )}
           </div>
 
-          {/* Screen sharing indicator */}
-          {localControls.isScreenSharing && (
-            <div className="absolute top-4 left-4">
-              <Badge className="bg-red-500">
-                <Monitor className="w-3 h-3 mr-1" />
-                Sharing Screen
-              </Badge>
+          {/* Screen sharing display */}
+          {localControls.isScreenSharing && screenStream && (
+            <div className="absolute inset-0 bg-black">
+              <video
+                ref={screenVideoRef}
+                className="w-full h-full object-contain"
+                autoPlay
+                playsInline
+                onLoadedMetadata={() => {
+                  if (screenVideoRef.current && screenStream) {
+                    screenVideoRef.current.srcObject = screenStream;
+                  }
+                }}
+              />
+              <div className="absolute top-4 left-4">
+                <Badge className="bg-red-500 text-white">
+                  <Monitor className="w-3 h-3 mr-1" />
+                  Sharing Screen
+                </Badge>
+              </div>
+              {/* Picture-in-picture for remote participant during screen share */}
+              <div className="absolute bottom-4 right-4 w-32 h-24 bg-gray-800 rounded-lg overflow-hidden border-2 border-white">
+                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <Avatar className="w-12 h-12">
+                    <AvatarImage src={callData.participant?.avatar} />
+                    <AvatarFallback className="text-white">
+                      {callData.participant?.name.substring(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -398,9 +520,9 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
             onClick={toggleScreenShare}
             variant="ghost"
             size="lg"
-            className={`rounded-full w-12 h-12 p-0 ${
-              localControls.isScreenSharing 
-                ? 'bg-blue-500 hover:bg-blue-600' 
+            className={`rounded-full w-12 h-12 p-0 transition-all ${
+              localControls.isScreenSharing
+                ? 'bg-blue-500 hover:bg-blue-600 ring-2 ring-blue-300'
                 : 'bg-gray-600 hover:bg-gray-700'
             } text-white`}
           >
