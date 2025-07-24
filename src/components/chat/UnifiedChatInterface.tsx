@@ -64,6 +64,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   // State management
   const [activeTab, setActiveTab] = useState<UnifiedChatType>("social");
