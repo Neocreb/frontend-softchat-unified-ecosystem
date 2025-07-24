@@ -294,30 +294,33 @@ const Pages = () => {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                    <PageTypeIcon className="w-4 h-4" />
-                    <span>{page.category}</span>
+                  <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-2">
+                    <div className="flex items-center gap-1">
+                      <PageTypeIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="truncate">{page.category}</span>
+                    </div>
                     {page.location && (
                       <>
-                        <span>•</span>
-                        <MapPin className="w-3 h-3" />
-                        <span className="truncate">{page.location}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <div className="flex items-center gap-1 min-w-0">
+                          <MapPin className="w-3 h-3 flex-shrink-0" />
+                          <span className="truncate text-xs">{page.location}</span>
+                        </div>
                       </>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      <span className="font-medium">
-                        {formatNumber(page.followers)}
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="font-medium whitespace-nowrap">
+                        {formatNumber(page.followers)} followers
                       </span>
-                      <span>followers</span>
                     </div>
                     {page.posts !== undefined && (
                       <div className="flex items-center gap-1">
-                        <MessageSquare className="w-4 h-4" />
-                        <span>{formatNumber(page.posts)} posts</span>
+                        <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="whitespace-nowrap">{formatNumber(page.posts)} posts</span>
                       </div>
                     )}
                   </div>
@@ -385,51 +388,60 @@ const Pages = () => {
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {!page.isFollowing && !page.isOwner ? (
-              <Button
-                onClick={() => handleFollowPage(page)}
-                className="flex-1 h-9"
-              >
-                <UserPlus className="w-4 h-4 mr-2" />
-                Follow
-              </Button>
-            ) : page.isFollowing ? (
-              <div className="flex gap-2 flex-1">
-                <Button 
-                  variant="outline" 
-                  className="flex-1 h-9"
-                  onClick={() => handleViewPage(page.id)}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  View Page
-                </Button>
+          <div className="flex flex-col sm:flex-row gap-2" onClick={(e) => e.stopPropagation()}>
+            <div className="flex gap-2 flex-1">
+              {!page.isFollowing && !page.isOwner ? (
                 <Button
-                  variant="outline"
-                  onClick={() => handleUnfollowPage(page.id)}
-                  className="h-9"
+                  onClick={() => handleFollowPage(page)}
+                  className="flex-1 h-8 sm:h-9 text-xs sm:text-sm"
+                  size="sm"
                 >
-                  Following
+                  <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Follow
                 </Button>
-              </div>
-            ) : page.isOwner ? (
-              <div className="flex gap-2 flex-1">
-                <Button 
-                  variant="outline" 
-                  className="flex-1 h-9"
-                  onClick={() => handleViewPage(page.id)}
-                >
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Manage Page
-                </Button>
-                <Button variant="outline" className="h-9">
-                  <Settings className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : null}
+              ) : page.isFollowing ? (
+                <>
+                  <Button
+                    variant="outline"
+                    className="flex-1 h-8 sm:h-9 text-xs sm:text-sm"
+                    onClick={() => handleViewPage(page.id)}
+                    size="sm"
+                  >
+                    <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">View Page</span>
+                    <span className="sm:hidden">View</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleUnfollowPage(page.id)}
+                    className="h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3"
+                    size="sm"
+                  >
+                    <span className="hidden sm:inline">Following</span>
+                    <span className="sm:hidden">✓</span>
+                  </Button>
+                </>
+              ) : page.isOwner ? (
+                <>
+                  <Button
+                    variant="outline"
+                    className="flex-1 h-8 sm:h-9 text-xs sm:text-sm"
+                    onClick={() => handleViewPage(page.id)}
+                    size="sm"
+                  >
+                    <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Manage Page</span>
+                    <span className="sm:hidden">Manage</span>
+                  </Button>
+                  <Button variant="outline" className="h-8 w-8 sm:h-9 sm:w-9 p-0" size="sm">
+                    <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+                  </Button>
+                </>
+              ) : null}
+            </div>
 
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-              <Share2 className="w-4 h-4" />
+            <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0 flex-shrink-0">
+              <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           </div>
         </CardContent>
