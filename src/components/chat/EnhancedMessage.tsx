@@ -207,8 +207,10 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         return (
           <Card
             className={cn(
-              "max-w-xs",
-              isCurrentUser ? "bg-primary text-primary-foreground" : "",
+              "max-w-xs shadow-md border-0",
+              isCurrentUser
+                ? "bg-gradient-to-br from-green-500 to-green-600 text-white dark:from-green-600 dark:to-green-700"
+                : "bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 dark:text-orange-100",
             )}
           >
             <CardContent className="p-3">
