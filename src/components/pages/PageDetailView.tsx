@@ -150,28 +150,31 @@ const PageDetailView = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [newReview, setNewReview] = useState({ rating: 5, content: "" });
 
-  // Mock page data
-  const page: Page = {
-    id: pageId || "1",
-    name: "TechCorp Innovation Hub",
-    followers: 125420,
-    category: "Technology",
-    verified: true,
-    avatar: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=200",
-    cover: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
-    description: "Leading technology solutions provider specializing in AI, blockchain, and cloud infrastructure.",
-    pageType: "business",
-    isFollowing: false,
-    isOwner: false,
-    website: "https://techcorp.com",
-    location: "San Francisco, CA",
-    email: "contact@techcorp.com",
-    phone: "+1 (555) 123-4567",
-    createdAt: "2020-03-15",
-    posts: 456,
-    engagement: 87,
+  // Find the specific page based on the route parameter
+  const page = pages.find(p => p.id === pageId);
+
+  // If page not found, redirect or show error
+  if (!page) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">Page Not Found</h2>
+          <p className="text-muted-foreground mb-4">The page you're looking for doesn't exist.</p>
+          <Button onClick={() => navigate("/app/pages")}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Pages
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Extend the page data with additional properties for the detail view
+  const extendedPage = {
+    ...page,
+    cover: page.avatar || "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800",
     hours: "Mon-Fri 9AM-6PM PST",
-    about: "Founded in 2020, TechCorp has been at the forefront of technological innovation, helping businesses transform their operations through cutting-edge solutions. Our team of experts specializes in artificial intelligence, blockchain technology, and cloud infrastructure."
+    about: page.description || `Learn more about ${page.name} and what we do.`
   };
 
   // Mock posts data
