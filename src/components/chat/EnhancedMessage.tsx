@@ -571,7 +571,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                       onClick={() => handleReaction(reaction.emoji)}
                       variant="secondary"
                       size="sm"
-                      className="h-6 px-2 text-xs rounded-full"
+                      className="h-6 px-2 text-xs rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:scale-105 transition-all duration-200 shadow-sm"
                     >
                       {reaction.emoji} {reaction.count}
                     </Button>
