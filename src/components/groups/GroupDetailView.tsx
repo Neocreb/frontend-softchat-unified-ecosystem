@@ -566,19 +566,23 @@ const GroupDetailView = () => {
 
             <div className="flex gap-2">
               {!extendedGroup.isJoined ? (
-                <Button className="gap-2">
+                <Button className="gap-2" onClick={handleJoinGroup}>
                   <UserPlus className="w-4 h-4" />
-                  Join Group
+                  {extendedGroup.privacy === "private" ? "Request to Join" : "Join Group"}
                 </Button>
               ) : (
                 <>
                   {(extendedGroup.isOwner || extendedGroup.isAdmin) && (
-                    <Button variant="secondary" className="gap-2">
+                    <Button variant="secondary" className="gap-2" onClick={handleManageGroup}>
                       <Settings className="w-4 h-4" />
                       Manage
                     </Button>
                   )}
-                  <Button variant="outline" className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30">
+                  <Button
+                    variant="outline"
+                    className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30"
+                    onClick={handleLeaveGroup}
+                  >
                     <UserMinus className="w-4 h-4" />
                     Leave
                   </Button>
