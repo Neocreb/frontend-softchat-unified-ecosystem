@@ -88,7 +88,7 @@ interface EnhancedMessageProps {
 const reactionEmojis = [
   { emoji: "❤️", name: "heart" },
   { emoji: "👍", name: "thumbs_up" },
-  { emoji: "��", name: "laugh" },
+  { emoji: "😂", name: "laugh" },
   { emoji: "😮", name: "wow" },
   { emoji: "😢", name: "sad" },
   { emoji: "😡", name: "angry" },
@@ -407,9 +407,9 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
               </div>
             ) : (
               <>
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                 {message.isEdited && (
-                  <span className="text-xs opacity-60"> (edited)</span>
+                  <span className="text-xs opacity-70 italic"> (edited)</span>
                 )}
               </>
             )}
