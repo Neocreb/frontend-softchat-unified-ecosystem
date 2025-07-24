@@ -1186,6 +1186,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   className={isMobile ? "h-8 w-8" : "h-8 w-8"}
                                   onClick={handleStartVoiceCall}
                                   title="Start voice call"
+                                  disabled={!selectedChat || !user || loading}
                                 >
                                   <Phone className="h-4 w-4" />
                                 </Button>
@@ -1195,6 +1196,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   className={isMobile ? "h-8 w-8" : "h-8 w-8"}
                                   onClick={handleStartVideoCall}
                                   title="Start video call"
+                                  disabled={!selectedChat || !user || loading}
                                 >
                                   <Video className="h-4 w-4" />
                                 </Button>
