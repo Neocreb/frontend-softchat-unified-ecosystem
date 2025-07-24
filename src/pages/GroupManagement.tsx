@@ -100,21 +100,23 @@ const GroupManagement = () => {
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
             <Button
               variant="ghost"
               onClick={() => navigate(`/app/groups/${groupId}`)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 self-start"
+              size="sm"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Group
+              <span className="hidden sm:inline">Back to Group</span>
+              <span className="sm:hidden">Back</span>
             </Button>
-            <div>
-              <h1 className="text-3xl font-bold flex items-center gap-2">
-                <Settings className="w-8 h-8" />
-                Group Management
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2">
+                <Settings className="w-6 h-6 sm:w-8 sm:h-8" />
+                <span className="truncate">Group Management</span>
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Manage your group settings, members, and content
               </p>
             </div>
@@ -122,12 +124,12 @@ const GroupManagement = () => {
         </div>
 
         <Tabs defaultValue="settings" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-            <TabsTrigger value="members">Members</TabsTrigger>
-            <TabsTrigger value="requests">Requests</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 mb-6">
+            <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
+            <TabsTrigger value="members" className="text-xs sm:text-sm">Members</TabsTrigger>
+            <TabsTrigger value="requests" className="text-xs sm:text-sm lg:inline hidden">Requests</TabsTrigger>
+            <TabsTrigger value="content" className="text-xs sm:text-sm">Content</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="settings" className="space-y-6">
@@ -380,7 +382,7 @@ const GroupManagement = () => {
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Total Members</CardTitle>
