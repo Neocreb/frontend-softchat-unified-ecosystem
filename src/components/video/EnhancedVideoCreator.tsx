@@ -150,26 +150,48 @@ const EnhancedVideoCreator: React.FC = () => {
   }, [isRecording, isPaused, maxDuration]);
 
   const initializeCamera = async () => {
+    setIsInitializingCamera(true);
+    setCameraError(null);
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { 
+      const constraints = {
+        video: {
           facingMode: cameraFacing,
           width: { ideal: 720 },
           height: { ideal: 1280 }
         },
         audio: micEnabled
-      });
-      
-      streamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+      };
+
+      const result = await requestCameraAccess(constraints);
+
+      if (result.error) {
+        setCameraError(result.error);
+        setShowPermissionDialog(true);
+        return;
+      }
+
+      if (result.stream) {
+        streamRef.current = result.stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = result.stream;
+        }
+
+        toast({
+          title: "Camera Ready",
+          description: "Camera initialized successfully",
+        });
       }
     } catch (error) {
-      toast({
-        title: "Camera Access Error",
-        description: "Unable to access camera. Please check permissions.",
-        variant: "destructive"
+      console.error("Unexpected camera error:", error);
+      setCameraError({
+        type: 'unknown',
+        message: 'Unexpected error occurred',
+        userAction: 'Please try refreshing the page'
       });
+      setShowPermissionDialog(true);
+    } finally {
+      setIsInitializingCamera(false);
     }
   };
 
