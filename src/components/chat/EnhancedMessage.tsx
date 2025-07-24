@@ -344,10 +344,10 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         return (
           <div
             className={cn(
-              "px-3 py-2 rounded-2xl max-w-sm break-words",
+              "px-4 py-3 rounded-2xl max-w-sm break-words relative shadow-md",
               isCurrentUser
-                ? "bg-primary text-primary-foreground ml-auto"
-                : "bg-muted",
+                ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white ml-auto before:absolute before:bottom-0 before:-right-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-blue-500 before:to-blue-600 before:rotate-45 before:transform before:origin-bottom-left dark:from-blue-600 dark:to-blue-700 dark:before:from-blue-600 dark:before:to-blue-700"
+                : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-900 dark:from-gray-700 dark:to-gray-800 dark:text-gray-100 before:absolute before:bottom-0 before:-left-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-gray-100 before:to-gray-200 before:rotate-45 before:transform before:origin-bottom-right dark:before:from-gray-700 dark:before:to-gray-800",
             )}
           >
             {message.replyTo && (
