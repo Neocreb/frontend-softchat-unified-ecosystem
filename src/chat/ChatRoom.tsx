@@ -55,6 +55,7 @@ export const ChatRoom: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const [messageInput, setMessageInput] = useState("");
   const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
