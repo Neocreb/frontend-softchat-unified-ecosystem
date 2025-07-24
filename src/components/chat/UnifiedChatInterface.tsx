@@ -1264,20 +1264,25 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                           300000; // 5 minutes
 
                                       return (
-                                        <EnhancedMessage
+                                        <div
                                           key={msg.id}
-                                          message={msg}
-                                          isCurrentUser={
-                                            msg.senderId === user.id
-                                          }
-                                          isMobile={isMobile}
-                                          onReply={handleReplyToMessage}
-                                          onReact={handleReactToMessage}
-                                          onEdit={handleEditMessage}
-                                          onDelete={handleDeleteMessage}
-                                          showAvatar={!isGrouped}
-                                          groupWithPrevious={isGrouped}
-                                        />
+                                          className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300"
+                                          style={{ animationDelay: `${index * 50}ms` }}
+                                        >
+                                          <EnhancedMessage
+                                            message={msg}
+                                            isCurrentUser={
+                                              msg.senderId === user.id
+                                            }
+                                            isMobile={isMobile}
+                                            onReply={handleReplyToMessage}
+                                            onReact={handleReactToMessage}
+                                            onEdit={handleEditMessage}
+                                            onDelete={handleDeleteMessage}
+                                            showAvatar={!isGrouped}
+                                            groupWithPrevious={isGrouped}
+                                          />
+                                        </div>
                                       );
                                     },
                                   )
