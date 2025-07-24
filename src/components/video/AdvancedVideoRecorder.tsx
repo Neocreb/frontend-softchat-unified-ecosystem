@@ -508,6 +508,56 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
     }
   };
 
+  const handleRetryCamera = () => {
+    setShowPermissionDialog(false);
+    setCameraError(null);
+    initializeCamera();
+  };
+
+  const handleCancelCamera = () => {
+    setShowPermissionDialog(false);
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const handleCameraSwitch = async () => {
+    setIsInitializingCamera(true);
+
+    try {
+      const result = await switchCamera(streamRef.current, cameraFacing, micEnabled);
+
+      if (result.error) {
+        setCameraError(result.error);
+        setShowPermissionDialog(true);
+        return;
+      }
+
+      if (result.stream) {
+        streamRef.current = result.stream;
+        setCameraFacing(result.facing);
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = result.stream;
+        }
+
+        toast({
+          title: "Camera Switched",
+          description: `Switched to ${result.facing === 'user' ? 'front' : 'back'} camera`,
+        });
+      }
+    } catch (error) {
+      console.error('Camera switch error:', error);
+      toast({
+        title: "Switch Failed",
+        description: "Could not switch camera. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsInitializingCamera(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
       {/* Header */}
