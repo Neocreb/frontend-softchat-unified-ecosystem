@@ -681,88 +681,94 @@ const PageDetailView = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 z-10">
           <Button
             variant="secondary"
             onClick={() => navigate(-1)}
-            className="gap-2"
+            className="gap-2 text-sm sm:text-base"
+            size="sm"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back
+            <span className="hidden sm:inline">Back</span>
           </Button>
         </div>
 
-        <div className="absolute bottom-6 left-6 right-6 text-white">
-          <div className="flex items-end justify-between">
-            <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20 border-4 border-white">
-                <AvatarImage src={extendedPage.avatar} alt={extendedPage.name} />
-                <AvatarFallback className="text-2xl">{extendedPage.name.substring(0, 2)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-bold">{extendedPage.name}</h1>
-                  {extendedPage.verified && (
-                    <Verified className="w-8 h-8 text-blue-400" fill="currentColor" />
-                  )}
-                </div>
-                <div className="flex items-center gap-4 text-sm opacity-90">
-                  <div className="flex items-center gap-1">
-                    <PageTypeIcon className="w-4 h-4" />
-                    {extendedPage.category}
+        <div className="absolute bottom-6 left-4 right-4 sm:left-6 sm:right-6 text-white">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                <Avatar className="h-16 w-16 sm:h-20 sm:w-20 border-4 border-white flex-shrink-0">
+                  <AvatarImage src={extendedPage.avatar} alt={extendedPage.name} />
+                  <AvatarFallback className="text-lg sm:text-2xl">{extendedPage.name.substring(0, 2)}</AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold truncate">{extendedPage.name}</h1>
+                    {extendedPage.verified && (
+                      <Verified className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400 flex-shrink-0" fill="currentColor" />
+                    )}
                   </div>
-                  <span>•</span>
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    {formatNumber(extendedPage.followers)} followers
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm opacity-90">
+                    <div className="flex items-center gap-1">
+                      <PageTypeIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="truncate">{extendedPage.category}</span>
+                    </div>
+                    <span className="hidden sm:inline">•</span>
+                    <div className="flex items-center gap-1">
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="whitespace-nowrap">{formatNumber(extendedPage.followers)} followers</span>
+                    </div>
+                    {extendedPage.location && (
+                      <>
+                        <span className="hidden sm:inline">•</span>
+                        <div className="flex items-center gap-1 min-w-0">
+                          <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                          <span className="truncate">{extendedPage.location}</span>
+                        </div>
+                      </>
+                    )}
                   </div>
-                  {extendedPage.location && (
-                    <>
-                      <span>•</span>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {extendedPage.location}
-                      </div>
-                    </>
-                  )}
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:flex-wrap">
               <Button
                 onClick={handleFollowPage}
                 variant={extendedPage.isFollowing ? "outline" : "default"}
-                className={extendedPage.isFollowing ? "bg-white/20 border-white/30 text-white hover:bg-white/30" : ""}
+                className={`gap-2 text-sm sm:text-base ${extendedPage.isFollowing ? "bg-white/20 border-white/30 text-white hover:bg-white/30" : ""}`}
+                size="sm"
               >
                 {extendedPage.isFollowing ? (
                   <>
-                    <Heart className="w-4 h-4 mr-2 fill-current" />
-                    Following
+                    <Heart className="w-4 h-4 fill-current" />
+                    <span>Following</span>
                   </>
                 ) : (
                   <>
-                    <UserPlus className="w-4 h-4 mr-2" />
-                    Follow
+                    <UserPlus className="w-4 h-4" />
+                    <span>Follow</span>
                   </>
                 )}
               </Button>
               <Button
                 variant="outline"
-                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30 text-sm sm:text-base"
                 onClick={handleMessagePage}
+                size="sm"
               >
-                <MessageSquare className="w-4 h-4 mr-2" />
-                Message
+                <MessageSquare className="w-4 h-4" />
+                <span>Message</span>
               </Button>
               {extendedPage.isOwner && (
                 <Button
                   variant="outline"
-                  className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                  className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30 text-sm sm:text-base"
                   onClick={handleManagePage}
+                  size="sm"
                 >
-                  <Settings className="w-4 h-4 mr-2" />
-                  Manage
+                  <Settings className="w-4 h-4" />
+                  <span>Manage</span>
                 </Button>
               )}
             </div>
@@ -770,8 +776,8 @@ const PageDetailView = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
             {/* Page Info */}
