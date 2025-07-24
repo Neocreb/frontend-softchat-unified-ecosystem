@@ -648,12 +648,12 @@ const PageDetailView = () => {
             </div>
 
             <div className="flex gap-2">
-              <Button 
+              <Button
                 onClick={handleFollowPage}
-                variant={page.isFollowing ? "outline" : "default"}
-                className={page.isFollowing ? "bg-white/20 border-white/30 text-white hover:bg-white/30" : ""}
+                variant={extendedPage.isFollowing ? "outline" : "default"}
+                className={extendedPage.isFollowing ? "bg-white/20 border-white/30 text-white hover:bg-white/30" : ""}
               >
-                {page.isFollowing ? (
+                {extendedPage.isFollowing ? (
                   <>
                     <Heart className="w-4 h-4 mr-2 fill-current" />
                     Following
@@ -669,7 +669,7 @@ const PageDetailView = () => {
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Message
               </Button>
-              {page.isOwner && (
+              {extendedPage.isOwner && (
                 <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
                   <Settings className="w-4 h-4 mr-2" />
                   Manage
