@@ -510,6 +510,13 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   };
 
   const handleChatSelect = (chat: UnifiedChatThread) => {
+    // On mobile, navigate to full-screen chat room
+    if (isMobile) {
+      window.location.href = `/app/chat/${chat.id}`;
+      return;
+    }
+
+    // On desktop, show in sidebar
     setSelectedChat(chat);
     // Mark as read
     if (chat.unreadCount && chat.unreadCount > 0) {
