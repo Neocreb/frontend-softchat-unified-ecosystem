@@ -254,7 +254,7 @@ const initialMockPosts = [
       isVerified: false,
     },
     content:
-      "Amazing sunset from my balcony today! Sometimes you need to step away from the screen and enjoy the simple things in life. 🌅✨",
+      "Amazing sunset from my balcony today! Sometimes you need to step away from the screen and enjoy the simple things in life. 🌅��",
     media: [
       {
         type: "image" as const,
@@ -1365,6 +1365,10 @@ export default function EnhancedFeed() {
 
   // Get post count for a specific tab
   const getPostCountForTab = (tab: string) => {
+    if (!posts || !Array.isArray(posts)) {
+      return 0;
+    }
+
     switch (tab) {
       case "for-you":
         return posts.length;
