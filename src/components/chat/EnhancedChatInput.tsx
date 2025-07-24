@@ -109,7 +109,7 @@ const stickerCategories = [
     stickers: [
       { id: "37", emoji: "🤣", name: "ROFL" },
       { id: "38", emoji: "😭", name: "Crying Laughing" },
-      { id: "39", emoji: "🤯", name: "Mind Blown" },
+      { id: "39", emoji: "����", name: "Mind Blown" },
       { id: "40", emoji: "🙃", name: "Upside Down" },
       { id: "41", emoji: "😵", name: "Dizzy" },
       { id: "42", emoji: "🤐", name: "Zipper Mouth" },
@@ -388,9 +388,9 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200"
               >
-                <Smile className="h-4 w-4" />
+                <Smile className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
               </Button>
             </PopoverTrigger>
             <PopoverContent side="top" className="w-80 p-0">
