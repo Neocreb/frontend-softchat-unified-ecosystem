@@ -376,7 +376,7 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               }
             }}
             className={cn(
-              "pr-12 rounded-full border-2 focus:border-primary",
+              "pr-12 rounded-full border-2 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-gray-50 dark:bg-gray-900 shadow-inner",
               isMobile ? "h-11" : "h-10",
             )}
             disabled={disabled || isRecording}
