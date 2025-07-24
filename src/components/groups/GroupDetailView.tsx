@@ -834,7 +834,14 @@ const GroupDetailView = () => {
                               </p>
                             </div>
                           </div>
-                          <Button variant="outline" size="sm">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              // Navigate to chat with specific member
+                              navigate(`/app/chat?user=${member.id}&type=social`);
+                            }}
+                          >
                             <MessageSquare className="w-4 h-4 mr-2" />
                             Message
                           </Button>
