@@ -1114,7 +1114,20 @@ const PageDetailView = () => {
                             {product.inStock ? "In Stock" : "Out of Stock"}
                           </Badge>
                         </div>
-                        <Button className="w-full mt-3" disabled={!product.inStock}>
+                        <Button
+                          className="w-full mt-3"
+                          disabled={!product.inStock}
+                          onClick={() => {
+                            if (product.inStock) {
+                              // Navigate to marketplace with product search
+                              navigate(`/app/marketplace?search=${encodeURIComponent(product.name)}&seller=${encodeURIComponent(extendedPage.name)}`);
+                              toast({
+                                title: "Redirecting to Marketplace",
+                                description: `Finding ${product.name} in the marketplace...`
+                              });
+                            }
+                          }}
+                        >
                           <Store className="w-4 h-4 mr-2" />
                           {product.inStock ? "Buy Now" : "Notify Me"}
                         </Button>
