@@ -300,20 +300,51 @@ export const ChatRoom: React.FC = () => {
 
   // Convert ChatMessage to EnhancedChatMessage for beautiful styling
   const convertToEnhancedMessage = (message: ChatMessage): EnhancedChatMessage => {
+    // Handle different message types properly
+    let content = message.content;
+    let messageType: "text" | "voice" | "sticker" | "media" = "text";
+    let metadata: any = undefined;
+
+    if (message.messageType === "voice") {
+      messageType = "voice";
+      metadata = {
+        transcription: "Voice message",
+        duration: 30 // Default duration
+      };
+    } else if (message.messageType === "image") {
+      messageType = "media";
+      content = message.attachments?.[0] || content;
+      metadata = {
+        fileName: "Image",
+        mediaType: "image" as const,
+        fileSize: 1024 * 1024 // Default 1MB
+      };
+    } else if (message.messageType === "file") {
+      messageType = "media";
+      content = message.attachments?.[0] || content;
+      metadata = {
+        fileName: "Document",
+        mediaType: "file" as const,
+        fileSize: 1024 * 512 // Default 512KB
+      };
+    } else if (content.length === 1 || content.length === 2) {
+      // Detect emojis as stickers
+      const emojiRegex = /^[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]$/u;
+      if (emojiRegex.test(content)) {
+        messageType = "sticker";
+        metadata = { stickerName: "Emoji" };
+      }
+    }
+
     return {
       id: message.id,
       senderId: message.senderId,
-      senderName: message.sender?.name || message.sender?.full_name || "Unknown",
+      senderName: message.sender?.name || message.sender?.full_name || (message.senderId === user?.id ? "You" : "Unknown"),
       senderAvatar: message.sender?.avatar || message.sender?.avatar_url,
-      content: message.content,
-      type: message.messageType === "voice" ? "voice" :
-            message.messageType === "image" || message.messageType === "file" ? "media" : "text",
+      content,
+      type: messageType,
       timestamp: message.timestamp,
-      metadata: message.messageType === "voice"
-        ? { transcription: "Voice message" }
-        : message.messageType === "image" || message.messageType === "file"
-        ? { fileName: "Attachment", mediaType: message.messageType as "image" | "file" }
-        : undefined,
+      metadata,
       status: message.readBy.includes(user?.id || "") ? "read" : "delivered",
       reactions: message.reactions?.map((reaction) => ({
         userId: reaction.userIds[0] || "unknown",
