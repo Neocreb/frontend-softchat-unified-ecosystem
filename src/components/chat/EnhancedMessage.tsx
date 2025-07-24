@@ -200,7 +200,9 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
     switch (message.type) {
       case "sticker":
         return (
-          <div className="text-6xl p-2 bg-transparent">{message.content}</div>
+          <div className="text-6xl p-2 bg-transparent hover:scale-110 transition-transform duration-200 cursor-pointer">
+            <div className="drop-shadow-lg">{message.content}</div>
+          </div>
         );
 
       case "voice":
