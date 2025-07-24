@@ -605,6 +605,40 @@ export const ChatRoom: React.FC = () => {
           </Button>
         </div>
       </div>
+
+      {/* Enhanced Video Call */}
+      {(showVideoCall || showVoiceCall) && callData && (
+        <EnhancedVideoCall
+          isOpen={showVideoCall || showVoiceCall}
+          onClose={handleCallEnd}
+          callData={callData}
+          onAccept={() => {
+            toast({
+              title: "Call Connected",
+              description: "Call has started successfully"
+            });
+          }}
+          onDecline={handleCallEnd}
+          onMute={(muted) => {
+            toast({
+              title: muted ? "Microphone Muted" : "Microphone Unmuted",
+              description: muted ? "Your microphone is now muted" : "Your microphone is now active"
+            });
+          }}
+          onVideoToggle={(enabled) => {
+            toast({
+              title: enabled ? "Camera On" : "Camera Off",
+              description: enabled ? "Your camera is now on" : "Your camera is now off"
+            });
+          }}
+          onScreenShare={(sharing) => {
+            toast({
+              title: sharing ? "Screen Sharing Started" : "Screen Sharing Stopped",
+              description: sharing ? "Your screen is now being shared" : "Screen sharing has stopped"
+            });
+          }}
+        />
+      )}
     </div>
   );
 };
