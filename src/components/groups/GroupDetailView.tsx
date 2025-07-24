@@ -580,64 +580,66 @@ const GroupDetailView = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 z-10">
           <Button
             variant="secondary"
             onClick={() => navigate(-1)}
-            className="gap-2"
+            className="gap-2 text-sm sm:text-base"
+            size="sm"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back
+            <span className="hidden sm:inline">Back</span>
           </Button>
         </div>
 
-        <div className="absolute bottom-6 left-6 right-6 text-white">
-          <div className="flex items-end justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-bold">{extendedGroup.name}</h1>
+        <div className="absolute bottom-6 left-4 right-4 sm:left-6 sm:right-6 text-white">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold truncate">{extendedGroup.name}</h1>
                 {extendedGroup.privacy === "private" ? (
-                  <Lock className="w-6 h-6" />
+                  <Lock className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
                 ) : (
-                  <Globe className="w-6 h-6" />
+                  <Globe className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
                 )}
               </div>
-              <div className="flex items-center gap-4 text-sm opacity-90">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm opacity-90">
                 <div className="flex items-center gap-1">
-                  <Users className="w-4 h-4" />
-                  {formatNumber(extendedGroup.members)} members
+                  <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="whitespace-nowrap">{formatNumber(extendedGroup.members)} members</span>
                 </div>
-                <span>•</span>
-                <span>{extendedGroup.category}</span>
+                <span className="hidden sm:inline">•</span>
+                <span className="truncate">{extendedGroup.category}</span>
                 {extendedGroup.location && (
                   <>
-                    <span>•</span>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      {extendedGroup.location}
+                    <span className="hidden sm:inline">•</span>
+                    <div className="flex items-center gap-1 min-w-0">
+                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                      <span className="truncate">{extendedGroup.location}</span>
                     </div>
                   </>
                 )}
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:flex-shrink-0">
               {!extendedGroup.isJoined ? (
-                <Button className="gap-2" onClick={handleJoinGroup}>
+                <Button className="gap-2 text-sm sm:text-base" onClick={handleJoinGroup}>
                   <UserPlus className="w-4 h-4" />
-                  {extendedGroup.privacy === "private" ? "Request to Join" : "Join Group"}
+                  <span className="hidden sm:inline">{extendedGroup.privacy === "private" ? "Request to Join" : "Join Group"}</span>
+                  <span className="sm:hidden">{extendedGroup.privacy === "private" ? "Request" : "Join"}</span>
                 </Button>
               ) : (
                 <>
                   {(extendedGroup.isOwner || extendedGroup.isAdmin) && (
-                    <Button variant="secondary" className="gap-2" onClick={handleManageGroup}>
+                    <Button variant="secondary" className="gap-2 text-sm sm:text-base" onClick={handleManageGroup}>
                       <Settings className="w-4 h-4" />
                       Manage
                     </Button>
                   )}
                   <Button
                     variant="outline"
-                    className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30"
+                    className="gap-2 bg-white/20 border-white/30 text-white hover:bg-white/30 text-sm sm:text-base"
                     onClick={handleLeaveGroup}
                   >
                     <UserMinus className="w-4 h-4" />
@@ -650,8 +652,8 @@ const GroupDetailView = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-4">
             {/* About Section */}
