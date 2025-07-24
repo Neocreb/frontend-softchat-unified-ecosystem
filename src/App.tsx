@@ -87,6 +87,7 @@ import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
 import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
+import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
