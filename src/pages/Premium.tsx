@@ -207,7 +207,7 @@ const Premium: React.FC = () => {
 
   const openKYCInSettings = () => {
     // Navigate to settings with KYC tab or open existing KYC route
-    navigate('/kyc');
+    navigate('/app/kyc');
   };
 
   return (

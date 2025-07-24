@@ -43,6 +43,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { requestCameraAccess, stopCameraStream, switchCamera, CameraError } from "@/utils/cameraPermissions";
+import CameraPermissionDialog from "@/components/ui/camera-permission-dialog";
 
 interface VideoSegment {
   id: string;
@@ -243,6 +245,9 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
   >("filters");
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [cameraError, setCameraError] = useState<CameraError | null>(null);
+  const [showPermissionDialog, setShowPermissionDialog] = useState(false);
+  const [isInitializingCamera, setIsInitializingCamera] = useState(false);
 
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -296,15 +301,18 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
   }, [timerCountdown]);
 
   const cleanup = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-    }
+    stopCameraStream(streamRef.current);
+    streamRef.current = null;
+
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
     }
   }, [isRecording]);
 
   const initializeCamera = async () => {
+    setIsInitializingCamera(true);
+    setCameraError(null);
+
     try {
       cleanup();
 
@@ -318,25 +326,42 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
         audio: micEnabled,
       };
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      streamRef.current = stream;
+      const result = await requestCameraAccess(constraints);
 
-      if (videoRef.current) {
-        // Ensure video element is ready before setting source
-        videoRef.current.srcObject = stream;
+      if (result.error) {
+        setCameraError(result.error);
+        setShowPermissionDialog(true);
+        return;
+      }
 
-        // Wait for stream to be ready before applying filters
-        videoRef.current.onloadedmetadata = () => {
-          applyFilter();
-        };
+      if (result.stream) {
+        streamRef.current = result.stream;
+
+        if (videoRef.current) {
+          // Ensure video element is ready before setting source
+          videoRef.current.srcObject = result.stream;
+
+          // Wait for stream to be ready before applying filters
+          videoRef.current.onloadedmetadata = () => {
+            applyFilter();
+          };
+        }
+
+        toast({
+          title: "Camera Ready",
+          description: "Camera initialized successfully",
+        });
       }
     } catch (error) {
-      console.error("Camera initialization error:", error);
-      toast({
-        title: "Camera Error",
-        description: "Unable to access camera. Please check permissions.",
-        variant: "destructive",
+      console.error("Unexpected camera error:", error);
+      setCameraError({
+        type: 'unknown',
+        message: 'Unexpected error occurred',
+        userAction: 'Please try refreshing the page'
       });
+      setShowPermissionDialog(true);
+    } finally {
+      setIsInitializingCamera(false);
     }
   };
 
@@ -483,6 +508,56 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
     }
   };
 
+  const handleRetryCamera = () => {
+    setShowPermissionDialog(false);
+    setCameraError(null);
+    initializeCamera();
+  };
+
+  const handleCancelCamera = () => {
+    setShowPermissionDialog(false);
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const handleCameraSwitch = async () => {
+    setIsInitializingCamera(true);
+
+    try {
+      const result = await switchCamera(streamRef.current, cameraFacing, micEnabled);
+
+      if (result.error) {
+        setCameraError(result.error);
+        setShowPermissionDialog(true);
+        return;
+      }
+
+      if (result.stream) {
+        streamRef.current = result.stream;
+        setCameraFacing(result.facing);
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = result.stream;
+        }
+
+        toast({
+          title: "Camera Switched",
+          description: `Switched to ${result.facing === 'user' ? 'front' : 'back'} camera`,
+        });
+      }
+    } catch (error) {
+      console.error('Camera switch error:', error);
+      toast({
+        title: "Switch Failed",
+        description: "Could not switch camera. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsInitializingCamera(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
       {/* Header */}
@@ -609,15 +684,12 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() =>
-                  setCameraFacing(
-                    cameraFacing === "user" ? "environment" : "user",
-                  )
-                }
+                onClick={handleCameraSwitch}
+                disabled={isInitializingCamera}
                 className="text-white"
               >
                 <RotateCcw className="w-4 h-4 mr-1" />
-                Flip
+                {isInitializingCamera ? "Switching..." : "Flip"}
               </Button>
               <Button
                 variant="ghost"
@@ -869,6 +941,15 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
           )}
         </div>
       )}
+
+      {/* Camera Permission Dialog */}
+      <CameraPermissionDialog
+        open={showPermissionDialog}
+        onOpenChange={setShowPermissionDialog}
+        error={cameraError}
+        onRetry={handleRetryCamera}
+        onCancel={handleCancelCamera}
+      />
     </div>
   );
 };

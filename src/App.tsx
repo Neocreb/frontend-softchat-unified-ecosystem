@@ -86,6 +86,8 @@ import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
+import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
+import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
@@ -322,7 +324,7 @@ const AppRoutes = () => {
           <Route path="crypto" element={<EnhancedCrypto />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
-          <Route path="videos" element={<TikTokStyleVideos />} />
+          <Route path="videos" element={<EnhancedTikTokVideos />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="explore" element={<Explore />} />
@@ -374,6 +376,7 @@ const AppRoutes = () => {
           <Route path="send-gifts" element={<SendGifts />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
+          <Route path="camera-test" element={<CameraPermissionTest />} />
           <Route
             path="ai-assistant"
             element={<AIPersonalAssistantDashboard />}
