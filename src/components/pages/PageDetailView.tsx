@@ -402,13 +402,13 @@ const PageDetailView = () => {
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <Avatar className="h-10 w-10">
-              <AvatarImage src={page.avatar} alt={page.name} />
-              <AvatarFallback>{page.name.substring(0, 2)}</AvatarFallback>
+              <AvatarImage src={extendedPage.avatar} alt={extendedPage.name} />
+              <AvatarFallback>{extendedPage.name.substring(0, 2)}</AvatarFallback>
             </Avatar>
             <div>
               <div className="flex items-center gap-2">
-                <h4 className="font-semibold text-sm">{page.name}</h4>
-                {page.verified && (
+                <h4 className="font-semibold text-sm">{extendedPage.name}</h4>
+                {extendedPage.verified && (
                   <Verified className="w-4 h-4 text-blue-500" fill="currentColor" />
                 )}
                 {post.isPinned && (
