@@ -376,6 +376,7 @@ const AppRoutes = () => {
           <Route path="send-gifts" element={<SendGifts />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
+          <Route path="camera-test" element={<CameraPermissionTest />} />
           <Route
             path="ai-assistant"
             element={<AIPersonalAssistantDashboard />}
