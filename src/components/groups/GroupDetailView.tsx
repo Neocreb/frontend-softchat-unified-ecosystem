@@ -855,7 +855,7 @@ const GroupDetailView = () => {
               <TabsContent value="events" className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-semibold">Upcoming Events</h3>
-                  {(group.isOwner || group.isAdmin) && (
+                  {(extendedGroup.isOwner || extendedGroup.isAdmin) && (
                     <Button>
                       <Plus className="w-4 h-4 mr-2" />
                       Create Event
