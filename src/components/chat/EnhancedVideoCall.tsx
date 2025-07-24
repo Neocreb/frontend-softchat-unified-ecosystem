@@ -358,7 +358,7 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
   const renderActiveCall = () => (
     <div className="relative h-full bg-black">
       {/* Video Display */}
-      {callData.type === 'video' && (
+      {safeCallData.type === 'video' && (
         <div className="relative w-full h-full">
           {/* Remote video */}
           <video
