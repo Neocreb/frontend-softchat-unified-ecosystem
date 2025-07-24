@@ -2,6 +2,9 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { UnifiedChatInterface } from "@/components/chat/UnifiedChatInterface";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { Phone, Video } from "lucide-react";
+import { useIncomingCalls } from "@/hooks/useIncomingCalls";
 
 const Chat = () => {
   const isMobile = useIsMobile();
