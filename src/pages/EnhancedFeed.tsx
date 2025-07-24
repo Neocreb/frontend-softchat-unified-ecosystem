@@ -254,7 +254,7 @@ const initialMockPosts = [
       isVerified: false,
     },
     content:
-      "Amazing sunset from my balcony today! Sometimes you need to step away from the screen and enjoy the simple things in life. 🌅��",
+      "Amazing sunset from my balcony today! Sometimes you need to step away from the screen and enjoy the simple things in life. 🌅✨",
     media: [
       {
         type: "image" as const,
@@ -470,8 +470,8 @@ const Stories = ({
   };
 
   // Check if current user has stories
-  const userStories = stories.filter((story) => story.user.id === user?.id);
-  const otherStories = stories.filter((story) => story.user.id !== user?.id);
+  const userStories = stories && Array.isArray(stories) ? stories.filter((story) => story.user.id === user?.id) : [];
+  const otherStories = stories && Array.isArray(stories) ? stories.filter((story) => story.user.id !== user?.id) : [];
 
   // Group other stories by user
   const groupedStories = otherStories.reduce(
