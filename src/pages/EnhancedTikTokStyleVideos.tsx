@@ -68,6 +68,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import { videoFeedIntegrationService, FeedVideoData } from "@/services/videoFeedIntegrationService";
+import "../styles/enhanced-videos.css";
 
 interface VideoData {
   id: string;
