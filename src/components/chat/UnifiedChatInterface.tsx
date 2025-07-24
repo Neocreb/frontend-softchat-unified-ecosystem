@@ -81,6 +81,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const [messageInput, setMessageInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+  const [typingUsers, setTypingUsers] = useState<{[chatId: string]: Array<{id: string, name: string, avatar?: string}>}>({});
 
   // Voice/Video call state
   const [activeCall, setActiveCall] = useState<{
