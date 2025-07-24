@@ -791,9 +791,30 @@ const EnhancedTikTokStyleVideos: React.FC = () => {
     }
   }, [activeTab]);
 
-  const handleVideoCreated = (videoFile: File, metadata: any) => {
-    // Handle video creation - would typically upload to server
-    setIsAdvancedRecorderOpen(false);
+  const handleVideoCreated = async (videoFile: File, metadata: any) => {
+    try {
+      // Upload video through feed system so it appears in video feed
+      const success = await videoFeedIntegrationService.uploadVideoToFeed(videoFile, {
+        description: metadata.description || '',
+        hashtags: metadata.hashtags || [],
+        category: metadata.category || 'User Content',
+        thumbnail: metadata.thumbnail,
+      });
+
+      if (success) {
+        // Reload feed videos to show the new upload
+        const feedVideosData = await videoFeedIntegrationService.getFeedVideos();
+        const convertedVideos: VideoData[] = feedVideosData.map(feedVideo => ({
+          ...feedVideo,
+          isFromFeed: true,
+        }));
+        setFeedVideos(convertedVideos);
+      }
+    } catch (error) {
+      console.error('Error creating video:', error);
+    } finally {
+      setIsAdvancedRecorderOpen(false);
+    }
   };
 
   return (
