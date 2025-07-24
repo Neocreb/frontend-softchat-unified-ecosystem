@@ -1158,16 +1158,12 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                     </CardTitle>
                                   </div>
                                   <div className="flex items-center gap-2">
-                                    <p
-                                      className={`text-muted-foreground ${
-                                        isMobile ? "text-xs" : "text-sm"
-                                      }`}
-                                    >
-                                      {selectedChat.participant_profile
-                                        ?.is_online
-                                        ? "Online"
-                                        : "Offline"}
-                                    </p>
+                                    <OnlineStatusIndicator
+                                      isOnline={selectedChat.participant_profile?.is_online || false}
+                                      lastSeen={selectedChat.participant_profile?.last_seen}
+                                      size="sm"
+                                      showLabel={true}
+                                    />
                                     {getContextInfo(selectedChat) && (
                                       <>
                                         <div className="w-1 h-1 bg-muted-foreground rounded-full" />
