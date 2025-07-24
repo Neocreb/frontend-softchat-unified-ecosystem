@@ -521,6 +521,9 @@ const Stories = ({
 
   const hasUnviewedStories = (userStories: any[]) => {
     // In a real app, you'd check if user has viewed these stories
+    if (!userStories || !Array.isArray(userStories)) {
+      return false;
+    }
     return userStories.some((story) => {
       const hoursSincePost =
         (new Date().getTime() - new Date(story.timestamp).getTime()) /
