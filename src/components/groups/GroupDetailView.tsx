@@ -617,8 +617,8 @@ const GroupDetailView = () => {
           <div className="flex items-end justify-between">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-3xl font-bold">{group.name}</h1>
-                {group.privacy === "private" ? (
+                <h1 className="text-3xl font-bold">{extendedGroup.name}</h1>
+                {extendedGroup.privacy === "private" ? (
                   <Lock className="w-6 h-6" />
                 ) : (
                   <Globe className="w-6 h-6" />
@@ -627,16 +627,16 @@ const GroupDetailView = () => {
               <div className="flex items-center gap-4 text-sm opacity-90">
                 <div className="flex items-center gap-1">
                   <Users className="w-4 h-4" />
-                  {formatNumber(group.members)} members
+                  {formatNumber(extendedGroup.members)} members
                 </div>
                 <span>•</span>
-                <span>{group.category}</span>
-                {group.location && (
+                <span>{extendedGroup.category}</span>
+                {extendedGroup.location && (
                   <>
                     <span>•</span>
                     <div className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
-                      {group.location}
+                      {extendedGroup.location}
                     </div>
                   </>
                 )}
@@ -644,14 +644,14 @@ const GroupDetailView = () => {
             </div>
 
             <div className="flex gap-2">
-              {!group.isJoined ? (
+              {!extendedGroup.isJoined ? (
                 <Button className="gap-2">
                   <UserPlus className="w-4 h-4" />
                   Join Group
                 </Button>
               ) : (
                 <>
-                  {(group.isOwner || group.isAdmin) && (
+                  {(extendedGroup.isOwner || extendedGroup.isAdmin) && (
                     <Button variant="secondary" className="gap-2">
                       <Settings className="w-4 h-4" />
                       Manage
