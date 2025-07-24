@@ -695,12 +695,20 @@ const PageDetailView = () => {
                   </>
                 )}
               </Button>
-              <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+              <Button
+                variant="outline"
+                className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                onClick={handleMessagePage}
+              >
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Message
               </Button>
               {extendedPage.isOwner && (
-                <Button variant="outline" className="bg-white/20 border-white/30 text-white hover:bg-white/30">
+                <Button
+                  variant="outline"
+                  className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                  onClick={handleManagePage}
+                >
                   <Settings className="w-4 h-4 mr-2" />
                   Manage
                 </Button>
