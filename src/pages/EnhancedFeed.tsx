@@ -502,6 +502,10 @@ const Stories = ({
 
   const getStoryPreview = (userStories: any[]) => {
     // Get the most recent story for preview
+    if (!userStories || !Array.isArray(userStories) || userStories.length === 0) {
+      return null;
+    }
+
     const latestStory = userStories.sort(
       (a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
