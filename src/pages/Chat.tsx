@@ -8,6 +8,27 @@ import { useIncomingCalls } from "@/hooks/useIncomingCalls";
 
 const Chat = () => {
   const isMobile = useIsMobile();
+  const { simulateIncomingCall } = useIncomingCalls();
+
+  const handleTestVoiceCall = () => {
+    simulateIncomingCall({
+      callerId: 'test-caller',
+      callerName: 'Sarah Johnson',
+      callerAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b2bab1d3?w=100',
+      type: 'voice',
+      isGroup: false,
+    });
+  };
+
+  const handleTestVideoCall = () => {
+    simulateIncomingCall({
+      callerId: 'test-caller-2',
+      callerName: 'Mike Chen',
+      callerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
+      type: 'video',
+      isGroup: false,
+    });
+  };
 
   return (
     <>
