@@ -305,6 +305,62 @@ const GroupDetailView = () => {
     navigate('/app/groups');
   };
 
+  const handleCreateEvent = async (eventData: any) => {
+    try {
+      // Create event in group context
+      const newEvent: Event = {
+        id: Date.now().toString(),
+        title: eventData.title,
+        description: eventData.description,
+        date: eventData.date,
+        time: eventData.time,
+        location: eventData.location,
+        attendees: 0,
+        isAttending: false,
+        cover: eventData.cover
+      };
+
+      setEvents(prev => [newEvent, ...prev]);
+
+      // Sync with main events page if public
+      if (eventData.isPublic !== false) {
+        await eventSyncService.syncGroupEvent(
+          extendedGroup.id,
+          extendedGroup.name,
+          {
+            title: eventData.title,
+            description: eventData.description,
+            date: eventData.date,
+            time: eventData.time,
+            location: eventData.location,
+            cover: eventData.cover,
+            isPublic: true,
+            category: extendedGroup.category,
+            tags: [extendedGroup.category.toLowerCase(), 'group-event']
+          }
+        );
+
+        toast({
+          title: "Event Created",
+          description: "Event created and synced with main events page!"
+        });
+      } else {
+        toast({
+          title: "Event Created",
+          description: "Private group event created successfully!"
+        });
+      }
+
+      setShowCreateEvent(false);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create event",
+        variant: "destructive"
+      });
+    }
+  };
+
   const renderPost = (post: Post) => (
     <Card key={post.id} className="w-full">
       <CardContent className="p-4">
