@@ -596,8 +596,8 @@ const GroupDetailView = () => {
       {/* Group Header */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={group.cover}
-          alt={group.name}
+          src={extendedGroup.cover}
+          alt={extendedGroup.name}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
