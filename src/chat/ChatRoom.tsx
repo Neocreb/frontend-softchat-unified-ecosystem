@@ -164,41 +164,83 @@ export const ChatRoom: React.FC = () => {
   };
 
   const handleVideoCall = () => {
-    const participantName = formatChatTitle(thread, user?.id || "");
-    setCallData({
-      participant: {
-        id: thread.participantIds.find(id => id !== user?.id) || '',
-        name: participantName,
-        avatar: thread.groupAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
-      },
-      type: 'video',
-      isIncoming: false,
-      isGroup: thread.isGroup
-    });
-    setShowVideoCall(true);
-    toast({
-      title: "Starting Video Call",
-      description: `Calling ${participantName}...`
-    });
+    if (!thread || !user) {
+      toast({
+        title: "Call Error",
+        description: "Unable to start call. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const participantName = formatChatTitle(thread, user.id);
+      const participantIds = thread.participantIds || [];
+      const participantId = participantIds.find(id => id !== user.id) || '';
+
+      setCallData({
+        participant: {
+          id: participantId,
+          name: participantName,
+          avatar: thread.groupAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
+        },
+        type: 'video',
+        isIncoming: false,
+        isGroup: thread.isGroup || false
+      });
+      setShowVideoCall(true);
+      toast({
+        title: "Starting Video Call",
+        description: `Calling ${participantName}...`
+      });
+    } catch (error) {
+      console.error('Error starting video call:', error);
+      toast({
+        title: "Call Error",
+        description: "Failed to start video call. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleVoiceCall = () => {
-    const participantName = formatChatTitle(thread, user?.id || "");
-    setCallData({
-      participant: {
-        id: thread.participantIds.find(id => id !== user?.id) || '',
-        name: participantName,
-        avatar: thread.groupAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
-      },
-      type: 'voice',
-      isIncoming: false,
-      isGroup: thread.isGroup
-    });
-    setShowVoiceCall(true);
-    toast({
-      title: "Starting Voice Call",
-      description: `Calling ${participantName}...`
-    });
+    if (!thread || !user) {
+      toast({
+        title: "Call Error",
+        description: "Unable to start call. Please try again.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const participantName = formatChatTitle(thread, user.id);
+      const participantIds = thread.participantIds || [];
+      const participantId = participantIds.find(id => id !== user.id) || '';
+
+      setCallData({
+        participant: {
+          id: participantId,
+          name: participantName,
+          avatar: thread.groupAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
+        },
+        type: 'voice',
+        isIncoming: false,
+        isGroup: thread.isGroup || false
+      });
+      setShowVoiceCall(true);
+      toast({
+        title: "Starting Voice Call",
+        description: `Calling ${participantName}...`
+      });
+    } catch (error) {
+      console.error('Error starting voice call:', error);
+      toast({
+        title: "Call Error",
+        description: "Failed to start voice call. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const handleCallEnd = () => {
