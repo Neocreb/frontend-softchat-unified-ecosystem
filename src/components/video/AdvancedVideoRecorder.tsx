@@ -245,6 +245,9 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
   >("filters");
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [cameraError, setCameraError] = useState<CameraError | null>(null);
+  const [showPermissionDialog, setShowPermissionDialog] = useState(false);
+  const [isInitializingCamera, setIsInitializingCamera] = useState(false);
 
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
