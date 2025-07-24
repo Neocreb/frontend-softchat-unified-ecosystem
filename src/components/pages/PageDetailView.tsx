@@ -691,20 +691,20 @@ const PageDetailView = () => {
                 <h3 className="font-semibold">About</h3>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-sm text-muted-foreground">{page.about || page.description}</p>
-                
+                <p className="text-sm text-muted-foreground">{extendedPage.about || extendedPage.description}</p>
+
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-muted-foreground" />
-                    <span>{formatNumber(page.followers)} followers</span>
+                    <span>{formatNumber(extendedPage.followers)} followers</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-muted-foreground" />
-                    <span>Created {new Date(page.createdAt!).toLocaleDateString()}</span>
+                    <span>Created {new Date(extendedPage.createdAt!).toLocaleDateString()}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <PageTypeIcon className="w-4 h-4 text-muted-foreground" />
-                    <span>{page.pageType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                    <span>{extendedPage.pageType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
                   </div>
                 </div>
               </CardContent>
