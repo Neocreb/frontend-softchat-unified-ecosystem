@@ -104,21 +104,23 @@ const PageManagement = () => {
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
             <Button
               variant="ghost"
               onClick={() => navigate(`/app/pages/${pageId}`)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 self-start"
+              size="sm"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Page
+              <span className="hidden sm:inline">Back to Page</span>
+              <span className="sm:hidden">Back</span>
             </Button>
-            <div>
-              <h1 className="text-3xl font-bold flex items-center gap-2">
-                <Building className="w-8 h-8" />
-                Page Management
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2">
+                <Building className="w-6 h-6 sm:w-8 sm:h-8" />
+                <span className="truncate">Page Management</span>
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-sm sm:text-base text-muted-foreground">
                 Manage your page settings, products, and followers
               </p>
             </div>
@@ -126,12 +128,12 @@ const PageManagement = () => {
         </div>
 
         <Tabs defaultValue="settings" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-6">
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-            <TabsTrigger value="products">Products</TabsTrigger>
-            <TabsTrigger value="followers">Followers</TabsTrigger>
-            <TabsTrigger value="insights">Insights</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 mb-6">
+            <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
+            <TabsTrigger value="products" className="text-xs sm:text-sm">Products</TabsTrigger>
+            <TabsTrigger value="followers" className="text-xs sm:text-sm lg:inline hidden">Followers</TabsTrigger>
+            <TabsTrigger value="insights" className="text-xs sm:text-sm">Insights</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="settings" className="space-y-6">
@@ -266,7 +268,7 @@ const PageManagement = () => {
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {products.map((product) => (
                 <Card key={product.id}>
                   <div className="aspect-square overflow-hidden rounded-t-lg">
@@ -357,7 +359,7 @@ const PageManagement = () => {
           </TabsContent>
 
           <TabsContent value="insights" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Page Views</CardTitle>
@@ -416,7 +418,7 @@ const PageManagement = () => {
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Revenue</CardTitle>
