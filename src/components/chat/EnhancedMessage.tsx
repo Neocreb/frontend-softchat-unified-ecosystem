@@ -323,18 +323,18 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
 
         if (metadata?.mediaType === "file") {
           return (
-            <Card className="max-w-xs">
+            <Card className="max-w-xs shadow-md border-0 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800">
               <CardContent className="p-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gray-100 rounded-lg">
-                    <FileText className="w-6 h-6 text-gray-600" />
+                  <div className="p-2 bg-gradient-to-br from-purple-200 to-purple-300 dark:from-purple-700 dark:to-purple-600 rounded-lg">
+                    <FileText className="w-6 h-6 text-purple-700 dark:text-purple-200" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">
+                    <p className="font-medium text-sm truncate text-purple-900 dark:text-purple-100">
                       {metadata?.fileName || "File"}
                     </p>
                     {metadata?.fileSize && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-purple-600 dark:text-purple-300">
                         {formatFileSize(metadata.fileSize)}
                       </p>
                     )}
