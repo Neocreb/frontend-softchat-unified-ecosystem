@@ -920,7 +920,7 @@ const EnhancedTikTokStyleVideos: React.FC = () => {
       {/* Video content area */}
       <div
         ref={containerRef}
-        className="h-full w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+        className="h-full w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide video-container optimize-rendering"
         style={{
           scrollBehavior: "smooth",
           paddingBottom: isMobile ? "80px" : "20px",
