@@ -55,6 +55,7 @@ import {
 
 import { groups } from "@/data/mockExploreData";
 import { generateMockPosts, generateMockEvents, generateMockMembers } from "@/utils/mockDataGenerator";
+import { eventSyncService, SyncEvent } from "@/services/eventSyncService";
 
 interface Group {
   id: string;
