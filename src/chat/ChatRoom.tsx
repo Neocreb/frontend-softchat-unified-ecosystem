@@ -92,6 +92,25 @@ export const ChatRoom: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Simulate typing occasionally
+  useEffect(() => {
+    if (thread && Math.random() > 0.8) {
+      const participantName = formatChatTitle(thread, user?.id || "");
+      setTypingUsers([{
+        id: 'typing-user',
+        name: participantName,
+        avatar: thread.groupAvatar
+      }]);
+
+      // Clear typing after a few seconds
+      const timeout = setTimeout(() => {
+        setTypingUsers([]);
+      }, 3000 + Math.random() * 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [thread, user]);
+
   // Handle scroll to show/hide scroll-to-bottom button
   useEffect(() => {
     const container = messagesContainerRef.current;
