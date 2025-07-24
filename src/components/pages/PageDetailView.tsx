@@ -757,7 +757,7 @@ const PageDetailView = () => {
             </Card>
 
             {/* Page Stats */}
-            {page.isOwner && (
+            {extendedPage.isOwner && (
               <Card>
                 <CardHeader>
                   <h3 className="font-semibold">Page Insights</h3>
@@ -765,11 +765,11 @@ const PageDetailView = () => {
                 <CardContent className="space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="text-center p-3 bg-blue-50 rounded-lg">
-                      <div className="text-lg font-bold text-blue-600">{page.posts}</div>
+                      <div className="text-lg font-bold text-blue-600">{extendedPage.posts}</div>
                       <div className="text-xs text-muted-foreground">Posts</div>
                     </div>
                     <div className="text-center p-3 bg-green-50 rounded-lg">
-                      <div className="text-lg font-bold text-green-600">{page.engagement}%</div>
+                      <div className="text-lg font-bold text-green-600">{extendedPage.engagement}%</div>
                       <div className="text-xs text-muted-foreground">Engagement</div>
                     </div>
                   </div>
