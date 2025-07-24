@@ -443,10 +443,20 @@ export const ChatRoom: React.FC = () => {
           <div className="flex items-center gap-2">
             {thread.type === "social" && (
               <>
-                <Button variant="ghost" size="sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleVoiceCall}
+                  title="Start voice call"
+                >
                   <Phone className="w-4 h-4" />
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleVideoCall}
+                  title="Start video call"
+                >
                   <Video className="w-4 h-4" />
                 </Button>
               </>
