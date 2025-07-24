@@ -181,7 +181,7 @@ const PageDetailView = () => {
   const [posts, setPosts] = useState<Post[]>([
     {
       id: "1",
-      content: "🚀 Exciting News! We're launching our new AI-powered analytics platform next week! This revolutionary tool will help businesses make data-driven decisions faster than ever before.\n\nKey features:\n• Real-time data processing\n• Predictive analytics\n• Custom dashboards\n• Advanced ML algorithms\n\nStay tuned for the official launch! #AI #Analytics #Innovation",
+      content: "🚀 Exciting News! We're launching our new AI-powered analytics platform next week! This revolutionary tool will help businesses make data-driven decisions faster than ever before.\n\nKey features:\n• Real-time data processing\n��� Predictive analytics\n• Custom dashboards\n• Advanced ML algorithms\n\nStay tuned for the official launch! #AI #Analytics #Innovation",
       images: ["https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600"],
       timestamp: "2024-01-15T14:30:00Z",
       likes: 342,
@@ -716,41 +716,41 @@ const PageDetailView = () => {
                 <h3 className="font-semibold">Contact Information</h3>
               </CardHeader>
               <CardContent className="space-y-3">
-                {page.website && (
+                {extendedPage.website && (
                   <div className="flex items-center gap-2 text-sm">
                     <ExternalLink className="w-4 h-4 text-muted-foreground" />
                     <a
-                      href={page.website}
+                      href={extendedPage.website}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:underline"
                     >
-                      {page.website.replace(/^https?:\/\//, "")}
+                      {extendedPage.website.replace(/^https?:\/\//, "")}
                     </a>
                   </div>
                 )}
-                {page.email && (
+                {extendedPage.email && (
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="w-4 h-4 text-muted-foreground" />
-                    <span>{page.email}</span>
+                    <span>{extendedPage.email}</span>
                   </div>
                 )}
-                {page.phone && (
+                {extendedPage.phone && (
                   <div className="flex items-center gap-2 text-sm">
                     <Phone className="w-4 h-4 text-muted-foreground" />
-                    <span>{page.phone}</span>
+                    <span>{extendedPage.phone}</span>
                   </div>
                 )}
-                {page.location && (
+                {extendedPage.location && (
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="w-4 h-4 text-muted-foreground" />
-                    <span>{page.location}</span>
+                    <span>{extendedPage.location}</span>
                   </div>
                 )}
-                {page.hours && (
+                {extendedPage.hours && (
                   <div className="flex items-center gap-2 text-sm">
                     <Clock className="w-4 h-4 text-muted-foreground" />
-                    <span>{page.hours}</span>
+                    <span>{extendedPage.hours}</span>
                   </div>
                 )}
               </CardContent>
