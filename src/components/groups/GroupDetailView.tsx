@@ -678,18 +678,18 @@ const GroupDetailView = () => {
                 <h3 className="font-semibold">About</h3>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-sm text-muted-foreground">{group.description}</p>
-                
+                <p className="text-sm text-muted-foreground">{extendedGroup.description}</p>
+
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-muted-foreground" />
-                    <span>{formatNumber(group.members)} members</span>
+                    <span>{formatNumber(extendedGroup.members)} members</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-muted-foreground" />
-                    <span>Created {new Date(group.createdAt!).toLocaleDateString()}</span>
+                    <span>Created {new Date(extendedGroup.createdAt!).toLocaleDateString()}</span>
                   </div>
-                  {group.privacy === "public" ? (
+                  {extendedGroup.privacy === "public" ? (
                     <div className="flex items-center gap-2">
                       <Globe className="w-4 h-4 text-green-600" />
                       <span>Public group</span>
