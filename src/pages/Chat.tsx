@@ -72,7 +72,7 @@ const Chat = () => {
                 </p>
               </div>
 
-              {/* Status indicator - responsive */}
+              {/* Status indicator and demo call buttons - responsive */}
               <div className="flex items-center gap-2 ml-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span
@@ -80,6 +80,28 @@ const Chat = () => {
                 >
                   {isMobile ? "" : "Online"}
                 </span>
+
+                {/* Demo call buttons for testing */}
+                {!isMobile && (
+                  <div className="flex gap-1 ml-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleTestVoiceCall}
+                      title="Test incoming voice call"
+                    >
+                      <Phone className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleTestVideoCall}
+                      title="Test incoming video call"
+                    >
+                      <Video className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
