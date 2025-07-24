@@ -131,9 +131,6 @@ const GroupDetailView = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("recent");
 
-  // Import the groups data
-  import { groups } from "@/data/mockExploreData";
-
   // Find the specific group based on the route parameter
   const group = groups.find(g => g.id === groupId);
 
