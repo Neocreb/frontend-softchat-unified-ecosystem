@@ -163,85 +163,8 @@ const GroupDetailView = () => {
     ]
   };
 
-  // Mock posts data
-  const [posts, setPosts] = useState<Post[]>([
-    {
-      id: "1",
-      author: {
-        id: "1",
-        name: "Alex Chen",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
-        role: "admin",
-        joinedAt: "2023-01-15"
-      },
-      content: "🚀 Just deployed my first DeFi protocol on Ethereum! It's been an incredible journey learning about smart contracts, security audits, and gas optimization. \n\nKey learnings:\n• Always test extensively on testnets\n• Security is paramount - multiple audits needed\n• Gas optimization can save users significant costs\n\nWould love to hear about your DeFi experiences! What challenges did you face?",
-      images: ["https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400"],
-      timestamp: "2024-01-15T10:30:00Z",
-      likes: 124,
-      isLiked: false,
-      isPinned: true,
-      comments: [
-        {
-          id: "1",
-          author: {
-            id: "2",
-            name: "Sarah Kim",
-            avatar: "https://images.unsplash.com/photo-1494790108755-2616b2bab1d3?w=100",
-            role: "member",
-            joinedAt: "2023-02-01"
-          },
-          content: "Congratulations! Security audits are definitely crucial. Which auditing firm did you use?",
-          timestamp: "2024-01-15T11:00:00Z",
-          likes: 12,
-          isLiked: false
-        },
-        {
-          id: "2",
-          author: {
-            id: "3",
-            name: "Mike Johnson",
-            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
-            role: "member", 
-            joinedAt: "2023-03-10"
-          },
-          content: "Gas optimization is so important! Have you tried using CREATE2 for contract deployment?",
-          timestamp: "2024-01-15T11:15:00Z",
-          likes: 8,
-          isLiked: true
-        }
-      ]
-    },
-    {
-      id: "2",
-      author: {
-        id: "4",
-        name: "Emma Wilson",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
-        role: "member",
-        joinedAt: "2023-04-20"
-      },
-      content: "Question for the community: What's your favorite Web3 development framework and why? \n\nI've been using Hardhat for Ethereum development, but curious about alternatives for other chains like Solana or Polygon.",
-      timestamp: "2024-01-14T15:45:00Z",
-      likes: 67,
-      isLiked: true,
-      comments: [
-        {
-          id: "3",
-          author: {
-            id: "5",
-            name: "David Lee",
-            avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
-            role: "member",
-            joinedAt: "2023-05-15"
-          },
-          content: "For Solana, I highly recommend Anchor! It makes smart contract development much more intuitive.",
-          timestamp: "2024-01-14T16:00:00Z",
-          likes: 15,
-          isLiked: false
-        }
-      ]
-    }
-  ]);
+  // Generate dynamic mock posts based on group ID
+  const [posts, setPosts] = useState<Post[]>(() => generateMockPosts(extendedGroup.id, 4));
 
   // Mock events data
   const [events, setEvents] = useState<Event[]>([
