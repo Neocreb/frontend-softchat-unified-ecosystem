@@ -250,13 +250,58 @@ const GroupDetailView = () => {
   const handleJoinEvent = (eventId: string) => {
     setEvents(prev => prev.map(event =>
       event.id === eventId
-        ? { 
-            ...event, 
+        ? {
+            ...event,
             isAttending: !event.isAttending,
             attendees: event.isAttending ? event.attendees - 1 : event.attendees + 1
           }
         : event
     ));
+  };
+
+  const handleManageGroup = () => {
+    if (!extendedGroup.isOwner && !extendedGroup.isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to manage this group",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Navigate to group management page with proper admin interface
+    navigate(`/app/groups/${groupId}/manage`);
+
+    toast({
+      title: "Group Management",
+      description: "Opening group management interface..."
+    });
+  };
+
+  const handleJoinGroup = () => {
+    if (extendedGroup.privacy === "private") {
+      toast({
+        title: "Join Request Sent",
+        description: "Your request to join this private group has been sent to the admins"
+      });
+    } else {
+      toast({
+        title: "Joined Group",
+        description: `You've successfully joined ${extendedGroup.name}!`
+      });
+      // Update group state
+      Object.assign(extendedGroup, { isJoined: true, members: extendedGroup.members + 1 });
+    }
+  };
+
+  const handleLeaveGroup = () => {
+    toast({
+      title: "Left Group",
+      description: `You've left ${extendedGroup.name}`
+    });
+    // Update group state
+    Object.assign(extendedGroup, { isJoined: false, members: extendedGroup.members - 1 });
+    navigate('/app/groups');
   };
 
   const renderPost = (post: Post) => (
