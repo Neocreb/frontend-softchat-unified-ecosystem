@@ -109,7 +109,7 @@ const stickerCategories = [
     stickers: [
       { id: "37", emoji: "🤣", name: "ROFL" },
       { id: "38", emoji: "😭", name: "Crying Laughing" },
-      { id: "39", emoji: "����", name: "Mind Blown" },
+      { id: "39", emoji: "🤯", name: "Mind Blown" },
       { id: "40", emoji: "🙃", name: "Upside Down" },
       { id: "41", emoji: "😵", name: "Dizzy" },
       { id: "42", emoji: "🤐", name: "Zipper Mouth" },
@@ -442,7 +442,7 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               setMessageInput("");
             }}
             className={cn(
-              "flex-shrink-0 rounded-full bg-primary hover:bg-primary/90",
+              "flex-shrink-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-200 hover:scale-105",
               isMobile ? "h-11 w-11" : "h-10 w-10",
             )}
             disabled={disabled}
@@ -453,10 +453,10 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
           <Button
             onClick={isRecording ? stopRecording : startRecording}
             className={cn(
-              "flex-shrink-0 rounded-full",
+              "flex-shrink-0 rounded-full transition-all duration-200 hover:scale-105",
               isRecording
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-primary hover:bg-primary/90",
+                ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 animate-pulse"
+                : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg shadow-green-500/25 hover:shadow-green-500/40",
               isMobile ? "h-11 w-11" : "h-10 w-10",
             )}
             disabled={disabled || voicePermission === "denied"}
