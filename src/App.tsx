@@ -217,14 +217,11 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   return <>{children}</>;
 };
 
-// App routes component that uses auth context
-const AppRoutes = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+// Global call state component
+const GlobalCallProvider = ({ children }: { children: React.ReactNode }) => {
   const { incomingCall, handleAcceptCall, handleDeclineCall } = useIncomingCalls();
   const [showActiveCall, setShowActiveCall] = React.useState(false);
   const [activeCallData, setActiveCallData] = React.useState<any>(null);
-
-  console.log("App routes: Auth state", { isAuthenticated, isLoading });
 
   const handleAcceptIncomingCall = () => {
     const acceptedCall = handleAcceptCall();
@@ -248,6 +245,36 @@ const AppRoutes = () => {
     setShowActiveCall(false);
     setActiveCallData(null);
   };
+
+  return (
+    <>
+      {children}
+
+      {/* Global Call Components */}
+      <IncomingCallNotification
+        call={incomingCall}
+        onAccept={handleAcceptIncomingCall}
+        onDecline={handleDeclineCall}
+      />
+
+      {showActiveCall && activeCallData && (
+        <EnhancedVideoCall
+          isOpen={showActiveCall}
+          onClose={handleEndActiveCall}
+          callData={activeCallData}
+          onAccept={() => {}}
+          onDecline={handleEndActiveCall}
+        />
+      )}
+    </>
+  );
+};
+
+// App routes component that uses auth context
+const AppRoutes = () => {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  console.log("App routes: Auth state", { isAuthenticated, isLoading });
 
   return (
     <Routes>
