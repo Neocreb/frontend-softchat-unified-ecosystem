@@ -54,6 +54,7 @@ import {
 } from "lucide-react";
 
 import { groups } from "@/data/mockExploreData";
+import { generateMockPosts, generateMockEvents, generateMockMembers } from "@/utils/mockDataGenerator";
 
 interface Group {
   id: string;
