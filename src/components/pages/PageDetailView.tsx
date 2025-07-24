@@ -61,6 +61,7 @@ import {
 
 import { pages } from "@/data/mockExploreData";
 import { marketplaceSyncService, SyncProduct } from "@/services/marketplaceSyncService";
+import { chatInitiationService } from "@/services/chatInitiationService";
 
 interface Page {
   id: string;
@@ -411,13 +412,18 @@ const PageDetailView = () => {
     });
   };
 
-  const handleMessagePage = () => {
-    // Navigate to chat with page managers/admins
-    navigate(`/app/chat?page=${pageId}&type=social`);
+  const handleMessagePage = async () => {
+    // Find page owner/admin ID (in a real app, this would come from the page data)
+    const pageOwnerId = extendedPage.isOwner ? 'current-user' : 'page-owner-id';
 
-    toast({
-      title: "Starting Conversation",
-      description: `Opening chat with ${extendedPage.name}...`
+    await chatInitiationService.handleMessageButton({
+      type: 'page',
+      targetId: pageId!,
+      targetName: extendedPage.name,
+      ownerId: pageOwnerId,
+      context: 'page inquiry',
+      navigate,
+      toast
     });
   };
 
