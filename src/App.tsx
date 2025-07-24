@@ -118,6 +118,8 @@ import Groups from "./pages/Groups";
 import Pages from "./pages/Pages";
 import GroupDetailView from "./components/groups/GroupDetailView";
 import PageDetailView from "./components/pages/PageDetailView";
+import GroupManagement from "./pages/GroupManagement";
+import PageManagement from "./pages/PageManagement";
 import SendGifts from "./pages/SendGifts";
 import {
   FriendsPage,
