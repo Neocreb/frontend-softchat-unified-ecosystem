@@ -129,25 +129,36 @@ const GroupDetailView = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("recent");
 
-  // Mock group data
-  const group: Group = {
-    id: groupId || "1",
-    name: "Web3 Developers Community",
-    members: 15420,
-    category: "Technology",
-    cover: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
-    description: "A vibrant community of Web3 developers sharing knowledge, projects, and opportunities in the decentralized world.",
-    privacy: "public",
-    isJoined: true,
-    isAdmin: false,
-    isOwner: false,
-    location: "Global",
-    createdAt: "2023-01-15",
+  // Import the groups data
+  import { groups } from "@/data/mockExploreData";
+
+  // Find the specific group based on the route parameter
+  const group = groups.find(g => g.id === groupId);
+
+  // If group not found, redirect or show error
+  if (!group) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-2">Group Not Found</h2>
+          <p className="text-muted-foreground mb-4">The group you're looking for doesn't exist.</p>
+          <Button onClick={() => navigate("/app/groups")}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Groups
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Extend the group data with additional properties for the detail view
+  const extendedGroup: Group = {
+    ...group,
     rules: [
       "Be respectful to all members",
       "No spam or self-promotion without permission",
       "Share knowledge and help others learn",
-      "Keep discussions relevant to Web3 development",
+      `Keep discussions relevant to ${group.category}`,
       "No harassment or offensive content"
     ]
   };
