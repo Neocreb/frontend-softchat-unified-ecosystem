@@ -731,12 +731,18 @@ const EnhancedTikTokStyleVideos: React.FC = () => {
   useEffect(() => {
     const loadFeedVideos = async () => {
       try {
-        // This would be replaced with actual API call to get posts with videos
-        // For now, we'll simulate it
-        const mockFeedVideos: VideoData[] = [];
-        setFeedVideos(mockFeedVideos);
+        const feedVideosData = await videoFeedIntegrationService.getFeedVideos();
+
+        // Convert FeedVideoData to VideoData format
+        const convertedVideos: VideoData[] = feedVideosData.map(feedVideo => ({
+          ...feedVideo,
+          isFromFeed: true,
+        }));
+
+        setFeedVideos(convertedVideos);
       } catch (error) {
         console.error("Error loading feed videos:", error);
+        setFeedVideos([]);
       }
     };
 
