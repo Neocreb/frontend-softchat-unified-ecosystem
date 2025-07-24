@@ -53,6 +53,8 @@ import {
   Clock,
 } from "lucide-react";
 
+import { groups } from "@/data/mockExploreData";
+
 interface Group {
   id: string;
   name: string;
