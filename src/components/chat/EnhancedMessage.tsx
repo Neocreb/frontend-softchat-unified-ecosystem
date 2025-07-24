@@ -469,7 +469,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 )}
               >
                 {/* Quick reactions */}
-                <div className="flex bg-background border rounded-full p-1 shadow-lg">
+                <div className="flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full p-1 shadow-lg backdrop-blur-sm bg-opacity-90">
                   {reactionEmojis.slice(0, 3).map((reaction) => (
                     <Button
                       key={reaction.name}
