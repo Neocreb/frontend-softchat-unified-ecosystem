@@ -591,37 +591,22 @@ const App = () => {
                 <AdminProvider>
                   <AccessibilityProvider>
                     <TooltipProvider>
-                      <AppRoutes />
+                      <GlobalCallProvider>
+                        <AppRoutes />
 
-                      {/* Global Components */}
-                      <OnboardingTour />
-                      <NotificationSystem />
-                      <AccessibilityControlPanel />
-                      <KeyboardNavigationHelper />
-                      <ReadingGuide />
-                      <ConnectionStatus />
-                      <PWAInstallPrompt />
+                        {/* Global Components */}
+                        <OnboardingTour />
+                        <NotificationSystem />
+                        <AccessibilityControlPanel />
+                        <KeyboardNavigationHelper />
+                        <ReadingGuide />
+                        <ConnectionStatus />
+                        <PWAInstallPrompt />
 
-                      {/* Global Call Components */}
-                      <IncomingCallNotification
-                        call={incomingCall}
-                        onAccept={handleAcceptIncomingCall}
-                        onDecline={handleDeclineCall}
-                      />
-
-                      {showActiveCall && activeCallData && (
-                        <EnhancedVideoCall
-                          isOpen={showActiveCall}
-                          onClose={handleEndActiveCall}
-                          callData={activeCallData}
-                          onAccept={() => {}}
-                          onDecline={handleEndActiveCall}
-                        />
-                      )}
-
-                      {/* Toasters */}
-                      <Toaster />
-                      <Sonner />
+                        {/* Toasters */}
+                        <Toaster />
+                        <Sonner />
+                      </GlobalCallProvider>
                     </TooltipProvider>
                   </AccessibilityProvider>
                 </AdminProvider>
