@@ -88,7 +88,7 @@ interface EnhancedMessageProps {
 const reactionEmojis = [
   { emoji: "❤️", name: "heart" },
   { emoji: "👍", name: "thumbs_up" },
-  { emoji: "😂", name: "laugh" },
+  { emoji: "��", name: "laugh" },
   { emoji: "😮", name: "wow" },
   { emoji: "😢", name: "sad" },
   { emoji: "😡", name: "angry" },
@@ -364,9 +364,14 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             )}
           >
             {message.replyTo && (
-              <div className="border-l-2 border-white/30 pl-2 mb-2 text-xs opacity-80">
-                <p className="font-medium">{message.replyTo.senderName}</p>
-                <p className="truncate">{message.replyTo.content}</p>
+              <div className={cn(
+                "border-l-3 pl-3 mb-2 text-xs rounded-r-lg p-2 -mx-1",
+                isCurrentUser
+                  ? "border-white/50 bg-white/10"
+                  : "border-blue-400 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-500"
+              )}>
+                <p className="font-medium text-blue-600 dark:text-blue-300">{message.replyTo.senderName}</p>
+                <p className="truncate opacity-80">{message.replyTo.content}</p>
               </div>
             )}
 
