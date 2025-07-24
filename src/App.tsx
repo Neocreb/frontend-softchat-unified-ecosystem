@@ -366,12 +366,14 @@ const AppRoutes = () => {
           <Route path="friends" element={<FriendsPage />} />
           <Route path="groups" element={<Groups />} />
           <Route path="groups/:groupId" element={<GroupDetailView />} />
+          <Route path="groups/:groupId/manage" element={<GroupManagement />} />
           <Route path="ads" element={<AdsPage />} />
           <Route path="memories" element={<MemoriesPage />} />
           <Route path="saved" element={<SavedPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="pages" element={<Pages />} />
           <Route path="pages/:pageId" element={<PageDetailView />} />
+          <Route path="pages/:pageId/manage" element={<PageManagement />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
           <Route path="advertising" element={<AdvertisingPolicy />} />
