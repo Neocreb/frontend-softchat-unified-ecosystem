@@ -56,6 +56,7 @@ import {
 import { groups } from "@/data/mockExploreData";
 import { generateMockPosts, generateMockEvents, generateMockMembers } from "@/utils/mockDataGenerator";
 import { eventSyncService, SyncEvent } from "@/services/eventSyncService";
+import { chatInitiationService } from "@/services/chatInitiationService";
 
 interface Group {
   id: string;
@@ -896,9 +897,15 @@ const GroupDetailView = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => {
-                              // Navigate to chat with specific member
-                              navigate(`/app/chat?user=${member.id}&type=social`);
+                            onClick={async () => {
+                              await chatInitiationService.handleMessageButton({
+                                type: 'user',
+                                targetId: member.id,
+                                targetName: member.name,
+                                context: `from ${extendedGroup.name} group`,
+                                navigate,
+                                toast
+                              });
                             }}
                           >
                             <MessageSquare className="w-4 h-4 mr-2" />
