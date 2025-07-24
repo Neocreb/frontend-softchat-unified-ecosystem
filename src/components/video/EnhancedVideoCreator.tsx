@@ -251,6 +251,17 @@ const EnhancedVideoCreator: React.FC = () => {
     return recordedSegments.reduce((acc, seg) => acc + seg.duration, 0) + recordingTime;
   };
 
+  const handleRetryCamera = () => {
+    setShowPermissionDialog(false);
+    setCameraError(null);
+    initializeCamera();
+  };
+
+  const handleCancelCamera = () => {
+    setShowPermissionDialog(false);
+    // Close the video creator modal/component
+  };
+
   return (
     <div className="flex flex-col h-screen bg-black text-white">
       <div className="flex-1 relative overflow-hidden">
