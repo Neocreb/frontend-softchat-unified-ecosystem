@@ -57,6 +57,7 @@ import { groups } from "@/data/mockExploreData";
 import { generateMockPosts, generateMockEvents, generateMockMembers } from "@/utils/mockDataGenerator";
 import { eventSyncService, SyncEvent } from "@/services/eventSyncService";
 import { chatInitiationService } from "@/services/chatInitiationService";
+import { QuickMessageButton } from "@/components/chat/QuickMessageButton";
 
 interface Group {
   id: string;
