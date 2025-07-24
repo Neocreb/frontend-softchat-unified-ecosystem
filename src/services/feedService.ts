@@ -8,6 +8,13 @@ export interface MediaUpload {
 export interface PostCreationData {
   content: string;
   media?: MediaUpload[];
+  videoUrl?: string;
+  thumbnail?: string;
+  imageUrl?: string;
+  tags?: string[];
+  category?: string;
+  type?: 'text' | 'image' | 'video';
+  videoDuration?: number;
   feeling?: {
     emoji: string;
     text: string;
@@ -19,7 +26,7 @@ export interface PostCreationData {
       lng: number;
     };
   };
-  privacy: "public" | "friends" | "private";
+  privacy?: "public" | "friends" | "private";
 }
 
 export interface Comment {
