@@ -310,6 +310,9 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
   }, [isRecording]);
 
   const initializeCamera = async () => {
+    setIsInitializingCamera(true);
+    setCameraError(null);
+
     try {
       cleanup();
 
@@ -323,25 +326,42 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
         audio: micEnabled,
       };
 
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      streamRef.current = stream;
+      const result = await requestCameraAccess(constraints);
 
-      if (videoRef.current) {
-        // Ensure video element is ready before setting source
-        videoRef.current.srcObject = stream;
+      if (result.error) {
+        setCameraError(result.error);
+        setShowPermissionDialog(true);
+        return;
+      }
 
-        // Wait for stream to be ready before applying filters
-        videoRef.current.onloadedmetadata = () => {
-          applyFilter();
-        };
+      if (result.stream) {
+        streamRef.current = result.stream;
+
+        if (videoRef.current) {
+          // Ensure video element is ready before setting source
+          videoRef.current.srcObject = result.stream;
+
+          // Wait for stream to be ready before applying filters
+          videoRef.current.onloadedmetadata = () => {
+            applyFilter();
+          };
+        }
+
+        toast({
+          title: "Camera Ready",
+          description: "Camera initialized successfully",
+        });
       }
     } catch (error) {
-      console.error("Camera initialization error:", error);
-      toast({
-        title: "Camera Error",
-        description: "Unable to access camera. Please check permissions.",
-        variant: "destructive",
+      console.error("Unexpected camera error:", error);
+      setCameraError({
+        type: 'unknown',
+        message: 'Unexpected error occurred',
+        userAction: 'Please try refreshing the page'
       });
+      setShowPermissionDialog(true);
+    } finally {
+      setIsInitializingCamera(false);
     }
   };
 
