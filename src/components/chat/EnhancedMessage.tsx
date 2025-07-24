@@ -531,8 +531,8 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             {/* Message metadata */}
             <div
               className={cn(
-                "flex items-center gap-1 mt-1 text-xs text-gray-500",
-                isCurrentUser ? "justify-end" : "justify-start",
+                "flex items-center gap-1 mt-2 text-xs",
+                isCurrentUser ? "justify-end text-blue-200" : "justify-start text-gray-500 dark:text-gray-400",
               )}
             >
               <Tooltip>
