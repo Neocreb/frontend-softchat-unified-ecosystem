@@ -67,7 +67,7 @@ import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
-import { feedService } from "@/services/feedService";
+import { videoFeedIntegrationService, FeedVideoData } from "@/services/videoFeedIntegrationService";
 
 interface VideoData {
   id: string;
