@@ -511,12 +511,12 @@ const Stories = ({
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
     )[0];
 
-    if (latestStory.type === "image" && latestStory.media) {
+    if (latestStory && latestStory.type === "image" && latestStory.media) {
       return latestStory.media.preview || latestStory.media.url;
-    } else if (latestStory.type === "video" && latestStory.media) {
+    } else if (latestStory && latestStory.type === "video" && latestStory.media) {
       return latestStory.media.preview;
     }
-    return latestStory.user.avatar;
+    return latestStory?.user?.avatar || null;
   };
 
   const hasUnviewedStories = (userStories: any[]) => {
