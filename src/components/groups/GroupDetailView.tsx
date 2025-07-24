@@ -166,56 +166,9 @@ const GroupDetailView = () => {
   // Generate dynamic mock posts based on group ID
   const [posts, setPosts] = useState<Post[]>(() => generateMockPosts(extendedGroup.id, 4));
 
-  // Mock events data
-  const [events, setEvents] = useState<Event[]>([
-    {
-      id: "1",
-      title: "Web3 Security Workshop",
-      description: "Learn about smart contract security best practices and common vulnerabilities",
-      date: "2024-01-25",
-      time: "14:00",
-      location: "Virtual Event",
-      attendees: 89,
-      isAttending: false,
-      cover: "https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=400"
-    },
-    {
-      id: "2", 
-      title: "DeFi Protocol Demo Day",
-      description: "Community members showcase their latest DeFi projects and innovations",
-      date: "2024-02-10",
-      time: "18:00",
-      location: "San Francisco, CA",
-      attendees: 156,
-      isAttending: true,
-      cover: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400"
-    }
-  ]);
-
-  // Mock members data
-  const members: Member[] = [
-    {
-      id: "1",
-      name: "Alex Chen",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100",
-      role: "owner",
-      joinedAt: "2023-01-15"
-    },
-    {
-      id: "2",
-      name: "Sarah Kim", 
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b2bab1d3?w=100",
-      role: "admin",
-      joinedAt: "2023-02-01"
-    },
-    {
-      id: "3",
-      name: "Mike Johnson",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
-      role: "member",
-      joinedAt: "2023-03-10"
-    }
-  ];
+  // Generate dynamic mock events and members based on group ID
+  const [events, setEvents] = useState<Event[]>(() => generateMockEvents(extendedGroup.id, 3));
+  const members: Member[] = generateMockMembers(extendedGroup.id, 8);
 
   const handleCreatePost = () => {
     if (!newPostContent.trim()) {
