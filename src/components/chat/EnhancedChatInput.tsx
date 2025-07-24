@@ -259,17 +259,17 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
     >
       {/* Recording overlay */}
       {isRecording && (
-        <div className="absolute inset-0 bg-red-500/10 flex items-center justify-center z-50">
-          <div className="bg-background border rounded-lg p-4 flex items-center gap-3">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-red-400/15 to-red-500/20 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-800 border-2 border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3 shadow-lg shadow-red-500/25 animate-pulse">
+            <div className="w-4 h-4 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-ping"></div>
+            <span className="text-sm font-semibold text-red-600 dark:text-red-400">
               Recording: {formatRecordingTime(recordingTime)}
             </span>
             <Button
               onClick={stopRecording}
               size="sm"
               variant="outline"
-              className="text-red-600 border-red-600 hover:bg-red-50"
+              className="text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
             >
               <MicOff className="w-4 h-4 mr-1" />
               Stop
