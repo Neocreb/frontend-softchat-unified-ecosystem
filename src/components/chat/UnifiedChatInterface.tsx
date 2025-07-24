@@ -53,6 +53,8 @@ import {
 import { ChatThread, ChatMessage, ChatFilter } from "@/types/chat";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { TypingIndicator } from "./TypingIndicator";
+import { OnlineStatusIndicator } from "./OnlineStatusIndicator";
 
 interface UnifiedChatInterfaceProps {
   className?: string;
