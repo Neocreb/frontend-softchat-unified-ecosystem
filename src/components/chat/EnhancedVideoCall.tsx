@@ -90,18 +90,37 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
   onScreenShare,
 }) => {
   const { toast } = useToast();
+  // Safety check for call data
+  if (!callData || !callData.type) {
+    return null;
+  }
+
+  // Provide safe defaults for callData
+  const safeCallData = {
+    type: callData.type,
+    isIncoming: callData.isIncoming || false,
+    isGroup: callData.isGroup || false,
+    groupName: callData.groupName || "Group Call",
+    participant: {
+      id: callData.participant?.id || "unknown",
+      name: callData.participant?.name || "Unknown User",
+      avatar: callData.participant?.avatar || "",
+    },
+    participants: callData.participants || [],
+  };
+
   const [callState, setCallState] = useState<CallState>({
     isActive: false,
-    isIncoming: callData.isIncoming || false,
-    isOutgoing: !callData.isIncoming || false,
+    isIncoming: safeCallData.isIncoming,
+    isOutgoing: !safeCallData.isIncoming,
     startTime: null,
-    participants: callData.participants || [],
-    callType: callData.type,
-    isGroupCall: callData.isGroup || false,
+    participants: safeCallData.participants,
+    callType: safeCallData.type,
+    isGroupCall: safeCallData.isGroup,
   });
 
   const [localControls, setLocalControls] = useState({
-    isVideoEnabled: callData.type === 'video',
+    isVideoEnabled: safeCallData.type === 'video',
     isAudioEnabled: true,
     isScreenSharing: false,
     isSpeakerOn: true,
