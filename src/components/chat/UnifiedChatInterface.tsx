@@ -523,6 +523,27 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 
     // On desktop, show in sidebar
     setSelectedChat(chat);
+
+    // Simulate typing indicator occasionally
+    if (Math.random() > 0.7) {
+      setTypingUsers(prev => ({
+        ...prev,
+        [chat.id]: [{
+          id: 'typing-user',
+          name: chat.participant_profile?.name || 'Someone',
+          avatar: chat.participant_profile?.avatar
+        }]
+      }));
+
+      // Clear typing after a few seconds
+      setTimeout(() => {
+        setTypingUsers(prev => ({
+          ...prev,
+          [chat.id]: []
+        }));
+      }, 3000 + Math.random() * 2000);
+    }
+
     // Mark as read
     if (chat.unreadCount && chat.unreadCount > 0) {
       chatService.markAsRead(chat.id, user?.id || "");
