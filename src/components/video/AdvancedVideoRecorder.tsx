@@ -941,6 +941,15 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
           )}
         </div>
       )}
+
+      {/* Camera Permission Dialog */}
+      <CameraPermissionDialog
+        open={showPermissionDialog}
+        onOpenChange={setShowPermissionDialog}
+        error={cameraError}
+        onRetry={handleRetryCamera}
+        onCancel={handleCancelCamera}
+      />
     </div>
   );
 };
