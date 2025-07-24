@@ -60,6 +60,7 @@ import {
 } from "lucide-react";
 
 import { pages } from "@/data/mockExploreData";
+import { marketplaceSyncService, SyncProduct } from "@/services/marketplaceSyncService";
 
 interface Page {
   id: string;
