@@ -236,6 +236,10 @@ const Pages = () => {
     });
   };
 
+  const handleViewPage = (pageId: string) => {
+    navigate(`/app/pages/${pageId}`);
+  };
+
   const getPageTypeIcon = (type: string) => {
     const pageType = pageTypes.find((pt) => pt.value === type);
     return pageType ? pageType.icon : Building;
@@ -247,7 +251,8 @@ const Pages = () => {
     return (
       <Card
         key={page.id}
-        className="hover:shadow-lg transition-all duration-200 group overflow-hidden"
+        className="hover:shadow-lg transition-all duration-200 group overflow-hidden cursor-pointer"
+        onClick={() => handleViewPage(page.id)}
       >
         <CardHeader className="pb-3">
           <div className="flex items-start gap-4">
@@ -339,6 +344,7 @@ const Pages = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline truncate"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {page.website.replace(/^https?:\/\//, "")}
                 </a>
@@ -379,7 +385,7 @@ const Pages = () => {
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-2">
+          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
             {!page.isFollowing && !page.isOwner ? (
               <Button
                 onClick={() => handleFollowPage(page)}
@@ -390,9 +396,13 @@ const Pages = () => {
               </Button>
             ) : page.isFollowing ? (
               <div className="flex gap-2 flex-1">
-                <Button variant="outline" className="flex-1 h-9">
+                <Button 
+                  variant="outline" 
+                  className="flex-1 h-9"
+                  onClick={() => handleViewPage(page.id)}
+                >
                   <MessageSquare className="w-4 h-4 mr-2" />
-                  Message
+                  View Page
                 </Button>
                 <Button
                   variant="outline"
@@ -404,9 +414,13 @@ const Pages = () => {
               </div>
             ) : page.isOwner ? (
               <div className="flex gap-2 flex-1">
-                <Button variant="outline" className="flex-1 h-9">
+                <Button 
+                  variant="outline" 
+                  className="flex-1 h-9"
+                  onClick={() => handleViewPage(page.id)}
+                >
                   <BarChart3 className="w-4 h-4 mr-2" />
-                  Insights
+                  Manage Page
                 </Button>
                 <Button variant="outline" className="h-9">
                   <Settings className="w-4 h-4" />
