@@ -410,7 +410,7 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
                   <Avatar className="w-12 h-12">
                     <AvatarImage src={callData.participant?.avatar} />
                     <AvatarFallback className="text-white">
-                      {callData.participant?.name.substring(0, 2)}
+                      {callData.participant?.name?.substring(0, 2) || "??"}
                     </AvatarFallback>
                   </Avatar>
                 </div>
