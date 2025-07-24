@@ -497,7 +497,7 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
             )}
           </Button>
 
-          {callData.type === 'video' && (
+          {safeCallData.type === 'video' && (
             <Button
               onClick={toggleVideo}
               variant="ghost"
