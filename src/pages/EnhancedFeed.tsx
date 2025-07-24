@@ -1393,6 +1393,10 @@ export default function EnhancedFeed() {
 
   // Filter posts based on active tab
   const getFilteredPosts = () => {
+    if (!posts || !Array.isArray(posts)) {
+      return [];
+    }
+
     switch (activeFeedTab) {
       case "for-you":
         // AI-powered personalized feed - mix of trending, interests, and engagement
