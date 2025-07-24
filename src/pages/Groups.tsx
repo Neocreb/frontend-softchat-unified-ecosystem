@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { chatInitiationService } from "@/services/chatInitiationService";
 import {
   Plus,
   Search,
