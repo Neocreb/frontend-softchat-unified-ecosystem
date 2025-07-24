@@ -255,7 +255,7 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
 
   return (
     <div
-      className={`border-t flex-shrink-0 bg-background ${isMobile ? "p-2.5" : "p-3"}`}
+      className={`border-t flex-shrink-0 bg-gradient-to-r from-background via-background to-background backdrop-blur-sm ${isMobile ? "p-2.5" : "p-3"} relative`}
     >
       {/* Recording overlay */}
       {isRecording && (
