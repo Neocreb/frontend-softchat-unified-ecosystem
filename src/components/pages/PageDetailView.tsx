@@ -421,6 +421,57 @@ const PageDetailView = () => {
     });
   };
 
+  const handleAddProduct = async (productData: any) => {
+    try {
+      // Add product to page
+      const newProduct: Product = {
+        id: Date.now().toString(),
+        name: productData.name,
+        price: productData.price,
+        image: productData.image || "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300",
+        description: productData.description,
+        inStock: true
+      };
+
+      // Sync with main marketplace
+      await marketplaceSyncService.syncPageProduct(
+        extendedPage.id,
+        extendedPage.name,
+        {
+          name: productData.name,
+          price: productData.price,
+          image: productData.image,
+          description: productData.description,
+          category: productData.category || extendedPage.category,
+          tags: [extendedPage.category.toLowerCase(), 'page-product'],
+          seller: {
+            id: extendedPage.id,
+            name: extendedPage.name,
+            avatar: extendedPage.avatar,
+            verified: extendedPage.verified
+          },
+          shippingInfo: productData.shippingInfo || {
+            freeShipping: false,
+            estimatedDays: 5,
+            cost: 9.99
+          }
+        }
+      );
+
+      toast({
+        title: "Product Added",
+        description: "Product added and synced with marketplace!"
+      });
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add product",
+        variant: "destructive"
+      });
+    }
+  };
+
   const avgRating = reviews.length > 0
     ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
     : 0;
