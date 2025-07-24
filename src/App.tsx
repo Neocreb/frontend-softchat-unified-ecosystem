@@ -29,9 +29,6 @@ import {
 } from "./components/accessibility/AccessibilityFeatures";
 import { OnboardingTour } from "./components/onboarding/OnboardingTour";
 import { NotificationSystem } from "./components/notifications/NotificationSystem";
-import { IncomingCallNotification } from "./components/chat/IncomingCallNotification";
-import { EnhancedVideoCall } from "./components/chat/EnhancedVideoCall";
-import { useIncomingCalls } from "./hooks/useIncomingCalls";
 import {
   ConnectionStatus,
   PWAInstallPrompt,
