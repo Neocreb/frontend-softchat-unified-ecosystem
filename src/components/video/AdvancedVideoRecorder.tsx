@@ -301,9 +301,9 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
   }, [timerCountdown]);
 
   const cleanup = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach((track) => track.stop());
-    }
+    stopCameraStream(streamRef.current);
+    streamRef.current = null;
+
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
     }
