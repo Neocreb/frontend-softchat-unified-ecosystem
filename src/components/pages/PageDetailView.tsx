@@ -380,14 +380,14 @@ const PageDetailView = () => {
   };
 
   const handleFollowPage = () => {
-    page.isFollowing = !page.isFollowing;
-    page.followers += page.isFollowing ? 1 : -1;
-    
+    extendedPage.isFollowing = !extendedPage.isFollowing;
+    extendedPage.followers += extendedPage.isFollowing ? 1 : -1;
+
     toast({
-      title: page.isFollowing ? "Following Page" : "Unfollowed Page",
-      description: page.isFollowing 
-        ? `You're now following ${page.name}!` 
-        : `You've unfollowed ${page.name}`
+      title: extendedPage.isFollowing ? "Following Page" : "Unfollowed Page",
+      description: extendedPage.isFollowing
+        ? `You're now following ${extendedPage.name}!`
+        : `You've unfollowed ${extendedPage.name}`
     });
   };
 
