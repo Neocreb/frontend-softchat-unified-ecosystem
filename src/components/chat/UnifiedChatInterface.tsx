@@ -936,15 +936,13 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   "?"}
                               </AvatarFallback>
                             </Avatar>
-                            {conv.participant_profile?.is_online && (
-                              <div
-                                className={`absolute bg-green-500 border-2 border-background rounded-full ${
-                                  isMobile
-                                    ? "-bottom-0.5 -right-0.5 w-2.5 h-2.5"
-                                    : "-bottom-0.5 -right-0.5 w-3 h-3"
-                                }`}
-                              ></div>
-                            )}
+                            <div className="absolute -bottom-0.5 -right-0.5">
+                              <OnlineStatusIndicator
+                                isOnline={conv.participant_profile?.is_online || false}
+                                lastSeen={conv.participant_profile?.last_seen}
+                                size={isMobile ? "sm" : "md"}
+                              />
+                            </div>
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start mb-1">
