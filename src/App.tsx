@@ -220,8 +220,34 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
 // App routes component that uses auth context
 const AppRoutes = () => {
   const { isAuthenticated, isLoading } = useAuth();
+  const { incomingCall, handleAcceptCall, handleDeclineCall } = useIncomingCalls();
+  const [showActiveCall, setShowActiveCall] = React.useState(false);
+  const [activeCallData, setActiveCallData] = React.useState<any>(null);
 
   console.log("App routes: Auth state", { isAuthenticated, isLoading });
+
+  const handleAcceptIncomingCall = () => {
+    const acceptedCall = handleAcceptCall();
+    if (acceptedCall) {
+      setActiveCallData({
+        participant: {
+          id: acceptedCall.callerId,
+          name: acceptedCall.callerName,
+          avatar: acceptedCall.callerAvatar
+        },
+        type: acceptedCall.type,
+        isIncoming: true,
+        isGroup: acceptedCall.isGroup,
+        groupName: acceptedCall.groupName
+      });
+      setShowActiveCall(true);
+    }
+  };
+
+  const handleEndActiveCall = () => {
+    setShowActiveCall(false);
+    setActiveCallData(null);
+  };
 
   return (
     <Routes>
