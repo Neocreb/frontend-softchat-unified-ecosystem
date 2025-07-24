@@ -74,6 +74,9 @@ const EnhancedVideoCreator: React.FC = () => {
   const [speed, setSpeed] = useState(1);
   const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
+  const [cameraError, setCameraError] = useState<CameraError | null>(null);
+  const [showPermissionDialog, setShowPermissionDialog] = useState(false);
+  const [isInitializingCamera, setIsInitializingCamera] = useState(false);
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
