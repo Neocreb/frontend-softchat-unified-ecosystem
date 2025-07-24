@@ -407,7 +407,7 @@ export const ChatRoom: React.FC = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/messages")}
+              onClick={() => navigate("/app/chat")}
               className="md:hidden"
             >
               <ArrowLeft className="w-4 h-4" />
