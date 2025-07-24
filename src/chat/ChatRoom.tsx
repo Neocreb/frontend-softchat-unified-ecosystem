@@ -545,6 +545,14 @@ export const ChatRoom: React.FC = () => {
             <div ref={messagesEndRef} />
           </>
         )}
+
+        {/* Typing Indicator */}
+        {typingUsers.length > 0 && (
+          <TypingIndicator
+            users={typingUsers}
+            isMobile={isMobile}
+          />
+        )}
       </div>
 
       {/* Scroll to bottom button */}
