@@ -277,129 +277,58 @@ export const ChatRoom: React.FC = () => {
     }
   };
 
-  const MessageBubble: React.FC<{ message: ChatMessage; index: number }> = ({
-    message,
-    index,
-  }) => {
-    const isOwn = message.senderId === user?.id;
-    const previousMessage = index > 0 ? messages[index - 1] : null;
-    const isGrouped = shouldGroupMessages(message, previousMessage);
+  // Convert ChatMessage to EnhancedChatMessage for beautiful styling
+  const convertToEnhancedMessage = (message: ChatMessage): EnhancedChatMessage => {
+    return {
+      id: message.id,
+      senderId: message.senderId,
+      senderName: message.sender?.name || message.sender?.full_name || "Unknown",
+      senderAvatar: message.sender?.avatar || message.sender?.avatar_url,
+      content: message.content,
+      type: message.messageType === "voice" ? "voice" :
+            message.messageType === "image" || message.messageType === "file" ? "media" : "text",
+      timestamp: message.timestamp,
+      metadata: message.messageType === "voice"
+        ? { transcription: "Voice message" }
+        : message.messageType === "image" || message.messageType === "file"
+        ? { fileName: "Attachment", mediaType: message.messageType as "image" | "file" }
+        : undefined,
+      status: message.readBy.includes(user?.id || "") ? "read" : "delivered",
+      reactions: message.reactions?.map((reaction) => ({
+        userId: reaction.userIds[0] || "unknown",
+        emoji: reaction.emoji,
+        timestamp: message.timestamp,
+      })) || [],
+      isEdited: false,
+      replyTo: message.replyTo ? {
+        messageId: message.replyTo,
+        content: "Replied message",
+        senderName: "Unknown",
+      } : undefined,
+    };
+  };
 
-    return (
-      <div className={`flex ${isOwn ? "justify-end" : "justify-start"} mb-2`}>
-        <div
-          className={`flex ${isOwn ? "flex-row-reverse" : "flex-row"} items-end gap-2 max-w-[70%]`}
-        >
-          {!isOwn && !isGrouped && (
-            <Avatar className="w-8 h-8 flex-shrink-0">
-              <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" />
-              <AvatarFallback>
-                {message.senderId.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          )}
-          {!isOwn && isGrouped && <div className="w-8" />}
+  const handleReplyToMessage = (message: EnhancedChatMessage) => {
+    const originalMessage = messages.find(m => m.id === message.id);
+    if (originalMessage) {
+      setReplyingTo(originalMessage);
+    }
+  };
 
-          <div className={`group relative ${isOwn ? "ml-8" : "mr-8"}`}>
-            <div
-              className={`px-4 py-2 rounded-lg ${
-                isOwn ? "bg-primary text-primary-foreground" : "bg-muted"
-              } ${isGrouped ? "mb-1" : "mb-2"}`}
-            >
-              {message.replyTo && (
-                <div className="mb-2 p-2 border-l-2 border-border bg-background/50 rounded text-xs opacity-75">
-                  Replying to previous message
-                </div>
-              )}
+  const handleReactToMessage = (messageId: string, emoji: string) => {
+    handleReaction(messageId, emoji);
+  };
 
-              <div className="text-sm">{message.content}</div>
+  const handleEditMessage = (messageId: string, newContent: string) => {
+    // Handle edit message logic here
+    toast({
+      title: "Edit Feature",
+      description: "Message editing coming soon!",
+    });
+  };
 
-              {message.attachments && message.attachments.length > 0 && (
-                <div className="mt-2 space-y-1">
-                  {message.attachments.map((attachment, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-xs">
-                      {message.messageType === "image" ? (
-                        <ImageIcon className="w-3 h-3" />
-                      ) : (
-                        <File className="w-3 h-3" />
-                      )}
-                      <span className="truncate">Attachment</span>
-                      <Button variant="ghost" size="sm" className="h-auto p-1">
-                        <Download className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {message.reactions && message.reactions.length > 0 && (
-                <div className="flex gap-1 mt-2">
-                  {message.reactions.map((reaction, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleReaction(message.id, reaction.emoji)}
-                      className="text-xs bg-background/50 px-1 rounded hover:bg-background/75 transition-colors"
-                    >
-                      {reaction.emoji} {reaction.count}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div
-              className={`text-xs text-muted-foreground ${isOwn ? "text-right" : "text-left"}`}
-            >
-              {formatMessageTimestamp(message.timestamp)}
-            </div>
-
-            {/* Message actions */}
-            <div
-              className={`absolute top-0 ${isOwn ? "left-0" : "right-0"} opacity-0 group-hover:opacity-100 transition-opacity`}
-            >
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                    <MoreVertical className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align={isOwn ? "start" : "end"}>
-                  <DropdownMenuItem onClick={() => setReplyingTo(message)}>
-                    <Reply className="w-4 h-4 mr-2" />
-                    Reply
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleCopyMessage(message.content)}
-                  >
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Forward className="w-4 h-4 mr-2" />
-                    Forward
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => handleReaction(message.id, "👍")}
-                  >
-                    <Star className="w-4 h-4 mr-2" />
-                    React
-                  </DropdownMenuItem>
-                  {isOwn && (
-                    <DropdownMenuItem
-                      onClick={() => handleDeleteMessage(message.id)}
-                      className="text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const handleDeleteMessageEnhanced = (messageId: string) => {
+    handleDeleteMessage(messageId);
   };
 
   if (loading) {
