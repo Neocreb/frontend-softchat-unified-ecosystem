@@ -50,6 +50,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface Comment {
   id: string;
