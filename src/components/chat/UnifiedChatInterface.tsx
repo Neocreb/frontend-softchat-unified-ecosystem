@@ -52,6 +52,7 @@ import {
 } from "@/types/unified-chat";
 import { ChatThread, ChatMessage, ChatFilter } from "@/types/chat";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface UnifiedChatInterfaceProps {
   className?: string;
