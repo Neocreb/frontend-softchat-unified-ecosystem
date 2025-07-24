@@ -161,6 +161,50 @@ export const ChatRoom: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleVideoCall = () => {
+    const participantName = formatChatTitle(thread, user?.id || "");
+    setCallData({
+      participant: {
+        id: thread.participantIds.find(id => id !== user?.id) || '',
+        name: participantName,
+        avatar: thread.groupAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
+      },
+      type: 'video',
+      isIncoming: false,
+      isGroup: thread.isGroup
+    });
+    setShowVideoCall(true);
+    toast({
+      title: "Starting Video Call",
+      description: `Calling ${participantName}...`
+    });
+  };
+
+  const handleVoiceCall = () => {
+    const participantName = formatChatTitle(thread, user?.id || "");
+    setCallData({
+      participant: {
+        id: thread.participantIds.find(id => id !== user?.id) || '',
+        name: participantName,
+        avatar: thread.groupAvatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
+      },
+      type: 'voice',
+      isIncoming: false,
+      isGroup: thread.isGroup
+    });
+    setShowVoiceCall(true);
+    toast({
+      title: "Starting Voice Call",
+      description: `Calling ${participantName}...`
+    });
+  };
+
+  const handleCallEnd = () => {
+    setShowVideoCall(false);
+    setShowVoiceCall(false);
+    setCallData(null);
+  };
+
   const formatMessageTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
