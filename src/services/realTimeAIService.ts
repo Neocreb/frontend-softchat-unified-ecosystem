@@ -1480,7 +1480,7 @@ export class RealTimeAIService {
           action: "navigate",
           url: "/crypto",
         },
-        { id: "kyc", label: "Complete KYC", action: "navigate", url: "/kyc" },
+        { id: "kyc", label: "Complete KYC", action: "navigate", url: "/app/kyc" },
       ],
       followUpQuestions: [
         "How do I start trading crypto?",
