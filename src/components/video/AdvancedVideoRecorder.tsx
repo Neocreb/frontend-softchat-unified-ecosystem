@@ -684,15 +684,12 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() =>
-                  setCameraFacing(
-                    cameraFacing === "user" ? "environment" : "user",
-                  )
-                }
+                onClick={handleCameraSwitch}
+                disabled={isInitializingCamera}
                 className="text-white"
               >
                 <RotateCcw className="w-4 h-4 mr-1" />
-                Flip
+                {isInitializingCamera ? "Switching..." : "Flip"}
               </Button>
               <Button
                 variant="ghost"
