@@ -761,7 +761,7 @@ const GroupDetailView = () => {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Create Post Section */}
-            {group.isJoined && (
+            {extendedGroup.isJoined && (
               <Card>
                 <CardContent className="p-4">
                   <div className="flex gap-3">
