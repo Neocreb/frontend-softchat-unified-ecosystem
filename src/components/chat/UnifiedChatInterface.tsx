@@ -514,7 +514,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const handleChatSelect = (chat: UnifiedChatThread) => {
     // On mobile, navigate to full-screen chat room
     if (isMobile) {
-      window.location.href = `/app/chat/${chat.id}`;
+      navigate(`/app/chat/${chat.id}`);
       return;
     }
 
