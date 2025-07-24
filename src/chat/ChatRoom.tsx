@@ -59,6 +59,9 @@ export const ChatRoom: React.FC = () => {
   const [messageInput, setMessageInput] = useState("");
   const [replyingTo, setReplyingTo] = useState<ChatMessage | null>(null);
   const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+  const [showVideoCall, setShowVideoCall] = useState(false);
+  const [showVoiceCall, setShowVoiceCall] = useState(false);
+  const [callData, setCallData] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
