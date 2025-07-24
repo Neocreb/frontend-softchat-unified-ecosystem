@@ -415,24 +415,26 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
         </div>
 
         {/* Gift */}
-        <div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-12 h-12 rounded-full bg-yellow-500/30 hover:bg-yellow-500/50 text-yellow-200 border-none backdrop-blur-sm"
-            onClick={() => {
-              toast({
-                title: "Send Gift",
-                description: "Choose a virtual gift to send!",
-              });
-            }}
-          >
-            <Gift className="w-6 h-6" />
-          </Button>
-          <span className="text-white text-xs mt-1 text-center block">
-            Gift
-          </span>
-        </div>
+        <VirtualGiftsAndTips
+          recipientId={videoId}
+          recipientName="Creator"
+          recipientType="video"
+          showAsButton={false}
+          trigger={
+            <div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-12 h-12 rounded-full bg-yellow-500/30 hover:bg-yellow-500/50 text-yellow-200 border-none backdrop-blur-sm"
+              >
+                <Gift className="w-6 h-6" />
+              </Button>
+              <span className="text-white text-xs mt-1 text-center block">
+                Gift
+              </span>
+            </div>
+          }
+        />
 
         {/* Duet/Collaboration */}
         {allowDuets && (
