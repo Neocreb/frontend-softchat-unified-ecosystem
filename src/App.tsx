@@ -217,55 +217,11 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   return <>{children}</>;
 };
 
-// Global call state component
+// Global call state component (simplified - no incoming call simulation)
 const GlobalCallProvider = ({ children }: { children: React.ReactNode }) => {
-  const { incomingCall, handleAcceptCall, handleDeclineCall } = useIncomingCalls();
-  const [showActiveCall, setShowActiveCall] = React.useState(false);
-  const [activeCallData, setActiveCallData] = React.useState<any>(null);
-
-  const handleAcceptIncomingCall = () => {
-    const acceptedCall = handleAcceptCall();
-    if (acceptedCall) {
-      setActiveCallData({
-        participant: {
-          id: acceptedCall.callerId,
-          name: acceptedCall.callerName,
-          avatar: acceptedCall.callerAvatar
-        },
-        type: acceptedCall.type,
-        isIncoming: true,
-        isGroup: acceptedCall.isGroup,
-        groupName: acceptedCall.groupName
-      });
-      setShowActiveCall(true);
-    }
-  };
-
-  const handleEndActiveCall = () => {
-    setShowActiveCall(false);
-    setActiveCallData(null);
-  };
-
   return (
     <>
       {children}
-
-      {/* Global Call Components */}
-      <IncomingCallNotification
-        call={incomingCall}
-        onAccept={handleAcceptIncomingCall}
-        onDecline={handleDeclineCall}
-      />
-
-      {showActiveCall && activeCallData && (
-        <EnhancedVideoCall
-          isOpen={showActiveCall}
-          onClose={handleEndActiveCall}
-          callData={activeCallData}
-          onAccept={() => {}}
-          onDecline={handleEndActiveCall}
-        />
-      )}
     </>
   );
 };
