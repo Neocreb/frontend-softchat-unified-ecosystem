@@ -408,9 +408,9 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
               <div className="absolute bottom-4 right-4 w-32 h-24 bg-gray-800 rounded-lg overflow-hidden border-2 border-white">
                 <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                   <Avatar className="w-12 h-12">
-                    <AvatarImage src={callData.participant?.avatar} />
+                    <AvatarImage src={safeCallData.participant.avatar} />
                     <AvatarFallback className="text-white">
-                      {callData.participant?.name?.substring(0, 2) || "??"}
+                      {safeCallData.participant.name.substring(0, 2) || "??"}
                     </AvatarFallback>
                   </Avatar>
                 </div>
