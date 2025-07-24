@@ -614,32 +614,32 @@ const PageDetailView = () => {
           <div className="flex items-end justify-between">
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20 border-4 border-white">
-                <AvatarImage src={page.avatar} alt={page.name} />
-                <AvatarFallback className="text-2xl">{page.name.substring(0, 2)}</AvatarFallback>
+                <AvatarImage src={extendedPage.avatar} alt={extendedPage.name} />
+                <AvatarFallback className="text-2xl">{extendedPage.name.substring(0, 2)}</AvatarFallback>
               </Avatar>
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-bold">{page.name}</h1>
-                  {page.verified && (
+                  <h1 className="text-3xl font-bold">{extendedPage.name}</h1>
+                  {extendedPage.verified && (
                     <Verified className="w-8 h-8 text-blue-400" fill="currentColor" />
                   )}
                 </div>
                 <div className="flex items-center gap-4 text-sm opacity-90">
                   <div className="flex items-center gap-1">
                     <PageTypeIcon className="w-4 h-4" />
-                    {page.category}
+                    {extendedPage.category}
                   </div>
                   <span>•</span>
                   <div className="flex items-center gap-1">
                     <Users className="w-4 h-4" />
-                    {formatNumber(page.followers)} followers
+                    {formatNumber(extendedPage.followers)} followers
                   </div>
-                  {page.location && (
+                  {extendedPage.location && (
                     <>
                       <span>•</span>
                       <div className="flex items-center gap-1">
                         <MapPin className="w-4 h-4" />
-                        {page.location}
+                        {extendedPage.location}
                       </div>
                     </>
                   )}
