@@ -316,19 +316,19 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
     <div className="flex flex-col items-center justify-center h-full p-8 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
       <div className="text-center mb-8">
         <Avatar className="w-32 h-32 mx-auto mb-4 border-4 border-white">
-          <AvatarImage src={callData.participant?.avatar} />
+          <AvatarImage src={safeCallData.participant.avatar} />
           <AvatarFallback className="text-2xl">
-            {callData.participant?.name?.substring(0, 2) || "??"}
+            {safeCallData.participant.name.substring(0, 2) || "??"}
           </AvatarFallback>
         </Avatar>
         <h2 className="text-2xl font-bold mb-2">
-          {callData.isGroup ? callData.groupName : callData.participant?.name}
+          {safeCallData.isGroup ? safeCallData.groupName : safeCallData.participant.name}
         </h2>
         <p className="text-blue-100 mb-4">
-          Incoming {callData.type} call...
+          Incoming {safeCallData.type} call...
         </p>
         <div className="animate-pulse">
-          {callData.type === 'video' ? (
+          {safeCallData.type === 'video' ? (
             <Video className="w-8 h-8 mx-auto" />
           ) : (
             <Phone className="w-8 h-8 mx-auto" />
