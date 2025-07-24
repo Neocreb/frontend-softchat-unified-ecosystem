@@ -789,7 +789,7 @@ const Pages = () => {
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
               {filteredPages.length > 0 ? (
                 filteredPages.map((page) => renderPageCard(page))
               ) : (
@@ -817,7 +817,7 @@ const Pages = () => {
 
           <TabsContent value="following" className="space-y-6">
             {getFollowedPagesData().length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {getFollowedPagesData().map((page) =>
                   renderPageCard(page, false),
                 )}
@@ -841,7 +841,7 @@ const Pages = () => {
 
           <TabsContent value="owned" className="space-y-6">
             {getMyPagesData().length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {getMyPagesData().map((page) => renderPageCard(page, true))}
               </div>
             ) : (
