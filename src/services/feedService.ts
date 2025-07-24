@@ -129,43 +129,7 @@ class FeedService {
     return uploads;
   }
 
-  // Create a new post
-  async createPost(
-    postData: PostCreationData,
-    signal?: AbortSignal,
-  ): Promise<any> {
-    // Simulate API call with abort support
-    await this.delay(1000, signal);
 
-    const newPost = {
-      id: Date.now().toString(),
-      user: {
-        id: "current-user",
-        name: "You",
-        username: "you",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
-        isVerified: false,
-      },
-      content: postData.content,
-      media:
-        postData.media?.map((m) => ({
-          type: m.type,
-          url: m.preview || "",
-          alt: `${m.type} post`,
-        })) || [],
-      timestamp: "Just now",
-      likes: 0,
-      comments: 0,
-      shares: 0,
-      isLiked: false,
-      isSaved: false,
-      location: postData.location?.name,
-      privacy: postData.privacy,
-      feeling: postData.feeling,
-    };
-
-    return newPost;
-  }
 
   // Like/unlike a post
   async toggleLike(
