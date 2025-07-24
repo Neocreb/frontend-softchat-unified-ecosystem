@@ -628,7 +628,7 @@ const LiveStreamCard: React.FC<{
   showControls?: boolean;
 }> = ({ stream, showControls = true }) => {
   return (
-    <div className="relative h-screen w-full snap-start bg-black flex items-center justify-center">
+    <div className="relative h-screen w-full snap-start bg-black flex items-center justify-center video-card mobile-no-select">
       {/* Live stream thumbnail/video placeholder */}
       <div 
         className="absolute inset-0 w-full h-full bg-cover bg-center"
