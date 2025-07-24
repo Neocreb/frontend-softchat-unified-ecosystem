@@ -817,13 +817,13 @@ const PageDetailView = () => {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Create Post Section (Page Owner Only) */}
-            {page.isOwner && (
+            {extendedPage.isOwner && (
               <Card>
                 <CardContent className="p-4">
                   <div className="flex gap-3">
                     <Avatar className="h-10 w-10">
-                      <AvatarImage src={page.avatar} alt={page.name} />
-                      <AvatarFallback>{page.name.substring(0, 2)}</AvatarFallback>
+                      <AvatarImage src={extendedPage.avatar} alt={extendedPage.name} />
+                      <AvatarFallback>{extendedPage.name.substring(0, 2)}</AvatarFallback>
                     </Avatar>
                     <Dialog open={showCreatePost} onOpenChange={setShowCreatePost}>
                       <DialogTrigger asChild>
