@@ -575,6 +575,23 @@ const App = () => {
                       <ConnectionStatus />
                       <PWAInstallPrompt />
 
+                      {/* Global Call Components */}
+                      <IncomingCallNotification
+                        call={incomingCall}
+                        onAccept={handleAcceptIncomingCall}
+                        onDecline={handleDeclineCall}
+                      />
+
+                      {showActiveCall && activeCallData && (
+                        <EnhancedVideoCall
+                          isOpen={showActiveCall}
+                          onClose={handleEndActiveCall}
+                          callData={activeCallData}
+                          onAccept={() => {}}
+                          onDecline={handleEndActiveCall}
+                        />
+                      )}
+
                       {/* Toasters */}
                       <Toaster />
                       <Sonner />
