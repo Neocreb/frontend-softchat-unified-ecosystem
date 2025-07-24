@@ -163,7 +163,7 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
 
   const handleAcceptCall = async () => {
     try {
-      if (callData.type === 'video') {
+      if (safeCallData.type === 'video') {
         // Request camera and microphone access
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
