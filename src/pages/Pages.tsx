@@ -24,6 +24,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { chatInitiationService } from "@/services/chatInitiationService";
 import {
   Plus,
   Search,
