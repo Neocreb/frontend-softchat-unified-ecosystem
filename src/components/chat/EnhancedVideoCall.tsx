@@ -563,6 +563,20 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
     return null;
   }
 
+  // Provide safe defaults for callData
+  const safeCallData = {
+    type: callData.type,
+    isIncoming: callData.isIncoming || false,
+    isGroup: callData.isGroup || false,
+    groupName: callData.groupName || "Group Call",
+    participant: {
+      id: callData.participant?.id || "unknown",
+      name: callData.participant?.name || "Unknown User",
+      avatar: callData.participant?.avatar || "",
+    },
+    participants: callData.participants || [],
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl h-[80vh] p-0 overflow-hidden">
