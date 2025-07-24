@@ -310,27 +310,27 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent side="top" className="w-64 p-2">
+          <PopoverContent side="top" className="w-64 p-3 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-xl">
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => imageInputRef.current?.click()}
               >
-                <Image className="h-6 w-6 text-blue-600" />
-                <span className="text-xs">Photo/Video</span>
+                <Image className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+                <span className="text-xs font-medium">Photo/Video</span>
               </Button>
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-green-50 hover:to-green-100 dark:hover:from-green-900/20 dark:hover:to-green-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <File className="h-6 w-6 text-green-600" />
-                <span className="text-xs">Document</span>
+                <File className="h-7 w-7 text-green-600 dark:text-green-400" />
+                <span className="text-xs font-medium">Document</span>
               </Button>
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/20 dark:hover:to-purple-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => {
                   // Future: Open camera
                   toast({
@@ -339,22 +339,22 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
                   });
                 }}
               >
-                <Camera className="h-6 w-6 text-purple-600" />
-                <span className="text-xs">Camera</span>
+                <Camera className="h-7 w-7 text-purple-600 dark:text-purple-400" />
+                <span className="text-xs font-medium">Camera</span>
               </Button>
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-pink-50 hover:to-pink-100 dark:hover:from-pink-900/20 dark:hover:to-pink-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => {
                   // Future: Location sharing
                   toast({
-                    title: "Location",
-                    description: "Location sharing coming soon!",
+                    title: "Gift",
+                    description: "Gift feature coming soon!",
                   });
                 }}
               >
-                <Gift className="h-6 w-6 text-pink-600" />
-                <span className="text-xs">Gift</span>
+                <Gift className="h-7 w-7 text-pink-600 dark:text-pink-400" />
+                <span className="text-xs font-medium">Gift</span>
               </Button>
             </div>
           </PopoverContent>
