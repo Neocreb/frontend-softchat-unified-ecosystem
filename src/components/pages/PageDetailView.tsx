@@ -59,6 +59,8 @@ import {
   Briefcase,
 } from "lucide-react";
 
+import { pages } from "@/data/mockExploreData";
+
 interface Page {
   id: string;
   name: string;
