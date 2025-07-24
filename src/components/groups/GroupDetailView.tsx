@@ -711,7 +711,7 @@ const GroupDetailView = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {group.rules?.map((rule, index) => (
+                  {extendedGroup.rules?.map((rule, index) => (
                     <div key={index} className="flex gap-2 text-sm">
                       <span className="font-semibold text-muted-foreground">{index + 1}.</span>
                       <span>{rule}</span>
