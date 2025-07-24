@@ -190,10 +190,15 @@ const Groups = () => {
     });
   };
 
+  const handleViewGroup = (groupId: string) => {
+    navigate(`/app/groups/${groupId}`);
+  };
+
   const renderGroupCard = (group: Group, showManageButton = false) => (
     <Card
       key={group.id}
-      className="overflow-hidden hover:shadow-lg transition-all duration-200 group"
+      className="overflow-hidden hover:shadow-lg transition-all duration-200 group cursor-pointer"
+      onClick={() => handleViewGroup(group.id)}
     >
       <div className="relative h-48 overflow-hidden">
         <img
@@ -274,7 +279,7 @@ const Groups = () => {
             )}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
             {!group.isJoined && !group.isOwner ? (
               <Button
                 onClick={() => handleJoinGroup(group)}
@@ -285,7 +290,11 @@ const Groups = () => {
               </Button>
             ) : group.isJoined ? (
               <div className="flex gap-2 flex-1">
-                <Button variant="outline" className="flex-1 text-sm h-9">
+                <Button 
+                  variant="outline" 
+                  className="flex-1 text-sm h-9"
+                  onClick={() => handleViewGroup(group.id)}
+                >
                   <MessageSquare className="w-4 h-4 mr-2" />
                   View Posts
                 </Button>
@@ -299,7 +308,11 @@ const Groups = () => {
                 </Button>
               </div>
             ) : group.isOwner ? (
-              <Button variant="outline" className="flex-1 text-sm h-9">
+              <Button 
+                variant="outline" 
+                className="flex-1 text-sm h-9"
+                onClick={() => handleViewGroup(group.id)}
+              >
                 <Settings className="w-4 h-4 mr-2" />
                 Manage Group
               </Button>

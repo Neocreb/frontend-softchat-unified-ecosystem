@@ -80,6 +80,7 @@ import AdminFreelance from "./pages/admin/AdminFreelance";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminLogs from "./pages/admin/AdminLogs";
 import AdminSecurity from "./pages/admin/AdminSecurity";
+import AdminGroupsPages from "./pages/admin/AdminGroupsPages";
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideos from "./pages/EnhancedVideos";
@@ -115,6 +116,8 @@ import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
 import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
 import Groups from "./pages/Groups";
 import Pages from "./pages/Pages";
+import GroupDetailView from "./components/groups/GroupDetailView";
+import PageDetailView from "./components/pages/PageDetailView";
 import SendGifts from "./pages/SendGifts";
 import {
   FriendsPage,
@@ -360,11 +363,13 @@ const AppRoutes = () => {
           {/* Facebook-style navigation pages */}
           <Route path="friends" element={<FriendsPage />} />
           <Route path="groups" element={<Groups />} />
+          <Route path="groups/:groupId" element={<GroupDetailView />} />
           <Route path="ads" element={<AdsPage />} />
           <Route path="memories" element={<MemoriesPage />} />
           <Route path="saved" element={<SavedPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="pages" element={<Pages />} />
+          <Route path="pages/:pageId" element={<PageDetailView />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
           <Route path="advertising" element={<AdvertisingPolicy />} />
@@ -421,6 +426,7 @@ const AppRoutes = () => {
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="logs" element={<AdminLogs />} />
         <Route path="security" element={<AdminSecurity />} />
+        <Route path="groups-pages" element={<AdminGroupsPages />} />
       </Route>
 
       {/* Legacy route redirects */}
