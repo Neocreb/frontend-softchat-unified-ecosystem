@@ -558,6 +558,11 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
     </div>
   );
 
+  // Safety check for call data
+  if (!callData || !callData.type) {
+    return null;
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl h-[80vh] p-0 overflow-hidden">
