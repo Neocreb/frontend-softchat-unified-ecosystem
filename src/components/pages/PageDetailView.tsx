@@ -391,9 +391,8 @@ const PageDetailView = () => {
     });
   };
 
-  const PageTypeIcon = getPageTypeIcon(page.pageType);
-  const avgRating = reviews.length > 0 
-    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length 
+  const avgRating = reviews.length > 0
+    ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
     : 0;
 
   const renderPost = (post: Post) => (
