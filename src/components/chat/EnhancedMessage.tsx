@@ -300,14 +300,20 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (metadata?.mediaType === "video") {
           return (
             <div className="max-w-sm">
-              <video
-                src={message.content}
-                controls
-                className="rounded-lg max-w-full h-auto"
-                preload="metadata"
-              />
+              <div className="relative group">
+                <video
+                  src={message.content}
+                  controls
+                  className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  preload="metadata"
+                />
+                <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Video className="w-3 h-3 inline mr-1" />
+                  Video
+                </div>
+              </div>
               {metadata?.fileName && (
-                <p className="text-xs text-gray-500 mt-1 truncate">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                   {metadata.fileName}
                 </p>
               )}
