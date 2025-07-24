@@ -272,6 +272,117 @@ class FeedService {
       return null;
     }
   }
+
+  // Get feed posts (for video integration)
+  async getFeedPosts(signal?: AbortSignal): Promise<any[]> {
+    await this.delay(500, signal);
+
+    // Return mock posts with some video content
+    return [
+      {
+        id: "feed1",
+        userId: "user1",
+        content: "Check out my latest video! 🎬 #video #content",
+        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+        thumbnail: "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400",
+        imageUrl: null,
+        tags: ["video", "content", "amazing"],
+        category: "Entertainment",
+        videoDuration: 30,
+        likes: 245,
+        comments: 12,
+        shares: 8,
+        views: 1250,
+        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+        author: {
+          id: "user1",
+          name: "Alex Creator",
+          username: "alexcreator",
+          avatar: "https://i.pravatar.cc/150?img=10",
+          verified: true,
+          followerCount: 5420,
+          isFollowing: false,
+        }
+      },
+      {
+        id: "feed2",
+        userId: "user2",
+        content: "Dancing in the rain! 💃 Who else loves rainy days? #dance #rain #mood",
+        videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+        thumbnail: "https://images.unsplash.com/photo-1524863479829-916d8e77f114?w=400",
+        imageUrl: null,
+        tags: ["dance", "rain", "mood", "vibes"],
+        category: "Lifestyle",
+        videoDuration: 45,
+        likes: 892,
+        comments: 45,
+        shares: 23,
+        views: 3420,
+        createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+        author: {
+          id: "user2",
+          name: "Sophie Dance",
+          username: "sophiedance",
+          avatar: "https://i.pravatar.cc/150?img=25",
+          verified: false,
+          followerCount: 1250,
+          isFollowing: true,
+        }
+      }
+    ];
+  }
+
+  // Get user-specific posts
+  async getUserPosts(userId: string, signal?: AbortSignal): Promise<any[]> {
+    await this.delay(300, signal);
+
+    // Return user's posts (filtered from all posts)
+    const allPosts = await this.getFeedPosts(signal);
+    return allPosts.filter(post => post.userId === userId);
+  }
+
+  // Update post stats
+  async updatePostStats(postId: string, action: 'like' | 'comment' | 'share', increment: boolean = true, signal?: AbortSignal): Promise<boolean> {
+    await this.delay(200, signal);
+
+    // In a real implementation, this would update the database
+    console.log(`Updated post ${postId} - ${action}: ${increment ? '+1' : '-1'}`);
+    return true;
+  }
+
+  // Create post with enhanced data structure
+  async createPost(postData: any, signal?: AbortSignal): Promise<any> {
+    await this.delay(1000, signal);
+
+    const newPost = {
+      id: Date.now().toString(),
+      userId: "current-user",
+      content: postData.content,
+      videoUrl: postData.videoUrl || null,
+      thumbnail: postData.thumbnail || null,
+      imageUrl: postData.imageUrl || null,
+      tags: postData.tags || [],
+      category: postData.category || 'General',
+      type: postData.type || 'text',
+      videoDuration: postData.videoDuration || null,
+      likes: 0,
+      comments: 0,
+      shares: 0,
+      views: 0,
+      createdAt: new Date(),
+      author: {
+        id: "current-user",
+        name: "You",
+        username: "you",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
+        verified: false,
+        followerCount: 0,
+        isFollowing: false,
+      }
+    };
+
+    return newPost;
+  }
 }
 
 export const feedService = new FeedService();
