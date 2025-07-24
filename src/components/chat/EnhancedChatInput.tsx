@@ -303,11 +303,11 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               variant="ghost"
               size="icon"
               className={cn(
-                "flex-shrink-0",
+                "flex-shrink-0 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200",
                 isMobile ? "h-11 w-11" : "h-10 w-10",
               )}
             >
-              <Paperclip className="h-4 w-4" />
+              <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </Button>
           </PopoverTrigger>
           <PopoverContent side="top" className="w-64 p-2">
