@@ -193,7 +193,7 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
       onAccept?.();
       toast({
         title: "Call Connected",
-        description: `${callData.type === 'video' ? 'Video' : 'Voice'} call started`,
+        description: `${safeCallData.type === 'video' ? 'Video' : 'Voice'} call started`,
       });
     } catch (error) {
       console.error('Error accessing media devices:', error);
