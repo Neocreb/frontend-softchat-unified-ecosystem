@@ -1152,26 +1152,26 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   </div>
                                 </div>
                               </div>
-                              {!isMobile && (
-                                <div className="flex items-center gap-1">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={handleStartVoiceCall}
-                                    title="Start voice call"
-                                  >
-                                    <Phone className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={handleStartVideoCall}
-                                    title="Start video call"
-                                  >
-                                    <Video className="h-4 w-4" />
-                                  </Button>
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={isMobile ? "h-8 w-8" : "h-8 w-8"}
+                                  onClick={handleStartVoiceCall}
+                                  title="Start voice call"
+                                >
+                                  <Phone className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={isMobile ? "h-8 w-8" : "h-8 w-8"}
+                                  onClick={handleStartVideoCall}
+                                  title="Start video call"
+                                >
+                                  <Video className="h-4 w-4" />
+                                </Button>
+                                {!isMobile && (
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                       <Button
@@ -1200,8 +1200,8 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                       </DropdownMenuItem>
                                     </DropdownMenuContent>
                                   </DropdownMenu>
-                                </div>
-                              )}
+                                )}
+                              </div>
                             </div>
                           </CardHeader>
 
