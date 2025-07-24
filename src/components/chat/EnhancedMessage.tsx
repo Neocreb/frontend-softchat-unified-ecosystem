@@ -279,14 +279,17 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (metadata?.mediaType === "image") {
           return (
             <div className="max-w-sm">
-              <img
-                src={message.content}
-                alt="Shared image"
-                className="rounded-lg max-w-full h-auto"
-                loading="lazy"
-              />
+              <div className="relative group">
+                <img
+                  src={message.content}
+                  alt="Shared image"
+                  className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
+              </div>
               {metadata?.fileName && (
-                <p className="text-xs text-gray-500 mt-1 truncate">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                   {metadata.fileName}
                 </p>
               )}
