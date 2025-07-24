@@ -51,6 +51,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { EnhancedVideoCall } from "@/components/chat/EnhancedVideoCall";
 import { EnhancedMessage, EnhancedChatMessage } from "@/components/chat/EnhancedMessage";
+import { TypingIndicator } from "@/components/chat/TypingIndicator";
 
 export const ChatRoom: React.FC = () => {
   const { threadId } = useParams<{ threadId: string }>();
