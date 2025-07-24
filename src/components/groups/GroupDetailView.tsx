@@ -869,7 +869,7 @@ const GroupDetailView = () => {
 
               <TabsContent value="members" className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">Members ({formatNumber(group.members)})</h3>
+                  <h3 className="text-lg font-semibold">Members ({formatNumber(extendedGroup.members)})</h3>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
