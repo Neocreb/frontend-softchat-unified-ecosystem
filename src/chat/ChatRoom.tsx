@@ -549,18 +549,43 @@ export const ChatRoom: React.FC = () => {
         }}
       >
         {messages.length === 0 ? (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="text-center mb-8">
               <div className="text-4xl mb-4">
                 {getChatTypeIcon(thread.type)}
               </div>
               <h3 className="text-lg font-medium mb-2">
                 Start the conversation
               </h3>
-              <p className="text-muted-foreground">
-                Send a message to begin chatting
+              <p className="text-muted-foreground mb-4">
+                Send a message to see the beautiful chat styling!
               </p>
             </div>
+
+            {/* Styling Preview */}
+            {showStylingSample && (
+              <div className="space-y-4 w-full max-w-md animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
+                <div className="text-xs text-center text-muted-foreground mb-2">✨ Preview of enhanced chat styling ✨</div>
+
+                {/* Sample received message */}
+                <div className="flex justify-start">
+                  <div className="px-4 py-3 rounded-2xl max-w-sm bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 dark:text-gray-100 relative shadow-md before:absolute before:bottom-0 before:-left-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-gray-100 before:to-gray-200 before:rotate-45 before:transform before:origin-bottom-right dark:before:from-gray-700 dark:before:to-gray-800">
+                    <p className="whitespace-pre-wrap leading-relaxed">Beautiful colors & gradients! 🎨</p>
+                  </div>
+                </div>
+
+                {/* Sample sent message */}
+                <div className="flex justify-end">
+                  <div className="px-4 py-3 rounded-2xl max-w-sm bg-gradient-to-br from-blue-500 to-blue-600 text-white relative shadow-md before:absolute before:bottom-0 before:-right-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-blue-500 before:to-blue-600 before:rotate-45 before:transform before:origin-bottom-left">
+                    <p className="whitespace-pre-wrap leading-relaxed">Your messages on the right! 💙</p>
+                  </div>
+                </div>
+
+                <div className="text-xs text-center text-muted-foreground opacity-75 mt-4">
+                  Send a message to start chatting with this beautiful interface!
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <>
