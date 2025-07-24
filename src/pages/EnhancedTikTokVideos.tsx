@@ -75,6 +75,7 @@ import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import { useAuth } from "@/contexts/AuthContext";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface VideoData {
   id: string;
@@ -585,8 +586,8 @@ const EnhancedTikTokVideos: React.FC = () => {
               </Button>
             </div>
 
-            {/* Central tabs - Enhanced TikTok style with Live tab */}
-            <div className="flex-1 flex justify-center">
+            {/* Central tabs - Enhanced TikTok style with Live tab and Create button */}
+            <div className="flex-1 flex justify-center items-center gap-8">
               <Tabs
                 value={activeTab}
                 onValueChange={(value) =>
@@ -628,6 +629,37 @@ const EnhancedTikTokVideos: React.FC = () => {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
+
+              {/* Create Button in Header */}
+              <DropdownMenu open={showCreateMenu} onOpenChange={setShowCreateMenu}>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-1"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Create
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-gray-900 border-gray-700 text-white mb-2"
+                >
+                  <DropdownMenuItem onClick={handleRecordVideo} className="hover:bg-gray-800">
+                    <Camera className="w-4 h-4 mr-2" />
+                    Record Video
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleUploadVideo} className="hover:bg-gray-800">
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload Video
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleGoLive} className="hover:bg-gray-800">
+                    <Radio className="w-4 h-4 mr-2" />
+                    Go Live
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             {/* Right side buttons */}
@@ -716,36 +748,7 @@ const EnhancedTikTokVideos: React.FC = () => {
         </Tabs>
       </div>
 
-      {/* Enhanced Create Button with dropdown menu */}
-      <div className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50">
-        <DropdownMenu open={showCreateMenu} onOpenChange={setShowCreateMenu}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              className="bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white rounded-full w-14 h-14 shadow-lg transition-all duration-200 hover:scale-110"
-              title="Create Content"
-            >
-              <Plus className="h-7 w-7" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-gray-900 border-gray-700 text-white mb-2"
-          >
-            <DropdownMenuItem onClick={handleRecordVideo} className="hover:bg-gray-800">
-              <Camera className="w-4 h-4 mr-2" />
-              Record Video
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleUploadVideo} className="hover:bg-gray-800">
-              <Upload className="w-4 h-4 mr-2" />
-              Upload Video
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleGoLive} className="hover:bg-gray-800">
-              <Radio className="w-4 h-4 mr-2" />
-              Go Live
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+
 
       {/* Search Overlay */}
       {showSearchOverlay && (
