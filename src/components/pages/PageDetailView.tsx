@@ -391,6 +391,35 @@ const PageDetailView = () => {
     });
   };
 
+  const handleManagePage = () => {
+    if (!extendedPage.isOwner) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to manage this page",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Navigate to page management interface
+    navigate(`/app/pages/${pageId}/manage`);
+
+    toast({
+      title: "Page Management",
+      description: "Opening page management interface..."
+    });
+  };
+
+  const handleMessagePage = () => {
+    // Navigate to chat with page managers/admins
+    navigate(`/app/chat?page=${pageId}&type=social`);
+
+    toast({
+      title: "Starting Conversation",
+      description: `Opening chat with ${extendedPage.name}...`
+    });
+  };
+
   const avgRating = reviews.length > 0
     ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
     : 0;
