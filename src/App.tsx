@@ -115,6 +115,8 @@ import EnhancedKYCVerification from "./components/kyc/EnhancedKYCVerification";
 import { LiveStreamCreator } from "./components/livestream/LiveStreamCreator";
 import Groups from "./pages/Groups";
 import Pages from "./pages/Pages";
+import GroupDetailView from "./components/groups/GroupDetailView";
+import PageDetailView from "./components/pages/PageDetailView";
 import SendGifts from "./pages/SendGifts";
 import {
   FriendsPage,
