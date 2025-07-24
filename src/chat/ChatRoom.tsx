@@ -493,9 +493,31 @@ export const ChatRoom: React.FC = () => {
           </div>
         ) : (
           <>
-            {messages.map((message, index) => (
-              <MessageBubble key={message.id} message={message} index={index} />
-            ))}
+            {messages.map((message, index) => {
+              const previousMessage = index > 0 ? messages[index - 1] : null;
+              const isGrouped = shouldGroupMessages(message, previousMessage);
+              const enhancedMessage = convertToEnhancedMessage(message);
+
+              return (
+                <div
+                  key={message.id}
+                  className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <EnhancedMessage
+                    message={enhancedMessage}
+                    isCurrentUser={message.senderId === user?.id}
+                    isMobile={isMobile}
+                    onReply={handleReplyToMessage}
+                    onReact={handleReactToMessage}
+                    onEdit={handleEditMessage}
+                    onDelete={handleDeleteMessageEnhanced}
+                    showAvatar={!isGrouped}
+                    groupWithPrevious={isGrouped}
+                  />
+                </div>
+              );
+            })}
             <div ref={messagesEndRef} />
           </>
         )}
