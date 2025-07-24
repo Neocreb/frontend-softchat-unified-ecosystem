@@ -1332,8 +1332,22 @@ const PostCard = ({
 // Main Feed Component
 export default function EnhancedFeed() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState(initialMockPosts || []);
-  const [stories, setStories] = useState(initialMockStories || []);
+  const [posts, setPosts] = useState(() => {
+    try {
+      return Array.isArray(initialMockPosts) ? initialMockPosts : [];
+    } catch (error) {
+      console.error('Error initializing posts:', error);
+      return [];
+    }
+  });
+  const [stories, setStories] = useState(() => {
+    try {
+      return Array.isArray(initialMockStories) ? initialMockStories : [];
+    } catch (error) {
+      console.error('Error initializing stories:', error);
+      return [];
+    }
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [liveStreams, setLiveStreams] = useState<LiveStream[]>([]);
