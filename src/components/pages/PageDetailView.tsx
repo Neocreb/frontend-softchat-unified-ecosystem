@@ -912,30 +912,30 @@ const PageDetailView = () => {
               <TabsContent value="about" className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <h3 className="text-lg font-semibold">About {page.name}</h3>
+                    <h3 className="text-lg font-semibold">About {extendedPage.name}</h3>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">{page.about || page.description}</p>
-                    
+                    <p className="text-muted-foreground">{extendedPage.about || extendedPage.description}</p>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <h4 className="font-semibold mb-2">General Information</h4>
                         <div className="space-y-2 text-sm">
                           <div className="flex justify-between">
                             <span>Page Type:</span>
-                            <span>{page.pageType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+                            <span>{extendedPage.pageType.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Category:</span>
-                            <span>{page.category}</span>
+                            <span>{extendedPage.category}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Created:</span>
-                            <span>{new Date(page.createdAt!).toLocaleDateString()}</span>
+                            <span>{new Date(extendedPage.createdAt!).toLocaleDateString()}</span>
                           </div>
                           <div className="flex justify-between">
                             <span>Followers:</span>
-                            <span>{formatNumber(page.followers)}</span>
+                            <span>{formatNumber(extendedPage.followers)}</span>
                           </div>
                         </div>
                       </div>
@@ -943,30 +943,30 @@ const PageDetailView = () => {
                       <div>
                         <h4 className="font-semibold mb-2">Contact Details</h4>
                         <div className="space-y-2 text-sm">
-                          {page.website && (
+                          {extendedPage.website && (
                             <div className="flex justify-between">
                               <span>Website:</span>
-                              <a href={page.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                              <a href={extendedPage.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                                 Visit
                               </a>
                             </div>
                           )}
-                          {page.email && (
+                          {extendedPage.email && (
                             <div className="flex justify-between">
                               <span>Email:</span>
-                              <span>{page.email}</span>
+                              <span>{extendedPage.email}</span>
                             </div>
                           )}
-                          {page.phone && (
+                          {extendedPage.phone && (
                             <div className="flex justify-between">
                               <span>Phone:</span>
-                              <span>{page.phone}</span>
+                              <span>{extendedPage.phone}</span>
                             </div>
                           )}
-                          {page.location && (
+                          {extendedPage.location && (
                             <div className="flex justify-between">
                               <span>Location:</span>
-                              <span>{page.location}</span>
+                              <span>{extendedPage.location}</span>
                             </div>
                           )}
                         </div>
