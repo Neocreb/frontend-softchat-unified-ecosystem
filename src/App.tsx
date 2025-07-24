@@ -80,6 +80,7 @@ import AdminFreelance from "./pages/admin/AdminFreelance";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminLogs from "./pages/admin/AdminLogs";
 import AdminSecurity from "./pages/admin/AdminSecurity";
+import AdminGroupsPages from "./pages/admin/AdminGroupsPages";
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
 import EnhancedVideos from "./pages/EnhancedVideos";
