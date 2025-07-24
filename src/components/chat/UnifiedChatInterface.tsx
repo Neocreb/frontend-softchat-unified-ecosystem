@@ -1287,6 +1287,14 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                 )}
                               </div>
                             </ScrollArea>
+
+                            {/* Typing Indicator */}
+                            {typingUsers[selectedChat.id] && typingUsers[selectedChat.id].length > 0 && (
+                              <TypingIndicator
+                                users={typingUsers[selectedChat.id]}
+                                isMobile={isMobile}
+                              />
+                            )}
                           </CardContent>
 
                           {/* Reply indicator */}
