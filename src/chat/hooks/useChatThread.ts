@@ -45,7 +45,7 @@ export const useChatThread = (threadId?: string) => {
 
       try {
         setLoading(offset === 0);
-        const newMessages = await chatService.getMessages(threadId, 50, offset);
+        const newMessages = await chatService.getMessages(threadId, 50, offset, user?.id);
 
         if (offset === 0) {
           setMessages(newMessages);
