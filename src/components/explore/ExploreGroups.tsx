@@ -34,6 +34,7 @@ interface ExploreGroupsProps {
 }
 
 const ExploreGroups = ({ groups }: ExploreGroupsProps) => {
+  console.log('ExploreGroups component rendered', { groups });
   const [groupPosts, setGroupPosts] = useState<GroupPost[]>([]);
   const [loading, setLoading] = useState(false);
   const [joinedGroups] = useState<Group[]>([]);
