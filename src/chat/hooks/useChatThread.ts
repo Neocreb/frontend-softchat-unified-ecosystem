@@ -80,6 +80,7 @@ export const useChatThread = (threadId?: string) => {
           attachments,
           replyTo,
           messageType: "text",
+          currentUserId: user?.id,
         });
 
         // Add message to local state
