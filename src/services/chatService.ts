@@ -385,10 +385,21 @@ export const chatService = {
     threadId: string,
     limit: number = 50,
     offset: number = 0,
+    currentUserId?: string,
   ): Promise<ChatMessage[]> {
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    const messages = mockMessages[threadId] || [];
+    let messages = mockMessages[threadId] || [];
+
+    // If we have a current user ID, update the mock messages to use it
+    if (currentUserId) {
+      messages = messages.map(msg => ({
+        ...msg,
+        senderId: msg.senderId === "user_1" ? currentUserId : msg.senderId,
+        readBy: msg.readBy.map(id => id === "user_1" ? currentUserId : id)
+      }));
+    }
+
     return messages
       .slice(offset, offset + limit)
       .sort(
