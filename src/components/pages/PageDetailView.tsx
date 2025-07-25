@@ -17,6 +17,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { QuickMessageButton } from "@/components/chat/QuickMessageButton";
 import {
   ArrowLeft,
   Users,
