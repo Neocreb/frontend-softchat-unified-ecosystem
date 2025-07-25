@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
   Video,
   VideoOff,
@@ -275,6 +276,11 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
   const toggleScreenShare = async () => {
     try {
       if (!localControls.isScreenSharing) {
+        // Check if getDisplayMedia is available and allowed
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+          throw new Error('Screen sharing is not supported in this browser');
+        }
+
         // Start screen sharing
         const stream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
@@ -315,9 +321,22 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
       }
     } catch (error) {
       console.error('Error sharing screen:', error);
+
+      let errorMessage = "Could not share screen. Please check permissions.";
+
+      if (error instanceof Error) {
+        if (error.name === 'NotAllowedError') {
+          errorMessage = "Screen sharing permission denied. Please allow screen sharing in your browser settings.";
+        } else if (error.name === 'NotSupportedError') {
+          errorMessage = "Screen sharing is not supported in this browser or environment.";
+        } else if (error.message.includes('display-capture')) {
+          errorMessage = "Screen sharing is disabled by your browser's security policy. This may occur in embedded environments.";
+        }
+      }
+
       toast({
         title: "Screen Share Error",
-        description: "Could not share screen. Please check permissions.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -580,6 +599,14 @@ export const EnhancedVideoCall: React.FC<EnhancedVideoCallProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl h-[80vh] p-0 overflow-hidden">
+        <VisuallyHidden>
+          <DialogTitle>
+            {callState.isIncoming
+              ? `Incoming ${safeCallData.type} call from ${safeCallData.isGroup ? safeCallData.groupName : safeCallData.participant.name}`
+              : `${safeCallData.type} call with ${safeCallData.isGroup ? safeCallData.groupName : safeCallData.participant.name}`
+            }
+          </DialogTitle>
+        </VisuallyHidden>
         {callState.isIncoming ? renderIncomingCall() : renderActiveCall()}
       </DialogContent>
     </Dialog>
