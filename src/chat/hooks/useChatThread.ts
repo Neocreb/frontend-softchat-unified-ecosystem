@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ChatThread, ChatMessage, ChatFilter } from "@/types/chat";
 import { chatService } from "@/services/chatService";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useChatThread = (threadId?: string) => {
   const [thread, setThread] = useState<ChatThread | null>(null);
