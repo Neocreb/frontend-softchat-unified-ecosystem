@@ -568,7 +568,14 @@ const ExplorePages = ({ pages }: ExplorePagesProps) => {
 
         <TabsContent value="posts" className="space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Posts from Pages</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-semibold">Posts from Pages</h3>
+              {pagePosts.length > 0 && (
+                <Badge variant="secondary" className="text-xs">
+                  {pagePosts.length} posts
+                </Badge>
+              )}
+            </div>
             <div className="text-sm text-muted-foreground">
               Showing posts from pages you follow first
             </div>
