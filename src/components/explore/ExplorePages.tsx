@@ -40,6 +40,7 @@ interface ExplorePagesProps {
 }
 
 const ExplorePages = ({ pages }: ExplorePagesProps) => {
+  console.log('ExplorePages component rendered', { pages });
   const [pagePosts, setPagePosts] = useState<PagePost[]>([]);
   const [loading, setLoading] = useState(false);
   const [followedPages] = useState<Page[]>([]);
