@@ -485,7 +485,14 @@ const ExploreGroups = ({ groups }: ExploreGroupsProps) => {
 
         <TabsContent value="posts" className="space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Posts from Groups</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-semibold">Posts from Groups</h3>
+              {groupPosts.length > 0 && (
+                <Badge variant="secondary" className="text-xs">
+                  {groupPosts.length} posts
+                </Badge>
+              )}
+            </div>
             <div className="text-sm text-muted-foreground">
               Showing posts from your joined groups first
             </div>
