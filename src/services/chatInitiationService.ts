@@ -86,6 +86,10 @@ class ChatInitiationService {
     initialMessage?: string;
   }): Promise<string | null> {
     try {
+      if (!data.pageId || !data.pageName || !data.pageOwnerId) {
+        throw new Error("Missing required page information");
+      }
+
       // Create page conversation (similar to user conversation but with page context)
       const conversationId = await this.createConversation({
         participantId: data.pageOwnerId,
@@ -102,7 +106,7 @@ class ChatInitiationService {
       return conversationId;
     } catch (error) {
       console.error('Error starting page conversation:', error);
-      return null;
+      throw error; // Re-throw to bubble up the specific error
     }
   }
 
