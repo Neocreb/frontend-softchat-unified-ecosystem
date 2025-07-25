@@ -494,7 +494,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 
       // Load messages for each conversation
       for (const thread of unifiedThreads) {
-        const threadMessages = await chatService.getMessages(thread.id);
+        const threadMessages = await chatService.getMessages(thread.id, 50, 0, user?.id);
 
         // Convert ChatMessage[] to EnhancedChatMessage[]
         const enhancedMessages: EnhancedChatMessage[] = threadMessages.map(
