@@ -350,11 +350,21 @@ class ChatInitiationService {
 
   // Navigate to conversation
   navigateToConversation(conversationId: string, navigate: any, toast: any): void {
-    navigate(`/app/chat/${conversationId}`);
-    toast({
-      title: "Starting conversation",
-      description: "Opening chat..."
-    });
+    if (conversationId.startsWith('mock_conv_')) {
+      // For mock conversations, show a demo message
+      toast({
+        title: "Demo Conversation",
+        description: "Chat functionality is available! This is a demo conversation.",
+      });
+      // Navigate to a general chat page for demo purposes
+      navigate(`/app/chat`);
+    } else {
+      navigate(`/app/chat/${conversationId}`);
+      toast({
+        title: "Starting conversation",
+        description: "Opening chat..."
+      });
+    }
   }
 
   // Enhanced message button handler
