@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import { Post } from "@/types/post";
 import { Building, Verified } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Page {
   id: string;
