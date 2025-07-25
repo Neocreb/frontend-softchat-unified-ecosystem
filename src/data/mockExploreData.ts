@@ -264,6 +264,7 @@ export const pages = [
     pageType: "business" as const,
     isFollowing: false,
     isOwner: false,
+    ownerId: "tesla-owner",
     website: "https://tesla.com",
     location: "Austin, Texas",
     email: "press@tesla.com",
