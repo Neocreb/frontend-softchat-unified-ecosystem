@@ -52,6 +52,9 @@ import {
 } from "@/types/unified-chat";
 import { ChatThread, ChatMessage, ChatFilter } from "@/types/chat";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { TypingIndicator } from "./TypingIndicator";
+import { OnlineStatusIndicator } from "./OnlineStatusIndicator";
 
 interface UnifiedChatInterfaceProps {
   className?: string;
@@ -63,6 +66,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   // State management
   const [activeTab, setActiveTab] = useState<UnifiedChatType>("social");
@@ -77,6 +81,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   const [messageInput, setMessageInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+  const [typingUsers, setTypingUsers] = useState<{[chatId: string]: Array<{id: string, name: string, avatar?: string}>}>({});
 
   // Voice/Video call state
   const [activeCall, setActiveCall] = useState<{
@@ -180,14 +185,58 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
           senderId: "other-user",
           senderName: selectedChat.participant_profile?.name || "Other User",
           senderAvatar: selectedChat.participant_profile?.avatar,
+          content: "That sounds exciting! What kind of features are you working on?",
+          type: "text",
+          timestamp: new Date(Date.now() - 420000).toISOString(),
+          status: "read",
+          reactions: [],
+        },
+        {
+          id: "4",
+          senderId: user?.id || "current-user",
+          senderName: user?.profile?.full_name || user?.email || "You",
+          senderAvatar: user?.profile?.avatar_url,
+          content: "We're adding enhanced chat functionality with better message positioning and new interactive features!",
+          type: "text",
+          timestamp: new Date(Date.now() - 360000).toISOString(),
+          status: "delivered",
+          reactions: [],
+        },
+        {
+          id: "5",
+          senderId: user?.id || "current-user",
+          senderName: user?.profile?.full_name || user?.email || "You",
+          senderAvatar: user?.profile?.avatar_url,
+          content: "Also working on voice messages and file sharing",
+          type: "text",
+          timestamp: new Date(Date.now() - 300000).toISOString(),
+          status: "sent",
+          reactions: [],
+        },
+        {
+          id: "6",
+          senderId: "other-user",
+          senderName: selectedChat.participant_profile?.name || "Other User",
+          senderAvatar: selectedChat.participant_profile?.avatar,
           content: "😊",
           type: "sticker",
-          timestamp: new Date(Date.now() - 360000).toISOString(),
+          timestamp: new Date(Date.now() - 240000).toISOString(),
           status: "read",
           reactions: [],
           metadata: {
             stickerName: "Happy",
           },
+        },
+        {
+          id: "7",
+          senderId: "other-user",
+          senderName: selectedChat.participant_profile?.name || "Other User",
+          senderAvatar: selectedChat.participant_profile?.avatar,
+          content: "Can't wait to try them out! When will they be available?",
+          type: "text",
+          timestamp: new Date(Date.now() - 180000).toISOString(),
+          status: "read",
+          reactions: [],
         },
       ];
 
@@ -445,7 +494,7 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
 
       // Load messages for each conversation
       for (const thread of unifiedThreads) {
-        const threadMessages = await chatService.getMessages(thread.id);
+        const threadMessages = await chatService.getMessages(thread.id, 50, 0, user?.id);
 
         // Convert ChatMessage[] to EnhancedChatMessage[]
         const enhancedMessages: EnhancedChatMessage[] = threadMessages.map(
@@ -510,7 +559,35 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
   };
 
   const handleChatSelect = (chat: UnifiedChatThread) => {
+    // On mobile, navigate to full-screen chat room
+    if (isMobile) {
+      navigate(`/app/chat/${chat.id}`);
+      return;
+    }
+
+    // On desktop, show in sidebar
     setSelectedChat(chat);
+
+    // Simulate typing indicator occasionally
+    if (Math.random() > 0.7) {
+      setTypingUsers(prev => ({
+        ...prev,
+        [chat.id]: [{
+          id: 'typing-user',
+          name: chat.participant_profile?.name || 'Someone',
+          avatar: chat.participant_profile?.avatar
+        }]
+      }));
+
+      // Clear typing after a few seconds
+      setTimeout(() => {
+        setTypingUsers(prev => ({
+          ...prev,
+          [chat.id]: []
+        }));
+      }, 3000 + Math.random() * 2000);
+    }
+
     // Mark as read
     if (chat.unreadCount && chat.unreadCount > 0) {
       chatService.markAsRead(chat.id, user?.id || "");
@@ -924,15 +1001,13 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   "?"}
                               </AvatarFallback>
                             </Avatar>
-                            {conv.participant_profile?.is_online && (
-                              <div
-                                className={`absolute bg-green-500 border-2 border-background rounded-full ${
-                                  isMobile
-                                    ? "-bottom-0.5 -right-0.5 w-2.5 h-2.5"
-                                    : "-bottom-0.5 -right-0.5 w-3 h-3"
-                                }`}
-                              ></div>
-                            )}
+                            <div className="absolute -bottom-0.5 -right-0.5">
+                              <OnlineStatusIndicator
+                                isOnline={conv.participant_profile?.is_online || false}
+                                lastSeen={conv.participant_profile?.last_seen}
+                                size={isMobile ? "sm" : "md"}
+                              />
+                            </div>
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between items-start mb-1">
@@ -1127,16 +1202,12 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                     </CardTitle>
                                   </div>
                                   <div className="flex items-center gap-2">
-                                    <p
-                                      className={`text-muted-foreground ${
-                                        isMobile ? "text-xs" : "text-sm"
-                                      }`}
-                                    >
-                                      {selectedChat.participant_profile
-                                        ?.is_online
-                                        ? "Online"
-                                        : "Offline"}
-                                    </p>
+                                    <OnlineStatusIndicator
+                                      isOnline={selectedChat.participant_profile?.is_online || false}
+                                      lastSeen={selectedChat.participant_profile?.last_seen}
+                                      size="sm"
+                                      showLabel={true}
+                                    />
                                     {getContextInfo(selectedChat) && (
                                       <>
                                         <div className="w-1 h-1 bg-muted-foreground rounded-full" />
@@ -1152,26 +1223,28 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                   </div>
                                 </div>
                               </div>
-                              {!isMobile && (
-                                <div className="flex items-center gap-1">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={handleStartVoiceCall}
-                                    title="Start voice call"
-                                  >
-                                    <Phone className="h-4 w-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={handleStartVideoCall}
-                                    title="Start video call"
-                                  >
-                                    <Video className="h-4 w-4" />
-                                  </Button>
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={isMobile ? "h-8 w-8" : "h-8 w-8"}
+                                  onClick={handleStartVoiceCall}
+                                  title="Start voice call"
+                                  disabled={!selectedChat || !user || loading}
+                                >
+                                  <Phone className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className={isMobile ? "h-8 w-8" : "h-8 w-8"}
+                                  onClick={handleStartVideoCall}
+                                  title="Start video call"
+                                  disabled={!selectedChat || !user || loading}
+                                >
+                                  <Video className="h-4 w-4" />
+                                </Button>
+                                {!isMobile && (
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                       <Button
@@ -1200,21 +1273,22 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                       </DropdownMenuItem>
                                     </DropdownMenuContent>
                                   </DropdownMenu>
-                                </div>
-                              )}
+                                )}
+                              </div>
                             </div>
                           </CardHeader>
 
                           <CardContent className="p-0 flex-1 overflow-hidden flex flex-col">
                             <ScrollArea
                               className={cn(
-                                "flex-1 chat-scroll-area",
+                                "flex-1 chat-scroll-area relative",
                                 isMobile ? "px-3" : "px-4",
                               )}
                               style={{
                                 height: isMobile
                                   ? "calc(100vh - 180px)"
                                   : "calc(100vh - 240px)",
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                               }}
                             >
                               <div
@@ -1236,20 +1310,25 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                           300000; // 5 minutes
 
                                       return (
-                                        <EnhancedMessage
+                                        <div
                                           key={msg.id}
-                                          message={msg}
-                                          isCurrentUser={
-                                            msg.senderId === user.id
-                                          }
-                                          isMobile={isMobile}
-                                          onReply={handleReplyToMessage}
-                                          onReact={handleReactToMessage}
-                                          onEdit={handleEditMessage}
-                                          onDelete={handleDeleteMessage}
-                                          showAvatar={!isGrouped}
-                                          groupWithPrevious={isGrouped}
-                                        />
+                                          className="animate-in fade-in-0 slide-in-from-bottom-2 duration-300"
+                                          style={{ animationDelay: `${index * 50}ms` }}
+                                        >
+                                          <EnhancedMessage
+                                            message={msg}
+                                            isCurrentUser={
+                                              msg.senderId === user.id
+                                            }
+                                            isMobile={isMobile}
+                                            onReply={handleReplyToMessage}
+                                            onReact={handleReactToMessage}
+                                            onEdit={handleEditMessage}
+                                            onDelete={handleDeleteMessage}
+                                            showAvatar={!isGrouped}
+                                            groupWithPrevious={isGrouped}
+                                          />
+                                        </div>
                                       );
                                     },
                                   )
@@ -1275,6 +1354,14 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                                 )}
                               </div>
                             </ScrollArea>
+
+                            {/* Typing Indicator */}
+                            {typingUsers[selectedChat.id] && typingUsers[selectedChat.id].length > 0 && (
+                              <TypingIndicator
+                                users={typingUsers[selectedChat.id]}
+                                isMobile={isMobile}
+                              />
+                            )}
                           </CardContent>
 
                           {/* Reply indicator */}

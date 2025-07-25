@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ChatThread, ChatMessage, ChatFilter } from "@/types/chat";
 import { chatService } from "@/services/chatService";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const useChatThread = (threadId?: string) => {
   const [thread, setThread] = useState<ChatThread | null>(null);
@@ -10,6 +11,7 @@ export const useChatThread = (threadId?: string) => {
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Load thread data
   const loadThread = useCallback(async () => {
@@ -24,7 +26,7 @@ export const useChatThread = (threadId?: string) => {
         setThread(threadData);
 
         // Mark thread as read
-        await chatService.markAsRead(threadId, "user_1"); // Current user ID
+        await chatService.markAsRead(threadId, user?.id || "user_1"); // Current user ID
       } else {
         setError("Chat thread not found");
       }
@@ -34,7 +36,7 @@ export const useChatThread = (threadId?: string) => {
     } finally {
       setLoading(false);
     }
-  }, [threadId]);
+  }, [threadId, user?.id]);
 
   // Load messages
   const loadMessages = useCallback(
@@ -43,7 +45,7 @@ export const useChatThread = (threadId?: string) => {
 
       try {
         setLoading(offset === 0);
-        const newMessages = await chatService.getMessages(threadId, 50, offset);
+        const newMessages = await chatService.getMessages(threadId, 50, offset, user?.id);
 
         if (offset === 0) {
           setMessages(newMessages);
@@ -59,7 +61,7 @@ export const useChatThread = (threadId?: string) => {
         setLoading(false);
       }
     },
-    [threadId],
+    [threadId, user?.id],
   );
 
   // Send message
@@ -78,6 +80,7 @@ export const useChatThread = (threadId?: string) => {
           attachments,
           replyTo,
           messageType: "text",
+          currentUserId: user?.id,
         });
 
         // Add message to local state

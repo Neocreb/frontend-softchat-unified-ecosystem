@@ -255,21 +255,21 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
 
   return (
     <div
-      className={`border-t flex-shrink-0 bg-background ${isMobile ? "p-2.5" : "p-3"}`}
+      className={`border-t flex-shrink-0 bg-gradient-to-r from-background via-background to-background backdrop-blur-sm ${isMobile ? "p-2.5" : "p-3"} relative`}
     >
       {/* Recording overlay */}
       {isRecording && (
-        <div className="absolute inset-0 bg-red-500/10 flex items-center justify-center z-50">
-          <div className="bg-background border rounded-lg p-4 flex items-center gap-3">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-red-400/15 to-red-500/20 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-gray-800 border-2 border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3 shadow-lg shadow-red-500/25 animate-pulse">
+            <div className="w-4 h-4 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-ping"></div>
+            <span className="text-sm font-semibold text-red-600 dark:text-red-400">
               Recording: {formatRecordingTime(recordingTime)}
             </span>
             <Button
               onClick={stopRecording}
               size="sm"
               variant="outline"
-              className="text-red-600 border-red-600 hover:bg-red-50"
+              className="text-red-600 border-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
             >
               <MicOff className="w-4 h-4 mr-1" />
               Stop
@@ -303,34 +303,34 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               variant="ghost"
               size="icon"
               className={cn(
-                "flex-shrink-0",
+                "flex-shrink-0 hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200",
                 isMobile ? "h-11 w-11" : "h-10 w-10",
               )}
             >
-              <Paperclip className="h-4 w-4" />
+              <Paperclip className="h-4 w-4 text-gray-600 dark:text-gray-400" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent side="top" className="w-64 p-2">
+          <PopoverContent side="top" className="w-64 p-3 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 shadow-xl">
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 dark:hover:from-blue-900/20 dark:hover:to-blue-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => imageInputRef.current?.click()}
               >
-                <Image className="h-6 w-6 text-blue-600" />
-                <span className="text-xs">Photo/Video</span>
+                <Image className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+                <span className="text-xs font-medium">Photo/Video</span>
               </Button>
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-green-50 hover:to-green-100 dark:hover:from-green-900/20 dark:hover:to-green-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => fileInputRef.current?.click()}
               >
-                <File className="h-6 w-6 text-green-600" />
-                <span className="text-xs">Document</span>
+                <File className="h-7 w-7 text-green-600 dark:text-green-400" />
+                <span className="text-xs font-medium">Document</span>
               </Button>
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/20 dark:hover:to-purple-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => {
                   // Future: Open camera
                   toast({
@@ -339,22 +339,22 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
                   });
                 }}
               >
-                <Camera className="h-6 w-6 text-purple-600" />
-                <span className="text-xs">Camera</span>
+                <Camera className="h-7 w-7 text-purple-600 dark:text-purple-400" />
+                <span className="text-xs font-medium">Camera</span>
               </Button>
               <Button
                 variant="ghost"
-                className="h-auto p-3 flex flex-col gap-2"
+                className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-pink-50 hover:to-pink-100 dark:hover:from-pink-900/20 dark:hover:to-pink-800/20 transition-all duration-200 rounded-xl"
                 onClick={() => {
                   // Future: Location sharing
                   toast({
-                    title: "Location",
-                    description: "Location sharing coming soon!",
+                    title: "Gift",
+                    description: "Gift feature coming soon!",
                   });
                 }}
               >
-                <Gift className="h-6 w-6 text-pink-600" />
-                <span className="text-xs">Gift</span>
+                <Gift className="h-7 w-7 text-pink-600 dark:text-pink-400" />
+                <span className="text-xs font-medium">Gift</span>
               </Button>
             </div>
           </PopoverContent>
@@ -376,7 +376,7 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               }
             }}
             className={cn(
-              "pr-12 rounded-full border-2 focus:border-primary",
+              "pr-12 rounded-full border-2 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-gray-50 dark:bg-gray-900 shadow-inner",
               isMobile ? "h-11" : "h-10",
             )}
             disabled={disabled || isRecording}
@@ -388,9 +388,9 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200"
               >
-                <Smile className="h-4 w-4" />
+                <Smile className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
               </Button>
             </PopoverTrigger>
             <PopoverContent side="top" className="w-80 p-0">
@@ -442,7 +442,7 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
               setMessageInput("");
             }}
             className={cn(
-              "flex-shrink-0 rounded-full bg-primary hover:bg-primary/90",
+              "flex-shrink-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-200 hover:scale-105",
               isMobile ? "h-11 w-11" : "h-10 w-10",
             )}
             disabled={disabled}
@@ -453,10 +453,10 @@ export const EnhancedChatInput: React.FC<EnhancedChatInputProps> = ({
           <Button
             onClick={isRecording ? stopRecording : startRecording}
             className={cn(
-              "flex-shrink-0 rounded-full",
+              "flex-shrink-0 rounded-full transition-all duration-200 hover:scale-105",
               isRecording
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-primary hover:bg-primary/90",
+                ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg shadow-red-500/25 hover:shadow-red-500/40 animate-pulse"
+                : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg shadow-green-500/25 hover:shadow-green-500/40",
               isMobile ? "h-11 w-11" : "h-10 w-10",
             )}
             disabled={disabled || voicePermission === "denied"}

@@ -200,15 +200,19 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
     switch (message.type) {
       case "sticker":
         return (
-          <div className="text-6xl p-2 bg-transparent">{message.content}</div>
+          <div className="text-6xl p-2 bg-transparent hover:scale-110 transition-transform duration-200 cursor-pointer">
+            <div className="drop-shadow-lg">{message.content}</div>
+          </div>
         );
 
       case "voice":
         return (
           <Card
             className={cn(
-              "max-w-xs",
-              isCurrentUser ? "bg-primary text-primary-foreground" : "",
+              "max-w-xs shadow-md border-0",
+              isCurrentUser
+                ? "bg-gradient-to-br from-green-500 to-green-600 text-white dark:from-green-600 dark:to-green-700"
+                : "bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900 dark:to-orange-800 dark:text-orange-100",
             )}
           >
             <CardContent className="p-3">
@@ -277,14 +281,17 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (metadata?.mediaType === "image") {
           return (
             <div className="max-w-sm">
-              <img
-                src={message.content}
-                alt="Shared image"
-                className="rounded-lg max-w-full h-auto"
-                loading="lazy"
-              />
+              <div className="relative group">
+                <img
+                  src={message.content}
+                  alt="Shared image"
+                  className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
+              </div>
               {metadata?.fileName && (
-                <p className="text-xs text-gray-500 mt-1 truncate">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                   {metadata.fileName}
                 </p>
               )}
@@ -295,14 +302,20 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (metadata?.mediaType === "video") {
           return (
             <div className="max-w-sm">
-              <video
-                src={message.content}
-                controls
-                className="rounded-lg max-w-full h-auto"
-                preload="metadata"
-              />
+              <div className="relative group">
+                <video
+                  src={message.content}
+                  controls
+                  className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  preload="metadata"
+                />
+                <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Video className="w-3 h-3 inline mr-1" />
+                  Video
+                </div>
+              </div>
               {metadata?.fileName && (
-                <p className="text-xs text-gray-500 mt-1 truncate">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
                   {metadata.fileName}
                 </p>
               )}
@@ -312,18 +325,18 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
 
         if (metadata?.mediaType === "file") {
           return (
-            <Card className="max-w-xs">
+            <Card className="max-w-xs shadow-md border-0 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800">
               <CardContent className="p-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gray-100 rounded-lg">
-                    <FileText className="w-6 h-6 text-gray-600" />
+                  <div className="p-2 bg-gradient-to-br from-purple-200 to-purple-300 dark:from-purple-700 dark:to-purple-600 rounded-lg">
+                    <FileText className="w-6 h-6 text-purple-700 dark:text-purple-200" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm truncate">
+                    <p className="font-medium text-sm truncate text-purple-900 dark:text-purple-100">
                       {metadata?.fileName || "File"}
                     </p>
                     {metadata?.fileSize && (
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-purple-600 dark:text-purple-300">
                         {formatFileSize(metadata.fileSize)}
                       </p>
                     )}
@@ -344,16 +357,21 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         return (
           <div
             className={cn(
-              "px-3 py-2 rounded-2xl max-w-sm break-words",
+              "px-4 py-3 rounded-2xl max-w-sm break-words relative shadow-md",
               isCurrentUser
-                ? "bg-primary text-primary-foreground ml-auto"
-                : "bg-muted",
+                ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white ml-auto before:absolute before:bottom-0 before:-right-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-blue-500 before:to-blue-600 before:rotate-45 before:transform before:origin-bottom-left dark:from-blue-600 dark:to-blue-700 dark:before:from-blue-600 dark:before:to-blue-700"
+                : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-900 dark:from-gray-700 dark:to-gray-800 dark:text-gray-100 before:absolute before:bottom-0 before:-left-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-gray-100 before:to-gray-200 before:rotate-45 before:transform before:origin-bottom-right dark:before:from-gray-700 dark:before:to-gray-800",
             )}
           >
             {message.replyTo && (
-              <div className="border-l-2 border-white/30 pl-2 mb-2 text-xs opacity-80">
-                <p className="font-medium">{message.replyTo.senderName}</p>
-                <p className="truncate">{message.replyTo.content}</p>
+              <div className={cn(
+                "border-l-3 pl-3 mb-2 text-xs rounded-r-lg p-2 -mx-1",
+                isCurrentUser
+                  ? "border-white/50 bg-white/10"
+                  : "border-blue-400 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-500"
+              )}>
+                <p className="font-medium text-blue-600 dark:text-blue-300">{message.replyTo.senderName}</p>
+                <p className="truncate opacity-80">{message.replyTo.content}</p>
               </div>
             )}
 
@@ -389,9 +407,9 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
               </div>
             ) : (
               <>
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                 {message.isEdited && (
-                  <span className="text-xs opacity-60"> (edited)</span>
+                  <span className="text-xs opacity-70 italic"> (edited)</span>
                 )}
               </>
             )}
@@ -451,7 +469,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 )}
               >
                 {/* Quick reactions */}
-                <div className="flex bg-background border rounded-full p-1 shadow-lg">
+                <div className="flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full p-1 shadow-lg backdrop-blur-sm bg-opacity-90">
                   {reactionEmojis.slice(0, 3).map((reaction) => (
                     <Button
                       key={reaction.name}
@@ -513,8 +531,8 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             {/* Message metadata */}
             <div
               className={cn(
-                "flex items-center gap-1 mt-1 text-xs text-gray-500",
-                isCurrentUser ? "justify-end" : "justify-start",
+                "flex items-center gap-1 mt-2 text-xs",
+                isCurrentUser ? "justify-end text-blue-200" : "justify-start text-gray-500 dark:text-gray-400",
               )}
             >
               <Tooltip>
@@ -531,7 +549,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
 
             {/* Reactions */}
             {message.reactions && message.reactions.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-1">
+              <div className="flex flex-wrap gap-1 mt-2">
                 {message.reactions
                   .reduce(
                     (acc, reaction) => {
@@ -553,7 +571,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                       onClick={() => handleReaction(reaction.emoji)}
                       variant="secondary"
                       size="sm"
-                      className="h-6 px-2 text-xs rounded-full"
+                      className="h-6 px-2 text-xs rounded-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 hover:scale-105 transition-all duration-200 shadow-sm"
                     >
                       {reaction.emoji} {reaction.count}
                     </Button>

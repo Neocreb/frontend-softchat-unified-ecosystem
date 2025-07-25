@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { chatInitiationService } from "@/services/chatInitiationService";
 import {
   Plus,
   Search,
@@ -241,17 +242,21 @@ const Groups = () => {
 
         {/* Group name overlay */}
         <div className="absolute bottom-3 left-3 right-3">
-          <h3 className="font-bold text-white text-lg mb-1 line-clamp-2">
+          <h3 className="font-bold text-white text-base sm:text-lg mb-1 line-clamp-2">
             {group.name}
           </h3>
-          <div className="flex items-center text-white/80 text-sm">
-            <Users className="w-4 h-4 mr-1" />
-            <span>{formatNumber(group.members)} members</span>
+          <div className="flex flex-wrap items-center text-white/80 text-xs sm:text-sm gap-1">
+            <div className="flex items-center">
+              <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="whitespace-nowrap">{formatNumber(group.members)} members</span>
+            </div>
             {group.location && (
               <>
-                <span className="mx-2">•</span>
-                <MapPin className="w-3 h-3 mr-1" />
-                <span>{group.location}</span>
+                <span className="hidden sm:inline mx-2">•</span>
+                <div className="flex items-center min-w-0">
+                  <MapPin className="w-3 h-3 sm:w-3 sm:h-3 mr-1 flex-shrink-0" />
+                  <span className="truncate">{group.location}</span>
+                </div>
               </>
             )}
           </div>
@@ -279,42 +284,48 @@ const Groups = () => {
             )}
           </div>
 
-          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+          <div className="flex flex-col sm:flex-row gap-2" onClick={(e) => e.stopPropagation()}>
             {!group.isJoined && !group.isOwner ? (
               <Button
                 onClick={() => handleJoinGroup(group)}
-                className="flex-1 text-sm h-9"
+                className="flex-1 text-xs sm:text-sm h-8 sm:h-9"
+                size="sm"
               >
-                <UserPlus className="w-4 h-4 mr-2" />
-                {group.privacy === "private" ? "Request to Join" : "Join Group"}
+                <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">{group.privacy === "private" ? "Request to Join" : "Join Group"}</span>
+                <span className="sm:hidden">{group.privacy === "private" ? "Request" : "Join"}</span>
               </Button>
             ) : group.isJoined ? (
               <div className="flex gap-2 flex-1">
-                <Button 
-                  variant="outline" 
-                  className="flex-1 text-sm h-9"
+                <Button
+                  variant="outline"
+                  className="flex-1 text-xs sm:text-sm h-8 sm:h-9"
                   onClick={() => handleViewGroup(group.id)}
+                  size="sm"
                 >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  View Posts
+                  <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">View Posts</span>
+                  <span className="sm:hidden">View</span>
                 </Button>
                 <Button
                   variant="outline"
-                  size="icon"
+                  size="sm"
                   onClick={() => handleLeaveGroup(group.id)}
-                  className="h-9 w-9"
+                  className="h-8 w-8 sm:h-9 sm:w-9 p-0"
                 >
-                  <UserMinus className="w-4 h-4" />
+                  <UserMinus className="w-3 h-3 sm:w-4 sm:h-4" />
                 </Button>
               </div>
             ) : group.isOwner ? (
-              <Button 
-                variant="outline" 
-                className="flex-1 text-sm h-9"
+              <Button
+                variant="outline"
+                className="flex-1 text-xs sm:text-sm h-8 sm:h-9"
                 onClick={() => handleViewGroup(group.id)}
+                size="sm"
               >
-                <Settings className="w-4 h-4 mr-2" />
-                Manage Group
+                <Settings className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Manage Group</span>
+                <span className="sm:hidden">Manage</span>
               </Button>
             ) : null}
           </div>
@@ -479,8 +490,8 @@ const Groups = () => {
 
           {/* Search and Filters */}
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
+            <div className="flex flex-col gap-4">
+              <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   placeholder="Search groups..."
@@ -490,12 +501,12 @@ const Groups = () => {
                 />
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Select
                   value={selectedCategory}
                   onValueChange={setSelectedCategory}
                 >
-                  <SelectTrigger className="w-48">
+                  <SelectTrigger className="w-full sm:w-48">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -509,7 +520,7 @@ const Groups = () => {
                 </Select>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-full sm:w-40">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -617,7 +628,7 @@ const Groups = () => {
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
               {filteredGroups.length > 0 ? (
                 filteredGroups.map((group) => renderGroupCard(group))
               ) : (
@@ -646,7 +657,7 @@ const Groups = () => {
 
           <TabsContent value="joined" className="space-y-6">
             {getJoinedGroupsData().length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {getJoinedGroupsData().map((group) =>
                   renderGroupCard(group, true),
                 )}
@@ -670,7 +681,7 @@ const Groups = () => {
 
           <TabsContent value="owned" className="space-y-6">
             {getMyGroupsData().length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {getMyGroupsData().map((group) => renderGroupCard(group, true))}
               </div>
             ) : (

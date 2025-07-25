@@ -118,6 +118,8 @@ import Groups from "./pages/Groups";
 import Pages from "./pages/Pages";
 import GroupDetailView from "./components/groups/GroupDetailView";
 import PageDetailView from "./components/pages/PageDetailView";
+import GroupManagement from "./pages/GroupManagement";
+import PageManagement from "./pages/PageManagement";
 import SendGifts from "./pages/SendGifts";
 import {
   FriendsPage,
@@ -210,6 +212,15 @@ const LegacyAdminRoute = ({ children }: LegacyAdminRouteProps) => {
   }
 
   return <>{children}</>;
+};
+
+// Global call state component (simplified - no incoming call simulation)
+const GlobalCallProvider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <>
+      {children}
+    </>
+  );
 };
 
 // App routes component that uses auth context
@@ -364,12 +375,14 @@ const AppRoutes = () => {
           <Route path="friends" element={<FriendsPage />} />
           <Route path="groups" element={<Groups />} />
           <Route path="groups/:groupId" element={<GroupDetailView />} />
+          <Route path="groups/:groupId/manage" element={<GroupManagement />} />
           <Route path="ads" element={<AdsPage />} />
           <Route path="memories" element={<MemoriesPage />} />
           <Route path="saved" element={<SavedPage />} />
           <Route path="support" element={<SupportPage />} />
           <Route path="pages" element={<Pages />} />
           <Route path="pages/:pageId" element={<PageDetailView />} />
+          <Route path="pages/:pageId/manage" element={<PageManagement />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
           <Route path="advertising" element={<AdvertisingPolicy />} />
@@ -531,20 +544,22 @@ const App = () => {
                 <AdminProvider>
                   <AccessibilityProvider>
                     <TooltipProvider>
-                      <AppRoutes />
+                      <GlobalCallProvider>
+                        <AppRoutes />
 
-                      {/* Global Components */}
-                      <OnboardingTour />
-                      <NotificationSystem />
-                      <AccessibilityControlPanel />
-                      <KeyboardNavigationHelper />
-                      <ReadingGuide />
-                      <ConnectionStatus />
-                      <PWAInstallPrompt />
+                        {/* Global Components */}
+                        <OnboardingTour />
+                        <NotificationSystem />
+                        <AccessibilityControlPanel />
+                        <KeyboardNavigationHelper />
+                        <ReadingGuide />
+                        <ConnectionStatus />
+                        <PWAInstallPrompt />
 
-                      {/* Toasters */}
-                      <Toaster />
-                      <Sonner />
+                        {/* Toasters */}
+                        <Toaster />
+                        <Sonner />
+                      </GlobalCallProvider>
                     </TooltipProvider>
                   </AccessibilityProvider>
                 </AdminProvider>

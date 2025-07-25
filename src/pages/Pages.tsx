@@ -24,6 +24,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatNumber } from "@/utils/formatters";
 import { useToast } from "@/hooks/use-toast";
+import { chatInitiationService } from "@/services/chatInitiationService";
 import {
   Plus,
   Search,
@@ -294,30 +295,33 @@ const Pages = () => {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                    <PageTypeIcon className="w-4 h-4" />
-                    <span>{page.category}</span>
+                  <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-2">
+                    <div className="flex items-center gap-1">
+                      <PageTypeIcon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="truncate">{page.category}</span>
+                    </div>
                     {page.location && (
                       <>
-                        <span>•</span>
-                        <MapPin className="w-3 h-3" />
-                        <span className="truncate">{page.location}</span>
+                        <span className="hidden sm:inline">•</span>
+                        <div className="flex items-center gap-1 min-w-0">
+                          <MapPin className="w-3 h-3 flex-shrink-0" />
+                          <span className="truncate text-xs">{page.location}</span>
+                        </div>
                       </>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      <span className="font-medium">
-                        {formatNumber(page.followers)}
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="font-medium whitespace-nowrap">
+                        {formatNumber(page.followers)} followers
                       </span>
-                      <span>followers</span>
                     </div>
                     {page.posts !== undefined && (
                       <div className="flex items-center gap-1">
-                        <MessageSquare className="w-4 h-4" />
-                        <span>{formatNumber(page.posts)} posts</span>
+                        <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="whitespace-nowrap">{formatNumber(page.posts)} posts</span>
                       </div>
                     )}
                   </div>
@@ -385,51 +389,60 @@ const Pages = () => {
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-            {!page.isFollowing && !page.isOwner ? (
-              <Button
-                onClick={() => handleFollowPage(page)}
-                className="flex-1 h-9"
-              >
-                <UserPlus className="w-4 h-4 mr-2" />
-                Follow
-              </Button>
-            ) : page.isFollowing ? (
-              <div className="flex gap-2 flex-1">
-                <Button 
-                  variant="outline" 
-                  className="flex-1 h-9"
-                  onClick={() => handleViewPage(page.id)}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  View Page
-                </Button>
+          <div className="flex flex-col sm:flex-row gap-2" onClick={(e) => e.stopPropagation()}>
+            <div className="flex gap-2 flex-1">
+              {!page.isFollowing && !page.isOwner ? (
                 <Button
-                  variant="outline"
-                  onClick={() => handleUnfollowPage(page.id)}
-                  className="h-9"
+                  onClick={() => handleFollowPage(page)}
+                  className="flex-1 h-8 sm:h-9 text-xs sm:text-sm"
+                  size="sm"
                 >
-                  Following
+                  <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  Follow
                 </Button>
-              </div>
-            ) : page.isOwner ? (
-              <div className="flex gap-2 flex-1">
-                <Button 
-                  variant="outline" 
-                  className="flex-1 h-9"
-                  onClick={() => handleViewPage(page.id)}
-                >
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Manage Page
-                </Button>
-                <Button variant="outline" className="h-9">
-                  <Settings className="w-4 h-4" />
-                </Button>
-              </div>
-            ) : null}
+              ) : page.isFollowing ? (
+                <>
+                  <Button
+                    variant="outline"
+                    className="flex-1 h-8 sm:h-9 text-xs sm:text-sm"
+                    onClick={() => handleViewPage(page.id)}
+                    size="sm"
+                  >
+                    <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">View Page</span>
+                    <span className="sm:hidden">View</span>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleUnfollowPage(page.id)}
+                    className="h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3"
+                    size="sm"
+                  >
+                    <span className="hidden sm:inline">Following</span>
+                    <span className="sm:hidden">✓</span>
+                  </Button>
+                </>
+              ) : page.isOwner ? (
+                <>
+                  <Button
+                    variant="outline"
+                    className="flex-1 h-8 sm:h-9 text-xs sm:text-sm"
+                    onClick={() => handleViewPage(page.id)}
+                    size="sm"
+                  >
+                    <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Manage Page</span>
+                    <span className="sm:hidden">Manage</span>
+                  </Button>
+                  <Button variant="outline" className="h-8 w-8 sm:h-9 sm:w-9 p-0" size="sm">
+                    <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+                  </Button>
+                </>
+              ) : null}
+            </div>
 
-            <Button variant="ghost" size="icon" className="h-9 w-9">
-              <Share2 className="w-4 h-4" />
+            <Button variant="ghost" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0 flex-shrink-0">
+              <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
           </div>
         </CardContent>
@@ -626,8 +639,8 @@ const Pages = () => {
 
           {/* Search and Filters */}
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
+            <div className="flex flex-col gap-4">
+              <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
                   placeholder="Search pages..."
@@ -637,12 +650,12 @@ const Pages = () => {
                 />
               </div>
 
-              <div className="flex gap-2 flex-wrap">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                 <Select
                   value={selectedCategory}
                   onValueChange={setSelectedCategory}
                 >
-                  <SelectTrigger className="w-48">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -656,7 +669,7 @@ const Pages = () => {
                 </Select>
 
                 <Select value={selectedType} onValueChange={setSelectedType}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -670,7 +683,7 @@ const Pages = () => {
                 </Select>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -777,7 +790,7 @@ const Pages = () => {
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
               {filteredPages.length > 0 ? (
                 filteredPages.map((page) => renderPageCard(page))
               ) : (
@@ -805,7 +818,7 @@ const Pages = () => {
 
           <TabsContent value="following" className="space-y-6">
             {getFollowedPagesData().length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {getFollowedPagesData().map((page) =>
                   renderPageCard(page, false),
                 )}
@@ -829,7 +842,7 @@ const Pages = () => {
 
           <TabsContent value="owned" className="space-y-6">
             {getMyPagesData().length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                 {getMyPagesData().map((page) => renderPageCard(page, true))}
               </div>
             ) : (
