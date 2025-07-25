@@ -11,6 +11,7 @@ export const useChatThread = (threadId?: string) => {
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   // Load thread data
   const loadThread = useCallback(async () => {
