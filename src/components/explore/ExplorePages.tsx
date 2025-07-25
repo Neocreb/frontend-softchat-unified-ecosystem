@@ -576,8 +576,19 @@ const ExplorePages = ({ pages }: ExplorePagesProps) => {
                 </Badge>
               )}
             </div>
-            <div className="text-sm text-muted-foreground">
-              Showing posts from pages you follow first
+            <div className="flex items-center gap-2">
+              <div className="text-sm text-muted-foreground">
+                Showing posts from pages you follow first
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={loadPagePosts}
+                disabled={loading}
+                className="text-xs"
+              >
+                Refresh
+              </Button>
             </div>
           </div>
 
