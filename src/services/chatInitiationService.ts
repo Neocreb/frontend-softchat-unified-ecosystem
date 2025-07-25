@@ -323,9 +323,24 @@ class ChatInitiationService {
       }
     } catch (error) {
       console.error('Error handling message button:', error);
+
+      let errorMessage = "Failed to start conversation. Please try again.";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        if ('message' in error) {
+          errorMessage = (error as any).message;
+        } else if ('details' in error) {
+          errorMessage = (error as any).details;
+        } else {
+          errorMessage = "An unexpected error occurred";
+        }
+      }
+
       data.toast({
-        title: "Error",
-        description: "Failed to start conversation",
+        title: "Error starting conversation",
+        description: errorMessage,
         variant: "destructive"
       });
     }
