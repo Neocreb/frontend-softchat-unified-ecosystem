@@ -409,17 +409,18 @@ export const chatService = {
   },
 
   // Send a message
-  async sendMessage(request: SendMessageRequest): Promise<ChatMessage> {
+  async sendMessage(request: SendMessageRequest & { currentUserId?: string }): Promise<ChatMessage> {
     await new Promise((resolve) => setTimeout(resolve, 200));
 
+    const currentUserId = request.currentUserId || "user_1";
     const newMessage: ChatMessage = {
       id: generateMessageId(),
       threadId: request.threadId,
-      senderId: "user_1", // Current user
+      senderId: currentUserId, // Current user
       content: request.content,
       attachments: request.attachments,
       timestamp: new Date().toISOString(),
-      readBy: ["user_1"],
+      readBy: [currentUserId],
       messageType: request.messageType || "text",
       replyTo: request.replyTo,
     };
