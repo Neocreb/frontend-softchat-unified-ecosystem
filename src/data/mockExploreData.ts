@@ -286,6 +286,7 @@ export const pages = [
     pageType: "organization" as const,
     isFollowing: true,
     isOwner: false,
+    ownerId: "nasa-owner",
     website: "https://nasa.gov",
     location: "Washington, D.C.",
     email: "public-inquiries@nasa.gov",
