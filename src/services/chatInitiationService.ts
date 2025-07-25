@@ -144,7 +144,13 @@ class ChatInitiationService {
     initialMessage?: string;
   }): Promise<string> {
     const currentUser = await this.getCurrentUser();
-    if (!currentUser) throw new Error('No current user');
+    if (!currentUser) {
+      throw new Error('You must be logged in to start a conversation');
+    }
+
+    if (!data.participantId) {
+      throw new Error('Cannot start conversation: participant not found');
+    }
 
     const conversationData = {
       participants: [currentUser.id, data.participantId],
@@ -161,11 +167,18 @@ class ChatInitiationService {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      throw new Error(`Failed to create conversation: ${error.message}`);
+    }
 
     // Send initial message if provided
     if (data.initialMessage) {
-      await this.sendMessage(conversation.id, data.initialMessage);
+      try {
+        await this.sendMessage(conversation.id, data.initialMessage);
+      } catch (messageError) {
+        console.warn('Failed to send initial message:', messageError);
+        // Don't fail the whole operation if message sending fails
+      }
     }
 
     return conversation.id;
