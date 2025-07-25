@@ -493,8 +493,19 @@ const ExploreGroups = ({ groups }: ExploreGroupsProps) => {
                 </Badge>
               )}
             </div>
-            <div className="text-sm text-muted-foreground">
-              Showing posts from your joined groups first
+            <div className="flex items-center gap-2">
+              <div className="text-sm text-muted-foreground">
+                Showing posts from your joined groups first
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={loadGroupPosts}
+                disabled={loading}
+                className="text-xs"
+              >
+                Refresh
+              </Button>
             </div>
           </div>
 
