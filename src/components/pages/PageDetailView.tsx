@@ -749,7 +749,7 @@ const PageDetailView = () => {
                 type="page"
                 targetId={pageId!}
                 targetName={extendedPage.name}
-                ownerId={extendedPage.isOwner ? 'current-user' : 'page-owner-id'}
+                ownerId={extendedPage.ownerId || `page-owner-${pageId}`}
                 context="page inquiry"
                 variant="outline"
                 size="sm"
