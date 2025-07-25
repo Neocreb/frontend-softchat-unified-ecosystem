@@ -614,18 +614,21 @@ const ExplorePages = ({ pages }: ExplorePagesProps) => {
               {pagePosts.map((post) => (
                 <div key={post.id} className="space-y-2">
                   {/* Page context header */}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground px-2">
-                    <Avatar className="h-5 w-5">
-                      <AvatarImage src={post.pageAvatar} alt={post.pageName} />
-                      <AvatarFallback>{post.pageName.substring(0, 2).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <span>Posted by</span>
-                    <span className="font-semibold text-primary flex items-center gap-1">
-                      {post.pageName}
-                      {post.pageVerified && (
-                        <Verified className="h-3 w-3 text-blue-500" fill="currentColor" />
-                      )}
-                    </span>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground px-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-5 w-5">
+                        <AvatarImage src={post.pageAvatar} alt={post.pageName} />
+                        <AvatarFallback>{post.pageName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <span className="hidden sm:inline">Posted by</span>
+                      <span className="sm:hidden">By</span>
+                      <span className="font-semibold text-primary flex items-center gap-1 truncate max-w-[200px]">
+                        {post.pageName}
+                        {post.pageVerified && (
+                          <Verified className="h-3 w-3 text-blue-500" fill="currentColor" />
+                        )}
+                      </span>
+                    </div>
                     {[...mockFollowedPages, ...followedPages].some(p => p.id === post.pageId) && (
                       <Badge variant="secondary" className="text-xs">Following</Badge>
                     )}
