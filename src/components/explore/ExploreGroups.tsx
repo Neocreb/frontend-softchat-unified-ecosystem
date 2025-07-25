@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import { Post } from "@/types/post";
 import { Users } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Group {
   id: string;
