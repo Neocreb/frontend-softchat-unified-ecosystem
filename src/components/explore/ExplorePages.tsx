@@ -2,40 +2,10 @@ import { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { formatNumber } from "@/utils/formatters";
+import { Card, CardContent } from "@/components/ui/card";
 import EnhancedPostCard from "@/components/feed/EnhancedPostCard";
 import { Post } from "@/types/post";
-import { 
-  Plus, 
-  Users, 
-  Settings, 
-  Crown, 
-  UserPlus, 
-  MessageSquare, 
-  Calendar,
-  MapPin,
-  Globe,
-  Building,
-  Verified,
-  BarChart3,
-  Image as ImageIcon,
-  Edit,
-  Trash2,
-  Eye,
-  Heart,
-  Share2,
-  Star,
-  Store,
-  Briefcase
-} from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Building, Verified } from "lucide-react";
 
 interface Page {
   id: string;
