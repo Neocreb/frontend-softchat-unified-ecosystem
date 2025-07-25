@@ -168,7 +168,14 @@ class ChatInitiationService {
       .single();
 
     if (error) {
-      throw new Error(`Failed to create conversation: ${error.message}`);
+      // Handle specific error cases
+      if (error.code === '42P01') {
+        throw new Error("Chat feature is not fully configured. Please contact support.");
+      } else if (error.code === '23505') {
+        throw new Error("Conversation already exists.");
+      } else {
+        throw new Error(`Failed to create conversation: ${error.message}`);
+      }
     }
 
     // Send initial message if provided
