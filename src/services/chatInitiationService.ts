@@ -123,14 +123,48 @@ class ChatInitiationService {
         .eq('type', type)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-        console.error('Error finding conversation:', error);
-        return null;
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No rows returned - this is expected when no conversation exists
+          return null;
+        } else if (error.code === '42P01' || error.message.includes('schema cache') || error.message.includes('column')) {
+          // Table doesn't exist - check localStorage for mock conversations
+          console.warn('Database table not available, checking mock conversations');
+          return this.findMockConversation(currentUser.id, userId, type);
+        } else {
+          console.error('Error finding conversation:', error);
+          return null;
+        }
       }
 
       return data;
     } catch (error) {
       console.error('Error in findExistingConversation:', error);
+      // Fallback to checking mock conversations
+      try {
+        const currentUser = await this.getCurrentUser();
+        if (currentUser) {
+          return this.findMockConversation(currentUser.id, userId, type);
+        }
+      } catch (e) {
+        console.warn('Could not check mock conversations');
+      }
+      return null;
+    }
+  }
+
+  // Find existing mock conversation
+  private findMockConversation(currentUserId: string, userId: string, type: string): any {
+    try {
+      const mockConversations = JSON.parse(localStorage.getItem('mock_conversations') || '[]');
+      return mockConversations.find((conv: any) =>
+        conv.type === type &&
+        conv.participants &&
+        conv.participants.includes(currentUserId) &&
+        conv.participants.includes(userId)
+      );
+    } catch (e) {
+      console.warn('Could not access mock conversations from localStorage');
       return null;
     }
   }
