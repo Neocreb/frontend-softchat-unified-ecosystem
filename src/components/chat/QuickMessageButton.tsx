@@ -35,17 +35,26 @@ export const QuickMessageButton: React.FC<QuickMessageButtonProps> = ({
 
   const handleClick = async (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent parent click events
-    
-    await chatInitiationService.handleMessageButton({
-      type,
-      targetId,
-      targetName,
-      context,
-      adminIds,
-      ownerId,
-      navigate,
-      toast
-    });
+
+    try {
+      await chatInitiationService.handleMessageButton({
+        type,
+        targetId,
+        targetName,
+        context,
+        adminIds,
+        ownerId,
+        navigate,
+        toast
+      });
+    } catch (error) {
+      console.error('Error in QuickMessageButton:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to start conversation. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
