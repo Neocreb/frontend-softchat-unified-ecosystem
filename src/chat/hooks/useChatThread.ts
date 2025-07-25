@@ -61,7 +61,7 @@ export const useChatThread = (threadId?: string) => {
         setLoading(false);
       }
     },
-    [threadId],
+    [threadId, user?.id],
   );
 
   // Send message
