@@ -374,6 +374,7 @@ export const pages = [
     pageType: "public_figure" as const,
     isFollowing: true,
     isOwner: false,
+    ownerId: "gordon-ramsay-owner",
     website: "https://gordonramsay.com",
     location: "London, UK",
     email: "contact@gordonramsay.com",
