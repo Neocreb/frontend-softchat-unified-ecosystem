@@ -26,7 +26,7 @@ export const useChatThread = (threadId?: string) => {
         setThread(threadData);
 
         // Mark thread as read
-        await chatService.markAsRead(threadId, "user_1"); // Current user ID
+        await chatService.markAsRead(threadId, user?.id || "user_1"); // Current user ID
       } else {
         setError("Chat thread not found");
       }
