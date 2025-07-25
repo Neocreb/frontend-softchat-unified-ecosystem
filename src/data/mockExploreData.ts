@@ -330,6 +330,7 @@ export const pages = [
     pageType: "business" as const,
     isFollowing: false,
     isOwner: false,
+    ownerId: "apple-owner",
     website: "https://apple.com",
     location: "Cupertino, California",
     email: "media.help@apple.com",
@@ -351,6 +352,7 @@ export const pages = [
     pageType: "business" as const,
     isFollowing: false,
     isOwner: true,
+    ownerId: "current-user-id", // This is the user's own page
     website: "https://mycoffeeshop.local",
     location: "Downtown Portland",
     email: "hello@mycoffeeshop.local",
