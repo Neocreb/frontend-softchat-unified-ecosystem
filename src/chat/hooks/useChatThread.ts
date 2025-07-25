@@ -36,7 +36,7 @@ export const useChatThread = (threadId?: string) => {
     } finally {
       setLoading(false);
     }
-  }, [threadId]);
+  }, [threadId, user?.id]);
 
   // Load messages
   const loadMessages = useCallback(
