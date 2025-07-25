@@ -396,6 +396,7 @@ export const pages = [
     pageType: "organization" as const,
     isFollowing: false,
     isOwner: false,
+    ownerId: "green-earth-owner",
     website: "https://greenearthinitiative.org",
     location: "Global",
     email: "info@greenearthinitiative.org",
