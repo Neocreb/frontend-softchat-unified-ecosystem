@@ -242,6 +242,7 @@ export const pages = [
     pageType: "brand" as const,
     isFollowing: true,
     isOwner: false,
+    ownerId: "natgeo-owner",
     website: "https://nationalgeographic.com",
     location: "Washington, D.C.",
     email: "info@natgeo.com",
