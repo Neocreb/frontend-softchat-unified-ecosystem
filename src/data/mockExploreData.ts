@@ -308,6 +308,7 @@ export const pages = [
     pageType: "brand" as const,
     isFollowing: true,
     isOwner: false,
+    ownerId: "netflix-owner",
     website: "https://netflix.com",
     location: "Los Gatos, California",
     email: "press@netflix.com",
