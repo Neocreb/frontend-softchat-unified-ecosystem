@@ -531,13 +531,16 @@ const ExploreGroups = ({ groups }: ExploreGroupsProps) => {
               {groupPosts.map((post) => (
                 <div key={post.id} className="space-y-2">
                   {/* Group context header */}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground px-2">
-                    <Avatar className="h-5 w-5">
-                      <AvatarImage src={post.groupAvatar} alt={post.groupName} />
-                      <AvatarFallback>{post.groupName.substring(0, 2).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <span>Posted in</span>
-                    <span className="font-semibold text-primary">{post.groupName}</span>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground px-2 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-5 w-5">
+                        <AvatarImage src={post.groupAvatar} alt={post.groupName} />
+                        <AvatarFallback>{post.groupName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <span className="hidden sm:inline">Posted in</span>
+                      <span className="sm:hidden">From</span>
+                      <span className="font-semibold text-primary truncate max-w-[200px]">{post.groupName}</span>
+                    </div>
                     {[...mockJoinedGroups, ...joinedGroups].some(g => g.id === post.groupId) && (
                       <Badge variant="secondary" className="text-xs">Joined</Badge>
                     )}
