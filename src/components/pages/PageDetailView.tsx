@@ -76,6 +76,7 @@ interface Page {
   pageType: "business" | "brand" | "public_figure" | "community" | "organization";
   isFollowing?: boolean;
   isOwner?: boolean;
+  ownerId?: string;
   website?: string;
   location?: string;
   email?: string;
