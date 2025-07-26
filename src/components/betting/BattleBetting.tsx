@@ -70,7 +70,7 @@ interface BattleBettingProps {
   };
 }
 
-const quickBetAmounts = [10, 25, 50, 100, 250];
+const quickBetAmounts = [10, 20, 50, 100, 250];
 
 const BattleBetting: React.FC<BattleBettingProps> = ({
   battleId,
