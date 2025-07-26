@@ -771,8 +771,8 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
       {/* Battle Betting Modal */}
       {showBetting && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[110] p-4">
-          <div className="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[110] p-4 pb-20 md:pb-4">
+          <div className="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[85vh] overflow-auto">
             <div className="p-4 border-b border-gray-700 flex items-center justify-between">
               <h3 className="text-white font-semibold text-lg">Battle Betting</h3>
               <Button variant="ghost" size="icon" onClick={() => setShowBetting(false)}>
