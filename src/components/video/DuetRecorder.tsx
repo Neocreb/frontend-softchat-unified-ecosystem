@@ -66,6 +66,10 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
   const [recordingTime, setRecordingTime] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+
+  // Permission state
+  const [permissionState, setPermissionState] = useState<'checking' | 'granted' | 'denied' | 'prompt'>('checking');
+  const [permissionError, setPermissionError] = useState<string>('');
   
   // Audio/Video settings
   const [audioSource, setAudioSource] = useState<'original' | 'both' | 'voiceover'>('both');
