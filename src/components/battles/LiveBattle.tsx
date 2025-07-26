@@ -395,6 +395,39 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
         </div>
       </div>
 
+      {/* Betting Stats Panel */}
+      {bettingPool.totalPool > 0 && (
+        <div className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-700 p-3">
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1">
+                <Coins className="w-4 h-4 text-yellow-400" />
+                <span className="text-white font-medium">{bettingPool.totalPool} SP Pool</span>
+              </div>
+              <div className="text-gray-300">
+                {bettingPool.totalBettors} bettors
+              </div>
+            </div>
+
+            <div className="flex items-center gap-6">
+              <div className="text-center">
+                <div className="text-red-400 font-medium">
+                  {Math.round((bettingPool.creator1Total / bettingPool.totalPool) * 100)}%
+                </div>
+                <div className="text-xs text-gray-400">{creator1.displayName}</div>
+              </div>
+
+              <div className="text-center">
+                <div className="text-blue-400 font-medium">
+                  {Math.round((bettingPool.creator2Total / bettingPool.totalPool) * 100)}%
+                </div>
+                <div className="text-xs text-gray-400">{creator2.displayName}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Battle Area */}
       <div className="flex-1 relative">
         {/* Split Screen */}
