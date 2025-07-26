@@ -640,8 +640,14 @@ const VideoCard: React.FC<{
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => setShowDuetRecorder(true)}
-              className="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 backdrop-blur-sm transition-all duration-200"
+              onClick={() => {
+                setShowDuetRecorder(true);
+                toast({
+                  title: "Creating Duet 🎬",
+                  description: "Get ready to duet with this amazing video!",
+                });
+              }}
+              className="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
             >
               <Users className="w-7 h-7" />
             </Button>
@@ -653,8 +659,14 @@ const VideoCard: React.FC<{
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => setShowBattleInterface(true)}
-              className="w-12 h-12 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30 backdrop-blur-sm transition-all duration-200"
+              onClick={() => {
+                setShowBattleInterface(true);
+                toast({
+                  title: "Battle Challenge! ⚔️",
+                  description: "Ready to compete in an epic live battle?",
+                });
+              }}
+              className="w-12 h-12 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
             >
               <Sword className="w-7 h-7" />
             </Button>
