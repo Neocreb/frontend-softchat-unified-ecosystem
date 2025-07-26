@@ -374,16 +374,7 @@ setInterval(
 // STATIC FILE SERVING (PRODUCTION)
 // =============================================================================
 
-// Serve static files from built frontend
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const staticPath = path.join(__dirname, "../dist");
 
-app.use(express.static(staticPath));
-
-// Serve index.html for all unmatched routes (SPA support)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(staticPath, "index.html"));
-});
 
 // =============================================================================
 // ERROR HANDLING
