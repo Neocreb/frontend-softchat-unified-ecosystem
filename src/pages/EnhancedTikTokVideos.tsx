@@ -467,6 +467,7 @@ const VideoCard: React.FC<{
 const EnhancedTikTokVideos: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
