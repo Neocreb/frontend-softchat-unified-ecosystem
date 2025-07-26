@@ -818,6 +818,38 @@ const EnhancedTikTokVideos: React.FC = () => {
         />
       )}
 
+      {/* Duet Recorder */}
+      {showDuetRecorder && duetOriginalVideo && (
+        <DuetEnabledVideoPlayer
+          video={{
+            id: duetOriginalVideo.id,
+            url: duetOriginalVideo.url,
+            thumbnail: duetOriginalVideo.thumbnail,
+            duration: duetOriginalVideo.duration,
+            title: duetOriginalVideo.title,
+            description: duetOriginalVideo.title,
+            author: {
+              id: duetOriginalVideo.creatorId,
+              name: duetOriginalVideo.creatorUsername,
+              username: duetOriginalVideo.creatorUsername,
+              avatar: 'https://i.pravatar.cc/150?u=' + duetOriginalVideo.creatorId,
+              verified: false,
+            },
+            stats: {
+              likes: 0,
+              comments: 0,
+              shares: 0,
+              duets: 0,
+            }
+          }}
+          allowDuets={false}
+          autoPlay={false}
+          showControls={false}
+          onDuetComplete={handleDuetComplete}
+          className="fixed inset-0 z-50"
+        />
+      )}
+
       {/* Content Discovery Engine */}
       <Dialog open={isDiscoveryOpen} onOpenChange={setIsDiscoveryOpen}>
         <DialogContent className="max-w-4xl w-[95vw] h-[90vh] bg-black border-gray-800 p-0">
