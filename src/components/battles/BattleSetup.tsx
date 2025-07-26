@@ -60,7 +60,7 @@ interface BattleConfig {
   duration: number;
   battleType: 'instant' | 'scheduled';
   inviteeId?: string;
-  allowBetting: boolean;
+  allowVoting: boolean;
   isPublic: boolean;
   scheduledFor?: Date;
   tags: string[];
