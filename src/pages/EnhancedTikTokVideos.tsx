@@ -544,7 +544,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following" | "challenges">("foryou");
+  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
