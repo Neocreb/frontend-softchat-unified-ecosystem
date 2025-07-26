@@ -812,7 +812,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       {/* Battle Results Modal */}
       {showResults && battleResults && (
         <Dialog open={showResults} onOpenChange={setShowResults}>
-          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md">
+          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md z-[110]">
             <DialogHeader>
               <DialogTitle className="text-center text-xl">Battle Results 🏆</DialogTitle>
             </DialogHeader>
