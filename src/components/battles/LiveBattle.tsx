@@ -787,22 +787,22 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                   ...creator1,
                   currentScore: scores.creator1,
                   winRate: 75,
-                  totalBets: 145,
+                  totalVotes: 145,
                   isLeading: scores.creator1 > scores.creator2,
                 }}
                 creator2={{
                   ...creator2,
                   currentScore: scores.creator2,
                   winRate: 68,
-                  totalBets: 89,
+                  totalVotes: 89,
                   isLeading: scores.creator2 > scores.creator1,
                 }}
                 isLive={timeLeft > 0}
                 timeRemaining={timeLeft}
                 userBalance={userBalance}
-                onPlaceBet={handlePlaceBet}
-                userBets={userBets}
-                bettingPool={bettingPool}
+                onPlaceVote={handlePlaceVote}
+                userVotes={userVotes}
+                votingPool={votingPool}
               />
             </div>
           </div>
