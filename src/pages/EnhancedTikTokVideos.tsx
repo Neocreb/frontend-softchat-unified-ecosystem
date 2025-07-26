@@ -800,10 +800,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                     <Sparkles className="w-4 h-4 mr-2" />
                     Start Battle
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowCreateChallenge(true)} className="hover:bg-gray-800">
-                    <Target className="w-4 h-4 mr-2" />
-                    Create Challenge
-                  </DropdownMenuItem>
+
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
