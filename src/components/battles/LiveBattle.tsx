@@ -856,7 +856,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
               {/* User Results */}
               <div className="text-center">
-                {battleResults.userBetOutcome === 'won' ? (
+                {battleResults.userVoteOutcome === 'won' ? (
                   <div className="space-y-2">
                     <div className="text-6xl">🎉</div>
                     <h4 className="text-xl font-bold text-green-400">You Won!</h4>
@@ -867,7 +867,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                       Your winnings have been added to your balance
                     </p>
                   </div>
-                ) : battleResults.userBetOutcome === 'lost' ? (
+                ) : battleResults.userVoteOutcome === 'lost' ? (
                   <div className="space-y-2">
                     <div className="text-6xl">❌</div>
                     <h4 className="text-xl font-bold text-red-400">You Lost</h4>
@@ -880,7 +880,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                     <div className="text-6xl">👀</div>
                     <h4 className="text-xl font-bold text-gray-400">You Watched</h4>
                     <p className="text-gray-400 text-sm">
-                      Join the betting next time for a chance to win!
+                      Join the voting next time for a chance to win!
                     </p>
                   </div>
                 )}
