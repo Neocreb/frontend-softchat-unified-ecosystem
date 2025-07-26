@@ -7,6 +7,7 @@ import {
   insertPostSchema,
   insertProductSchema,
 } from "@shared/schema";
+import challengesApi from "./routes/challenges-api.js";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Blog RSS Feed endpoint
