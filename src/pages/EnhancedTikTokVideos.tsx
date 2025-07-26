@@ -679,14 +679,7 @@ const EnhancedTikTokVideos: React.FC = () => {
     // You could add logic here to add the new duet to the current videos list
   };
 
-  const handleCreateChallenge = (challengeData: any) => {
-    console.log('Challenge created:', challengeData);
-    setShowCreateChallenge(false);
-    toast({
-      title: "Challenge Created! 🎯",
-      description: "Your challenge is now live and accepting submissions.",
-    });
-  };
+
 
   const handleJoinChallenge = (challengeId: string) => {
     console.log('Joining challenge:', challengeId);
