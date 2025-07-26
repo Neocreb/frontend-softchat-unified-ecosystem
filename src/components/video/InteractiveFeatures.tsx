@@ -443,7 +443,13 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               variant="ghost"
               size="icon"
               className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-sm"
-              onClick={() => setShowDuetDialog(true)}
+              onClick={() => {
+                if (onDuetCreate) {
+                  onDuetCreate(videoId);
+                } else {
+                  setShowDuetDialog(true);
+                }
+              }}
             >
               <Users className="w-6 h-6" />
             </Button>
