@@ -476,7 +476,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
+  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following" | "challenges">("foryou");
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -490,6 +490,8 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [selectedDuetStyle, setSelectedDuetStyle] = useState<'side-by-side' | 'react-respond' | 'picture-in-picture'>('side-by-side');
   const [showBattleSetup, setShowBattleSetup] = useState(false);
   const [showLiveBattle, setShowLiveBattle] = useState(false);
+  const [showCreateChallenge, setShowCreateChallenge] = useState(false);
+  const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
