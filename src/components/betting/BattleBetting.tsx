@@ -84,7 +84,7 @@ const BattleBetting: React.FC<BattleBettingProps> = ({
   bettingPool,
 }) => {
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
-  const [betAmount, setBetAmount] = useState(25);
+  const [betAmount, setBetAmount] = useState(20);
   const [customAmount, setCustomAmount] = useState('');
   const [showBetConfirm, setShowBetConfirm] = useState(false);
   const [bettingLocked, setBettingLocked] = useState(false);
