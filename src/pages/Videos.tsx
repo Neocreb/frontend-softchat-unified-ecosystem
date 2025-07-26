@@ -564,11 +564,44 @@ const VideoCard: React.FC<{
 
         {/* Right side - Enhanced Interactive Features */}
         <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-28 md:pb-8">
-          <InteractiveFeatures
-            videoId={video.id}
+          <EnhancedInteractiveFeatures
+            videoData={{
+              id: video.id,
+              url: video.videoUrl,
+              duration: video.duration,
+              creatorId: video.user.id,
+              creatorUsername: video.user.username,
+              creatorDisplayName: video.user.displayName,
+              creatorAvatar: video.user.avatar,
+              title: video.description,
+              description: video.description,
+              thumbnail: video.thumbnail,
+              viewCount: parseInt(video.stats.views.replace(/[^\d]/g, '')) || 0,
+              likeCount: video.stats.likes,
+              shareCount: video.stats.shares,
+              commentCount: video.stats.comments,
+              allowDuets: video.allowDuets ?? true,
+              allowComments: video.allowComments ?? true,
+              isMonetized: true,
+              softPointsEarned: Math.floor(Math.random() * 500) + 50, // Mock earnings
+              tipCount: Math.floor(Math.random() * 20) + 1, // Mock tip count
+            }}
             isLiveStream={video.isLiveStream}
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
+            allowBattles={true} // Enable battles for all videos
+            onDuetCreate={(originalVideoId) => {
+              console.log("Duet created for video:", originalVideoId);
+              // Handle duet creation
+            }}
+            onBattleInvite={(targetUserId) => {
+              console.log("Battle invite sent to:", targetUserId);
+              // Handle battle invitation
+            }}
+            onTipSent={(amount, currency) => {
+              console.log(`Tip sent: ${amount} ${currency}`);
+              // Handle tip transaction
+            }}
           />
         </div>
       </div>
