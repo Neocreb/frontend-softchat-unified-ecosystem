@@ -2303,3 +2303,14 @@
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-26T21:41:02.802Z","url":"/","userAgent":"node"}
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-26T21:41:04.803Z","url":"/","userAgent":"node"}
 {"level":"error","message":"Unhandled Rejection at:","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:06.721Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.953Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.957Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.957Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.957Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.958Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.958Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.958Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-07-26T21:41:13.958Z"}
+{"duration":"5ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-26T21:41:15.622Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-26T21:41:16.232Z","url":"/?reload=0","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-07-26T21:41:17.613Z","url":"/","userAgent":"node"}
