@@ -431,8 +431,26 @@ const VideoCard: React.FC<{
 
         {/* Right side - Interactive Features */}
         <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-28 md:pb-8">
-          <InteractiveFeatures
-            videoId={video.id}
+          <EnhancedInteractiveFeatures
+            videoData={{
+              id: video.id,
+              user: video.user,
+              description: video.description,
+              music: video.music,
+              stats: video.stats,
+              hashtags: video.hashtags,
+              videoUrl: video.videoUrl,
+              thumbnail: video.thumbnail,
+              duration: video.duration,
+              timestamp: video.timestamp,
+              category: video.category,
+              isLiveStream: video.isLiveStream,
+              allowDuets: video.allowDuets,
+              allowComments: video.allowComments,
+              hasCaption: video.hasCaption,
+              isSponsored: video.isSponsored,
+              challenge: video.challenge,
+            }}
             isLiveStream={video.isLiveStream}
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
