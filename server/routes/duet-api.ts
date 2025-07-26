@@ -178,12 +178,8 @@ router.post('/create', authMiddleware, upload.fields([
     const originalCreator = originalCreatorProfile[0];
 
     // Upload duet video to storage
-    const duetVideoUrl = await fileService.uploadFile({
-      buffer: duetVideoFile.buffer,
-      mimetype: duetVideoFile.mimetype,
-      originalname: duetVideoFile.originalname,
-      folder: 'duets',
-    });
+    const duetUploadResult = await FileService.uploadFile(duetVideoFile, 'duets');
+    const duetVideoUrl = duetUploadResult.url;
 
     // Upload thumbnail if provided
     let thumbnailUrl = null;
