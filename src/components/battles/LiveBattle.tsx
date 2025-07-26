@@ -151,25 +151,57 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
           setTimeout(() => {
             setBattlePhase('ended');
             const winnerId = scores.creator1 > scores.creator2 ? creator1.id : creator2.id;
-            onBattleEnd(winnerId);
+
+            // Calculate battle results
+            const totalPool = bettingPool.totalPool;
+            const platformFee = totalPool * 0.1;
+            const winningCreatorBonus = totalPool * 0.2;
+            const winnersPool = totalPool * 0.7;
+
+            // Calculate user winnings
+            const userWinningBets = userBets.filter(bet => bet.creatorId === winnerId);
+            const totalWinningBets = winnerId === creator1.id ? bettingPool.creator1Total : bettingPool.creator2Total;
+            const userWinnings = totalWinningBets > 0
+              ? userWinningBets.reduce((sum, bet) => sum + bet.amount, 0) * (winnersPool / totalWinningBets)
+              : 0;
+
+            const userBetOutcome = userBets.length === 0 ? 'none' :
+              userWinningBets.length > 0 ? 'won' : 'lost';
+
+            setBattleResults({
+              winnerId,
+              totalPool,
+              winningCreatorBonus,
+              platformFee,
+              userWinnings,
+              userBetOutcome,
+            });
+
+            setTimeout(() => {
+              setShowResults(true);
+            }, 1000);
+
+            setTimeout(() => {
+              onBattleEnd(winnerId);
+            }, 5000);
           }, 3000);
           return 0;
         }
-        
-        // Battle ending warning
+
+        // Battle ending warning and betting lock
         if (prev === 30) {
           toast({
             title: "30 seconds left! ⏰",
-            description: "Battle ending soon!",
+            description: "Betting is now locked!",
           });
         }
-        
+
         return prev - 1;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [bettingPool, userBets, scores, creator1.id, creator2.id, onBattleEnd, toast]);
 
   // Simulate live updates
   useEffect(() => {
