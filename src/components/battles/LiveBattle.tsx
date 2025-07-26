@@ -298,6 +298,32 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Betting functions
+  const handlePlaceBet = (bet: Omit<Bet, 'id' | 'timestamp' | 'status'>) => {
+    const newBet: Bet = {
+      ...bet,
+      id: Date.now().toString(),
+      timestamp: new Date(),
+      status: 'active',
+    };
+
+    setUserBets(prev => [...prev, newBet]);
+
+    // Update betting pool
+    setBettingPool(prev => ({
+      ...prev,
+      creator1Total: bet.creatorId === creator1.id ? prev.creator1Total + bet.amount : prev.creator1Total,
+      creator2Total: bet.creatorId === creator2.id ? prev.creator2Total + bet.amount : prev.creator2Total,
+      totalPool: prev.totalPool + bet.amount,
+      totalBettors: prev.totalBettors + 1,
+    }));
+
+    toast({
+      title: "Bet Placed! 🎯",
+      description: `${bet.amount} SP on ${bet.creatorId === creator1.id ? creator1.displayName : creator2.displayName}`,
+    });
+  };
+
   const getLeadingCreator = () => {
     return scores.creator1 > scores.creator2 ? creator1 : creator2;
   };
