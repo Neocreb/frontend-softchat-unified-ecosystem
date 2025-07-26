@@ -690,6 +690,17 @@ const EnhancedTikTokVideos: React.FC = () => {
                   >
                     Following
                   </TabsTrigger>
+                  <TabsTrigger
+                    value="challenges"
+                    className={cn(
+                      "bg-transparent border-0 text-base font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
+                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-purple-500",
+                      "text-white/60 hover:text-white transition-colors flex items-center gap-1"
+                    )}
+                  >
+                    <Target className="w-4 h-4" />
+                    Challenges
+                  </TabsTrigger>
                 </TabsList>
               </Tabs>
 
