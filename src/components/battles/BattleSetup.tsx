@@ -290,7 +290,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                   <div className="flex items-center justify-between">
                     <Label htmlFor="voting">Allow Voting</Label>
                     <Switch
-                      id="betting"
+                      id="voting"
                       checked={battleConfig.allowVoting}
                       onCheckedChange={(checked) => setBattleConfig({ ...battleConfig, allowVoting: checked })}
                     />
@@ -411,7 +411,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                                   @{creator.username} • {creator.followers.toLocaleString()} followers
                                 </div>
                                 <div className="flex gap-4 text-xs text-gray-500 mt-1">
-                                  <span>🏆 {creator.battlesWon} wins</span>
+                                  <span>��� {creator.battlesWon} wins</span>
                                   <span>💔 {creator.battlesLost} losses</span>
                                   {!creator.isOnline && creator.lastSeen && (
                                     <span>Last seen {creator.lastSeen}</span>
