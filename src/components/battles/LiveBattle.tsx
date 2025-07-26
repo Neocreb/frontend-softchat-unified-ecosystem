@@ -96,7 +96,7 @@ interface LiveBattleProps {
 
 const gifts: Gift[] = [
   { id: '1', name: 'Rose', icon: '🌹', value: 1, color: 'text-pink-400' },
-  { id: '2', name: 'Heart', icon: '❤️', value: 5, color: 'text-red-400' },
+  { id: '2', name: 'Heart', icon: '❤��', value: 5, color: 'text-red-400' },
   { id: '3', name: 'Diamond', icon: '💎', value: 10, color: 'text-blue-400' },
   { id: '4', name: 'Crown', icon: '👑', value: 25, color: 'text-yellow-400' },
   { id: '5', name: 'Rocket', icon: '🚀', value: 50, color: 'text-purple-400' },
@@ -125,6 +125,19 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
   const [comboCount, setComboCount] = useState(0);
   const [showCombo, setShowCombo] = useState(false);
   const [battlePhase, setBattlePhase] = useState<'active' | 'ending' | 'ended'>('active');
+
+  // Betting state
+  const [showBetting, setShowBetting] = useState(false);
+  const [userBalance] = useState(2500); // Mock user balance
+  const [userBets, setUserBets] = useState<Bet[]>([]);
+  const [bettingPool, setBettingPool] = useState({
+    creator1Total: 450,
+    creator2Total: 780,
+    totalPool: 1230,
+    totalBettors: 23,
+  });
+  const [battleResults, setBattleResults] = useState<BattleResults | null>(null);
+  const [showResults, setShowResults] = useState(false);
   
   const commentsRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
