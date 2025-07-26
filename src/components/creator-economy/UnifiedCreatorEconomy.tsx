@@ -577,16 +577,42 @@ const UnifiedCreatorEconomy: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="activities">Activities</TabsTrigger>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="challenges">Challenges</TabsTrigger>
-          <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
-          <TabsTrigger value="rewards">Rewards</TabsTrigger>
-          <TabsTrigger value="referrals">Referrals</TabsTrigger>
-          <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="inline-flex w-max min-w-full">
+            <TabsTrigger value="overview" className="flex items-center gap-2 min-w-0">
+              <BarChart3 className="w-4 h-4" />
+              <span className="hidden sm:inline">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="activities" className="flex items-center gap-2 min-w-0">
+              <Activity className="w-4 h-4" />
+              <span className="hidden sm:inline">Activities</span>
+            </TabsTrigger>
+            <TabsTrigger value="content" className="flex items-center gap-2 min-w-0">
+              <Video className="w-4 h-4" />
+              <span className="hidden sm:inline">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="challenges" className="flex items-center gap-2 min-w-0">
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">Challenges</span>
+            </TabsTrigger>
+            <TabsTrigger value="leaderboard" className="flex items-center gap-2 min-w-0">
+              <Trophy className="w-4 h-4" />
+              <span className="hidden sm:inline">Leaderboard</span>
+            </TabsTrigger>
+            <TabsTrigger value="rewards" className="flex items-center gap-2 min-w-0">
+              <Gift className="w-4 h-4" />
+              <span className="hidden sm:inline">Rewards</span>
+            </TabsTrigger>
+            <TabsTrigger value="referrals" className="flex items-center gap-2 min-w-0">
+              <UserPlus className="w-4 h-4" />
+              <span className="hidden sm:inline">Referrals</span>
+            </TabsTrigger>
+            <TabsTrigger value="withdraw" className="flex items-center gap-2 min-w-0">
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">Withdraw</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
