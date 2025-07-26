@@ -84,7 +84,7 @@ interface BattleResults {
   winningCreatorBonus: number;
   platformFee: number;
   userWinnings: number;
-  userBetOutcome: 'won' | 'lost' | 'none';
+  userVoteOutcome: 'won' | 'lost' | 'none';
 }
 
 interface LiveBattleProps {
