@@ -317,12 +317,12 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
     });
   };
 
-  const handleDuetRequest = () => {
+  const handleDuetRequest = (duetStyle: 'side-by-side' | 'react-respond' | 'picture-in-picture') => {
     if (onDuetCreate) {
       onDuetCreate(videoId);
     }
     setShowDuetDialog(false);
-    toast({ title: "Duet creation started!" });
+    toast({ title: `${duetStyle.replace('-', ' ')} duet creation started!` });
   };
 
   const handleReplyVideo = () => {
