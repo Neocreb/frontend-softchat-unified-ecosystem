@@ -16,7 +16,7 @@ import {
   Home,
   Sparkles,
   Award,
-  Target,
+
   Eye,
   Users,
   ChevronUp,
