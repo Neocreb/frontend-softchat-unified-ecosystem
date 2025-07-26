@@ -84,7 +84,7 @@ export default function CreatorEconomy() {
 
         {/* Tab Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-9">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               <span className="hidden sm:inline">Overview</span>
@@ -92,6 +92,18 @@ export default function CreatorEconomy() {
             <TabsTrigger value="content" className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4" />
               <span className="hidden sm:inline">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="challenges" className="flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span className="hidden sm:inline">Challenges</span>
+            </TabsTrigger>
+            <TabsTrigger value="leaderboard" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              <span className="hidden sm:inline">Leaderboard</span>
+            </TabsTrigger>
+            <TabsTrigger value="rewards" className="flex items-center gap-2">
+              <Gift className="w-4 h-4" />
+              <span className="hidden sm:inline">Rewards</span>
             </TabsTrigger>
             <TabsTrigger value="boosts" className="flex items-center gap-2">
               <Zap className="w-4 h-4" />
@@ -107,10 +119,6 @@ export default function CreatorEconomy() {
             <TabsTrigger value="withdraw" className="flex items-center gap-2">
               <ArrowUpDown className="w-4 h-4" />
               <span className="hidden sm:inline">Withdraw</span>
-            </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
-              <History className="w-4 h-4" />
-              <span className="hidden sm:inline">History</span>
             </TabsTrigger>
             <TabsTrigger
               value="partnerships"
