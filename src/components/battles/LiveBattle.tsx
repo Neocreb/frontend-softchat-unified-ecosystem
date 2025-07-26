@@ -132,6 +132,8 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
   const [showVoting, setShowVoting] = useState(false);
   const [userBalance] = useState(2500); // Mock user balance
   const [userVotes, setUserVotes] = useState<Vote[]>([]);
+  const [hasUserVoted, setHasUserVoted] = useState(false);
+  const [userVotedCreatorId, setUserVotedCreatorId] = useState<string>();
   const [votingPool, setVotingPool] = useState({
     creator1Total: 450,
     creator2Total: 780,
@@ -192,11 +194,11 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
           return 0;
         }
 
-        // Battle ending warning and voting lock
-        if (prev === 30) {
+        // Voting closes 3 minutes after battle starts
+        if (prev === 180) {
           toast({
-            title: "30 seconds left! ⏰",
-            description: "Voting is now locked!",
+            title: "Voting Closed! 🔒",
+            description: "Voting window has ended",
           });
         }
 
@@ -304,6 +306,16 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
   // Voting functions
   const handlePlaceVote = (vote: Omit<Vote, 'id' | 'timestamp' | 'status'>) => {
+    // Check if user has already voted
+    if (hasUserVoted) {
+      toast({
+        title: "Already Voted! ❌",
+        description: "You can only vote once per battle",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const newVote: Vote = {
       ...vote,
       id: Date.now().toString(),
@@ -312,6 +324,8 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
     };
 
     setUserVotes(prev => [...prev, newVote]);
+    setHasUserVoted(true);
+    setUserVotedCreatorId(vote.creatorId);
 
     // Update voting pool
     setVotingPool(prev => ({
@@ -326,6 +340,9 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       title: "Vote Placed! 🎯",
       description: `${vote.amount} SP on ${vote.creatorId === creator1.id ? creator1.displayName : creator2.displayName}`,
     });
+
+    // Close voting modal after successful vote
+    setShowVoting(false);
   };
 
   const getLeadingCreator = () => {
@@ -366,22 +383,33 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
               Battle Ending!
             </div>
           )}
-          {timeLeft > 30 && (
+          {timeLeft > 180 && (
             <div className="text-xs text-gray-300 mt-1">
-              Voting closes in {Math.max(0, timeLeft - 30)}s
+              Voting closes in {Math.max(0, timeLeft - 180)}s
             </div>
           )}
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Voting button - only show if voting is still open */}
-          {timeLeft > 30 && (
+          {/* Voting button - only show if voting is still open and user hasn't voted */}
+          {timeLeft > 180 && !hasUserVoted && (
             <Button
               onClick={() => setShowVoting(true)}
               className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4"
             >
               <DollarSign className="w-4 h-4 mr-1" />
               Place Vote
+            </Button>
+          )}
+
+          {/* Show voted status */}
+          {hasUserVoted && (
+            <Button
+              disabled
+              className="bg-gray-600 text-white px-4 cursor-not-allowed"
+            >
+              <CheckCircle className="w-4 h-4 mr-1" />
+              Voted
             </Button>
           )}
 
@@ -802,6 +830,8 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                 userBalance={userBalance}
                 onPlaceVote={handlePlaceVote}
                 userVotes={userVotes}
+                hasUserVoted={hasUserVoted}
+                userVotedCreatorId={userVotedCreatorId}
                 votingPool={votingPool}
               />
             </div>
