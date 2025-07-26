@@ -15,6 +15,7 @@ import {
   Gift,
   Eye,
   Star,
+  Trophy,
 } from "lucide-react";
 
 export default function CreatorEconomy() {
