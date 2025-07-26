@@ -362,6 +362,11 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
               Battle Ending!
             </div>
           )}
+          {timeLeft > 30 && (
+            <div className="text-xs text-gray-300 mt-1">
+              Betting closes in {Math.max(0, timeLeft - 30)}s
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
