@@ -241,6 +241,9 @@ app.use("/api/marketplace", marketplaceApiRoutes);
 // Admin API Routes
 app.use("/api", adminComprehensiveRoutes);
 
+// Duet API Routes
+app.use("/api/duets", duetApiRoutes);
+
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);
 
