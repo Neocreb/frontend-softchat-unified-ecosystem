@@ -364,17 +364,16 @@ setInterval(
 // STATIC FILE SERVING (PRODUCTION)
 // =============================================================================
 
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const staticPath = path.join(__dirname, "../dist/client");
+// Serve static files from built frontend
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const staticPath = path.join(__dirname, "../dist");
 
-  app.use(express.static(staticPath));
+app.use(express.static(staticPath));
 
-  // Serve index.html for all unmatched routes (SPA support)
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
-  });
-}
+// Serve index.html for all unmatched routes (SPA support)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(staticPath, "index.html"));
+});
 
 // =============================================================================
 // ERROR HANDLING
