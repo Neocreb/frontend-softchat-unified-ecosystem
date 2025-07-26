@@ -582,12 +582,20 @@ const EnhancedTikTokVideos: React.FC = () => {
       thumbnail: video.thumbnail,
     });
     setShowDuetRecorder(true);
+    toast({
+      title: "Duet Recording Started",
+      description: `Creating duet with @${video.user.username}`,
+    });
   };
 
   const handleDuetComplete = (duetData: any) => {
     console.log('Duet created:', duetData);
     setShowDuetRecorder(false);
     setDuetOriginalVideo(null);
+    toast({
+      title: "Duet Created! 🎉",
+      description: "Your duet has been posted successfully.",
+    });
     // Refresh the feed or navigate to the new duet
     // You could add logic here to add the new duet to the current videos list
   };
