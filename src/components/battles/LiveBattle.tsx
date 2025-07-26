@@ -399,46 +399,46 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
         </div>
       </div>
 
-      {/* Betting Stats Panel */}
-      {bettingPool.totalPool > 0 && (
+      {/* Voting Stats Panel */}
+      {votingPool.totalPool > 0 && (
         <div className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-700 p-3">
           <div className="flex items-center justify-between text-sm mb-2">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
                 <Coins className="w-4 h-4 text-yellow-400" />
-                <span className="text-white font-medium">{bettingPool.totalPool} SP Pool</span>
+                <span className="text-white font-medium">{votingPool.totalPool} SP Pool</span>
               </div>
               <div className="text-gray-300">
-                {bettingPool.totalBettors} bettors
+                {votingPool.totalVoters} voters
               </div>
             </div>
 
             <div className="flex items-center gap-6">
               <div className="text-center">
                 <div className="text-red-400 font-medium">
-                  {Math.round((bettingPool.creator1Total / bettingPool.totalPool) * 100)}%
+                  {Math.round((votingPool.creator1Total / votingPool.totalPool) * 100)}%
                 </div>
                 <div className="text-xs text-gray-400">{creator1.displayName}</div>
               </div>
 
               <div className="text-center">
                 <div className="text-blue-400 font-medium">
-                  {Math.round((bettingPool.creator2Total / bettingPool.totalPool) * 100)}%
+                  {Math.round((votingPool.creator2Total / votingPool.totalPool) * 100)}%
                 </div>
                 <div className="text-xs text-gray-400">{creator2.displayName}</div>
               </div>
             </div>
           </div>
 
-          {/* Visual betting distribution */}
+          {/* Visual voting distribution */}
           <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
             <div
               className="absolute left-0 top-0 h-full bg-red-500 transition-all duration-500"
-              style={{ width: `${(bettingPool.creator1Total / bettingPool.totalPool) * 100}%` }}
+              style={{ width: `${(votingPool.creator1Total / votingPool.totalPool) * 100}%` }}
             />
             <div
               className="absolute right-0 top-0 h-full bg-blue-500 transition-all duration-500"
-              style={{ width: `${(bettingPool.creator2Total / bettingPool.totalPool) * 100}%` }}
+              style={{ width: `${(votingPool.creator2Total / votingPool.totalPool) * 100}%` }}
             />
           </div>
         </div>
