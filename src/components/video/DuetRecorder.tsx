@@ -535,7 +535,7 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
 
               <div className="flex gap-3">
                 <Button
-                  onClick={initializeMedia}
+                  onClick={retryPermissions}
                   className="flex-1"
                   variant="default"
                 >
