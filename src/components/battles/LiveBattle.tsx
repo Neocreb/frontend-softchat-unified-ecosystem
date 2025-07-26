@@ -630,11 +630,14 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
       {/* Comments Overlay */}
       {showCommentsOverlay && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm z-40">
-          <div className="p-4">
+        <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-sm z-40 border-t border-gray-600">
+          <div className="p-4 max-h-[50vh] flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-semibold">Live Chat</h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-white font-semibold flex items-center gap-2">
+                <MessageCircle className="w-4 h-4" />
+                Live Chat
+              </h3>
               <Button
                 variant="ghost"
                 size="icon"
@@ -646,23 +649,30 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
             </div>
 
             {/* Comments */}
-            <div className="h-40 md:h-32 overflow-y-auto mb-4 space-y-2" ref={commentsRef}>
-              {comments.map((comment) => (
-                <div key={comment.id} className="flex items-start gap-2 text-sm">
-                  <Avatar className="w-6 h-6">
-                    <AvatarImage src={comment.user.avatar} />
-                    <AvatarFallback className="text-xs">{comment.user.username[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <span className="text-yellow-400 font-medium">{comment.user.username}: </span>
-                    <span className="text-white">{comment.message}</span>
+            <div className="flex-1 overflow-y-auto mb-3 space-y-2 min-h-[120px] max-h-[200px]" ref={commentsRef}>
+              {comments.length > 0 ? (
+                comments.map((comment) => (
+                  <div key={comment.id} className="flex items-start gap-2 text-sm">
+                    <Avatar className="w-6 h-6 flex-shrink-0">
+                      <AvatarImage src={comment.user.avatar} />
+                      <AvatarFallback className="text-xs">{comment.user.username[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-yellow-400 font-medium">{comment.user.username}: </span>
+                      <span className="text-white break-words">{comment.message}</span>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center text-gray-400 py-8">
+                  <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p>No messages yet. Be the first to chat!</p>
                 </div>
-              ))}
+              )}
             </div>
 
             {/* Comment Input */}
-            <div className="flex gap-2">
+            <div className="flex gap-2 mb-3">
               <Input
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
@@ -676,7 +686,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
             </div>
 
             {/* Quick Gifts Grid */}
-            <div className="mt-4">
+            <div>
               <div className="text-white text-sm font-medium mb-2">Quick Gifts</div>
               <div className="grid grid-cols-6 gap-2">
                 {gifts.slice(0, 6).map((gift) => (
