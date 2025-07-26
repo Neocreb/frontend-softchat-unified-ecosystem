@@ -756,7 +756,7 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
                 size="lg"
                 onClick={startRecording}
                 className="bg-red-600 hover:bg-red-700 rounded-full w-16 h-16"
-                disabled={isProcessing}
+                disabled={isProcessing || permissionState !== 'granted'}
               >
                 {isProcessing ? (
                   <Loader2 className="w-6 h-6 animate-spin" />
