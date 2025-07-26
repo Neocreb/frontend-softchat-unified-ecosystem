@@ -37,7 +37,7 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import BattleBetting from '@/components/betting/BattleBetting';
+import BattleVoting from '@/components/voting/BattleVoting';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface Creator {
@@ -227,7 +227,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       // Random comments
       if (Math.random() > 0.8) {
         const mockComments = [
-          "Amazing battle! 🔥",
+          "Amazing battle! ����",
           "Go go go!",
           "This is insane! 💯",
           "Team blue! 💙",
