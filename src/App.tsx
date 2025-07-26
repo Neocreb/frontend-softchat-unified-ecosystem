@@ -340,6 +340,7 @@ const AppRoutes = () => {
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<EnhancedTikTokVideos />} />
+          <Route path="videos-tiktok" element={<TikTokStyleVideos />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="duet-demo" element={<DuetDemo />} />
