@@ -743,6 +743,70 @@ const VideoCard: React.FC<{
           {video.stats.views}
         </Badge>
       </div>
+
+      {/* Duet Recorder */}
+      {showDuetRecorder && (
+        <VideoDuetRecorder
+          originalVideo={{
+            id: video.id,
+            url: video.videoUrl,
+            duration: video.duration,
+            creatorId: video.user.id,
+            creatorUsername: video.user.username,
+            title: video.description,
+            thumbnail: video.thumbnail,
+            allowDuets: video.allowDuets ?? true,
+          }}
+          onClose={() => setShowDuetRecorder(false)}
+          onDuetCreated={(duet) => {
+            setShowDuetRecorder(false);
+            console.log("Duet created:", duet);
+            // Could add toast notification here
+          }}
+        />
+      )}
+
+      {/* Battle Interface */}
+      {showBattleInterface && (
+        <LiveBattleInterface
+          config={{
+            battleId: `battle_${Date.now()}`,
+            title: `${video.user.displayName} Battle Challenge`,
+            duration: 180, // 3 minutes
+            creator1: {
+              id: video.user.id,
+              username: video.user.username,
+              displayName: video.user.displayName,
+              avatar: video.user.avatar,
+              level: 15,
+              battlesWon: 23,
+              battlesLost: 7,
+              winRate: 76.7,
+              isLive: true,
+              isHost: true,
+            },
+            creator2: {
+              id: "challenger_user_id",
+              username: "challenger",
+              displayName: "Challenger",
+              avatar: "https://i.pravatar.cc/150?u=challenger",
+              level: 12,
+              battlesWon: 18,
+              battlesLost: 12,
+              winRate: 60.0,
+              isLive: true,
+              isHost: false,
+            },
+            scoringMethod: "hybrid",
+            allowVoting: true,
+            allowGifts: true,
+            entryFee: 10,
+            prizePot: 200,
+          }}
+          userRole="viewer"
+          onLeave={() => setShowBattleInterface(false)}
+        />
+      )}
     </div>
   );
 };
