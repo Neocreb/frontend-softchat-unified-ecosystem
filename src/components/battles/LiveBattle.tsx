@@ -606,8 +606,8 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
       {/* Floating Action Buttons */}
       <div className={cn(
-        "absolute right-4 flex flex-col gap-2 z-30 transition-all duration-300",
-        showCommentsOverlay ? "bottom-80 md:bottom-60" : "bottom-4"
+        "absolute right-4 flex flex-col gap-2 z-[102] transition-all duration-300",
+        showCommentsOverlay ? "bottom-80 md:bottom-60" : "bottom-20 md:bottom-4"
       )}>
         {/* Comments Toggle */}
         <Button
