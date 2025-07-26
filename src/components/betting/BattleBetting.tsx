@@ -152,7 +152,7 @@ const BattleBetting: React.FC<BattleBettingProps> = ({
     onPlaceBet(bet);
     setShowBetConfirm(false);
     setSelectedCreator(null);
-    setBetAmount(25);
+    setBetAmount(20);
 
     toast({
       title: 'Bet Placed! 🎯',
