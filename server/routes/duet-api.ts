@@ -184,12 +184,8 @@ router.post('/create', authMiddleware, upload.fields([
     // Upload thumbnail if provided
     let thumbnailUrl = null;
     if (thumbnailFile) {
-      thumbnailUrl = await fileService.uploadFile({
-        buffer: thumbnailFile.buffer,
-        mimetype: thumbnailFile.mimetype,
-        originalname: thumbnailFile.originalname,
-        folder: 'thumbnails',
-      });
+      const thumbnailUploadResult = await FileService.uploadFile(thumbnailFile, 'thumbnails');
+      thumbnailUrl = thumbnailUploadResult.url;
     }
 
     // Determine the root original creator for duet chains
