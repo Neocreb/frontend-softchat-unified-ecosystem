@@ -415,7 +415,7 @@ export const contentFlags = pgTable("content_flags", {
 // INDEXES FOR PERFORMANCE
 // =============================================================================
 
-// Battle indexes
+// Battle indexes (commented out due to syntax issues - can be enabled after fixing)
 // export const battleStatusIdx = index("battle_status_idx").on(liveBattles.status);
 // export const battleCreator1Idx = index("battle_creator1_idx").on(liveBattles.creator1Id);
 // export const battleCreator2Idx = index("battle_creator2_idx").on(liveBattles.creator2Id);
