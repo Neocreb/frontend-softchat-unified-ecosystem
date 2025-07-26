@@ -487,7 +487,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
             </div>
 
             {/* Gift Button for Creator 1 */}
-            <div className="absolute bottom-20 right-4">
+            <div className="absolute bottom-4 right-4">
               <Button
                 size="sm"
                 className="bg-red-600 hover:bg-red-700 text-white"
@@ -497,7 +497,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                 }}
               >
                 <Gift className="w-4 h-4 mr-1" />
-                Gift
+                <span className="hidden sm:inline">Gift</span>
               </Button>
             </div>
           </div>
