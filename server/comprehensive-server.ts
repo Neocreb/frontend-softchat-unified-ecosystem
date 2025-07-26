@@ -19,6 +19,7 @@ import comprehensiveApiRoutes from "./routes/comprehensive-api";
 import adminComprehensiveRoutes from "./routes/admin-comprehensive";
 import marketplaceApiRoutes from "./routes/marketplace-api";
 import activityEconomyApiRoutes from "./routes/activity-economy-api";
+import duetApiRoutes from "./routes/duet-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
