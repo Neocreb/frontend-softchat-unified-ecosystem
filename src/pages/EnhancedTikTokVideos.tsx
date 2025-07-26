@@ -706,6 +706,10 @@ const EnhancedTikTokVideos: React.FC = () => {
                     <Radio className="w-4 h-4 mr-2" />
                     Go Live
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleStartBattle} className="hover:bg-gray-800">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Start Battle
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
