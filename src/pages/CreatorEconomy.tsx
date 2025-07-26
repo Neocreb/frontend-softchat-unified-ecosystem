@@ -320,10 +320,12 @@ export default function CreatorEconomy() {
           {/* Other tabs with placeholder content */}
           {[
             "content",
+            "challenges",
+            "leaderboard",
+            "rewards",
             "boosts",
             "subscribers",
             "withdraw",
-            "history",
             "partnerships",
           ].map((tab) => (
             <TabsContent key={tab} value={tab} className="mt-6">
