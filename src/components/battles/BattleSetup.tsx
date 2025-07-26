@@ -60,7 +60,7 @@ interface BattleConfig {
   duration: number;
   battleType: 'instant' | 'scheduled';
   inviteeId?: string;
-  allowBetting: boolean;
+  allowVoting: boolean;
   isPublic: boolean;
   scheduledFor?: Date;
   tags: string[];
@@ -113,7 +113,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
     description: '',
     duration: 300, // 5 minutes default
     battleType: 'instant',
-    allowBetting: true,
+    allowVoting: true,
     isPublic: true,
     tags: [],
   });
@@ -163,7 +163,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
         description: '',
         duration: 300,
         battleType: 'instant',
-        allowBetting: true,
+        allowVoting: true,
         isPublic: true,
         tags: [],
       });
@@ -288,11 +288,11 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="betting">Allow Betting</Label>
+                    <Label htmlFor="voting">Allow Voting</Label>
                     <Switch
-                      id="betting"
-                      checked={battleConfig.allowBetting}
-                      onCheckedChange={(checked) => setBattleConfig({ ...battleConfig, allowBetting: checked })}
+                      id="voting"
+                      checked={battleConfig.allowVoting}
+                      onCheckedChange={(checked) => setBattleConfig({ ...battleConfig, allowVoting: checked })}
                     />
                   </div>
                   
@@ -497,10 +497,10 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                   </div>
 
                   <div className="flex gap-2">
-                    {battleConfig.allowBetting && (
+                    {battleConfig.allowVoting && (
                       <Badge variant="secondary" className="bg-green-600/20 text-green-400">
                         <Gift className="w-3 h-3 mr-1" />
-                        Betting Enabled
+                        Voting Enabled
                       </Badge>
                     )}
                     <Badge variant="secondary" className={battleConfig.isPublic ? "bg-blue-600/20 text-blue-400" : "bg-gray-600/20 text-gray-400"}>

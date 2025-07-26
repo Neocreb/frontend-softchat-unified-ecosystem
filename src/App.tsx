@@ -489,6 +489,7 @@ const AppRoutes = () => {
       <Route path="/chat" element={<Navigate to="/app/chat" replace />} />
       <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
       <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
+      <Route path="/events" element={<Navigate to="/app/events" replace />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

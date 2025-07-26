@@ -39,8 +39,9 @@ import {
   UserPlus,
   Link,
   Copy,
-  Share2,
+  History,
   Crown,
+  Share2,
   Building,
   CreditCard,
   Wallet,
@@ -59,6 +60,7 @@ import {
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 // =============================================================================
 // TYPE DEFINITIONS
@@ -575,14 +577,42 @@ const UnifiedCreatorEconomy: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="activities">Activities</TabsTrigger>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="challenges">Challenges</TabsTrigger>
-          <TabsTrigger value="referrals">Referrals</TabsTrigger>
-          <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto">
+          <TabsList className="inline-flex w-max min-w-full">
+            <TabsTrigger value="overview" className="flex items-center gap-2 min-w-0">
+              <BarChart3 className="w-4 h-4" />
+              <span className="hidden sm:inline">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="activities" className="flex items-center gap-2 min-w-0">
+              <Activity className="w-4 h-4" />
+              <span className="hidden sm:inline">Activities</span>
+            </TabsTrigger>
+            <TabsTrigger value="content" className="flex items-center gap-2 min-w-0">
+              <Video className="w-4 h-4" />
+              <span className="hidden sm:inline">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="challenges" className="flex items-center gap-2 min-w-0">
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">Challenges</span>
+            </TabsTrigger>
+            <TabsTrigger value="leaderboard" className="flex items-center gap-2 min-w-0">
+              <Trophy className="w-4 h-4" />
+              <span className="hidden sm:inline">Leaderboard</span>
+            </TabsTrigger>
+            <TabsTrigger value="rewards" className="flex items-center gap-2 min-w-0">
+              <Gift className="w-4 h-4" />
+              <span className="hidden sm:inline">Rewards</span>
+            </TabsTrigger>
+            <TabsTrigger value="referrals" className="flex items-center gap-2 min-w-0">
+              <UserPlus className="w-4 h-4" />
+              <span className="hidden sm:inline">Referrals</span>
+            </TabsTrigger>
+            <TabsTrigger value="withdraw" className="flex items-center gap-2 min-w-0">
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">Withdraw</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
@@ -937,6 +967,176 @@ const UnifiedCreatorEconomy: React.FC = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </TabsContent>
+
+        {/* Leaderboard Tab */}
+        <TabsContent value="leaderboard" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  Challenge Leaderboard
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[
+                    { rank: 1, name: "DanceMaster", score: 2850, avatar: "https://i.pravatar.cc/150?img=1", badge: "🥇" },
+                    { rank: 2, name: "CreativeQueen", score: 2720, avatar: "https://i.pravatar.cc/150?img=2", badge: "🥈" },
+                    { rank: 3, name: "TalentKing", score: 2650, avatar: "https://i.pravatar.cc/150?img=3", badge: "🥉" },
+                    { rank: 4, name: "You", score: 2100, avatar: "https://i.pravatar.cc/150?img=4", badge: "" },
+                    { rank: 5, name: "ArtisticSoul", score: 1980, avatar: "https://i.pravatar.cc/150?img=5", badge: "" },
+                  ].map((user) => (
+                    <div key={user.rank} className={cn(
+                      "flex items-center justify-between p-3 rounded-lg",
+                      user.name === "You" ? "bg-purple-50 border border-purple-200" : "hover:bg-gray-50"
+                    )}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg font-bold w-8 text-center">
+                            {user.badge || `#${user.rank}`}
+                          </span>
+                        </div>
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={user.avatar} />
+                          <AvatarFallback>{user.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{user.name}</p>
+                          <p className="text-sm text-muted-foreground">Rank #{user.rank}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-purple-600">{user.score} SP</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="w-5 h-5 text-purple-500" />
+                  Top Creators This Month
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[
+                    { rank: 1, name: "ViralStar", earnings: 15420, avatar: "https://i.pravatar.cc/150?img=6", growth: "+23%" },
+                    { rank: 2, name: "ContentKing", earnings: 12850, avatar: "https://i.pravatar.cc/150?img=7", growth: "+18%" },
+                    { rank: 3, name: "TrendSetter", earnings: 11200, avatar: "https://i.pravatar.cc/150?img=8", growth: "+15%" },
+                    { rank: 4, name: "You", earnings: 8900, avatar: "https://i.pravatar.cc/150?img=4", growth: "+12%" },
+                    { rank: 5, name: "RisingStar", earnings: 7650, avatar: "https://i.pravatar.cc/150?img=9", growth: "+9%" },
+                  ].map((creator) => (
+                    <div key={creator.rank} className={cn(
+                      "flex items-center justify-between p-3 rounded-lg",
+                      creator.name === "You" ? "bg-green-50 border border-green-200" : "hover:bg-gray-50"
+                    )}>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold w-6 text-center">#{creator.rank}</span>
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={creator.avatar} />
+                          <AvatarFallback>{creator.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{creator.name}</p>
+                          <p className="text-sm text-green-600">{creator.growth}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold">${creator.earnings}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Rewards Tab */}
+        <TabsContent value="rewards" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Available Rewards */}
+            <Card className="col-span-full mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Gift className="w-5 h-5 text-pink-500" />
+                  Available Rewards
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 border border-purple-200 rounded-lg text-center bg-purple-50">
+                    <Crown className="w-8 h-8 mx-auto mb-2 text-purple-600" />
+                    <h3 className="font-bold text-lg mb-1">Creator Badge</h3>
+                    <p className="text-sm text-muted-foreground mb-3">Unlock at 5,000 SP</p>
+                    <Button size="sm" className="w-full" disabled>2,900 SP to go</Button>
+                  </div>
+
+                  <div className="p-4 border border-blue-200 rounded-lg text-center bg-blue-50">
+                    <Zap className="w-8 h-8 mx-auto mb-2 text-blue-600" />
+                    <h3 className="font-bold text-lg mb-1">Free Boost</h3>
+                    <p className="text-sm text-muted-foreground mb-3">Cost: 1,000 SP</p>
+                    <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">Claim Now</Button>
+                  </div>
+
+                  <div className="p-4 border border-green-200 rounded-lg text-center bg-green-50">
+                    <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-600" />
+                    <h3 className="font-bold text-lg mb-1">Cash Reward</h3>
+                    <p className="text-sm text-muted-foreground mb-3">$50 USD</p>
+                    <Button size="sm" className="w-full bg-green-600 hover:bg-green-700">Claim for 2,500 SP</Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Reward History */}
+            <Card className="col-span-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <History className="w-5 h-5 text-gray-500" />
+                  Reward History
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {[
+                    { date: "2024-01-15", reward: "Free Boost", type: "boost", status: "claimed" },
+                    { date: "2024-01-10", reward: "Challenge Winner", type: "sp", amount: "500 SP", status: "claimed" },
+                    { date: "2024-01-05", reward: "Monthly Bonus", type: "cash", amount: "$25", status: "claimed" },
+                    { date: "2024-01-01", reward: "Referral Bonus", type: "sp", amount: "200 SP", status: "claimed" },
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className={cn(
+                          "w-2 h-2 rounded-full",
+                          item.type === "boost" ? "bg-blue-500" :
+                          item.type === "sp" ? "bg-purple-500" : "bg-green-500"
+                        )} />
+                        <div>
+                          <p className="font-medium">{item.reward}</p>
+                          <p className="text-sm text-muted-foreground">{item.date}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        {item.amount && (
+                          <p className="font-bold text-sm">{item.amount}</p>
+                        )}
+                        <Badge variant="outline" className="text-xs">
+                          {item.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 

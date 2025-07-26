@@ -16,7 +16,7 @@ import {
   Home,
   Sparkles,
   Award,
-  Target,
+
   Eye,
   Users,
   ChevronUp,
@@ -73,8 +73,7 @@ import DuetEnabledVideoPlayer from "@/components/video/DuetEnabledVideoPlayer";
 import DuetRecorder from "@/components/video/DuetRecorder";
 import BattleSetup from "@/components/battles/BattleSetup";
 import LiveBattle from "@/components/battles/LiveBattle";
-import DuetChallengesHub from "@/components/challenges/DuetChallengesHub";
-import CreateChallengeModal from "@/components/challenges/CreateChallengeModal";
+
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
 import { cn } from "@/utils/utils";
@@ -545,7 +544,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following" | "challenges">("foryou");
+  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -559,7 +558,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [selectedDuetStyle, setSelectedDuetStyle] = useState<'side-by-side' | 'react-respond' | 'picture-in-picture'>('side-by-side');
   const [showBattleSetup, setShowBattleSetup] = useState(false);
   const [showLiveBattle, setShowLiveBattle] = useState(false);
-  const [showCreateChallenge, setShowCreateChallenge] = useState(false);
+
   const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
@@ -680,24 +679,9 @@ const EnhancedTikTokVideos: React.FC = () => {
     // You could add logic here to add the new duet to the current videos list
   };
 
-  const handleCreateChallenge = (challengeData: any) => {
-    console.log('Challenge created:', challengeData);
-    setShowCreateChallenge(false);
-    toast({
-      title: "Challenge Created! 🎯",
-      description: "Your challenge is now live and accepting submissions.",
-    });
-  };
 
-  const handleJoinChallenge = (challengeId: string) => {
-    console.log('Joining challenge:', challengeId);
-    // This would typically open the duet recorder with challenge context
-    setActiveTab("foryou"); // Switch back to feed to record
-    toast({
-      title: "Challenge Joined! 🎬",
-      description: "Create your video response to participate.",
-    });
-  };
+
+
 
   const handleDuetCancel = () => {
     setShowDuetRecorder(false);
@@ -744,7 +728,7 @@ const EnhancedTikTokVideos: React.FC = () => {
               <Tabs
                 value={activeTab}
                 onValueChange={(value) =>
-                  setActiveTab(value as "live" | "foryou" | "following" | "challenges")
+                  setActiveTab(value as "live" | "foryou" | "following")
                 }
                 className="w-auto"
               >
@@ -780,17 +764,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                   >
                     Following
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="challenges"
-                    className={cn(
-                      "bg-transparent border-0 text-base font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
-                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-purple-500",
-                      "text-white/60 hover:text-white transition-colors flex items-center gap-1"
-                    )}
-                  >
-                    <Target className="w-4 h-4" />
-                    Challenges
-                  </TabsTrigger>
+
                 </TabsList>
               </Tabs>
 
@@ -826,10 +800,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                     <Sparkles className="w-4 h-4 mr-2" />
                     Start Battle
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setShowCreateChallenge(true)} className="hover:bg-gray-800">
-                    <Target className="w-4 h-4 mr-2" />
-                    Create Challenge
-                  </DropdownMenuItem>
+
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -920,13 +891,7 @@ const EnhancedTikTokVideos: React.FC = () => {
               </div>
             )}
           </TabsContent>
-          <TabsContent value="challenges" className="h-full mt-0 overflow-y-auto">
-            <DuetChallengesHub
-              userBalance={userBalance}
-              onCreateChallenge={() => setShowCreateChallenge(true)}
-              onJoinChallenge={handleJoinChallenge}
-            />
-          </TabsContent>
+
         </Tabs>
       </div>
 
@@ -1060,13 +1025,7 @@ const EnhancedTikTokVideos: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Create Challenge Modal */}
-      <CreateChallengeModal
-        isOpen={showCreateChallenge}
-        onClose={() => setShowCreateChallenge(false)}
-        onCreateChallenge={handleCreateChallenge}
-        userBalance={userBalance}
-      />
+
     </div>
   );
 };

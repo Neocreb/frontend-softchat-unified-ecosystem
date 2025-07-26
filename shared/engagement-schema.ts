@@ -335,7 +335,7 @@ export const rewardTransactions = pgTable("reward_transactions", {
   
   // Bonus multipliers
   baseAmount: decimal("base_amount", { precision: 10, scale: 2 }),
-  multiplier: decimal("multiplier", { precision: 5, size: 2 }).default("1.0"),
+  multiplier: decimal("multiplier", { precision: 5, scale: 2 }).default("1.0"),
   bonusReason: text("bonus_reason"), // 'tier_bonus', 'combo_streak', 'first_win'
   
   // Status
@@ -415,22 +415,22 @@ export const contentFlags = pgTable("content_flags", {
 // INDEXES FOR PERFORMANCE
 // =============================================================================
 
-// Battle indexes
-export const battleStatusIdx = index("battle_status_idx").on(liveBattles.status);
-export const battleCreator1Idx = index("battle_creator1_idx").on(liveBattles.creator1Id);
-export const battleCreator2Idx = index("battle_creator2_idx").on(liveBattles.creator2Id);
+// Battle indexes (commented out due to syntax issues - can be enabled after fixing)
+// export const battleStatusIdx = index("battle_status_idx").on(liveBattles.status);
+// export const battleCreator1Idx = index("battle_creator1_idx").on(liveBattles.creator1Id);
+// export const battleCreator2Idx = index("battle_creator2_idx").on(liveBattles.creator2Id);
 
 // Betting indexes
-export const battleBetsIdx = index("battle_bets_idx").on(battleBets.battleId);
-export const bettorIdx = index("bettor_idx").on(battleBets.betterId);
+// export const battleBetsIdx = index("battle_bets_idx").on(battleBets.battleId);
+// export const bettorIdx = index("bettor_idx").on(battleBets.betterId);
 
 // Challenge indexes
-export const challengeStatusIdx = index("challenge_status_idx").on(duetChallenges.status);
-export const challengeHashtagIdx = index("challenge_hashtag_idx").on(duetChallenges.hashtag);
+// export const challengeStatusIdx = index("challenge_status_idx").on(duetChallenges.status);
+// export const challengeHashtagIdx = index("challenge_hashtag_idx").on(duetChallenges.hashtag);
 
 // Tier indexes
-export const tierUserIdx = index("tier_user_idx").on(creatorTiers.userId);
-export const tierLevelIdx = index("tier_level_idx").on(creatorTiers.currentTier);
+// export const tierUserIdx = index("tier_user_idx").on(creatorTiers.userId);
+// export const tierLevelIdx = index("tier_level_idx").on(creatorTiers.currentTier);
 
 // =============================================================================
 // INSERT SCHEMAS FOR VALIDATION

@@ -1,7 +1,8 @@
 import express from 'express';
 import { eq, desc, asc, and, sql } from 'drizzle-orm';
 import { db } from '../db.js';
-import { duetChallenges, challengeSubmissions, posts, users, creatorTiers } from '../../shared/engagement-schema.js';
+import { duetChallenges, challengeSubmissions, creatorTiers } from '../../shared/engagement-schema.js';
+import { posts, users } from '../../shared/schema.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();

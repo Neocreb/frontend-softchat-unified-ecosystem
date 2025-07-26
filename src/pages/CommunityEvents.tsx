@@ -63,6 +63,7 @@ import {
   Gift,
   Crown,
   Zap,
+  Target,
   Globe,
   Lock,
   AlertCircle,
@@ -669,6 +670,100 @@ const CommunityEvents = () => {
 
           {/* Events Section */}
           <LiveCommunityEvents />
+
+          {/* Challenges Section */}
+          <div className="mt-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">🎯 Challenges & Competitions</h2>
+              <Button onClick={() => navigate('rewards')} variant="outline">
+                View Leaderboard
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {/* Challenge Cards */}
+              <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                <div className="relative">
+                  <div className="w-full h-48 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                    <Target className="w-12 h-12 text-white" />
+                  </div>
+                  <Badge className="absolute top-3 left-3 bg-purple-600 text-white">
+                    ACTIVE
+                  </Badge>
+                  <div className="absolute bottom-3 left-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
+                    🏆 500 SP Prize
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-lg mb-2">#DanceChallenge</h3>
+                  <p className="text-muted-foreground text-sm mb-3">
+                    Show off your best dance moves! Winner gets 500 SoftPoints.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">2 days left</span>
+                    <Button size="sm">Join Challenge</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                <div className="relative">
+                  <div className="w-full h-48 bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center">
+                    <Zap className="w-12 h-12 text-white" />
+                  </div>
+                  <Badge className="absolute top-3 left-3 bg-blue-600 text-white">
+                    FEATURED
+                  </Badge>
+                  <div className="absolute bottom-3 left-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
+                    🎁 1000 SP Prize
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-lg mb-2">#TalentShowcase</h3>
+                  <p className="text-muted-foreground text-sm mb-3">
+                    Share your unique talent and win big! Sponsored challenge.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">5 days left</span>
+                    <Button size="sm">Join Challenge</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                <div className="relative">
+                  <div className="w-full h-48 bg-gradient-to-r from-green-500 to-emerald-500 flex items-center justify-center">
+                    <Crown className="w-12 h-12 text-white" />
+                  </div>
+                  <Badge className="absolute top-3 left-3 bg-green-600 text-white">
+                    NEW
+                  </Badge>
+                  <div className="absolute bottom-3 left-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
+                    🏅 Badge Reward
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-lg mb-2">#CreativityBoost</h3>
+                  <p className="text-muted-foreground text-sm mb-3">
+                    Create something amazing and unlock exclusive creator badge!
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">1 week left</span>
+                    <Button size="sm">Join Challenge</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="text-center">
+              <Button
+                onClick={() => navigate('rewards')}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              >
+                View All Challenges & Leaderboard
+              </Button>
+            </div>
+          </div>
 
           {/* Featured Live Events Spotlight */}
           <div className="mt-12">
