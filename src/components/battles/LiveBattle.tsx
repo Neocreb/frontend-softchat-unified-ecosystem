@@ -711,8 +711,8 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
       {/* Gift Selection Modal */}
       {showGifts && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[110]">
-          <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4">
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[110] p-4 pb-20 md:pb-4">
+          <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full max-h-[85vh] overflow-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-white font-semibold">Send Gift</h3>
               <Button variant="ghost" size="icon" onClick={() => setShowGifts(false)}>
