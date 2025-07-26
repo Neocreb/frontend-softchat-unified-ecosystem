@@ -62,6 +62,8 @@ interface BattleVotingProps {
   userBalance: number;
   onPlaceVote: (vote: Omit<Vote, 'id' | 'timestamp' | 'status'>) => void;
   userVotes: Vote[];
+  hasUserVoted: boolean;
+  userVotedCreatorId?: string;
   votingPool: {
     creator1Total: number;
     creator2Total: number;
@@ -92,9 +94,9 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
   
   const { toast } = useToast();
 
-  // Lock voting 30 seconds before battle ends
+  // Lock voting 3 minutes after battle starts (when battle timer shows 2:00 or less)
   useEffect(() => {
-    if (timeRemaining <= 30 && isLive) {
+    if (timeRemaining <= 180 && isLive) {
       setVotingLocked(true);
     }
   }, [timeRemaining, isLive]);
@@ -133,10 +135,19 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
       return;
     }
 
+    if (hasUserVoted) {
+      toast({
+        title: 'Already Voted',
+        description: 'You can only vote once per battle',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     if (votingLocked) {
       toast({
-        title: 'Voting Locked',
-        description: 'Voting is locked for the final 30 seconds',
+        title: 'Voting Closed',
+        description: 'Voting closes 3 minutes after battle starts',
         variant: 'destructive',
       });
       return;
@@ -331,10 +342,22 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
         <div className="mt-4 p-3 bg-yellow-400/10 border border-yellow-400 rounded-lg">
           <div className="flex items-center gap-2 text-yellow-400">
             <Lock className="w-4 h-4" />
-            <span className="font-medium">Voting Locked</span>
+            <span className="font-medium">Voting Closed</span>
           </div>
           <div className="text-xs text-gray-300 mt-1">
-            Voting closes 30 seconds before battle ends
+            Voting closes 3 minutes after battle starts
+          </div>
+        </div>
+      )}
+
+      {hasUserVoted && (
+        <div className="mt-4 p-3 bg-green-400/10 border border-green-400 rounded-lg">
+          <div className="flex items-center gap-2 text-green-400">
+            <CheckCircle className="w-4 h-4" />
+            <span className="font-medium">Vote Placed</span>
+          </div>
+          <div className="text-xs text-gray-300 mt-1">
+            You voted for {userVotedCreatorId === creator1.id ? creator1.displayName : creator2.displayName}
           </div>
         </div>
       )}
@@ -445,13 +468,18 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
 
                   <Button
                     onClick={placeVote}
-                    disabled={votingLocked || voteAmount <= 0 || voteAmount > userBalance}
+                    disabled={votingLocked || hasUserVoted || voteAmount <= 0 || voteAmount > userBalance}
                     className="w-full bg-green-600 hover:bg-green-700"
                   >
-                    {votingLocked ? (
+                    {hasUserVoted ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Vote Placed
+                      </>
+                    ) : votingLocked ? (
                       <>
                         <Lock className="w-4 h-4 mr-2" />
-                        Voting Locked
+                        Voting Closed
                       </>
                     ) : (
                       <>
