@@ -424,7 +424,7 @@ const VideoCard: React.FC<{
             {/* Video metadata */}
             <div className="flex items-center gap-3 text-white/60 text-[10px] md:text-xs mt-1">
               {video.timestamp && (
-                <span>{video.isLiveStream ? "���� LIVE" : video.timestamp}</span>
+                <span>{video.isLiveStream ? "🔴 LIVE" : video.timestamp}</span>
               )}
               <span>{video.stats.views} {video.isLiveStream ? "watching" : "views"}</span>
             </div>
@@ -821,33 +821,11 @@ const EnhancedTikTokVideos: React.FC = () => {
 
       {/* Duet Recorder */}
       {showDuetRecorder && duetOriginalVideo && (
-        <DuetEnabledVideoPlayer
-          video={{
-            id: duetOriginalVideo.id,
-            url: duetOriginalVideo.url,
-            thumbnail: duetOriginalVideo.thumbnail,
-            duration: duetOriginalVideo.duration,
-            title: duetOriginalVideo.title,
-            description: duetOriginalVideo.title,
-            author: {
-              id: duetOriginalVideo.creatorId,
-              name: duetOriginalVideo.creatorUsername,
-              username: duetOriginalVideo.creatorUsername,
-              avatar: 'https://i.pravatar.cc/150?u=' + duetOriginalVideo.creatorId,
-              verified: false,
-            },
-            stats: {
-              likes: 0,
-              comments: 0,
-              shares: 0,
-              duets: 0,
-            }
-          }}
-          allowDuets={false}
-          autoPlay={false}
-          showControls={false}
-          onDuetComplete={handleDuetComplete}
-          className="fixed inset-0 z-50"
+        <DuetRecorder
+          originalVideo={duetOriginalVideo}
+          duetStyle={selectedDuetStyle}
+          onCancel={handleDuetCancel}
+          onComplete={handleDuetComplete}
         />
       )}
 
