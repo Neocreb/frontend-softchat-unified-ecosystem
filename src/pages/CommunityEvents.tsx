@@ -431,7 +431,7 @@ const CommunityEvents = () => {
                           📈 Trading Session
                         </SelectItem>
                         <SelectItem value="marketplace">
-                          🛒 Shopping Event
+                          ���� Shopping Event
                         </SelectItem>
                         <SelectItem value="social">❤️ Social Meetup</SelectItem>
                         <SelectItem value="challenge">🏆 Challenge</SelectItem>
@@ -675,7 +675,7 @@ const CommunityEvents = () => {
           <div className="mt-12">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">🎯 Challenges & Competitions</h2>
-              <Button onClick={() => navigate('/creator-economy')} variant="outline">
+              <Button onClick={() => navigate('/rewards')} variant="outline">
                 View Leaderboard
               </Button>
             </div>
@@ -768,7 +768,7 @@ const CommunityEvents = () => {
           {/* Featured Live Events Spotlight */}
           <div className="mt-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">🔴 Live Right Now</h2>
+              <h2 className="text-2xl font-bold">�� Live Right Now</h2>
               <Button variant="outline">View All Live</Button>
             </div>
 
