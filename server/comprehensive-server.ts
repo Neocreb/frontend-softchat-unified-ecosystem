@@ -235,6 +235,9 @@ app.use("/api/v1", comprehensiveApiRoutes);
 // Activity Economy API Routes
 app.use("/api/v1", activityEconomyApiRoutes);
 
+// Duet and Battle API Routes
+app.use("/api/v1", duetBattleApiRoutes);
+
 // Marketplace API Routes
 app.use("/api/marketplace", marketplaceApiRoutes);
 
