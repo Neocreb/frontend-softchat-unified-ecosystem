@@ -370,14 +370,25 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Betting button - only show if betting is still open */}
+          {timeLeft > 30 && (
+            <Button
+              onClick={() => setShowBetting(true)}
+              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4"
+            >
+              <DollarSign className="w-4 h-4 mr-1" />
+              Place Bet
+            </Button>
+          )}
+
           <Button variant="ghost" size="icon" onClick={() => setIsMuted(!isMuted)}>
             {isMuted ? <VolumeX className="w-5 h-5 text-white" /> : <Volume2 className="w-5 h-5 text-white" />}
           </Button>
-          
+
           <Button variant="ghost" size="icon">
             <Share2 className="w-5 h-5 text-white" />
           </Button>
-          
+
           <Button variant="ghost" size="icon">
             <Settings className="w-5 h-5 text-white" />
           </Button>
