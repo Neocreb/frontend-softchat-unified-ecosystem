@@ -605,14 +605,17 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       </div>
 
       {/* Floating Action Buttons */}
-      <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-30">
+      <div className={cn(
+        "absolute right-4 flex flex-col gap-2 z-30 transition-all duration-300",
+        showCommentsOverlay ? "bottom-80 md:bottom-60" : "bottom-4"
+      )}>
         {/* Comments Toggle */}
         <Button
           size="icon"
           className="rounded-full bg-gray-900/90 hover:bg-gray-800 text-white border border-gray-600"
           onClick={() => setShowCommentsOverlay(!showCommentsOverlay)}
         >
-          <MessageCircle className="w-5 h-5" />
+          {showCommentsOverlay ? <ChevronDown className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
         </Button>
 
         {/* Gift Button */}
