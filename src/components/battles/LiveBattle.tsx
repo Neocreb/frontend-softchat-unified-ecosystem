@@ -128,15 +128,15 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
   const [showCombo, setShowCombo] = useState(false);
   const [battlePhase, setBattlePhase] = useState<'active' | 'ending' | 'ended'>('active');
 
-  // Betting state
-  const [showBetting, setShowBetting] = useState(false);
+  // Voting state
+  const [showVoting, setShowVoting] = useState(false);
   const [userBalance] = useState(2500); // Mock user balance
-  const [userBets, setUserBets] = useState<Bet[]>([]);
-  const [bettingPool, setBettingPool] = useState({
+  const [userVotes, setUserVotes] = useState<Vote[]>([]);
+  const [votingPool, setVotingPool] = useState({
     creator1Total: 450,
     creator2Total: 780,
     totalPool: 1230,
-    totalBettors: 23,
+    totalVoters: 23,
   });
   const [battleResults, setBattleResults] = useState<BattleResults | null>(null);
   const [showResults, setShowResults] = useState(false);
