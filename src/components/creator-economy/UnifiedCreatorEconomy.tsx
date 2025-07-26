@@ -575,11 +575,13 @@ const UnifiedCreatorEconomy: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-8">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="activities">Activities</TabsTrigger>
           <TabsTrigger value="content">Content</TabsTrigger>
           <TabsTrigger value="challenges">Challenges</TabsTrigger>
+          <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+          <TabsTrigger value="rewards">Rewards</TabsTrigger>
           <TabsTrigger value="referrals">Referrals</TabsTrigger>
           <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
         </TabsList>
