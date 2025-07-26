@@ -483,6 +483,90 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
     );
   }
 
+  // Permission request UI
+  if (permissionState === 'checking') {
+    return (
+      <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
+        <div className="text-center text-white">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Setting up your camera...</h2>
+          <p className="text-gray-400">Please wait while we prepare the duet recorder</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (permissionState === 'denied') {
+    return (
+      <div className="fixed inset-0 bg-black z-50 flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 bg-black/80 backdrop-blur-sm">
+          <Button variant="ghost" onClick={onCancel}>
+            <X className="w-5 h-5" />
+          </Button>
+          <h2 className="text-lg font-semibold text-white">Camera Permission Required</h2>
+          <div></div>
+        </div>
+
+        {/* Permission Request Content */}
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="max-w-md text-center text-white">
+            <div className="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Camera className="w-10 h-10 text-red-400" />
+            </div>
+
+            <h3 className="text-2xl font-bold mb-4">Camera Access Needed</h3>
+            <p className="text-gray-300 mb-6">{permissionError}</p>
+
+            <div className="space-y-4">
+              <div className="bg-gray-800 rounded-lg p-4 text-left">
+                <h4 className="font-semibold mb-2">To enable camera access:</h4>
+                <ol className="text-sm text-gray-300 space-y-1">
+                  <li>1. Click the camera icon in your browser's address bar</li>
+                  <li>2. Select "Allow" for camera and microphone</li>
+                  <li>3. Refresh the page if needed</li>
+                </ol>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={initializeMedia}
+                  className="flex-1"
+                  variant="default"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Try Again
+                </Button>
+                <Button
+                  onClick={onCancel}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (permissionState === 'prompt') {
+    return (
+      <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
+        <div className="text-center text-white">
+          <div className="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
+            <Camera className="w-10 h-10 text-blue-400" />
+          </div>
+          <h2 className="text-xl font-semibold mb-2">Allow Camera Access</h2>
+          <p className="text-gray-400 mb-4">Please click "Allow" when prompted by your browser</p>
+          <p className="text-sm text-gray-500">This is required to record your duet video</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
       {/* Header */}
