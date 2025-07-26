@@ -157,20 +157,20 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
             const winnerId = scores.creator1 > scores.creator2 ? creator1.id : creator2.id;
 
             // Calculate battle results
-            const totalPool = bettingPool.totalPool;
+            const totalPool = votingPool.totalPool;
             const platformFee = totalPool * 0.1;
             const winningCreatorBonus = totalPool * 0.2;
             const winnersPool = totalPool * 0.7;
 
             // Calculate user winnings
-            const userWinningBets = userBets.filter(bet => bet.creatorId === winnerId);
-            const totalWinningBets = winnerId === creator1.id ? bettingPool.creator1Total : bettingPool.creator2Total;
-            const userWinnings = totalWinningBets > 0
-              ? userWinningBets.reduce((sum, bet) => sum + bet.amount, 0) * (winnersPool / totalWinningBets)
+            const userWinningVotes = userVotes.filter(vote => vote.creatorId === winnerId);
+            const totalWinningVotes = winnerId === creator1.id ? votingPool.creator1Total : votingPool.creator2Total;
+            const userWinnings = totalWinningVotes > 0
+              ? userWinningVotes.reduce((sum, vote) => sum + vote.amount, 0) * (winnersPool / totalWinningVotes)
               : 0;
 
-            const userBetOutcome = userBets.length === 0 ? 'none' :
-              userWinningBets.length > 0 ? 'won' : 'lost';
+            const userVoteOutcome = userVotes.length === 0 ? 'none' :
+              userWinningVotes.length > 0 ? 'won' : 'lost';
 
             setBattleResults({
               winnerId,
