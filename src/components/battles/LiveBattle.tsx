@@ -68,7 +68,7 @@ interface Comment {
   timestamp: Date;
 }
 
-interface Bet {
+interface Vote {
   id: string;
   amount: number;
   creatorId: string;
@@ -227,7 +227,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       // Random comments
       if (Math.random() > 0.8) {
         const mockComments = [
-          "Amazing battle! ����",
+          "Amazing battle! 🔥",
           "Go go go!",
           "This is insane! 💯",
           "Team blue! 💙",
