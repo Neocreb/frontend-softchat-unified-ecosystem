@@ -442,7 +442,9 @@ const VideoCard: React.FC<{
             allowComments={video.allowComments}
             onDuetCreate={(videoId) => {
               // Handle duet creation by opening the new duet recorder
-              handleDuetCreate(video);
+              if (onDuetCreate) {
+                onDuetCreate(video);
+              }
             }}
           />
         </div>
