@@ -245,7 +245,8 @@ const VideoCard: React.FC<{
   video: VideoData;
   isActive: boolean;
   showControls?: boolean;
-}> = ({ video, isActive, showControls = true }) => {
+  onDuetCreate?: (video: VideoData) => void;
+}> = ({ video, isActive, showControls = true, onDuetCreate }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showMore, setShowMore] = useState(false);
