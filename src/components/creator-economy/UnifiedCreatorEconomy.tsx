@@ -60,6 +60,7 @@ import {
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 // =============================================================================
 // TYPE DEFINITIONS
