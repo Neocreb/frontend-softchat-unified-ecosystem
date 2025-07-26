@@ -445,7 +445,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       )}
 
       {/* Battle Area */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative overflow-hidden">
         {/* Split Screen */}
         <div className="grid grid-cols-2 h-full">
           {/* Creator 1 */}
