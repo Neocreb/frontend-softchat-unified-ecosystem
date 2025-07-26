@@ -63,6 +63,7 @@ import {
   Gift,
   Crown,
   Zap,
+  Target,
   Globe,
   Lock,
   AlertCircle,
