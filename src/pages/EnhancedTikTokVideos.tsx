@@ -851,6 +851,13 @@ const EnhancedTikTokVideos: React.FC = () => {
               </div>
             )}
           </TabsContent>
+          <TabsContent value="challenges" className="h-full mt-0 overflow-y-auto">
+            <DuetChallengesHub
+              userBalance={userBalance}
+              onCreateChallenge={() => setShowCreateChallenge(true)}
+              onJoinChallenge={handleJoinChallenge}
+            />
+          </TabsContent>
         </Tabs>
       </div>
 
