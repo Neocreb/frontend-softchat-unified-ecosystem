@@ -411,7 +411,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                                   @{creator.username} • {creator.followers.toLocaleString()} followers
                                 </div>
                                 <div className="flex gap-4 text-xs text-gray-500 mt-1">
-                                  <span>��� {creator.battlesWon} wins</span>
+                                  <span>🏆 {creator.battlesWon} wins</span>
                                   <span>💔 {creator.battlesLost} losses</span>
                                   {!creator.isOnline && creator.lastSeen && (
                                     <span>Last seen {creator.lastSeen}</span>
@@ -500,7 +500,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                     {battleConfig.allowVoting && (
                       <Badge variant="secondary" className="bg-green-600/20 text-green-400">
                         <Gift className="w-3 h-3 mr-1" />
-                        Betting Enabled
+                        Voting Enabled
                       </Badge>
                     )}
                     <Badge variant="secondary" className={battleConfig.isPublic ? "bg-blue-600/20 text-blue-400" : "bg-gray-600/20 text-gray-400"}>
