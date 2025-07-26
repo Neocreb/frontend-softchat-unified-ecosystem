@@ -654,7 +654,7 @@ const EnhancedTikTokVideos: React.FC = () => {
               <Tabs
                 value={activeTab}
                 onValueChange={(value) =>
-                  setActiveTab(value as "live" | "foryou" | "following")
+                  setActiveTab(value as "live" | "foryou" | "following" | "challenges")
                 }
                 className="w-auto"
               >
