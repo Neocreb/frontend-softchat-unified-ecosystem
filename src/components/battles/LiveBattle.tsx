@@ -66,6 +66,25 @@ interface Comment {
   timestamp: Date;
 }
 
+interface Bet {
+  id: string;
+  amount: number;
+  creatorId: string;
+  odds: number;
+  potentialWinning: number;
+  timestamp: Date;
+  status: 'active' | 'won' | 'lost' | 'refunded';
+}
+
+interface BattleResults {
+  winnerId: string;
+  totalPool: number;
+  winningCreatorBonus: number;
+  platformFee: number;
+  userWinnings: number;
+  userBetOutcome: 'won' | 'lost' | 'none';
+}
+
 interface LiveBattleProps {
   battleId: string;
   creator1: Creator;
