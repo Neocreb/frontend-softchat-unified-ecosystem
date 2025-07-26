@@ -398,7 +398,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
       {/* Betting Stats Panel */}
       {bettingPool.totalPool > 0 && (
         <div className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-700 p-3">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-sm mb-2">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
                 <Coins className="w-4 h-4 text-yellow-400" />
@@ -424,6 +424,18 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                 <div className="text-xs text-gray-400">{creator2.displayName}</div>
               </div>
             </div>
+          </div>
+
+          {/* Visual betting distribution */}
+          <div className="relative h-2 bg-gray-700 rounded-full overflow-hidden">
+            <div
+              className="absolute left-0 top-0 h-full bg-red-500 transition-all duration-500"
+              style={{ width: `${(bettingPool.creator1Total / bettingPool.totalPool) * 100}%` }}
+            />
+            <div
+              className="absolute right-0 top-0 h-full bg-blue-500 transition-all duration-500"
+              style={{ width: `${(bettingPool.creator2Total / bettingPool.totalPool) * 100}%` }}
+            />
           </div>
         </div>
       )}
