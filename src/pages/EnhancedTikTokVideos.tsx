@@ -496,7 +496,10 @@ const VideoCard: React.FC<{
             {/* Video metadata */}
             <div className="flex items-center gap-3 text-white/60 text-[10px] md:text-xs mt-1">
               {video.timestamp && (
-                <span>{video.isLiveStream ? "🔴 LIVE" : video.timestamp}</span>
+                <span>
+                  {video.timestamp === "BATTLE" ? "⚔️ LIVE BATTLE" :
+                   video.isLiveStream ? "🔴 LIVE" : video.timestamp}
+                </span>
               )}
               <span>{video.stats.views} {video.isLiveStream ? "watching" : "views"}</span>
             </div>
