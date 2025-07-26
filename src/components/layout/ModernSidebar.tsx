@@ -79,6 +79,13 @@ const platformNavItems: NavItem[] = [
     description: "Create and watch videos",
   },
   {
+    label: "TikTok Battles",
+    href: "/videos-tiktok",
+    icon: Zap,
+    color: "text-purple-600",
+    description: "Live battles TikTok-style",
+  },
+  {
     label: "Marketplace",
     href: "/marketplace",
     icon: ShoppingBag,
