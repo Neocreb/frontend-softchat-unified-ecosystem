@@ -39,6 +39,8 @@ import {
   UserPlus,
   Link,
   Copy,
+  History,
+  Crown,
   Share2,
   Crown,
   Building,
