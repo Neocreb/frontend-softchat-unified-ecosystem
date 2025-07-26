@@ -237,7 +237,14 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
   };
 
   const startRecording = async () => {
-    if (!streamRef.current) return;
+    if (!streamRef.current || permissionState !== 'granted') {
+      toast({
+        title: 'Camera Not Ready',
+        description: 'Please allow camera access before recording.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
     try {
       // Reset recording state
