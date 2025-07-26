@@ -771,6 +771,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                 video={video}
                 isActive={index === currentVideoIndex && activeTab === "foryou"}
                 showControls={showControls}
+                onDuetCreate={handleDuetCreate}
               />
             ))}
           </TabsContent>
