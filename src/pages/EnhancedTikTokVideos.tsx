@@ -610,6 +610,15 @@ const EnhancedTikTokVideos: React.FC = () => {
     setDuetOriginalVideo(null);
   };
 
+  const handleStartBattle = () => {
+    setShowCreateMenu(false);
+    setShowBattleSetup(true);
+    toast({
+      title: "Battle Mode! ⚔️",
+      description: "Set up your live battle challenge",
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
