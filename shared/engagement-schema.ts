@@ -335,7 +335,7 @@ export const rewardTransactions = pgTable("reward_transactions", {
   
   // Bonus multipliers
   baseAmount: decimal("base_amount", { precision: 10, scale: 2 }),
-  multiplier: decimal("multiplier", { precision: 5, size: 2 }).default("1.0"),
+  multiplier: decimal("multiplier", { precision: 5, scale: 2 }).default("1.0"),
   bonusReason: text("bonus_reason"), // 'tier_bonus', 'combo_streak', 'first_win'
   
   // Status
