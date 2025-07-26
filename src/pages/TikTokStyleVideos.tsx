@@ -67,6 +67,8 @@ import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import VideoDuetRecorder from "@/components/video/VideoDuetRecorder";
+import LiveBattleInterface from "@/components/video/LiveBattleInterface";
 
 interface VideoData {
   id: string;
