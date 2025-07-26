@@ -178,7 +178,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
               winningCreatorBonus,
               platformFee,
               userWinnings,
-              userBetOutcome,
+              userVoteOutcome,
             });
 
             setTimeout(() => {
