@@ -219,6 +219,11 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
     }
   };
 
+  const retryPermissions = async () => {
+    setPermissionError('');
+    await initializeMedia();
+  };
+
   const cleanup = () => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
