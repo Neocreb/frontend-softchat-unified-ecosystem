@@ -226,6 +226,16 @@ app.get("/status", async (req, res) => {
 });
 
 // =============================================================================
+// STATIC FILE SERVING
+// =============================================================================
+
+// Serve static files from built frontend
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const staticPath = path.join(__dirname, "../dist");
+
+app.use(express.static(staticPath));
+
+// =============================================================================
 // API ROUTES REGISTRATION
 // =============================================================================
 
