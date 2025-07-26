@@ -70,6 +70,7 @@ import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
 import DuetEnabledVideoPlayer from "@/components/video/DuetEnabledVideoPlayer";
+import DuetRecorder from "@/components/video/DuetRecorder";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
 import { cn } from "@/utils/utils";
@@ -423,7 +424,7 @@ const VideoCard: React.FC<{
             {/* Video metadata */}
             <div className="flex items-center gap-3 text-white/60 text-[10px] md:text-xs mt-1">
               {video.timestamp && (
-                <span>{video.isLiveStream ? "🔴 LIVE" : video.timestamp}</span>
+                <span>{video.isLiveStream ? "���� LIVE" : video.timestamp}</span>
               )}
               <span>{video.stats.views} {video.isLiveStream ? "watching" : "views"}</span>
             </div>
