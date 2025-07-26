@@ -311,6 +311,8 @@ const VideoCard: React.FC<{
   const [isFollowing, setIsFollowing] = useState(
     video.user.isFollowing || false,
   );
+  const [showDuetRecorder, setShowDuetRecorder] = useState(false);
+  const [showBattleInterface, setShowBattleInterface] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
