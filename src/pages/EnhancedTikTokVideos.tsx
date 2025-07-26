@@ -69,12 +69,19 @@ import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
+import DuetEnabledVideoPlayer from "@/components/video/DuetEnabledVideoPlayer";
+import DuetRecorder from "@/components/video/DuetRecorder";
+import BattleSetup from "@/components/battles/BattleSetup";
+import LiveBattle from "@/components/battles/LiveBattle";
+import DuetChallengesHub from "@/components/challenges/DuetChallengesHub";
+import CreateChallengeModal from "@/components/challenges/CreateChallengeModal";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface VideoData {
@@ -236,13 +243,80 @@ const liveStreams: VideoData[] = [
     allowDuets: false,
     allowComments: true,
   },
+  {
+    id: "battle1",
+    user: {
+      id: "battle1",
+      username: "dance_master",
+      displayName: "Dance Master",
+      avatar: "https://i.pravatar.cc/150?img=3",
+      verified: true,
+      followerCount: 892000,
+    },
+    description: "🔥 LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
+    music: { title: "Battle Theme", artist: "Epic Beats" },
+    stats: { likes: 3240, comments: 890, shares: 234, views: "24.8K watching" },
+    hashtags: ["livebattle", "dance", "epic", "compete"],
+    videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+    thumbnail: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400",
+    duration: 0,
+    timestamp: "BATTLE",
+    isLiveStream: true,
+    allowDuets: false,
+    allowComments: true,
+  },
+  {
+    id: "battle2",
+    user: {
+      id: "battle2",
+      username: "rap_king",
+      displayName: "Rap King",
+      avatar: "https://i.pravatar.cc/150?img=8",
+      verified: true,
+      followerCount: 567000,
+    },
+    description: "🎤 LIVE RAP BATTLE: Freestyle showdown! Drop bars and win SoftPoints! 💰",
+    music: { title: "Hip Hop Battle", artist: "Street Beats" },
+    stats: { likes: 1890, comments: 567, shares: 123, views: "15.2K watching" },
+    hashtags: ["rapbattle", "freestyle", "hiphop", "bars"],
+    videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+    thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
+    duration: 0,
+    timestamp: "BATTLE",
+    isLiveStream: true,
+    allowDuets: false,
+    allowComments: true,
+  },
+  {
+    id: "battle3",
+    user: {
+      id: "battle3",
+      username: "comedy_clash",
+      displayName: "Comedy Clash",
+      avatar: "https://i.pravatar.cc/150?img=7",
+      verified: false,
+      followerCount: 234000,
+    },
+    description: "😂 COMEDY BATTLE: Who's funnier? Laugh and support your favorite! 🤣",
+    music: { title: "Comedy Battle", artist: "Funny Sounds" },
+    stats: { likes: 945, comments: 234, shares: 78, views: "8.9K watching" },
+    hashtags: ["comedybattle", "funny", "laugh", "humor"],
+    videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+    thumbnail: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
+    duration: 0,
+    timestamp: "BATTLE",
+    isLiveStream: true,
+    allowDuets: false,
+    allowComments: true,
+  },
 ];
 
 const VideoCard: React.FC<{
   video: VideoData;
   isActive: boolean;
   showControls?: boolean;
-}> = ({ video, isActive, showControls = true }) => {
+  onDuetCreate?: (video: VideoData) => void;
+}> = ({ video, isActive, showControls = true, onDuetCreate }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showMore, setShowMore] = useState(false);
@@ -422,7 +496,10 @@ const VideoCard: React.FC<{
             {/* Video metadata */}
             <div className="flex items-center gap-3 text-white/60 text-[10px] md:text-xs mt-1">
               {video.timestamp && (
-                <span>{video.isLiveStream ? "🔴 LIVE" : video.timestamp}</span>
+                <span>
+                  {video.timestamp === "BATTLE" ? "⚔️ LIVE BATTLE" :
+                   video.isLiveStream ? "🔴 LIVE" : video.timestamp}
+                </span>
               )}
               <span>{video.stats.views} {video.isLiveStream ? "watching" : "views"}</span>
             </div>
@@ -436,6 +513,12 @@ const VideoCard: React.FC<{
             isLiveStream={video.isLiveStream}
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
+            onDuetCreate={(videoId) => {
+              // Handle duet creation by opening the new duet recorder
+              if (onDuetCreate) {
+                onDuetCreate(video);
+              }
+            }}
           />
         </div>
       </div>
@@ -460,8 +543,9 @@ const VideoCard: React.FC<{
 const EnhancedTikTokVideos: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
+  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following" | "challenges">("foryou");
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -470,6 +554,13 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [showCreateMenu, setShowCreateMenu] = useState(false);
+  const [showDuetRecorder, setShowDuetRecorder] = useState(false);
+  const [duetOriginalVideo, setDuetOriginalVideo] = useState<any>(null);
+  const [selectedDuetStyle, setSelectedDuetStyle] = useState<'side-by-side' | 'react-respond' | 'picture-in-picture'>('side-by-side');
+  const [showBattleSetup, setShowBattleSetup] = useState(false);
+  const [showLiveBattle, setShowLiveBattle] = useState(false);
+  const [showCreateChallenge, setShowCreateChallenge] = useState(false);
+  const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -560,6 +651,68 @@ const EnhancedTikTokVideos: React.FC = () => {
     setIsAdvancedRecorderOpen(true);
   };
 
+  const handleDuetCreate = (video: VideoData) => {
+    setDuetOriginalVideo({
+      id: video.id,
+      url: video.videoUrl,
+      duration: video.duration,
+      creatorUsername: video.user.username,
+      creatorId: video.user.id,
+      title: video.description,
+      thumbnail: video.thumbnail,
+    });
+    setShowDuetRecorder(true);
+    toast({
+      title: "Duet Recording Started",
+      description: `Creating duet with @${video.user.username}`,
+    });
+  };
+
+  const handleDuetComplete = (duetData: any) => {
+    console.log('Duet created:', duetData);
+    setShowDuetRecorder(false);
+    setDuetOriginalVideo(null);
+    toast({
+      title: "Duet Created! 🎉",
+      description: "Your duet has been posted successfully.",
+    });
+    // Refresh the feed or navigate to the new duet
+    // You could add logic here to add the new duet to the current videos list
+  };
+
+  const handleCreateChallenge = (challengeData: any) => {
+    console.log('Challenge created:', challengeData);
+    setShowCreateChallenge(false);
+    toast({
+      title: "Challenge Created! 🎯",
+      description: "Your challenge is now live and accepting submissions.",
+    });
+  };
+
+  const handleJoinChallenge = (challengeId: string) => {
+    console.log('Joining challenge:', challengeId);
+    // This would typically open the duet recorder with challenge context
+    setActiveTab("foryou"); // Switch back to feed to record
+    toast({
+      title: "Challenge Joined! 🎬",
+      description: "Create your video response to participate.",
+    });
+  };
+
+  const handleDuetCancel = () => {
+    setShowDuetRecorder(false);
+    setDuetOriginalVideo(null);
+  };
+
+  const handleStartBattle = () => {
+    setShowCreateMenu(false);
+    setShowBattleSetup(true);
+    toast({
+      title: "Battle Mode! ⚔️",
+      description: "Set up your live battle challenge",
+    });
+  };
+
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
@@ -591,7 +744,7 @@ const EnhancedTikTokVideos: React.FC = () => {
               <Tabs
                 value={activeTab}
                 onValueChange={(value) =>
-                  setActiveTab(value as "live" | "foryou" | "following")
+                  setActiveTab(value as "live" | "foryou" | "following" | "challenges")
                 }
                 className="w-auto"
               >
@@ -605,7 +758,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                     )}
                   >
                     <Radio className="w-4 h-4" />
-                    Live
+                    Live/Battle
                   </TabsTrigger>
                   <TabsTrigger
                     value="foryou"
@@ -626,6 +779,17 @@ const EnhancedTikTokVideos: React.FC = () => {
                     )}
                   >
                     Following
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="challenges"
+                    className={cn(
+                      "bg-transparent border-0 text-base font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
+                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-purple-500",
+                      "text-white/60 hover:text-white transition-colors flex items-center gap-1"
+                    )}
+                  >
+                    <Target className="w-4 h-4" />
+                    Challenges
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
@@ -657,6 +821,14 @@ const EnhancedTikTokVideos: React.FC = () => {
                   <DropdownMenuItem onClick={handleGoLive} className="hover:bg-gray-800">
                     <Radio className="w-4 h-4 mr-2" />
                     Go Live
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleStartBattle} className="hover:bg-gray-800">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Start Battle
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setShowCreateChallenge(true)} className="hover:bg-gray-800">
+                    <Target className="w-4 h-4 mr-2" />
+                    Create Challenge
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -703,6 +875,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                   video={video}
                   isActive={index === currentVideoIndex && activeTab === "live"}
                   showControls={showControls}
+                  onDuetCreate={handleDuetCreate}
                 />
               ))
             ) : (
@@ -722,6 +895,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                 video={video}
                 isActive={index === currentVideoIndex && activeTab === "foryou"}
                 showControls={showControls}
+                onDuetCreate={handleDuetCreate}
               />
             ))}
           </TabsContent>
@@ -733,6 +907,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                   video={video}
                   isActive={index === currentVideoIndex && activeTab === "following"}
                   showControls={showControls}
+                  onDuetCreate={handleDuetCreate}
                 />
               ))
             ) : (
@@ -744,6 +919,13 @@ const EnhancedTikTokVideos: React.FC = () => {
                 </div>
               </div>
             )}
+          </TabsContent>
+          <TabsContent value="challenges" className="h-full mt-0 overflow-y-auto">
+            <DuetChallengesHub
+              userBalance={userBalance}
+              onCreateChallenge={() => setShowCreateChallenge(true)}
+              onJoinChallenge={handleJoinChallenge}
+            />
           </TabsContent>
         </Tabs>
       </div>
@@ -784,6 +966,65 @@ const EnhancedTikTokVideos: React.FC = () => {
         />
       )}
 
+      {/* Duet Recorder */}
+      {showDuetRecorder && duetOriginalVideo && (
+        <DuetRecorder
+          originalVideo={duetOriginalVideo}
+          duetStyle={selectedDuetStyle}
+          onCancel={handleDuetCancel}
+          onComplete={handleDuetComplete}
+        />
+      )}
+
+      {/* Battle Setup */}
+      <BattleSetup
+        open={showBattleSetup}
+        onOpenChange={setShowBattleSetup}
+        onBattleStart={(config) => {
+          console.log('Battle started:', config);
+          setShowBattleSetup(false);
+          setShowLiveBattle(true);
+          toast({
+            title: "Battle Started! ⚔️",
+            description: `${config.title} is now live!`,
+          });
+        }}
+      />
+
+      {/* Live Battle */}
+      {showLiveBattle && (
+        <LiveBattle
+          battleId="demo-battle"
+          creator1={{
+            id: '1',
+            username: 'you',
+            displayName: 'You',
+            avatar: 'https://i.pravatar.cc/150?u=you',
+            verified: false,
+            tier: 'rising_star',
+            score: 0,
+          }}
+          creator2={{
+            id: '2',
+            username: 'opponent',
+            displayName: 'Dance Master',
+            avatar: 'https://i.pravatar.cc/150?img=3',
+            verified: true,
+            tier: 'legend',
+            score: 0,
+          }}
+          duration={300}
+          onBattleEnd={(winnerId) => {
+            setShowLiveBattle(false);
+            toast({
+              title: "Battle Ended! 🏆",
+              description: `${winnerId === '1' ? 'You' : 'Dance Master'} won the battle!`,
+            });
+          }}
+          onExit={() => setShowLiveBattle(false)}
+        />
+      )}
+
       {/* Content Discovery Engine */}
       <Dialog open={isDiscoveryOpen} onOpenChange={setIsDiscoveryOpen}>
         <DialogContent className="max-w-4xl w-[95vw] h-[90vh] bg-black border-gray-800 p-0">
@@ -818,6 +1059,14 @@ const EnhancedTikTokVideos: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Create Challenge Modal */}
+      <CreateChallengeModal
+        isOpen={showCreateChallenge}
+        onClose={() => setShowCreateChallenge(false)}
+        onCreateChallenge={handleCreateChallenge}
+        userBalance={userBalance}
+      />
     </div>
   );
 };

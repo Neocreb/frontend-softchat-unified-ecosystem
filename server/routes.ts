@@ -7,6 +7,7 @@ import {
   insertPostSchema,
   insertProductSchema,
 } from "@shared/schema";
+import challengesApi from "./routes/challenges-api.js";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Blog RSS Feed endpoint
@@ -1860,6 +1861,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to fetch bank accounts" });
     }
   });
+
+  // Challenges API routes
+  app.use("/api", challengesApi);
 
   // Talent API endpoints
   app.get("/api/talents", async (req, res) => {

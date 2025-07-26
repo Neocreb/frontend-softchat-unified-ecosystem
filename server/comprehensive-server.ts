@@ -19,6 +19,7 @@ import comprehensiveApiRoutes from "./routes/comprehensive-api";
 import adminComprehensiveRoutes from "./routes/admin-comprehensive";
 import marketplaceApiRoutes from "./routes/marketplace-api";
 import activityEconomyApiRoutes from "./routes/activity-economy-api";
+import duetApiRoutes from "./routes/duet-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
@@ -239,6 +240,9 @@ app.use("/api/marketplace", marketplaceApiRoutes);
 
 // Admin API Routes
 app.use("/api", adminComprehensiveRoutes);
+
+// Duet API Routes
+app.use("/api/duets", duetApiRoutes);
 
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);

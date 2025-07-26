@@ -317,12 +317,12 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
     });
   };
 
-  const handleDuetRequest = () => {
+  const handleDuetRequest = (duetStyle: 'side-by-side' | 'react-respond' | 'picture-in-picture') => {
     if (onDuetCreate) {
       onDuetCreate(videoId);
     }
     setShowDuetDialog(false);
-    toast({ title: "Duet creation started!" });
+    toast({ title: `${duetStyle.replace('-', ' ')} duet creation started!` });
   };
 
   const handleReplyVideo = () => {
@@ -443,7 +443,13 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               variant="ghost"
               size="icon"
               className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-sm"
-              onClick={() => setShowDuetDialog(true)}
+              onClick={() => {
+                if (onDuetCreate) {
+                  onDuetCreate(videoId);
+                } else {
+                  setShowDuetDialog(true);
+                }
+              }}
             >
               <Users className="w-6 h-6" />
             </Button>
@@ -683,7 +689,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={handleDuetRequest}
+                onClick={() => handleDuetRequest('side-by-side')}
               >
                 <Users className="w-4 h-4 mr-3" />
                 Side-by-side Duet
@@ -691,7 +697,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={handleDuetRequest}
+                onClick={() => handleDuetRequest('react-respond')}
               >
                 <PlayCircle className="w-4 h-4 mr-3" />
                 React & Respond
@@ -699,7 +705,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={handleDuetRequest}
+                onClick={() => handleDuetRequest('picture-in-picture')}
               >
                 <Camera className="w-4 h-4 mr-3" />
                 Picture-in-Picture

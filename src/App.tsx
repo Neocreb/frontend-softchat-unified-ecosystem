@@ -88,6 +88,7 @@ import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
 import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
+import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
@@ -341,6 +342,7 @@ const AppRoutes = () => {
           <Route path="videos" element={<EnhancedTikTokVideos />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
+          <Route path="duet-demo" element={<DuetDemo />} />
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />
           <Route path="events" element={<CommunityEvents />} />

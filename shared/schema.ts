@@ -60,6 +60,17 @@ export const posts = pgTable("posts", {
   filter: text("filter"),
   tags: text("tags").array(),
   softpoints: integer("softpoints"),
+
+  // Duet metadata
+  isDuet: boolean("is_duet").default(false),
+  duetOfPostId: uuid("duet_of_post_id").references(() => posts.id),
+  originalCreatorId: uuid("original_creator_id").references(() => users.id),
+  originalCreatorUsername: text("original_creator_username"),
+  duetStyle: text("duet_style"), // 'side-by-side', 'react-respond', 'picture-in-picture'
+  audioSource: text("audio_source").default("both"), // 'original', 'both', 'voiceover'
+  duetVideoUrl: text("duet_video_url"), // The merged duet video
+  originalVideoUrl: text("original_video_url"), // Original video URL for reference
+
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
