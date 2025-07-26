@@ -526,11 +526,20 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
             <div className="space-y-4">
               <div className="bg-gray-800 rounded-lg p-4 text-left">
                 <h4 className="font-semibold mb-2">To enable camera access:</h4>
-                <ol className="text-sm text-gray-300 space-y-1">
-                  <li>1. Click the camera icon in your browser's address bar</li>
-                  <li>2. Select "Allow" for camera and microphone</li>
-                  <li>3. Refresh the page if needed</li>
-                </ol>
+                <div className="text-sm text-gray-300 space-y-2">
+                  <div>
+                    <strong>Chrome/Edge:</strong> Click the camera icon in the address bar and select "Allow"
+                  </div>
+                  <div>
+                    <strong>Firefox:</strong> Click "Allow" in the permission popup
+                  </div>
+                  <div>
+                    <strong>Safari:</strong> Go to Safari → Settings → Websites → Camera and enable access
+                  </div>
+                  <div className="text-xs text-gray-400 mt-2">
+                    💡 If you accidentally clicked "Block", you may need to refresh the page and try again
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-3">
