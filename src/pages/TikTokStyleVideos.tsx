@@ -633,6 +633,32 @@ const VideoCard: React.FC<{
             <span className="text-white text-xs font-semibold">Gift</span>
           </div>
 
+          {/* Duet button */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setShowDuetRecorder(true)}
+              className="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 hover:bg-purple-500/30 backdrop-blur-sm transition-all duration-200"
+            >
+              <Users className="w-7 h-7" />
+            </Button>
+            <span className="text-white text-xs font-semibold">Duet</span>
+          </div>
+
+          {/* Battle button */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setShowBattleInterface(true)}
+              className="w-12 h-12 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30 backdrop-blur-sm transition-all duration-200"
+            >
+              <Sword className="w-7 h-7" />
+            </Button>
+            <span className="text-white text-xs font-semibold">Battle</span>
+          </div>
+
           {/* Bookmark */}
           <div className="flex flex-col items-center gap-1">
             <Button
