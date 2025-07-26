@@ -317,6 +317,7 @@ const VideoCard: React.FC<{
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
+  const { toast } = useToast();
 
   useEffect(() => {
     const video = videoRef.current;
