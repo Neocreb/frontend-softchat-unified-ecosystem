@@ -681,15 +681,7 @@ const EnhancedTikTokVideos: React.FC = () => {
 
 
 
-  const handleJoinChallenge = (challengeId: string) => {
-    console.log('Joining challenge:', challengeId);
-    // This would typically open the duet recorder with challenge context
-    setActiveTab("foryou"); // Switch back to feed to record
-    toast({
-      title: "Challenge Joined! 🎬",
-      description: "Create your video response to participate.",
-    });
-  };
+
 
   const handleDuetCancel = () => {
     setShowDuetRecorder(false);
