@@ -568,6 +568,32 @@ const EnhancedTikTokVideos: React.FC = () => {
     setIsAdvancedRecorderOpen(true);
   };
 
+  const handleDuetCreate = (video: VideoData) => {
+    setDuetOriginalVideo({
+      id: video.id,
+      url: video.videoUrl,
+      duration: video.duration,
+      creatorUsername: video.user.username,
+      creatorId: video.user.id,
+      title: video.description,
+      thumbnail: video.thumbnail,
+    });
+    setShowDuetRecorder(true);
+  };
+
+  const handleDuetComplete = (duetData: any) => {
+    console.log('Duet created:', duetData);
+    setShowDuetRecorder(false);
+    setDuetOriginalVideo(null);
+    // Refresh the feed or navigate to the new duet
+    // You could add logic here to add the new duet to the current videos list
+  };
+
+  const handleDuetCancel = () => {
+    setShowDuetRecorder(false);
+    setDuetOriginalVideo(null);
+  };
+
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
       <Helmet>
