@@ -425,10 +425,18 @@ router.delete('/:postId', authMiddleware, async (req, res) => {
 
     // Delete files from storage
     if (duetPost.videoUrl) {
-      await fileService.deleteFile(duetPost.videoUrl);
+      // Extract filename from URL for S3 deletion
+      const videoFileName = duetPost.videoUrl.split('/').pop();
+      if (videoFileName) {
+        await FileService.deleteFile(videoFileName, 'duets');
+      }
     }
     if (duetPost.imageUrl) {
-      await fileService.deleteFile(duetPost.imageUrl);
+      // Extract filename from URL for S3 deletion
+      const imageFileName = duetPost.imageUrl.split('/').pop();
+      if (imageFileName) {
+        await FileService.deleteFile(imageFileName, 'thumbnails');
+      }
     }
 
     // Delete post from database
