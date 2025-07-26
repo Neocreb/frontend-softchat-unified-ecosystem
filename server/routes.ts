@@ -1862,6 +1862,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Challenges API routes
+  app.use("/api", challengesApi);
+
   // Talent API endpoints
   app.get("/api/talents", async (req, res) => {
     try {
