@@ -428,7 +428,7 @@ const CommunityEvents = () => {
                       <SelectContent>
                         <SelectItem value="workshop">📚 Workshop</SelectItem>
                         <SelectItem value="trading">
-                          ��� Trading Session
+                          📈 Trading Session
                         </SelectItem>
                         <SelectItem value="marketplace">
                           🛒 Shopping Event
@@ -675,7 +675,7 @@ const CommunityEvents = () => {
           <div className="mt-12">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">🎯 Challenges & Competitions</h2>
-              <Button onClick={() => navigate('/rewards')} variant="outline">
+              <Button onClick={() => navigate('rewards')} variant="outline">
                 View Leaderboard
               </Button>
             </div>
@@ -997,7 +997,7 @@ const CommunityEvents = () => {
                 {
                   type: "challenge",
                   label: "Challenges",
-                  icon: "��",
+                  icon: "🏆",
                   color: "bg-red-500",
                 },
                 {
