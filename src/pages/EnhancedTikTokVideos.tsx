@@ -69,6 +69,7 @@ import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
+import DuetEnabledVideoPlayer from "@/components/video/DuetEnabledVideoPlayer";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
 import { cn } from "@/utils/utils";
