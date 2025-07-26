@@ -683,7 +683,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={handleDuetRequest}
+                onClick={() => handleDuetRequest('side-by-side')}
               >
                 <Users className="w-4 h-4 mr-3" />
                 Side-by-side Duet
@@ -691,7 +691,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={handleDuetRequest}
+                onClick={() => handleDuetRequest('react-respond')}
               >
                 <PlayCircle className="w-4 h-4 mr-3" />
                 React & Respond
@@ -699,7 +699,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
               <Button
                 variant="ghost"
                 className="w-full justify-start"
-                onClick={handleDuetRequest}
+                onClick={() => handleDuetRequest('picture-in-picture')}
               >
                 <Camera className="w-4 h-4 mr-3" />
                 Picture-in-Picture
