@@ -113,7 +113,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
     description: '',
     duration: 300, // 5 minutes default
     battleType: 'instant',
-    allowBetting: true,
+    allowVoting: true,
     isPublic: true,
     tags: [],
   });
@@ -163,7 +163,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
         description: '',
         duration: 300,
         battleType: 'instant',
-        allowBetting: true,
+        allowVoting: true,
         isPublic: true,
         tags: [],
       });
@@ -291,8 +291,8 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                     <Label htmlFor="betting">Allow Betting</Label>
                     <Switch
                       id="betting"
-                      checked={battleConfig.allowBetting}
-                      onCheckedChange={(checked) => setBattleConfig({ ...battleConfig, allowBetting: checked })}
+                      checked={battleConfig.allowVoting}
+                      onCheckedChange={(checked) => setBattleConfig({ ...battleConfig, allowVoting: checked })}
                     />
                   </div>
                   
@@ -497,7 +497,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
                   </div>
 
                   <div className="flex gap-2">
-                    {battleConfig.allowBetting && (
+                    {battleConfig.allowVoting && (
                       <Badge variant="secondary" className="bg-green-600/20 text-green-400">
                         <Gift className="w-3 h-3 mr-1" />
                         Betting Enabled
