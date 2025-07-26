@@ -689,7 +689,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                     )}
                   >
                     <Radio className="w-4 h-4" />
-                    Live
+                    Live/Battle
                   </TabsTrigger>
                   <TabsTrigger
                     value="foryou"
