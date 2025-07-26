@@ -374,14 +374,14 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Betting button - only show if betting is still open */}
+          {/* Voting button - only show if voting is still open */}
           {timeLeft > 30 && (
             <Button
-              onClick={() => setShowBetting(true)}
+              onClick={() => setShowVoting(true)}
               className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4"
             >
               <DollarSign className="w-4 h-4 mr-1" />
-              Place Bet
+              Place Vote
             </Button>
           )}
 
