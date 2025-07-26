@@ -630,7 +630,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
       {/* Comments Overlay */}
       {showCommentsOverlay && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-sm z-[105] border-t border-gray-600">
+        <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-sm z-[105] border-t border-gray-600 pb-16 md:pb-0">
           <div className="p-4 max-h-[50vh] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
