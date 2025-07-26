@@ -862,6 +862,55 @@ const EnhancedTikTokVideos: React.FC = () => {
         />
       )}
 
+      {/* Battle Setup */}
+      <BattleSetup
+        open={showBattleSetup}
+        onOpenChange={setShowBattleSetup}
+        onBattleStart={(config) => {
+          console.log('Battle started:', config);
+          setShowBattleSetup(false);
+          setShowLiveBattle(true);
+          toast({
+            title: "Battle Started! ⚔️",
+            description: `${config.title} is now live!`,
+          });
+        }}
+      />
+
+      {/* Live Battle */}
+      {showLiveBattle && (
+        <LiveBattle
+          battleId="demo-battle"
+          creator1={{
+            id: '1',
+            username: 'you',
+            displayName: 'You',
+            avatar: 'https://i.pravatar.cc/150?u=you',
+            verified: false,
+            tier: 'rising_star',
+            score: 0,
+          }}
+          creator2={{
+            id: '2',
+            username: 'opponent',
+            displayName: 'Dance Master',
+            avatar: 'https://i.pravatar.cc/150?img=3',
+            verified: true,
+            tier: 'legend',
+            score: 0,
+          }}
+          duration={300}
+          onBattleEnd={(winnerId) => {
+            setShowLiveBattle(false);
+            toast({
+              title: "Battle Ended! 🏆",
+              description: `${winnerId === '1' ? 'You' : 'Dance Master'} won the battle!`,
+            });
+          }}
+          onExit={() => setShowLiveBattle(false)}
+        />
+      )}
+
       {/* Content Discovery Engine */}
       <Dialog open={isDiscoveryOpen} onOpenChange={setIsDiscoveryOpen}>
         <DialogContent className="max-w-4xl w-[95vw] h-[90vh] bg-black border-gray-800 p-0">
