@@ -392,6 +392,11 @@ app.use("/api", (req, res) => {
 // Global error handler
 app.use(globalErrorHandler);
 
+// SPA fallback - serve index.html for all unmatched routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(staticPath, "index.html"));
+});
+
 // =============================================================================
 // SERVER STARTUP
 // =============================================================================
