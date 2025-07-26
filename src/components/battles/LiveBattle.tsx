@@ -604,28 +604,61 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
         )}
       </div>
 
-      {/* Bottom Panel */}
-      <div className="h-32 bg-gray-900/95 backdrop-blur-sm border-t border-gray-700">
-        <div className="grid grid-cols-3 h-full">
-          {/* Comments */}
-          <div className="col-span-2 p-4">
-            <div className="h-20 overflow-y-auto mb-2" ref={commentsRef}>
-              <div className="space-y-1">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="flex items-start gap-2 text-sm">
-                    <Avatar className="w-5 h-5">
-                      <AvatarImage src={comment.user.avatar} />
-                      <AvatarFallback className="text-xs">{comment.user.username[0]}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <span className="text-yellow-400 font-medium">{comment.user.username}: </span>
-                      <span className="text-white">{comment.message}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+      {/* Floating Action Buttons */}
+      <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-30">
+        {/* Comments Toggle */}
+        <Button
+          size="icon"
+          className="rounded-full bg-gray-900/90 hover:bg-gray-800 text-white border border-gray-600"
+          onClick={() => setShowCommentsOverlay(!showCommentsOverlay)}
+        >
+          <MessageCircle className="w-5 h-5" />
+        </Button>
+
+        {/* Gift Button */}
+        <Button
+          size="icon"
+          className="rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          onClick={() => setShowGifts(true)}
+        >
+          <Gift className="w-5 h-5" />
+        </Button>
+      </div>
+
+      {/* Comments Overlay */}
+      {showCommentsOverlay && (
+        <div className="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm z-40">
+          <div className="p-4">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-semibold">Live Chat</h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowCommentsOverlay(false)}
+                className="text-white hover:bg-white/10"
+              >
+                <ChevronDown className="w-5 h-5" />
+              </Button>
             </div>
-            
+
+            {/* Comments */}
+            <div className="h-40 md:h-32 overflow-y-auto mb-4 space-y-2" ref={commentsRef}>
+              {comments.map((comment) => (
+                <div key={comment.id} className="flex items-start gap-2 text-sm">
+                  <Avatar className="w-6 h-6">
+                    <AvatarImage src={comment.user.avatar} />
+                    <AvatarFallback className="text-xs">{comment.user.username[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <span className="text-yellow-400 font-medium">{comment.user.username}: </span>
+                    <span className="text-white">{comment.message}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Comment Input */}
             <div className="flex gap-2">
               <Input
                 value={newComment}
@@ -638,30 +671,30 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
                 <MessageCircle className="w-4 h-4" />
               </Button>
             </div>
-          </div>
 
-          {/* Quick Gifts */}
-          <div className="p-4">
-            <div className="text-white text-sm font-medium mb-2">Quick Gifts</div>
-            <div className="grid grid-cols-3 gap-1">
-              {gifts.slice(0, 6).map((gift) => (
-                <Button
-                  key={gift.id}
-                  variant="outline"
-                  size="sm"
-                  className="aspect-square p-1 text-lg"
-                  onClick={() => {
-                    setSelectedGift(gift);
-                    setShowGifts(true);
-                  }}
-                >
-                  {gift.icon}
-                </Button>
-              ))}
+            {/* Quick Gifts Grid */}
+            <div className="mt-4">
+              <div className="text-white text-sm font-medium mb-2">Quick Gifts</div>
+              <div className="grid grid-cols-6 gap-2">
+                {gifts.slice(0, 6).map((gift) => (
+                  <Button
+                    key={gift.id}
+                    variant="outline"
+                    size="sm"
+                    className="aspect-square p-1 text-lg border-gray-600 hover:bg-gray-700"
+                    onClick={() => {
+                      setSelectedGift(gift);
+                      setShowGifts(true);
+                    }}
+                  >
+                    {gift.icon}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Gift Selection Modal */}
       {showGifts && (
