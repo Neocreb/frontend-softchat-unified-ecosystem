@@ -434,26 +434,29 @@ const VideoCard: React.FC<{
           <EnhancedInteractiveFeatures
             videoData={{
               id: video.id,
-              user: video.user,
-              description: video.description,
-              music: video.music,
-              stats: video.stats,
-              hashtags: video.hashtags,
-              videoUrl: video.videoUrl,
-              thumbnail: video.thumbnail,
+              url: video.videoUrl,
               duration: video.duration,
-              timestamp: video.timestamp,
-              category: video.category,
-              isLiveStream: video.isLiveStream,
-              allowDuets: video.allowDuets,
-              allowComments: video.allowComments,
-              hasCaption: video.hasCaption,
-              isSponsored: video.isSponsored,
-              challenge: video.challenge,
+              creatorId: video.user.id,
+              creatorUsername: video.user.username,
+              creatorDisplayName: video.user.displayName,
+              creatorAvatar: video.user.avatar,
+              title: video.description,
+              description: video.description,
+              thumbnail: video.thumbnail,
+              viewCount: parseInt(video.stats.views.replace(/[^\d]/g, '')) || 0,
+              likeCount: video.stats.likes,
+              shareCount: video.stats.shares,
+              commentCount: video.stats.comments,
+              allowDuets: video.allowDuets ?? true,
+              allowComments: video.allowComments ?? true,
+              isMonetized: true,
+              softPointsEarned: Math.floor(Math.random() * 1000),
+              tipCount: Math.floor(Math.random() * 50),
             }}
             isLiveStream={video.isLiveStream}
-            allowDuets={video.allowDuets}
-            allowComments={video.allowComments}
+            allowDuets={video.allowDuets ?? true}
+            allowComments={video.allowComments ?? true}
+            allowBattles={true}
           />
         </div>
       </div>
