@@ -475,6 +475,9 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [showCreateMenu, setShowCreateMenu] = useState(false);
+  const [showDuetRecorder, setShowDuetRecorder] = useState(false);
+  const [duetOriginalVideo, setDuetOriginalVideo] = useState<any>(null);
+  const [selectedDuetStyle, setSelectedDuetStyle] = useState<'side-by-side' | 'react-respond' | 'picture-in-picture'>('side-by-side');
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
