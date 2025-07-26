@@ -428,10 +428,10 @@ const CommunityEvents = () => {
                       <SelectContent>
                         <SelectItem value="workshop">📚 Workshop</SelectItem>
                         <SelectItem value="trading">
-                          📈 Trading Session
+                          ��� Trading Session
                         </SelectItem>
                         <SelectItem value="marketplace">
-                          ���� Shopping Event
+                          🛒 Shopping Event
                         </SelectItem>
                         <SelectItem value="social">❤️ Social Meetup</SelectItem>
                         <SelectItem value="challenge">🏆 Challenge</SelectItem>
@@ -757,7 +757,7 @@ const CommunityEvents = () => {
 
             <div className="text-center">
               <Button
-                onClick={() => navigate('/creator-economy')}
+                onClick={() => navigate('/rewards')}
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
               >
                 View All Challenges & Leaderboard
@@ -768,7 +768,7 @@ const CommunityEvents = () => {
           {/* Featured Live Events Spotlight */}
           <div className="mt-12">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">�� Live Right Now</h2>
+              <h2 className="text-2xl font-bold">🔴 Live Right Now</h2>
               <Button variant="outline">View All Live</Button>
             </div>
 
@@ -997,7 +997,7 @@ const CommunityEvents = () => {
                 {
                   type: "challenge",
                   label: "Challenges",
-                  icon: "🏆",
+                  icon: "��",
                   color: "bg-red-500",
                 },
                 {
