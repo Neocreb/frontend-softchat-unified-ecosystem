@@ -990,6 +990,14 @@ const EnhancedTikTokVideos: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Create Challenge Modal */}
+      <CreateChallengeModal
+        isOpen={showCreateChallenge}
+        onClose={() => setShowCreateChallenge(false)}
+        onCreateChallenge={handleCreateChallenge}
+        userBalance={userBalance}
+      />
     </div>
   );
 };
