@@ -101,7 +101,6 @@ import Notifications from "./pages/Notifications";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
-import CreatorEconomy from "./pages/CreatorEconomy";
 import ProfileDemo from "./components/profile/ProfileDemo";
 import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
 import DataManagement from "./components/data/DataManagement";
