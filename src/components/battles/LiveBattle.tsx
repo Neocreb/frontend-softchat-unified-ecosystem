@@ -192,11 +192,11 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
           return 0;
         }
 
-        // Battle ending warning and betting lock
+        // Battle ending warning and voting lock
         if (prev === 30) {
           toast({
             title: "30 seconds left! ⏰",
-            description: "Betting is now locked!",
+            description: "Voting is now locked!",
           });
         }
 
@@ -205,7 +205,7 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [bettingPool, userBets, scores, creator1.id, creator2.id, onBattleEnd, toast]);
+  }, [votingPool, userVotes, scores, creator1.id, creator2.id, onBattleEnd, toast]);
 
   // Simulate live updates
   useEffect(() => {
