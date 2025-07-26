@@ -706,6 +706,147 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
           </div>
         </div>
       )}
+
+      {/* Battle Betting Modal */}
+      {showBetting && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+            <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+              <h3 className="text-white font-semibold text-lg">Battle Betting</h3>
+              <Button variant="ghost" size="icon" onClick={() => setShowBetting(false)}>
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+
+            <div className="p-4">
+              <BattleBetting
+                battleId={battleId}
+                creator1={{
+                  ...creator1,
+                  currentScore: scores.creator1,
+                  winRate: 75,
+                  totalBets: 145,
+                  isLeading: scores.creator1 > scores.creator2,
+                }}
+                creator2={{
+                  ...creator2,
+                  currentScore: scores.creator2,
+                  winRate: 68,
+                  totalBets: 89,
+                  isLeading: scores.creator2 > scores.creator1,
+                }}
+                isLive={timeLeft > 0}
+                timeRemaining={timeLeft}
+                userBalance={userBalance}
+                onPlaceBet={handlePlaceBet}
+                userBets={userBets}
+                bettingPool={bettingPool}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Battle Results Modal */}
+      {showResults && battleResults && (
+        <Dialog open={showResults} onOpenChange={setShowResults}>
+          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md">
+            <DialogHeader>
+              <DialogTitle className="text-center text-xl">Battle Results 🏆</DialogTitle>
+            </DialogHeader>
+
+            <div className="space-y-6">
+              {/* Winner Announcement */}
+              <div className="text-center">
+                <div className="w-20 h-20 mx-auto mb-4">
+                  <Avatar className="w-full h-full">
+                    <AvatarImage
+                      src={battleResults.winnerId === creator1.id ? creator1.avatar : creator2.avatar}
+                    />
+                    <AvatarFallback className="text-2xl">
+                      {battleResults.winnerId === creator1.id ? creator1.displayName[0] : creator2.displayName[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 className="text-2xl font-bold mb-2">
+                  {battleResults.winnerId === creator1.id ? creator1.displayName : creator2.displayName} Wins!
+                </h3>
+                <div className="text-gray-400">
+                  +{battleResults.winningCreatorBonus.toFixed(0)} SP Creator Bonus
+                </div>
+              </div>
+
+              {/* Pool Stats */}
+              <div className="bg-gray-800/50 rounded-lg p-4 space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Total Pool</span>
+                  <span className="text-white font-bold">{battleResults.totalPool} SP</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Platform Fee (10%)</span>
+                  <span className="text-gray-400">{battleResults.platformFee.toFixed(0)} SP</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Winners Share (70%)</span>
+                  <span className="text-green-400">{(battleResults.totalPool * 0.7).toFixed(0)} SP</span>
+                </div>
+              </div>
+
+              {/* User Results */}
+              <div className="text-center">
+                {battleResults.userBetOutcome === 'won' ? (
+                  <div className="space-y-2">
+                    <div className="text-6xl">🎉</div>
+                    <h4 className="text-xl font-bold text-green-400">You Won!</h4>
+                    <div className="text-2xl font-bold text-yellow-400">
+                      +{battleResults.userWinnings.toFixed(0)} SP
+                    </div>
+                    <p className="text-gray-400 text-sm">
+                      Your winnings have been added to your balance
+                    </p>
+                  </div>
+                ) : battleResults.userBetOutcome === 'lost' ? (
+                  <div className="space-y-2">
+                    <div className="text-6xl">❌</div>
+                    <h4 className="text-xl font-bold text-red-400">You Lost</h4>
+                    <p className="text-gray-400 text-sm">
+                      Better luck next time!
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="text-6xl">👀</div>
+                    <h4 className="text-xl font-bold text-gray-400">You Watched</h4>
+                    <p className="text-gray-400 text-sm">
+                      Join the betting next time for a chance to win!
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 border-gray-600 text-white hover:bg-gray-700"
+                  onClick={() => setShowResults(false)}
+                >
+                  Close
+                </Button>
+                <Button
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                  onClick={() => {
+                    setShowResults(false);
+                    // Could navigate to another battle or creator economy
+                  }}
+                >
+                  Next Battle
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
