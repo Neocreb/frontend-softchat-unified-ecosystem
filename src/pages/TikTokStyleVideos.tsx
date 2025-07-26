@@ -762,8 +762,10 @@ const VideoCard: React.FC<{
           onClose={() => setShowDuetRecorder(false)}
           onDuetCreated={(duet) => {
             setShowDuetRecorder(false);
-            console.log("Duet created:", duet);
-            // Could add toast notification here
+            toast({
+              title: "Duet Created! 🎉",
+              description: `Your duet with @${video.user.username} has been published!`,
+            });
           }}
         />
       )}
