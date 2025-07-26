@@ -288,7 +288,7 @@ const BattleSetup: React.FC<BattleSetupProps> = ({ open, onOpenChange, onBattleS
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="betting">Allow Betting</Label>
+                    <Label htmlFor="voting">Allow Voting</Label>
                     <Switch
                       id="betting"
                       checked={battleConfig.allowVoting}
