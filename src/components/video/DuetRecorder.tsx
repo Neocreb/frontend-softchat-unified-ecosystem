@@ -106,24 +106,74 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
     };
   }, []);
 
+  const checkPermissions = async () => {
+    try {
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera and microphone access not supported in this browser');
+      }
+
+      // Check permission status if supported
+      if (navigator.permissions) {
+        const cameraPermission = await navigator.permissions.query({ name: 'camera' as PermissionName });
+        const microphonePermission = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+
+        if (cameraPermission.state === 'denied' || microphonePermission.state === 'denied') {
+          setPermissionState('denied');
+          setPermissionError('Camera or microphone access has been denied. Please enable permissions in your browser settings.');
+          return false;
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.warn('Permission check failed:', error);
+      // Continue anyway as some browsers don't support permission checks
+      return true;
+    }
+  };
+
   const initializeMedia = async () => {
     try {
-      // Get user media
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 720 },
-          height: { ideal: 1280 },
-          frameRate: { ideal: 30 },
-          facingMode: 'user'
-        },
-        audio: {
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      });
+      setPermissionState('checking');
+
+      // Check permissions first
+      const hasPermission = await checkPermissions();
+      if (!hasPermission) {
+        return;
+      }
+
+      setPermissionState('prompt');
+
+      // Get user media with progressive fallback
+      let stream: MediaStream;
+
+      try {
+        // Try with ideal settings first
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            width: { ideal: 720 },
+            height: { ideal: 1280 },
+            frameRate: { ideal: 30 },
+            facingMode: 'user'
+          },
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
+      } catch (error) {
+        // Fallback to basic settings
+        console.warn('High-quality media failed, trying basic settings:', error);
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'user' },
+          audio: true
+        });
+      }
 
       streamRef.current = stream;
+      setPermissionState('granted');
 
       if (userVideoRef.current) {
         userVideoRef.current.srcObject = stream;
@@ -136,11 +186,34 @@ const DuetRecorder: React.FC<DuetRecorderProps> = ({
         originalVideoRef.current.currentTime = 0;
       }
 
-    } catch (error) {
+      toast({
+        title: 'Camera Ready!',
+        description: 'You can now start recording your duet.',
+      });
+
+    } catch (error: any) {
       console.error('Error accessing media:', error);
+      setPermissionState('denied');
+
+      let errorMessage = 'Unable to access camera and microphone.';
+
+      if (error.name === 'NotAllowedError') {
+        errorMessage = 'Camera and microphone access was denied. Please click "Allow" when prompted and try again.';
+      } else if (error.name === 'NotFoundError') {
+        errorMessage = 'No camera or microphone found. Please connect a camera and microphone and try again.';
+      } else if (error.name === 'NotReadableError') {
+        errorMessage = 'Camera or microphone is already in use by another application.';
+      } else if (error.name === 'OverconstrainedError') {
+        errorMessage = 'Camera does not meet the required specifications. Trying with basic settings...';
+        // Try with minimal constraints
+        setTimeout(() => initializeMedia(), 1000);
+        return;
+      }
+
+      setPermissionError(errorMessage);
       toast({
         title: 'Camera Access Error',
-        description: 'Unable to access camera and microphone. Please check permissions.',
+        description: errorMessage,
         variant: 'destructive',
       });
     }
