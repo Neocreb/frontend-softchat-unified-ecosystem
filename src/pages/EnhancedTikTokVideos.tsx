@@ -71,6 +71,8 @@ import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
 import DuetEnabledVideoPlayer from "@/components/video/DuetEnabledVideoPlayer";
 import DuetRecorder from "@/components/video/DuetRecorder";
+import BattleSetup from "@/components/battles/BattleSetup";
+import LiveBattle from "@/components/battles/LiveBattle";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
 import { cn } from "@/utils/utils";
