@@ -42,7 +42,6 @@ import {
   History,
   Crown,
   Share2,
-  Crown,
   Building,
   CreditCard,
   Wallet,
