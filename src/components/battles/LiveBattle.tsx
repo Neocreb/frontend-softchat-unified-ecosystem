@@ -769,19 +769,19 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
         </div>
       )}
 
-      {/* Battle Betting Modal */}
-      {showBetting && (
+      {/* Battle Voting Modal */}
+      {showVoting && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-[110] p-4 pb-20 md:pb-4">
           <div className="bg-gray-900 rounded-lg max-w-2xl w-full max-h-[85vh] overflow-auto">
             <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-              <h3 className="text-white font-semibold text-lg">Battle Betting</h3>
-              <Button variant="ghost" size="icon" onClick={() => setShowBetting(false)}>
+              <h3 className="text-white font-semibold text-lg">Battle Voting</h3>
+              <Button variant="ghost" size="icon" onClick={() => setShowVoting(false)}>
                 <X className="w-4 h-4" />
               </Button>
             </div>
 
             <div className="p-4">
-              <BattleBetting
+              <BattleVoting
                 battleId={battleId}
                 creator1={{
                   ...creator1,
