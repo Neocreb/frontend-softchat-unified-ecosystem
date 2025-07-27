@@ -218,6 +218,18 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
       .reduce((sum, vote) => sum + vote.potentialWinning, 0);
   };
 
+  const hasVotedForCreator = (creatorId: string) => {
+    return userVotes.some(vote =>
+      vote.creatorId === creatorId && vote.status === 'active'
+    );
+  };
+
+  const getUserVoteForCreator = (creatorId: string) => {
+    return userVotes.find(vote =>
+      vote.creatorId === creatorId && vote.status === 'active'
+    );
+  };
+
   return (
     <div className="space-y-4">
       {/* Battle Status */}
