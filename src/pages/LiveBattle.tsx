@@ -41,6 +41,7 @@ import { useToast } from '@/hooks/use-toast';
 import LiveBattle from '@/components/battles/LiveBattle';
 import BattleSetup from '@/components/battles/BattleSetup';
 import { LiveStreamPlayer } from '@/components/livestream/LiveStreamPlayer';
+import { battleRedirectService } from '@/services/battleRedirectService';
 
 interface LiveStream {
   id: string;
