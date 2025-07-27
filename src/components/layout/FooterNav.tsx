@@ -8,6 +8,8 @@ import {
   Wallet,
   Plus,
   Zap,
+  Radio,
+  Trophy,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
