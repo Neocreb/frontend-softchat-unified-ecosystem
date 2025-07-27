@@ -341,6 +341,9 @@ const AppRoutes = () => {
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<EnhancedTikTokVideos />} />
+          <Route path="live-battle" element={<LiveBattle />} />
+          <Route path="live" element={<LiveBattle />} />
+          <Route path="battle" element={<LiveBattle />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="duet-demo" element={<DuetDemo />} />
