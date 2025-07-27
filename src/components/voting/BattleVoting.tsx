@@ -319,6 +319,7 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
         <Card className={cn(
           "border-2 cursor-pointer transition-all hover:scale-105",
           selectedCreator?.id === creator2.id ? "border-red-500 bg-red-500/10" : "border-gray-700",
+          hasVotedForCreator(creator2.id) && "border-green-500 bg-green-500/10",
           votingLocked && "opacity-50 cursor-not-allowed"
         )}
         onClick={() => !votingLocked && setSelectedCreator(creator2)}
