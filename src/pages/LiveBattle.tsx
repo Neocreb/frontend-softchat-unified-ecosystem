@@ -155,7 +155,14 @@ const gifts: Gift[] = [
 const LiveBattlePage: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('live');
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  // Get initial tab from URL parameters
+  const initialTab = searchParams.get('tab') || 'live';
+  const battleIdFromUrl = searchParams.get('battleId');
+
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showChat, setShowChat] = useState(true);
