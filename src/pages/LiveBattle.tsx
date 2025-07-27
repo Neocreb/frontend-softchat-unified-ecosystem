@@ -182,6 +182,48 @@ const LiveBattlePage: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const currentStream = mockLiveStreams[currentStreamIndex];
 
+  // Handle battle redirect from URL
+  useEffect(() => {
+    if (battleIdFromUrl && activeTab === 'battle') {
+      const pendingBattle = battleRedirectService.getPendingBattle(battleIdFromUrl);
+      if (pendingBattle) {
+        // Create battle from pending config
+        const mockBattle = {
+          id: pendingBattle.battleId,
+          title: pendingBattle.title,
+          creator1: {
+            id: pendingBattle.creator1Id,
+            username: 'creator1',
+            displayName: 'Battle Creator',
+            avatar: 'https://i.pravatar.cc/150?img=1',
+            verified: false,
+            tier: 'pro_creator' as const,
+            score: 0,
+          },
+          creator2: {
+            id: pendingBattle.creator2Id,
+            username: 'creator2',
+            displayName: 'Challenger',
+            avatar: 'https://i.pravatar.cc/150?img=2',
+            verified: true,
+            tier: 'legend' as const,
+            score: 0,
+          },
+          duration: pendingBattle.duration,
+          description: pendingBattle.description || '',
+          isPublic: pendingBattle.isPublic || true,
+          allowVoting: pendingBattle.allowVoting || true,
+        };
+
+        setActiveBattle(mockBattle);
+        battleRedirectService.clearPendingBattle(battleIdFromUrl);
+
+        // Clean up URL
+        navigate('/app/live-battle?tab=battle', { replace: true });
+      }
+    }
+  }, [battleIdFromUrl, activeTab, navigate]);
+
   // Simulate live comments
   useEffect(() => {
     const interval = setInterval(() => {
