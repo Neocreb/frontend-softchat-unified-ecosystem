@@ -40,10 +40,13 @@ const FooterNav = () => {
       special: true,
     },
     {
-      icon: Video,
-      label: "Videos",
-      href: "/app/videos",
-      active: location.pathname === "/app/videos",
+      icon: Radio,
+      label: "Live",
+      href: "/app/live-battle",
+      active: location.pathname === "/app/live-battle" ||
+              location.pathname === "/app/live" ||
+              location.pathname === "/app/battle" ||
+              location.pathname === "/app/videos",
     },
     {
       icon: ShoppingCart,
