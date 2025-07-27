@@ -138,6 +138,7 @@ import AdChoices from "./pages/AdChoices";
 import MonetizationPolicy from "./pages/MonetizationPolicy";
 import Premium from "./pages/Premium";
 import CampaignCenter from "./components/campaigns/CampaignCenter";
+import LiveBattle from "./pages/LiveBattle";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
