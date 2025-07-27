@@ -345,7 +345,14 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
                 </div>
                 <div className="text-sm text-gray-400">@{creator2.username}</div>
               </div>
-              {creator2.isLeading && <Crown className="w-5 h-5 text-yellow-400" />}
+              <div className="flex items-center gap-2">
+                {creator2.isLeading && <Crown className="w-5 h-5 text-yellow-400" />}
+                {hasVotedForCreator(creator2.id) && (
+                  <Badge className="bg-green-500 text-white text-xs">
+                    ✓ Voted
+                  </Badge>
+                )}
+              </div>
             </div>
             
             {/* Stats */}
