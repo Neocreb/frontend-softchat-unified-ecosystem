@@ -142,6 +142,35 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
       return;
     }
 
+    // Check if user has already voted for this creator
+    const existingVoteForCreator = userVotes.find(vote =>
+      vote.creatorId === selectedCreator.id && vote.status === 'active'
+    );
+
+    if (existingVoteForCreator) {
+      toast({
+        title: 'Already Voted! ❌',
+        description: `You've already voted for ${selectedCreator.displayName}. You can only vote once per creator per battle.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Check if user has already voted for the opposing creator
+    const opposingCreatorId = selectedCreator.id === creator1.id ? creator2.id : creator1.id;
+    const existingVoteForOpponent = userVotes.find(vote =>
+      vote.creatorId === opposingCreatorId && vote.status === 'active'
+    );
+
+    if (existingVoteForOpponent) {
+      toast({
+        title: 'Switch Vote? 🔄',
+        description: `You've already voted for the other creator. You can only vote for one creator per battle.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     const vote = {
       amount: voteAmount,
       creatorId: selectedCreator.id,
