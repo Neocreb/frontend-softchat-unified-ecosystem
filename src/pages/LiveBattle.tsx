@@ -816,11 +816,41 @@ const LiveBattlePage: React.FC = () => {
             <DialogTitle>Create New Battle</DialogTitle>
           </DialogHeader>
           <BattleSetup
-            onBattleCreated={(battle) => {
-              setActiveBattle(battle);
+            open={showBattleSetup}
+            onOpenChange={setShowBattleSetup}
+            onBattleStart={(battleConfig) => {
+              // Create a mock battle from the config
+              const mockBattle = {
+                id: `battle-${Date.now()}`,
+                title: battleConfig.title,
+                creator1: {
+                  id: '1',
+                  username: 'user1',
+                  displayName: 'Battle Creator',
+                  avatar: 'https://i.pravatar.cc/150?img=1',
+                  verified: false,
+                  tier: 'pro_creator' as const,
+                  score: 0,
+                },
+                creator2: {
+                  id: '2',
+                  username: 'opponent',
+                  displayName: 'Challenger',
+                  avatar: 'https://i.pravatar.cc/150?img=2',
+                  verified: true,
+                  tier: 'legend' as const,
+                  score: 0,
+                },
+                duration: battleConfig.duration * 60, // Convert minutes to seconds
+                description: battleConfig.description,
+                isPublic: battleConfig.isPublic,
+                allowVoting: battleConfig.allowVoting,
+              };
+
+              setActiveBattle(mockBattle);
               setShowBattleSetup(false);
+              setActiveTab('battle'); // Switch to battle tab
             }}
-            onCancel={() => setShowBattleSetup(false)}
           />
         </DialogContent>
       </Dialog>
