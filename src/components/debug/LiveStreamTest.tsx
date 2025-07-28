@@ -10,12 +10,21 @@ const LiveStreamTest: React.FC = () => {
   const { toast } = useToast();
 
   const handleTestStream = () => {
-    const streamId = addLiveStream({
+    if (!liveContentContext) {
+      toast({
+        title: "Live Content Provider Not Available",
+        description: "This feature requires authentication",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const streamId = liveContentContext.addLiveStream({
       title: "Test Live Stream",
       description: "Testing the live streaming functionality",
       category: "test",
     });
-    
+
     toast({
       title: "Test Stream Created!",
       description: `Stream ID: ${streamId}`,
