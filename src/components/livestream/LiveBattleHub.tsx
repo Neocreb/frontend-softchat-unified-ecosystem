@@ -58,6 +58,7 @@ import { LiveStreamData } from '../../hooks/use-live-content';
 import { useToast } from '../../hooks/use-toast';
 import { useAuth } from '../../contexts/AuthContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
+import { EnhancedBattleVoting } from '../voting/EnhancedBattleVoting';
 import {
   DropdownMenu,
   DropdownMenuContent,
