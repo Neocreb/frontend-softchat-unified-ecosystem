@@ -331,8 +331,8 @@ export const creatorRankings = pgTable("creator_rankings", {
   
   // Engagement metrics
   averageViewerCount: decimal("average_viewer_count", { precision: 8, scale: 2 }),
-  engagementRate: decimal("engagement_rate", { precision: 5, scale = 2 }), // likes + comments / views
-  chatActivity: decimal("chat_activity", { precision: 8, scale = 2 }), // messages per stream
+  engagementRate: decimal("engagement_rate", { precision: 5, scale: 2 }), // likes + comments / views
+  chatActivity: decimal("chat_activity", { precision: 8, scale: 2 }), // messages per stream
   
   // Battle-specific metrics
   battlesWon: integer("battles_won").default(0),
