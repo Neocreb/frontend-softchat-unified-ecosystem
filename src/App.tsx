@@ -365,13 +365,7 @@ const AppRoutes = () => {
           />
           <Route
             path="live-streaming"
-            element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-6xl mx-auto">
-                  <LiveStreamCreator />
-                </div>
-              </div>
-            }
+            element={<Navigate to="/app/videos?tab=live" replace />}
           />
           <Route path="settings" element={<EnhancedSettings />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
