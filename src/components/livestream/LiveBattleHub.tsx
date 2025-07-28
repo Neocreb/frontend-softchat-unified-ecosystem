@@ -826,7 +826,17 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
         <Button
           variant="ghost"
           size="icon"
+          onClick={() => setShowFullscreen(!showFullscreen)}
           className="text-white hover:bg-white/20 rounded-full"
+        >
+          {showFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-white hover:bg-white/20 rounded-full"
+          onClick={() => window.history.back()}
         >
           <X className="w-4 h-4" />
         </Button>
