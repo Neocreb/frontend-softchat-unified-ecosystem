@@ -920,16 +920,19 @@ const EnhancedTikTokVideos: React.FC = () => {
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
-            {liveStreams.length > 0 ? (
-              liveStreams.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  isActive={index === currentVideoIndex && activeTab === "live"}
-                  showControls={showControls}
-                  onDuetCreate={handleDuetCreate}
-                />
-              ))
+            {allLiveContent.length > 0 ? (
+              allLiveContent.map((liveContent, index) => {
+                const video = liveContentToVideoData(liveContent);
+                return (
+                  <VideoCard
+                    key={video.id}
+                    video={video}
+                    isActive={index === currentVideoIndex && activeTab === "live"}
+                    showControls={showControls}
+                    onDuetCreate={handleDuetCreate}
+                  />
+                );
+              })
             ) : (
               <div className="h-screen flex items-center justify-center">
                 <div className="text-center text-white/60">
