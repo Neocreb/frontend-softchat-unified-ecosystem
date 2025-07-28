@@ -897,7 +897,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
               className="bg-black/40 backdrop-blur-sm rounded-lg px-3 py-2 mb-2 max-w-sm animate-fade-in-up"
               style={{
                 animationDelay: `${index * 0.1}s`,
-              }}
+              } as React.CSSProperties}
             >
               <div className="flex items-center gap-2">
                 <Avatar className="w-5 h-5">
