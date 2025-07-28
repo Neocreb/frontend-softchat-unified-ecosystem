@@ -112,6 +112,21 @@ interface InteractiveFeaturesProps {
   allowComments?: boolean;
   onDuetCreate?: (originalVideoId: string) => void;
   onReplyCreate?: (originalVideoId: string) => void;
+  isBattle?: boolean;
+  battleData?: {
+    creator1: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+    creator2: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+  };
 }
 
 const mockComments: Comment[] = [
