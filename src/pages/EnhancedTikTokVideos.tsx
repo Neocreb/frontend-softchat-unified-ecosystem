@@ -75,7 +75,7 @@ import BattleSetup from "@/components/battles/BattleSetup";
 import LiveBattle from "@/components/battles/LiveBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
-import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
+import { LiveStreamCreator } from "@/components/livestream/LiveStreamCreator";
 import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
 import { cn } from "@/utils/utils";
