@@ -463,7 +463,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
       )}
 
       {/* Live Chat Messages Overlay */}
-      <div className="absolute left-4 bottom-24 right-20 z-30 space-y-2">
+      <div className="absolute left-4 bottom-36 right-20 z-30 space-y-2">
         {chatMessages.slice(-4).map((msg, index) => (
           <div
             key={msg.id}
