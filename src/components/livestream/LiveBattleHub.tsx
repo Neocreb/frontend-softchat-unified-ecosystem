@@ -546,13 +546,13 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
         <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
           <div className="flex items-center gap-2 mb-2">
             <Avatar className="w-10 h-10 border-2 border-white">
-              <AvatarImage src={participants[0]?.avatar} />
-              <AvatarFallback>{participants[0]?.displayName[0]}</AvatarFallback>
+              <AvatarImage src={participants[0]?.avatar || content?.user?.avatar} />
+              <AvatarFallback>{participants[0]?.displayName?.[0] || content?.user?.displayName?.[0] || 'U'}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <div className="flex items-center gap-1">
-                <span className="text-white font-semibold text-sm">@{participants[0]?.username}</span>
-                {participants[0]?.verified && (
+                <span className="text-white font-semibold text-sm">@{participants[0]?.username || content?.user?.username}</span>
+                {(participants[0]?.verified || content?.user?.verified) && (
                   <div className="w-3 h-3 bg-blue-500 rounded-full" />
                 )}
                 <Badge className="bg-orange-500 text-white text-xs px-1 py-0">
@@ -560,7 +560,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
                 </Badge>
               </div>
               <div className="text-white/80 text-xs">
-                {participants[0]?.displayName} • {formatNumber(localViewerCount)} watching
+                {participants[0]?.displayName || content?.user?.displayName} • {formatNumber(localViewerCount)} watching
               </div>
             </div>
           </div>
