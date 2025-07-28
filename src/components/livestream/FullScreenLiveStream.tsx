@@ -576,6 +576,17 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
                   </span>
                 </div>
               )}
+
+              {/* Vote Button */}
+              <div className="mt-3 flex justify-center">
+                <Button
+                  onClick={() => setShowVoting(true)}
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6"
+                >
+                  <DollarSign className="w-4 h-4 mr-2" />
+                  Place Vote
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
