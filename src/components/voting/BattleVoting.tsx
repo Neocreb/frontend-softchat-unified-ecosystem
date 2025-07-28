@@ -490,11 +490,23 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
                 </>
               ) : (
                 <div className="text-center py-8">
-                  <Target className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                  <h3 className="font-medium text-gray-300 mb-2">Select a Creator</h3>
-                  <p className="text-sm text-gray-400">
-                    Choose which creator you think will win to place your vote
-                  </p>
+                  {userVotes.length > 0 ? (
+                    <>
+                      <CheckCircle className="w-12 h-12 mx-auto text-green-400 mb-4" />
+                      <h3 className="font-medium text-green-300 mb-2">Vote Already Placed</h3>
+                      <p className="text-sm text-gray-400">
+                        You can only vote once per battle. Check "My Votes" tab to see your bet.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <Target className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                      <h3 className="font-medium text-gray-300 mb-2">Select a Creator</h3>
+                      <p className="text-sm text-gray-400">
+                        Choose which creator you think will win to place your vote
+                      </p>
+                    </>
+                  )}
                 </div>
               )}
             </CardContent>
