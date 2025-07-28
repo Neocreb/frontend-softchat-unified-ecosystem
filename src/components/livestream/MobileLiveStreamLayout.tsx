@@ -114,7 +114,7 @@ const mockChatMessages: LiveChatMessage[] = [
   },
 ];
 
-const quickReactions = ['❤️', '😂', '😮', '���', '🔥', '💎', '🚀', '👑'];
+const quickReactions = ['❤️', '😂', '😮', '���', '��', '💎', '🚀', '👑'];
 
 export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   content,
@@ -319,7 +319,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   };
 
   return (
-    <div className={cn("relative w-full bg-black overflow-hidden snap-start snap-always h-[calc(100vh-100px)]", className)}>
+    <div className={cn("relative h-screen w-full bg-black overflow-hidden snap-start snap-always", className)}>
       {/* Video Background */}
       <video
         ref={videoRef}
