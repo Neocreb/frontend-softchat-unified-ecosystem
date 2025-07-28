@@ -635,6 +635,7 @@ export function LiveStreamCreator({
                     value={streamTags}
                     onChange={(e) => setStreamTags(e.target.value)}
                     placeholder="tag1, tag2, tag3"
+                    className="min-h-[44px] text-base"
                   />
                 </div>
               </div>
