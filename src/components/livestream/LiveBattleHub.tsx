@@ -221,7 +221,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
 
   // Calculate stream duration
   useEffect(() => {
-    if (content.startedAt) {
+    if (content.startedAt && content.startedAt instanceof Date) {
       const interval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - content.startedAt.getTime()) / 1000);
         setStreamDuration(elapsed);
