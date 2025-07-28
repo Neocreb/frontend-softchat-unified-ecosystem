@@ -518,6 +518,21 @@ const VideoCard: React.FC<{
             isLiveStream={video.isLiveStream}
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
+            isBattle={video.timestamp === "BATTLE"}
+            battleData={video.timestamp === "BATTLE" ? {
+              creator1: {
+                id: video.user.id,
+                username: video.user.username,
+                displayName: video.user.displayName,
+                avatar: video.user.avatar,
+              },
+              creator2: {
+                id: "opponent_" + video.id,
+                username: video.id === "battle1" ? "melody_queen" : "freestyle_master",
+                displayName: video.id === "battle1" ? "Melody Queen" : "Freestyle Master",
+                avatar: `https://i.pravatar.cc/150?img=${video.id === "battle1" ? "9" : "10"}`,
+              }
+            } : undefined}
             onDuetCreate={(videoId) => {
               // Handle duet creation by opening the new duet recorder
               if (onDuetCreate) {
