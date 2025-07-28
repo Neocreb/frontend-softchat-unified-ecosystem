@@ -1,4 +1,5 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import * as React from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import { useLiveContent, LiveStreamData } from '../hooks/use-live-content';
 
 interface LiveContentContextType {
