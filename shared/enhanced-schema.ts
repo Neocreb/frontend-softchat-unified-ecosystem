@@ -15,6 +15,9 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { users, profiles, p2pOffers } from "./schema";
 
+// Import live/battle schema
+export * from "./live-battle-schema";
+
 // =============================================================================
 // WALLET & TRANSACTION SYSTEM
 // =============================================================================
