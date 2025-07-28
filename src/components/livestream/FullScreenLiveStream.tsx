@@ -48,6 +48,8 @@ import { cn } from '../../lib/utils';
 import { LiveStreamData } from '../../hooks/use-live-content';
 import { useToast } from '../../hooks/use-toast';
 import { useAuth } from '../../contexts/AuthContext';
+import BattleVoting from '../voting/BattleVoting';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 interface LiveChatMessage {
   id: string;
