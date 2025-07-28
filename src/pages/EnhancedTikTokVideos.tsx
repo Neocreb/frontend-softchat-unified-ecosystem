@@ -78,6 +78,7 @@ import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
 import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
+import LiveStreamingCard from "../components/video/LiveStreamingCard";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
