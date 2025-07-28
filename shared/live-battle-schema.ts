@@ -296,8 +296,8 @@ export const liveSessionAnalytics = pgTable("live_session_analytics", {
   
   // Battle-specific analytics (if applicable)
   votingParticipation: decimal("voting_participation", { precision: 5, scale: 2 }), // percentage
-  totalVotingPool: decimal("total_voting_pool", { precision: 10, scale = 2 }),
-  averageVoteAmount: decimal("average_vote_amount", { precision: 10, scale = 2 }),
+  totalVotingPool: decimal("total_voting_pool", { precision: 10, scale: 2 }),
+  averageVoteAmount: decimal("average_vote_amount", { precision: 10, scale: 2 }),
   
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
