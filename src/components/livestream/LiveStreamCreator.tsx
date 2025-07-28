@@ -657,7 +657,7 @@ export function LiveStreamCreator({
                     <p className="text-gray-600 text-sm">
                       {currentStream.description}
                     </p>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-2 text-xs md:text-sm text-gray-500">
                       <span className="flex items-center gap-1">
                         <Users className="h-4 w-4" />
                         {formatViewerCount(viewerCount)} viewers
