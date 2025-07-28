@@ -912,9 +912,9 @@ const EnhancedTikTokVideos: React.FC = () => {
           <TabsContent value="live" className="h-full mt-0">
             {allLiveContent.length > 0 ? (
               allLiveContent.map((liveContent, index) => {
-                // Use FullScreenLiveStream for all live content for TikTok-style experience
+                // Use MobileLiveStreamLayout for mobile-optimized live experience
                 return (
-                  <FullScreenLiveStream
+                  <MobileLiveStreamLayout
                     key={liveContent.id}
                     content={liveContent}
                     isActive={index === currentVideoIndex && activeTab === "live"}
