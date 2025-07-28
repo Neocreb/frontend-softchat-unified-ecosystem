@@ -233,9 +233,9 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
         <Card className={cn(
           "border-2 cursor-pointer transition-all hover:scale-105",
           selectedCreator?.id === creator1.id ? "border-blue-500 bg-blue-500/10" : "border-gray-700",
-          votingLocked && "opacity-50 cursor-not-allowed"
+          (votingLocked || userVotes.length > 0) && "opacity-50 cursor-not-allowed"
         )}
-        onClick={() => !votingLocked && setSelectedCreator(creator1)}
+        onClick={() => !votingLocked && userVotes.length === 0 && setSelectedCreator(creator1)}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-3 mb-4">
