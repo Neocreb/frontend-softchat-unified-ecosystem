@@ -467,13 +467,18 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
 
                   <Button
                     onClick={placeVote}
-                    disabled={votingLocked || voteAmount <= 0 || voteAmount > userBalance}
+                    disabled={votingLocked || voteAmount <= 0 || voteAmount > userBalance || userVotes.length > 0}
                     className="w-full bg-green-600 hover:bg-green-700"
                   >
                     {votingLocked ? (
                       <>
                         <Lock className="w-4 h-4 mr-2" />
                         Voting Locked
+                      </>
+                    ) : userVotes.length > 0 ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Vote Already Placed
                       </>
                     ) : (
                       <>
