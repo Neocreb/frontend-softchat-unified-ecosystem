@@ -80,14 +80,23 @@ const LiveStreamingCard: React.FC<LiveStreamingCardProps> = ({
   useEffect(() => {
     if (content.isActive) {
       const interval = setInterval(() => {
-        setLocalViewerCount(prev => Math.max(1, prev + Math.floor(Math.random() * 5 - 1)));
+        const viewerChange = Math.floor(Math.random() * 5 - 1);
+        if (viewerChange > 0 && isUserOwned) {
+          // Show viewer join notification for stream owner
+          toast({
+            title: `+${viewerChange} viewer${viewerChange > 1 ? 's' : ''} joined!`,
+            description: "Your stream is growing",
+          });
+        }
+        setLocalViewerCount(prev => Math.max(1, prev + viewerChange));
+
         if (Math.random() > 0.7) {
           setLocalLikes(prev => prev + Math.floor(Math.random() * 3));
         }
-      }, 3000);
+      }, 5000);
       return () => clearInterval(interval);
     }
-  }, [content.isActive]);
+  }, [content.isActive, isUserOwned, toast]);
 
   // Start camera if user owns this stream
   useEffect(() => {
