@@ -629,7 +629,7 @@ const EnhancedTikTokVideos: React.FC = () => {
 
   const handleGoLive = () => {
     setShowCreateMenu(false);
-    setIsLiveStreamOpen(true);
+    navigate('/app/live-streaming');
   };
 
   const handleUploadVideo = () => {
