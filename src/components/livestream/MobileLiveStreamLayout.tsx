@@ -543,6 +543,12 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
               </Button>
 
               <Button
+                onClick={() => {
+                  toast({
+                    title: "Guests Feature 👥",
+                    description: "View and invite guests to your live stream",
+                  });
+                }}
                 variant="ghost"
                 size="icon"
                 className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
