@@ -201,6 +201,8 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
   allowComments = true,
   onDuetCreate,
   onReplyCreate,
+  isBattle = false,
+  battleData,
 }) => {
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [newComment, setNewComment] = useState("");
