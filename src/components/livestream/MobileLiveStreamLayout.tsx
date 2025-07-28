@@ -406,13 +406,24 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
 
       {/* Live Badges */}
       <div className="absolute top-20 left-0 right-0 z-30 flex items-center justify-between px-4">
-        <Badge className="bg-yellow-500/90 text-black font-semibold px-3 py-1 rounded-full border-0">
+        <Badge className="bg-yellow-500/90 text-black font-semibold px-3 py-1.5 rounded-full border-0 shadow-lg">
           <Crown className="w-3 h-3 mr-1" />
           Daily Ranking
         </Badge>
-        <Badge className="bg-pink-500/90 text-white font-semibold px-3 py-1 rounded-full border-0">
+        <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold px-3 py-1.5 rounded-full border-0 shadow-lg">
           Explore →
         </Badge>
+      </div>
+
+      {/* Live Indicator */}
+      <div className="absolute top-14 left-4 z-30">
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-75"></div>
+          </div>
+          <span className="text-white text-sm font-semibold">LIVE</span>
+        </div>
       </div>
 
       {/* Battle UI (if battle) */}
