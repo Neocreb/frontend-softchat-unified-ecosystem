@@ -382,10 +382,19 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
               {recipientType === 'battle' && battleData && (
                 <Card className="bg-gradient-to-r from-red-50 to-blue-50 dark:from-red-900/20 dark:to-blue-900/20">
                   <CardHeader>
-                    <CardTitle className="text-center">Choose Recipient</CardTitle>
+                    <CardTitle className="text-center flex items-center justify-center gap-2">
+                      <Gift className="w-5 h-5 text-purple-500" />
+                      Choose Recipient
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="relative grid grid-cols-2 gap-4">
+                      {/* VS Badge */}
+                      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="bg-gradient-to-r from-red-500 to-blue-500 text-white font-bold px-3 py-1 rounded-full text-sm shadow-lg">
+                          VS
+                        </div>
+                      </div>
                       {/* Creator 1 */}
                       <Card
                         className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
