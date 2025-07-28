@@ -834,6 +834,33 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
       {/* Stream/Battle content */}
       {streamMode === 'livestream' ? renderLivestreamMode() : renderBattleMode()}
 
+      {/* Bottom Floating Chat Feed - Live viewer messages */}
+      <div className="absolute bottom-24 left-4 right-96 z-30 pointer-events-none">
+        <div className="max-h-48 overflow-hidden">
+          {chatMessages.slice(-5).map((msg, index) => (
+            <div
+              key={msg.id}
+              className="bg-black/40 backdrop-blur-sm rounded-lg px-3 py-2 mb-2 max-w-sm animate-fade-in-up"
+              style={{
+                animationDelay: `${index * 0.1}s`,
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Avatar className="w-5 h-5">
+                  <AvatarImage src={msg.user.avatar} />
+                  <AvatarFallback className="text-xs">{msg.user.username[0]}</AvatarFallback>
+                </Avatar>
+                <span className="text-white text-sm font-medium">{msg.user.username}:</span>
+                <span className="text-white text-sm">{msg.message}</span>
+                {msg.type === 'gift' && (
+                  <span className="text-xl">{msg.giftInfo?.animation === 'sparkle' ? '✨' : '🎁'}</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Floating reactions */}
       {reactions.map((reaction) => (
         <div
