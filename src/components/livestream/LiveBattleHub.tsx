@@ -574,11 +574,12 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
         )}
       </div>
 
-      {/* Host info */}
-      <div className="absolute bottom-4 left-4 max-w-xs">
+      {/* Host info and enhanced section */}
+      <div className="absolute bottom-20 left-4 max-w-xs">
         <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <Avatar className="w-10 h-10 border-2 border-white">
+          {/* Profile section */}
+          <div className="flex items-center gap-2 mb-3">
+            <Avatar className="w-12 h-12 border-2 border-white">
               <AvatarImage src={participants[0]?.avatar || content?.user?.avatar} />
               <AvatarFallback>{participants[0]?.displayName?.[0] || content?.user?.displayName?.[0] || 'U'}</AvatarFallback>
             </Avatar>
@@ -586,18 +587,44 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
               <div className="flex items-center gap-1">
                 <span className="text-white font-semibold text-sm">@{participants[0]?.username || content?.user?.username}</span>
                 {(participants[0]?.verified || content?.user?.verified) && (
-                  <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                  <div className="w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                  </div>
                 )}
-                <Badge className="bg-orange-500 text-white text-xs px-1 py-0">
-                  🔥 Trending
-                </Badge>
               </div>
               <div className="text-white/80 text-xs">
-                {participants[0]?.displayName || content?.user?.displayName} • {formatNumber(localViewerCount)} watching
+                {participants[0]?.displayName || content?.user?.displayName}
+              </div>
+              <div className="text-white/60 text-xs">
+                {formatNumber(content?.user?.followerCount || 50000)} followers
               </div>
             </div>
+
+            {!isUserOwned && (
+              <Button
+                size="sm"
+                onClick={handleFollow}
+                variant={isFollowing ? "secondary" : "outline"}
+                className={cn(
+                  "text-white font-medium border-white hover:bg-white hover:text-black text-xs px-2 py-1",
+                  isFollowing && "bg-white text-black"
+                )}
+              >
+                {isFollowing ? "Following" : "Follow"}
+              </Button>
+            )}
           </div>
-          
+
+          {/* Host labels */}
+          <div className="flex gap-1 mb-3">
+            <Badge className="bg-orange-500 text-white text-xs px-2 py-1">
+              🔥 Trending
+            </Badge>
+            <Badge className="bg-purple-500 text-white text-xs px-2 py-1">
+              🧡 Popular LIVE
+            </Badge>
+          </div>
+
           {/* Quick actions for livestream */}
           <div className="flex gap-2">
             {isUserOwned && participants.length < maxParticipants && (
