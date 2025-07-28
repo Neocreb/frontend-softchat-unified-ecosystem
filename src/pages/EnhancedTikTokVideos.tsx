@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Heart,
   MessageCircle,
@@ -45,6 +45,7 @@ import {
   Gift,
   Radio,
   Upload,
+  Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -75,7 +76,11 @@ import BattleSetup from "@/components/battles/BattleSetup";
 import LiveBattle from "@/components/battles/LiveBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
-import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
+import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
+import { useLiveContentContext } from "../contexts/LiveContentContext";
+import { liveContentToVideoData } from "../utils/liveContentAdapter";
+import LiveStreamingCard from "../components/video/LiveStreamingCard";
+import FullScreenLiveStream from "../components/livestream/FullScreenLiveStream";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
@@ -252,7 +257,7 @@ const liveStreams: VideoData[] = [
       verified: true,
       followerCount: 892000,
     },
-    description: "🔥 LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
+    description: "��� LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
     music: { title: "Battle Theme", artist: "Epic Beats" },
     stats: { likes: 3240, comments: 890, shares: 234, views: "24.8K watching" },
     hashtags: ["livebattle", "dance", "epic", "compete"],
@@ -543,8 +548,12 @@ const EnhancedTikTokVideos: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
+
+  // Get initial tab from URL params or default to "foryou"
+  const initialTab = searchParams.get('tab') as "live" | "foryou" | "following" || "foryou";
+  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">(initialTab);
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -562,12 +571,14 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const { allLiveContent, addLiveStream, addBattle, removeLiveContent } = useLiveContentContext();
 
   // Get current videos based on active tab
   const getCurrentVideos = () => {
     switch (activeTab) {
       case "live":
-        return liveStreams;
+        // Convert live content to video format for compatibility
+        return allLiveContent.map(liveContentToVideoData);
       case "following":
         return followingVideos;
       default:
@@ -626,7 +637,7 @@ const EnhancedTikTokVideos: React.FC = () => {
 
   const handleGoLive = () => {
     setShowCreateMenu(false);
-    navigate('/app/live-streaming');
+    setIsLiveStreamOpen(true);
   };
 
   const handleUploadVideo = () => {
@@ -677,6 +688,65 @@ const EnhancedTikTokVideos: React.FC = () => {
     });
     // Refresh the feed or navigate to the new duet
     // You could add logic here to add the new duet to the current videos list
+  };
+
+  const handleCreateLiveStream = (streamData: {
+    title: string;
+    description: string;
+    category?: string;
+  }) => {
+    const streamId = addLiveStream({
+      title: streamData.title,
+      description: streamData.description,
+      category: streamData.category,
+    });
+
+    // Switch to live tab to show the new stream
+    setActiveTab("live");
+    setCurrentVideoIndex(0);
+    setIsLiveStreamOpen(false);
+
+    toast({
+      title: "Live Stream Started! 🔴",
+      description: "Your stream is now live in the Live/Battle tab",
+    });
+  };
+
+  const handleCreateBattle = (battleData: {
+    title: string;
+    description: string;
+    type: 'dance' | 'rap' | 'comedy' | 'general';
+    opponentId?: string;
+  }) => {
+    const battleId = addBattle({
+      title: battleData.title,
+      description: battleData.description,
+      category: battleData.type,
+      battleData: {
+        type: battleData.type,
+        timeRemaining: 300, // 5 minutes
+        scores: {
+          user1: 0,
+          user2: 0,
+        },
+        opponent: battleData.opponentId ? {
+          id: battleData.opponentId,
+          username: "opponent",
+          displayName: "Opponent",
+          avatar: "https://i.pravatar.cc/150?img=5",
+        } : undefined,
+      },
+    });
+
+    // Switch to live tab to show the new battle
+    setActiveTab("live");
+    setCurrentVideoIndex(0);
+    setShowBattleSetup(false);
+
+    toast({
+      title: "Battle Started! ⚔️",
+      description: "Your battle is now live in the Live/Battle tab",
+    });
   };
 
 
@@ -839,22 +909,48 @@ const EnhancedTikTokVideos: React.FC = () => {
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
-            {liveStreams.length > 0 ? (
-              liveStreams.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  isActive={index === currentVideoIndex && activeTab === "live"}
-                  showControls={showControls}
-                  onDuetCreate={handleDuetCreate}
-                />
-              ))
+            {allLiveContent.length > 0 ? (
+              allLiveContent.map((liveContent, index) => {
+                // Use FullScreenLiveStream for all live content for TikTok-style experience
+                return (
+                  <FullScreenLiveStream
+                    key={liveContent.id}
+                    content={liveContent}
+                    isActive={index === currentVideoIndex && activeTab === "live"}
+                    isUserOwned={liveContent.isUserOwned}
+                    onEndStream={() => {
+                      removeLiveContent(liveContent.id);
+                      toast({
+                        title: "Stream Ended",
+                        description: "Your live stream has been ended",
+                      });
+                    }}
+                  />
+                );
+              })
             ) : (
               <div className="h-screen flex items-center justify-center">
                 <div className="text-center text-white/60">
                   <Radio className="w-12 h-12 mx-auto mb-4 text-red-500" />
-                  <p className="text-lg font-medium mb-2">No live streams right now</p>
-                  <p className="text-sm">Check back later for live content!</p>
+                  <p className="text-lg font-medium mb-2">No live content right now</p>
+                  <p className="text-sm">Start a live stream or battle to see content here!</p>
+                  <div className="mt-4">
+                    <Button
+                      onClick={() => setIsLiveStreamOpen(true)}
+                      className="bg-red-500 hover:bg-red-600 text-white mr-2"
+                    >
+                      <Radio className="w-4 h-4 mr-2" />
+                      Go Live
+                    </Button>
+                    <Button
+                      onClick={() => setShowBattleSetup(true)}
+                      variant="outline"
+                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                    >
+                      <Target className="w-4 h-4 mr-2" />
+                      Start Battle
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -946,15 +1042,54 @@ const EnhancedTikTokVideos: React.FC = () => {
         open={showBattleSetup}
         onOpenChange={setShowBattleSetup}
         onBattleStart={(config) => {
-          console.log('Battle started:', config);
-          setShowBattleSetup(false);
-          setShowLiveBattle(true);
+          // Create the battle
+          handleCreateBattle({
+            title: config.title || "Battle",
+            description: config.description || "Live battle now!",
+            type: config.type || 'general',
+            opponentId: config.opponentId,
+          });
+
+          // Show immediate feedback
           toast({
             title: "Battle Started! ⚔️",
-            description: `${config.title} is now live!`,
+            description: "Your battle is now live in the Live/Battle tab",
           });
         }}
       />
+
+      {/* Live Stream Creator */}
+      <Dialog open={isLiveStreamOpen} onOpenChange={setIsLiveStreamOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] bg-black border-gray-800 p-0 overflow-hidden">
+          <VisuallyHidden>
+            <DialogTitle>Start Live Stream</DialogTitle>
+          </VisuallyHidden>
+          <div className="h-full max-h-[90vh] overflow-y-auto">
+            <LiveStreamCreator
+            onStreamStart={(stream) => {
+              // Close the setup dialog first
+              setIsLiveStreamOpen(false);
+
+              // Create the live stream with full data
+              handleCreateLiveStream({
+                title: stream.title || "Live Stream",
+                description: stream.description || "Live streaming now!",
+                category: stream.category,
+              });
+
+              // Show immediate feedback
+              toast({
+                title: "Going Live! 🔴",
+                description: "Your stream is starting in the Live/Battle tab",
+              });
+            }}
+            onStreamEnd={() => {
+              setIsLiveStreamOpen(false);
+            }}
+          />
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Live Battle */}
       {showLiveBattle && (

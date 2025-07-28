@@ -304,6 +304,16 @@ const LiveBattle: React.FC<LiveBattleProps> = ({
 
   // Voting functions
   const handlePlaceVote = (vote: Omit<Vote, 'id' | 'timestamp' | 'status'>) => {
+    // Check if user has already voted in this battle
+    if (userVotes.length > 0) {
+      toast({
+        title: "Vote Already Placed! 🚫",
+        description: "You can only vote once per battle",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const newVote: Vote = {
       ...vote,
       id: Date.now().toString(),

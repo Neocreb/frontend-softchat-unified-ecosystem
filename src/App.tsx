@@ -17,6 +17,7 @@ import { MarketplaceProvider } from "./contexts/MarketplaceContext";
 import { EnhancedMarketplaceProvider } from "./contexts/EnhancedMarketplaceContext";
 import { ChatProvider } from "./contexts/ChatContext";
 import { WalletProvider } from "./contexts/WalletContext";
+import { LiveContentProvider } from "./contexts/LiveContentContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
 import ErrorBoundary from "./components/ui/error-boundary";
@@ -266,13 +267,15 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <WalletProvider>
-                <MarketplaceProvider>
-                  <EnhancedMarketplaceProvider>
-                    <ChatProvider>
-                      <AppLayout />
-                    </ChatProvider>
-                  </EnhancedMarketplaceProvider>
-                </MarketplaceProvider>
+                <LiveContentProvider>
+                  <MarketplaceProvider>
+                    <EnhancedMarketplaceProvider>
+                      <ChatProvider>
+                        <AppLayout />
+                      </ChatProvider>
+                    </EnhancedMarketplaceProvider>
+                  </MarketplaceProvider>
+                </LiveContentProvider>
               </WalletProvider>
             </ProtectedRoute>
           }
@@ -362,13 +365,7 @@ const AppRoutes = () => {
           />
           <Route
             path="live-streaming"
-            element={
-              <div className="container mx-auto px-4 py-6">
-                <div className="max-w-6xl mx-auto">
-                  <LiveStreamCreator />
-                </div>
-              </div>
-            }
+            element={<Navigate to="/app/videos?tab=live" replace />}
           />
           <Route path="settings" element={<EnhancedSettings />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />

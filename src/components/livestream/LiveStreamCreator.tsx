@@ -275,11 +275,11 @@ export function LiveStreamCreator({
   ];
 
   return (
-    <div className={className}>
+    <div className={cn("p-4 md:p-6 min-h-0 overflow-y-auto", className)}>
       {/* Navigation Header with Breadcrumbs and Cross-links */}
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
+        <nav className="flex items-center space-x-1 md:space-x-2 text-sm text-muted-foreground mb-4">
           <Button
             variant="ghost"
             size="sm"
@@ -302,7 +302,7 @@ export function LiveStreamCreator({
         </nav>
 
         {/* Quick Navigation to Related Features */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-4 overflow-x-auto">
           <Button
             variant="outline"
             size="sm"
@@ -342,7 +342,7 @@ export function LiveStreamCreator({
         </div>
 
         {/* Feature Description */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-3 md:p-4">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
               <Radio className="h-5 w-5 text-blue-600" />
@@ -386,9 +386,9 @@ export function LiveStreamCreator({
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6">
           {/* Stream Preview */}
-          <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video">
+          <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video max-w-full">
             <video
               ref={videoRef}
               autoPlay
@@ -413,7 +413,7 @@ export function LiveStreamCreator({
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30">
               {/* Top Stats (when streaming) */}
               {isStreaming && (
-                <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                <div className="absolute top-2 md:top-4 left-2 md:left-4 right-2 md:right-4 flex flex-wrap justify-between items-start gap-2">
                   <div className="flex items-center gap-2">
                     <Badge className="bg-red-500 text-white">
                       LIVE • {formatDuration(streamDuration)}
@@ -437,7 +437,7 @@ export function LiveStreamCreator({
               )}
 
               {/* Bottom Controls */}
-              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+              <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 right-2 md:right-4 flex flex-wrap justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={toggleVideo}
@@ -481,7 +481,7 @@ export function LiveStreamCreator({
                       <Settings className="h-4 w-4" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-md">
+                  <DialogContent className="max-w-md w-[90vw] max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Stream Settings</DialogTitle>
                       <DialogDescription>
@@ -580,6 +580,7 @@ export function LiveStreamCreator({
                   onChange={(e) => setStreamTitle(e.target.value)}
                   placeholder="What's your stream about?"
                   maxLength={100}
+                  className="min-h-[44px] text-base"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   {streamTitle.length}/100
@@ -596,13 +597,14 @@ export function LiveStreamCreator({
                   placeholder="Tell viewers what to expect..."
                   rows={3}
                   maxLength={500}
+                  className="min-h-[80px] text-base resize-none"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   {streamDescription.length}/500
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">
                     Category
@@ -633,6 +635,7 @@ export function LiveStreamCreator({
                     value={streamTags}
                     onChange={(e) => setStreamTags(e.target.value)}
                     placeholder="tag1, tag2, tag3"
+                    className="min-h-[44px] text-base"
                   />
                 </div>
               </div>
@@ -642,7 +645,7 @@ export function LiveStreamCreator({
           {/* Stream Info (when streaming) */}
           {isStreaming && currentStream && (
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 md:p-4">
                 <div className="flex items-start gap-3">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={user?.avatar} />
@@ -657,7 +660,7 @@ export function LiveStreamCreator({
                     <p className="text-gray-600 text-sm">
                       {currentStream.description}
                     </p>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                    <div className="flex flex-wrap items-center gap-2 md:gap-4 mt-2 text-xs md:text-sm text-gray-500">
                       <span className="flex items-center gap-1">
                         <Users className="h-4 w-4" />
                         {formatViewerCount(viewerCount)} viewers
@@ -675,14 +678,14 @@ export function LiveStreamCreator({
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             {!isStreaming ? (
               <>
                 {!isPreviewing ? (
                   <Button
                     onClick={startPreview}
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 w-full sm:w-auto"
                   >
                     <Play className="h-4 w-4 mr-2" />
                     Start Preview
@@ -691,7 +694,7 @@ export function LiveStreamCreator({
                   <Button
                     onClick={stopPreview}
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 w-full sm:w-auto"
                   >
                     <Square className="h-4 w-4 mr-2" />
                     Stop Preview
@@ -699,7 +702,7 @@ export function LiveStreamCreator({
                 )}
                 <Button
                   onClick={startStream}
-                  className="flex-1 bg-red-500 hover:bg-red-600"
+                  className="flex-1 w-full sm:w-auto bg-red-500 hover:bg-red-600"
                   disabled={!streamTitle.trim()}
                 >
                   <Radio className="h-4 w-4 mr-2" />
@@ -710,7 +713,7 @@ export function LiveStreamCreator({
               <Button
                 onClick={endStream}
                 variant="destructive"
-                className="flex-1"
+                className="flex-1 w-full sm:w-auto"
               >
                 <Square className="h-4 w-4 mr-2" />
                 End Stream
@@ -719,7 +722,7 @@ export function LiveStreamCreator({
           </div>
 
           {/* Quick Tips */}
-          <div className="bg-blue-50 rounded-lg p-4">
+          <div className="bg-blue-50 rounded-lg p-3 md:p-4">
             <div className="flex items-start gap-2">
               <Zap className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
               <div>

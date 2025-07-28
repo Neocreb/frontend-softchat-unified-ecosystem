@@ -17,6 +17,7 @@ import {
   Calculator,
   History,
   Wallet,
+  CheckCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -142,6 +143,15 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
       return;
     }
 
+    if (userVotes.length > 0) {
+      toast({
+        title: 'Vote Already Placed',
+        description: 'You can only vote once per battle',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     const vote = {
       amount: voteAmount,
       creatorId: selectedCreator.id,
@@ -224,9 +234,9 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
         <Card className={cn(
           "border-2 cursor-pointer transition-all hover:scale-105",
           selectedCreator?.id === creator1.id ? "border-blue-500 bg-blue-500/10" : "border-gray-700",
-          votingLocked && "opacity-50 cursor-not-allowed"
+          (votingLocked || userVotes.length > 0) && "opacity-50 cursor-not-allowed"
         )}
-        onClick={() => !votingLocked && setSelectedCreator(creator1)}
+        onClick={() => !votingLocked && userVotes.length === 0 && setSelectedCreator(creator1)}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-3 mb-4">
@@ -277,9 +287,9 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
         <Card className={cn(
           "border-2 cursor-pointer transition-all hover:scale-105",
           selectedCreator?.id === creator2.id ? "border-red-500 bg-red-500/10" : "border-gray-700",
-          votingLocked && "opacity-50 cursor-not-allowed"
+          (votingLocked || userVotes.length > 0) && "opacity-50 cursor-not-allowed"
         )}
-        onClick={() => !votingLocked && setSelectedCreator(creator2)}
+        onClick={() => !votingLocked && userVotes.length === 0 && setSelectedCreator(creator2)}
         >
           <CardContent className="p-4">
             <div className="flex items-center gap-3 mb-4">
@@ -335,6 +345,18 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
           </div>
           <div className="text-xs text-gray-300 mt-1">
             Voting closes 30 seconds before battle ends
+          </div>
+        </div>
+      )}
+
+      {userVotes.length > 0 && !votingLocked && (
+        <div className="mt-4 p-3 bg-green-400/10 border border-green-400 rounded-lg">
+          <div className="flex items-center gap-2 text-green-400">
+            <CheckCircle className="w-4 h-4" />
+            <span className="font-medium">Vote Already Placed</span>
+          </div>
+          <div className="text-xs text-gray-300 mt-1">
+            You can only vote once per battle. Check "My Votes" tab to see your bet.
           </div>
         </div>
       )}
@@ -445,13 +467,18 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
 
                   <Button
                     onClick={placeVote}
-                    disabled={votingLocked || voteAmount <= 0 || voteAmount > userBalance}
+                    disabled={votingLocked || voteAmount <= 0 || voteAmount > userBalance || userVotes.length > 0}
                     className="w-full bg-green-600 hover:bg-green-700"
                   >
                     {votingLocked ? (
                       <>
                         <Lock className="w-4 h-4 mr-2" />
                         Voting Locked
+                      </>
+                    ) : userVotes.length > 0 ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Vote Already Placed
                       </>
                     ) : (
                       <>
@@ -463,11 +490,23 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
                 </>
               ) : (
                 <div className="text-center py-8">
-                  <Target className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                  <h3 className="font-medium text-gray-300 mb-2">Select a Creator</h3>
-                  <p className="text-sm text-gray-400">
-                    Choose which creator you think will win to place your vote
-                  </p>
+                  {userVotes.length > 0 ? (
+                    <>
+                      <CheckCircle className="w-12 h-12 mx-auto text-green-400 mb-4" />
+                      <h3 className="font-medium text-green-300 mb-2">Vote Already Placed</h3>
+                      <p className="text-sm text-gray-400">
+                        You can only vote once per battle. Check "My Votes" tab to see your bet.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <Target className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                      <h3 className="font-medium text-gray-300 mb-2">Select a Creator</h3>
+                      <p className="text-sm text-gray-400">
+                        Choose which creator you think will win to place your vote
+                      </p>
+                    </>
+                  )}
                 </div>
               )}
             </CardContent>
