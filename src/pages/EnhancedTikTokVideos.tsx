@@ -570,7 +570,8 @@ const EnhancedTikTokVideos: React.FC = () => {
   const getCurrentVideos = () => {
     switch (activeTab) {
       case "live":
-        return liveStreams;
+        // Convert live content to video format for compatibility
+        return allLiveContent.map(liveContentToVideoData);
       case "following":
         return followingVideos;
       default:
