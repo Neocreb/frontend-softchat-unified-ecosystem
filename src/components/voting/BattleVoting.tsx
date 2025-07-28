@@ -348,6 +348,18 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
         </div>
       )}
 
+      {userVotes.length > 0 && !votingLocked && (
+        <div className="mt-4 p-3 bg-green-400/10 border border-green-400 rounded-lg">
+          <div className="flex items-center gap-2 text-green-400">
+            <CheckCircle className="w-4 h-4" />
+            <span className="font-medium">Vote Already Placed</span>
+          </div>
+          <div className="text-xs text-gray-300 mt-1">
+            You can only vote once per battle. Check "My Votes" tab to see your bet.
+          </div>
+        </div>
+      )}
+
       {/* Voting Interface */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-gray-800">
