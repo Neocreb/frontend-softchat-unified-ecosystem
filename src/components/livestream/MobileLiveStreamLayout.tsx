@@ -643,6 +643,39 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
         </Button>
       </div>
 
+      {/* Quick Reactions Popup */}
+      {showQuickReactions && (
+        <div className="absolute bottom-32 left-4 right-4 z-50 bg-black/80 rounded-2xl p-4 backdrop-blur-md">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-white font-semibold">Quick Reactions</h4>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowQuickReactions(false)}
+              className="text-white hover:bg-white/20 rounded-full w-8 h-8"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+          <div className="grid grid-cols-4 gap-3">
+            {quickReactions.map((emoji, index) => (
+              <Button
+                key={index}
+                variant="ghost"
+                size="lg"
+                onClick={() => {
+                  handleQuickReaction(emoji);
+                  setShowQuickReactions(false);
+                }}
+                className="text-4xl hover:scale-125 transition-transform p-3 h-auto bg-white/10 hover:bg-white/20 rounded-xl"
+              >
+                {emoji}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Battle Voting Modal */}
       {showVoting && content.type === 'battle' && content.battleData && (
         <Dialog open={showVoting} onOpenChange={setShowVoting}>
