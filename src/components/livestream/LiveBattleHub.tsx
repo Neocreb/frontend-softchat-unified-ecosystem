@@ -737,10 +737,25 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
             </div>
           )}
           
-          {/* Voting stats */}
+          {/* Voting stats and top gifters */}
           {votingPool.totalPool > 0 && (
-            <div className="mt-2 text-xs text-gray-300">
-              Pool: {votingPool.totalPool} SP • {votingPool.totalVoters} voters
+            <div className="mt-2 space-y-1">
+              <div className="text-xs text-gray-300">
+                Pool: {votingPool.totalPool} SP • {votingPool.totalVoters} voters
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-yellow-400 hover:text-yellow-300 p-0 h-auto"
+                onClick={() => {
+                  toast({
+                    title: "Top Gifters 🏆",
+                    description: "Check the leaderboard in chat!",
+                  });
+                }}
+              >
+                🏆 Top Gifters
+              </Button>
             </div>
           )}
         </div>
