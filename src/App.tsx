@@ -267,13 +267,15 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <WalletProvider>
-                <MarketplaceProvider>
-                  <EnhancedMarketplaceProvider>
-                    <ChatProvider>
-                      <AppLayout />
-                    </ChatProvider>
-                  </EnhancedMarketplaceProvider>
-                </MarketplaceProvider>
+                <LiveContentProvider>
+                  <MarketplaceProvider>
+                    <EnhancedMarketplaceProvider>
+                      <ChatProvider>
+                        <AppLayout />
+                      </ChatProvider>
+                    </EnhancedMarketplaceProvider>
+                  </MarketplaceProvider>
+                </LiveContentProvider>
               </WalletProvider>
             </ProtectedRoute>
           }
