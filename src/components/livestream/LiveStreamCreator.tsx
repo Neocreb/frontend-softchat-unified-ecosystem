@@ -413,7 +413,7 @@ export function LiveStreamCreator({
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30">
               {/* Top Stats (when streaming) */}
               {isStreaming && (
-                <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
+                <div className="absolute top-2 md:top-4 left-2 md:left-4 right-2 md:right-4 flex flex-wrap justify-between items-start gap-2">
                   <div className="flex items-center gap-2">
                     <Badge className="bg-red-500 text-white">
                       LIVE • {formatDuration(streamDuration)}
