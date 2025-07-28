@@ -34,18 +34,6 @@ export interface LiveStreamData {
   };
 }
 
-interface UseLiveContentReturn {
-  liveStreams: LiveStreamData[];
-  activeBattles: LiveStreamData[];
-  allLiveContent: LiveStreamData[];
-  addLiveStream: (stream: Omit<LiveStreamData, 'id' | 'startedAt' | 'isActive'>) => string;
-  addBattle: (battle: Omit<LiveStreamData, 'id' | 'startedAt' | 'isActive' | 'type'> & { battleData: NonNullable<LiveStreamData['battleData']> }) => string;
-  removeLiveContent: (id: string) => void;
-  updateViewerCount: (id: string, count: number) => void;
-  getLiveContentById: (id: string) => LiveStreamData | undefined;
-  isUserLive: (userId: string) => boolean;
-}
-
 // Mock data for initial state
 const mockLiveContent: LiveStreamData[] = [
   {
@@ -98,41 +86,9 @@ const mockLiveContent: LiveStreamData[] = [
       },
     },
   },
-  {
-    id: "battle2",
-    type: "battle",
-    user: {
-      id: "user4",
-      username: "rap_king",
-      displayName: "Rap King",
-      avatar: "https://i.pravatar.cc/150?img=8",
-      verified: true,
-      followerCount: 567000,
-    },
-    title: "Freestyle Rap Battle",
-    description: "🎤 LIVE RAP BATTLE: Freestyle showdown! Drop bars and win SoftPoints! 💰",
-    viewerCount: 1520,
-    isActive: true,
-    startedAt: new Date(Date.now() - 600000), // Started 10 mins ago
-    category: "music",
-    battleData: {
-      opponent: {
-        id: "user5",
-        username: "lyric_legend",
-        displayName: "Lyric Legend",
-        avatar: "https://i.pravatar.cc/150?img=12",
-      },
-      type: "rap",
-      timeRemaining: 240, // 4 minutes left
-      scores: {
-        user1: 1890,
-        user2: 1650,
-      },
-    },
-  },
 ];
 
-export function useLiveContent(): UseLiveContentReturn {
+export function useLiveContent() {
   const [liveContent, setLiveContent] = useState<LiveStreamData[]>(mockLiveContent);
 
   // Simulate real-time updates
@@ -140,14 +96,14 @@ export function useLiveContent(): UseLiveContentReturn {
     const interval = setInterval(() => {
       setLiveContent(prev => prev.map(content => ({
         ...content,
-        viewerCount: content.viewerCount + Math.floor(Math.random() * 10 - 3), // Random viewer changes
+        viewerCount: Math.max(1, content.viewerCount + Math.floor(Math.random() * 10 - 3)),
         battleData: content.battleData ? {
           ...content.battleData,
           timeRemaining: Math.max(0, (content.battleData.timeRemaining || 0) - 1),
-          scores: {
-            user1: content.battleData.scores!.user1 + Math.floor(Math.random() * 20),
-            user2: content.battleData.scores!.user2 + Math.floor(Math.random() * 20),
-          },
+          scores: content.battleData.scores ? {
+            user1: content.battleData.scores.user1 + Math.floor(Math.random() * 20),
+            user2: content.battleData.scores.user2 + Math.floor(Math.random() * 20),
+          } : undefined,
         } : undefined,
       })));
     }, 2000);
@@ -155,28 +111,55 @@ export function useLiveContent(): UseLiveContentReturn {
     return () => clearInterval(interval);
   }, []);
 
-  const addLiveStream = useCallback((streamData: Omit<LiveStreamData, 'id' | 'startedAt' | 'isActive'>) => {
+  const addLiveStream = useCallback((streamData: Partial<LiveStreamData>) => {
     const id = `live_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newStream: LiveStreamData = {
-      ...streamData,
       id,
       type: 'live',
       startedAt: new Date(),
       isActive: true,
+      viewerCount: 1,
+      title: 'New Live Stream',
+      description: 'Live streaming now!',
+      user: {
+        id: "current_user",
+        username: "current_user",
+        displayName: "You",
+        avatar: "https://i.pravatar.cc/150?img=1",
+        verified: false,
+        followerCount: 1200,
+      },
+      ...streamData,
     };
 
     setLiveContent(prev => [newStream, ...prev]);
     return id;
   }, []);
 
-  const addBattle = useCallback((battleData: Omit<LiveStreamData, 'id' | 'startedAt' | 'isActive' | 'type'> & { battleData: NonNullable<LiveStreamData['battleData']> }) => {
+  const addBattle = useCallback((battleData: Partial<LiveStreamData>) => {
     const id = `battle_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newBattle: LiveStreamData = {
-      ...battleData,
       id,
       type: 'battle',
       startedAt: new Date(),
       isActive: true,
+      viewerCount: 1,
+      title: 'New Battle',
+      description: 'Battle starting now!',
+      user: {
+        id: "current_user",
+        username: "current_user",
+        displayName: "You",
+        avatar: "https://i.pravatar.cc/150?img=1",
+        verified: false,
+        followerCount: 1200,
+      },
+      battleData: {
+        type: 'general',
+        timeRemaining: 300,
+        scores: { user1: 0, user2: 0 },
+      },
+      ...battleData,
     };
 
     setLiveContent(prev => [newBattle, ...prev]);
