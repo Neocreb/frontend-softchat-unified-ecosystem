@@ -453,28 +453,40 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
 
       {/* Live Chat Messages Overlay */}
       <div className="absolute left-4 bottom-24 right-20 z-30 space-y-2">
-        {chatMessages.slice(-4).map((msg) => (
-          <div key={msg.id} className="flex items-start gap-2 animate-in slide-in-from-bottom-2">
-            <Avatar className="w-7 h-7 border border-white/30">
+        {chatMessages.slice(-4).map((msg, index) => (
+          <div
+            key={msg.id}
+            className="flex items-start gap-2 animate-in slide-in-from-bottom-2 duration-300"
+            style={{
+              animationDelay: `${index * 100}ms`,
+              opacity: 0.9 + (index * 0.025) // Slightly more opacity for newer messages
+            }}
+          >
+            <Avatar className="w-7 h-7 border border-white/30 flex-shrink-0">
               <AvatarImage src={msg.user.avatar} />
               <AvatarFallback className="text-xs">{msg.user.displayName[0]}</AvatarFallback>
             </Avatar>
-            <div className="bg-black/50 rounded-lg px-3 py-1 backdrop-blur-sm max-w-xs">
-              <div className="flex items-center gap-1 mb-1">
-                <span className="text-white text-xs font-medium">{msg.user.username}</span>
+            <div className="bg-black/60 rounded-2xl px-3 py-1.5 backdrop-blur-sm max-w-xs border border-white/10">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="text-white text-xs font-semibold">{msg.user.username}</span>
                 {getTierIcon(msg.user.tier)}
+                {msg.user.verified && (
+                  <div className="w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full" />
+                  </div>
+                )}
                 {msg.type === 'join' && (
-                  <span className="text-green-400 text-xs">joined</span>
+                  <span className="text-green-400 text-xs font-medium">joined</span>
                 )}
                 {msg.type === 'like' && (
-                  <Heart className="w-3 h-3 text-red-500" />
+                  <Heart className="w-3 h-3 text-red-500 fill-red-500" />
                 )}
               </div>
               {msg.message && msg.type === 'message' && (
-                <p className="text-white text-sm">{msg.message}</p>
+                <p className="text-white text-sm leading-tight">{msg.message}</p>
               )}
               {msg.type === 'like' && (
-                <p className="text-white text-sm">liked the LIVE</p>
+                <p className="text-white text-sm leading-tight">liked the LIVE</p>
               )}
             </div>
           </div>
