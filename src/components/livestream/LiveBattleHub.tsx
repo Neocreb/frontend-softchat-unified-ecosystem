@@ -194,7 +194,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
   const [showQuickReactions, setShowQuickReactions] = useState(false);
 
   // Battle state
-  const [battleTimeLeft, setBattleTimeLeft] = useState(content.battleData?.timeRemaining || 300);
+  const [battleTimeLeft, setBattleTimeLeft] = useState(content?.battleData?.timeRemaining || 300);
   const [battlePhase, setBattlePhase] = useState<'active' | 'voting_closed' | 'ending' | 'ended'>('active');
   const [showVoting, setShowVoting] = useState(false);
   const [userBalance] = useState(2500);
