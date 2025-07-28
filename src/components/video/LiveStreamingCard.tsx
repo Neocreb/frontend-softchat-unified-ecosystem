@@ -193,6 +193,17 @@ const LiveStreamingCard: React.FC<LiveStreamingCardProps> = ({
         poster={`https://images.unsplash.com/photo-${content.type === 'battle' ? '1571019613454-1cb2f99b2d8b' : '1639762681485-074b7f938ba0'}?w=400`}
       />
 
+      {/* Fallback background for when camera isn't available */}
+      {isUserOwned && (
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{
+            backgroundImage: `url(https://images.unsplash.com/photo-${content.type === 'battle' ? '1571019613454-1cb2f99b2d8b' : '1639762681485-074b7f938ba0'}?w=800)`,
+            zIndex: -1
+          }}
+        />
+      )}
+
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
 
