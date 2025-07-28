@@ -642,7 +642,7 @@ export function LiveStreamCreator({
           {/* Stream Info (when streaming) */}
           {isStreaming && currentStream && (
             <Card>
-              <CardContent className="p-4">
+              <CardContent className="p-3 md:p-4">
                 <div className="flex items-start gap-3">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={user?.avatar} />
