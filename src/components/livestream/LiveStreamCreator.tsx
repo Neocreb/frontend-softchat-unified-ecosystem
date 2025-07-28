@@ -597,6 +597,7 @@ export function LiveStreamCreator({
                   placeholder="Tell viewers what to expect..."
                   rows={3}
                   maxLength={500}
+                  className="min-h-[80px] text-base resize-none"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   {streamDescription.length}/500
