@@ -337,14 +337,14 @@ export const creatorRankings = pgTable("creator_rankings", {
   // Battle-specific metrics
   battlesWon: integer("battles_won").default(0),
   battlesLost: integer("battles_lost").default(0),
-  winRate: decimal("win_rate", { precision: 5, scale = 2 }),
-  averageBattleScore: decimal("average_battle_score", { precision: 10, scale = 2 }),
-  
+  winRate: decimal("win_rate", { precision: 5, scale: 2 }),
+  averageBattleScore: decimal("average_battle_score", { precision: 10, scale: 2 }),
+
   // Scoring and weights
-  engagementScore: decimal("engagement_score", { precision = 10, scale = 2 }),
-  consistencyScore: decimal("consistency_score", { precision = 10, scale = 2 }),
-  revenueScore: decimal("revenue_score", { precision = 10, scale = 2 }),
-  totalScore: decimal("total_score", { precision = 10, scale = 2 }),
+  engagementScore: decimal("engagement_score", { precision: 10, scale: 2 }),
+  consistencyScore: decimal("consistency_score", { precision: 10, scale: 2 }),
+  revenueScore: decimal("revenue_score", { precision: 10, scale: 2 }),
+  totalScore: decimal("total_score", { precision: 10, scale: 2 }),
   
   // Achievements and badges
   achievements: jsonb("achievements"), // Array of achievement IDs
