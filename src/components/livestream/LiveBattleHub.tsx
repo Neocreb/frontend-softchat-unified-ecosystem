@@ -495,6 +495,34 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
     });
   };
 
+  const handleFollow = () => {
+    setIsFollowing(!isFollowing);
+
+    if (!isFollowing && user && content) {
+      const followMessage: LiveChatMessage = {
+        id: `follow-${Date.now()}`,
+        user: {
+          id: user.id,
+          username: user.username || 'user',
+          displayName: user.name || 'User',
+          avatar: user.avatar || '',
+          verified: false,
+          tier: 'bronze',
+        },
+        message: `Started following ${content.user?.displayName || 'this creator'}! 🎉`,
+        timestamp: new Date(),
+        type: 'follow',
+      };
+
+      setChatMessages(prev => [...prev.slice(-50), followMessage]);
+    }
+
+    toast({
+      title: isFollowing ? 'Unfollowed' : 'Following!',
+      description: `@${content?.user?.username || 'creator'}`,
+    });
+  };
+
   const initiateBattle = () => {
     if (participants.length < 2) {
       toast({
