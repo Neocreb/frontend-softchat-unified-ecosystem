@@ -930,7 +930,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                 );
               })
             ) : (
-              <div className="flex items-center justify-center" style={{ height: 'calc(100vh - 56px)' }}>
+              <div className="flex items-center justify-center" style={{ height: 'calc(100vh - 64px)' }}>
                 <div className="text-center text-white/60">
                   <Radio className="w-12 h-12 mx-auto mb-4 text-red-500" />
                   <p className="text-lg font-medium mb-2">No live content right now</p>
