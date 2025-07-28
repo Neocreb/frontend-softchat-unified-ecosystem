@@ -558,6 +558,12 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
               </Button>
 
               <Button
+                onClick={() => {
+                  toast({
+                    title: "Recharge Wallet 💰",
+                    description: "Add SoftPoints to your wallet",
+                  });
+                }}
                 variant="ghost"
                 size="icon"
                 className="text-yellow-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
