@@ -1032,12 +1032,11 @@ const EnhancedTikTokVideos: React.FC = () => {
         open={showBattleSetup}
         onOpenChange={setShowBattleSetup}
         onBattleStart={(config) => {
-          console.log('Battle started:', config);
-          setShowBattleSetup(false);
-          setShowLiveBattle(true);
-          toast({
-            title: "Battle Started! ⚔️",
-            description: `${config.title} is now live!`,
+          handleCreateBattle({
+            title: config.title || "Battle",
+            description: config.description || "Live battle now!",
+            type: config.type || 'general',
+            opponentId: config.opponentId,
           });
         }}
       />
