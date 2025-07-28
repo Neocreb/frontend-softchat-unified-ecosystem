@@ -19,7 +19,6 @@ A comprehensive AI-powered social media and marketplace platform with crypto tra
 
 ### 💳 **Payment Processing**
 
-- Stripe integration for payments
 - Marketplace transactions
 - Freelance escrow system
 - Subscription management
