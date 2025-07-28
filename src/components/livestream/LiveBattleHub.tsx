@@ -254,8 +254,10 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
   useEffect(() => {
     if (content?.startedAt && content.startedAt instanceof Date) {
       const interval = setInterval(() => {
-        const elapsed = Math.floor((Date.now() - content.startedAt.getTime()) / 1000);
-        setStreamDuration(elapsed);
+        if (content?.startedAt) {
+          const elapsed = Math.floor((Date.now() - content.startedAt.getTime()) / 1000);
+          setStreamDuration(elapsed);
+        }
       }, 1000);
       return () => clearInterval(interval);
     }
