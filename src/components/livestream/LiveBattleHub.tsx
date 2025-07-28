@@ -193,8 +193,9 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
   // Return early if no content provided
   if (!content) {
     return (
-      <div className="relative h-screen w-full bg-black flex items-center justify-center">
+      <div className="relative h-screen w-full bg-black flex items-center justify-center snap-start snap-always">
         <div className="text-white text-center">
+          <Radio className="w-12 h-12 mx-auto mb-4 text-red-500" />
           <div className="text-xl mb-2">No live content available</div>
           <div className="text-gray-400">Please try again later</div>
         </div>
