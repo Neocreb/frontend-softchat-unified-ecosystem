@@ -138,6 +138,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   const [chatMessage, setChatMessage] = useState('');
   const [showGifts, setShowGifts] = useState(false);
   const [showVoting, setShowVoting] = useState(false);
+  const [showQuickReactions, setShowQuickReactions] = useState(false);
   
   // Battle voting state
   const [userBalance] = useState(2500);
