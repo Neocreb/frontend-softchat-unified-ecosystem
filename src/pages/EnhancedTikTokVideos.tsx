@@ -570,7 +570,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const getCurrentVideos = () => {
     switch (activeTab) {
       case "live":
-        return allLiveContent; // Use real live content instead of static data
+        return liveStreams;
       case "following":
         return followingVideos;
       default:
