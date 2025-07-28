@@ -319,7 +319,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   };
 
   return (
-    <div className={cn("relative w-full bg-black overflow-hidden snap-start snap-always", className)} style={{ height: 'calc(100vh - 56px)' }}>
+    <div className={cn("relative w-full bg-black overflow-hidden snap-start snap-always", className)} style={{ height: 'calc(100vh - 64px)' }}>
       {/* Video Background */}
       <video
         ref={videoRef}
