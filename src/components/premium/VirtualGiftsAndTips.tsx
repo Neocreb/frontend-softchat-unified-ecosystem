@@ -70,12 +70,20 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
   recipientName,
   contentId,
   trigger,
+  recipientType = 'video',
+  battleData,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Debug log
   console.log("VirtualGiftsAndTips rendered for:", recipientName);
   const [activeTab, setActiveTab] = useState("gifts");
+  const [selectedRecipient, setSelectedRecipient] = useState<{
+    id: string;
+    name: string;
+    username: string;
+    avatar: string;
+  } | null>(null);
   const [selectedGift, setSelectedGift] = useState<VirtualGift | null>(null);
   const [giftQuantity, setGiftQuantity] = useState(1);
   const [tipAmount, setTipAmount] = useState(5);
