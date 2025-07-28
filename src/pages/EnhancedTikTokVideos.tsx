@@ -1049,17 +1049,27 @@ const EnhancedTikTokVideos: React.FC = () => {
           </VisuallyHidden>
           <div className="h-full max-h-[90vh] overflow-y-auto">
             <LiveStreamCreator
-              onStreamStart={(stream) => {
-                handleCreateLiveStream({
-                  title: stream.title || "Live Stream",
-                  description: stream.description || "Live streaming now!",
-                  category: stream.category,
-                });
-              }}
-              onStreamEnd={() => {
-                setIsLiveStreamOpen(false);
-              }}
-            />
+            onStreamStart={(stream) => {
+              // Close the setup dialog first
+              setIsLiveStreamOpen(false);
+
+              // Create the live stream with full data
+              handleCreateLiveStream({
+                title: stream.title || "Live Stream",
+                description: stream.description || "Live streaming now!",
+                category: stream.category,
+              });
+
+              // Show immediate feedback
+              toast({
+                title: "Going Live! 🔴",
+                description: "Your stream is starting in the Live/Battle tab",
+              });
+            }}
+            onStreamEnd={() => {
+              setIsLiveStreamOpen(false);
+            }}
+          />
           </div>
         </DialogContent>
       </Dialog>
