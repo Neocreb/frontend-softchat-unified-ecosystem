@@ -33,3 +33,8 @@ export function useLiveContentContext() {
   }
   return context;
 }
+
+export function useLiveContentContextSafe() {
+  const context = useContext(LiveContentContext);
+  return context;
+}
