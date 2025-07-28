@@ -275,9 +275,9 @@ export function LiveStreamCreator({
   ];
 
   return (
-    <div className={className}>
+    <div className={cn("p-4 md:p-6", className)}>
       {/* Navigation Header with Breadcrumbs and Cross-links */}
-      <div className="mb-6">
+      <div className="mb-4 md:mb-6">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
           <Button
@@ -302,7 +302,7 @@ export function LiveStreamCreator({
         </nav>
 
         {/* Quick Navigation to Related Features */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-4 overflow-x-auto">
           <Button
             variant="outline"
             size="sm"
@@ -342,7 +342,7 @@ export function LiveStreamCreator({
         </div>
 
         {/* Feature Description */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-3 md:p-4">
           <div className="flex items-start gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
               <Radio className="h-5 w-5 text-blue-600" />
@@ -386,7 +386,7 @@ export function LiveStreamCreator({
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6">
           {/* Stream Preview */}
           <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video">
             <video
@@ -602,7 +602,7 @@ export function LiveStreamCreator({
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">
                     Category
@@ -675,14 +675,14 @@ export function LiveStreamCreator({
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             {!isStreaming ? (
               <>
                 {!isPreviewing ? (
                   <Button
                     onClick={startPreview}
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 w-full sm:w-auto"
                   >
                     <Play className="h-4 w-4 mr-2" />
                     Start Preview
@@ -691,7 +691,7 @@ export function LiveStreamCreator({
                   <Button
                     onClick={stopPreview}
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 w-full sm:w-auto"
                   >
                     <Square className="h-4 w-4 mr-2" />
                     Stop Preview
@@ -699,7 +699,7 @@ export function LiveStreamCreator({
                 )}
                 <Button
                   onClick={startStream}
-                  className="flex-1 bg-red-500 hover:bg-red-600"
+                  className="flex-1 w-full sm:w-auto bg-red-500 hover:bg-red-600"
                   disabled={!streamTitle.trim()}
                 >
                   <Radio className="h-4 w-4 mr-2" />
@@ -710,7 +710,7 @@ export function LiveStreamCreator({
               <Button
                 onClick={endStream}
                 variant="destructive"
-                className="flex-1"
+                className="flex-1 w-full sm:w-auto"
               >
                 <Square className="h-4 w-4 mr-2" />
                 End Stream
@@ -719,7 +719,7 @@ export function LiveStreamCreator({
           </div>
 
           {/* Quick Tips */}
-          <div className="bg-blue-50 rounded-lg p-4">
+          <div className="bg-blue-50 rounded-lg p-3 md:p-4">
             <div className="flex items-start gap-2">
               <Zap className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
               <div>
