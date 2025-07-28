@@ -434,9 +434,10 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
         {/* Gift */}
         <VirtualGiftsAndTips
           recipientId={videoId}
-          recipientName="Creator"
-          recipientType="video"
-          showAsButton={false}
+          recipientName={isBattle ? "Battle Creators" : "Creator"}
+          contentId={videoId}
+          recipientType={isBattle ? "battle" : isLiveStream ? "livestream" : "video"}
+          battleData={isBattle ? battleData : undefined}
           trigger={
             <div>
               <Button
