@@ -23,14 +23,14 @@ import {
   Target,
   Clock,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { Button } from '../ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Badge } from '../ui/badge';
+import { Progress } from '../ui/progress';
+import { Input } from '../ui/input';
+import { cn } from '../../lib/utils';
 import { LiveStreamData } from '../../hooks/use-live-content';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../../hooks/use-toast';
 
 interface LiveStreamingCardProps {
   content: LiveStreamData;
