@@ -207,6 +207,16 @@ const LiveStreamingCard: React.FC<LiveStreamingCardProps> = ({
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
 
+      {/* Debug Info (only for user-owned streams) */}
+      {isUserOwned && (
+        <div className="absolute top-2 left-2 z-40 bg-black/80 text-white p-2 rounded text-xs">
+          <div>Stream ID: {content.id}</div>
+          <div>Active: {isActive ? 'Yes' : 'No'}</div>
+          <div>User Owned: {isUserOwned ? 'Yes' : 'No'}</div>
+          <div>Camera: {videoRef.current?.srcObject ? 'Connected' : 'Not Connected'}</div>
+        </div>
+      )}
+
       {/* Live/Battle Indicator */}
       <div className="absolute top-4 left-4 z-30 flex gap-2">
         <Badge
