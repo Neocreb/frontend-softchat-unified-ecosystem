@@ -406,11 +406,27 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
 
       {/* Live Badges */}
       <div className="absolute top-20 left-0 right-0 z-30 flex items-center justify-between px-4">
-        <Badge className="bg-yellow-500/90 text-black font-semibold px-3 py-1.5 rounded-full border-0 shadow-lg">
+        <Badge
+          className="bg-yellow-500/90 text-black font-semibold px-3 py-1.5 rounded-full border-0 shadow-lg cursor-pointer hover:bg-yellow-400/90 transition-colors"
+          onClick={() => {
+            toast({
+              title: "Daily Ranking 👑",
+              description: "View today's top creators and streamers",
+            });
+          }}
+        >
           <Crown className="w-3 h-3 mr-1" />
           Daily Ranking
         </Badge>
-        <Badge className="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold px-3 py-1.5 rounded-full border-0 shadow-lg">
+        <Badge
+          className="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold px-3 py-1.5 rounded-full border-0 shadow-lg cursor-pointer hover:from-pink-600 hover:to-purple-600 transition-colors"
+          onClick={() => {
+            toast({
+              title: "Explore Content 🌟",
+              description: "Discover trending streams and creators",
+            });
+          }}
+        >
           Explore →
         </Badge>
       </div>
