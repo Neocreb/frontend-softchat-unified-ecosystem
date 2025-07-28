@@ -971,37 +971,51 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
           </Card>
         )}
 
-        {/* Action buttons */}
-        <div className="flex flex-col gap-2">
+        {/* Action buttons - TikTok style vertical */}
+        <div className="flex flex-col gap-4">
+          {/* Like with floating hearts */}
           <Button
             onClick={handleLike}
             variant="ghost"
             size="icon"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white flex flex-col items-center"
+            className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 text-white flex flex-col items-center p-2"
           >
-            <Heart className={cn("w-6 h-6", isLiked && "fill-red-500 text-red-500")} />
-            <span className="text-xs mt-1">{formatNumber(localLikes)}</span>
+            <Heart className={cn("w-7 h-7", isLiked && "fill-red-500 text-red-500")} />
+            <span className="text-xs mt-1 font-bold">{formatNumber(localLikes)}</span>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white flex flex-col items-center"
-          >
-            <Share2 className="w-6 h-6" />
-            <span className="text-xs mt-1">Share</span>
-          </Button>
-
+          {/* Gift/Recharge */}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setShowGifts(true)}
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white flex flex-col items-center"
+            className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 text-white flex flex-col items-center p-2"
           >
-            <Gift className="w-6 h-6" />
-            <span className="text-xs mt-1">Gift</span>
+            <Gift className="w-7 h-7" />
+            <span className="text-xs mt-1">🎁</span>
           </Button>
 
+          {/* Share */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 text-white flex flex-col items-center p-2"
+          >
+            <Share2 className="w-7 h-7" />
+            <span className="text-xs mt-1">🔄</span>
+          </Button>
+
+          {/* Recharge/SoftPoints */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-14 h-14 rounded-full bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 flex flex-col items-center p-2"
+          >
+            <Coins className="w-7 h-7" />
+            <span className="text-xs mt-1">💱</span>
+          </Button>
+
+          {/* Volume Control */}
           <Button
             onClick={() => setIsMuted(!isMuted)}
             variant="ghost"
