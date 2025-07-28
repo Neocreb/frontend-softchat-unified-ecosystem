@@ -148,6 +148,7 @@ export function useLiveContent() {
       viewerCount: 1,
       title: 'New Battle',
       description: 'Battle starting now!',
+      isUserOwned: true, // Mark as user-owned
       user: {
         id: "current_user",
         username: "current_user",
