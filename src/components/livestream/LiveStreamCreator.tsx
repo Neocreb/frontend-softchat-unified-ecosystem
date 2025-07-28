@@ -388,7 +388,7 @@ export function LiveStreamCreator({
         </CardHeader>
         <CardContent className="space-y-4 md:space-y-6 p-4 md:p-6">
           {/* Stream Preview */}
-          <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video">
+          <div className="relative bg-gray-900 rounded-lg overflow-hidden aspect-video max-w-full">
             <video
               ref={videoRef}
               autoPlay
