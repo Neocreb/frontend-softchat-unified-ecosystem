@@ -919,20 +919,14 @@ const EnhancedTikTokVideos: React.FC = () => {
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
-            {allLiveContent.length > 0 ? (
-              allLiveContent.map((content, index) => (
-                <LiveContentCard
-                  key={content.id}
-                  content={content}
+            {liveStreams.length > 0 ? (
+              liveStreams.map((video, index) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
                   isActive={index === currentVideoIndex && activeTab === "live"}
-                  onBattleJoin={(battleId) => {
-                    // Navigate to full battle interface
-                    setShowLiveBattle(true);
-                  }}
-                  onStreamJoin={(streamId) => {
-                    // Handle stream joining
-                    console.log("Joining stream:", streamId);
-                  }}
+                  showControls={showControls}
+                  onDuetCreate={handleDuetCreate}
                 />
               ))
             ) : (
