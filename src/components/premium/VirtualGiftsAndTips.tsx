@@ -172,11 +172,24 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
   const handleSendGift = async () => {
     if (!user?.id || !selectedGift) return;
 
+    // For battles, ensure a recipient is selected
+    if (recipientType === 'battle' && !selectedRecipient) {
+      toast({
+        title: "Select Recipient",
+        description: "Please choose who to send the gift to",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const targetRecipientId = selectedRecipient?.id || recipientId;
+    const targetRecipientName = selectedRecipient?.name || recipientName;
+
     setSending(true);
     try {
       const transaction = await virtualGiftsService.sendGift(
         user.id,
-        recipientId,
+        targetRecipientId,
         selectedGift.id,
         giftQuantity,
         message || undefined,
@@ -186,13 +199,14 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
       if (transaction) {
         toast({
           title: "Gift sent! 🎁",
-          description: `You sent ${giftQuantity}x ${selectedGift.name} to ${recipientName}`,
+          description: `You sent ${giftQuantity}x ${selectedGift.name} to ${targetRecipientName}`,
         });
 
         // Reset form
         setSelectedGift(null);
         setGiftQuantity(1);
         setMessage("");
+        setSelectedRecipient(null);
         setIsOpen(false);
       } else {
         throw new Error("Failed to send gift");
