@@ -41,6 +41,7 @@ import {
   Minimize,
   Maximize,
   Flag,
+  Globe,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
