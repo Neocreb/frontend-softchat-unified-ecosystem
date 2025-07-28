@@ -76,6 +76,8 @@ import LiveBattle from "@/components/battles/LiveBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import LiveStreamCreator from "@/components/livestream/LiveStreamCreator";
+import LiveContentCard from "@/components/video/LiveContentCard";
+import { useLiveContentContext } from "@/contexts/LiveContentContext";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
