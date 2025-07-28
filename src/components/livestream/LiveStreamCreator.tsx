@@ -279,7 +279,7 @@ export function LiveStreamCreator({
       {/* Navigation Header with Breadcrumbs and Cross-links */}
       <div className="mb-4 md:mb-6">
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-4">
+        <nav className="flex items-center space-x-1 md:space-x-2 text-sm text-muted-foreground mb-4">
           <Button
             variant="ghost"
             size="sm"
