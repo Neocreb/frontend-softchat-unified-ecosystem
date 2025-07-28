@@ -582,7 +582,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
         </div>
 
         {/* Bottom safe area for mobile */}
-        <div className="h-2 bg-black/50"></div>
+        <div className="h-20 bg-black/50"></div>
       </div>
 
       {/* Right Side Actions */}
