@@ -16,6 +16,7 @@ export interface LiveStreamData {
   viewerCount: number;
   isActive: boolean;
   startedAt: Date;
+  isUserOwned?: boolean; // Track if current user owns this stream
   category?: string;
   streamKey?: string;
   battleData?: {
