@@ -683,36 +683,27 @@ const EnhancedTikTokVideos: React.FC = () => {
     // You could add logic here to add the new duet to the current videos list
   };
 
-  // const handleCreateLiveStream = (streamData: {
-  //   title: string;
-  //   description: string;
-  //   category?: string;
-  // }) => {
-  //   const streamId = addLiveStream({
-  //     user: {
-  //       id: "current_user",
-  //       username: "current_user",
-  //       displayName: "You",
-  //       avatar: "https://i.pravatar.cc/150?img=1",
-  //       verified: false,
-  //       followerCount: 1200,
-  //     },
-  //     title: streamData.title,
-  //     description: streamData.description,
-  //     viewerCount: 1,
-  //     category: streamData.category,
-  //   });
+  const handleCreateLiveStream = (streamData: {
+    title: string;
+    description: string;
+    category?: string;
+  }) => {
+    const streamId = addLiveStream({
+      title: streamData.title,
+      description: streamData.description,
+      category: streamData.category,
+    });
 
-  //   // Switch to live tab to show the new stream
-  //   setActiveTab("live");
-  //   setCurrentVideoIndex(0);
-  //   setIsLiveStreamOpen(false);
+    // Switch to live tab to show the new stream
+    setActiveTab("live");
+    setCurrentVideoIndex(0);
+    setIsLiveStreamOpen(false);
 
-  //   toast({
-  //     title: "Live Stream Started! 🔴",
-  //     description: "Your stream is now live in the Live/Battle tab",
-  //   });
-  // };
+    toast({
+      title: "Live Stream Started! 🔴",
+      description: "Your stream is now live in the Live/Battle tab",
+    });
+  };
 
   // const handleCreateBattle = (battleData: {
   //   title: string;
