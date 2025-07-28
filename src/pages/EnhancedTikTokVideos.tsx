@@ -428,7 +428,7 @@ const VideoCard: React.FC<{
       {/* Content overlay */}
       <div className="absolute inset-0 flex">
         {/* Left side - user info and description */}
-        <div className="flex-1 flex flex-col justify-end p-3 md:p-4 pb-36 md:pb-8">
+        <div className="flex-1 flex flex-col justify-end p-3 md:p-4 pb-44 md:pb-8">
           <div className="space-y-2 md:space-y-3">
             {/* User info */}
             <div className="flex items-center gap-2 md:gap-3">
