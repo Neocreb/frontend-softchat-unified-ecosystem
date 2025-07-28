@@ -91,7 +91,7 @@ interface LiveChatMessage {
   };
   message: string;
   timestamp: Date;
-  type: 'message' | 'gift' | 'join' | 'follow' | 'system' | 'reaction' | 'vote';
+  type: 'message' | 'gift' | 'join' | 'follow' | 'system' | 'reaction' | 'vote' | 'like';
   giftInfo?: {
     giftType: string;
     value: number;
