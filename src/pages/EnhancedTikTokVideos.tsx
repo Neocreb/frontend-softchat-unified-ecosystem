@@ -933,8 +933,8 @@ const EnhancedTikTokVideos: React.FC = () => {
               <div className="h-screen flex items-center justify-center">
                 <div className="text-center text-white/60">
                   <Radio className="w-12 h-12 mx-auto mb-4 text-red-500" />
-                  <p className="text-lg font-medium mb-2">No live content right now</p>
-                  <p className="text-sm">Start a live stream or battle to see content here!</p>
+                  <p className="text-lg font-medium mb-2">No live streams right now</p>
+                  <p className="text-sm">Check back later for live content!</p>
                 </div>
               </div>
             )}
