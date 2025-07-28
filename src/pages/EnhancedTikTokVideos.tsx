@@ -905,16 +905,35 @@ const EnhancedTikTokVideos: React.FC = () => {
           <TabsContent value="live" className="h-full mt-0">
             {allLiveContent.length > 0 ? (
               allLiveContent.map((liveContent, index) => {
-                const video = liveContentToVideoData(liveContent);
-                return (
-                  <VideoCard
-                    key={video.id}
-                    video={video}
-                    isActive={index === currentVideoIndex && activeTab === "live"}
-                    showControls={showControls}
-                    onDuetCreate={handleDuetCreate}
-                  />
-                );
+                // Use LiveStreamingCard for user-owned streams, VideoCard for others
+                if (liveContent.isUserOwned) {
+                  return (
+                    <LiveStreamingCard
+                      key={liveContent.id}
+                      content={liveContent}
+                      isActive={index === currentVideoIndex && activeTab === "live"}
+                      isUserOwned={true}
+                      onEndStream={() => {
+                        removeLiveContent(liveContent.id);
+                        toast({
+                          title: "Stream Ended",
+                          description: "Your live stream has been ended",
+                        });
+                      }}
+                    />
+                  );
+                } else {
+                  const video = liveContentToVideoData(liveContent);
+                  return (
+                    <VideoCard
+                      key={video.id}
+                      video={video}
+                      isActive={index === currentVideoIndex && activeTab === "live"}
+                      showControls={showControls}
+                      onDuetCreate={handleDuetCreate}
+                    />
+                  );
+                }
               })
             ) : (
               <div className="h-screen flex items-center justify-center">
