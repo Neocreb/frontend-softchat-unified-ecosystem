@@ -586,7 +586,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
       </div>
 
       {/* Right Side Actions */}
-      <div className="absolute bottom-32 right-4 z-30 flex flex-col gap-3">
+      <div className="absolute bottom-40 right-4 z-30 flex flex-col gap-3">
         {/* Like Button */}
         <Button
           onClick={handleLike}
