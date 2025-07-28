@@ -388,10 +388,10 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
                     <div className="grid grid-cols-2 gap-4">
                       {/* Creator 1 */}
                       <Card
-                        className={`cursor-pointer transition-all duration-200 ${
+                        className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
                           selectedRecipient?.id === battleData.creator1.id
-                            ? 'ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                            : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                            ? 'ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20 scale-105 shadow-lg'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-md'
                         }`}
                         onClick={() => setSelectedRecipient({
                           id: battleData.creator1.id,
