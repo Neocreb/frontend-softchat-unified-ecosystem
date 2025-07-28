@@ -505,63 +505,84 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-black/70 to-transparent p-4">
-        <div className="flex items-center gap-3">
-          {/* Message Input */}
-          <div className="flex-1 flex items-center gap-2">
-            <Input
-              value={chatMessage}
-              onChange={(e) => setChatMessage(e.target.value)}
-              placeholder="Type message..."
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/70 rounded-full px-4 py-2 text-sm"
-              onKeyPress={(e) => e.key === 'Enter' && handleSendChat()}
-            />
-          </div>
+      <div className="absolute bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+        <div className="p-4 pt-8">
+          <div className="flex items-center gap-3">
+            {/* Message Input */}
+            <div className="flex-1">
+              <div className="relative">
+                <Input
+                  value={chatMessage}
+                  onChange={(e) => setChatMessage(e.target.value)}
+                  placeholder="Say something..."
+                  className="bg-white/15 border-white/20 text-white placeholder:text-white/60 rounded-full px-4 py-3 text-sm backdrop-blur-md shadow-lg"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendChat()}
+                />
+                {chatMessage && (
+                  <Button
+                    onClick={handleSendChat}
+                    size="sm"
+                    className="absolute right-1 top-1 bg-blue-500 hover:bg-blue-600 rounded-full w-8 h-8 p-0"
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 rounded-full w-10 h-10"
-            >
-              <Smile className="w-5 h-5" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 rounded-full w-10 h-10"
-            >
-              <Users className="w-5 h-5" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-yellow-400 hover:bg-white/20 rounded-full w-10 h-10"
-            >
-              <Coins className="w-5 h-5" />
-            </Button>
-            
-            <Button
-              onClick={() => setShowGifts(!showGifts)}
-              variant="ghost"
-              size="icon"
-              className="text-pink-400 hover:bg-white/20 rounded-full w-10 h-10"
-            >
-              <Gift className="w-5 h-5" />
-            </Button>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 rounded-full w-10 h-10"
-            >
-              <Share2 className="w-5 h-5" />
-            </Button>
+            {/* Action Buttons */}
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                title="Reactions"
+              >
+                <Smile className="w-5 h-5" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                title="Guests"
+              >
+                <Users className="w-5 h-5" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-yellow-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                title="Recharge"
+              >
+                <Coins className="w-5 h-5" />
+              </Button>
+
+              <Button
+                onClick={() => setShowGifts(!showGifts)}
+                variant="ghost"
+                size="icon"
+                className="text-pink-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                title="Gift"
+              >
+                <Gift className="w-5 h-5" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                title="Share"
+              >
+                <Share2 className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
+
+        {/* Bottom safe area for mobile */}
+        <div className="h-2 bg-black/50"></div>
       </div>
 
       {/* Right Side Actions */}
