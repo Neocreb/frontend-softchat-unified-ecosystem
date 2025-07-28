@@ -437,7 +437,7 @@ export function LiveStreamCreator({
               )}
 
               {/* Bottom Controls */}
-              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+              <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 right-2 md:right-4 flex flex-wrap justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={toggleVideo}
