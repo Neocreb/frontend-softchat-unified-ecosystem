@@ -142,6 +142,15 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
       return;
     }
 
+    if (userVotes.length > 0) {
+      toast({
+        title: 'Vote Already Placed',
+        description: 'You can only vote once per battle',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     const vote = {
       amount: voteAmount,
       creatorId: selectedCreator.id,
