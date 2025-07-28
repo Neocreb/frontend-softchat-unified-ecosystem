@@ -48,6 +48,8 @@ import { cn } from '../../lib/utils';
 import { LiveStreamData } from '../../hooks/use-live-content';
 import { useToast } from '../../hooks/use-toast';
 import { useAuth } from '../../contexts/AuthContext';
+import BattleVoting from '../voting/BattleVoting';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 interface LiveChatMessage {
   id: string;
@@ -163,6 +165,17 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
   const [videoEnabled, setVideoEnabled] = useState(true);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+
+  // Battle voting state
+  const [showVoting, setShowVoting] = useState(false);
+  const [userBalance] = useState(2500); // Mock user balance
+  const [userVotes, setUserVotes] = useState<any[]>([]);
+  const [votingPool, setVotingPool] = useState({
+    creator1Total: 450,
+    creator2Total: 780,
+    totalPool: 1230,
+    totalVoters: 23,
+  });
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
@@ -429,6 +442,43 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
     return (content.battleData.scores.user1 / total) * 100;
   };
 
+  // Handle placing a vote in battle
+  const handlePlaceVote = (vote: any) => {
+    if (userVotes.length > 0) {
+      toast({
+        title: "Vote Already Placed! 🚫",
+        description: "You can only vote once per battle",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const newVote = {
+      ...vote,
+      id: Date.now().toString(),
+      timestamp: new Date(),
+      status: 'active',
+    };
+
+    setUserVotes(prev => [...prev, newVote]);
+
+    // Update voting pool
+    setVotingPool(prev => ({
+      ...prev,
+      creator1Total: vote.creatorId === content.user.id ? prev.creator1Total + vote.amount : prev.creator1Total,
+      creator2Total: vote.creatorId === content.battleData?.opponent?.id ? prev.creator2Total + vote.amount : prev.creator2Total,
+      totalPool: prev.totalPool + vote.amount,
+      totalVoters: prev.totalVoters + 1,
+    }));
+
+    toast({
+      title: "Vote Placed! 🎯",
+      description: `${vote.amount} SP placed`,
+    });
+
+    setShowVoting(false);
+  };
+
   return (
     <div className={cn("relative h-screen w-full bg-black overflow-hidden snap-start snap-always", className)}>
       {/* Video Background */}
@@ -563,6 +613,17 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
                   </span>
                 </div>
               )}
+
+              {/* Vote Button */}
+              <div className="mt-3 flex justify-center">
+                <Button
+                  onClick={() => setShowVoting(true)}
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6"
+                >
+                  <DollarSign className="w-4 h-4 mr-2" />
+                  Place Vote
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -852,6 +913,52 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
           </Button>
         </div>
       </div>
+
+      {/* Battle Voting Modal */}
+      {showVoting && content.type === 'battle' && content.battleData && (
+        <Dialog open={showVoting} onOpenChange={setShowVoting}>
+          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl z-[110]">
+            <DialogHeader>
+              <DialogTitle className="text-lg font-semibold">Battle Voting</DialogTitle>
+            </DialogHeader>
+            <div className="max-h-[70vh] overflow-y-auto">
+              <BattleVoting
+                battleId={content.id}
+                creator1={{
+                  id: content.user.id,
+                  username: content.user.username,
+                  displayName: content.user.displayName,
+                  avatar: content.user.avatar,
+                  tier: 'pro_creator' as const,
+                  verified: content.user.verified,
+                  currentScore: content.battleData.scores?.user1 || 0,
+                  winRate: 75,
+                  totalVotes: 145,
+                  isLeading: (content.battleData.scores?.user1 || 0) > (content.battleData.scores?.user2 || 0),
+                }}
+                creator2={{
+                  id: content.battleData.opponent?.id || 'opponent',
+                  username: content.battleData.opponent?.username || 'opponent',
+                  displayName: content.battleData.opponent?.displayName || 'Opponent',
+                  avatar: content.battleData.opponent?.avatar || '',
+                  tier: 'pro_creator' as const,
+                  verified: content.battleData.opponent?.verified || false,
+                  currentScore: content.battleData.scores?.user2 || 0,
+                  winRate: 68,
+                  totalVotes: 89,
+                  isLeading: (content.battleData.scores?.user2 || 0) > (content.battleData.scores?.user1 || 0),
+                }}
+                isLive={content.isActive}
+                timeRemaining={content.battleData.timeRemaining || 300}
+                userBalance={userBalance}
+                onPlaceVote={handlePlaceVote}
+                userVotes={userVotes}
+                votingPool={votingPool}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {/* Custom CSS for animations */}
       <style jsx>{`

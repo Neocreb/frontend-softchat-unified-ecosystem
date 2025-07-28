@@ -81,6 +81,7 @@ import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
 import LiveStreamingCard from "../components/video/LiveStreamingCard";
 import FullScreenLiveStream from "../components/livestream/FullScreenLiveStream";
+import MobileLiveStreamLayout from "../components/livestream/MobileLiveStreamLayout";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
@@ -427,7 +428,7 @@ const VideoCard: React.FC<{
       {/* Content overlay */}
       <div className="absolute inset-0 flex">
         {/* Left side - user info and description */}
-        <div className="flex-1 flex flex-col justify-end p-3 md:p-4 pb-28 md:pb-8">
+        <div className="flex-1 flex flex-col justify-end p-3 md:p-4 pb-44 md:pb-8">
           <div className="space-y-2 md:space-y-3">
             {/* User info */}
             <div className="flex items-center gap-2 md:gap-3">
@@ -511,12 +512,27 @@ const VideoCard: React.FC<{
         </div>
 
         {/* Right side - Interactive Features */}
-        <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-28 md:pb-8">
+        <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-44 md:pb-8">
           <InteractiveFeatures
             videoId={video.id}
             isLiveStream={video.isLiveStream}
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
+            isBattle={video.timestamp === "BATTLE"}
+            battleData={video.timestamp === "BATTLE" ? {
+              creator1: {
+                id: video.user.id,
+                username: video.user.username,
+                displayName: video.user.displayName,
+                avatar: video.user.avatar,
+              },
+              creator2: {
+                id: "opponent_" + video.id,
+                username: video.id === "battle1" ? "melody_queen" : "freestyle_master",
+                displayName: video.id === "battle1" ? "Melody Queen" : "Freestyle Master",
+                avatar: `https://i.pravatar.cc/150?img=${video.id === "battle1" ? "9" : "10"}`,
+              }
+            } : undefined}
             onDuetCreate={(videoId) => {
               // Handle duet creation by opening the new duet recorder
               if (onDuetCreate) {
@@ -744,7 +760,7 @@ const EnhancedTikTokVideos: React.FC = () => {
     setShowBattleSetup(false);
 
     toast({
-      title: "Battle Started! ⚔️",
+      title: "Battle Started! ⚔��",
       description: "Your battle is now live in the Live/Battle tab",
     });
   };
@@ -911,9 +927,9 @@ const EnhancedTikTokVideos: React.FC = () => {
           <TabsContent value="live" className="h-full mt-0">
             {allLiveContent.length > 0 ? (
               allLiveContent.map((liveContent, index) => {
-                // Use FullScreenLiveStream for all live content for TikTok-style experience
+                // Use MobileLiveStreamLayout for mobile-optimized live experience
                 return (
-                  <FullScreenLiveStream
+                  <MobileLiveStreamLayout
                     key={liveContent.id}
                     content={liveContent}
                     isActive={index === currentVideoIndex && activeTab === "live"}

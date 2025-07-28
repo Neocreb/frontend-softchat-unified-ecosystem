@@ -112,6 +112,21 @@ interface InteractiveFeaturesProps {
   allowComments?: boolean;
   onDuetCreate?: (originalVideoId: string) => void;
   onReplyCreate?: (originalVideoId: string) => void;
+  isBattle?: boolean;
+  battleData?: {
+    creator1: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+    creator2: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+  };
 }
 
 const mockComments: Comment[] = [
@@ -186,6 +201,8 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
   allowComments = true,
   onDuetCreate,
   onReplyCreate,
+  isBattle = false,
+  battleData,
 }) => {
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [newComment, setNewComment] = useState("");
@@ -417,9 +434,10 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
         {/* Gift */}
         <VirtualGiftsAndTips
           recipientId={videoId}
-          recipientName="Creator"
-          recipientType="video"
-          showAsButton={false}
+          recipientName={isBattle ? "Battle Creators" : "Creator"}
+          contentId={videoId}
+          recipientType={isBattle ? "battle" : isLiveStream ? "livestream" : "video"}
+          battleData={isBattle ? battleData : undefined}
           trigger={
             <div>
               <Button

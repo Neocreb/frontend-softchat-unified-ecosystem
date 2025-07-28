@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   virtualGiftsService,
   VIRTUAL_GIFTS,
@@ -48,6 +49,21 @@ interface VirtualGiftsAndTipsProps {
   recipientName: string;
   contentId?: string;
   trigger?: React.ReactNode;
+  recipientType?: 'video' | 'livestream' | 'battle';
+  battleData?: {
+    creator1: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+    creator2: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+  };
 }
 
 const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
@@ -55,12 +71,20 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
   recipientName,
   contentId,
   trigger,
+  recipientType = 'video',
+  battleData,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Debug log
   console.log("VirtualGiftsAndTips rendered for:", recipientName);
   const [activeTab, setActiveTab] = useState("gifts");
+  const [selectedRecipient, setSelectedRecipient] = useState<{
+    id: string;
+    name: string;
+    username: string;
+    avatar: string;
+  } | null>(null);
   const [selectedGift, setSelectedGift] = useState<VirtualGift | null>(null);
   const [giftQuantity, setGiftQuantity] = useState(1);
   const [tipAmount, setTipAmount] = useState(5);
@@ -148,11 +172,24 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
   const handleSendGift = async () => {
     if (!user?.id || !selectedGift) return;
 
+    // For battles, ensure a recipient is selected
+    if (recipientType === 'battle' && !selectedRecipient) {
+      toast({
+        title: "Select Recipient",
+        description: "Please choose who to send the gift to",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const targetRecipientId = selectedRecipient?.id || recipientId;
+    const targetRecipientName = selectedRecipient?.name || recipientName;
+
     setSending(true);
     try {
       const transaction = await virtualGiftsService.sendGift(
         user.id,
-        recipientId,
+        targetRecipientId,
         selectedGift.id,
         giftQuantity,
         message || undefined,
@@ -162,13 +199,14 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
       if (transaction) {
         toast({
           title: "Gift sent! 🎁",
-          description: `You sent ${giftQuantity}x ${selectedGift.name} to ${recipientName}`,
+          description: `You sent ${giftQuantity}x ${selectedGift.name} to ${targetRecipientName}`,
         });
 
         // Reset form
         setSelectedGift(null);
         setGiftQuantity(1);
         setMessage("");
+        setSelectedRecipient(null);
         setIsOpen(false);
       } else {
         throw new Error("Failed to send gift");
@@ -340,6 +378,85 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
             </TabsList>
 
             <TabsContent value="gifts" className="space-y-6">
+              {/* Recipient Selection for Battles */}
+              {recipientType === 'battle' && battleData && (
+                <Card className="bg-gradient-to-r from-red-50 to-blue-50 dark:from-red-900/20 dark:to-blue-900/20">
+                  <CardHeader>
+                    <CardTitle className="text-center flex items-center justify-center gap-2">
+                      <Gift className="w-5 h-5 text-purple-500" />
+                      Choose Recipient
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="relative grid grid-cols-2 gap-4">
+                      {/* VS Badge */}
+                      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+                        <div className="bg-gradient-to-r from-red-500 to-blue-500 text-white font-bold px-3 py-1 rounded-full text-sm shadow-lg">
+                          VS
+                        </div>
+                      </div>
+                      {/* Creator 1 */}
+                      <Card
+                        className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
+                          selectedRecipient?.id === battleData.creator1.id
+                            ? 'ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20 scale-105 shadow-lg'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-md'
+                        }`}
+                        onClick={() => setSelectedRecipient({
+                          id: battleData.creator1.id,
+                          name: battleData.creator1.displayName,
+                          username: battleData.creator1.username,
+                          avatar: battleData.creator1.avatar,
+                        })}
+                      >
+                        <CardContent className="p-4 text-center">
+                          <Avatar className="w-16 h-16 mx-auto mb-3">
+                            <AvatarImage src={battleData.creator1.avatar} />
+                            <AvatarFallback>{battleData.creator1.displayName[0]}</AvatarFallback>
+                          </Avatar>
+                          <h3 className="font-semibold">{battleData.creator1.displayName}</h3>
+                          <p className="text-sm text-muted-foreground">@{battleData.creator1.username}</p>
+                          <Badge className="mt-2 bg-blue-500 text-white">Team Blue</Badge>
+                        </CardContent>
+                      </Card>
+
+                      {/* Creator 2 */}
+                      <Card
+                        className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
+                          selectedRecipient?.id === battleData.creator2.id
+                            ? 'ring-2 ring-red-500 bg-red-50 dark:bg-red-900/20 scale-105 shadow-lg'
+                            : 'hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-md'
+                        }`}
+                        onClick={() => setSelectedRecipient({
+                          id: battleData.creator2.id,
+                          name: battleData.creator2.displayName,
+                          username: battleData.creator2.username,
+                          avatar: battleData.creator2.avatar,
+                        })}
+                      >
+                        <CardContent className="p-4 text-center">
+                          <Avatar className="w-16 h-16 mx-auto mb-3">
+                            <AvatarImage src={battleData.creator2.avatar} />
+                            <AvatarFallback>{battleData.creator2.displayName[0]}</AvatarFallback>
+                          </Avatar>
+                          <h3 className="font-semibold">{battleData.creator2.displayName}</h3>
+                          <p className="text-sm text-muted-foreground">@{battleData.creator2.username}</p>
+                          <Badge className="mt-2 bg-red-500 text-white">Team Red</Badge>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {selectedRecipient && (
+                      <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-center">
+                        <p className="text-sm text-green-700 dark:text-green-300">
+                          ✅ Sending gift to <strong>{selectedRecipient.name}</strong>
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Gift Selection */}
                 <div className="lg:col-span-2 space-y-4">
