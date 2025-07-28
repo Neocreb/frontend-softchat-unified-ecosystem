@@ -1023,22 +1023,24 @@ const EnhancedTikTokVideos: React.FC = () => {
 
       {/* Live Stream Creator */}
       <Dialog open={isLiveStreamOpen} onOpenChange={setIsLiveStreamOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] h-[90vh] bg-black border-gray-800 p-0">
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] bg-black border-gray-800 p-0 overflow-hidden">
           <VisuallyHidden>
             <DialogTitle>Start Live Stream</DialogTitle>
           </VisuallyHidden>
-          <LiveStreamCreator
-            onStreamStart={(stream) => {
-              handleCreateLiveStream({
-                title: stream.title || "Live Stream",
-                description: stream.description || "Live streaming now!",
-                category: stream.category,
-              });
-            }}
-            onStreamEnd={() => {
-              setIsLiveStreamOpen(false);
-            }}
-          />
+          <div className="h-full max-h-[90vh] overflow-y-auto">
+            <LiveStreamCreator
+              onStreamStart={(stream) => {
+                handleCreateLiveStream({
+                  title: stream.title || "Live Stream",
+                  description: stream.description || "Live streaming now!",
+                  category: stream.category,
+                });
+              }}
+              onStreamEnd={() => {
+                setIsLiveStreamOpen(false);
+              }}
+            />
+          </div>
         </DialogContent>
       </Dialog>
 
