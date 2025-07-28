@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Radio, Video } from 'lucide-react';
-import { useLiveContentContext } from '../../contexts/LiveContentContext';
+import { Radio, Video, AlertTriangle } from 'lucide-react';
+import { useLiveContentContextSafe } from '../../contexts/LiveContentContext';
 import { useToast } from '../../hooks/use-toast';
 
 const LiveStreamTest: React.FC = () => {
-  const { addLiveStream, allLiveContent } = useLiveContentContext();
+  const liveContentContext = useLiveContentContextSafe();
   const { toast } = useToast();
 
   const handleTestStream = () => {
