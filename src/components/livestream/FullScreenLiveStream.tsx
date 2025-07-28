@@ -442,6 +442,43 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
     return (content.battleData.scores.user1 / total) * 100;
   };
 
+  // Handle placing a vote in battle
+  const handlePlaceVote = (vote: any) => {
+    if (userVotes.length > 0) {
+      toast({
+        title: "Vote Already Placed! 🚫",
+        description: "You can only vote once per battle",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const newVote = {
+      ...vote,
+      id: Date.now().toString(),
+      timestamp: new Date(),
+      status: 'active',
+    };
+
+    setUserVotes(prev => [...prev, newVote]);
+
+    // Update voting pool
+    setVotingPool(prev => ({
+      ...prev,
+      creator1Total: vote.creatorId === content.user.id ? prev.creator1Total + vote.amount : prev.creator1Total,
+      creator2Total: vote.creatorId === content.battleData?.opponent?.id ? prev.creator2Total + vote.amount : prev.creator2Total,
+      totalPool: prev.totalPool + vote.amount,
+      totalVoters: prev.totalVoters + 1,
+    }));
+
+    toast({
+      title: "Vote Placed! 🎯",
+      description: `${vote.amount} SP placed`,
+    });
+
+    setShowVoting(false);
+  };
+
   return (
     <div className={cn("relative h-screen w-full bg-black overflow-hidden snap-start snap-always", className)}>
       {/* Video Background */}
