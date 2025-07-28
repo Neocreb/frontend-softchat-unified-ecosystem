@@ -275,7 +275,7 @@ export function LiveStreamCreator({
   ];
 
   return (
-    <div className={cn("p-4 md:p-6", className)}>
+    <div className={cn("p-4 md:p-6 min-h-0 overflow-y-auto", className)}>
       {/* Navigation Header with Breadcrumbs and Cross-links */}
       <div className="mb-4 md:mb-6">
         {/* Breadcrumb Navigation */}
