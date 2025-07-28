@@ -105,11 +105,23 @@ const LiveStreamingCard: React.FC<LiveStreamingCardProps> = ({
         .then(stream => {
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
+            videoRef.current.play().catch(console.error);
           }
+          toast({
+            title: "Camera Started! 📹",
+            description: "Your live stream is now broadcasting",
+          });
         })
-        .catch(console.error);
+        .catch(error => {
+          console.error('Camera access failed:', error);
+          toast({
+            title: "Camera Access Issue",
+            description: "Using demo mode. Check camera permissions.",
+            variant: "destructive",
+          });
+        });
     }
-  }, [isUserOwned, isActive]);
+  }, [isUserOwned, isActive, toast]);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
