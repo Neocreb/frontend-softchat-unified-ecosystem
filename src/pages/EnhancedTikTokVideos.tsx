@@ -383,7 +383,7 @@ const VideoCard: React.FC<{
     description.length > 100 ? description.substring(0, 100) + "..." : description;
 
   return (
-    <div className="relative w-full bg-black snap-start snap-always" style={{ height: 'calc(100vh - 80px)' }}>
+    <div className="relative w-full bg-black snap-start snap-always" style={{ height: 'calc(100vh - 56px)' }}>
       {/* Video */}
       <video
         ref={videoRef}
