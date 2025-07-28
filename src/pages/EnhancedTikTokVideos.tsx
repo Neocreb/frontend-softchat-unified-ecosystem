@@ -81,6 +81,7 @@ import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
 import LiveStreamingCard from "../components/video/LiveStreamingCard";
 import FullScreenLiveStream from "../components/livestream/FullScreenLiveStream";
+import MobileLiveStreamLayout from "../components/livestream/MobileLiveStreamLayout";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
