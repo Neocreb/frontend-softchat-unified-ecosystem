@@ -1415,7 +1415,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
       )}
 
       {/* Floating animations CSS */}
-      <style jsx>{`
+      <style>{`
         @keyframes float-up {
           0% {
             opacity: 1;
