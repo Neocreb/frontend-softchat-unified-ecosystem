@@ -252,14 +252,14 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
 
   // Calculate stream duration
   useEffect(() => {
-    if (content.startedAt && content.startedAt instanceof Date) {
+    if (content?.startedAt && content.startedAt instanceof Date) {
       const interval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - content.startedAt.getTime()) / 1000);
         setStreamDuration(elapsed);
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [content.startedAt]);
+  }, [content?.startedAt]);
 
   // Battle countdown timer
   useEffect(() => {
