@@ -114,7 +114,7 @@ interface VotingPool {
 }
 
 interface LiveBattleHubProps {
-  content: LiveStreamData;
+  content: LiveStreamData | null;
   isActive: boolean;
   isUserOwned?: boolean;
   onEndStream?: () => void;
