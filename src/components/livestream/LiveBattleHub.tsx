@@ -147,7 +147,7 @@ const getMockParticipants = (content: LiveStreamData): LiveParticipant[] => [
     videoEnabled: true,
     currentScore: 1250,
   },
-  ...(content.battleData?.opponent ? [{
+  ...(content?.battleData?.opponent ? [{
     id: content.battleData.opponent.id,
     username: content.battleData.opponent.username,
     displayName: content.battleData.opponent.displayName,
