@@ -165,6 +165,17 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
   const [videoEnabled, setVideoEnabled] = useState(true);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
+
+  // Battle voting state
+  const [showVoting, setShowVoting] = useState(false);
+  const [userBalance] = useState(2500); // Mock user balance
+  const [userVotes, setUserVotes] = useState<any[]>([]);
+  const [votingPool, setVotingPool] = useState({
+    creator1Total: 450,
+    creator2Total: 780,
+    totalPool: 1230,
+    totalVoters: 23,
+  });
   
   const videoRef = useRef<HTMLVideoElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
