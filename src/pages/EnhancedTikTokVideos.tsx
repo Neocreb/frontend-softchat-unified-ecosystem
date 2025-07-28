@@ -45,6 +45,7 @@ import {
   Gift,
   Radio,
   Upload,
+  Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
