@@ -152,11 +152,11 @@ const getMockParticipants = (content: LiveStreamData | null): LiveParticipant[] 
 
   return [
     {
-      id: content.user.id,
-      username: content.user.username,
-      displayName: content.user.displayName,
-      avatar: content.user.avatar,
-      verified: content.user.verified,
+      id: content?.user?.id || 'default-host',
+      username: content?.user?.username || 'host_user',
+      displayName: content?.user?.displayName || 'Live Host',
+      avatar: content?.user?.avatar || 'https://i.pravatar.cc/150?img=1',
+      verified: content?.user?.verified || false,
       role: 'host',
       isHost: true,
       micEnabled: true,
