@@ -571,6 +571,21 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
               </Button>
 
               <Button
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: content.title,
+                      text: content.description,
+                      url: window.location.href,
+                    });
+                  } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    toast({
+                      title: "Link Copied! 📋",
+                      description: "Share link copied to clipboard",
+                    });
+                  }
+                }}
                 variant="ghost"
                 size="icon"
                 className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
