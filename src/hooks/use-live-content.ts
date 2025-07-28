@@ -122,6 +122,7 @@ export function useLiveContent() {
       viewerCount: 1,
       title: 'New Live Stream',
       description: 'Live streaming now!',
+      isUserOwned: true, // Mark as user-owned
       user: {
         id: "current_user",
         username: "current_user",
