@@ -75,7 +75,7 @@ import BattleSetup from "@/components/battles/BattleSetup";
 import LiveBattle from "@/components/battles/LiveBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
-import { LiveStreamCreator } from "@/components/livestream/LiveStreamCreator";
+import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
 import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
 import { cn } from "@/utils/utils";
@@ -254,7 +254,7 @@ const liveStreams: VideoData[] = [
       verified: true,
       followerCount: 892000,
     },
-    description: "🔥 LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
+    description: "��� LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
     music: { title: "Battle Theme", artist: "Epic Beats" },
     stats: { likes: 3240, comments: 890, shares: 234, views: "24.8K watching" },
     hashtags: ["livebattle", "dance", "epic", "compete"],
