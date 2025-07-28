@@ -1,12 +1,12 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useLiveContent, LiveStreamData } from '@/hooks/use-live-content';
+import { useLiveContent, LiveStreamData } from '../hooks/use-live-content';
 
 interface LiveContentContextType {
   liveStreams: LiveStreamData[];
   activeBattles: LiveStreamData[];
   allLiveContent: LiveStreamData[];
-  addLiveStream: (stream: Omit<LiveStreamData, 'id' | 'startedAt' | 'isActive'>) => string;
-  addBattle: (battle: Omit<LiveStreamData, 'id' | 'startedAt' | 'isActive' | 'type'> & { battleData: NonNullable<LiveStreamData['battleData']> }) => string;
+  addLiveStream: (stream: Partial<LiveStreamData>) => string;
+  addBattle: (battle: Partial<LiveStreamData>) => string;
   removeLiveContent: (id: string) => void;
   updateViewerCount: (id: string, count: number) => void;
   getLiveContentById: (id: string) => LiveStreamData | undefined;
