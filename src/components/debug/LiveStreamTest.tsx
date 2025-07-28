@@ -50,6 +50,46 @@ const LiveStreamTest: React.FC = () => {
     }
   };
 
+  if (!liveContentContext) {
+    return (
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-amber-500" />
+            Live Stream Debug (Limited)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded">
+            <p className="text-sm text-amber-800">
+              Live content features require authentication. Only camera test is available.
+            </p>
+          </div>
+
+          <Button
+            onClick={handleTestCamera}
+            className="w-full flex items-center gap-2"
+            variant="outline"
+          >
+            <Video className="w-4 h-4" />
+            Test Camera Access
+          </Button>
+
+          <Button
+            onClick={handleTestStream}
+            className="w-full flex items-center gap-2"
+            disabled
+          >
+            <Radio className="w-4 h-4" />
+            Create Test Stream (Requires Auth)
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const { addLiveStream, allLiveContent } = liveContentContext;
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
@@ -68,7 +108,7 @@ const LiveStreamTest: React.FC = () => {
           </p>
         </div>
 
-        <Button 
+        <Button
           onClick={handleTestCamera}
           className="w-full flex items-center gap-2"
           variant="outline"
@@ -77,7 +117,7 @@ const LiveStreamTest: React.FC = () => {
           Test Camera Access
         </Button>
 
-        <Button 
+        <Button
           onClick={handleTestStream}
           className="w-full flex items-center gap-2"
         >
