@@ -481,7 +481,7 @@ export function LiveStreamCreator({
                       <Settings className="h-4 w-4" />
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-md">
+                  <DialogContent className="max-w-md w-[90vw] max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Stream Settings</DialogTitle>
                       <DialogDescription>
