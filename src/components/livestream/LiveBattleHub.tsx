@@ -188,13 +188,13 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
   const [isMuted, setIsMuted] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isPlaying, setIsPlaying] = useState(isActive);
-  const [localViewerCount, setLocalViewerCount] = useState(content.viewerCount || 127);
-  const [localLikes, setLocalLikes] = useState(Math.floor((content.viewerCount || 127) * 0.8));
+  const [localViewerCount, setLocalViewerCount] = useState(content?.viewerCount || 127);
+  const [localLikes, setLocalLikes] = useState(Math.floor((content?.viewerCount || 127) * 0.8));
   const [streamDuration, setStreamDuration] = useState(0);
   const [showFullscreen, setShowFullscreen] = useState(false);
 
   // Mode and participants
-  const [streamMode, setStreamMode] = useState<'livestream' | 'battle'>(content.type === 'battle' ? 'battle' : 'livestream');
+  const [streamMode, setStreamMode] = useState<'livestream' | 'battle'>(content?.type === 'battle' ? 'battle' : 'livestream');
   const [participants, setParticipants] = useState<LiveParticipant[]>(getMockParticipants(content));
   const [maxParticipants] = useState(6);
 
