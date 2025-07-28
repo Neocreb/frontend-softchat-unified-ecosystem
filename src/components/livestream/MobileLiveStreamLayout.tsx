@@ -533,6 +533,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
             {/* Action Buttons */}
             <div className="flex items-center gap-1">
               <Button
+                onClick={() => setShowQuickReactions(!showQuickReactions)}
                 variant="ghost"
                 size="icon"
                 className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
