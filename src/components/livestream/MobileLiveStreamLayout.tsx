@@ -616,15 +616,36 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
                 <Coins className="w-5 h-5" />
               </Button>
 
-              <Button
-                onClick={() => setShowGifts(!showGifts)}
-                variant="ghost"
-                size="icon"
-                className="text-pink-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
-                title="Gift"
-              >
-                <Gift className="w-5 h-5" />
-              </Button>
+              <VirtualGiftsAndTips
+                recipientId={content.user.id}
+                recipientName={content.type === 'battle' ? "Battle Creators" : content.user.displayName}
+                contentId={content.id}
+                recipientType={content.type === 'battle' ? "battle" : "livestream"}
+                battleData={content.type === 'battle' && content.battleData ? {
+                  creator1: {
+                    id: content.user.id,
+                    username: content.user.username,
+                    displayName: content.user.displayName,
+                    avatar: content.user.avatar,
+                  },
+                  creator2: {
+                    id: content.battleData.opponent?.id || 'opponent',
+                    username: content.battleData.opponent?.username || 'opponent',
+                    displayName: content.battleData.opponent?.displayName || 'Opponent',
+                    avatar: content.battleData.opponent?.avatar || '',
+                  }
+                } : undefined}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-pink-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                    title="Gift"
+                  >
+                    <Gift className="w-5 h-5" />
+                  </Button>
+                }
+              />
 
               <Button
                 onClick={() => {
