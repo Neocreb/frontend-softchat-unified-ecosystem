@@ -183,7 +183,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
 
   // Mode and participants
   const [streamMode, setStreamMode] = useState<'livestream' | 'battle'>(content.type === 'battle' ? 'battle' : 'livestream');
-  const [participants, setParticipants] = useState<LiveParticipant[]>(mockParticipants);
+  const [participants, setParticipants] = useState<LiveParticipant[]>(getMockParticipants(content));
   const [maxParticipants] = useState(6);
 
   // Chat and interactions
