@@ -906,35 +906,22 @@ const EnhancedTikTokVideos: React.FC = () => {
           <TabsContent value="live" className="h-full mt-0">
             {allLiveContent.length > 0 ? (
               allLiveContent.map((liveContent, index) => {
-                // Use LiveStreamingCard for user-owned streams, VideoCard for others
-                if (liveContent.isUserOwned) {
-                  return (
-                    <LiveStreamingCard
-                      key={liveContent.id}
-                      content={liveContent}
-                      isActive={index === currentVideoIndex && activeTab === "live"}
-                      isUserOwned={true}
-                      onEndStream={() => {
-                        removeLiveContent(liveContent.id);
-                        toast({
-                          title: "Stream Ended",
-                          description: "Your live stream has been ended",
-                        });
-                      }}
-                    />
-                  );
-                } else {
-                  const video = liveContentToVideoData(liveContent);
-                  return (
-                    <VideoCard
-                      key={video.id}
-                      video={video}
-                      isActive={index === currentVideoIndex && activeTab === "live"}
-                      showControls={showControls}
-                      onDuetCreate={handleDuetCreate}
-                    />
-                  );
-                }
+                // Use FullScreenLiveStream for all live content for TikTok-style experience
+                return (
+                  <FullScreenLiveStream
+                    key={liveContent.id}
+                    content={liveContent}
+                    isActive={index === currentVideoIndex && activeTab === "live"}
+                    isUserOwned={liveContent.isUserOwned}
+                    onEndStream={() => {
+                      removeLiveContent(liveContent.id);
+                      toast({
+                        title: "Stream Ended",
+                        description: "Your live stream has been ended",
+                      });
+                    }}
+                  />
+                );
               })
             ) : (
               <div className="h-screen flex items-center justify-center">
@@ -942,6 +929,23 @@ const EnhancedTikTokVideos: React.FC = () => {
                   <Radio className="w-12 h-12 mx-auto mb-4 text-red-500" />
                   <p className="text-lg font-medium mb-2">No live content right now</p>
                   <p className="text-sm">Start a live stream or battle to see content here!</p>
+                  <div className="mt-4">
+                    <Button
+                      onClick={() => setIsLiveStreamOpen(true)}
+                      className="bg-red-500 hover:bg-red-600 text-white mr-2"
+                    >
+                      <Radio className="w-4 h-4 mr-2" />
+                      Go Live
+                    </Button>
+                    <Button
+                      onClick={() => setShowBattleSetup(true)}
+                      variant="outline"
+                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                    >
+                      <Target className="w-4 h-4 mr-2" />
+                      Start Battle
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
