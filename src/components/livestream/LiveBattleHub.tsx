@@ -758,13 +758,20 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
 
       {/* Top right info */}
       <div className="absolute top-4 right-4 z-40 flex items-center gap-2">
+        {/* Live viewer count */}
         <div className="bg-black/50 rounded-full px-3 py-1 backdrop-blur-sm">
           <div className="flex items-center text-white text-sm">
             <Users className="w-4 h-4 mr-1" />
             <span>{formatNumber(localViewerCount)}</span>
           </div>
         </div>
-        
+
+        {/* Explore tag */}
+        <Badge className="bg-blue-500/20 text-blue-400 border-0">
+          <Globe className="w-3 h-3 mr-1" />
+          🧭 Explore
+        </Badge>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20 rounded-full">
@@ -779,6 +786,10 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
             <DropdownMenuItem className="text-white">
               <Flag className="w-4 h-4 mr-2" />
               Report
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-white">
+              <Settings className="w-4 h-4 mr-2" />
+              Stream Settings
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
