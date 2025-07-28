@@ -259,10 +259,36 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
 
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
-    
+
     toast({
       title: isFollowing ? 'Unfollowed' : 'Following!',
       description: `@${content.user.username}`,
+    });
+  };
+
+  const handleQuickReaction = (emoji: string) => {
+    if (!user) return;
+
+    const reactionMessage: LiveChatMessage = {
+      id: `reaction-${Date.now()}`,
+      user: {
+        id: user.id,
+        username: user.username || 'user',
+        displayName: user.name || 'User',
+        avatar: user.avatar || '',
+        verified: false,
+        tier: 'bronze',
+      },
+      message: emoji,
+      timestamp: new Date(),
+      type: 'reaction',
+    };
+
+    setChatMessages(prev => [...prev.slice(-10), reactionMessage]);
+
+    toast({
+      title: `Reaction sent! ${emoji}`,
+      description: "Your reaction was added to the live chat",
     });
   };
 
