@@ -171,6 +171,18 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
   const { user } = useAuth();
   const { toast } = useToast();
 
+  // Return early if no content provided
+  if (!content) {
+    return (
+      <div className="relative h-screen w-full bg-black flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="text-xl mb-2">No live content available</div>
+          <div className="text-gray-400">Please try again later</div>
+        </div>
+      </div>
+    );
+  }
+
   // Stream state
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
