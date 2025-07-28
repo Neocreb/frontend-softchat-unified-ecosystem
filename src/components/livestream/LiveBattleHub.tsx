@@ -579,7 +579,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
         {/* Co-hosts grid overlay */}
         {participants.length > 1 && (
           <div className="absolute top-4 right-4 grid grid-cols-2 gap-2 max-w-xs">
-            {participants.slice(1, 6).map((participant, index) => (
+            {(participants || []).slice(1, 6).map((participant, index) => (
               <div
                 key={participant.id}
                 className="relative w-20 h-28 bg-gray-800 rounded-lg overflow-hidden border-2 border-white/20"
@@ -693,7 +693,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
           participants.length <= 4 ? "grid-cols-2 grid-rows-2" :
           "grid-cols-3 grid-rows-2"
         )}>
-          {participants.slice(0, 6).map((participant, index) => (
+          {(participants || []).slice(0, 6).map((participant, index) => (
             <div
               key={participant.id}
               className="relative bg-gray-800 overflow-hidden"
@@ -1307,7 +1307,7 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
               <div className="mt-4">
                 <div className="text-white text-sm mb-2">Send to participant:</div>
                 <div className="grid grid-cols-2 gap-2">
-                  {participants.slice(0, 2).map((participant) => (
+                  {(participants || []).slice(0, 2).map((participant) => (
                     <Button
                       key={participant.id}
                       variant="outline"
