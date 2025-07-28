@@ -512,7 +512,7 @@ const VideoCard: React.FC<{
         </div>
 
         {/* Right side - Interactive Features */}
-        <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-28 md:pb-8">
+        <div className="flex flex-col items-center justify-end gap-3 md:gap-4 p-2 md:p-4 pb-36 md:pb-8">
           <InteractiveFeatures
             videoId={video.id}
             isLiveStream={video.isLiveStream}
