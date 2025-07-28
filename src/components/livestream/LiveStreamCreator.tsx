@@ -580,6 +580,7 @@ export function LiveStreamCreator({
                   onChange={(e) => setStreamTitle(e.target.value)}
                   placeholder="What's your stream about?"
                   maxLength={100}
+                  className="min-h-[44px] text-base"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   {streamTitle.length}/100
