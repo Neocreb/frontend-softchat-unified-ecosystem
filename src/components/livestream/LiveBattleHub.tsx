@@ -1017,6 +1017,60 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
         </div>
       )}
 
+      {/* Bottom Horizontal Navigation Row */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-40 flex items-center gap-3 bg-black/70 backdrop-blur-sm rounded-full px-6 py-3 border border-gray-600">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowChatOverlay(!showChatOverlay)}
+          className="text-white hover:bg-white/20 flex items-center gap-1"
+        >
+          <MessageCircle className="w-4 h-4" />
+          <span className="text-xs">Message</span>
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowQuickReactions(!showQuickReactions)}
+          className="text-white hover:bg-white/20 flex items-center gap-1"
+        >
+          <Smile className="w-4 h-4" />
+          <span className="text-xs">Emoji</span>
+        </Button>
+
+        {isUserOwned && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowInviteGuest(true)}
+            className="text-white hover:bg-white/20 flex items-center gap-1"
+          >
+            <UserPlus className="w-4 h-4" />
+            <span className="text-xs">Invite Guest</span>
+          </Button>
+        )}
+
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-white hover:bg-white/20 flex items-center gap-1"
+        >
+          <Share2 className="w-4 h-4" />
+          <span className="text-xs">Share</span>
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowGifts(true)}
+          className="text-yellow-400 hover:bg-yellow-400/20 flex items-center gap-1"
+        >
+          <Gift className="w-4 h-4" />
+          <span className="text-xs">💱 Recharge</span>
+        </Button>
+      </div>
+
       {/* Mobile chat overlay */}
       {showChatOverlay && (
         <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-sm z-50 border-t border-gray-600 md:hidden">
