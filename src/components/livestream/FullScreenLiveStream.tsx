@@ -914,6 +914,52 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
         </div>
       </div>
 
+      {/* Battle Voting Modal */}
+      {showVoting && content.type === 'battle' && content.battleData && (
+        <Dialog open={showVoting} onOpenChange={setShowVoting}>
+          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl z-[110]">
+            <DialogHeader>
+              <DialogTitle className="text-lg font-semibold">Battle Voting</DialogTitle>
+            </DialogHeader>
+            <div className="max-h-[70vh] overflow-y-auto">
+              <BattleVoting
+                battleId={content.id}
+                creator1={{
+                  id: content.user.id,
+                  username: content.user.username,
+                  displayName: content.user.displayName,
+                  avatar: content.user.avatar,
+                  tier: 'pro_creator' as const,
+                  verified: content.user.verified,
+                  currentScore: content.battleData.scores?.user1 || 0,
+                  winRate: 75,
+                  totalVotes: 145,
+                  isLeading: (content.battleData.scores?.user1 || 0) > (content.battleData.scores?.user2 || 0),
+                }}
+                creator2={{
+                  id: content.battleData.opponent?.id || 'opponent',
+                  username: content.battleData.opponent?.username || 'opponent',
+                  displayName: content.battleData.opponent?.displayName || 'Opponent',
+                  avatar: content.battleData.opponent?.avatar || '',
+                  tier: 'pro_creator' as const,
+                  verified: content.battleData.opponent?.verified || false,
+                  currentScore: content.battleData.scores?.user2 || 0,
+                  winRate: 68,
+                  totalVotes: 89,
+                  isLeading: (content.battleData.scores?.user2 || 0) > (content.battleData.scores?.user1 || 0),
+                }}
+                isLive={content.isActive}
+                timeRemaining={content.battleData.timeRemaining || 300}
+                userBalance={userBalance}
+                onPlaceVote={handlePlaceVote}
+                userVotes={userVotes}
+                votingPool={votingPool}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* Custom CSS for animations */}
       <style jsx>{`
         @keyframes float-up {
