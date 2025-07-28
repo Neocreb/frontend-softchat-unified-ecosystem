@@ -564,7 +564,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  // const { allLiveContent, addLiveStream, addBattle } = useLiveContentContext();
+  const { allLiveContent, addLiveStream, addBattle } = useLiveContentContext();
 
   // Get current videos based on active tab
   const getCurrentVideos = () => {
