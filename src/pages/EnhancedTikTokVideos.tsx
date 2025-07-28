@@ -705,51 +705,42 @@ const EnhancedTikTokVideos: React.FC = () => {
     });
   };
 
-  // const handleCreateBattle = (battleData: {
-  //   title: string;
-  //   description: string;
-  //   type: 'dance' | 'rap' | 'comedy' | 'general';
-  //   opponentId?: string;
-  // }) => {
-  //   const battleId = addBattle({
-  //     user: {
-  //       id: "current_user",
-  //       username: "current_user",
-  //       displayName: "You",
-  //       avatar: "https://i.pravatar.cc/150?img=1",
-  //       verified: false,
-  //       followerCount: 1200,
-  //     },
-  //     title: battleData.title,
-  //     description: battleData.description,
-  //     viewerCount: 1,
-  //     category: battleData.type,
-  //     battleData: {
-  //       type: battleData.type,
-  //       timeRemaining: 300, // 5 minutes
-  //       scores: {
-  //         user1: 0,
-  //         user2: 0,
-  //       },
-  //       opponent: battleData.opponentId ? {
-  //         id: battleData.opponentId,
-  //         username: "opponent",
-  //         displayName: "Opponent",
-  //         avatar: "https://i.pravatar.cc/150?img=5",
-  //       } : undefined,
-  //     },
-  //   });
+  const handleCreateBattle = (battleData: {
+    title: string;
+    description: string;
+    type: 'dance' | 'rap' | 'comedy' | 'general';
+    opponentId?: string;
+  }) => {
+    const battleId = addBattle({
+      title: battleData.title,
+      description: battleData.description,
+      category: battleData.type,
+      battleData: {
+        type: battleData.type,
+        timeRemaining: 300, // 5 minutes
+        scores: {
+          user1: 0,
+          user2: 0,
+        },
+        opponent: battleData.opponentId ? {
+          id: battleData.opponentId,
+          username: "opponent",
+          displayName: "Opponent",
+          avatar: "https://i.pravatar.cc/150?img=5",
+        } : undefined,
+      },
+    });
 
-  //   // Switch to live tab to show the new battle
-  //   setActiveTab("live");
-  //   setCurrentVideoIndex(0);
-  //   setShowBattleSetup(false);
+    // Switch to live tab to show the new battle
+    setActiveTab("live");
+    setCurrentVideoIndex(0);
+    setShowBattleSetup(false);
 
-  //   toast({
-  //     title: "Battle Started! ⚔️",
-  //     description: "Your battle is now live in the Live/Battle tab",
-  //   });
-  // };
+    toast({
+      title: "Battle Started! ⚔️",
+      description: "Your battle is now live in the Live/Battle tab",
+    });
+  };
 
 
 
