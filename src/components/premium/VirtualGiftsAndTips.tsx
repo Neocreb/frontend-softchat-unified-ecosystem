@@ -48,6 +48,21 @@ interface VirtualGiftsAndTipsProps {
   recipientName: string;
   contentId?: string;
   trigger?: React.ReactNode;
+  recipientType?: 'video' | 'livestream' | 'battle';
+  battleData?: {
+    creator1: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+    creator2: {
+      id: string;
+      username: string;
+      displayName: string;
+      avatar: string;
+    };
+  };
 }
 
 const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
