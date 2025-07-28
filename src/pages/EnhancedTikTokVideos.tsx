@@ -548,8 +548,12 @@ const EnhancedTikTokVideos: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">("foryou");
+
+  // Get initial tab from URL params or default to "foryou"
+  const initialTab = searchParams.get('tab') as "live" | "foryou" | "following" || "foryou";
+  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">(initialTab);
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
