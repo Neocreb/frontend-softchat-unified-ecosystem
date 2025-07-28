@@ -134,30 +134,31 @@ const giftTypes: GiftType[] = [
 
 const quickReactions = ['❤️', '🔥', '👏', '😍', '💎', '🚀', '👑', '⭐'];
 
-const mockParticipants: LiveParticipant[] = [
+const getMockParticipants = (content: LiveStreamData): LiveParticipant[] => [
   {
-    id: '1',
-    username: 'host_user',
-    displayName: 'Live Host',
-    avatar: 'https://i.pravatar.cc/150?img=1',
-    verified: true,
+    id: content.user.id,
+    username: content.user.username,
+    displayName: content.user.displayName,
+    avatar: content.user.avatar,
+    verified: content.user.verified,
     role: 'host',
     isHost: true,
     micEnabled: true,
     videoEnabled: true,
     currentScore: 1250,
   },
-  {
-    id: '2',
-    username: 'cohost_user',
-    displayName: 'Co-Host',
-    avatar: 'https://i.pravatar.cc/150?img=2',
+  ...(content.battleData?.opponent ? [{
+    id: content.battleData.opponent.id,
+    username: content.battleData.opponent.username,
+    displayName: content.battleData.opponent.displayName,
+    avatar: content.battleData.opponent.avatar,
     verified: false,
-    role: 'co-host',
+    role: 'guest' as const,
+    isHost: false,
     micEnabled: true,
     videoEnabled: true,
     currentScore: 890,
-  },
+  }] : []),
 ];
 
 export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
