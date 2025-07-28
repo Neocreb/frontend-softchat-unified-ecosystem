@@ -1319,6 +1319,76 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
         </Dialog>
       )}
 
+      {/* Battle Voting Modal - Enhanced */}
+      {showVoting && streamMode === 'battle' && (
+        <Dialog open={showVoting} onOpenChange={setShowVoting}>
+          <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-4xl w-[95vw] max-h-[90vh] z-[110] p-0">
+            <DialogHeader className="p-6 pb-0">
+              <DialogTitle className="text-xl font-bold">⚔️ Battle Voting Arena</DialogTitle>
+            </DialogHeader>
+            <div className="max-h-[80vh] overflow-y-auto p-6">
+              <EnhancedBattleVoting
+                battleId={content?.id || 'battle-1'}
+                creator1={{
+                  id: participants[0]?.id || 'creator1',
+                  username: participants[0]?.username || 'creator1',
+                  displayName: participants[0]?.displayName || 'Creator 1',
+                  avatar: participants[0]?.avatar || 'https://i.pravatar.cc/150?img=1',
+                  tier: 'pro_creator',
+                  verified: participants[0]?.verified || false,
+                  currentScore: participants[0]?.currentScore || 0,
+                  winRate: 75,
+                  totalVotes: 145,
+                  isLeading: (participants[0]?.currentScore || 0) > (participants[1]?.currentScore || 0),
+                }}
+                creator2={{
+                  id: participants[1]?.id || 'creator2',
+                  username: participants[1]?.username || 'creator2',
+                  displayName: participants[1]?.displayName || 'Creator 2',
+                  avatar: participants[1]?.avatar || 'https://i.pravatar.cc/150?img=2',
+                  tier: 'pro_creator',
+                  verified: participants[1]?.verified || false,
+                  currentScore: participants[1]?.currentScore || 0,
+                  winRate: 68,
+                  totalVotes: 89,
+                  isLeading: (participants[1]?.currentScore || 0) > (participants[0]?.currentScore || 0),
+                }}
+                isLive={battlePhase === 'active'}
+                timeRemaining={battleTimeLeft}
+                userBalance={userBalance}
+                onPlaceVote={(vote) => {
+                  // Handle vote placement
+                  setUserVotes(prev => [...prev, {
+                    ...vote,
+                    id: Date.now().toString(),
+                    timestamp: new Date(),
+                    status: 'active',
+                  }]);
+
+                  // Update voting pool
+                  setVotingPool(prev => ({
+                    ...prev,
+                    creator1Total: vote.creatorId === participants[0]?.id ? prev.creator1Total + vote.amount : prev.creator1Total,
+                    creator2Total: vote.creatorId === participants[1]?.id ? prev.creator2Total + vote.amount : prev.creator2Total,
+                    totalPool: prev.totalPool + vote.amount,
+                    totalVoters: prev.totalVoters + 1,
+                  }));
+
+                  toast({
+                    title: "Vote Placed! 🎯",
+                    description: `${vote.amount} SP placed on ${vote.creatorId === participants[0]?.id ? participants[0]?.displayName : participants[1]?.displayName}`,
+                  });
+
+                  setShowVoting(false);
+                }}
+                userVotes={userVotes}
+                votingPool={votingPool}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
       {/* Floating animations CSS */}
       <style jsx>{`
         @keyframes float-up {
@@ -1330,6 +1400,21 @@ export const LiveBattleHub: React.FC<LiveBattleHubProps> = ({
             opacity: 0;
             transform: translateY(-100px) scale(1.5);
           }
+        }
+
+        @keyframes fade-in-up {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fade-in-up 0.5s ease-out forwards;
         }
       `}</style>
     </div>
