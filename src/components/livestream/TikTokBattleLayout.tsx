@@ -248,7 +248,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
           'Amazing battle! 🔥',
           'This is intense! 😱',
           'Who will win? 🏆',
-          'sent a gift! 🎁',
+          'sent a gift! ��',
           'liked the LIVE',
           'Go creator1! 👏',
           'Creator2 for the win! 🚀',
@@ -444,7 +444,25 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
             playsInline
             poster="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400"
           />
-          
+
+          {/* Camera placeholder for user-owned stream */}
+          {isUserOwned && !streamRef.current && (
+            <div className="absolute inset-0 bg-gray-900/90 flex items-center justify-center">
+              <div className="text-center text-white p-6">
+                <Video className="w-16 h-16 mx-auto mb-4 text-blue-400" />
+                <h3 className="text-lg font-semibold mb-2">Your Camera</h3>
+                <p className="text-sm text-white/70 mb-4">Initializing camera for battle...</p>
+                <Button
+                  onClick={() => window.location.reload()}
+                  size="sm"
+                  className="bg-blue-500 hover:bg-blue-600"
+                >
+                  Enable Camera
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Creator 1 Score Overlay */}
           <div className="absolute top-20 left-4 right-4">
             <div className={cn(
