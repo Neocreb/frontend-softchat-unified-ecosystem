@@ -11,9 +11,11 @@ import {
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 const FooterNav = () => {
   const location = useLocation();
+  const { isNavVisible, isVideoPage } = useNavigation();
 
   const navItems = [
     {
