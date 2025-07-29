@@ -340,13 +340,13 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
     return num.toString();
   };
 
-  const handleSendGift = (gift: typeof battleGifts[0], recipient: 'creator1' | 'creator2') => {
+  const handleSendGift = (gift: BattleGift, recipient: 'creator1' | 'creator2') => {
     if (!user) return;
 
-    // Update battle scores
+    // Update battle scores with gift multiplier
     setBattleScores(prev => ({
       ...prev,
-      [recipient]: prev[recipient] + gift.value * 10, // Multiply for battle impact
+      [recipient]: prev[recipient] + gift.multiplier,
     }));
 
     const giftMessage: LiveChatMessage = {
@@ -359,23 +359,23 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
         verified: false,
         tier: 'bronze',
       },
-      message: `sent ${gift.name} to ${recipient === 'creator1' ? content.user.displayName : content.battleData?.opponent?.displayName || 'Creator 2'}`,
+      message: `sent ${gift.name} ${gift.emoji} to ${recipient === 'creator1' ? content.user.displayName : content.battleData?.opponent?.displayName || 'Creator 2'}`,
       timestamp: new Date(),
       type: 'gift',
       giftInfo: {
         giftType: gift.id,
         value: gift.value,
-        animation: 'sparkle',
+        animation: gift.animation || 'sparkle',
         recipient,
       },
     };
 
     setChatMessages(prev => [...prev.slice(-15), giftMessage]);
     setShowGifts(false);
-    
+
     toast({
       title: `${gift.name} sent! 🎁`,
-      description: `+${gift.value * 10} points for ${recipient === 'creator1' ? 'Creator 1' : 'Creator 2'}`,
+      description: `+${gift.multiplier.toLocaleString()} battle points for ${recipient === 'creator1' ? 'Creator 1' : 'Creator 2'}`,
     });
   };
 
@@ -406,7 +406,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
     }));
 
     toast({
-      title: "Support sent! ����",
+      title: "Support sent! 💪",
       description: `+1000 points for ${recipient === 'creator1' ? 'Creator 1' : 'Creator 2'}`,
     });
   };
