@@ -25,7 +25,7 @@ import {
   MicOff
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { requestCameraAccess, stopCameraStream, CameraError } from '@/utils/cameraPermissions';
+import { requestCameraPermission, stopCameraStream, CameraError } from '@/utils/cameraPermissions';
 import CameraPermissionDialog from '@/components/ui/camera-permission-dialog';
 
 interface VideoSegment {
