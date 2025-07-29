@@ -726,7 +726,21 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
           </Button>
           
           <Button
-            onClick={onEndStream}
+            onClick={() => {
+              if (streamRef.current) {
+                streamRef.current.getTracks().forEach(track => {
+                  track.stop();
+                });
+                streamRef.current = null;
+              }
+
+              toast({
+                title: "Stream Ended",
+                description: "Your live stream has been ended successfully",
+              });
+
+              onEndStream?.();
+            }}
             size="icon"
             className="rounded-full bg-red-600 hover:bg-red-700"
           >
