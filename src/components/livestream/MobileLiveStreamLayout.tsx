@@ -140,6 +140,13 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   const [showGifts, setShowGifts] = useState(false);
   const [showVoting, setShowVoting] = useState(false);
   const [showQuickReactions, setShowQuickReactions] = useState(false);
+
+  // Stream controls for owner
+  const [videoEnabled, setVideoEnabled] = useState(true);
+  const [audioEnabled, setAudioEnabled] = useState(true);
+  const [guestRequests, setGuestRequests] = useState<any[]>([]);
+  const [showGuestRequests, setShowGuestRequests] = useState(false);
+  const [showStreamControls, setShowStreamControls] = useState(false);
   
   // Battle voting state
   const [userBalance] = useState(2500);
