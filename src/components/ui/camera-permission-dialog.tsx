@@ -17,7 +17,7 @@ import {
   CheckCircle2,
   X,
 } from "lucide-react";
-import { CameraError, getCameraPermissionInstructions } from "@/utils/cameraPermissions";
+import { getPermissionHelp } from "@/utils/cameraPermissions";
 
 interface CameraPermissionDialogProps {
   open: boolean;
