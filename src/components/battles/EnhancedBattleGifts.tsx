@@ -27,6 +27,7 @@ import {
   Shield,
   Hammer,
   X,
+  Coins,
 } from 'lucide-react';
 
 export interface BattleGift {
