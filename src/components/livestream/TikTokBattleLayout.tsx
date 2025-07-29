@@ -290,29 +290,48 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
   useEffect(() => {
     if (isUserOwned && isActive && creator1VideoRef.current) {
       const initializeCamera = async () => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: { 
-              width: { ideal: 720 },
-              height: { ideal: 1280 },
-              facingMode: 'user'
-            },
-            audio: true
-          });
-          
-          if (creator1VideoRef.current) {
-            creator1VideoRef.current.srcObject = stream;
-            creator1VideoRef.current.muted = true;
-            streamRef.current = stream;
-            
-            creator1VideoRef.current.play().catch(console.error);
-          }
-        } catch (error) {
-          console.error('Camera access failed:', error);
+        // Import the camera manager
+        const { requestCameraPermission, getPermissionHelp } = await import('../../utils/cameraPermissions');
+
+        const result = await requestCameraPermission({
+          video: {
+            width: { ideal: 720 },
+            height: { ideal: 1280 },
+            facingMode: 'user'
+          },
+          audio: true,
+          fallbackToAudioOnly: false,
+        });
+
+        if (result.success && result.stream && creator1VideoRef.current) {
+          creator1VideoRef.current.srcObject = result.stream;
+          creator1VideoRef.current.muted = true;
+          streamRef.current = result.stream;
+
+          creator1VideoRef.current.play().catch(console.error);
+
           toast({
-            title: "Camera Access Failed",
-            description: "Please allow camera access for battle streaming",
+            title: "Battle Ready! ⚔️",
+            description: "Camera and microphone connected successfully",
+          });
+        } else {
+          toast({
+            title: "Camera Access Required 📹",
+            description: result.error || "Please enable camera access to start battle streaming",
             variant: "destructive",
+            action: result.error?.includes('denied') ? (
+              <div className="mt-2">
+                <p className="text-xs text-white/80 whitespace-pre-line">
+                  {getPermissionHelp()}
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="mt-2 text-xs underline text-blue-400 hover:text-blue-300"
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : undefined,
           });
         }
       };
