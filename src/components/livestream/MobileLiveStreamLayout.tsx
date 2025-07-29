@@ -371,6 +371,62 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   };
 
   // Handle placing a vote in battle
+  // Stream control functions
+  const toggleVideo = () => {
+    if (streamRef.current) {
+      const videoTrack = streamRef.current.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.enabled = !videoEnabled;
+        setVideoEnabled(!videoEnabled);
+
+        toast({
+          title: videoEnabled ? "Camera Off" : "Camera On",
+          description: videoEnabled ? "Your camera is now disabled" : "Your camera is now enabled",
+        });
+      }
+    }
+  };
+
+  const toggleAudio = () => {
+    if (streamRef.current) {
+      const audioTrack = streamRef.current.getAudioTracks()[0];
+      if (audioTrack) {
+        audioTrack.enabled = !audioEnabled;
+        setAudioEnabled(!audioEnabled);
+
+        toast({
+          title: audioEnabled ? "Mic Muted" : "Mic Unmuted",
+          description: audioEnabled ? "Your microphone is now muted" : "Your microphone is now unmuted",
+        });
+      }
+    }
+  };
+
+  const handleEndStream = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => {
+        track.stop();
+      });
+      streamRef.current = null;
+    }
+
+    toast({
+      title: "Stream Ended",
+      description: "Your live stream has been ended successfully",
+    });
+
+    onEndStream?.();
+  };
+
+  const handleApproveGuest = (guestId: string) => {
+    toast({
+      title: "Guest Approved! 👥",
+      description: "Guest has been invited to join your stream",
+    });
+
+    setGuestRequests(prev => prev.filter(g => g.id !== guestId));
+  };
+
   const handlePlaceVote = (vote: any) => {
     if (userVotes.length > 0) {
       toast({
