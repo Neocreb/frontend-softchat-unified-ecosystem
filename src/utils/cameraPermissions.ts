@@ -262,3 +262,25 @@ export function createCameraError(errorName: string, errorMessage: string): Came
     userAction: 'Please check your camera settings and try again.'
   };
 }
+
+export function isCameraSupported(): boolean {
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+}
+
+export async function switchCamera(
+  currentStream: MediaStream | null,
+  facingMode: 'user' | 'environment',
+  audioEnabled: boolean = true
+): Promise<CameraPermissionResult> {
+  // Stop current stream
+  if (currentStream) {
+    currentStream.getTracks().forEach(track => track.stop());
+  }
+
+  // Request new stream with different camera
+  return requestCameraPermission({
+    video: { facingMode },
+    audio: audioEnabled,
+    fallbackToAudioOnly: false,
+  });
+}
