@@ -735,23 +735,23 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1 flex-shrink-0">
               <Button
                 onClick={() => setShowGifts(!showGifts)}
                 variant="ghost"
                 size="icon"
-                className="text-pink-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                className="text-pink-400 hover:bg-white/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 backdrop-blur-sm"
               >
-                <Gift className="w-5 h-5" />
+                <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
 
               <Button
                 onClick={() => setShowQuickReactions(!showQuickReactions)}
                 variant="ghost"
                 size="icon"
-                className="text-yellow-400 hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                className="text-yellow-400 hover:bg-white/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 backdrop-blur-sm"
               >
-                <Smile className="w-5 h-5" />
+                <Smile className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
 
               <Button
