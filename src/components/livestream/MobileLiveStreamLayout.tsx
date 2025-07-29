@@ -515,7 +515,7 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
                 </div>
               </div>
             </div>
-            {!isUserOwned && (
+            {!isUserOwned ? (
               <Button
                 onClick={handleFollow}
                 size="sm"
@@ -525,6 +525,15 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
                 )}
               >
                 {isFollowing ? "Following" : "+ Follow"}
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setShowStreamControls(!showStreamControls)}
+                size="sm"
+                className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-3 rounded-full"
+              >
+                <Settings className="w-4 h-4 mr-1" />
+                Controls
               </Button>
             )}
           </div>
