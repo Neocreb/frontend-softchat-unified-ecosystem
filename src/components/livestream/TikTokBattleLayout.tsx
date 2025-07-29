@@ -47,6 +47,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import BattleVoting from '../voting/BattleVoting';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import VirtualGiftsAndTips from '../premium/VirtualGiftsAndTips';
+import EnhancedBattleGifts, { BattleGift } from '../battles/EnhancedBattleGifts';
 
 interface LiveChatMessage {
   id: string;
@@ -405,7 +406,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
     }));
 
     toast({
-      title: "Support sent! 💪",
+      title: "Support sent! ����",
       description: `+1000 points for ${recipient === 'creator1' ? 'Creator 1' : 'Creator 2'}`,
     });
   };
