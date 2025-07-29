@@ -957,6 +957,74 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Guest Requests Modal */}
+      {isUserOwned && showGuestRequests && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="bg-black/90 rounded-lg p-4 max-w-md w-full backdrop-blur-md border border-gray-600">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-semibold flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Guest Requests
+              </h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowGuestRequests(false)}
+                className="text-white hover:bg-white/20 rounded-full w-8 h-8"
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {guestRequests.length === 0 ? (
+              <div className="text-center py-8">
+                <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                <p className="text-white/70">No guest requests at the moment</p>
+                <p className="text-white/50 text-sm mt-1">Users can request to join your live stream</p>
+              </div>
+            ) : (
+              <div className="space-y-3 max-h-60 overflow-y-auto">
+                {guestRequests.map((request) => (
+                  <div key={request.id} className="flex items-center gap-3 p-3 bg-white/10 rounded-lg">
+                    <Avatar className="w-10 h-10">
+                      <AvatarImage src={request.avatar} />
+                      <AvatarFallback>{request.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <p className="text-white font-medium">{request.name}</p>
+                      <p className="text-white/70 text-sm">@{request.username}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => handleApproveGuest(request.id)}
+                        size="sm"
+                        className="bg-green-500 hover:bg-green-600 text-white"
+                      >
+                        Approve
+                      </Button>
+                      <Button
+                        onClick={() => setGuestRequests(prev => prev.filter(g => g.id !== request.id))}
+                        variant="outline"
+                        size="sm"
+                        className="text-white border-white hover:bg-white hover:text-black"
+                      >
+                        Decline
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-4 pt-3 border-t border-gray-600">
+              <p className="text-white/70 text-xs text-center">
+                You can approve up to 3 guests to join your live stream
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
