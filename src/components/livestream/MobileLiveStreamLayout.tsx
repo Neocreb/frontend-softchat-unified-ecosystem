@@ -474,9 +474,10 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
         autoPlay
-        muted
+        muted={!isUserOwned}
         playsInline
-        poster={`https://images.unsplash.com/photo-${content.type === 'battle' ? '1571019613454-1cb2f99b2d8b' : '1639762681485-074b7f938ba0'}?w=800`}
+        loop={!isUserOwned}
+        poster={isUserOwned ? undefined : `https://images.unsplash.com/photo-${content.type === 'battle' ? '1571019613454-1cb2f99b2d8b' : '1639762681485-074b7f938ba0'}?w=800`}
         onClick={togglePlayPause}
       />
 
