@@ -20,6 +20,12 @@ import {
   Eye,
   Coins,
   DollarSign,
+  Video,
+  VideoOff,
+  Mic,
+  MicOff,
+  Settings,
+  Square,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
