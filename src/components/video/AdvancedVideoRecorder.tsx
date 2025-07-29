@@ -43,7 +43,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { requestCameraAccess, stopCameraStream, switchCamera, CameraError } from "@/utils/cameraPermissions";
+import { requestCameraPermission, stopCameraStream, CameraError } from "@/utils/cameraPermissions";
 import CameraPermissionDialog from "@/components/ui/camera-permission-dialog";
 
 interface VideoSegment {
