@@ -1,3 +1,9 @@
+export interface CameraError {
+  type: 'permission-denied' | 'not-found' | 'not-readable' | 'unknown';
+  message: string;
+  userAction: string;
+}
+
 export interface CameraPermissionResult {
   success: boolean;
   stream?: MediaStream;
