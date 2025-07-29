@@ -19,6 +19,12 @@ import {
 } from "lucide-react";
 import { getPermissionHelp } from "@/utils/cameraPermissions";
 
+interface CameraError {
+  type: 'permission-denied' | 'not-found' | 'not-readable' | 'unknown';
+  message: string;
+  userAction: string;
+}
+
 interface CameraPermissionDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -34,7 +40,19 @@ export const CameraPermissionDialog: React.FC<CameraPermissionDialogProps> = ({
   onRetry,
   onCancel,
 }) => {
-  const instructions = getCameraPermissionInstructions();
+  const instructionsText = getPermissionHelp();
+
+  // Parse the instructions text into structured format
+  const instructions = {
+    title: "Enable Camera Permissions",
+    steps: instructionsText.split('\n').map(line => line.replace(/^\d+\.\s*/, '')),
+    troubleshooting: [
+      "Try refreshing the page after enabling permissions",
+      "Check if another app is using your camera",
+      "Make sure you're on a secure (HTTPS) connection",
+      "Try using a different browser if the issue persists"
+    ]
+  };
 
   const getErrorIcon = () => {
     if (!error) return <Camera className="w-6 h-6 text-blue-500" />;
