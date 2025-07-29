@@ -737,56 +737,18 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
         <div className="h-16 bg-black/50"></div>
       </div>
 
-      {/* Gift Selection Panel */}
+      {/* Enhanced Gift Selection Panel */}
       {showGifts && (
-        <div className="absolute bottom-32 left-4 right-4 z-50 bg-black/90 rounded-2xl p-4 backdrop-blur-md">
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="text-white font-semibold">Send Gift</h4>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowGifts(false)}
-              className="text-white hover:bg-white/20 rounded-full w-8 h-8"
-            >
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
-          
-          {/* Creator Selection */}
-          <div className="flex gap-2 mb-3">
-            <Button
-              onClick={() => setSelectedCreator('creator1')}
-              variant={selectedCreator === 'creator1' ? "default" : "outline"}
-              size="sm"
-              className="flex-1"
-            >
-              {content.user.displayName}
-            </Button>
-            <Button
-              onClick={() => setSelectedCreator('creator2')}
-              variant={selectedCreator === 'creator2' ? "default" : "outline"}
-              size="sm"
-              className="flex-1"
-            >
-              {content.battleData?.opponent?.displayName || 'Creator 2'}
-            </Button>
-          </div>
-          
-          {/* Gift Grid */}
-          <div className="grid grid-cols-3 gap-3 max-h-48 overflow-y-auto">
-            {battleGifts.map((gift) => (
-              <Button
-                key={gift.id}
-                variant="ghost"
-                onClick={() => handleSendGift(gift, selectedCreator)}
-                className="flex flex-col items-center gap-2 p-3 text-white hover:bg-white/10 h-auto"
-              >
-                <span className="text-2xl">{gift.emoji}</span>
-                <span className="text-xs font-medium">{gift.name}</span>
-                <span className={cn("text-xs", gift.color)}>{gift.value}</span>
-              </Button>
-            ))}
-          </div>
+        <div className="absolute bottom-32 left-4 right-4 z-50">
+          <EnhancedBattleGifts
+            onSendGift={handleSendGift}
+            selectedCreator={selectedCreator}
+            onCreatorSelect={setSelectedCreator}
+            creator1Name={content.user.displayName}
+            creator2Name={content.battleData?.opponent?.displayName || 'Creator 2'}
+            userBalance={25000} // Mock user balance
+            onClose={() => setShowGifts(false)}
+          />
         </div>
       )}
 
