@@ -5,6 +5,7 @@ import { Camera, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import {
   requestCameraPermission,
   checkCameraPermissions,
+  isCameraSupported,
   CameraError
 } from '@/utils/cameraPermissions';
 import CameraPermissionDialog from '@/components/ui/camera-permission-dialog';
