@@ -230,3 +230,35 @@ export async function getAvailableCameras() {
 export function getPermissionHelp(): string {
   return cameraManager.getPermissionInstructions();
 }
+
+export function createCameraError(errorName: string, errorMessage: string): CameraError {
+  if (errorName === 'NotAllowedError' || errorMessage.includes('Permission denied')) {
+    return {
+      type: 'permission-denied',
+      message: 'Camera permission denied',
+      userAction: 'Please allow camera access in your browser settings and refresh the page.'
+    };
+  }
+
+  if (errorName === 'NotFoundError') {
+    return {
+      type: 'not-found',
+      message: 'No camera device found',
+      userAction: 'Please connect a camera device and try again.'
+    };
+  }
+
+  if (errorName === 'NotReadableError') {
+    return {
+      type: 'not-readable',
+      message: 'Camera is being used by another application',
+      userAction: 'Please close other apps using your camera and try again.'
+    };
+  }
+
+  return {
+    type: 'unknown',
+    message: errorMessage || 'Unknown camera error',
+    userAction: 'Please check your camera settings and try again.'
+  };
+}
