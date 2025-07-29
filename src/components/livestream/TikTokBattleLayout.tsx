@@ -643,10 +643,20 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
               {formatNumber(battleScores.creator2)}
             </span>
           </div>
-          <Progress 
-            value={getBattleProgress()} 
+          <Progress
+            value={getBattleProgress()}
             className="h-2 bg-gray-600"
           />
+          <div className="flex items-center justify-center mt-3">
+            <Button
+              onClick={() => setShowVoting(true)}
+              size="sm"
+              className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 rounded-full flex items-center gap-2"
+            >
+              <DollarSign className="w-4 h-4" />
+              Vote Now
+            </Button>
+          </div>
         </div>
       </div>
 
