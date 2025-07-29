@@ -630,6 +630,70 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
         </div>
       )}
 
+      {/* Stream Owner Controls Panel */}
+      {isUserOwned && showStreamControls && (
+        <div className="absolute top-32 left-4 right-4 z-40 bg-black/80 rounded-lg p-4 backdrop-blur-md">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-white font-semibold flex items-center gap-2">
+              <Radio className="w-4 h-4" />
+              Stream Controls
+            </h4>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowStreamControls(false)}
+              className="text-white hover:bg-white/20 rounded-full w-8 h-8"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <Button
+              onClick={toggleVideo}
+              variant={videoEnabled ? "secondary" : "destructive"}
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              {videoEnabled ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
+              {videoEnabled ? "Camera On" : "Camera Off"}
+            </Button>
+
+            <Button
+              onClick={toggleAudio}
+              variant={audioEnabled ? "secondary" : "destructive"}
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              {audioEnabled ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4" />}
+              {audioEnabled ? "Mic On" : "Mic Off"}
+            </Button>
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              onClick={() => setShowGuestRequests(true)}
+              variant="outline"
+              size="sm"
+              className="flex-1 text-white border-white hover:bg-white hover:text-black"
+            >
+              <UserPlus className="w-4 h-4 mr-1" />
+              Guest Requests {guestRequests.length > 0 && `(${guestRequests.length})`}
+            </Button>
+
+            <Button
+              onClick={handleEndStream}
+              variant="destructive"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <Square className="w-4 h-4" />
+              End Stream
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Live Chat Messages Overlay */}
       <div className="absolute left-4 bottom-36 right-20 z-30 space-y-2">
         {chatMessages.slice(-4).map((msg, index) => (
