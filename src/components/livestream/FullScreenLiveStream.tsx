@@ -670,21 +670,47 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
       {isUserOwned && (
         <div className="absolute bottom-28 left-4 z-30 flex gap-2">
           <Button
-            onClick={() => setVideoEnabled(!videoEnabled)}
+            onClick={() => {
+              if (streamRef.current) {
+                const videoTrack = streamRef.current.getVideoTracks()[0];
+                if (videoTrack) {
+                  videoTrack.enabled = !videoEnabled;
+                  setVideoEnabled(!videoEnabled);
+
+                  toast({
+                    title: videoEnabled ? "Camera Off" : "Camera On",
+                    description: videoEnabled ? "Your camera is now disabled" : "Your camera is now enabled",
+                  });
+                }
+              }
+            }}
             size="icon"
             className={cn(
-              "rounded-full",
+              "rounded-full bg-white/20 hover:bg-white/30 text-white",
               !videoEnabled && "bg-red-500 hover:bg-red-600"
             )}
           >
             {videoEnabled ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
           </Button>
-          
+
           <Button
-            onClick={() => setAudioEnabled(!audioEnabled)}
+            onClick={() => {
+              if (streamRef.current) {
+                const audioTrack = streamRef.current.getAudioTracks()[0];
+                if (audioTrack) {
+                  audioTrack.enabled = !audioEnabled;
+                  setAudioEnabled(!audioEnabled);
+
+                  toast({
+                    title: audioEnabled ? "Mic Muted" : "Mic Unmuted",
+                    description: audioEnabled ? "Your microphone is now muted" : "Your microphone is now unmuted",
+                  });
+                }
+              }
+            }}
             size="icon"
             className={cn(
-              "rounded-full",
+              "rounded-full bg-white/20 hover:bg-white/30 text-white",
               !audioEnabled && "bg-red-500 hover:bg-red-600"
             )}
           >
