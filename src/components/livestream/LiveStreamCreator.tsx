@@ -114,24 +114,42 @@ export function LiveStreamCreator({
   }, [isStreaming]);
 
   const startPreview = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: videoEnabled,
-        audio: audioEnabled,
-      });
+    // Import the camera manager
+    const { requestCameraPermission, getPermissionHelp } = await import('../../utils/cameraPermissions');
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        streamRef.current = stream;
-        setIsPreviewing(true);
-      }
-    } catch (error) {
-      console.error("Error accessing media devices:", error);
+    const result = await requestCameraPermission({
+      video: videoEnabled,
+      audio: audioEnabled,
+      fallbackToAudioOnly: true,
+    });
+
+    if (result.success && result.stream && videoRef.current) {
+      videoRef.current.srcObject = result.stream;
+      streamRef.current = result.stream;
+      setIsPreviewing(true);
+
       toast({
-        title: "Camera/Microphone Error",
-        description:
-          "Please allow camera and microphone access to start streaming.",
+        title: "Preview Ready! 👀",
+        description: "Camera preview is now active",
+      });
+    } else {
+      toast({
+        title: "Camera Access Required 📹",
+        description: result.error || "Please enable camera and microphone access to start streaming",
         variant: "destructive",
+        action: result.error?.includes('denied') ? (
+          <div className="mt-2">
+            <p className="text-xs text-white/80 whitespace-pre-line">
+              {getPermissionHelp()}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-2 text-xs underline text-blue-400 hover:text-blue-300"
+            >
+              Refresh & Try Again
+            </button>
+          </div>
+        ) : undefined,
       });
     }
   };
