@@ -780,8 +780,8 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
           </div>
         </div>
 
-        {/* Bottom navigation area */}
-        <div className="h-16 bg-black/50"></div>
+        {/* Bottom safe area for mobile */}
+        <div className="h-12 sm:h-16 bg-black/50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}></div>
       </div>
 
       {/* Enhanced Gift Selection Panel */}
