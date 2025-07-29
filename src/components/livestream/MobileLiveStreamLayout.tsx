@@ -122,7 +122,7 @@ const mockChatMessages: LiveChatMessage[] = [
   },
 ];
 
-const quickReactions = ['❤️', '😂', '😮', '���', '��', '💎', '🚀', '👑'];
+const quickReactions = ['❤️', '😂', '😮', '�����', '��', '💎', '🚀', '👑'];
 
 export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   content,
@@ -185,32 +185,51 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   useEffect(() => {
     if (isUserOwned && isActive && content.isActive) {
       const initializeCamera = async () => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-              width: { ideal: 1280 },
-              height: { ideal: 720 },
-              facingMode: 'user'
-            },
-            audio: true
+        // Import the camera manager
+        const { requestCameraPermission, getPermissionHelp } = await import('../../utils/cameraPermissions');
+
+        const result = await requestCameraPermission({
+          video: {
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+            facingMode: 'user'
+          },
+          audio: true,
+          fallbackToAudioOnly: false,
+        });
+
+        if (result.success && result.stream && videoRef.current) {
+          videoRef.current.srcObject = result.stream;
+          videoRef.current.muted = true; // Prevent echo
+          streamRef.current = result.stream;
+
+          // Auto-play with error handling
+          videoRef.current.play().catch(error => {
+            console.error('Video play failed:', error);
           });
 
-          if (videoRef.current) {
-            videoRef.current.srcObject = stream;
-            videoRef.current.muted = true; // Prevent echo
-            streamRef.current = stream;
-
-            // Auto-play with error handling
-            videoRef.current.play().catch(error => {
-              console.error('Video play failed:', error);
-            });
-          }
-        } catch (error) {
-          console.error('Camera access failed:', error);
           toast({
-            title: "Camera Access Failed",
-            description: "Please allow camera access to stream",
+            title: "Live Stream Ready! 🔴",
+            description: "Camera and microphone connected successfully",
+          });
+        } else {
+          toast({
+            title: "Camera Permission Required 📹",
+            description: result.error || "Please enable camera access to start live streaming",
             variant: "destructive",
+            action: result.error?.includes('denied') ? (
+              <div className="mt-2">
+                <p className="text-xs text-white/80 whitespace-pre-line">
+                  {getPermissionHelp()}
+                </p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="mt-2 text-xs underline text-blue-400 hover:text-blue-300"
+                >
+                  Refresh & Try Again
+                </button>
+              </div>
+            ) : undefined,
           });
         }
       };
