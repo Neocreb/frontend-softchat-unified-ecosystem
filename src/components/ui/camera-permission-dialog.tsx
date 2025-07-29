@@ -17,13 +17,7 @@ import {
   CheckCircle2,
   X,
 } from "lucide-react";
-import { getPermissionHelp } from "@/utils/cameraPermissions";
-
-interface CameraError {
-  type: 'permission-denied' | 'not-found' | 'not-readable' | 'unknown';
-  message: string;
-  userAction: string;
-}
+import { getPermissionHelp, CameraError } from "@/utils/cameraPermissions";
 
 interface CameraPermissionDialogProps {
   open: boolean;
