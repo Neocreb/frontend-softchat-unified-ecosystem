@@ -250,21 +250,58 @@ export const FullScreenLiveStream: React.FC<FullScreenLiveStreamProps> = ({
     return () => clearInterval(interval);
   }, [isActive, content.isActive]);
 
+  const streamRef = useRef<MediaStream | null>(null);
+
   // Start camera if user owns this stream
   useEffect(() => {
     if (isUserOwned && isActive && videoRef.current) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then(stream => {
+      const initializeCamera = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: 'user'
+            },
+            audio: true
+          });
+
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
-            videoRef.current.play().catch(console.error);
+            videoRef.current.muted = true; // Prevent echo
+            streamRef.current = stream;
+
+            // Auto-play with error handling
+            videoRef.current.play().catch(error => {
+              console.error('Video play failed:', error);
+            });
           }
-        })
-        .catch(error => {
+        } catch (error) {
           console.error('Camera access failed:', error);
-        });
+          toast({
+            title: "Camera Access Failed",
+            description: "Please allow camera and microphone access to stream",
+            variant: "destructive",
+          });
+        }
+      };
+
+      initializeCamera();
     }
-  }, [isUserOwned, isActive]);
+
+    // Cleanup function
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => {
+          track.stop();
+        });
+        streamRef.current = null;
+      }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    };
+  }, [isUserOwned, isActive, toast]);
 
   // Handle reactions animation
   const addReaction = useCallback((emoji: string, x?: number, y?: number) => {
