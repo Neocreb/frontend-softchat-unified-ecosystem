@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Camera, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
-import { 
-  requestCameraAccess, 
-  checkCameraPermissions, 
-  isCameraSupported,
+import {
+  requestCameraPermission,
+  checkCameraPermissions,
   CameraError
 } from '@/utils/cameraPermissions';
 import CameraPermissionDialog from '@/components/ui/camera-permission-dialog';
