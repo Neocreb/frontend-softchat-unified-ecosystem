@@ -1,5 +1,3 @@
-import { toast } from "@/hooks/use-toast";
-
 export interface CameraPermissionResult {
   success: boolean;
   stream?: MediaStream;
@@ -61,12 +59,11 @@ class CameraPermissionManager {
     // Check current permissions
     const permissions = await this.checkPermissions();
     
-    // If camera is explicitly denied, show helpful message
+    // If camera is explicitly denied, return error
     if (permissions.camera === 'denied') {
-      this.showPermissionDeniedHelp();
       return {
         success: false,
-        error: 'Camera permission denied',
+        error: 'Camera permission denied. Please enable camera access in your browser settings.',
         permissionState: 'denied'
       };
     }
@@ -78,11 +75,7 @@ class CameraPermissionManager {
         audio
       });
 
-      toast({
-        title: "Camera Ready! 📹",
-        description: "Camera and microphone access granted",
-      });
-
+      console.log('Camera access granted successfully');
       return {
         success: true,
         stream,
@@ -98,28 +91,25 @@ class CameraPermissionManager {
 
       // Handle specific error types
       if (errorName === 'NotAllowedError' || errorMessage.includes('Permission denied')) {
-        this.showPermissionDeniedHelp();
         return {
           success: false,
-          error: 'Permission denied by user',
+          error: 'Camera permission denied. Please click the camera icon in your address bar and allow access.',
           permissionState: 'denied'
         };
       }
 
       if (errorName === 'NotFoundError') {
-        this.showNoDeviceHelp();
         return {
           success: false,
-          error: 'No camera device found',
+          error: 'No camera device found. Please connect a camera to start streaming.',
           permissionState: 'denied'
         };
       }
 
       if (errorName === 'NotReadableError') {
-        this.showDeviceBusyHelp();
         return {
           success: false,
-          error: 'Camera is being used by another application',
+          error: 'Camera is being used by another application. Please close other apps and try again.',
           permissionState: 'denied'
         };
       }
@@ -132,12 +122,7 @@ class CameraPermissionManager {
             audio
           });
 
-          toast({
-            title: "Audio Only Mode 🎤",
-            description: "Camera unavailable, but microphone is working",
-            variant: "default",
-          });
-
+          console.log('Fallback to audio-only mode successful');
           return {
             success: true,
             stream: audioStream,
@@ -149,85 +134,12 @@ class CameraPermissionManager {
         }
       }
 
-      // Show generic error with retry option
-      this.showGenericError(errorMessage, retryOnDenied);
-      
       return {
         success: false,
-        error: errorMessage,
+        error: errorMessage || 'Unable to access camera. Please check your camera settings and try again.',
         permissionState: 'denied'
       };
     }
-  }
-
-  private showPermissionDeniedHelp(): void {
-    toast({
-      title: "Camera Permission Required 🎥",
-      description: "Please allow camera access in your browser settings",
-      variant: "destructive",
-      action: (
-        <div className="flex flex-col gap-2">
-          <button
-            onClick={this.openPermissionHelp}
-            className="text-sm underline text-blue-400 hover:text-blue-300"
-          >
-            How to enable camera?
-          </button>
-        </div>
-      ),
-    });
-  }
-
-  private showNoDeviceHelp(): void {
-    toast({
-      title: "No Camera Found 📹",
-      description: "Please connect a camera device to start streaming",
-      variant: "destructive",
-    });
-  }
-
-  private showDeviceBusyHelp(): void {
-    toast({
-      title: "Camera In Use 🔒",
-      description: "Close other apps using your camera and try again",
-      variant: "destructive",
-    });
-  }
-
-  private showGenericError(message: string, showRetry: boolean): void {
-    toast({
-      title: "Camera Error ❌",
-      description: message || "Unable to access camera. Please check your settings.",
-      variant: "destructive",
-      action: showRetry ? (
-        <button
-          onClick={() => window.location.reload()}
-          className="text-sm underline text-blue-400 hover:text-blue-300"
-        >
-          Retry
-        </button>
-      ) : undefined,
-    });
-  }
-
-  private openPermissionHelp(): void {
-    const userAgent = navigator.userAgent.toLowerCase();
-    let helpUrl = 'https://support.google.com/chrome/answer/2693767';
-    
-    if (userAgent.includes('firefox')) {
-      helpUrl = 'https://support.mozilla.org/en-US/kb/how-manage-your-camera-and-microphone-permissions';
-    } else if (userAgent.includes('safari')) {
-      helpUrl = 'https://support.apple.com/guide/safari/websites-ibrwe2159f50/mac';
-    } else if (userAgent.includes('edge')) {
-      helpUrl = 'https://support.microsoft.com/en-us/microsoft-edge/camera-and-microphone-permissions-in-microsoft-edge-87b0d8c2-c7e3-4a5b-9e8e-1c9b1e8d5e9f';
-    }
-
-    // Show help modal instead of opening external link
-    toast({
-      title: "Enable Camera Permissions 📹",
-      description: "1. Click the camera icon in your address bar\n2. Select 'Allow'\n3. Refresh the page",
-      variant: "default",
-    });
   }
 
   async retryWithSimpleConstraints(): Promise<CameraPermissionResult> {
@@ -238,11 +150,7 @@ class CameraPermissionManager {
         audio: true
       });
 
-      toast({
-        title: "Camera Connected! ✅",
-        description: "Successfully connected to your camera",
-      });
-
+      console.log('Camera connected with simple constraints');
       return {
         success: true,
         stream,
@@ -275,6 +183,22 @@ class CameraPermissionManager {
       return { cameras: [], microphones: [] };
     }
   }
+
+  getPermissionInstructions(): string {
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    if (userAgent.includes('chrome')) {
+      return '1. Click the camera icon in your address bar\n2. Select "Allow"\n3. Refresh the page';
+    } else if (userAgent.includes('firefox')) {
+      return '1. Click the shield/camera icon in the address bar\n2. Choose "Allow"\n3. Refresh the page';
+    } else if (userAgent.includes('safari')) {
+      return '1. Go to Safari > Settings > Websites > Camera\n2. Select "Allow" for this site\n3. Refresh the page';
+    } else if (userAgent.includes('edge')) {
+      return '1. Click the camera icon in the address bar\n2. Select "Allow"\n3. Refresh the page';
+    }
+    
+    return '1. Look for camera/microphone icons in your browser\n2. Allow access to camera and microphone\n3. Refresh the page';
+  }
 }
 
 // Export singleton instance
@@ -295,4 +219,8 @@ export function stopCameraStream(stream: MediaStream): void {
 
 export async function getAvailableCameras() {
   return cameraManager.getAvailableDevices();
+}
+
+export function getPermissionHelp(): string {
+  return cameraManager.getPermissionInstructions();
 }
