@@ -56,7 +56,7 @@ const CameraPermissionTest: React.FC = () => {
     setIsLoading(true);
     
     try {
-      const result = await requestCameraAccess({
+      const result = await requestCameraPermission({
         video: {
           facingMode: 'user',
           width: { ideal: 640 },
