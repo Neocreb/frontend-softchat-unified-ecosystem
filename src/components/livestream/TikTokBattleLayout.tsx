@@ -772,9 +772,9 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
                 }}
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/20 rounded-full w-10 h-10 backdrop-blur-sm"
+                className="text-white hover:bg-white/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 backdrop-blur-sm"
               >
-                <Share2 className="w-5 h-5" />
+                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </div>
           </div>
