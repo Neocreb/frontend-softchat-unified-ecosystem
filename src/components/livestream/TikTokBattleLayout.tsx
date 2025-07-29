@@ -702,15 +702,15 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
 
       {/* Bottom Controls */}
       <div className="absolute bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-        <div className="p-4 pt-8">
+        <div className="p-3 sm:p-4 pt-6">
           <div className="flex items-center gap-2">
             {/* Chat Input */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <Input
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
                 placeholder="Type..."
-                className="bg-white/15 border-white/20 text-white placeholder:text-white/60 rounded-full px-4 py-3 text-sm backdrop-blur-md"
+                className="bg-white/15 border-white/20 text-white placeholder:text-white/60 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-sm backdrop-blur-md"
                 onKeyPress={(e) => {
                   if (e.key === 'Enter' && chatMessage.trim()) {
                     const newMessage: LiveChatMessage = {
