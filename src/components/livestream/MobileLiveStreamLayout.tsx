@@ -152,6 +152,58 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
   });
   
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  // Start camera feed if user owns this stream
+  useEffect(() => {
+    if (isUserOwned && isActive && content.isActive) {
+      const initializeCamera = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: 'user'
+            },
+            audio: true
+          });
+
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+            videoRef.current.muted = true; // Prevent echo
+            streamRef.current = stream;
+
+            // Auto-play with error handling
+            videoRef.current.play().catch(error => {
+              console.error('Video play failed:', error);
+            });
+          }
+        } catch (error) {
+          console.error('Camera access failed:', error);
+          toast({
+            title: "Camera Access Failed",
+            description: "Please allow camera access to stream",
+            variant: "destructive",
+          });
+        }
+      };
+
+      initializeCamera();
+    }
+
+    // Cleanup function
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => {
+          track.stop();
+        });
+        streamRef.current = null;
+      }
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+    };
+  }, [isUserOwned, isActive, content.isActive, toast]);
 
   // Simulate real-time updates
   useEffect(() => {
