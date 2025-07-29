@@ -163,7 +163,7 @@ const EnhancedVideoCreator: React.FC = () => {
         audio: micEnabled
       };
 
-      const result = await requestCameraAccess(constraints);
+      const result = await requestCameraPermission(constraints);
 
       if (result.error) {
         setCameraError(result.error);
