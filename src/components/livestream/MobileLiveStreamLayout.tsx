@@ -38,6 +38,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import BattleVoting from '../voting/BattleVoting';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import VirtualGiftsAndTips from '../premium/VirtualGiftsAndTips';
+import TikTokBattleLayout from './TikTokBattleLayout';
 
 interface LiveChatMessage {
   id: string;
