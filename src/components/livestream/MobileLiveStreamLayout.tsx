@@ -133,6 +133,19 @@ export const MobileLiveStreamLayout: React.FC<MobileLiveStreamLayoutProps> = ({
 }) => {
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Use TikTok-style layout for battles
+  if (content.type === 'battle') {
+    return (
+      <TikTokBattleLayout
+        content={content}
+        isActive={isActive}
+        isUserOwned={isUserOwned}
+        onEndStream={onEndStream}
+        className={className}
+      />
+    );
+  }
   
   // Stream state
   const [isLiked, setIsLiked] = useState(false);
