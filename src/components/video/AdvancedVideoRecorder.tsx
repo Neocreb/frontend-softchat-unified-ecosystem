@@ -326,7 +326,7 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
         audio: micEnabled,
       };
 
-      const result = await requestCameraAccess(constraints);
+      const result = await requestCameraPermission(constraints);
 
       if (result.error) {
         setCameraError(result.error);
