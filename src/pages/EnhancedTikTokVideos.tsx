@@ -981,8 +981,8 @@ const EnhancedTikTokVideos: React.FC = () => {
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
-            {allLiveContent.filter(content => !content.battleData).length > 0 ? (
-              allLiveContent.filter(content => !content.battleData).map((liveContent, index) => {
+            {(allLiveContent || []).filter(content => !content.battleData).length > 0 ? (
+              (allLiveContent || []).filter(content => !content.battleData).map((liveContent, index) => {
                 return (
                   <MobileLiveStreamLayout
                     key={liveContent.id}
