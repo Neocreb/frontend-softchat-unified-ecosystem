@@ -573,6 +573,15 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [showControls, setShowControls] = useState(true);
   const [showHeaderTabs, setShowHeaderTabs] = useState(true);
   const [showCreateMenu, setShowCreateMenu] = useState(false);
+  const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
+  const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
+  const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const [isLiveStreamOpen, setIsLiveStreamOpen] = useState(false);
+  const [showDuetRecorder, setShowDuetRecorder] = useState(false);
+  const [duetOriginalVideo, setDuetOriginalVideo] = useState<any>(null);
+  const [selectedDuetStyle, setSelectedDuetStyle] = useState<'side-by-side' | 'react-respond' | 'picture-in-picture'>('side-by-side');
+  const [showBattleSetup, setShowBattleSetup] = useState(false);
+  const [showLiveBattle, setShowLiveBattle] = useState(false);
 
   // Auto-hide navigation state
   // Auto-hide footer navigation state (NOT header tabs)
