@@ -366,7 +366,7 @@ const AppRoutes = () => {
           />
           <Route
             path="live-streaming"
-            element={<Navigate to="/app/live" replace />}
+            element={<Navigate to="/app/videos?tab=live" replace />}
           />
           <Route path="live" element={<Live />} />
           <Route path="settings" element={<EnhancedSettings />} />
