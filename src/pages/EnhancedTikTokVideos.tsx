@@ -946,9 +946,9 @@ const EnhancedTikTokVideos: React.FC = () => {
           <TabsContent value="live" className="h-full mt-0">
             {allLiveContent.length > 0 ? (
               allLiveContent.map((liveContent, index) => {
-                // Use MobileLiveStreamLayout for mobile-optimized live experience
+                // Use EnhancedLiveContentCard for real camera preview and battles
                 return (
-                  <MobileLiveStreamLayout
+                  <EnhancedLiveContentCard
                     key={liveContent.id}
                     content={liveContent}
                     isActive={index === currentVideoIndex && activeTab === "live"}
