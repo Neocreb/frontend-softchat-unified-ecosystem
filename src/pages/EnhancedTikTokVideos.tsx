@@ -46,7 +46,7 @@ import {
   Upload,
   Target,
   Swords,
-  Target as BattleIcon,
+  ShoppingCart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
