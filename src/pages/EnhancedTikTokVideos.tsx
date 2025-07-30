@@ -16,7 +16,6 @@ import {
   Home,
   Sparkles,
   Award,
-
   Eye,
   Users,
   ChevronUp,
@@ -46,6 +45,8 @@ import {
   Radio,
   Upload,
   Target,
+  Swords,
+  Target as BattleIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -248,6 +249,9 @@ const liveStreams: VideoData[] = [
     allowDuets: false,
     allowComments: true,
   },
+];
+
+const battleVideos: VideoData[] = [
   {
     id: "battle1",
     user: {
@@ -258,7 +262,7 @@ const liveStreams: VideoData[] = [
       verified: true,
       followerCount: 892000,
     },
-    description: "��� LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
+    description: "⚔️ LIVE BATTLE: Epic Dance Battle vs @melody_queen! Vote with gifts! ⚡",
     music: { title: "Battle Theme", artist: "Epic Beats" },
     stats: { likes: 3240, comments: 890, shares: 234, views: "24.8K watching" },
     hashtags: ["livebattle", "dance", "epic", "compete"],
@@ -286,28 +290,6 @@ const liveStreams: VideoData[] = [
     hashtags: ["rapbattle", "freestyle", "hiphop", "bars"],
     videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
     thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
-    duration: 0,
-    timestamp: "BATTLE",
-    isLiveStream: true,
-    allowDuets: false,
-    allowComments: true,
-  },
-  {
-    id: "battle3",
-    user: {
-      id: "battle3",
-      username: "comedy_clash",
-      displayName: "Comedy Clash",
-      avatar: "https://i.pravatar.cc/150?img=7",
-      verified: false,
-      followerCount: 234000,
-    },
-    description: "😂 COMEDY BATTLE: Who's funnier? Laugh and support your favorite! 🤣",
-    music: { title: "Comedy Battle", artist: "Funny Sounds" },
-    stats: { likes: 945, comments: 234, shares: 78, views: "8.9K watching" },
-    hashtags: ["comedybattle", "funny", "laugh", "humor"],
-    videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-    thumbnail: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400",
     duration: 0,
     timestamp: "BATTLE",
     isLiveStream: true,
@@ -404,6 +386,16 @@ const VideoCard: React.FC<{
           <Badge className="bg-red-500 text-white animate-pulse">
             <Radio className="w-3 h-3 mr-1" />
             LIVE
+          </Badge>
+        </div>
+      )}
+
+      {/* Battle indicator */}
+      {video.timestamp === "BATTLE" && (
+        <div className="absolute top-4 left-4 z-30">
+          <Badge className="bg-orange-500 text-white animate-pulse">
+            <Swords className="w-3 h-3 mr-1" />
+            BATTLE
           </Badge>
         </div>
       )}
@@ -568,8 +560,8 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   // Get initial tab from URL params or default to "foryou"
-  const initialTab = searchParams.get('tab') as "live" | "foryou" | "following" || "foryou";
-  const [activeTab, setActiveTab] = useState<"live" | "foryou" | "following">(initialTab);
+  const initialTab = searchParams.get('tab') as "live" | "battle" | "foryou" | "following" || "foryou";
+  const [activeTab, setActiveTab] = useState<"live" | "battle" | "foryou" | "following">(initialTab);
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
@@ -584,17 +576,60 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [showBattleSetup, setShowBattleSetup] = useState(false);
   const [showLiveBattle, setShowLiveBattle] = useState(false);
 
+  // Auto-hide navigation state
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const navTimeoutRef = useRef<NodeJS.Timeout>();
+
   const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   const { allLiveContent, addLiveStream, addBattle, removeLiveContent } = useLiveContentContext();
+
+  // Auto-hide navigation after 3 seconds
+  useEffect(() => {
+    const isVideoPage = window.location.pathname.includes('/videos');
+    if (!isVideoPage) return;
+
+    const resetTimer = () => {
+      if (navTimeoutRef.current) {
+        clearTimeout(navTimeoutRef.current);
+      }
+      setIsNavVisible(true);
+      navTimeoutRef.current = setTimeout(() => {
+        setIsNavVisible(false);
+      }, 3000);
+    };
+
+    resetTimer();
+
+    return () => {
+      if (navTimeoutRef.current) {
+        clearTimeout(navTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Toggle navigation visibility on click
+  const toggleNavigation = useCallback(() => {
+    setIsNavVisible(!isNavVisible);
+    if (navTimeoutRef.current) {
+      clearTimeout(navTimeoutRef.current);
+    }
+    if (!isNavVisible) {
+      navTimeoutRef.current = setTimeout(() => {
+        setIsNavVisible(false);
+      }, 3000);
+    }
+  }, [isNavVisible]);
 
   // Get current videos based on active tab
   const getCurrentVideos = () => {
     switch (activeTab) {
       case "live":
         // Convert live content to video format for compatibility
-        return allLiveContent.map(liveContentToVideoData);
+        return allLiveContent.filter(content => !content.battleData).map(liveContentToVideoData);
+      case "battle":
+        return battleVideos.concat(allLiveContent.filter(content => content.battleData).map(liveContentToVideoData));
       case "following":
         return followingVideos;
       default:
@@ -702,8 +737,6 @@ const EnhancedTikTokVideos: React.FC = () => {
       title: "Duet Created! 🎉",
       description: "Your duet has been posted successfully.",
     });
-    // Refresh the feed or navigate to the new duet
-    // You could add logic here to add the new duet to the current videos list
   };
 
   const handleCreateLiveStream = (streamData: {
@@ -724,7 +757,7 @@ const EnhancedTikTokVideos: React.FC = () => {
 
     toast({
       title: "Live Stream Started! 🔴",
-      description: "Your stream is now live in the Live/Battle tab",
+      description: "Your stream is now live in the Live tab",
     });
   };
 
@@ -754,20 +787,16 @@ const EnhancedTikTokVideos: React.FC = () => {
       },
     });
 
-    // Switch to live tab to show the new battle
-    setActiveTab("live");
+    // Switch to battle tab to show the new battle
+    setActiveTab("battle");
     setCurrentVideoIndex(0);
     setShowBattleSetup(false);
 
     toast({
-      title: "Battle Started! ⚔��",
-      description: "Your battle is now live in the Live/Battle tab",
+      title: "Battle Started! ⚔️",
+      description: "Your battle is now live in the Battle tab",
     });
   };
-
-
-
-
 
   const handleDuetCancel = () => {
     setShowDuetRecorder(false);
@@ -793,77 +822,103 @@ const EnhancedTikTokVideos: React.FC = () => {
         />
       </Helmet>
 
-      {/* Enhanced TikTok-style header with Live, For You, Following tabs */}
+      {/* Enhanced 6-Element Header Layout */}
       {showControls && (
         <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/90 via-black/60 to-transparent">
-          <div className="flex items-center justify-between p-4 pt-8">
-            {/* Left side buttons */}
-            <div className="flex items-center gap-3">
+          <div className="grid grid-cols-6 items-center gap-2 p-3 pt-8 min-h-[80px]">
+            {/* 1. Search Icon (left side) */}
+            <div className="flex justify-start">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSearchOverlay(true)}
-                className="text-white hover:bg-white/20"
+                className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
               >
-                <Search className="w-5 h-5" />
+                <Search className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
             </div>
 
-            {/* Central tabs - Enhanced TikTok style with Live tab and Create button */}
-            <div className="flex-1 flex justify-center items-center gap-8">
-              <Tabs
-                value={activeTab}
-                onValueChange={(value) =>
-                  setActiveTab(value as "live" | "foryou" | "following")
-                }
-                className="w-auto"
+            {/* 2. Live Tab (center) */}
+            <div className="flex justify-center">
+              <Button
+                variant="ghost"
+                onClick={() => setActiveTab("live")}
+                className={cn(
+                  "flex flex-col items-center justify-center h-12 sm:h-14 px-2 sm:px-3 transition-all",
+                  activeTab === "live" 
+                    ? "text-red-500 bg-red-500/10" 
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
               >
-                <TabsList className="bg-transparent border-0 h-auto p-0 space-x-6">
-                  <TabsTrigger
-                    value="live"
-                    className={cn(
-                      "bg-transparent border-0 text-base font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
-                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-red-500",
-                      "text-white/60 hover:text-white transition-colors flex items-center gap-1"
-                    )}
-                  >
-                    <Radio className="w-4 h-4" />
-                    Live/Battle
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="foryou"
-                    className={cn(
-                      "bg-transparent border-0 text-base font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
-                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-white",
-                      "text-white/60 hover:text-white transition-colors"
-                    )}
-                  >
-                    For You
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="following"
-                    className={cn(
-                      "bg-transparent border-0 text-base font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
-                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-white",
-                      "text-white/60 hover:text-white transition-colors"
-                    )}
-                  >
-                    Following
-                  </TabsTrigger>
+                <Radio className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
+                <span className="text-[10px] sm:text-xs font-medium hidden xs:block">Live</span>
+              </Button>
+            </div>
 
-                </TabsList>
-              </Tabs>
+            {/* 3. Battle Tab (center) */}
+            <div className="flex justify-center">
+              <Button
+                variant="ghost"
+                onClick={() => setActiveTab("battle")}
+                className={cn(
+                  "flex flex-col items-center justify-center h-12 sm:h-14 px-2 sm:px-3 transition-all",
+                  activeTab === "battle" 
+                    ? "text-orange-500 bg-orange-500/10" 
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
+              >
+                <Swords className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
+                <span className="text-[10px] sm:text-xs font-medium hidden xs:block">Battle</span>
+              </Button>
+            </div>
 
-              {/* Create Button in Header */}
+            {/* 4. For You Tab (center) */}
+            <div className="flex justify-center">
+              <Button
+                variant="ghost"
+                onClick={() => setActiveTab("foryou")}
+                className={cn(
+                  "flex flex-col items-center justify-center h-12 sm:h-14 px-2 sm:px-3 transition-all",
+                  activeTab === "foryou" 
+                    ? "text-white border-b-2 border-white" 
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
+              >
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
+                <span className="text-[10px] sm:text-xs font-medium hidden xs:block sm:block">
+                  {isMobile ? "You" : "For You"}
+                </span>
+              </Button>
+            </div>
+
+            {/* 5. Following Tab (center) */}
+            <div className="flex justify-center">
+              <Button
+                variant="ghost"
+                onClick={() => setActiveTab("following")}
+                className={cn(
+                  "flex flex-col items-center justify-center h-12 sm:h-14 px-2 sm:px-3 transition-all",
+                  activeTab === "following" 
+                    ? "text-white border-b-2 border-white" 
+                    : "text-white/60 hover:text-white hover:bg-white/10"
+                )}
+              >
+                <Users className="h-4 w-4 sm:h-5 sm:w-5 mb-1" />
+                <span className="text-[10px] sm:text-xs font-medium hidden xs:block sm:block">
+                  {isMobile ? "Follow" : "Following"}
+                </span>
+              </Button>
+            </div>
+
+            {/* 6. Create Button + More options (right side) */}
+            <div className="flex justify-end items-center gap-1">
               <DropdownMenu open={showCreateMenu} onOpenChange={setShowCreateMenu}>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-white/10 border-white/20 text-white hover:bg-white/20 flex items-center gap-1"
+                    className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white border-none h-8 w-8 sm:h-10 sm:w-10 sm:w-auto sm:px-3 rounded-full sm:rounded-lg"
                   >
-                    <Plus className="w-4 h-4" />
-                    Create
+                    <Plus className="h-4 w-4 sm:mr-1" />
+                    <span className="hidden sm:inline text-xs font-medium">Create</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
@@ -883,34 +938,35 @@ const EnhancedTikTokVideos: React.FC = () => {
                     Go Live
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleStartBattle} className="hover:bg-gray-800">
-                    <Sparkles className="w-4 h-4 mr-2" />
+                    <Swords className="w-4 h-4 mr-2" />
                     Start Battle
                   </DropdownMenuItem>
-
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
 
-            {/* Right side buttons */}
-            <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/20"
+                className="text-white hover:bg-white/20 h-6 w-6 sm:h-8 sm:w-8"
                 onClick={() => setIsDashboardOpen(true)}
               >
-                <Award className="w-5 h-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20"
-              >
-                <MoreHorizontal className="w-5 h-5" />
+                <MoreHorizontal className="h-4 w-4" />
               </Button>
             </div>
           </div>
         </div>
+      )}
+
+      {/* Back to Feed Button - Shows when navigation is hidden */}
+      {!isNavVisible && (
+        <Button
+          onClick={() => navigate('/app/feed')}
+          className="fixed bottom-6 left-4 z-50 bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-all duration-300"
+          size="sm"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Feed
+        </Button>
       )}
 
       {/* Video content area */}
@@ -919,15 +975,14 @@ const EnhancedTikTokVideos: React.FC = () => {
         className="h-full w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
           scrollBehavior: "smooth",
-          paddingBottom: isMobile ? "80px" : "20px",
+          paddingBottom: isNavVisible && isMobile ? "80px" : "20px",
         }}
-        onClick={() => setShowControls(!showControls)}
+        onClick={toggleNavigation}
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
-            {allLiveContent.length > 0 ? (
-              allLiveContent.map((liveContent, index) => {
-                // Use MobileLiveStreamLayout for mobile-optimized live experience
+            {allLiveContent.filter(content => !content.battleData).length > 0 ? (
+              allLiveContent.filter(content => !content.battleData).map((liveContent, index) => {
                 return (
                   <MobileLiveStreamLayout
                     key={liveContent.id}
@@ -949,21 +1004,44 @@ const EnhancedTikTokVideos: React.FC = () => {
                 <div className="text-center text-white/60">
                   <Radio className="w-12 h-12 mx-auto mb-4 text-red-500" />
                   <p className="text-lg font-medium mb-2">No live content right now</p>
-                  <p className="text-sm">Start a live stream or battle to see content here!</p>
+                  <p className="text-sm">Start a live stream to see content here!</p>
                   <div className="mt-4">
                     <Button
                       onClick={() => setIsLiveStreamOpen(true)}
-                      className="bg-red-500 hover:bg-red-600 text-white mr-2"
+                      className="bg-red-500 hover:bg-red-600 text-white"
                     >
                       <Radio className="w-4 h-4 mr-2" />
                       Go Live
                     </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="battle" className="h-full mt-0">
+            {battleVideos.length > 0 ? (
+              battleVideos.map((video, index) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  isActive={index === currentVideoIndex && activeTab === "battle"}
+                  showControls={showControls}
+                  onDuetCreate={handleDuetCreate}
+                />
+              ))
+            ) : (
+              <div className="h-screen flex items-center justify-center">
+                <div className="text-center text-white/60">
+                  <Swords className="w-12 h-12 mx-auto mb-4 text-orange-500" />
+                  <p className="text-lg font-medium mb-2">No battles right now</p>
+                  <p className="text-sm">Start a battle to compete with other creators!</p>
+                  <div className="mt-4">
                     <Button
                       onClick={() => setShowBattleSetup(true)}
-                      variant="outline"
-                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                      className="bg-orange-500 hover:bg-orange-600 text-white"
                     >
-                      <Target className="w-4 h-4 mr-2" />
+                      <Swords className="w-4 h-4 mr-2" />
                       Start Battle
                     </Button>
                   </div>
@@ -971,6 +1049,7 @@ const EnhancedTikTokVideos: React.FC = () => {
               </div>
             )}
           </TabsContent>
+
           <TabsContent value="foryou" className="h-full mt-0">
             {forYouVideos.map((video, index) => (
               <VideoCard
@@ -982,6 +1061,7 @@ const EnhancedTikTokVideos: React.FC = () => {
               />
             ))}
           </TabsContent>
+
           <TabsContent value="following" className="h-full mt-0">
             {followingVideos.length > 0 ? (
               followingVideos.map((video, index) => (
@@ -1003,11 +1083,8 @@ const EnhancedTikTokVideos: React.FC = () => {
               </div>
             )}
           </TabsContent>
-
         </Tabs>
       </div>
-
-
 
       {/* Search Overlay */}
       {showSearchOverlay && (
@@ -1058,7 +1135,6 @@ const EnhancedTikTokVideos: React.FC = () => {
         open={showBattleSetup}
         onOpenChange={setShowBattleSetup}
         onBattleStart={(config) => {
-          // Create the battle
           handleCreateBattle({
             title: config.title || "Battle",
             description: config.description || "Live battle now!",
@@ -1066,10 +1142,9 @@ const EnhancedTikTokVideos: React.FC = () => {
             opponentId: config.opponentId,
           });
 
-          // Show immediate feedback
           toast({
             title: "Battle Started! ⚔️",
-            description: "Your battle is now live in the Live/Battle tab",
+            description: "Your battle is now live in the Battle tab",
           });
         }}
       />
@@ -1083,20 +1158,16 @@ const EnhancedTikTokVideos: React.FC = () => {
           <div className="h-full max-h-[90vh] overflow-y-auto">
             <LiveStreamCreator
             onStreamStart={(stream) => {
-              // Close the setup dialog first
               setIsLiveStreamOpen(false);
-
-              // Create the live stream with full data
               handleCreateLiveStream({
                 title: stream.title || "Live Stream",
                 description: stream.description || "Live streaming now!",
                 category: stream.category,
               });
 
-              // Show immediate feedback
               toast({
                 title: "Going Live! 🔴",
-                description: "Your stream is starting in the Live/Battle tab",
+                description: "Your stream is starting in the Live tab",
               });
             }}
             onStreamEnd={() => {
@@ -1176,7 +1247,71 @@ const EnhancedTikTokVideos: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-
+      {/* Enhanced Footer Navigation with Auto-Hide */}
+      {isNavVisible && (
+        <div className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb transition-transform duration-300 ease-in-out">
+          <div className="grid grid-cols-6 h-14 sm:h-16 px-1 w-full max-w-full">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/app/feed')}
+              className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0 text-muted-foreground"
+            >
+              <Home className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs leading-none truncate w-full">Feed</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/app/explore')}
+              className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0 text-muted-foreground"
+            >
+              <Search className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs leading-none truncate w-full">Explore</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/app/freelance')}
+              className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0 text-muted-foreground"
+            >
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5 mb-0.5 sm:mb-1 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs leading-none truncate w-full">Freelance</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0 text-primary bg-primary/10"
+            >
+              <Video className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0 text-primary" />
+              <span className="text-[10px] sm:text-xs leading-none truncate w-full">Videos</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/app/marketplace')}
+              className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0 text-muted-foreground"
+            >
+              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs leading-none truncate w-full">Market</span>
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/app/crypto')}
+              className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0 text-muted-foreground"
+            >
+              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0" />
+              <span className="text-[10px] sm:text-xs leading-none truncate w-full">Crypto</span>
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
