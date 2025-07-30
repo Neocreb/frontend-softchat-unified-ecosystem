@@ -574,6 +574,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [showControls, setShowControls] = useState(true);
+  const [showHeaderTabs, setShowHeaderTabs] = useState(true);
   const [showCreateMenu, setShowCreateMenu] = useState(false);
 
   // Auto-hide navigation state
