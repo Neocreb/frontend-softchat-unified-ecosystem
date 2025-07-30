@@ -584,6 +584,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [selectedDuetStyle, setSelectedDuetStyle] = useState<'side-by-side' | 'react-respond' | 'picture-in-picture'>('side-by-side');
   const [showBattleSetup, setShowBattleSetup] = useState(false);
   const [showLiveBattle, setShowLiveBattle] = useState(false);
+  const [useEnhancedComponents, setUseEnhancedComponents] = useState(true);
 
   // Auto-hide navigation state
   // Auto-hide footer navigation state (NOT header tabs)
