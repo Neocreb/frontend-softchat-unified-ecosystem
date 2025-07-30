@@ -713,28 +713,39 @@ const EnhancedTikTokVideos: React.FC = () => {
     }
   }, [activeTab]);
 
+  const handleVideoCreated = (videoFile: File, metadata: any) => {
+    setIsAdvancedRecorderOpen(false);
+    toast({
+      title: "Video Created! 🎉",
+      description: "Your video has been created successfully.",
+    });
+  };
+
   const handleGoLive = () => {
     setShowCreateMenu(false);
-    toast({
-      title: "Live Stream",
-      description: "Live streaming feature coming soon!",
-    });
+    setIsLiveStreamOpen(true);
   };
 
   const handleUploadVideo = () => {
     setShowCreateMenu(false);
-    toast({
-      title: "Upload Video",
-      description: "Video upload feature coming soon!",
-    });
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'video/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        toast({
+          title: "Video Selected",
+          description: `Selected: ${file.name}`,
+        });
+      }
+    };
+    input.click();
   };
 
   const handleRecordVideo = () => {
     setShowCreateMenu(false);
-    toast({
-      title: "Record Video",
-      description: "Video recording feature coming soon!",
-    });
+    setIsAdvancedRecorderOpen(true);
   };
 
   const handleDuetCreate = (video: VideoData) => {
