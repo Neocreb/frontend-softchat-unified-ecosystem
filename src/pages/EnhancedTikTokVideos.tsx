@@ -764,6 +764,11 @@ const EnhancedTikTokVideos: React.FC = () => {
     setCurrentVideoIndex(0);
     setShowBattleSetup(false);
 
+    // Update URL to live tab
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("tab", "live");
+    navigate(`/app/videos?${newSearchParams.toString()}`, { replace: true });
+
     toast({
       title: "Battle Started! ⚔��",
       description: "Your battle is now live in the Live/Battle tab",
