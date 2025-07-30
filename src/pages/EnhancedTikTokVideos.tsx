@@ -520,9 +520,9 @@ const VideoCard: React.FC<{
               },
               creator2: {
                 id: "opponent_" + video.id,
-                username: video.id === "battle1" ? "melody_queen" : "freestyle_master",
-                displayName: video.id === "battle1" ? "Melody Queen" : "Freestyle Master",
-                avatar: `https://i.pravatar.cc/150?img=${video.id === "battle1" ? "9" : "10"}`,
+                username: "opponent",
+                displayName: "Opponent",
+                avatar: "https://i.pravatar.cc/150?img=9",
               }
             } : undefined}
             onDuetCreate={(videoId) => {
