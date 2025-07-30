@@ -721,29 +721,9 @@ const EnhancedTikTokVideos: React.FC = () => {
   };
 
   const handleDuetCreate = (video: VideoData) => {
-    setDuetOriginalVideo({
-      id: video.id,
-      url: video.videoUrl,
-      duration: video.duration,
-      creatorUsername: video.user.username,
-      creatorId: video.user.id,
-      title: video.description,
-      thumbnail: video.thumbnail,
-    });
-    setShowDuetRecorder(true);
     toast({
-      title: "Duet Recording Started",
-      description: `Creating duet with @${video.user.username}`,
-    });
-  };
-
-  const handleDuetComplete = (duetData: any) => {
-    console.log('Duet created:', duetData);
-    setShowDuetRecorder(false);
-    setDuetOriginalVideo(null);
-    toast({
-      title: "Duet Created! 🎉",
-      description: "Your duet has been posted successfully.",
+      title: "Duet Feature",
+      description: "Duet creation feature coming soon!",
     });
   };
 
