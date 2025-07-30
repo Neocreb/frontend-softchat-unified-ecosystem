@@ -68,28 +68,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
-
-// Temporary fallback for missing imports
-const CreatorDashboard = () => <div>Creator Dashboard</div>;
-const LiveStreamCreator = ({ onStreamStart, onStreamEnd }: any) => <div>Live Stream Creator</div>;
-const MobileLiveStreamLayout = ({ content, isActive, isUserOwned, onEndStream }: any) => <div>Mobile Live Stream Layout</div>;
-
-// Use fallback function for live content adapter
-const liveContentToVideoData = (content: any) => ({
-  id: content.id,
-  user: content.user,
-  description: content.description,
-  music: { title: "Live Stream", artist: "Real Time" },
-  stats: { likes: 0, comments: 0, shares: 0, views: "0 watching" },
-  hashtags: ["live"],
-  videoUrl: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-  thumbnail: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400",
-  duration: 0,
-  timestamp: "LIVE",
-  isLiveStream: true,
-  allowDuets: false,
-  allowComments: true,
-});
+import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
+import BattleSetup from "@/components/battles/BattleSetup";
+import { LiveStreamCreator } from "@/components/livestream/LiveStreamCreator";
+import MobileLiveStreamLayout from "@/components/livestream/MobileLiveStreamLayout";
+import CreatorDashboard from "@/components/video/CreatorDashboard";
+import DuetRecorder from "@/components/video/DuetRecorder";
+import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
+import { liveContentToVideoData } from "../utils/liveContentAdapter";
 
 // Live content context removed for simplicity
 import { cn } from "@/utils/utils";
