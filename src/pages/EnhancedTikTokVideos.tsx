@@ -894,8 +894,8 @@ const EnhancedTikTokVideos: React.FC = () => {
         </div>
       )}
 
-      {/* Back to Feed Button - Shows when navigation is hidden */}
-      {!isNavVisible && (
+      {/* Back to Feed Button - Shows when footer navigation is hidden */}
+      {!isFooterNavVisible && (
         <Button
           onClick={() => navigate('/app/feed')}
           className="fixed bottom-6 left-4 z-50 bg-black/60 hover:bg-black/80 text-white border border-white/20 backdrop-blur-sm transition-all duration-300"
