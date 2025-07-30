@@ -28,7 +28,11 @@ export const NavigationProvider: React.FC<NavigationProviderProps> = ({ children
   const location = useLocation();
   
   // Check if current page is a video page
-  const isVideoPage = location.pathname === '/app/videos' || location.pathname.startsWith('/app/videos');
+  const isVideoPage = location.pathname === '/app/videos' ||
+    location.pathname.startsWith('/app/videos') ||
+    location.pathname === '/app/videos-improved' ||
+    location.pathname === '/app/videos-enhanced' ||
+    location.pathname === '/app/live-streaming';
 
   // Auto-hide navigation on video pages
   useEffect(() => {
