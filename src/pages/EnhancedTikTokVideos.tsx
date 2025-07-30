@@ -760,7 +760,7 @@ const EnhancedTikTokVideos: React.FC = () => {
       </Helmet>
 
       {/* Enhanced 6-Element Header Layout */}
-      {showControls && (
+      {showHeaderTabs && (
         <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/90 via-black/60 to-transparent">
           <div className="grid grid-cols-6 items-center gap-2 p-3 pt-8 min-h-[80px]">
             {/* 1. Search Icon (left side) */}
