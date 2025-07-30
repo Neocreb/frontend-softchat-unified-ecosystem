@@ -86,6 +86,7 @@ import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { useToast } from "@/hooks/use-toast";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
