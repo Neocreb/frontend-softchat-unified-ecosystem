@@ -101,9 +101,13 @@ interface EnhancedLiveBattleProps {
   battleId: string;
   creator1: Creator;
   creator2: Creator;
-  duration: number;
-  onBattleEnd: (winnerId: string) => void;
-  onExit: () => void;
+  battleType?: 'dance' | 'rap' | 'comedy' | 'general';
+  timeRemaining?: number;
+  duration?: number;
+  isUserOwned?: boolean;
+  onBattleEnd?: (winnerId: string) => void;
+  onEndBattle?: () => void;
+  onExit?: () => void;
 }
 
 // Enhanced animal gifts with TikTok-style effects
