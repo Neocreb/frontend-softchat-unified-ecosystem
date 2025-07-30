@@ -1141,7 +1141,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
               className="w-full flex flex-col items-center justify-center py-1 px-0.5 h-full rounded-none text-center min-w-0"
               onClick={() => navigate('/app/marketplace')}
             >
-              <Zap className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0" />
+              <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 mb-0.5 sm:mb-1 flex-shrink-0" />
               <span className="text-[10px] sm:text-xs leading-none truncate w-full">Market</span>
             </Button>
             <Button
