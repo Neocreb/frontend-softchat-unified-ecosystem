@@ -123,7 +123,7 @@ const animalGifts: AnimalGift[] = [
 ];
 
 // Quick emoji reactions
-const quickEmojis = ['❤️', '🔥', '��', '😍', '💯', '🎉'];
+const quickEmojis = ['❤️', '🔥', '👏', '😍', '💯', '🎉'];
 
 const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
   battleId,
@@ -133,6 +133,8 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
   timeRemaining,
   duration,
   isUserOwned = false,
+  creator1VideoRef,
+  creator2VideoRef,
   onBattleEnd,
   onEndBattle,
   onExit,
