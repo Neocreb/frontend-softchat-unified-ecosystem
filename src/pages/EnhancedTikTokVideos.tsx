@@ -813,9 +813,18 @@ const EnhancedTikTokVideos: React.FC = () => {
             <div className="flex-1 flex justify-center items-center gap-8">
               <Tabs
                 value={activeTab}
-                onValueChange={(value) =>
-                  setActiveTab(value as "live" | "foryou" | "following")
-                }
+                onValueChange={(value) => {
+                  const newTab = value as "live" | "foryou" | "following";
+                  setActiveTab(newTab);
+                  // Update URL parameter to maintain state
+                  const newSearchParams = new URLSearchParams(searchParams);
+                  if (newTab === "foryou") {
+                    newSearchParams.delete("tab");
+                  } else {
+                    newSearchParams.set("tab", newTab);
+                  }
+                  navigate(`/app/videos${newSearchParams.toString() ? `?${newSearchParams.toString()}` : ''}`, { replace: true });
+                }}
                 className="w-auto"
               >
                 <TabsList className="bg-transparent border-0 h-auto p-0 space-x-6">
