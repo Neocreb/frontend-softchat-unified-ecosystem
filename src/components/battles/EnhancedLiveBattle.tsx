@@ -525,15 +525,26 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
 
         {/* Creator 2 Side */}
         <div className="relative flex-1 bg-gradient-to-br from-blue-600/20 to-blue-800/20">
-          <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
-            <div className="text-center text-white">
-              <Avatar className="w-16 h-16 md:w-24 md:h-24 mx-auto mb-4">
-                <AvatarImage src={creator2.avatar} />
-                <AvatarFallback>{creator2.displayName[0]}</AvatarFallback>
-              </Avatar>
-              <div className="text-sm opacity-50">Camera feed</div>
+          {/* Real video feed for Creator 2 if available */}
+          {creator2VideoRef ? (
+            <video
+              ref={creator2VideoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              playsInline
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
+              <div className="text-center text-white">
+                <Avatar className="w-16 h-16 md:w-24 md:h-24 mx-auto mb-4">
+                  <AvatarImage src={creator2.avatar} />
+                  <AvatarFallback>{creator2.displayName[0]}</AvatarFallback>
+                </Avatar>
+                <div className="text-sm opacity-50">Opponent camera feed</div>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Creator 2 Info */}
           <div className="absolute top-4 right-4">
