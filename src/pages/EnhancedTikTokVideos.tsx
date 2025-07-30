@@ -583,7 +583,22 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [userBalance] = useState(2500); // Mock user balance
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const { allLiveContent, addLiveStream, addBattle, removeLiveContent } = useLiveContentContext();
+  // Safely get live content context with fallback
+  const liveContentContext = (() => {
+    try {
+      return useLiveContentContext();
+    } catch (error) {
+      // Fallback if provider is not available
+      return {
+        allLiveContent: [],
+        addLiveStream: (stream: any) => 'fallback-id',
+        addBattle: (battle: any) => 'fallback-id',
+        removeLiveContent: (id: string) => {},
+      };
+    }
+  })();
+
+  const { allLiveContent, addLiveStream, addBattle, removeLiveContent } = liveContentContext;
 
   // Auto-hide navigation after 3 seconds
   useEffect(() => {
