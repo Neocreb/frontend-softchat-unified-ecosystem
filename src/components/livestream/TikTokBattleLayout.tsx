@@ -172,6 +172,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
   const [showGifts, setShowGifts] = useState(false);
   const [showVoting, setShowVoting] = useState(false);
   const [showGiftAnimation, setShowGiftAnimation] = useState<{gift: BattleGift, position: {x: number, y: number}} | null>(null);
+  const [giftEffects, setGiftEffects] = useState<any[]>([]);
   const [showQuickReactions, setShowQuickReactions] = useState(false);
   const [showStreamControls, setShowStreamControls] = useState(false);
   const [selectedCreator, setSelectedCreator] = useState<'creator1' | 'creator2'>('creator1');
@@ -793,22 +794,39 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
           <EnhancedBattleGifts
             onSendGift={(gift, recipient) => {
               handleSendGift(gift, recipient);
-              // Add gift animation effect
+              // Add TikTok-style gift animation effect
               const giftEffect = {
                 id: `gift-${Date.now()}`,
                 type: 'gift' as const,
                 animation: gift.animation || 'sparkle' as const,
-                position: { x: Math.random() * 80 + 10, y: Math.random() * 30 + 20 },
+                position: {
+                  x: recipient === 'creator1' ? Math.random() * 40 + 5 : Math.random() * 40 + 55,
+                  y: Math.random() * 30 + 20
+                },
                 value: gift.multiplier,
                 gift: {
                   emoji: gift.emoji,
                   name: gift.name,
                   rarity: gift.rarity,
                 },
-                duration: 3000,
+                duration: gift.rarity === 'mythic' ? 5000 : gift.rarity === 'legendary' ? 4000 : 3000,
                 timestamp: Date.now(),
               };
-              // You could add this to an effects array if you implement the effects system
+              setGiftEffects(prev => [...prev, giftEffect]);
+
+              // Special effects for rare gifts
+              if (gift.rarity === 'legendary' || gift.rarity === 'mythic') {
+                // Add screen shake effect for legendary/mythic gifts
+                const screenShake = {
+                  id: `shake-${Date.now()}`,
+                  type: 'stun' as const,
+                  animation: 'shake' as const,
+                  position: { x: 50, y: 50 },
+                  duration: 1000,
+                  timestamp: Date.now(),
+                };
+                setGiftEffects(prev => [...prev, screenShake]);
+              }
             }}
             selectedCreator={selectedCreator}
             onCreatorSelect={setSelectedCreator}
@@ -909,6 +927,113 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
             <Settings className="w-4 h-4 mr-1" />
             Controls
           </Button>
+        </div>
+      )}
+
+      {/* Voting Modal */}
+      <Dialog open={showVoting} onOpenChange={setShowVoting}>
+        <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5 text-green-400" />
+              Battle Voting
+            </DialogTitle>
+          </DialogHeader>
+          <BattleVoting
+            battleId={content.id}
+            creator1={{
+              id: 'creator1',
+              username: content.user.username || 'creator1',
+              displayName: content.user.displayName,
+              avatar: content.user.avatar || '',
+              tier: 'pro_creator',
+              verified: content.user.verified || false,
+              currentScore: battleScores.creator1,
+              winRate: 75,
+              totalVotes: 150,
+              isLeading: currentWinner === 'creator1',
+            }}
+            creator2={{
+              id: 'creator2',
+              username: content.battleData?.opponent?.username || 'creator2',
+              displayName: content.battleData?.opponent?.displayName || 'Creator 2',
+              avatar: content.battleData?.opponent?.avatar || '',
+              tier: 'rising_star',
+              verified: false,
+              currentScore: battleScores.creator2,
+              winRate: 68,
+              totalVotes: 120,
+              isLeading: currentWinner === 'creator2',
+            }}
+            isLive={isActive}
+            timeRemaining={battleTime}
+            userBalance={25000}
+            onPlaceVote={(vote) => {
+              // Handle vote placement
+              setBattleScores(prev => ({
+                ...prev,
+                [vote.creatorId === 'creator1' ? 'creator1' : 'creator2']: prev[vote.creatorId === 'creator1' ? 'creator1' : 'creator2'] + vote.amount * 10
+              }));
+
+              toast({
+                title: "Vote Placed! 🎯",
+                description: `${vote.amount} SP on ${vote.creatorId === 'creator1' ? content.user.displayName : content.battleData?.opponent?.displayName}`,
+              });
+            }}
+            userVotes={[]} // Mock empty array for now
+            votingPool={{
+              creator1Total: Math.floor(battleScores.creator1 / 100),
+              creator2Total: Math.floor(battleScores.creator2 / 100),
+              totalPool: Math.floor((battleScores.creator1 + battleScores.creator2) / 100),
+              totalVoters: localViewerCount,
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Gift Animation Effects */}
+      <BattleEffects
+        effects={giftEffects}
+        onEffectComplete={(effectId) => {
+          setGiftEffects(prev => prev.filter(e => e.id !== effectId));
+        }}
+      />
+
+      {/* Quick Reactions Overlay */}
+      {showQuickReactions && (
+        <div className="absolute bottom-32 right-4 z-50">
+          <div className="bg-black/90 rounded-2xl p-3 backdrop-blur-md border border-white/20">
+            <div className="grid grid-cols-3 gap-2">
+              {['❤️', '🔥', '👏', '😍', '💯', '🎉'].map((emoji, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    // Add reaction effect
+                    const reactionEffect = {
+                      id: `reaction-${Date.now()}`,
+                      type: 'gift' as const,
+                      animation: 'float' as const,
+                      position: { x: Math.random() * 60 + 20, y: Math.random() * 40 + 30 },
+                      gift: {
+                        emoji,
+                        name: 'Reaction',
+                        rarity: 'common',
+                      },
+                      duration: 2000,
+                      timestamp: Date.now(),
+                    };
+                    setGiftEffects(prev => [...prev, reactionEffect]);
+                    setShowQuickReactions(false);
+                  }}
+                  className="text-2xl hover:bg-white/20 rounded-lg w-12 h-12 p-0"
+                >
+                  {emoji}
+                </Button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
