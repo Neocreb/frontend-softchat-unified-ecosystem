@@ -926,12 +926,15 @@ const EnhancedTikTokVideos: React.FC = () => {
       {/* Video content area */}
       <div
         ref={containerRef}
-        className="h-full w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
+        className="h-full w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide video-main-area"
         style={{
           scrollBehavior: "smooth",
           paddingBottom: isMobile ? "80px" : "20px",
         }}
-        onClick={() => setShowControls(!showControls)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowControls(!showControls);
+        }}
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
