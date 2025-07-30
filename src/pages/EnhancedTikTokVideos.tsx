@@ -592,11 +592,8 @@ const EnhancedTikTokVideos: React.FC = () => {
   // Removed userBalance as it's not used
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  // Use a simple fallback for live content to avoid context errors
-  const allLiveContent: any[] = [];
-  const addLiveStream = (stream: any) => 'fallback-id';
-  const addBattle = (battle: any) => 'fallback-id';
-  const removeLiveContent = (id: string) => {};
+  // Restore live content context
+  const { allLiveContent, addLiveStream, addBattle, removeLiveContent } = useLiveContentContext();
 
   // Auto-hide FOOTER navigation after 3 seconds (header tabs should stay visible)
   useEffect(() => {
