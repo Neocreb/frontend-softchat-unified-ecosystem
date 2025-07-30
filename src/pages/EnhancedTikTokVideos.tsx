@@ -1259,6 +1259,40 @@ const EnhancedTikTokVideos: React.FC = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Enhanced Live Battle */}
+      {showLiveBattle && useEnhancedComponents && (
+        <EnhancedLiveBattle
+          battleId="demo-battle"
+          creator1={{
+            id: '1',
+            username: 'you',
+            displayName: 'You',
+            avatar: 'https://i.pravatar.cc/150?u=you',
+            verified: false,
+            tier: 'rising_star',
+            score: 0,
+          }}
+          creator2={{
+            id: '2',
+            username: 'opponent',
+            displayName: 'Battle Master',
+            avatar: 'https://i.pravatar.cc/150?img=3',
+            verified: true,
+            tier: 'legend',
+            score: 0,
+          }}
+          duration={300}
+          onBattleEnd={(winnerId) => {
+            setShowLiveBattle(false);
+            toast({
+              title: "Battle Ended! 🏆",
+              description: `${winnerId === '1' ? 'You' : 'Battle Master'} won the battle!`,
+            });
+          }}
+          onExit={() => setShowLiveBattle(false)}
+        />
+      )}
+
       {/* Enhanced Footer Navigation with Auto-Hide */}
       {isFooterNavVisible && (
         <div
