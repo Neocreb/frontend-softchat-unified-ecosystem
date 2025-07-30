@@ -563,6 +563,7 @@ const VideoCard: React.FC<{
 
 const EnhancedTikTokVideos: React.FC = () => {
   const { user } = useAuth();
+  const { toggleNav } = useNavigation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
