@@ -423,15 +423,37 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
       {/* Header */}
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between p-3 md:p-4 bg-gradient-to-b from-black/80 to-transparent">
         <div className="flex items-center gap-2 md:gap-4">
-          <Button variant="ghost" size={isMobile ? "sm" : "icon"} onClick={onExit} className="text-white">
+          <Button variant="ghost" size={isMobile ? "sm" : "icon"} onClick={onExit || onEndBattle} className="text-white">
             <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
           </Button>
-          
+
+          {/* Camera controls for user-owned battles */}
+          {isUserOwned && (
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white bg-black/30 hover:bg-black/50"
+                title="Toggle Camera"
+              >
+                <Camera className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white bg-black/30 hover:bg-black/50"
+                title="Toggle Microphone"
+              >
+                <Mic className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
+
           <Badge className="bg-red-500 text-white animate-pulse text-xs md:text-sm">
             <Flame className="w-2 h-2 md:w-3 md:h-3 mr-1" />
             LIVE BATTLE
           </Badge>
-          
+
           <div className="flex items-center gap-1 md:gap-2 text-white">
             <Users className="w-3 h-3 md:w-4 md:h-4" />
             <span className="font-medium text-sm md:text-base">{viewers.toLocaleString()}</span>
