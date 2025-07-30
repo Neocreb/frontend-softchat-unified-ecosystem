@@ -77,7 +77,7 @@ import DuetRecorder from "@/components/video/DuetRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
 
-// Live content context removed for simplicity
+import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
