@@ -627,9 +627,9 @@ const EnhancedTikTokVideos: React.FC = () => {
     switch (activeTab) {
       case "live":
         // Convert live content to video format for compatibility
-        return allLiveContent.filter(content => !content.battleData).map(liveContentToVideoData);
+        return (allLiveContent || []).filter(content => !content.battleData).map(liveContentToVideoData);
       case "battle":
-        return battleVideos.concat(allLiveContent.filter(content => content.battleData).map(liveContentToVideoData));
+        return battleVideos.concat((allLiveContent || []).filter(content => content.battleData).map(liveContentToVideoData));
       case "following":
         return followingVideos;
       default:
