@@ -71,6 +71,8 @@ import InteractiveFeatures from "@/components/video/InteractiveFeatures";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import BattleSetup from "@/components/battles/BattleSetup";
 import { LiveStreamCreator } from "@/components/livestream/LiveStreamCreator";
+import EnhancedLiveStreamCreator from "@/components/livestream/EnhancedLiveStreamCreator";
+import EnhancedLiveBattle from "@/components/battles/EnhancedLiveBattle";
 import MobileLiveStreamLayout from "@/components/livestream/MobileLiveStreamLayout";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import DuetRecorder from "@/components/video/DuetRecorder";
