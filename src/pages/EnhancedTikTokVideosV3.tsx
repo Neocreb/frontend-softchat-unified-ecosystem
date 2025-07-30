@@ -1050,7 +1050,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
           <TabsContent value="foryou" className="h-full mt-0">
             {forYouVideos.map((video, index) => (
               <VideoCard
-                key={video.id}
+                key={`foryou-${video.id}`}
                 video={video}
                 isActive={index === currentVideoIndex && activeTab === "foryou"}
                 showControls={showControls}
@@ -1062,7 +1062,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
             {followingVideos.length > 0 ? (
               followingVideos.map((video, index) => (
                 <VideoCard
-                  key={video.id}
+                  key={`following-${video.id}`}
                   video={video}
                   isActive={index === currentVideoIndex && activeTab === "following"}
                   showControls={showControls}
