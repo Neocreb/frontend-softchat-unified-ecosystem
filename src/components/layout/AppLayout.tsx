@@ -22,8 +22,7 @@ const AppLayout = () => {
     return (
       <div className="min-h-screen bg-background">
         <Outlet />
-        {/* Footer navigation for videos with special styling */}
-        {isMobile && <FooterNav />}
+        {/* Video pages handle their own navigation */}
       </div>
     );
   }
