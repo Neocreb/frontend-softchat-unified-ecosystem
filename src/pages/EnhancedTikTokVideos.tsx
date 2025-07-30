@@ -374,8 +374,18 @@ const VideoCard: React.FC<{
   const truncatedDescription =
     description.length > 100 ? description.substring(0, 100) + "..." : description;
 
+  const handleTapAnywhere = (e: React.MouseEvent) => {
+    // Only show controls if tap is not on the video itself
+    if (e.target !== e.currentTarget && onTapToShowControls) {
+      onTapToShowControls();
+    }
+  };
+
   return (
-    <div className="relative h-screen w-full bg-black snap-start snap-always">
+    <div
+      className="relative h-screen w-full bg-black snap-start snap-always"
+      onClick={handleTapAnywhere}
+    >
       {/* Video */}
       <video
         ref={videoRef}
