@@ -1603,13 +1603,13 @@ export default function EnhancedFeed() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => navigate("/app/live-streaming")}
+                      onClick={() => navigate("/app/videos?tab=live")}
                     >
                       View All
                     </Button>
                     <Button
                       size="sm"
-                      onClick={() => navigate("/app/live-streaming")}
+                      onClick={() => navigate("/app/videos?tab=live")}
                       className="bg-red-600 hover:bg-red-700 text-white"
                     >
                       Go Live
