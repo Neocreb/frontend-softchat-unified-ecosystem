@@ -752,34 +752,37 @@ export function EnhancedLiveStreamCreator({
               
               <div>
                 <label className="text-sm font-medium">Brightness</label>
-                <Slider
-                  value={brightness}
-                  onValueChange={setBrightness}
-                  max={200}
-                  step={1}
-                  className="mt-2"
+                <input
+                  type="range"
+                  min="0"
+                  max="200"
+                  value={brightness[0]}
+                  onChange={(e) => setBrightness([parseInt(e.target.value)])}
+                  className="w-full mt-2"
                 />
               </div>
-              
+
               <div>
                 <label className="text-sm font-medium">Contrast</label>
-                <Slider
-                  value={contrast}
-                  onValueChange={setContrast}
-                  max={200}
-                  step={1}
-                  className="mt-2"
+                <input
+                  type="range"
+                  min="0"
+                  max="200"
+                  value={contrast[0]}
+                  onChange={(e) => setContrast([parseInt(e.target.value)])}
+                  className="w-full mt-2"
                 />
               </div>
-              
+
               <div>
                 <label className="text-sm font-medium">Saturation</label>
-                <Slider
-                  value={saturation}
-                  onValueChange={setSaturation}
-                  max={200}
-                  step={1}
-                  className="mt-2"
+                <input
+                  type="range"
+                  min="0"
+                  max="200"
+                  value={saturation[0]}
+                  onChange={(e) => setSaturation([parseInt(e.target.value)])}
+                  className="w-full mt-2"
                 />
               </div>
             </CardContent>
