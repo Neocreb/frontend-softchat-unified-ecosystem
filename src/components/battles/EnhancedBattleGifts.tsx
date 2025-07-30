@@ -144,34 +144,50 @@ export const EnhancedBattleGifts: React.FC<EnhancedBattleGiftsProps> = ({
         </Button>
       </div>
 
-      {/* Creator Selection */}
-      <div className="flex gap-2 mb-4">
-        <Button
-          onClick={() => onCreatorSelect('creator1')}
-          variant={selectedCreator === 'creator1' ? "default" : "outline"}
-          size="sm"
-          className={cn(
-            "flex-1 text-xs",
-            selectedCreator === 'creator1' 
-              ? "bg-blue-500 hover:bg-blue-600 text-white" 
-              : "border-blue-400 text-blue-400 hover:bg-blue-400/20"
-          )}
-        >
-          👑 {creator1Name}
-        </Button>
-        <Button
-          onClick={() => onCreatorSelect('creator2')}
-          variant={selectedCreator === 'creator2' ? "default" : "outline"}
-          size="sm"
-          className={cn(
-            "flex-1 text-xs",
-            selectedCreator === 'creator2' 
-              ? "bg-red-500 hover:bg-red-600 text-white" 
-              : "border-red-400 text-red-400 hover:bg-red-400/20"
-          )}
-        >
-          ⚔️ {creator2Name}
-        </Button>
+      {/* Creator Selection - Enhanced UI */}
+      <div className="mb-4">
+        <div className="text-center mb-2">
+          <p className="text-white/70 text-sm">Choose recipient for your gift</p>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => onCreatorSelect('creator1')}
+            variant={selectedCreator === 'creator1' ? "default" : "outline"}
+            size="sm"
+            className={cn(
+              "flex-1 text-xs py-3 transition-all duration-200",
+              selectedCreator === 'creator1'
+                ? "bg-blue-500 hover:bg-blue-600 text-white border-2 border-blue-300 scale-105 shadow-lg shadow-blue-500/30"
+                : "border-blue-400 text-blue-400 hover:bg-blue-400/20 hover:scale-102"
+            )}
+          >
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-lg">👑</span>
+              <span className="font-medium">{creator1Name}</span>
+            </div>
+          </Button>
+          <Button
+            onClick={() => onCreatorSelect('creator2')}
+            variant={selectedCreator === 'creator2' ? "default" : "outline"}
+            size="sm"
+            className={cn(
+              "flex-1 text-xs py-3 transition-all duration-200",
+              selectedCreator === 'creator2'
+                ? "bg-red-500 hover:bg-red-600 text-white border-2 border-red-300 scale-105 shadow-lg shadow-red-500/30"
+                : "border-red-400 text-red-400 hover:bg-red-400/20 hover:scale-102"
+            )}
+          >
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-lg">⚔️</span>
+              <span className="font-medium">{creator2Name}</span>
+            </div>
+          </Button>
+        </div>
+        {!selectedCreator && (
+          <div className="text-center mt-2">
+            <p className="text-yellow-400 text-xs animate-pulse">�� Select a creator to send gifts</p>
+          </div>
+        )}
       </div>
 
       {/* Category Tabs */}
