@@ -30,7 +30,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import EnhancedLiveBattle from '@/components/battles/EnhancedLiveBattle';
-import { TouchOptimizedComponents } from '@/components/mobile/TouchOptimizedComponents';
+import { MobileChat } from '@/components/mobile/TouchOptimizedComponents';
 
 interface LiveContent {
   id: string;
