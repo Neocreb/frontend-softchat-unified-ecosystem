@@ -976,6 +976,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                   isActive={index === currentVideoIndex && activeTab === "battle"}
                   showControls={showControls}
                   onDuetCreate={handleDuetCreate}
+                  onTapToShowControls={toggleHeaderTabs}
                 />
               ))
             ) : (
