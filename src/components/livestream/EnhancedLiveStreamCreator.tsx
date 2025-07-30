@@ -316,7 +316,7 @@ export function EnhancedLiveStreamCreator() {
       });
 
       // Navigate to live/battle tab to show live stream
-      navigate("/app/live");
+      navigate("/app/videos?tab=live");
     } catch (error) {
       console.error("Error starting stream:", error);
       toast({
