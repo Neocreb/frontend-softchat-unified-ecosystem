@@ -42,6 +42,8 @@ import {
   Flame,
   Coffee,
   Gift,
+  Swords,
+  Radio,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -223,6 +225,161 @@ const forYouVideos: VideoData[] = [
     duration: 35,
     timestamp: "6h",
     category: "Technology",
+  },
+];
+
+// Mock data for "Live" tab (live streaming videos)
+const liveVideos: VideoData[] = [
+  {
+    id: "live1",
+    user: {
+      id: "live1",
+      username: "live_streamer",
+      displayName: "Live Streamer",
+      avatar: "https://i.pravatar.cc/150?img=25",
+      verified: true,
+      followerCount: 45000,
+      isFollowing: false,
+    },
+    description:
+      "🔴 LIVE: Trading crypto in real time! Ask me anything about the markets 📈 #live #crypto #trading",
+    music: {
+      title: "Live Stream Audio",
+      artist: "Real Time",
+    },
+    stats: {
+      likes: 2340,
+      comments: 156,
+      shares: 23,
+      views: "1.2K watching",
+    },
+    hashtags: ["live", "crypto", "trading", "realtime"],
+    videoUrl:
+      "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400",
+    duration: 0,
+    timestamp: "Live",
+    category: "Live Stream",
+    isLiveStream: true,
+    allowDuets: false,
+    allowComments: true,
+    hasCaption: false,
+  },
+  {
+    id: "live2",
+    user: {
+      id: "live2",
+      username: "music_live",
+      displayName: "DJ LiveMix",
+      avatar: "https://i.pravatar.cc/150?img=30",
+      verified: false,
+      followerCount: 12000,
+      isFollowing: false,
+    },
+    description:
+      "🎵 Live DJ set from my studio! Drop song requests in chat 🎧 #live #dj #music",
+    music: {
+      title: "Live DJ Mix",
+      artist: "DJ LiveMix",
+    },
+    stats: {
+      likes: 890,
+      comments: 67,
+      shares: 12,
+      views: "456 watching",
+    },
+    hashtags: ["live", "dj", "music", "requests"],
+    videoUrl:
+      "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
+    duration: 0,
+    timestamp: "Live",
+    category: "Music",
+    isLiveStream: true,
+    allowDuets: false,
+    allowComments: true,
+    hasCaption: false,
+  },
+];
+
+// Mock data for "Battle" tab (battle/competition videos)
+const battleVideos: VideoData[] = [
+  {
+    id: "battle1",
+    user: {
+      id: "battle1",
+      username: "dance_warrior",
+      displayName: "Dance Warrior",
+      avatar: "https://i.pravatar.cc/150?img=18",
+      verified: true,
+      followerCount: 67000,
+      isFollowing: false,
+    },
+    description:
+      "⚔️ Dance Battle Finals! Vote for the winner! 💃🕺 #battle #dance #competition #vote",
+    music: {
+      title: "Battle Beats",
+      artist: "Competition Mix",
+    },
+    stats: {
+      likes: 15600,
+      comments: 2340,
+      shares: 890,
+      views: "3.4M",
+    },
+    hashtags: ["battle", "dance", "competition", "vote"],
+    videoUrl:
+      "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1524863479829-916d8e77f114?w=400",
+    duration: 60,
+    timestamp: "1h",
+    category: "Battle",
+    allowDuets: true,
+    allowComments: true,
+    hasCaption: true,
+    challenge: {
+      id: "dance-battle-2024",
+      title: "Ultimate Dance Battle",
+      hashtag: "DanceBattle2024",
+    },
+  },
+  {
+    id: "battle2",
+    user: {
+      id: "battle2",
+      username: "rap_king",
+      displayName: "Rap King",
+      avatar: "https://i.pravatar.cc/150?img=22",
+      verified: false,
+      followerCount: 23000,
+      isFollowing: false,
+    },
+    description:
+      "🎤 Rap Battle Championship! Who won this round? 🔥 #battle #rap #hiphop #fire",
+    music: {
+      title: "Rap Battle Beat",
+      artist: "Beat Maker",
+    },
+    stats: {
+      likes: 8900,
+      comments: 1200,
+      shares: 445,
+      views: "1.8M",
+    },
+    hashtags: ["battle", "rap", "hiphop", "fire"],
+    videoUrl:
+      "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+    thumbnail:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400",
+    duration: 45,
+    timestamp: "3h",
+    category: "Battle",
+    allowDuets: true,
+    allowComments: true,
+    hasCaption: false,
   },
 ];
 
@@ -716,7 +873,7 @@ const VideoCard: React.FC<{
 };
 
 const TikTokStyleVideos: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"foryou" | "following">("foryou");
+  const [activeTab, setActiveTab] = useState<"live" | "battle" | "foryou" | "following">("foryou");
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
@@ -727,7 +884,11 @@ const TikTokStyleVideos: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  const currentVideos = activeTab === "foryou" ? forYouVideos : followingVideos;
+  const currentVideos =
+    activeTab === "live" ? liveVideos :
+    activeTab === "battle" ? battleVideos :
+    activeTab === "foryou" ? forYouVideos :
+    followingVideos;
 
   // Auto-hide controls after inactivity
   useEffect(() => {
@@ -786,78 +947,101 @@ const TikTokStyleVideos: React.FC = () => {
         />
       </Helmet>
 
-      {/* TikTok-style header with tabs */}
+      {/* Enhanced header with 6 elements */}
       {showControls && (
-        <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
-          <div className="flex items-center justify-between p-4 pt-8">
-            {/* Search and Live buttons */}
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20"
-              >
-                <Users className="w-5 h-5" />
-              </Button>
+        <div className="absolute top-0 left-0 right-0 z-50 bg-gradient-to-b from-black/90 via-black/50 to-transparent">
+          <div className="flex items-center justify-between p-2 sm:p-4 pt-6 sm:pt-8">
+            {/* Left side - Search */}
+            <div className="flex items-center">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSearchOverlay(true)}
-                className="text-white hover:bg-white/20"
+                className="text-white hover:bg-white/20 w-8 h-8 sm:w-10 sm:h-10"
+                title="Search"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </div>
 
-            {/* Central tabs - TikTok style */}
-            <div className="flex-1 flex justify-center">
+            {/* Central tabs - 4 tabs in responsive layout */}
+            <div className="flex-1 flex justify-center px-2 sm:px-4">
               <Tabs
                 value={activeTab}
                 onValueChange={(value) =>
-                  setActiveTab(value as "foryou" | "following")
+                  setActiveTab(value as "live" | "battle" | "foryou" | "following")
                 }
-                className="w-auto"
+                className="w-full max-w-md"
               >
-                <TabsList className="bg-transparent border-0 h-auto p-0 space-x-8">
+                <TabsList className="bg-transparent border-0 h-auto p-0 grid grid-cols-4 gap-1 sm:gap-3 w-full">
+                  <TabsTrigger
+                    value="live"
+                    className={cn(
+                      "bg-transparent border-0 text-xs sm:text-sm font-semibold px-1 sm:px-2 pb-1 sm:pb-2 data-[state=active]:bg-transparent flex items-center gap-1",
+                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-red-500",
+                      "text-white/60 hover:text-white transition-colors",
+                    )}
+                    title="Live Streams"
+                  >
+                    <Radio className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="hidden xs:inline">Live</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="battle"
+                    className={cn(
+                      "bg-transparent border-0 text-xs sm:text-sm font-semibold px-1 sm:px-2 pb-1 sm:pb-2 data-[state=active]:bg-transparent flex items-center gap-1",
+                      "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-orange-500",
+                      "text-white/60 hover:text-white transition-colors",
+                    )}
+                    title="Battles"
+                  >
+                    <Swords className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="hidden xs:inline">Battle</span>
+                  </TabsTrigger>
                   <TabsTrigger
                     value="foryou"
                     className={cn(
-                      "bg-transparent border-0 text-lg font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
+                      "bg-transparent border-0 text-xs sm:text-sm font-semibold px-1 sm:px-2 pb-1 sm:pb-2 data-[state=active]:bg-transparent",
                       "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-white",
                       "text-white/60 hover:text-white transition-colors",
                     )}
+                    title="For You"
                   >
-                    For You
+                    <span className="hidden xs:inline">For You</span>
+                    <span className="xs:hidden text-[10px]">You</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="following"
                     className={cn(
-                      "bg-transparent border-0 text-lg font-semibold px-0 pb-2 data-[state=active]:bg-transparent",
+                      "bg-transparent border-0 text-xs sm:text-sm font-semibold px-1 sm:px-2 pb-1 sm:pb-2 data-[state=active]:bg-transparent",
                       "data-[state=active]:text-white data-[state=active]:border-b-2 data-[state=active]:border-white",
                       "text-white/60 hover:text-white transition-colors",
                     )}
+                    title="Following"
                   >
-                    Following
+                    <span className="hidden xs:inline">Following</span>
+                    <span className="xs:hidden text-[10px]">Follow</span>
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
 
-            {/* Right side buttons */}
-            <div className="flex items-center gap-3">
+            {/* Right side - Create button and menu */}
+            <div className="flex items-center gap-1 sm:gap-2">
               <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20"
+                onClick={() => setIsAdvancedRecorderOpen(true)}
+                className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-lg w-8 h-8 sm:w-10 sm:h-10 p-0"
+                title="Create Video"
               >
-                <Coffee className="w-5 h-5" />
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/20"
+                className="text-white hover:bg-white/20 w-8 h-8 sm:w-10 sm:h-10"
+                title="More options"
               >
-                <MoreHorizontal className="w-5 h-5" />
+                <MoreHorizontal className="w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </div>
           </div>
@@ -875,6 +1059,58 @@ const TikTokStyleVideos: React.FC = () => {
         onClick={() => setShowControls(!showControls)}
       >
         <Tabs value={activeTab} className="h-full">
+          <TabsContent value="live" className="h-full mt-0">
+            {liveVideos.length > 0 ? (
+              liveVideos.map((video, index) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  isActive={index === currentVideoIndex && activeTab === "live"}
+                  showControls={showControls}
+                />
+              ))
+            ) : (
+              <div className="h-screen flex flex-col items-center justify-center text-white p-8">
+                <Radio className="w-24 h-24 text-red-400 mb-6" />
+                <h3 className="text-2xl font-bold mb-4">No live streams</h3>
+                <p className="text-white/70 text-center text-lg leading-relaxed mb-8 max-w-sm">
+                  No one is streaming right now. Check back later or start your own live stream!
+                </p>
+                <Button
+                  onClick={() => setIsAdvancedRecorderOpen(true)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 text-lg font-semibold rounded-xl"
+                >
+                  Go Live
+                </Button>
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="battle" className="h-full mt-0">
+            {battleVideos.length > 0 ? (
+              battleVideos.map((video, index) => (
+                <VideoCard
+                  key={video.id}
+                  video={video}
+                  isActive={index === currentVideoIndex && activeTab === "battle"}
+                  showControls={showControls}
+                />
+              ))
+            ) : (
+              <div className="h-screen flex flex-col items-center justify-center text-white p-8">
+                <Swords className="w-24 h-24 text-orange-400 mb-6" />
+                <h3 className="text-2xl font-bold mb-4">No battles yet</h3>
+                <p className="text-white/70 text-center text-lg leading-relaxed mb-8 max-w-sm">
+                  No battle videos available. Create one to start competing with other creators!
+                </p>
+                <Button
+                  onClick={() => setIsAdvancedRecorderOpen(true)}
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 text-lg font-semibold rounded-xl"
+                >
+                  Start Battle
+                </Button>
+              </div>
+            )}
+          </TabsContent>
           <TabsContent value="foryou" className="h-full mt-0">
             {forYouVideos.map((video, index) => (
               <VideoCard
@@ -917,7 +1153,7 @@ const TikTokStyleVideos: React.FC = () => {
         </Tabs>
       </div>
 
-      {/* Create button and quick actions - TikTok style */}
+      {/* Quick actions - moved to bottom right */}
       <div className="fixed bottom-28 md:bottom-12 right-2 z-40 flex flex-col gap-2">
         {/* Creator Dashboard */}
         <Button
@@ -939,16 +1175,6 @@ const TikTokStyleVideos: React.FC = () => {
           title="Discover Trends"
         >
           <TrendingUp className="w-5 h-5" />
-        </Button>
-
-        {/* Main create button - TikTok style */}
-        <Button
-          onClick={() => setIsAdvancedRecorderOpen(true)}
-          className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white rounded-2xl w-14 h-14 shadow-xl transition-all duration-200 hover:scale-105 relative overflow-hidden"
-          title="Create Video"
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-pink-400 opacity-30 animate-pulse"></div>
-          <Plus className="h-7 w-7 relative z-10" />
         </Button>
       </div>
 
