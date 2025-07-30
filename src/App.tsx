@@ -89,6 +89,7 @@ import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
 import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
+import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
@@ -342,7 +343,7 @@ const AppRoutes = () => {
           <Route path="crypto" element={<EnhancedCrypto />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
-          <Route path="videos" element={<EnhancedTikTokVideos />} />
+          <Route path="videos" element={<EnhancedTikTokVideosV3 />} />
           <Route path="videos-improved" element={<ImprovedVideos />} />
           <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="duet-demo" element={<DuetDemo />} />
