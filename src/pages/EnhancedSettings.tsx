@@ -1899,7 +1899,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/app/live-streaming", "_blank")}
+                    onClick={() => window.open("/app/videos?tab=live", "_blank")}
                   >
                     <Radio className="w-6 h-6 text-red-600" />
                     <span className="font-medium">Live Streaming</span>
