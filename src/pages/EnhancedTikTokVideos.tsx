@@ -627,18 +627,29 @@ const EnhancedTikTokVideos: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [showHeaderTabs]);
 
-  // Toggle navigation visibility on click
-  const toggleNavigation = useCallback(() => {
-    setIsNavVisible(!isNavVisible);
-    if (navTimeoutRef.current) {
-      clearTimeout(navTimeoutRef.current);
+  // Toggle header tabs visibility on tap (without affecting video pause)
+  const toggleHeaderTabs = useCallback(() => {
+    setShowHeaderTabs(true);
+    if (headerTabsTimeoutRef.current) {
+      clearTimeout(headerTabsTimeoutRef.current);
     }
-    if (!isNavVisible) {
-      navTimeoutRef.current = setTimeout(() => {
-        setIsNavVisible(false);
+    headerTabsTimeoutRef.current = setTimeout(() => {
+      setShowHeaderTabs(false);
+    }, 4000);
+  }, []);
+
+  // Toggle footer navigation visibility on tap
+  const toggleFooterNavigation = useCallback(() => {
+    setIsFooterNavVisible(!isFooterNavVisible);
+    if (footerNavTimeoutRef.current) {
+      clearTimeout(footerNavTimeoutRef.current);
+    }
+    if (!isFooterNavVisible) {
+      footerNavTimeoutRef.current = setTimeout(() => {
+        setIsFooterNavVisible(false);
       }, 3000);
     }
-  }, [isNavVisible]);
+  }, [isFooterNavVisible]);
 
   // Get current videos based on active tab
   const getCurrentVideos = () => {
