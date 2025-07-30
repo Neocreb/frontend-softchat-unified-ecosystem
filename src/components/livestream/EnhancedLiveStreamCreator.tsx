@@ -483,32 +483,35 @@ export function EnhancedLiveStreamCreator({
                 <div className="space-y-3">
                   <div>
                     <label className="text-sm">Brightness</label>
-                    <Slider
-                      value={brightness}
-                      onValueChange={setBrightness}
-                      max={200}
-                      step={1}
-                      className="mt-1"
+                    <input
+                      type="range"
+                      min="0"
+                      max="200"
+                      value={brightness[0]}
+                      onChange={(e) => setBrightness([parseInt(e.target.value)])}
+                      className="w-full mt-1"
                     />
                   </div>
                   <div>
                     <label className="text-sm">Contrast</label>
-                    <Slider
-                      value={contrast}
-                      onValueChange={setContrast}
-                      max={200}
-                      step={1}
-                      className="mt-1"
+                    <input
+                      type="range"
+                      min="0"
+                      max="200"
+                      value={contrast[0]}
+                      onChange={(e) => setContrast([parseInt(e.target.value)])}
+                      className="w-full mt-1"
                     />
                   </div>
                   <div>
                     <label className="text-sm">Saturation</label>
-                    <Slider
-                      value={saturation}
-                      onValueChange={setSaturation}
-                      max={200}
-                      step={1}
-                      className="mt-1"
+                    <input
+                      type="range"
+                      min="0"
+                      max="200"
+                      value={saturation[0]}
+                      onChange={(e) => setSaturation([parseInt(e.target.value)])}
+                      className="w-full mt-1"
                     />
                   </div>
                 </div>
