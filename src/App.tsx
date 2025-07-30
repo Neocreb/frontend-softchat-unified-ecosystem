@@ -546,7 +546,9 @@ const App = () => {
                   <AccessibilityProvider>
                     <TooltipProvider>
                       <GlobalCallProvider>
-                        <AppRoutes />
+                        <NavigationProvider>
+                          <AppRoutes />
+                        </NavigationProvider>
 
                         {/* Global Components */}
                         <OnboardingTour />
