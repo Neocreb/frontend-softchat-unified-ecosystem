@@ -1053,7 +1053,10 @@ const EnhancedTikTokVideos: React.FC = () => {
 
       {/* Enhanced Footer Navigation with Auto-Hide */}
       {isFooterNavVisible && (
-        <div className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb transition-transform duration-300 ease-in-out">
+        <div
+          className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb transition-transform duration-300 ease-in-out"
+          onClick={toggleFooterNavigation}
+        >
           <div className="grid grid-cols-6 h-14 sm:h-16 px-1 w-full max-w-full">
             <Button
               variant="ghost"
