@@ -105,6 +105,8 @@ interface EnhancedLiveBattleProps {
   timeRemaining?: number;
   duration?: number;
   isUserOwned?: boolean;
+  creator1VideoRef?: React.RefObject<HTMLVideoElement>;
+  creator2VideoRef?: React.RefObject<HTMLVideoElement>;
   onBattleEnd?: (winnerId: string) => void;
   onEndBattle?: () => void;
   onExit?: () => void;
@@ -121,7 +123,7 @@ const animalGifts: AnimalGift[] = [
 ];
 
 // Quick emoji reactions
-const quickEmojis = ['❤️', '🔥', '👏', '😍', '💯', '🎉'];
+const quickEmojis = ['❤️', '🔥', '��', '😍', '💯', '🎉'];
 
 const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
   battleId,
