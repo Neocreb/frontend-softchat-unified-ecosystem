@@ -1175,12 +1175,17 @@ const EnhancedTikTokVideos: React.FC = () => {
         open={showBattleSetup}
         onOpenChange={setShowBattleSetup}
         onBattleStart={(config) => {
-          handleCreateBattle({
-            title: config.title || "Battle",
-            description: config.description || "Live battle now!",
-            type: config.type || 'general',
-            opponentId: config.opponentId,
-          });
+          if (useEnhancedComponents) {
+            setShowBattleSetup(false);
+            setShowLiveBattle(true);
+          } else {
+            handleCreateBattle({
+              title: config.title || "Battle",
+              description: config.description || "Live battle now!",
+              type: config.type || 'general',
+              opponentId: config.opponentId,
+            });
+          }
         }}
       />
 
