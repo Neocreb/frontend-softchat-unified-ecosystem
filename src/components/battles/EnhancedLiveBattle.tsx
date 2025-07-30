@@ -253,75 +253,59 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black z-50 flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-red-600 to-orange-600">
-        <div className="flex items-center gap-4">
-          <Badge className="bg-red-500 text-white animate-pulse">
-            <Target className="w-3 h-3 mr-1" />
-            LIVE BATTLE
-          </Badge>
-          <div className="flex items-center gap-2 text-white">
-            <Clock className="w-4 h-4" />
-            <span className="font-bold text-lg">{formatTime(timeRemaining)}</span>
-          </div>
-          <div className="text-white text-sm">
-            Round {currentRound}/{totalRounds}
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-white">
-            <Users className="w-4 h-4" />
-            <span>{viewerCount.toLocaleString()} watching</span>
-          </div>
-          <Button onClick={onExit} variant="ghost" size="sm" className="text-white">
-            <X className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
-
-      {/* Battle Score Display */}
-      <div className="bg-gray-900 p-4 border-b border-gray-800">
-        <div className="flex items-center justify-between max-w-4xl mx-auto">
-          {/* Player 1 */}
+      {/* Clean Top Header */}
+      <div className="relative bg-gradient-to-r from-red-600 to-orange-600 px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Left: Battle indicator and timer */}
           <div className="flex items-center gap-3">
-            <Avatar className="w-12 h-12 border-2 border-blue-500">
-              <AvatarImage src={creator1.avatar} />
-              <AvatarFallback>{creator1.displayName[0]}</AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold">{creator1.displayName}</span>
-                {creator1.verified && <CheckCircle className="w-4 h-4 text-blue-500" />}
-                <span className={getTierColor(creator1.tier)}>
-                  {getTierIcon(creator1.tier)}
-                </span>
-              </div>
-              <div className="text-blue-400 font-bold text-2xl">{scores.player1}</div>
+            <Badge className="bg-red-500 text-white animate-pulse px-3 py-1">
+              <Target className="w-3 h-3 mr-1" />
+              LIVE BATTLE
+            </Badge>
+            <div className="bg-black/30 rounded-full px-3 py-1">
+              <span className="text-white font-bold text-lg">{formatTime(timeRemaining)}</span>
+            </div>
+            <div className="text-white text-sm opacity-90">
+              Round {currentRound}/{totalRounds}
             </div>
           </div>
 
-          {/* VS */}
-          <div className="text-center">
-            <div className="text-white text-3xl font-bold">VS</div>
-            <Progress value={(scores.player1 / (scores.player1 + scores.player2)) * 100} className="w-32 mt-2" />
+          {/* Right: Viewers and close */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 text-white">
+              <Users className="w-4 h-4" />
+              <span className="font-medium">{viewerCount.toLocaleString()}</span>
+              <span className="text-sm opacity-90">watching</span>
+            </div>
+            <Button onClick={onExit} variant="ghost" size="sm" className="text-white hover:bg-white/20">
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Player Scores - Positioned at top corners */}
+        <div className="absolute top-12 left-0 right-0 flex justify-between px-4">
+          {/* Player 1 Score */}
+          <div className="bg-blue-600/90 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center gap-2">
+            <Avatar className="w-8 h-8 border-2 border-white/50">
+              <AvatarImage src={creator1.avatar} />
+              <AvatarFallback>{creator1.displayName[0]}</AvatarFallback>
+            </Avatar>
+            <div className="text-white">
+              <div className="font-bold text-lg">{scores.player1}</div>
+              <div className="text-xs opacity-90">{creator1.displayName}</div>
+            </div>
           </div>
 
-          {/* Player 2 */}
-          <div className="flex items-center gap-3 flex-row-reverse">
-            <Avatar className="w-12 h-12 border-2 border-red-500">
+          {/* Player 2 Score */}
+          <div className="bg-red-600/90 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center gap-2 flex-row-reverse">
+            <Avatar className="w-8 h-8 border-2 border-white/50">
               <AvatarImage src={creator2.avatar} />
               <AvatarFallback>{creator2.displayName[0]}</AvatarFallback>
             </Avatar>
-            <div className="text-right">
-              <div className="flex items-center gap-2 flex-row-reverse">
-                <span className="text-white font-bold">{creator2.displayName}</span>
-                {creator2.verified && <CheckCircle className="w-4 h-4 text-blue-500" />}
-                <span className={getTierColor(creator2.tier)}>
-                  {getTierIcon(creator2.tier)}
-                </span>
-              </div>
-              <div className="text-red-400 font-bold text-2xl">{scores.player2}</div>
+            <div className="text-white text-right">
+              <div className="font-bold text-lg">{scores.player2}</div>
+              <div className="text-xs opacity-90">{creator2.displayName}</div>
             </div>
           </div>
         </div>
