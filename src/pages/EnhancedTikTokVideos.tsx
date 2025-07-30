@@ -67,45 +67,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// Import video components with error handling
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
-
-// Conditional imports to avoid errors if components don't exist
-let EnhancedVideoCreator: React.ComponentType<any> = () => <div>Video Creator Not Available</div>;
-let AdvancedVideoRecorder: React.ComponentType<any> = () => <div>Video Recorder Not Available</div>;
-let ContentDiscoveryEngine: React.ComponentType<any> = () => <div>Discovery Engine Not Available</div>;
-let DuetEnabledVideoPlayer: React.ComponentType<any> = () => <div>Duet Player Not Available</div>;
-let DuetRecorder: React.ComponentType<any> = () => <div>Duet Recorder Not Available</div>;
-let BattleSetup: React.ComponentType<any> = () => <div>Battle Setup Not Available</div>;
-let LiveBattle: React.ComponentType<any> = () => <div>Live Battle Not Available</div>;
-
-try {
-  EnhancedVideoCreator = require("@/components/video/EnhancedVideoCreator").default;
-} catch (e) { console.warn("EnhancedVideoCreator not found"); }
-
-try {
-  AdvancedVideoRecorder = require("@/components/video/AdvancedVideoRecorder").default;
-} catch (e) { console.warn("AdvancedVideoRecorder not found"); }
-
-try {
-  ContentDiscoveryEngine = require("@/components/video/ContentDiscoveryEngine").default;
-} catch (e) { console.warn("ContentDiscoveryEngine not found"); }
-
-try {
-  DuetEnabledVideoPlayer = require("@/components/video/DuetEnabledVideoPlayer").default;
-} catch (e) { console.warn("DuetEnabledVideoPlayer not found"); }
-
-try {
-  DuetRecorder = require("@/components/video/DuetRecorder").default;
-} catch (e) { console.warn("DuetRecorder not found"); }
-
-try {
-  BattleSetup = require("@/components/battles/BattleSetup").default;
-} catch (e) { console.warn("BattleSetup not found"); }
-
-try {
-  LiveBattle = require("@/components/battles/LiveBattle").default;
-} catch (e) { console.warn("LiveBattle not found"); }
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
