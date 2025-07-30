@@ -984,7 +984,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                 className="text-white hover:bg-white/20 h-6 w-6 sm:h-8 sm:w-8"
                 onClick={() => setIsDashboardOpen(true)}
               >
-                <MoreHorizontal className="h-4 h-4" />
+                <MoreHorizontal className="h-4 w-4" />
               </Button>
             </div>
           </div>
