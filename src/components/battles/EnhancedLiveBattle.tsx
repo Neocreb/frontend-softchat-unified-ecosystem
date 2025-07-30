@@ -511,29 +511,7 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
         </div>
       </div>
 
-      {/* Global Controls */}
-      <div className="bg-gray-900 border-t border-gray-800 p-4">
-        <div className="flex items-center justify-center gap-4">
-          <Button
-            onClick={() => setIsMuted(!isMuted)}
-            variant="ghost"
-            size="sm"
-            className="text-white"
-          >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </Button>
-          
-          <Button variant="ghost" size="sm" className="text-white">
-            <Share2 className="w-4 h-4 mr-2" />
-            Share Battle
-          </Button>
-          
-          <Button variant="ghost" size="sm" className="text-white">
-            <Settings className="w-4 h-4 mr-2" />
-            Settings
-          </Button>
-        </div>
-      </div>
+
     </div>
   );
 };
