@@ -727,76 +727,11 @@ const EnhancedTikTokVideos: React.FC = () => {
     });
   };
 
-  const handleCreateLiveStream = (streamData: {
-    title: string;
-    description: string;
-    category?: string;
-  }) => {
-    const streamId = addLiveStream({
-      title: streamData.title,
-      description: streamData.description,
-      category: streamData.category,
-    });
-
-    // Switch to live tab to show the new stream
-    setActiveTab("live");
-    setCurrentVideoIndex(0);
-    setIsLiveStreamOpen(false);
-
-    toast({
-      title: "Live Stream Started! 🔴",
-      description: "Your stream is now live in the Live tab",
-    });
-  };
-
-  const handleCreateBattle = (battleData: {
-    title: string;
-    description: string;
-    type: 'dance' | 'rap' | 'comedy' | 'general';
-    opponentId?: string;
-  }) => {
-    const battleId = addBattle({
-      title: battleData.title,
-      description: battleData.description,
-      category: battleData.type,
-      battleData: {
-        type: battleData.type,
-        timeRemaining: 300, // 5 minutes
-        scores: {
-          user1: 0,
-          user2: 0,
-        },
-        opponent: battleData.opponentId ? {
-          id: battleData.opponentId,
-          username: "opponent",
-          displayName: "Opponent",
-          avatar: "https://i.pravatar.cc/150?img=5",
-        } : undefined,
-      },
-    });
-
-    // Switch to battle tab to show the new battle
-    setActiveTab("battle");
-    setCurrentVideoIndex(0);
-    setShowBattleSetup(false);
-
-    toast({
-      title: "Battle Started! ⚔️",
-      description: "Your battle is now live in the Battle tab",
-    });
-  };
-
-  const handleDuetCancel = () => {
-    setShowDuetRecorder(false);
-    setDuetOriginalVideo(null);
-  };
-
   const handleStartBattle = () => {
     setShowCreateMenu(false);
-    setShowBattleSetup(true);
     toast({
       title: "Battle Mode! ⚔️",
-      description: "Set up your live battle challenge",
+      description: "Battle feature coming soon!",
     });
   };
 
