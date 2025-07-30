@@ -192,15 +192,16 @@ const EnhancedLiveContentCard: React.FC<EnhancedLiveContentCardProps> = ({
   // Initialize camera when component becomes active
   useEffect(() => {
     if (isActive && isUserOwned) {
+      console.log('Initializing camera for live content:', content.type, content.id);
       initializeCamera();
     } else {
       stopCamera();
     }
-    
+
     return () => {
       stopCamera();
     };
-  }, [isActive, isUserOwned, initializeCamera, stopCamera]);
+  }, [isActive, isUserOwned, initializeCamera, stopCamera, content.type, content.id]);
   
   // Auto-hide controls
   useEffect(() => {
