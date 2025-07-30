@@ -106,7 +106,10 @@ export const AutoHideNavigation: React.FC<AutoHideNavigationProps> = ({
   ];
 
   const getPageTitle = () => {
-    if (location.pathname.startsWith('/app/videos')) return 'Videos';
+    if (location.pathname.startsWith('/app/videos')) {
+      const tab = new URLSearchParams(location.search).get('tab');
+      return tab === 'live' ? 'Live & Battles' : 'Videos';
+    }
     if (location.pathname.startsWith('/app/live')) return 'Live & Battles';
     if (location.pathname.startsWith('/app/battle')) return 'Battle';
     if (location.pathname.startsWith('/app/explore')) return 'Explore';
