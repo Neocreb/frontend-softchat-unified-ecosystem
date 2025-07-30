@@ -311,10 +311,10 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
         </div>
       </div>
 
-      {/* Main Battle Area - Split Screen */}
-      <div className="flex-1 flex">
+      {/* Main Battle Area - Clean Split Screen */}
+      <div className="flex-1 flex relative">
         {/* Player 1 Stream */}
-        <div className="flex-1 relative bg-gray-900 border-r border-gray-800">
+        <div className="flex-1 relative bg-gray-900">
           <video
             ref={player1VideoRef}
             className="w-full h-full object-cover"
@@ -322,13 +322,19 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
             muted={isMuted}
             poster="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800"
           />
-          
-          {/* Player 1 Controls Overlay */}
+
+          {/* Player 1 Name Badge */}
+          <div className="absolute top-4 left-4 bg-blue-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full">
+            <span className="font-medium text-sm">{creator1.displayName}</span>
+          </div>
+
+          {/* Player 1 Controls (bottom left) */}
           <div className="absolute bottom-4 left-4 flex gap-2">
             <Button
               size="sm"
               variant={isCamera1On ? "default" : "destructive"}
               onClick={() => setIsCamera1On(!isCamera1On)}
+              className="bg-black/50 backdrop-blur-sm border-none"
             >
               {isCamera1On ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
             </Button>
@@ -336,34 +342,22 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
               size="sm"
               variant={isMic1On ? "default" : "destructive"}
               onClick={() => setIsMic1On(!isMic1On)}
+              className="bg-black/50 backdrop-blur-sm border-none"
             >
               {isMic1On ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4" />}
             </Button>
           </div>
+        </div>
 
-          {/* Player 1 Name Overlay */}
-          <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full">
-            <span className="font-bold">{creator1.displayName}</span>
-          </div>
-
-          {/* Vote for Player 1 */}
-          <div className="absolute top-4 right-4">
-            <Button
-              onClick={() => handleVote('player1')}
-              disabled={hasVoted}
-              className={cn(
-                "bg-blue-600 hover:bg-blue-700",
-                userVote === 'player1' && "bg-blue-800 ring-2 ring-blue-400"
-              )}
-            >
-              <ThumbsUp className="w-4 h-4 mr-2" />
-              Vote ({voteCount.player1})
-            </Button>
+        {/* Center Divider with VS */}
+        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+          <div className="bg-black/80 backdrop-blur-sm rounded-full p-3 border-2 border-white/20">
+            <span className="text-white font-bold text-lg">VS</span>
           </div>
         </div>
 
         {/* Player 2 Stream */}
-        <div className="flex-1 relative bg-gray-900">
+        <div className="flex-1 relative bg-gray-900 border-l border-gray-700">
           <video
             ref={player2VideoRef}
             className="w-full h-full object-cover"
@@ -371,13 +365,19 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
             muted={isMuted}
             poster="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800"
           />
-          
-          {/* Player 2 Controls Overlay */}
+
+          {/* Player 2 Name Badge */}
+          <div className="absolute top-4 right-4 bg-red-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full">
+            <span className="font-medium text-sm">{creator2.displayName}</span>
+          </div>
+
+          {/* Player 2 Controls (bottom right) */}
           <div className="absolute bottom-4 right-4 flex gap-2">
             <Button
               size="sm"
               variant={isCamera2On ? "default" : "destructive"}
               onClick={() => setIsCamera2On(!isCamera2On)}
+              className="bg-black/50 backdrop-blur-sm border-none"
             >
               {isCamera2On ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
             </Button>
@@ -385,28 +385,9 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
               size="sm"
               variant={isMic2On ? "default" : "destructive"}
               onClick={() => setIsMic2On(!isMic2On)}
+              className="bg-black/50 backdrop-blur-sm border-none"
             >
               {isMic2On ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4" />}
-            </Button>
-          </div>
-
-          {/* Player 2 Name Overlay */}
-          <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full">
-            <span className="font-bold">{creator2.displayName}</span>
-          </div>
-
-          {/* Vote for Player 2 */}
-          <div className="absolute top-4 left-4">
-            <Button
-              onClick={() => handleVote('player2')}
-              disabled={hasVoted}
-              className={cn(
-                "bg-red-600 hover:bg-red-700",
-                userVote === 'player2' && "bg-red-800 ring-2 ring-red-400"
-              )}
-            >
-              <ThumbsUp className="w-4 h-4 mr-2" />
-              Vote ({voteCount.player2})
             </Button>
           </div>
         </div>
