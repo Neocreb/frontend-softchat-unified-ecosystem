@@ -188,8 +188,8 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     },
     {
       icon: <Radio className="w-6 h-6 text-red-500" />,
-      label: "Live Streaming",
-      href: "/app/videos?tab=live",
+      label: "Live & Battles",
+      href: "/app/live",
     },
     {
       icon: <ShoppingCart className="w-6 h-6 text-blue-600" />,
