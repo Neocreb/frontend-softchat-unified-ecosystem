@@ -476,15 +476,28 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
       <div className="flex h-full pt-16 md:pt-20">
         {/* Creator 1 Side */}
         <div className="relative flex-1 bg-gradient-to-br from-red-600/20 to-red-800/20">
-          <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
-            <div className="text-center text-white">
-              <Avatar className="w-16 h-16 md:w-24 md:h-24 mx-auto mb-4">
-                <AvatarImage src={creator1.avatar} />
-                <AvatarFallback>{creator1.displayName[0]}</AvatarFallback>
-              </Avatar>
-              <div className="text-sm opacity-50">Camera feed</div>
+          {/* Real video feed for Creator 1 if available */}
+          {creator1VideoRef ? (
+            <video
+              ref={creator1VideoRef}
+              className="absolute inset-0 w-full h-full object-cover"
+              autoPlay
+              muted
+              playsInline
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gray-800 flex items-center justify-center">
+              <div className="text-center text-white">
+                <Avatar className="w-16 h-16 md:w-24 md:h-24 mx-auto mb-4">
+                  <AvatarImage src={creator1.avatar} />
+                  <AvatarFallback>{creator1.displayName[0]}</AvatarFallback>
+                </Avatar>
+                <div className="text-sm opacity-50">
+                  {isUserOwned ? 'Your camera feed' : 'Camera feed'}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Creator 1 Info */}
           <div className="absolute top-4 left-4">
