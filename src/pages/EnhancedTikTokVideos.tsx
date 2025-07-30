@@ -912,9 +912,9 @@ const EnhancedTikTokVideos: React.FC = () => {
         className="h-full w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
         style={{
           scrollBehavior: "smooth",
-          paddingBottom: isNavVisible && isMobile ? "80px" : "20px",
+          paddingBottom: isFooterNavVisible && isMobile ? "80px" : "20px",
         }}
-        onClick={toggleNavigation}
+        onClick={toggleHeaderTabs}
       >
         <Tabs value={activeTab} className="h-full">
           <TabsContent value="live" className="h-full mt-0">
