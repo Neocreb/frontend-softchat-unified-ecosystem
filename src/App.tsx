@@ -89,6 +89,7 @@ import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
 import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
+import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
