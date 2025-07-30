@@ -930,7 +930,7 @@ const EnhancedTikTokVideos: React.FC = () => {
                   <p className="text-sm">Start a live stream to see content here!</p>
                   <div className="mt-4">
                     <Button
-                      onClick={() => setIsLiveStreamOpen(true)}
+                      onClick={handleGoLive}
                       className="bg-red-500 hover:bg-red-600 text-white"
                     >
                       <Radio className="w-4 h-4 mr-2" />
