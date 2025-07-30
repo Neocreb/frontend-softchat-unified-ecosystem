@@ -100,7 +100,7 @@ export const AutoHideNavigation: React.FC<AutoHideNavigationProps> = ({
   const navigationItems = [
     { icon: Home, label: 'Feed', path: '/app/feed', active: location.pathname === '/app/feed' },
     { icon: Video, label: 'Videos', path: '/app/videos', active: location.pathname.startsWith('/app/videos') },
-    { icon: Users, label: 'Live', path: '/app/live', active: location.pathname.startsWith('/app/live') },
+    { icon: Users, label: 'Live', path: '/app/videos?tab=live', active: location.pathname.startsWith('/app/videos') && new URLSearchParams(location.search).get('tab') === 'live' },
     { icon: Search, label: 'Explore', path: '/app/explore', active: location.pathname.startsWith('/app/explore') },
     { icon: MessageSquare, label: 'Chat', path: '/app/chat', active: location.pathname.startsWith('/app/chat') },
   ];
