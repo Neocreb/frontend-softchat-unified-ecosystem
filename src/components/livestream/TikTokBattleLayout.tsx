@@ -435,7 +435,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
   };
 
   return (
-    <div className={cn("relative h-screen w-full bg-black overflow-hidden", className)}>
+    <div className={cn("relative h-screen w-full bg-black overflow-hidden snap-start snap-always", className)}>
       {/* Split Screen Videos */}
       <div className="absolute inset-0 flex">
         {/* Creator 1 - Left Side */}
