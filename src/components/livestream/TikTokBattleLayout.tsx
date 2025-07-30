@@ -152,6 +152,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
   className,
 }) => {
   const { user } = useAuth();
+  const { toggleNav } = useNavigation();
   const { toast } = useToast();
   
   // Battle state
