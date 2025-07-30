@@ -95,6 +95,7 @@ import CreatorStudio from "./pages/CreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
 import Explore from "./pages/Explore";
+import Live from "./pages/Live";
 import GlobalSearch from "./pages/GlobalSearch";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
