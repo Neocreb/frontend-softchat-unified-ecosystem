@@ -8,6 +8,7 @@ import {
   Wallet,
   Plus,
   Zap,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import { useNavigation } from "@/contexts/NavigationContext";
 
 const FooterNav = () => {
   const location = useLocation();
-  const { isNavVisible, isVideoPage } = useNavigation();
+  const { isNavVisible, isVideoPage, toggleNav } = useNavigation();
 
   const navItems = [
     {
@@ -61,8 +62,30 @@ const FooterNav = () => {
     },
   ];
 
+  // Don't render on video pages if navigation is hidden
+  if (isVideoPage && !isNavVisible) {
+    return (
+      <div className="fixed bottom-4 left-4 z-[100] md:hidden">
+        <Button
+          variant="default"
+          size="sm"
+          onClick={() => toggleNav()}
+          className="rounded-full h-12 w-12 p-0 shadow-lg"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb">
+    <div
+      className={cn(
+        "fixed bottom-0 inset-x-0 bg-background/95 backdrop-blur border-t md:hidden z-[100] safe-area-pb transition-transform duration-300",
+        isVideoPage && "cursor-pointer"
+      )}
+      onClick={isVideoPage ? toggleNav : undefined}
+    >
       <div className="grid grid-cols-6 h-14 sm:h-16 px-1 w-full max-w-full">
         {navItems.map((item) => (
           <Link key={item.href} to={item.href} className="w-full min-w-0">
