@@ -592,29 +592,40 @@ const EnhancedTikTokVideos: React.FC = () => {
   const addBattle = (battle: any) => 'fallback-id';
   const removeLiveContent = (id: string) => {};
 
-  // Auto-hide navigation after 3 seconds
+  // Auto-hide FOOTER navigation after 3 seconds (header tabs should stay visible)
   useEffect(() => {
     const isVideoPage = window.location.pathname.includes('/videos');
     if (!isVideoPage) return;
 
-    const resetTimer = () => {
-      if (navTimeoutRef.current) {
-        clearTimeout(navTimeoutRef.current);
+    const resetFooterTimer = () => {
+      if (footerNavTimeoutRef.current) {
+        clearTimeout(footerNavTimeoutRef.current);
       }
-      setIsNavVisible(true);
-      navTimeoutRef.current = setTimeout(() => {
-        setIsNavVisible(false);
+      setIsFooterNavVisible(true);
+      footerNavTimeoutRef.current = setTimeout(() => {
+        setIsFooterNavVisible(false);
       }, 3000);
     };
 
-    resetTimer();
+    resetFooterTimer();
 
     return () => {
-      if (navTimeoutRef.current) {
-        clearTimeout(navTimeoutRef.current);
+      if (footerNavTimeoutRef.current) {
+        clearTimeout(footerNavTimeoutRef.current);
       }
     };
   }, []);
+
+  // Auto-hide HEADER tabs after 4 seconds (separate from footer)
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (showHeaderTabs) {
+      timeout = setTimeout(() => {
+        setShowHeaderTabs(false);
+      }, 4000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showHeaderTabs]);
 
   // Toggle navigation visibility on click
   const toggleNavigation = useCallback(() => {
