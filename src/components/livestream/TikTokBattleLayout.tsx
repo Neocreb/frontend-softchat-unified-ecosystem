@@ -48,6 +48,8 @@ import BattleVoting from '../voting/BattleVoting';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import VirtualGiftsAndTips from '../premium/VirtualGiftsAndTips';
 import EnhancedBattleGifts, { BattleGift } from '../battles/EnhancedBattleGifts';
+import BattleEffects from '../battles/BattleEffects';
+import BattleVoting from '../voting/BattleVoting';
 
 interface LiveChatMessage {
   id: string;
@@ -169,6 +171,7 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
   // UI state
   const [showGifts, setShowGifts] = useState(false);
   const [showVoting, setShowVoting] = useState(false);
+  const [showGiftAnimation, setShowGiftAnimation] = useState<{gift: BattleGift, position: {x: number, y: number}} | null>(null);
   const [showQuickReactions, setShowQuickReactions] = useState(false);
   const [showStreamControls, setShowStreamControls] = useState(false);
   const [selectedCreator, setSelectedCreator] = useState<'creator1' | 'creator2'>('creator1');
@@ -631,37 +634,37 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
         </Badge>
       </div>
 
-      {/* Battle Progress Bar */}
-      <div className="absolute bottom-80 left-4 right-4 z-30">
-        <div className="bg-black/70 rounded-lg p-3 backdrop-blur-sm">
+      {/* Battle Progress Bar - Moved higher to avoid overlap */}
+      <div className="absolute bottom-24 sm:bottom-32 left-4 right-4 z-30">
+        <div className="bg-black/80 rounded-lg p-2.5 sm:p-3 backdrop-blur-sm">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-blue-300 text-sm font-medium">
+            <span className="text-blue-300 text-xs sm:text-sm font-medium">
               {formatNumber(battleScores.creator1)}
             </span>
             <span className="text-white text-xs">BATTLE SCORE</span>
-            <span className="text-red-300 text-sm font-medium">
+            <span className="text-red-300 text-xs sm:text-sm font-medium">
               {formatNumber(battleScores.creator2)}
             </span>
           </div>
           <Progress
             value={getBattleProgress()}
-            className="h-2 bg-gray-600"
+            className="h-1.5 sm:h-2 bg-gray-600"
           />
-          <div className="flex items-center justify-center mt-3">
+          <div className="flex items-center justify-center mt-2">
             <Button
               onClick={() => setShowVoting(true)}
               size="sm"
-              className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-6 rounded-full flex items-center gap-2"
+              className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-4 sm:px-6 py-1 sm:py-2 rounded-full flex items-center gap-2 text-xs sm:text-sm h-6 sm:h-8"
             >
-              <DollarSign className="w-4 h-4" />
+              <DollarSign className="w-3 h-3 sm:w-4 sm:h-4" />
               Vote Now
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Live Chat */}
-      <div className="absolute bottom-32 left-4 right-20 z-30 space-y-1">
+      {/* Live Chat - Adjusted position */}
+      <div className="absolute bottom-16 sm:bottom-20 left-4 right-20 z-30 space-y-1 max-h-32 overflow-hidden">
         {chatMessages.slice(-4).map((msg, index) => (
           <div
             key={msg.id}
@@ -701,16 +704,16 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-        <div className="p-3 sm:p-4 pt-6">
-          <div className="flex items-center gap-2">
+      <div className="absolute bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+        <div className="p-2 sm:p-4 pt-4">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Chat Input */}
             <div className="flex-1 min-w-0">
               <Input
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
                 placeholder="Type..."
-                className="bg-white/15 border-white/20 text-white placeholder:text-white/60 rounded-full px-3 py-2 sm:px-4 sm:py-3 text-sm backdrop-blur-md"
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 text-sm backdrop-blur-md h-8 sm:h-10"
                 onKeyPress={(e) => {
                   if (e.key === 'Enter' && chatMessage.trim()) {
                     const newMessage: LiveChatMessage = {
@@ -734,24 +737,24 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
               />
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons - More compact */}
             <div className="flex items-center gap-1 flex-shrink-0">
               <Button
                 onClick={() => setShowGifts(!showGifts)}
                 variant="ghost"
                 size="icon"
-                className="text-pink-400 hover:bg-white/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 backdrop-blur-sm"
+                className="text-pink-400 hover:bg-white/20 rounded-full w-7 h-7 sm:w-9 sm:h-9 backdrop-blur-sm p-0"
               >
-                <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
+                <Gift className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Button>
 
               <Button
                 onClick={() => setShowQuickReactions(!showQuickReactions)}
                 variant="ghost"
                 size="icon"
-                className="text-yellow-400 hover:bg-white/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 backdrop-blur-sm"
+                className="text-yellow-400 hover:bg-white/20 rounded-full w-7 h-7 sm:w-9 sm:h-9 backdrop-blur-sm p-0"
               >
-                <Smile className="w-4 h-4 sm:w-5 sm:h-5" />
+                <Smile className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Button>
 
               <Button
@@ -772,23 +775,41 @@ export const TikTokBattleLayout: React.FC<TikTokBattleLayoutProps> = ({
                 }}
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 backdrop-blur-sm"
+                className="text-white hover:bg-white/20 rounded-full w-7 h-7 sm:w-9 sm:h-9 backdrop-blur-sm p-0"
               >
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Bottom safe area for mobile */}
-        <div className="h-12 sm:h-16 bg-black/50" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}></div>
+        {/* Safe area for mobile with reduced height */}
+        <div className="h-6 sm:h-8" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}></div>
       </div>
 
-      {/* Enhanced Gift Selection Panel */}
+      {/* Enhanced Gift Selection Panel - Better positioning */}
       {showGifts && (
-        <div className="absolute bottom-32 left-4 right-4 z-50">
+        <div className="absolute bottom-20 sm:bottom-24 left-2 right-2 sm:left-4 sm:right-4 z-50 max-h-96 overflow-hidden">
           <EnhancedBattleGifts
-            onSendGift={handleSendGift}
+            onSendGift={(gift, recipient) => {
+              handleSendGift(gift, recipient);
+              // Add gift animation effect
+              const giftEffect = {
+                id: `gift-${Date.now()}`,
+                type: 'gift' as const,
+                animation: gift.animation || 'sparkle' as const,
+                position: { x: Math.random() * 80 + 10, y: Math.random() * 30 + 20 },
+                value: gift.multiplier,
+                gift: {
+                  emoji: gift.emoji,
+                  name: gift.name,
+                  rarity: gift.rarity,
+                },
+                duration: 3000,
+                timestamp: Date.now(),
+              };
+              // You could add this to an effects array if you implement the effects system
+            }}
             selectedCreator={selectedCreator}
             onCreatorSelect={setSelectedCreator}
             creator1Name={content.user.displayName}
