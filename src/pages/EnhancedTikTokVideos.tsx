@@ -580,7 +580,7 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [isNavVisible, setIsNavVisible] = useState(true);
   const navTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const [userBalance] = useState(2500); // Mock user balance
+  // Removed userBalance as it's not used
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
   // Use a simple fallback for live content to avoid context errors
