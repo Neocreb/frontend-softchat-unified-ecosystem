@@ -411,8 +411,8 @@ const EnhancedLiveContentCard: React.FC<EnhancedLiveContentCardProps> = ({
 
       {/* Chat Section for viewers */}
       {!isUserOwned && (
-        <TouchOptimizedComponents.MobileChat
-          comments={comments}
+        <MobileChat
+          messages={comments}
           newMessage={chatMessage}
           onMessageChange={setChatMessage}
           onSendMessage={sendMessage}
