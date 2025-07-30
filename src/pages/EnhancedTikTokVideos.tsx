@@ -578,8 +578,10 @@ const EnhancedTikTokVideos: React.FC = () => {
   const [showCreateMenu, setShowCreateMenu] = useState(false);
 
   // Auto-hide navigation state
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const navTimeoutRef = useRef<NodeJS.Timeout>();
+  // Auto-hide footer navigation state (NOT header tabs)
+  const [isFooterNavVisible, setIsFooterNavVisible] = useState(true);
+  const footerNavTimeoutRef = useRef<NodeJS.Timeout>();
+  const headerTabsTimeoutRef = useRef<NodeJS.Timeout>();
 
   // Removed userBalance as it's not used
   const containerRef = useRef<HTMLDivElement>(null);
