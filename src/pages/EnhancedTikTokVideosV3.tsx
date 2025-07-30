@@ -46,6 +46,7 @@ import {
   Upload,
   Target,
   Swords,
+  ShoppingCart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -719,7 +720,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
     setIsLiveStreamOpen(false);
 
     toast({
-      title: "Live Stream Started! ���",
+      title: "Live Stream Started! 🔴",
       description: "Your stream is now live in the Live tab",
     });
   };
