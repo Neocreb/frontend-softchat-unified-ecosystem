@@ -1149,7 +1149,96 @@ const EnhancedTikTokVideos: React.FC = () => {
         </div>
       )}
 
-      {/* Placeholder for future features */}
+      {/* Advanced Video Recorder */}
+      {isAdvancedRecorderOpen && (
+        <AdvancedVideoRecorder
+          onClose={() => setIsAdvancedRecorderOpen(false)}
+          onVideoCreated={handleVideoCreated}
+        />
+      )}
+
+      {/* Duet Recorder */}
+      {showDuetRecorder && duetOriginalVideo && (
+        <DuetRecorder
+          originalVideo={duetOriginalVideo}
+          duetStyle={selectedDuetStyle}
+          onCancel={handleDuetCancel}
+          onComplete={handleDuetComplete}
+        />
+      )}
+
+      {/* Battle Setup */}
+      <BattleSetup
+        open={showBattleSetup}
+        onOpenChange={setShowBattleSetup}
+        onBattleStart={(config) => {
+          handleCreateBattle({
+            title: config.title || "Battle",
+            description: config.description || "Live battle now!",
+            type: config.type || 'general',
+            opponentId: config.opponentId,
+          });
+        }}
+      />
+
+      {/* Live Stream Creator */}
+      <Dialog open={isLiveStreamOpen} onOpenChange={setIsLiveStreamOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] bg-black border-gray-800 p-0 overflow-hidden">
+          <VisuallyHidden>
+            <DialogTitle>Start Live Stream</DialogTitle>
+          </VisuallyHidden>
+          <div className="h-full max-h-[90vh] overflow-y-auto">
+            <LiveStreamCreator
+              onStreamStart={(stream) => {
+                setIsLiveStreamOpen(false);
+                handleCreateLiveStream({
+                  title: stream.title || "Live Stream",
+                  description: stream.description || "Live streaming now!",
+                  category: stream.category,
+                });
+              }}
+              onStreamEnd={() => {
+                setIsLiveStreamOpen(false);
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Content Discovery Engine */}
+      <Dialog open={isDiscoveryOpen} onOpenChange={setIsDiscoveryOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[90vh] bg-black border-gray-800 p-0">
+          <VisuallyHidden>
+            <DialogTitle>Content Discovery</DialogTitle>
+          </VisuallyHidden>
+          <ContentDiscoveryEngine
+            onHashtagSelect={(hashtag) => {
+              setSearchQuery(`#${hashtag}`);
+              setIsDiscoveryOpen(false);
+            }}
+            onSoundSelect={(soundId) => {
+              setIsDiscoveryOpen(false);
+              setIsAdvancedRecorderOpen(true);
+            }}
+            onChallengeSelect={(challengeId) => {
+              setIsDiscoveryOpen(false);
+              setIsAdvancedRecorderOpen(true);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Creator Dashboard */}
+      <Dialog open={isDashboardOpen} onOpenChange={setIsDashboardOpen}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] bg-gray-900 border-gray-700 p-0">
+          <VisuallyHidden>
+            <DialogTitle>Creator Dashboard</DialogTitle>
+          </VisuallyHidden>
+          <div className="h-full overflow-auto p-6">
+            <CreatorDashboard />
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Enhanced Footer Navigation with Auto-Hide */}
       {isFooterNavVisible && (
