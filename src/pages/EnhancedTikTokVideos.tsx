@@ -780,11 +780,69 @@ const EnhancedTikTokVideos: React.FC = () => {
     setDuetOriginalVideo(null);
   };
 
+  const handleCreateLiveStream = (streamData: {
+    title: string;
+    description: string;
+    category?: string;
+  }) => {
+    const streamId = addLiveStream({
+      title: streamData.title,
+      description: streamData.description,
+      category: streamData.category,
+    });
+
+    setActiveTab("live");
+    setCurrentVideoIndex(0);
+    setIsLiveStreamOpen(false);
+
+    toast({
+      title: "Live Stream Started! 🔴",
+      description: "Your stream is now live in the Live tab",
+    });
+  };
+
+  const handleCreateBattle = (battleData: {
+    title: string;
+    description: string;
+    type: 'dance' | 'rap' | 'comedy' | 'general';
+    opponentId?: string;
+  }) => {
+    const battleId = addBattle({
+      title: battleData.title,
+      description: battleData.description,
+      category: battleData.type,
+      battleData: {
+        type: battleData.type,
+        timeRemaining: 300,
+        scores: {
+          user1: 0,
+          user2: 0,
+        },
+        opponent: battleData.opponentId ? {
+          id: battleData.opponentId,
+          username: "opponent",
+          displayName: "Opponent",
+          avatar: "https://i.pravatar.cc/150?img=5",
+        } : undefined,
+      },
+    });
+
+    setActiveTab("battle");
+    setCurrentVideoIndex(0);
+    setShowBattleSetup(false);
+
+    toast({
+      title: "Battle Started! ⚔️",
+      description: "Your battle is now live in the Battle tab",
+    });
+  };
+
   const handleStartBattle = () => {
     setShowCreateMenu(false);
+    setShowBattleSetup(true);
     toast({
       title: "Battle Mode! ⚔️",
-      description: "Battle feature coming soon!",
+      description: "Set up your live battle challenge",
     });
   };
 
