@@ -319,7 +319,7 @@ export interface Badge {
 
 // Extended User interface
 export interface ExtendedUser extends User {
-  username(arg0: string, username: any): unknown;
+  username: string;
   name: string;
   avatar: string;
   points: number;
