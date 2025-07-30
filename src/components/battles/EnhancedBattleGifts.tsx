@@ -64,6 +64,12 @@ export const battleGifts: BattleGift[] = [
   { id: 'private_jet', name: 'Private Jet', emoji: '✈️', icon: Plane, value: 2000, multiplier: 20000, rarity: 'legendary', category: 'super', color: 'text-blue-500', animation: 'explosion', description: 'Sky high support!' },
   
   // Ultimate Gifts
+  { id: 'lion', name: 'Lion King', emoji: '🦁', value: 3000, multiplier: 30000, rarity: 'legendary', category: 'ultimate', color: 'text-yellow-600', animation: 'fire', description: 'King of the jungle!' },
+  { id: 'dragon', name: 'Dragon', emoji: '🐉', value: 4000, multiplier: 40000, rarity: 'mythic', category: 'ultimate', color: 'text-red-600', animation: 'fire', description: 'Legendary creature!' },
+  { id: 'unicorn', name: 'Unicorn', emoji: '🦄', value: 3500, multiplier: 35000, rarity: 'mythic', category: 'ultimate', color: 'text-pink-500', animation: 'sparkle', description: 'Magical and rare!' },
+  { id: 'tiger', name: 'Tiger', emoji: '🐅', value: 2500, multiplier: 25000, rarity: 'legendary', category: 'ultimate', color: 'text-orange-600', animation: 'lightning', description: 'Fierce predator!' },
+  { id: 'eagle', name: 'Eagle', emoji: '🦅', value: 2000, multiplier: 20000, rarity: 'legendary', category: 'ultimate', color: 'text-amber-600', animation: 'lightning', description: 'Soar to victory!' },
+  { id: 'panda', name: 'Panda', emoji: '🐼', value: 1500, multiplier: 15000, rarity: 'epic', category: 'super', color: 'text-gray-600', animation: 'sparkle', description: 'Adorable and rare!' },
   { id: 'mansion', name: 'Mansion', emoji: '🏰', icon: Home, value: 5000, multiplier: 50000, rarity: 'mythic', category: 'ultimate', color: 'text-purple-500', animation: 'explosion', description: 'Ultimate luxury!' },
   { id: 'yacht', name: 'Yacht', emoji: '🛥️', value: 10000, multiplier: 100000, rarity: 'mythic', category: 'ultimate', color: 'text-cyan-400', animation: 'explosion', description: 'Sail away in style!' },
   
