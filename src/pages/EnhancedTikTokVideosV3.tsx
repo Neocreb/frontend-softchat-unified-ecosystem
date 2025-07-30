@@ -958,7 +958,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
               allLiveContent.filter(content => !content.battleData).map((liveContent, index) => {
                 return (
                   <MobileLiveStreamLayout
-                    key={liveContent.id}
+                    key={`live-stream-${liveContent.id}`}
                     content={liveContent}
                     isActive={index === currentVideoIndex && activeTab === "live"}
                     isUserOwned={liveContent.isUserOwned}
@@ -975,7 +975,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
             ) : liveStreams.length > 0 ? (
               liveStreams.map((video, index) => (
                 <VideoCard
-                  key={video.id}
+                  key={`mock-live-${video.id}`}
                   video={video}
                   isActive={index === currentVideoIndex && activeTab === "live"}
                   showControls={showControls}
