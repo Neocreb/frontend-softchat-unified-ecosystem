@@ -127,11 +127,15 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
   battleId,
   creator1,
   creator2,
+  battleType = 'general',
+  timeRemaining,
   duration,
+  isUserOwned = false,
   onBattleEnd,
+  onEndBattle,
   onExit,
 }) => {
-  const [timeLeft, setTimeLeft] = useState(duration);
+  const [timeLeft, setTimeLeft] = useState(timeRemaining || duration || 300);
   const [viewers, setViewers] = useState(1247);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
