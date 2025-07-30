@@ -558,9 +558,19 @@ const EnhancedTikTokVideosV3: React.FC = () => {
   const getCurrentVideos = () => {
     switch (activeTab) {
       case "live":
-        return [...allLiveContent.filter(content => !content.battleData).map(liveContentToVideoData), ...liveStreams];
+        const liveContentVideos = allLiveContent.filter(content => !content.battleData).map(liveContentToVideoData);
+        // Filter out duplicates and ensure unique IDs
+        const filteredLiveStreams = liveStreams.filter(stream =>
+          !liveContentVideos.some(video => video.id === stream.id)
+        );
+        return [...liveContentVideos, ...filteredLiveStreams];
       case "battle":
-        return [...allLiveContent.filter(content => content.battleData).map(liveContentToVideoData), ...battleVideos];
+        const battleContentVideos = allLiveContent.filter(content => content.battleData).map(liveContentToVideoData);
+        // Filter out duplicates and ensure unique IDs
+        const filteredBattleVideos = battleVideos.filter(battle =>
+          !battleContentVideos.some(video => video.id === battle.id)
+        );
+        return [...battleContentVideos, ...filteredBattleVideos];
       case "following":
         return followingVideos;
       default:
