@@ -392,84 +392,121 @@ const EnhancedLiveBattle: React.FC<EnhancedLiveBattleProps> = ({
           </div>
         </div>
 
-        {/* Chat & Voting Panel */}
-        <div className="w-80 bg-gray-900 border-l border-gray-800 flex flex-col">
-          {/* Gift Sending Section */}
-          <div className="p-4 border-b border-gray-800">
-            <h3 className="text-white font-bold mb-3">Send Gifts</h3>
-            <div className="grid grid-cols-2 gap-2">
-              <Button
-                size="sm"
-                onClick={() => handleSendGift('player1', 50)}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Gift className="w-4 h-4 mr-1" />
-                50
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => handleSendGift('player2', 50)}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                <Gift className="w-4 h-4 mr-1" />
-                50
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => handleSendGift('player1', 100)}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Crown className="w-4 h-4 mr-1" />
-                100
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => handleSendGift('player2', 100)}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                <Crown className="w-4 h-4 mr-1" />
-                100
-              </Button>
-            </div>
+        {/* Right Side Panel - TikTok Live Style */}
+        <div className="w-16 sm:w-20 md:w-24 flex flex-col items-center justify-end gap-4 p-4 pb-20">
+          {/* Vote for Player 1 */}
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              onClick={() => handleVote('player1')}
+              disabled={hasVoted}
+              size="lg"
+              className={cn(
+                "w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-600/90 hover:bg-blue-700 backdrop-blur-sm border-2",
+                userVote === 'player1' ? "border-blue-400 bg-blue-800" : "border-white/20"
+              )}
+            >
+              <ThumbsUp className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <span className="text-white text-xs font-medium">{voteCount.player1}</span>
+            <span className="text-blue-400 text-xs">{creator1.displayName}</span>
           </div>
 
-          {/* Chat Section */}
-          <div className="flex-1 flex flex-col">
-            <div className="p-3 border-b border-gray-800">
-              <h3 className="text-white font-bold">Battle Chat</h3>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto p-3 space-y-2">
-              {comments.map((comment) => (
-                <div key={comment.id} className="text-sm">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Avatar className="w-6 h-6">
-                      <AvatarImage src={comment.user.avatar} />
-                      <AvatarFallback>{comment.user.username[0]}</AvatarFallback>
-                    </Avatar>
-                    <span className="text-blue-400 font-medium">{comment.user.username}</span>
-                    {comment.user.verified && <CheckCircle className="w-3 h-3 text-blue-500" />}
-                  </div>
-                  <p className="text-white ml-8">{comment.text}</p>
-                </div>
-              ))}
-            </div>
+          {/* Vote for Player 2 */}
+          <div className="flex flex-col items-center gap-2">
+            <Button
+              onClick={() => handleVote('player2')}
+              disabled={hasVoted}
+              size="lg"
+              className={cn(
+                "w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-red-600/90 hover:bg-red-700 backdrop-blur-sm border-2",
+                userVote === 'player2' ? "border-red-400 bg-red-800" : "border-white/20"
+              )}
+            >
+              <ThumbsUp className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <span className="text-white text-xs font-medium">{voteCount.player2}</span>
+            <span className="text-red-400 text-xs">{creator2.displayName}</span>
+          </div>
 
-            {/* Chat Input */}
-            <div className="p-3 border-t border-gray-800">
-              <div className="flex gap-2">
-                <Input
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Type a message..."
-                  className="bg-gray-800 border-gray-700 text-white"
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendComment()}
-                />
-                <Button onClick={handleSendComment} size="sm">
-                  <Send className="w-4 h-4" />
-                </Button>
+          {/* Gift Player 1 */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              onClick={() => handleSendGift('player1', 50)}
+              size="lg"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-blue-600/80 hover:bg-blue-700 backdrop-blur-sm border border-white/20"
+            >
+              <Gift className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <span className="text-white text-[10px]">Gift</span>
+          </div>
+
+          {/* Gift Player 2 */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              onClick={() => handleSendGift('player2', 50)}
+              size="lg"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-red-600/80 hover:bg-red-700 backdrop-blur-sm border border-white/20"
+            >
+              <Gift className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <span className="text-white text-[10px]">Gift</span>
+          </div>
+
+          {/* Share Battle */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="lg"
+              variant="ghost"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm border border-white/20 text-white"
+            >
+              <Share2 className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <span className="text-white text-[10px]">Share</span>
+          </div>
+
+          {/* More Options */}
+          <div className="flex flex-col items-center gap-1">
+            <Button
+              size="lg"
+              variant="ghost"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm border border-white/20 text-white"
+            >
+              <MoreHorizontal className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <span className="text-white text-[10px]">More</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Chat Section */}
+      <div className="bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 p-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Recent Comments */}
+          <div className="mb-3 max-h-20 overflow-y-auto space-y-1">
+            {comments.slice(0, 3).map((comment) => (
+              <div key={comment.id} className="flex items-center gap-2 text-sm">
+                <span className="text-blue-400 font-medium">{comment.user.username}</span>
+                <span className="text-white">{comment.text}</span>
               </div>
-            </div>
+            ))}
+          </div>
+
+          {/* Chat Input */}
+          <div className="flex gap-3 items-center">
+            <Input
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1 bg-gray-800/70 border-gray-700 text-white placeholder-gray-400 rounded-full px-4"
+              onKeyPress={(e) => e.key === 'Enter' && handleSendComment()}
+            />
+            <Button
+              onClick={handleSendComment}
+              size="sm"
+              className="rounded-full bg-blue-600 hover:bg-blue-700 px-4"
+            >
+              <Send className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </div>
