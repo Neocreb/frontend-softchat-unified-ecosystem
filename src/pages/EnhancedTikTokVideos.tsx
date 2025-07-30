@@ -91,7 +91,7 @@ const liveContentToVideoData = (content: any) => ({
   allowComments: true,
 });
 
-import { useLiveContentContext } from "../contexts/LiveContentContext";
+// Live content context removed for simplicity
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
