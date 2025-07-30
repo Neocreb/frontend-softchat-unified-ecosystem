@@ -1002,39 +1002,32 @@ const EnhancedTikTokVideosV3: React.FC = () => {
             )}
           </TabsContent>
           <TabsContent value="battle" className="h-full mt-0">
-            {getCurrentVideos().length > 0 ? (
-              getCurrentVideos().map((video, index) => {
-                // Use MobileLiveStreamLayout for mobile-optimized live experience
-                if (video.timestamp === "BATTLE" || video.isLiveStream) {
-                  const liveContent = allLiveContent.find(content => content.battleData);
-                  if (liveContent) {
-                    return (
-                      <MobileLiveStreamLayout
-                        key={liveContent.id}
-                        content={liveContent}
-                        isActive={index === currentVideoIndex && activeTab === "battle"}
-                        isUserOwned={liveContent.isUserOwned}
-                        onEndStream={() => {
-                          removeLiveContent(liveContent.id);
-                          toast({
-                            title: "Battle Ended",
-                            description: "The battle has been ended",
-                          });
-                        }}
-                      />
-                    );
-                  }
-                }
-                return (
-                  <VideoCard
-                    key={video.id}
-                    video={video}
-                    isActive={index === currentVideoIndex && activeTab === "battle"}
-                    showControls={showControls}
-                    onDuetCreate={handleDuetCreate}
-                  />
-                );
-              })
+            {allLiveContent.filter(content => content.battleData).length > 0 ? (
+              allLiveContent.filter(content => content.battleData).map((liveContent, index) => (
+                <MobileLiveStreamLayout
+                  key={`live-battle-${liveContent.id}`}
+                  content={liveContent}
+                  isActive={index === currentVideoIndex && activeTab === "battle"}
+                  isUserOwned={liveContent.isUserOwned}
+                  onEndStream={() => {
+                    removeLiveContent(liveContent.id);
+                    toast({
+                      title: "Battle Ended",
+                      description: "The battle has been ended",
+                    });
+                  }}
+                />
+              ))
+            ) : battleVideos.length > 0 ? (
+              battleVideos.map((video, index) => (
+                <VideoCard
+                  key={`mock-battle-${video.id}`}
+                  video={video}
+                  isActive={index === currentVideoIndex && activeTab === "battle"}
+                  showControls={showControls}
+                  onDuetCreate={handleDuetCreate}
+                />
+              ))
             ) : (
               <div className="h-screen flex items-center justify-center">
                 <div className="text-center text-white/60">
