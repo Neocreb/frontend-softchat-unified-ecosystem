@@ -786,7 +786,15 @@ const EnhancedTikTokVideos: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black text-white overflow-hidden z-10">
+    <div
+      className="fixed inset-0 bg-black text-white overflow-hidden z-10"
+      onClick={(e) => {
+        // Only toggle nav if clicking on the main area, not on interactive elements
+        if (e.target === e.currentTarget || (e.target as HTMLElement).closest('.video-main-area')) {
+          toggleNav();
+        }
+      }}
+    >
       <Helmet>
         <title>Videos | SoftChat</title>
         <meta
