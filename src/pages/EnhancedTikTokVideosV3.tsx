@@ -78,6 +78,16 @@ import LiveBattle from "@/components/battles/LiveBattle";
 import TikTokStyleBattle from "@/components/battles/TikTokStyleBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
+import EnhancedCreatorAnalytics from "@/components/video/EnhancedCreatorAnalytics";
+import EnhancedVideoPlayer from "@/components/video/EnhancedVideoPlayer";
+import AdvancedSharingHub from "@/components/video/AdvancedSharingHub";
+import AutoCaptionsEngine from "@/components/video/AutoCaptionsEngine";
+import SmartContentEngine from "@/components/video/SmartContentEngine";
+import VideoEditingSuite from "@/components/video/VideoEditingSuite";
+import VideoMonetizationHub from "@/components/video/VideoMonetizationHub";
+import EnhancedLiveStreaming from "@/components/video/EnhancedLiveStreaming";
+import AccessibilityFAB from "@/components/accessibility/AccessibilityFAB";
+import EnhancedSearchDiscovery from "@/components/search/EnhancedSearchDiscovery";
 import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
 import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
@@ -168,7 +178,7 @@ const battleVideos: VideoData[] = [
       verified: true,
       followerCount: 567000,
     },
-    description: "🎤 LIVE RAP BATTLE: Freestyle showdown! Drop bars and win SoftPoints! 💰",
+    description: "🎤 LIVE RAP BATTLE: Freestyle showdown! Drop bars and win SoftPoints! ����",
     music: { title: "Hip Hop Battle", artist: "Street Beats" },
     stats: { likes: 1890, comments: 567, shares: 123, views: "15.2K watching" },
     hashtags: ["rapbattle", "freestyle", "hiphop", "bars"],
