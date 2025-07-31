@@ -529,7 +529,10 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
 
       {/* Chat Interface */}
       {showChat && (
-        <div className="absolute bottom-0 left-0 right-0 bg-black/90 backdrop-blur-sm border-t border-gray-600 z-40 h-80">
+        <div className={cn(
+          "absolute left-0 right-0 bg-black/90 backdrop-blur-sm border-t border-gray-600 z-40 h-80",
+          isMobile ? "bottom-14" : "bottom-0"
+        )}>
           {/* Chat Header */}
           <div className="flex items-center justify-between p-3 border-b border-gray-600">
             <h3 className="text-white font-semibold text-sm">Live Chat</h3>
