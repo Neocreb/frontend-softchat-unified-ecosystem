@@ -229,24 +229,61 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
       },
     },
     {
+      id: "whatsapp",
+      name: "Share to WhatsApp",
+      icon: <MessageCircle className="w-4 h-4" />,
+      action: () => {
+        window.open(`https://wa.me/?text=Check out this video! https://softchat.com/video/${videoId}`, '_blank');
+      },
+    },
+    {
+      id: "telegram",
+      name: "Share to Telegram",
+      icon: <Send className="w-4 h-4" />,
+      action: () => {
+        window.open(`https://t.me/share/url?url=https://softchat.com/video/${videoId}&text=Check out this video!`, '_blank');
+      },
+    },
+    {
+      id: "twitter",
+      name: "Share to Twitter",
+      icon: <Share2 className="w-4 h-4" />,
+      action: () => {
+        window.open(`https://twitter.com/intent/tweet?url=https://softchat.com/video/${videoId}&text=Check out this amazing video!`, '_blank');
+      },
+    },
+    {
+      id: "facebook",
+      name: "Share to Facebook",
+      icon: <Users className="w-4 h-4" />,
+      action: () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=https://softchat.com/video/${videoId}`, '_blank');
+      },
+    },
+    {
       id: "download",
-      name: "Download",
+      name: "Download Video",
       icon: <Download className="w-4 h-4" />,
       action: () => {
         toast({ title: "Download started" });
       },
     },
     {
-      id: "external",
-      name: "Share External",
+      id: "embed",
+      name: "Embed Code",
       icon: <ExternalLink className="w-4 h-4" />,
       action: () => {
-        if (navigator.share) {
-          navigator.share({
-            title: "Check out this video!",
-            url: `https://softchat.com/video/${videoId}`,
-          });
-        }
+        const embedCode = `<iframe src="https://softchat.com/embed/${videoId}" width="560" height="315" frameborder="0"></iframe>`;
+        navigator.clipboard.writeText(embedCode);
+        toast({ title: "Embed code copied!" });
+      },
+    },
+    {
+      id: "qr",
+      name: "Generate QR Code",
+      icon: <Star className="w-4 h-4" />,
+      action: () => {
+        toast({ title: "QR code generated" });
       },
     },
   ];
