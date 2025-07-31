@@ -1133,6 +1133,7 @@ const Videos: React.FC = () => {
               video={video}
               isActive={index === currentVideoIndex}
               showControls={showControls}
+              onVideoElementReady={index === currentVideoIndex ? setCurrentVideoElement : undefined}
             />
           );
         })}
