@@ -190,6 +190,9 @@ const mockAnalyticsData: AnalyticsData = {
     saves: 8934,
     avgWatchTime: 32.4,
     completionRate: 68.7,
+    engagementRate: 12.4,
+    clickThroughRate: 3.2,
+    retentionRate: 72.1,
   },
   audience: {
     followers: 89456,
