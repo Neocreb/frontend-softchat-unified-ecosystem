@@ -276,6 +276,8 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
   onReplyCreate,
   isBattle = false,
   battleData,
+  enableAI = true,
+  showAnalytics = false,
 }) => {
   const [comments, setComments] = useState<Comment[]>(mockComments);
   const [newComment, setNewComment] = useState("");
