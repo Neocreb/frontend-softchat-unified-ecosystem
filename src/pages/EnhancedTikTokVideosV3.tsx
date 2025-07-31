@@ -423,7 +423,7 @@ const VideoCard: React.FC<{
                   {video.user.displayName}
                   {video.user.followerCount && (
                     <span className="ml-1">
-                      ��� {formatNumber(video.user.followerCount)} followers
+                      • {formatNumber(video.user.followerCount)} followers
                     </span>
                   )}
                 </div>
@@ -1481,6 +1481,18 @@ const EnhancedTikTokVideosV3: React.FC = () => {
               <CreatorDashboard />
               <EnhancedCreatorAnalytics />
             </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Accessibility Settings */}
+      <Dialog open={isAccessibilityOpen} onOpenChange={setIsAccessibilityOpen}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] bg-gray-900 border-gray-700 p-0">
+          <VisuallyHidden>
+            <DialogTitle>Accessibility Settings</DialogTitle>
+          </VisuallyHidden>
+          <div className="h-full overflow-auto p-6">
+            <AccessibilityFAB />
           </div>
         </DialogContent>
       </Dialog>
