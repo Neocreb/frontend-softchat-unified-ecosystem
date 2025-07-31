@@ -171,6 +171,8 @@ const mockAnalyticsData: AnalyticsData = {
   views: {
     total: 2847291,
     change: 23.5,
+    realTime: 1247,
+    peakHour: "8:00 PM",
     chartData: [
       { date: "2024-01-01", value: 45000 },
       { date: "2024-01-02", value: 52000 },
