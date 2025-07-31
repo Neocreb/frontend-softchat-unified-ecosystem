@@ -356,19 +356,27 @@ const VideoCard: React.FC<{
 
   return (
     <div className="relative h-screen w-full bg-black snap-start snap-always">
-      {/* Video */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        loop
-        muted={isMuted}
-        playsInline
-        preload="metadata"
-        poster={video.thumbnail}
-        onClick={togglePlay}
-      >
-        <source src={video.videoUrl} type="video/mp4" />
-      </video>
+      {/* Enhanced Video Player */}
+      <div className="absolute inset-0 w-full h-full">
+        <EnhancedVideoPlayer
+          videoRef={videoRef}
+          src={video.videoUrl}
+          poster={video.thumbnail}
+          muted={isMuted}
+          autoPlay={isActive && isPlaying}
+          loop={true}
+          className="w-full h-full object-cover"
+          onClick={togglePlay}
+          onMuteChange={setIsMuted}
+          showControls={true}
+          chapters={video.chapters || []}
+          captions={video.captions || []}
+          qualities={video.videoSources || []}
+          onProgress={(progress) => {
+            // Handle progress updates if needed
+          }}
+        />
+      </div>
 
       {/* Live indicator for live streams */}
       {video.isLiveStream && (
