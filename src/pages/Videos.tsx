@@ -671,6 +671,20 @@ const VideoCard: React.FC<{
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
           />
+
+          {/* Enhanced Sharing Hub */}
+          <AdvancedSharingHub
+            videoId={video.id}
+            videoTitle={video.description}
+            videoUrl={video.videoUrl}
+            videoThumbnail={video.thumbnail}
+            videoDuration={video.duration}
+            currentUser={user ? {
+              id: user.id,
+              name: user.displayName || user.username,
+              avatar: user.avatar || 'https://i.pravatar.cc/150?u=' + user.id
+            } : undefined}
+          />
         </div>
       </div>
 
