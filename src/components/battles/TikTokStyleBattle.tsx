@@ -526,7 +526,15 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
         >
           <Heart className="w-6 h-6" />
         </Button>
-        
+
+        <Button
+          size="icon"
+          className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 backdrop-blur-sm text-white border border-green-500/30"
+          onClick={handleVote}
+        >
+          <Target className="w-6 h-6" />
+        </Button>
+
         <Button
           size="icon"
           className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white border-0"
