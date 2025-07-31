@@ -300,6 +300,12 @@ const VideoCard: React.FC<{
   const [showInVideoAd, setShowInVideoAd] = useState(false);
   const [adWatchTimer, setAdWatchTimer] = useState(0);
   const [hasEarnedReward, setHasEarnedReward] = useState(false);
+  const [currentQuality, setCurrentQuality] = useState("auto");
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [showAdvancedControls, setShowAdvancedControls] = useState(false);
+  const [isOfflineAvailable, setIsOfflineAvailable] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [connectionQuality, setConnectionQuality] = useState<"good" | "poor" | "offline">("good");
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
