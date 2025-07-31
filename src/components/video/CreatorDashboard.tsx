@@ -253,6 +253,8 @@ const mockAnalyticsData: AnalyticsData = {
       views: 456789,
       engagement: 89.2,
       thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af2176",
+      viralScore: 95,
+      trendingPotential: 88,
     },
     {
       id: "2",
@@ -260,6 +262,8 @@ const mockAnalyticsData: AnalyticsData = {
       views: 234567,
       engagement: 76.8,
       thumbnail: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136",
+      viralScore: 72,
+      trendingPotential: 65,
     },
     {
       id: "3",
@@ -267,6 +271,8 @@ const mockAnalyticsData: AnalyticsData = {
       views: 189234,
       engagement: 82.4,
       thumbnail: "https://images.unsplash.com/photo-1488646953014-85cb44e25828",
+      viralScore: 89,
+      trendingPotential: 82,
     },
   ],
 };
