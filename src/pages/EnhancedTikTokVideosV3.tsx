@@ -86,7 +86,7 @@ import SmartContentEngine from "@/components/video/SmartContentEngine";
 import VideoEditingSuite from "@/components/video/VideoEditingSuite";
 import VideoMonetizationHub from "@/components/video/VideoMonetizationHub";
 import EnhancedLiveStreaming from "@/components/video/EnhancedLiveStreaming";
-import AccessibilityFAB from "@/components/accessibility/AccessibilityFAB";
+import EnhancedAccessibilityFeatures from "@/components/accessibility/EnhancedAccessibilityFeatures";
 import EnhancedSearchDiscovery from "@/components/search/EnhancedSearchDiscovery";
 import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
 import { useLiveContentContext } from "../contexts/LiveContentContext";
