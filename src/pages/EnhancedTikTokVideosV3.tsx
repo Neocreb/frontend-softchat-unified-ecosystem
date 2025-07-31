@@ -1004,31 +1004,127 @@ const EnhancedTikTokVideosV3: React.FC = () => {
           </TabsContent>
           <TabsContent value="battle" className="h-full mt-0">
             {allLiveContent.filter(content => content.battleData).length > 0 ? (
-              allLiveContent.filter(content => content.battleData).map((liveContent, index) => (
-                <MobileLiveStreamLayout
-                  key={`live-battle-${liveContent.id}`}
-                  content={liveContent}
-                  isActive={index === currentVideoIndex && activeTab === "battle"}
-                  isUserOwned={liveContent.isUserOwned}
-                  onEndStream={() => {
-                    removeLiveContent(liveContent.id);
-                    toast({
-                      title: "Battle Ended",
-                      description: "The battle has been ended",
-                    });
-                  }}
-                />
-              ))
+              allLiveContent.filter(content => content.battleData).map((liveContent, index) => {
+                if (index === currentVideoIndex && activeTab === "battle") {
+                  // Show TikTok-style battle interface for active battle
+                  return (
+                    <TikTokStyleBattle
+                      key={`tiktok-battle-${liveContent.id}`}
+                      creator1={{
+                        id: liveContent.user.id,
+                        username: liveContent.user.username,
+                        displayName: liveContent.user.displayName,
+                        avatar: liveContent.user.avatar,
+                        verified: liveContent.user.verified || false,
+                        score: liveContent.battleData?.scores?.user1 || 0,
+                        wins: Math.floor(Math.random() * 15) + 5,
+                        followers: liveContent.user.followerCount || '11.5K',
+                      }}
+                      creator2={{
+                        id: liveContent.battleData?.opponent?.id || 'opponent',
+                        username: liveContent.battleData?.opponent?.username || 'anonymous_battler',
+                        displayName: liveContent.battleData?.opponent?.displayName || 'Anonymous Battler',
+                        avatar: liveContent.battleData?.opponent?.avatar || 'https://i.pravatar.cc/150?img=9',
+                        verified: true,
+                        score: liveContent.battleData?.scores?.user2 || 0,
+                        wins: Math.floor(Math.random() * 12) + 8,
+                        followers: '10.1K',
+                      }}
+                      timeRemaining={liveContent.battleData?.timeRemaining || 300}
+                      viewerCount={Math.floor(Math.random() * 2000) + 500}
+                      onExit={() => {
+                        // Switch back to For You tab or handle navigation
+                        setActiveTab("foryou");
+                      }}
+                      onVote={(creatorId, amount) => {
+                        toast({
+                          title: "Vote Placed! 🎯",
+                          description: `${amount} SP voted for creator`,
+                        });
+                      }}
+                      onGift={(creatorId, gift) => {
+                        // Handle gift sending
+                        console.log('Gift sent:', { creatorId, gift });
+                      }}
+                    />
+                  );
+                }
+
+                // Show regular mobile layout for non-active battles
+                return (
+                  <MobileLiveStreamLayout
+                    key={`live-battle-${liveContent.id}`}
+                    content={liveContent}
+                    isActive={false}
+                    isUserOwned={liveContent.isUserOwned}
+                    onEndStream={() => {
+                      removeLiveContent(liveContent.id);
+                      toast({
+                        title: "Battle Ended",
+                        description: "The battle has been ended",
+                      });
+                    }}
+                  />
+                );
+              })
             ) : battleVideos.length > 0 ? (
-              battleVideos.map((video, index) => (
-                <VideoCard
-                  key={`mock-battle-${video.id}`}
-                  video={video}
-                  isActive={index === currentVideoIndex && activeTab === "battle"}
-                  showControls={showControls}
-                  onDuetCreate={handleDuetCreate}
-                />
-              ))
+              battleVideos.map((video, index) => {
+                if (index === currentVideoIndex && activeTab === "battle") {
+                  // Show TikTok-style battle interface for active mock battles
+                  return (
+                    <TikTokStyleBattle
+                      key={`tiktok-mock-battle-${video.id}`}
+                      creator1={{
+                        id: video.user.id,
+                        username: video.user.username,
+                        displayName: video.user.displayName,
+                        avatar: video.user.avatar,
+                        verified: video.user.verified,
+                        score: Math.floor(Math.random() * 50) + 10,
+                        wins: Math.floor(Math.random() * 15) + 5,
+                        followers: video.user.followerCount ? `${Math.floor(video.user.followerCount / 1000)}K` : '11.5K',
+                      }}
+                      creator2={{
+                        id: video.id === "battle1" ? "melody_queen" : "freestyle_master",
+                        username: video.id === "battle1" ? "melody_queen" : "freestyle_master",
+                        displayName: video.id === "battle1" ? "Melody Queen" : "Freestyle Master",
+                        avatar: video.id === "battle1" ? "https://i.pravatar.cc/150?img=9" : "https://i.pravatar.cc/150?img=10",
+                        verified: true,
+                        score: Math.floor(Math.random() * 45) + 15,
+                        wins: Math.floor(Math.random() * 12) + 8,
+                        followers: '10.1K',
+                      }}
+                      timeRemaining={Math.floor(Math.random() * 240) + 60}
+                      viewerCount={parseInt(video.stats.views.replace('K watching', '').replace('.', '')) * 1000 || 2500}
+                      onExit={() => {
+                        // Switch back to For You tab or handle navigation
+                        setActiveTab("foryou");
+                      }}
+                      onVote={(creatorId, amount) => {
+                        toast({
+                          title: "Vote Placed! 🎯",
+                          description: `${amount} SP voted for ${creatorId === video.user.id ? video.user.displayName : 'opponent'}`,
+                        });
+                      }}
+                      onGift={(creatorId, gift) => {
+                        // Handle gift sending
+                        console.log('Gift sent:', { creatorId, gift });
+                      }}
+                    />
+                  );
+                }
+
+                // Show regular video card for non-active battles
+                return (
+                  <VideoCard
+                    key={`mock-battle-${video.id}`}
+                    video={video}
+                    isActive={false}
+                    showControls={showControls}
+                    onDuetCreate={handleDuetCreate}
+                  />
+                );
+              })
             ) : (
               <div className="h-screen flex items-center justify-center">
                 <div className="text-center text-white/60">
