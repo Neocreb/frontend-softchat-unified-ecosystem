@@ -236,6 +236,9 @@ const mockAnalyticsData: AnalyticsData = {
     tips: 3240,
     subscriptions: 5670,
     brandDeals: 3630,
+    predictedRevenue: 15600,
+    conversionRate: 2.8,
+    avgRevenuePerUser: 3.45,
     monthlyRevenue: [
       { month: "Sep", amount: 8900 },
       { month: "Oct", amount: 10200 },
