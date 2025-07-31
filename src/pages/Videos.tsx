@@ -339,6 +339,18 @@ const VideoCard: React.FC<{
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
+  const {
+    metrics: performanceMetrics,
+    optimizations,
+    performanceScore,
+    recommendations,
+    monitorVideoPerformance,
+    optimizeVideoQuality,
+  } = useVideoPerformance({
+    videoId: video.id,
+    enableMetrics: true,
+    enableOptimizations: true,
+  });
 
   // Enhanced video playback with quality and speed controls
   useEffect(() => {
