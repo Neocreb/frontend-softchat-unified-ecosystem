@@ -1494,6 +1494,18 @@ const Videos: React.FC = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Accessibility Features */}
+      <VideoAccessibilityFeatures
+        videoId={videos[currentVideoIndex]?.id || ''}
+        onSettingsChange={(settings) => {
+          // Apply accessibility settings to video playback
+          const currentVideo = videos[currentVideoIndex];
+          if (currentVideo && settings.autoPlayDisabled) {
+            // Disable autoplay if accessibility setting is enabled
+          }
+        }}
+      />
     </div>
   );
 };
