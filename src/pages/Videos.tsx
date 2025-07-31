@@ -432,7 +432,7 @@ const VideoCard: React.FC<{
     }
   }, [autoQuality, videoQuality]);
 
-  // Video progress tracking
+  // Video progress tracking and performance monitoring
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -448,12 +448,21 @@ const VideoCard: React.FC<{
     video.addEventListener('waiting', handleWaiting);
     video.addEventListener('canplay', handleCanPlay);
 
+    // Set up performance monitoring
+    const cleanupPerformanceMonitoring = monitorVideoPerformance(video);
+
+    // Optimize video quality on load
+    if (isActive) {
+      optimizeVideoQuality(video);
+    }
+
     return () => {
       video.removeEventListener('timeupdate', handleTimeUpdate);
       video.removeEventListener('waiting', handleWaiting);
       video.removeEventListener('canplay', handleCanPlay);
+      cleanupPerformanceMonitoring?.();
     };
-  }, []);
+  }, [isActive, monitorVideoPerformance, optimizeVideoQuality]);
 
   // In-video ad timer
   useEffect(() => {
