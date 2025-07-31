@@ -77,6 +77,7 @@ import VideoMonetizationHub from "@/components/video/VideoMonetizationHub";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import EnhancedCreatorAnalytics from "@/components/video/EnhancedCreatorAnalytics";
 import AccessibilityFAB from "@/components/accessibility/AccessibilityFAB";
+import EnhancedSearchDiscovery from "@/components/search/EnhancedSearchDiscovery";
 import { cn } from "@/utils/utils";
 import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
