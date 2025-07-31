@@ -309,30 +309,46 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
   };
 
   const handleVote = () => {
-    // Open voting modal
+    // Open voting modal with proper BattleVoting component
     setShowVoteModal(true);
-    setSelectedVoteCreator(null);
-    setVoteAmount(10);
   };
 
-  const handlePlaceVote = (creatorId: string, amount: number) => {
-    if (onVote) {
-      onVote(creatorId, amount);
+  const handlePlaceVote = (vote: Omit<Vote, 'id' | 'timestamp' | 'status'>) => {
+    // Check if user has already voted in this battle
+    if (userVotes.length > 0) {
+      toast({
+        title: "Vote Already Placed! 🚫",
+        description: "You can only vote once per battle",
+        variant: "destructive",
+      });
+      return;
     }
 
-    // Update visual feedback
-    setTotalVotes(prev => ({
+    const newVote: Vote = {
+      ...vote,
+      id: Date.now().toString(),
+      timestamp: new Date(),
+      status: 'active',
+    };
+
+    setUserVotes(prev => [...prev, newVote]);
+
+    // Update voting pool
+    setVotingPool(prev => ({
       ...prev,
-      [creatorId === creator1.id ? 'creator1' : 'creator2']:
-        prev[creatorId === creator1.id ? 'creator1' : 'creator2'] + 1
+      creator1Total: vote.creatorId === creator1.id ? prev.creator1Total + vote.amount : prev.creator1Total,
+      creator2Total: vote.creatorId === creator2.id ? prev.creator2Total + vote.amount : prev.creator2Total,
+      totalPool: prev.totalPool + vote.amount,
+      totalVoters: prev.totalVoters + 1,
     }));
 
-    setShowVoteModal(false);
-    setSelectedVoteCreator(null);
+    if (onVote) {
+      onVote(vote.creatorId, vote.amount);
+    }
 
     toast({
       title: "🎯 Vote Placed!",
-      description: `${amount} SP voted for ${creatorId === creator1.id ? creator1.displayName : creator2.displayName}`,
+      description: `${vote.amount} SP on ${vote.creatorId === creator1.id ? creator1.displayName : creator2.displayName}`,
     });
   };
 
