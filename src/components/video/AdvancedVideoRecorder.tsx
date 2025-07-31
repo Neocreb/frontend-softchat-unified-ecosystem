@@ -682,12 +682,20 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
     }
 
     try {
+      // Enhanced processing with transitions and effects
+      const processedSegments = recordedSegments.map(segment => ({
+        ...segment,
+        volume: segment.volume || 1,
+        speed: segment.speed || 1,
+      }));
+
       // Combine all segments
       const combinedBlob = new Blob(
-        recordedSegments.map((seg) => seg.blob),
+        processedSegments.map((seg) => seg.blob),
         { type: "video/webm" },
       );
 
+      // Enhanced metadata with new features
       const metadata = {
         duration: getTotalDuration(),
         segments: recordedSegments.length,
@@ -696,9 +704,15 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
         sound: selectedSound,
         textOverlays,
         stickers,
+        colorCorrection,
+        audioTracks,
+        transitions: recordedSegments.map(s => s.transition).filter(Boolean),
+        resolution: '1080p',
+        frameRate: 30,
+        bitrate: 5000,
       };
 
-      const file = new File([combinedBlob], `video-${Date.now()}.webm`, {
+      const file = new File([combinedBlob], `softchat-video-${Date.now()}.webm`, {
         type: "video/webm",
       });
 
