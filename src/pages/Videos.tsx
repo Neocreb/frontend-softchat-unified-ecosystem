@@ -33,6 +33,18 @@ import {
   Globe,
   Star,
   Zap,
+  MonitorSpeaker,
+  Gauge,
+  Download,
+  Cast,
+  RotateCcw,
+  SkipForward,
+  SkipBack,
+  Repeat,
+  Shuffle,
+  Subtitles,
+  Languages,
+  Accessibility,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -46,6 +58,19 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Slider } from "@/components/ui/slider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
@@ -99,6 +124,25 @@ interface VideoData {
     title: string;
     hashtag: string;
   };
+  qualityOptions?: {
+    label: string;
+    value: string;
+    bitrate: number;
+  }[];
+  subtitles?: {
+    language: string;
+    url: string;
+    default?: boolean;
+  }[];
+  chapters?: {
+    title: string;
+    time: number;
+  }[];
+  audioTracks?: {
+    language: string;
+    label: string;
+    url: string;
+  }[];
 }
 
 const mockVideos: VideoData[] = [
@@ -281,10 +325,20 @@ const VideoCard: React.FC<{
   const [showInVideoAd, setShowInVideoAd] = useState(false);
   const [adWatchTimer, setAdWatchTimer] = useState(0);
   const [hasEarnedReward, setHasEarnedReward] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [videoQuality, setVideoQuality] = useState('auto');
+  const [currentTime, setCurrentTime] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [showCaptions, setShowCaptions] = useState(false);
+  const [isBuffering, setIsBuffering] = useState(false);
+  const [networkSpeed, setNetworkSpeed] = useState('fast');
+  const [autoQuality, setAutoQuality] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
 
+  // Enhanced video playback with quality and speed controls
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -295,6 +349,10 @@ const VideoCard: React.FC<{
       if (!isComponentMounted) return;
 
       try {
+        // Set playback rate
+        video.playbackRate = playbackSpeed;
+        video.volume = isMuted ? 0 : volume;
+
         if (isActive && isPlaying) {
           await safePlay(video);
         } else {
@@ -313,7 +371,75 @@ const VideoCard: React.FC<{
         safePause(video);
       }
     };
-  }, [isActive, isPlaying, safePlay, safePause]);
+  }, [isActive, isPlaying, playbackSpeed, isMuted, volume, safePlay, safePause]);
+
+  // Auto-quality detection based on network speed
+  useEffect(() => {
+    if (!autoQuality) return;
+
+    const detectNetworkSpeed = () => {
+      const connection = (navigator as any).connection;
+      if (connection) {
+        const effectiveType = connection.effectiveType;
+        let recommendedQuality = 'auto';
+
+        switch (effectiveType) {
+          case 'slow-2g':
+          case '2g':
+            recommendedQuality = '360p';
+            setNetworkSpeed('slow');
+            break;
+          case '3g':
+            recommendedQuality = '480p';
+            setNetworkSpeed('medium');
+            break;
+          case '4g':
+            recommendedQuality = '720p';
+            setNetworkSpeed('fast');
+            break;
+          default:
+            recommendedQuality = '1080p';
+            setNetworkSpeed('fast');
+        }
+
+        if (videoQuality === 'auto') {
+          setVideoQuality(recommendedQuality);
+        }
+      }
+    };
+
+    detectNetworkSpeed();
+
+    // Listen for network changes
+    const connection = (navigator as any).connection;
+    if (connection) {
+      connection.addEventListener('change', detectNetworkSpeed);
+      return () => connection.removeEventListener('change', detectNetworkSpeed);
+    }
+  }, [autoQuality, videoQuality]);
+
+  // Video progress tracking
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(video.currentTime);
+    };
+
+    const handleWaiting = () => setIsBuffering(true);
+    const handleCanPlay = () => setIsBuffering(false);
+
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('waiting', handleWaiting);
+    video.addEventListener('canplay', handleCanPlay);
+
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('waiting', handleWaiting);
+      video.removeEventListener('canplay', handleCanPlay);
+    };
+  }, []);
 
   // In-video ad timer
   useEffect(() => {
@@ -344,6 +470,99 @@ const VideoCard: React.FC<{
 
     await togglePlayback(video, isPlaying, setIsPlaying);
   }, [isPlaying, togglePlayback]);
+
+  const handleSpeedChange = (speed: number) => {
+    setPlaybackSpeed(speed);
+    const video = videoRef.current;
+    if (video) {
+      video.playbackRate = speed;
+    }
+  };
+
+  const handleQualityChange = (quality: string) => {
+    setVideoQuality(quality);
+    if (quality === 'auto') {
+      setAutoQuality(true);
+    } else {
+      setAutoQuality(false);
+    }
+  };
+
+  const handleSeek = (time: number) => {
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = time;
+      setCurrentTime(time);
+    }
+  };
+
+  const handleVolumeChange = (newVolume: number[]) => {
+    const vol = newVolume[0];
+    setVolume(vol);
+    const video = videoRef.current;
+    if (video) {
+      video.volume = vol;
+      setIsMuted(vol === 0);
+    }
+  };
+
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch(video.videoUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${video.user.username}_${video.id}.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Download failed:', error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const skip10Forward = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = Math.min(video.duration, video.currentTime + 10);
+    }
+  };
+
+  const skip10Backward = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.currentTime = Math.max(0, video.currentTime - 10);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getQualityOptions = () => [
+    { label: 'Auto', value: 'auto' },
+    { label: '1080p', value: '1080p' },
+    { label: '720p', value: '720p' },
+    { label: '480p', value: '480p' },
+    { label: '360p', value: '360p' },
+  ];
+
+  const getSpeedOptions = () => [
+    { label: '0.25x', value: 0.25 },
+    { label: '0.5x', value: 0.5 },
+    { label: '0.75x', value: 0.75 },
+    { label: '1x', value: 1 },
+    { label: '1.25x', value: 1.25 },
+    { label: '1.5x', value: 1.5 },
+    { label: '2x', value: 2 },
+  ];
 
   const handleAdComplete = () => {
     setShowInVideoAd(false);
@@ -573,28 +792,162 @@ const VideoCard: React.FC<{
         </div>
       </div>
 
-      {/* Volume control */}
-      <Button
-        size="icon"
-        variant="ghost"
-        className="absolute top-4 right-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
-        onClick={() => setIsMuted(!isMuted)}
-      >
-        {isMuted ? (
-          <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
-        ) : (
-          <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
-        )}
-      </Button>
+      {/* Enhanced Video Controls */}
+      <div className="absolute top-4 right-4 flex flex-col gap-2">
+        {/* Volume control */}
+        <Button
+          size="icon"
+          variant="ghost"
+          className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
+          onClick={() => setIsMuted(!isMuted)}
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          ) : (
+            <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          )}
+        </Button>
 
-      {/* Views count */}
-      <div className="absolute top-4 left-4">
+        {/* Advanced Controls Menu */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
+            >
+              <Settings className="w-4 h-4 md:w-5 md:h-5 text-white" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-64 bg-black/90 border-gray-700 text-white" align="end">
+            {/* Playback Speed */}
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="text-white">
+                <Gauge className="w-4 h-4 mr-2" />
+                Speed ({playbackSpeed}x)
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="bg-black/90 border-gray-700">
+                {getSpeedOptions().map((option) => (
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() => handleSpeedChange(option.value)}
+                    className={cn(
+                      "text-white cursor-pointer",
+                      playbackSpeed === option.value && "bg-blue-600"
+                    )}
+                  >
+                    {option.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+
+            {/* Video Quality */}
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="text-white">
+                <MonitorSpeaker className="w-4 h-4 mr-2" />
+                Quality ({videoQuality})
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="bg-black/90 border-gray-700">
+                {getQualityOptions().map((option) => (
+                  <DropdownMenuItem
+                    key={option.value}
+                    onClick={() => handleQualityChange(option.value)}
+                    className={cn(
+                      "text-white cursor-pointer",
+                      videoQuality === option.value && "bg-blue-600"
+                    )}
+                  >
+                    {option.label}
+                    {option.value === 'auto' && (
+                      <Badge className="ml-2 bg-green-600 text-xs">Smart</Badge>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+
+            {/* Captions */}
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="text-white">
+                <Subtitles className="w-4 h-4 mr-2" />
+                Captions
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="bg-black/90 border-gray-700">
+                <DropdownMenuItem
+                  onClick={() => setShowCaptions(!showCaptions)}
+                  className="text-white cursor-pointer"
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <span>Enable Captions</span>
+                    <Switch checked={showCaptions} className="ml-2" />
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-gray-700" />
+                <DropdownMenuItem className="text-white cursor-pointer">
+                  <Languages className="w-4 h-4 mr-2" />
+                  English (Auto)
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+
+            <DropdownMenuSeparator className="bg-gray-700" />
+
+            {/* Download */}
+            <DropdownMenuItem
+              onClick={handleDownload}
+              className="text-white cursor-pointer"
+              disabled={isDownloading}
+            >
+              <Download className="w-4 h-4 mr-2" />
+              {isDownloading ? 'Downloading...' : 'Download Video'}
+            </DropdownMenuItem>
+
+            {/* Accessibility */}
+            <DropdownMenuItem className="text-white cursor-pointer">
+              <Accessibility className="w-4 h-4 mr-2" />
+              Accessibility Options
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Enhanced Status Indicators */}
+      <div className="absolute top-4 left-4 flex flex-col gap-2">
         <Badge
           variant="secondary"
           className="bg-black/40 text-white border-none text-[10px] md:text-xs px-2 py-1"
         >
           {video.stats.views} views
         </Badge>
+
+        {/* Network Speed Indicator */}
+        {autoQuality && (
+          <Badge
+            variant="secondary"
+            className={cn(
+              "text-[10px] md:text-xs px-2 py-1 border-none",
+              networkSpeed === 'fast' && "bg-green-500/20 text-green-400",
+              networkSpeed === 'medium' && "bg-yellow-500/20 text-yellow-400",
+              networkSpeed === 'slow' && "bg-red-500/20 text-red-400"
+            )}
+          >
+            {networkSpeed === 'fast' && '🚀'}
+            {networkSpeed === 'medium' && '⚡'}
+            {networkSpeed === 'slow' && '🐌'}
+            {videoQuality}
+          </Badge>
+        )}
+
+        {/* Buffering Indicator */}
+        {isBuffering && (
+          <Badge
+            variant="secondary"
+            className="bg-blue-500/20 text-blue-400 text-[10px] md:text-xs px-2 py-1 border-none animate-pulse"
+          >
+            Buffering...
+          </Badge>
+        )}
       </div>
 
       {/* In-Video Ad Overlay */}
