@@ -1177,43 +1177,23 @@ const Videos: React.FC = () => {
         </Button>
       </div>
 
-      {/* Search Overlay */}
+      {/* Enhanced Search Overlay */}
       {showSearchOverlay && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
-          <div className="w-full max-w-md mx-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search videos, creators, sounds..."
-                className="pl-10 pr-12 py-3 bg-gray-900 border-gray-700 text-white text-lg"
-                autoFocus
-              />
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 overflow-auto">
+          <div className="min-h-full p-4">
+            <div className="flex justify-end mb-4">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSearchOverlay(false)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="text-white hover:bg-white/20"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </Button>
             </div>
-
-            {searchQuery && (
-              <Card className="mt-4 bg-gray-900 border-gray-700">
-                <CardContent className="p-4">
-                  <p className="text-gray-400 text-sm">
-                    Search results for "{searchQuery}"
-                  </p>
-                  <div className="mt-2 text-white">
-                    <p className="text-sm">
-                      No results found. Try a different search term.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <div className="max-w-6xl mx-auto">
+              <EnhancedSearchDiscovery />
+            </div>
           </div>
         </div>
       )}
