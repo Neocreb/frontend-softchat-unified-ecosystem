@@ -324,7 +324,8 @@ const VideoCard: React.FC<{
   video: VideoData;
   isActive: boolean;
   showControls?: boolean;
-}> = ({ video, isActive, showControls = true }) => {
+  onVideoElementReady?: (element: HTMLVideoElement | null) => void;
+}> = ({ video, isActive, showControls = true, onVideoElementReady }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showMore, setShowMore] = useState(false);
