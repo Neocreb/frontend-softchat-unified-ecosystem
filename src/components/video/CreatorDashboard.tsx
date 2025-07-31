@@ -42,6 +42,20 @@ import {
   Bookmark,
   FileText,
   ExternalLink,
+  Sparkles,
+  Brain,
+  Gauge,
+  ArrowUpRight,
+  ArrowDownRight,
+  Wifi,
+  WifiOff,
+  Bell,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  Timer,
+  Radio,
+  Repeat,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
