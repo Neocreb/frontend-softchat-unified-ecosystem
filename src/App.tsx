@@ -84,6 +84,7 @@ import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminGroupsPages from "./pages/admin/AdminGroupsPages";
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
+import Videos from "./pages/Videos";
 import EnhancedVideos from "./pages/EnhancedVideos";
 import ImprovedVideos from "./pages/ImprovedVideos";
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
