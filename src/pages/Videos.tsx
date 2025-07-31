@@ -132,7 +132,7 @@ const mockVideos: VideoData[] = [
       followerCount: 234567,
     },
     description:
-      "Bitcoin to the moon! 🚀 Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
+      "Bitcoin to the moon! �� Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
     music: {
       title: "Crypto Anthem",
       artist: "Digital Dreams",
@@ -428,8 +428,54 @@ const VideoCard: React.FC<{
         preload="metadata"
         poster={video.thumbnail}
         onClick={togglePlay}
+        onLoadedMetadata={() => {
+          // Set initial playback speed
+          if (videoRef.current) {
+            videoRef.current.playbackRate = playbackSpeed;
+          }
+        }}
+        onProgress={() => {
+          // Update buffer progress
+          if (videoRef.current && videoRef.current.buffered.length > 0) {
+            const bufferedEnd = videoRef.current.buffered.end(videoRef.current.buffered.length - 1);
+            const duration = videoRef.current.duration;
+            if (duration > 0) {
+              const bufferedPercent = (bufferedEnd / duration) * 100;
+              // Use this for adaptive quality if needed
+              if (bufferedPercent < 25 && connectionQuality === "good") {
+                setConnectionQuality("poor");
+              }
+            }
+          }
+        }}
+        onWaiting={() => {
+          // Video is buffering
+          setConnectionQuality("poor");
+        }}
+        onCanPlayThrough={() => {
+          // Video can play through without interruptions
+          if (connectionQuality === "poor") {
+            setConnectionQuality("good");
+          }
+        }}
       >
         <source src={video.videoUrl} type="video/mp4" />
+        {/* Add multiple quality sources if available */}
+        {video.videoSources?.map((source) => (
+          <source key={source.quality} src={source.url} type="video/mp4" media={`(min-width: ${source.minWidth}px)`} />
+        ))}
+
+        {/* Add captions if available */}
+        {video.captions?.map((caption) => (
+          <track
+            key={caption.language}
+            kind="subtitles"
+            src={caption.url}
+            srcLang={caption.language}
+            label={caption.label}
+            default={caption.default}
+          />
+        ))}
       </video>
 
       {/* Challenge Banner */}
