@@ -92,6 +92,7 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
   onGift,
 }) => {
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [viewers, setViewers] = useState(initialViewers);
   const [isMuted, setIsMuted] = useState(false);
