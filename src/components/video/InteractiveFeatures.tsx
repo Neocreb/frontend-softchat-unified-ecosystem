@@ -291,6 +291,26 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [reportTarget, setReportTarget] = useState<string | null>(null);
 
+  // AI-powered features
+  const [showAIFeatures, setShowAIFeatures] = useState(false);
+  const [smartSuggestions, setSmartSuggestions] = useState<SmartSuggestion[]>([]);
+  const [aiFeatures, setAIFeatures] = useState<AIFeature[]>([
+    { id: 'auto-captions', name: 'Auto Captions', description: 'Generate automatic captions', icon: <Type className="w-4 h-4" />, enabled: true },
+    { id: 'smart-hashtags', name: 'Smart Hashtags', description: 'AI-suggested hashtags', icon: <Hash className="w-4 h-4" />, enabled: true },
+    { id: 'content-analysis', name: 'Content Analysis', description: 'Analyze video content', icon: <Brain className="w-4 h-4" />, enabled: false },
+    { id: 'translation', name: 'Auto Translate', description: 'Translate comments', icon: <Languages className="w-4 h-4" />, enabled: false },
+    { id: 'trend-prediction', name: 'Trend Prediction', description: 'Predict viral potential', icon: <TrendingUp className="w-4 h-4" />, enabled: false },
+  ]);
+  const [isGeneratingCaptions, setIsGeneratingCaptions] = useState(false);
+  const [captionTracks, setCaptionTracks] = useState<CaptionTrack[]>([]);
+  const [selectedCaptionLang, setSelectedCaptionLang] = useState('en');
+  const [showAnalyticsPanel, setShowAnalyticsPanel] = useState(false);
+  const [analyticsInsights, setAnalyticsInsights] = useState<AnalyticsInsight[]>([
+    { id: '1', metric: 'Engagement Rate', value: 12.5, change: 2.3, trend: 'up', description: 'Higher than average' },
+    { id: '2', metric: 'View Duration', value: 65, change: -5.2, trend: 'down', description: 'Average view completion' },
+    { id: '3', metric: 'Share Rate', value: 8.2, change: 15.7, trend: 'up', description: 'Excellent virality potential' },
+  ]);
+
   const { toast } = useToast();
 
   const shareOptions: ShareOption[] = [
