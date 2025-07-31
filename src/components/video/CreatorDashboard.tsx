@@ -295,6 +295,14 @@ const CreatorDashboard: React.FC<CreatorDashboardProps> = ({
 }) => {
   const [timeRange, setTimeRange] = useState("30d");
   const [activeTab, setActiveTab] = useState("overview");
+  const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(true);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [refreshInterval, setRefreshInterval] = useState(30);
+  const [showNotifications, setShowNotifications] = useState(true);
+  const [selectedMetrics, setSelectedMetrics] = useState(['views', 'engagement', 'followers']);
+  const [isLoading, setIsLoading] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'disconnected' | 'connecting'>('connected');
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
