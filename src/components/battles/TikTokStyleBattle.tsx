@@ -486,7 +486,10 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
             </div>
 
             {/* Mute indicator */}
-            <div className="absolute bottom-4 left-4">
+            <div className={cn(
+              "absolute left-4",
+              isMobile ? "bottom-20" : "bottom-4"
+            )}>
               <div className="bg-black/60 rounded-full p-2">
                 <VolumeX className="w-4 h-4 text-white" />
               </div>
