@@ -971,6 +971,20 @@ const VideoCard: React.FC<{
             Buffering...
           </Badge>
         )}
+
+        {/* Performance Score (for debugging/admin) */}
+        {performanceScore < 80 && (
+          <Badge
+            variant="secondary"
+            className={cn(
+              "text-[10px] md:text-xs px-2 py-1 border-none",
+              performanceScore >= 60 ? "bg-yellow-500/20 text-yellow-400" : "bg-red-500/20 text-red-400"
+            )}
+            title={`Performance: ${performanceScore}/100. ${recommendations.join(', ')}`}
+          >
+            ⚡ {performanceScore}%
+          </Badge>
+        )}
       </div>
 
       {/* Enhanced Video Progress Bar */}
