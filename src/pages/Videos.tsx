@@ -1133,6 +1133,11 @@ const Videos: React.FC = () => {
 
       {/* Enhanced Create Button Group */}
       <div className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 flex flex-col gap-3">
+        <AccessibilityFAB
+          videoElement={videoRef.current}
+          className="w-12 h-12"
+        />
+
         <Button
           variant="ghost"
           size="icon"
