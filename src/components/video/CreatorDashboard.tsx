@@ -89,6 +89,8 @@ interface AnalyticsData {
     total: number;
     change: number;
     chartData: { date: string; value: number }[];
+    realTime: number;
+    peakHour: string;
   };
   engagement: {
     likes: number;
@@ -97,15 +99,29 @@ interface AnalyticsData {
     saves: number;
     avgWatchTime: number;
     completionRate: number;
+    engagementRate: number;
+    clickThroughRate: number;
+    retentionRate: number;
   };
   audience: {
     followers: number;
     newFollowers: number;
+    unfollowers: number;
     demographics: {
       age: { range: string; percentage: number }[];
       gender: { type: string; percentage: number }[];
       location: { country: string; percentage: number }[];
     };
+    deviceStats: {
+      mobile: number;
+      desktop: number;
+      tablet: number;
+    };
+    trafficSources: {
+      source: string;
+      percentage: number;
+      growth: number;
+    }[];
   };
   monetization: {
     totalEarnings: number;
@@ -113,6 +129,9 @@ interface AnalyticsData {
     subscriptions: number;
     brandDeals: number;
     monthlyRevenue: { month: string; amount: number }[];
+    predictedRevenue: number;
+    conversionRate: number;
+    avgRevenuePerUser: number;
   };
   topVideos: {
     id: string;
@@ -120,7 +139,21 @@ interface AnalyticsData {
     views: number;
     engagement: number;
     thumbnail: string;
+    viralScore: number;
+    trendingPotential: number;
   }[];
+  realTimeMetrics: {
+    liveViewers: number;
+    activeVideos: number;
+    recentInteractions: number;
+    currentTrends: string[];
+  };
+  aiInsights: {
+    contentSuggestions: string[];
+    bestPostingTimes: string[];
+    audienceGrowthPrediction: number;
+    viralPotentialScore: number;
+  };
 }
 
 interface BrandPartnership {
