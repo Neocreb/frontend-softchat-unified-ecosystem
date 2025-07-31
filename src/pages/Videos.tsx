@@ -118,6 +118,32 @@ interface VideoData {
     title: string;
     hashtag: string;
   };
+  // Enhanced features
+  videoSources?: {
+    quality: string;
+    url: string;
+    minWidth: number;
+    bitrate: number;
+  }[];
+  captions?: {
+    language: string;
+    label: string;
+    url: string;
+    default?: boolean;
+  }[];
+  chapters?: {
+    id: string;
+    title: string;
+    startTime: number;
+    endTime: number;
+    thumbnail?: string;
+  }[];
+  allowDownload?: boolean;
+  allowOffline?: boolean;
+  supportsPiP?: boolean;
+  supportsAirPlay?: boolean;
+  aiGenerated?: boolean;
+  transcription?: string;
 }
 
 const mockVideos: VideoData[] = [
@@ -132,7 +158,7 @@ const mockVideos: VideoData[] = [
       followerCount: 234567,
     },
     description:
-      "Bitcoin to the moon! �� Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
+      "Bitcoin to the moon! 🚀 Who else is holding? This AI-powered analysis shows why we're still early! #crypto #bitcoin #hodl #ai",
     music: {
       title: "Crypto Anthem",
       artist: "Digital Dreams",
