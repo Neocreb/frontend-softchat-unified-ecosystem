@@ -76,6 +76,7 @@ import VideoEditingSuite from "@/components/video/VideoEditingSuite";
 import VideoMonetizationHub from "@/components/video/VideoMonetizationHub";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import EnhancedCreatorAnalytics from "@/components/video/EnhancedCreatorAnalytics";
+import AccessibilityFAB from "@/components/accessibility/AccessibilityFAB";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
