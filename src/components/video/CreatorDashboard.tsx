@@ -197,6 +197,7 @@ const mockAnalyticsData: AnalyticsData = {
   audience: {
     followers: 89456,
     newFollowers: 1247,
+    unfollowers: 98,
     demographics: {
       age: [
         { range: "18-24", percentage: 32 },
@@ -218,6 +219,17 @@ const mockAnalyticsData: AnalyticsData = {
         { country: "Germany", percentage: 7 },
       ],
     },
+    deviceStats: {
+      mobile: 78,
+      desktop: 18,
+      tablet: 4,
+    },
+    trafficSources: [
+      { source: "For You Page", percentage: 45, growth: 12 },
+      { source: "Search", percentage: 22, growth: -3 },
+      { source: "Direct", percentage: 18, growth: 8 },
+      { source: "External", percentage: 15, growth: 25 },
+    ],
   },
   monetization: {
     totalEarnings: 12540,
