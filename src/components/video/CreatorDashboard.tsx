@@ -275,6 +275,22 @@ const mockAnalyticsData: AnalyticsData = {
       trendingPotential: 82,
     },
   ],
+  realTimeMetrics: {
+    liveViewers: 1247,
+    activeVideos: 23,
+    recentInteractions: 156,
+    currentTrends: ['#viral', '#fyp', '#trending', '#tech'],
+  },
+  aiInsights: {
+    contentSuggestions: [
+      'Post more tech content - 23% higher engagement',
+      'Try posting at 8 PM for maximum reach',
+      'Use trending audio tracks for better discovery'
+    ],
+    bestPostingTimes: ['8:00 PM', '6:30 AM', '12:00 PM'],
+    audienceGrowthPrediction: 18.5,
+    viralPotentialScore: 78,
+  },
 };
 
 const brandPartnerships: BrandPartnership[] = [
