@@ -139,8 +139,14 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
   const [totalVotes, setTotalVotes] = useState({ creator1: 12, creator2: 6 });
   const [giftEffects, setGiftEffects] = useState<Array<{ id: string; creatorId: string; gift: Gift; timestamp: Date }>>([]);
   const [showVoteModal, setShowVoteModal] = useState(false);
-  const [selectedVoteCreator, setSelectedVoteCreator] = useState<string | null>(null);
-  const [voteAmount, setVoteAmount] = useState(10);
+  const [userVotes, setUserVotes] = useState<Vote[]>([]);
+  const [userBalance] = useState(2500); // Mock user balance
+  const [votingPool, setVotingPool] = useState({
+    creator1Total: 450,
+    creator2Total: 780,
+    totalPool: 1230,
+    totalVoters: 23,
+  });
 
   const chatRef = useRef<HTMLDivElement>(null);
 
