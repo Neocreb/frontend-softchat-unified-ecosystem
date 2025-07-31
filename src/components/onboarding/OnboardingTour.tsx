@@ -310,8 +310,8 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
   };
 
   if (!isOpen) {
-    // Debug trigger for testing (only show in development)
-    if (process.env.NODE_ENV === "development") {
+    // Debug trigger for testing (only show in development on landing and auth pages)
+    if (process.env.NODE_ENV === "development" && (location.pathname === "/" || location.pathname === "/auth")) {
       return (
         <Button
           variant="outline"
