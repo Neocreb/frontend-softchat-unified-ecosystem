@@ -371,9 +371,10 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="gifts">Virtual Gifts</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="gifts">Gifts</TabsTrigger>
               <TabsTrigger value="tips">Tips</TabsTrigger>
+              <TabsTrigger value="merchandise">Merch</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
             </TabsList>
 
