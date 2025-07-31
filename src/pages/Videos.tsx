@@ -46,9 +46,7 @@ import {
   CloudDownload,
   Repeat,
   Shuffle,
-  Bookmark,
   Flag,
-  Share,
   Copy,
   ExternalLink,
 } from "lucide-react";
