@@ -86,6 +86,11 @@ interface VideoSegment {
   startTime: number;
   filters: string[];
   effects: string[];
+  transition?: string;
+  volume: number;
+  speed: number;
+  trimStart?: number;
+  trimEnd?: number;
 }
 
 interface Filter {
