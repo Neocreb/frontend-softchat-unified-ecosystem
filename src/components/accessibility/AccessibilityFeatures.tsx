@@ -328,6 +328,11 @@ export const AccessibilityControlPanel: FC = () => {
     });
   };
 
+  // Only show accessibility button on landing and auth pages
+  if (location.pathname !== "/" && location.pathname !== "/auth") {
+    return null;
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
