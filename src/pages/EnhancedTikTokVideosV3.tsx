@@ -274,7 +274,7 @@ const liveStreams: VideoData[] = [
       verified: true,
       followerCount: 50000,
     },
-    description: "LIVE: Bitcoin analysis and market predictions! 🔴 Join the discussion",
+    description: "LIVE: Bitcoin analysis and market predictions! ���� Join the discussion",
     music: { title: "Live Stream", artist: "Real Time" },
     stats: { likes: 1250, comments: 345, shares: 89, views: "12.5K watching" },
     hashtags: ["live", "crypto", "bitcoin", "analysis"],
@@ -979,6 +979,13 @@ const EnhancedTikTokVideosV3: React.FC = () => {
                   <DropdownMenuItem onClick={() => setIsDashboardOpen(true)} className="hover:bg-gray-800">
                     <Award className="w-4 h-4 mr-2" />
                     Creator Studio
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="hover:bg-gray-800"
+                    onClick={() => setIsAccessibilityOpen(true)}
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    Accessibility
                   </DropdownMenuItem>
                   <DropdownMenuItem className="hover:bg-gray-800">
                     <Settings className="w-4 h-4 mr-2" />
