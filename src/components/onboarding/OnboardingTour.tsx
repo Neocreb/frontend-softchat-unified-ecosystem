@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -214,6 +215,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 }) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPath, setSelectedPath] = useState<OnboardingPath | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -308,8 +310,8 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
   };
 
   if (!isOpen) {
-    // Debug trigger for testing (only show in development)
-    if (process.env.NODE_ENV === "development") {
+    // Debug trigger for testing (only show in development on landing and auth pages)
+    if (process.env.NODE_ENV === "development" && (location.pathname === "/" || location.pathname === "/auth")) {
       return (
         <Button
           variant="outline"

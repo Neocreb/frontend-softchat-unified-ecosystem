@@ -6,6 +6,7 @@ import {
   type ReactNode,
   type FC,
 } from "react";
+import { useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -306,6 +307,7 @@ const applyAccessibilitySettings = (settings: AccessibilitySettings) => {
 export const AccessibilityControlPanel: FC = () => {
   const { settings, updateSettings, speak } = useAccessibility();
   const { toast } = useToast();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleTestScreenReader = () => {
@@ -325,6 +327,11 @@ export const AccessibilityControlPanel: FC = () => {
       description: "All accessibility settings have been reset to defaults",
     });
   };
+
+  // Only show accessibility button on landing and auth pages
+  if (location.pathname !== "/" && location.pathname !== "/auth") {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
