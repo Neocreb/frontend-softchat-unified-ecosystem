@@ -811,6 +811,8 @@ const VideoCard: React.FC<{
             isLiveStream={video.isLiveStream}
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
+            enableAI={true}
+            showAnalytics={true}
           />
         </div>
       </div>
