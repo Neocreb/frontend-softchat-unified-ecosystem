@@ -40,6 +40,7 @@ interface Creator {
   verified: boolean;
   score: number;
   wins: number;
+  followers?: string | number;
 }
 
 interface Gift {
