@@ -791,6 +791,114 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
         </div>
       )}
 
+      {/* Voting Modal */}
+      {showVoteModal && (
+        <div className={cn(
+          "absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4",
+          isMobile && "pb-36"
+        )}>
+          <div className="bg-gray-900 rounded-lg p-6 max-w-sm w-full">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-semibold">Place Your Vote</h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowVoteModal(false)}
+                className="text-white hover:bg-white/20"
+              >
+                <ChevronDown className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {!selectedVoteCreator ? (
+              <div>
+                <p className="text-white/70 text-sm mb-4">Choose who you think will win:</p>
+                <div className="grid grid-cols-1 gap-3">
+                  <Button
+                    className="bg-red-600 hover:bg-red-700 h-auto p-4 flex items-center gap-3 justify-start"
+                    onClick={() => setSelectedVoteCreator(creator1.id)}
+                  >
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={creator1.avatar} />
+                      <AvatarFallback>{creator1.displayName[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="text-left">
+                      <div className="font-semibold">{creator1.displayName}</div>
+                      <div className="text-sm opacity-80">Current Score: {scores.creator1}</div>
+                    </div>
+                  </Button>
+
+                  <Button
+                    className="bg-blue-600 hover:bg-blue-700 h-auto p-4 flex items-center gap-3 justify-start"
+                    onClick={() => setSelectedVoteCreator(creator2.id)}
+                  >
+                    <Avatar className="w-12 h-12">
+                      <AvatarImage src={creator2.avatar} />
+                      <AvatarFallback>{creator2.displayName[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="text-left">
+                      <div className="font-semibold">{creator2.displayName}</div>
+                      <div className="text-sm opacity-80">Current Score: {scores.creator2}</div>
+                    </div>
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="text-center mb-4">
+                  <Avatar className="w-16 h-16 mx-auto mb-2">
+                    <AvatarImage src={selectedVoteCreator === creator1.id ? creator1.avatar : creator2.avatar} />
+                    <AvatarFallback>
+                      {selectedVoteCreator === creator1.id ? creator1.displayName[0] : creator2.displayName[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <p className="text-white font-medium">
+                    Vote for {selectedVoteCreator === creator1.id ? creator1.displayName : creator2.displayName}
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-white text-sm font-medium mb-2 block">
+                      Vote Amount: {voteAmount} SP
+                    </label>
+                    <input
+                      type="range"
+                      min="5"
+                      max="100"
+                      step="5"
+                      value={voteAmount}
+                      onChange={(e) => setVoteAmount(parseInt(e.target.value))}
+                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                    />
+                    <div className="flex justify-between text-xs text-gray-400 mt-1">
+                      <span>5 SP</span>
+                      <span>100 SP</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setSelectedVoteCreator(null)}
+                      className="border-gray-600 text-white hover:bg-gray-700"
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      onClick={() => handlePlaceVote(selectedVoteCreator, voteAmount)}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      Vote {voteAmount} SP
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Gift Effects */}
       {giftEffects.map((effect) => (
         <div
