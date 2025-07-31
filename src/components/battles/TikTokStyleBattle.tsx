@@ -43,6 +43,21 @@ interface Creator {
   score: number;
   wins: number;
   followers?: string | number;
+  tier: 'rising_star' | 'pro_creator' | 'legend';
+  winRate: number;
+  totalVotes: number;
+  isLeading: boolean;
+  currentScore: number;
+}
+
+interface Vote {
+  id: string;
+  amount: number;
+  creatorId: string;
+  odds: number;
+  potentialWinning: number;
+  timestamp: Date;
+  status: 'active' | 'won' | 'lost' | 'refunded';
 }
 
 interface Gift {
