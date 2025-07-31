@@ -477,20 +477,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
           </div>
         )}
 
-        {/* Video Reply */}
-        <div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-sm"
-            onClick={handleReplyVideo}
-          >
-            <Video className="w-6 h-6" />
-          </Button>
-          <span className="text-white text-xs mt-1 text-center block">
-            Reply
-          </span>
-        </div>
+
 
         {/* Live Stream Viewers (if live) */}
         {isLiveStream && (
