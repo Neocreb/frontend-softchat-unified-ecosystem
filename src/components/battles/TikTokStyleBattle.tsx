@@ -172,7 +172,7 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
           "Team Red! ❤️",
           "Team Blue! 💙",
           "Epic moves! 🚀",
-          "Who's winning? 👀",
+          "Who's winning? ���",
           "Send more gifts! 🎁",
         ];
         
@@ -655,7 +655,10 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
 
       {/* Gift Selection Modal */}
       {showGifts && (
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className={cn(
+          "absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4",
+          isMobile && "pb-20"
+        )}>
           <div className="bg-gray-900 rounded-lg p-6 max-w-sm w-full">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-white font-semibold">Send Gift</h3>
