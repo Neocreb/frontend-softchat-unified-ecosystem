@@ -32,6 +32,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import BattleVoting from '@/components/voting/BattleVoting';
 
 interface Creator {
   id: string;
