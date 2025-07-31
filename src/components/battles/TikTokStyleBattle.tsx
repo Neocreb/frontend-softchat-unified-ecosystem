@@ -287,17 +287,30 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
   };
 
   const handleVote = () => {
-    // Open voting interface - could show a quick vote modal or integrate with existing voting
+    // Open voting modal
+    setShowVoteModal(true);
+    setSelectedVoteCreator(null);
+    setVoteAmount(10);
+  };
+
+  const handlePlaceVote = (creatorId: string, amount: number) => {
     if (onVote) {
-      // For demo, vote for a random creator with 10 SP
-      const randomCreator = Math.random() > 0.5 ? creator1.id : creator2.id;
-      const amount = 10;
-      onVote(randomCreator, amount);
+      onVote(creatorId, amount);
     }
+
+    // Update visual feedback
+    setTotalVotes(prev => ({
+      ...prev,
+      [creatorId === creator1.id ? 'creator1' : 'creator2']:
+        prev[creatorId === creator1.id ? 'creator1' : 'creator2'] + 1
+    }));
+
+    setShowVoteModal(false);
+    setSelectedVoteCreator(null);
 
     toast({
       title: "🎯 Vote Placed!",
-      description: "Your vote has been registered",
+      description: `${amount} SP voted for ${creatorId === creator1.id ? creator1.displayName : creator2.displayName}`,
     });
   };
 
