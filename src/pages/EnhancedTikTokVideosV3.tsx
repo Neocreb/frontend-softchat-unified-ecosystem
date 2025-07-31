@@ -274,7 +274,7 @@ const liveStreams: VideoData[] = [
       verified: true,
       followerCount: 50000,
     },
-    description: "LIVE: Bitcoin analysis and market predictions! ���� Join the discussion",
+    description: "LIVE: Bitcoin analysis and market predictions! 🔴 Join the discussion",
     music: { title: "Live Stream", artist: "Real Time" },
     stats: { likes: 1250, comments: 345, shares: 89, views: "12.5K watching" },
     hashtags: ["live", "crypto", "bitcoin", "analysis"],
@@ -590,6 +590,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
   const [isLiveStreamOpen, setIsLiveStreamOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
@@ -1164,7 +1165,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
                       }}
                       onVote={(creatorId, amount) => {
                         toast({
-                          title: "Vote Placed! 🎯",
+                          title: "Vote Placed! ���",
                           description: `${amount} SP voted for ${creatorId === video.user.id ? video.user.displayName : 'opponent'}`,
                         });
                       }}
