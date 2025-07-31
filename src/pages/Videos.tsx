@@ -50,6 +50,7 @@ import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
+import EnhancedVideoPlayer from "@/components/video/EnhancedVideoPlayer";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { cn } from "@/utils/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
