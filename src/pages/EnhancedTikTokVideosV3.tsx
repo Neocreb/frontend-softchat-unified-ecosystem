@@ -75,6 +75,7 @@ import DuetEnabledVideoPlayer from "@/components/video/DuetEnabledVideoPlayer";
 import DuetRecorder from "@/components/video/DuetRecorder";
 import BattleSetup from "@/components/battles/BattleSetup";
 import LiveBattle from "@/components/battles/LiveBattle";
+import TikTokStyleBattle from "@/components/battles/TikTokStyleBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
 import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
