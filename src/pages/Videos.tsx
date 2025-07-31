@@ -348,6 +348,11 @@ const VideoCard: React.FC<{
     const video = videoRef.current;
     if (!video) return;
 
+    // Notify parent component about the current video element
+    if (isActive && onVideoElementReady) {
+      onVideoElementReady(video);
+    }
+
     let isComponentMounted = true;
 
     const handleVideoPlayback = async () => {
@@ -372,7 +377,7 @@ const VideoCard: React.FC<{
         safePause(video);
       }
     };
-  }, [isActive, isPlaying, safePlay, safePause]);
+  }, [isActive, isPlaying, safePlay, safePause, onVideoElementReady]);
 
   // In-video ad timer
   useEffect(() => {
