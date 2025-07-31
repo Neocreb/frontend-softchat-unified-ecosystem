@@ -483,11 +483,23 @@ class VirtualGiftsService {
       if (error && error.code !== "PGRST116") throw error;
       return data;
     } catch (error) {
-      console.error(
-        "Error getting tip settings:",
+      console.warn(
+        "Tip settings table not found, using defaults:",
         error instanceof Error ? error.message : JSON.stringify(error),
       );
-      return null;
+
+      // Return default settings if table doesn't exist
+      return {
+        id: `default-${userId}`,
+        userId: userId,
+        isEnabled: true,
+        minTipAmount: 1,
+        maxTipAmount: 100,
+        suggestedAmounts: [1, 5, 10, 25],
+        thankYouMessage: "Thank you for your support!",
+        allowAnonymous: true,
+        createdAt: new Date().toISOString(),
+      };
     }
   }
 
