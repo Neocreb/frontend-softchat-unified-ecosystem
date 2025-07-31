@@ -142,6 +142,32 @@ interface VideoData {
     title: string;
     hashtag: string;
   };
+  // Enhanced features
+  videoSources?: {
+    quality: string;
+    url: string;
+    minWidth: number;
+    bitrate: number;
+  }[];
+  captions?: {
+    language: string;
+    label: string;
+    url: string;
+    default?: boolean;
+  }[];
+  chapters?: {
+    id: string;
+    title: string;
+    startTime: number;
+    endTime: number;
+    thumbnail?: string;
+  }[];
+  allowDownload?: boolean;
+  allowOffline?: boolean;
+  supportsPiP?: boolean;
+  supportsAirPlay?: boolean;
+  aiGenerated?: boolean;
+  transcription?: string;
 }
 
 // Mock data for battle videos
