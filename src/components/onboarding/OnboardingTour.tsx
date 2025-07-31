@@ -215,6 +215,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 }) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPath, setSelectedPath] = useState<OnboardingPath | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
