@@ -496,6 +496,9 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
           startTime: getTotalDuration(),
           filters: [currentFilter],
           effects: selectedEffects,
+          volume: 1,
+          speed: 1,
+          transition: undefined,
         };
         setRecordedSegments((prev) => [...prev, segment]);
         setRecordingTime(0);
