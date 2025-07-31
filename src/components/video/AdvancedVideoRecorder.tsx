@@ -322,6 +322,27 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
   const [showPermissionDialog, setShowPermissionDialog] = useState(false);
   const [isInitializingCamera, setIsInitializingCamera] = useState(false);
 
+  // Enhanced editing states
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedSegment, setSelectedSegment] = useState<string | null>(null);
+  const [showColorCorrection, setShowColorCorrection] = useState(false);
+  const [colorCorrection, setColorCorrection] = useState<ColorCorrection>({
+    brightness: 0,
+    contrast: 0,
+    saturation: 0,
+    hue: 0,
+    exposure: 0,
+    shadows: 0,
+    highlights: 0,
+    temperature: 0,
+    tint: 0,
+  });
+  const [audioTracks, setAudioTracks] = useState<AudioTrack[]>([]);
+  const [showTransitions, setShowTransitions] = useState(false);
+  const [playbackPosition, setPlaybackPosition] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showAdvancedTools, setShowAdvancedTools] = useState(false);
+
   // Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
