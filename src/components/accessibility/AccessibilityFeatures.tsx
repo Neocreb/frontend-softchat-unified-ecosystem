@@ -307,6 +307,7 @@ const applyAccessibilitySettings = (settings: AccessibilitySettings) => {
 export const AccessibilityControlPanel: FC = () => {
   const { settings, updateSettings, speak } = useAccessibility();
   const { toast } = useToast();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleTestScreenReader = () => {
