@@ -950,6 +950,96 @@ const VideoCard: React.FC<{
         )}
       </div>
 
+      {/* Enhanced Video Progress Bar */}
+      {showControls && !showInVideoAd && (
+        <div className="absolute bottom-32 md:bottom-16 left-4 right-4 z-30">
+          <div className="bg-black/40 backdrop-blur-sm rounded-lg p-3">
+            {/* Progress Bar */}
+            <div className="mb-2">
+              <Slider
+                value={[currentTime]}
+                max={video.duration}
+                step={0.1}
+                onValueChange={(value) => handleSeek(value[0])}
+                className="w-full"
+              />
+            </div>
+
+            {/* Time Display */}
+            <div className="flex justify-between items-center text-white text-xs">
+              <div className="flex items-center gap-2">
+                <span>{formatTime(currentTime)}</span>
+                <span>/</span>
+                <span>{formatTime(video.duration)}</span>
+                {playbackSpeed !== 1 && (
+                  <Badge className="bg-blue-600 text-xs">
+                    {playbackSpeed}x
+                  </Badge>
+                )}
+              </div>
+
+              {/* Quick Controls */}
+              <div className="flex items-center gap-2">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="w-8 h-8 hover:bg-white/20"
+                  onClick={skip10Backward}
+                >
+                  <SkipBack className="w-4 h-4 text-white" />
+                </Button>
+
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="w-8 h-8 hover:bg-white/20"
+                  onClick={togglePlay}
+                >
+                  {isPlaying ? (
+                    <Pause className="w-4 h-4 text-white" />
+                  ) : (
+                    <Play className="w-4 h-4 text-white" />
+                  )}
+                </Button>
+
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="w-8 h-8 hover:bg-white/20"
+                  onClick={skip10Forward}
+                >
+                  <SkipForward className="w-4 h-4 text-white" />
+                </Button>
+
+                {/* Volume Slider */}
+                <div className="hidden md:flex items-center gap-2 w-20">
+                  <VolumeX className="w-3 h-3 text-white" />
+                  <Slider
+                    value={[volume]}
+                    max={1}
+                    step={0.1}
+                    onValueChange={handleVolumeChange}
+                    className="flex-1"
+                  />
+                  <Volume2 className="w-3 h-3 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Captions Overlay */}
+      {showCaptions && (
+        <div className="absolute bottom-48 md:bottom-32 left-4 right-4 z-30">
+          <div className="bg-black/80 backdrop-blur-sm rounded-lg p-2 text-center">
+            <p className="text-white text-sm md:text-base">
+              [Auto-generated captions will appear here]
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* In-Video Ad Overlay */}
       {showInVideoAd && (
         <InVideoAd
