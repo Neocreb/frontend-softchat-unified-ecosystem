@@ -47,6 +47,7 @@ import {
   Target,
   Swords,
   ShoppingCart,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -750,7 +751,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
     setShowDuetRecorder(false);
     setDuetOriginalVideo(null);
     toast({
-      title: "Duet Created! ��",
+      title: "Duet Created! 🎉",
       description: "Your duet has been posted successfully.",
     });
   };
