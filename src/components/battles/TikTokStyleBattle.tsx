@@ -276,10 +276,25 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
       ...prev,
       [isCreator1 ? 'creator1' : 'creator2']: prev[isCreator1 ? 'creator1' : 'creator2'] + 2
     }));
-    
+
     toast({
       title: "❤️ Liked!",
       description: "+2 SP added to the battle",
+    });
+  };
+
+  const handleVote = () => {
+    // Open voting interface - could show a quick vote modal or integrate with existing voting
+    if (onVote) {
+      // For demo, vote for a random creator with 10 SP
+      const randomCreator = Math.random() > 0.5 ? creator1.id : creator2.id;
+      const amount = 10;
+      onVote(randomCreator, amount);
+    }
+
+    toast({
+      title: "🎯 Vote Placed!",
+      description: "Your vote has been registered",
     });
   };
 
