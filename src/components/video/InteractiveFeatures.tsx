@@ -183,6 +183,8 @@ interface InteractiveFeaturesProps {
   allowComments?: boolean;
   onDuetCreate?: (originalVideoId: string) => void;
   onReplyCreate?: (originalVideoId: string) => void;
+  enableAI?: boolean;
+  showAnalytics?: boolean;
   isBattle?: boolean;
   battleData?: {
     creator1: {
