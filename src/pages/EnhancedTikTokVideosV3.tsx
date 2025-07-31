@@ -750,7 +750,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
     setShowDuetRecorder(false);
     setDuetOriginalVideo(null);
     toast({
-      title: "Duet Created! 🎉",
+      title: "Duet Created! ��",
       description: "Your duet has been posted successfully.",
     });
   };
@@ -962,9 +962,21 @@ const EnhancedTikTokVideosV3: React.FC = () => {
                   align="end"
                   className="bg-gray-900 border-gray-700 text-white"
                 >
-                  <DropdownMenuItem onClick={() => setIsDashboardOpen(true)} className="hover:bg-gray-800">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsDashboardOpen(true);
+                    }}
+                    className="hover:bg-gray-800"
+                  >
                     <Award className="w-4 h-4 mr-2" />
-                    Creator Studio
+                    Creator Analytics
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => navigate('/app/rewards')}
+                    className="hover:bg-gray-800"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Creator Economy
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="hover:bg-gray-800"
