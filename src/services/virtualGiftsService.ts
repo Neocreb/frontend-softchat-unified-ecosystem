@@ -485,7 +485,7 @@ class VirtualGiftsService {
     } catch (error) {
       console.error(
         "Error getting tip settings:",
-        error instanceof Error ? error.message : error,
+        error instanceof Error ? error.message : JSON.stringify(error),
       );
       return null;
     }
