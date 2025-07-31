@@ -686,6 +686,37 @@ const VideoCard: React.FC<{
               avatar: user.avatar || 'https://i.pravatar.cc/150?u=' + user.id
             } : undefined}
           />
+
+          {/* Video Monetization Hub */}
+          <VideoMonetizationHub
+            videoId={video.id}
+            creatorId={video.user.id}
+            videoMetrics={{
+              views: parseInt(video.stats.views.replace(/[^0-9]/g, '')) || 0,
+              likes: video.stats.likes,
+              comments: video.stats.comments,
+              shares: video.stats.shares,
+              duration: video.duration
+            }}
+            onTipSent={(amount) => {
+              toast({
+                title: "Tip Sent!",
+                description: `You sent $${amount.toFixed(2)} to support this creator`,
+              });
+            }}
+            onSubscribe={(tier) => {
+              toast({
+                title: "Subscription Active",
+                description: `You subscribed to ${tier} tier`,
+              });
+            }}
+            onPurchaseMerchandise={(itemId) => {
+              toast({
+                title: "Purchase Successful",
+                description: "Item added to your cart",
+              });
+            }}
+          />
         </div>
       </div>
 
