@@ -473,7 +473,10 @@ const TikTokStyleBattle: React.FC<TikTokStyleBattleProps> = ({
             </div>
 
             {/* Top gifters */}
-            <div className="absolute bottom-4 right-4 flex gap-1">
+            <div className={cn(
+              "absolute right-4 flex gap-1",
+              isMobile ? "bottom-20" : "bottom-4"
+            )}>
               {[4, 5, 6].map((i) => (
                 <Avatar key={i} className="w-6 h-6 ring-1 ring-white/30">
                   <AvatarImage src={`https://i.pravatar.cc/32?img=${i + 10}`} />
