@@ -1074,7 +1074,33 @@ const Videos: React.FC = () => {
     let adCounter = 0;
 
     for (let i = 0; i < mockVideos.length; i++) {
-      videosWithAds.push(mockVideos[i]);
+      // Add quality options and subtitle support to mock videos
+      const enhancedVideo = {
+        ...mockVideos[i],
+        qualityOptions: [
+          { label: 'Auto', value: 'auto', bitrate: 0 },
+          { label: '1080p', value: '1080p', bitrate: 5000 },
+          { label: '720p', value: '720p', bitrate: 2500 },
+          { label: '480p', value: '480p', bitrate: 1000 },
+          { label: '360p', value: '360p', bitrate: 600 },
+        ],
+        subtitles: [
+          { language: 'en', url: '/captions/en.vtt', default: true },
+          { language: 'es', url: '/captions/es.vtt' },
+          { language: 'fr', url: '/captions/fr.vtt' },
+        ],
+        chapters: [
+          { title: 'Introduction', time: 0 },
+          { title: 'Main Content', time: 10 },
+          { title: 'Conclusion', time: 25 },
+        ],
+        audioTracks: [
+          { language: 'en', label: 'English', url: '/audio/en.mp3' },
+          { language: 'es', label: 'Spanish', url: '/audio/es.mp3' },
+        ],
+      };
+
+      videosWithAds.push(enhancedVideo);
 
       // Insert interstitial ad after every 4 videos
       if ((i + 1) % adSettings.interstitialFrequency === 0 && adSettings.enableAds) {
