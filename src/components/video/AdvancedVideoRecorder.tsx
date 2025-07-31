@@ -561,6 +561,116 @@ const AdvancedVideoRecorder: React.FC<AdvancedVideoRecorderProps> = ({
     );
   };
 
+  // Enhanced editing functions
+  const trimSegment = (segmentId: string, start: number, end: number) => {
+    setRecordedSegments(prev =>
+      prev.map(segment =>
+        segment.id === segmentId
+          ? { ...segment, trimStart: start, trimEnd: end }
+          : segment
+      )
+    );
+  };
+
+  const splitSegment = (segmentId: string, splitTime: number) => {
+    setRecordedSegments(prev => {
+      const segmentIndex = prev.findIndex(s => s.id === segmentId);
+      if (segmentIndex === -1) return prev;
+
+      const segment = prev[segmentIndex];
+      const firstPart = {
+        ...segment,
+        id: `${segment.id}_part1`,
+        duration: splitTime,
+      };
+      const secondPart = {
+        ...segment,
+        id: `${segment.id}_part2`,
+        startTime: segment.startTime + splitTime,
+        duration: segment.duration - splitTime,
+      };
+
+      const newSegments = [...prev];
+      newSegments.splice(segmentIndex, 1, firstPart, secondPart);
+      return newSegments;
+    });
+  };
+
+  const duplicateSegment = (segmentId: string) => {
+    setRecordedSegments(prev => {
+      const segment = prev.find(s => s.id === segmentId);
+      if (!segment) return prev;
+
+      const duplicated = {
+        ...segment,
+        id: `${segment.id}_copy_${Date.now()}`,
+      };
+
+      return [...prev, duplicated];
+    });
+  };
+
+  const deleteSegment = (segmentId: string) => {
+    setRecordedSegments(prev => prev.filter(s => s.id !== segmentId));
+  };
+
+  const addTransition = (segmentId: string, transitionType: string) => {
+    setRecordedSegments(prev =>
+      prev.map(segment =>
+        segment.id === segmentId
+          ? { ...segment, transition: transitionType }
+          : segment
+      )
+    );
+  };
+
+  const adjustSegmentVolume = (segmentId: string, volume: number) => {
+    setRecordedSegments(prev =>
+      prev.map(segment =>
+        segment.id === segmentId
+          ? { ...segment, volume }
+          : segment
+      )
+    );
+  };
+
+  const adjustSegmentSpeed = (segmentId: string, speed: number) => {
+    setRecordedSegments(prev =>
+      prev.map(segment =>
+        segment.id === segmentId
+          ? { ...segment, speed }
+          : segment
+      )
+    );
+  };
+
+  const handleColorCorrectionChange = (key: keyof ColorCorrection, value: number) => {
+    setColorCorrection(prev => ({ ...prev, [key]: value }));
+  };
+
+  const getAvailableTransitions = () => [
+    { id: "cut", name: "Cut", type: "cut" as const, duration: 0, preview: "✂️" },
+    { id: "fade", name: "Fade", type: "fade" as const, duration: 0.5, preview: "🌅" },
+    { id: "slide-left", name: "Slide Left", type: "slide" as const, duration: 0.8, preview: "⬅️" },
+    { id: "slide-right", name: "Slide Right", type: "slide" as const, duration: 0.8, preview: "➡️" },
+    { id: "zoom-in", name: "Zoom In", type: "zoom" as const, duration: 1, preview: "🔍" },
+    { id: "zoom-out", name: "Zoom Out", type: "zoom" as const, duration: 1, preview: "🔎" },
+    { id: "wipe-up", name: "Wipe Up", type: "wipe" as const, duration: 0.7, preview: "⬆️" },
+    { id: "dissolve", name: "Dissolve", type: "dissolve" as const, duration: 1.2, preview: "💫" },
+  ];
+
+  const getColorCorrectionTools = () => [
+    { key: 'brightness' as keyof ColorCorrection, label: 'Brightness', min: -100, max: 100, icon: Sun },
+    { key: 'contrast' as keyof ColorCorrection, label: 'Contrast', min: -100, max: 100, icon: Contrast },
+    { key: 'saturation' as keyof ColorCorrection, label: 'Saturation', min: -100, max: 100, icon: Droplets },
+    { key: 'hue' as keyof ColorCorrection, label: 'Hue', min: -180, max: 180, icon: Palette },
+    { key: 'exposure' as keyof ColorCorrection, label: 'Exposure', min: -100, max: 100, icon: Camera },
+    { key: 'shadows' as keyof ColorCorrection, label: 'Shadows', min: -100, max: 100, icon: Sparkles },
+    { key: 'highlights' as keyof ColorCorrection, label: 'Highlights', min: -100, max: 100, icon: Star },
+    { key: 'temperature' as keyof ColorCorrection, label: 'Temperature', min: -100, max: 100, icon: Zap },
+    { key: 'tint' as keyof ColorCorrection, label: 'Tint', min: -100, max: 100, icon: Blend },
+  ];
+
   const exportVideo = async () => {
     if (recordedSegments.length === 0) {
       toast({
