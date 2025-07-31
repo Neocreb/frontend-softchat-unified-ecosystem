@@ -1220,9 +1220,44 @@ const Videos: React.FC = () => {
               <Badge variant="secondary" className="bg-black/40 text-white">
                 {currentVideoIndex + 1} / {videos.length}
               </Badge>
+
+              {/* AI Recommendation Badge */}
+              <Badge
+                variant="secondary"
+                className="bg-purple-500/20 text-purple-400 border border-purple-500/30"
+              >
+                <Sparkles className="w-3 h-3 mr-1" />
+                AI Curated
+              </Badge>
             </div>
 
             <div className="flex items-center gap-2">
+              {/* Cast Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20"
+                title="Cast to TV"
+              >
+                <Cast className="w-5 h-5" />
+              </Button>
+
+              {/* Picture-in-Picture */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20"
+                title="Picture in Picture"
+                onClick={() => {
+                  const video = document.querySelector('video');
+                  if (video && (video as any).requestPictureInPicture) {
+                    (video as any).requestPictureInPicture();
+                  }
+                }}
+              >
+                <MonitorSpeaker className="w-5 h-5" />
+              </Button>
+
               <Button
                 variant="ghost"
                 size="icon"
