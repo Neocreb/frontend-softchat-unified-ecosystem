@@ -423,7 +423,7 @@ const VideoCard: React.FC<{
                   {video.user.displayName}
                   {video.user.followerCount && (
                     <span className="ml-1">
-                      • {formatNumber(video.user.followerCount)} followers
+                      ��� {formatNumber(video.user.followerCount)} followers
                     </span>
                   )}
                 </div>
@@ -1477,7 +1477,10 @@ const EnhancedTikTokVideosV3: React.FC = () => {
             <DialogTitle>Creator Dashboard</DialogTitle>
           </VisuallyHidden>
           <div className="h-full overflow-auto p-6">
-            <CreatorDashboard />
+            <div className="space-y-6">
+              <CreatorDashboard />
+              <EnhancedCreatorAnalytics />
+            </div>
           </div>
         </DialogContent>
       </Dialog>
