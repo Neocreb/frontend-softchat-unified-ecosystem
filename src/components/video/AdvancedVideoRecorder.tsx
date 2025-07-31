@@ -137,6 +137,41 @@ interface Sticker {
   y: number;
   scale: number;
   rotation: number;
+  startTime: number;
+  endTime: number;
+}
+
+interface Transition {
+  id: string;
+  name: string;
+  type: 'fade' | 'slide' | 'zoom' | 'wipe' | 'dissolve' | 'cut';
+  duration: number;
+  preview: string;
+}
+
+interface ColorCorrection {
+  brightness: number;
+  contrast: number;
+  saturation: number;
+  hue: number;
+  exposure: number;
+  shadows: number;
+  highlights: number;
+  temperature: number;
+  tint: number;
+}
+
+interface AudioTrack {
+  id: string;
+  blob?: Blob;
+  url?: string;
+  volume: number;
+  startTime: number;
+  duration: number;
+  fadeIn: number;
+  fadeOut: number;
+  type: 'original' | 'music' | 'voiceover';
+  rotation: number;
 }
 
 const filters: Filter[] = [
