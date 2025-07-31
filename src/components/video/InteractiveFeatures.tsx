@@ -485,7 +485,7 @@ const InteractiveFeatures: React.FC<InteractiveFeaturesProps> = ({
                 <Gift className="w-6 h-6" />
               </Button>
               <span className="text-white text-xs mt-1 text-center block">
-                Gift
+                Support
               </span>
             </div>
           }
