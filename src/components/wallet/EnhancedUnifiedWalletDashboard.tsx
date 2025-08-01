@@ -88,37 +88,35 @@ const EnhancedWalletDashboardContent = () => {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <div className="overflow-x-auto">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 min-w-max">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <Wallet className="h-4 w-4" />
-              <span className="hidden sm:inline">Overview</span>
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
-              <span className="hidden sm:inline">Analytics</span>
-            </TabsTrigger>
-            <TabsTrigger value="transactions" className="flex items-center gap-2">
-              <Search className="h-4 w-4" />
-              <span className="hidden sm:inline">Transactions</span>
-            </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              <span className="hidden sm:inline">Security</span>
-            </TabsTrigger>
-            <TabsTrigger value="integrations" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Integrations</span>
-            </TabsTrigger>
-            <TabsTrigger value="receipts" className="flex items-center gap-2">
-              <Receipt className="h-4 w-4" />
-              <span className="hidden sm:inline">Receipts</span>
-            </TabsTrigger>
-            <TabsTrigger value="performance" className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              <span className="hidden sm:inline">Performance</span>
-            </TabsTrigger>
-          </TabsList>
+        {/* Responsive Tab Navigation */}
+        <div className="w-full">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hide" aria-label="Tabs">
+              {[
+                { id: "overview", label: "Overview", icon: Wallet, description: "Wallet summary" },
+                { id: "analytics", label: "Analytics", icon: BarChart3, description: "Performance insights" },
+                { id: "transactions", label: "Transactions", icon: Search, description: "Transaction history & receipts" },
+                { id: "security", label: "Security", icon: Shield, description: "Security settings" },
+                { id: "integrations", label: "Integrations", icon: Settings, description: "Bank & bill management" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`
+                    whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex flex-col items-center gap-1 min-w-20
+                    ${activeTab === tab.id
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }
+                  `}
+                  aria-current={activeTab === tab.id ? 'page' : undefined}
+                >
+                  <tab.icon className="h-5 w-5" />
+                  <span className="text-xs font-medium">{tab.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
 
         {/* Overview Tab - Enhanced with Quick Actions */}
