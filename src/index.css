@@ -57,38 +57,38 @@
 
 /* Mobile optimizations and responsive utilities */
 @layer utilities {
-  /* Mobile-first responsive text utilities */
+  /* Mobile-first responsive text utilities - 13px base */
   .text-responsive-xs {
-    font-size: 0.75rem; /* 12px on mobile */
+    font-size: 0.69rem; /* ~9px */
   }
 
   .text-responsive-sm {
-    font-size: 0.875rem; /* 14px on mobile */
+    font-size: 0.85rem; /* ~11px */
   }
 
   .text-responsive-base {
-    font-size: 0.875rem; /* 14px on mobile, 16px on desktop */
+    font-size: 1rem; /* 13px base */
   }
 
   .text-responsive-lg {
-    font-size: 1rem; /* 16px on mobile, 18px on desktop */
+    font-size: 1.15rem; /* ~15px */
   }
 
   @media (min-width: 768px) {
     .text-responsive-xs {
-      font-size: 0.875rem; /* 14px on desktop */
+      font-size: 0.77rem; /* ~10px */
     }
 
     .text-responsive-sm {
-      font-size: 0.875rem; /* 14px on desktop */
+      font-size: 0.92rem; /* ~12px */
     }
 
     .text-responsive-base {
-      font-size: 1rem; /* 16px on desktop */
+      font-size: 1rem; /* 13px base */
     }
 
     .text-responsive-lg {
-      font-size: 1.125rem; /* 18px on desktop */
+      font-size: 1.23rem; /* ~16px */
     }
   }
 
