@@ -160,54 +160,43 @@ const PerformanceOptimizedWallet = () => {
     }
   }, [isLoading, transactions]);
 
-  // Real-time WebSocket connection
+  // Real-time WebSocket connection (Mock for demo)
   useEffect(() => {
-    const connectWebSocket = () => {
-      try {
-        // In a real app, this would connect to your actual WebSocket endpoint
-        wsRef.current = new WebSocket('wss://echo.websocket.org/');
-        
-        wsRef.current.onopen = () => {
-          setWsConnected(true);
-          console.log('WebSocket connected for real-time updates');
-        };
+    const simulateRealTimeUpdates = () => {
+      setWsConnected(true);
+      console.log('Mock WebSocket connected for real-time updates');
 
-        wsRef.current.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.type === 'transaction_update') {
-              setRealTimeUpdates(prev => [data.transaction, ...prev]);
-              setLastUpdate(new Date());
-            }
-          } catch (error) {
-            console.error('Error parsing WebSocket message:', error);
-          }
-        };
+      // Simulate periodic updates
+      const interval = setInterval(() => {
+        if (Math.random() > 0.8) { // 20% chance of update
+          const mockTransaction = {
+            id: `mock_${Date.now()}`,
+            type: "earned" as const,
+            amount: Math.floor(Math.random() * 500) + 10,
+            source: ["ecommerce", "crypto", "rewards", "freelance"][Math.floor(Math.random() * 4)] as any,
+            description: `Mock transaction ${Math.floor(Math.random() * 1000)}`,
+            timestamp: new Date().toISOString(),
+            status: "completed" as const,
+          };
 
-        wsRef.current.onclose = () => {
-          setWsConnected(false);
-          // Reconnect after 5 seconds
-          setTimeout(connectWebSocket, 5000);
-        };
+          setRealTimeUpdates(prev => [mockTransaction, ...prev.slice(0, 4)]); // Keep only 5 updates
+          setLastUpdate(new Date());
+        }
+      }, 10000); // Check every 10 seconds
 
-        wsRef.current.onerror = (error) => {
-          console.error('WebSocket error:', error);
-          setWsConnected(false);
-        };
-      } catch (error) {
-        console.error('Failed to connect WebSocket:', error);
-      }
+      return () => {
+        clearInterval(interval);
+        setWsConnected(false);
+      };
     };
+
+    let cleanup: (() => void) | undefined;
 
     if (isOnline) {
-      connectWebSocket();
+      cleanup = simulateRealTimeUpdates();
     }
 
-    return () => {
-      if (wsRef.current) {
-        wsRef.current.close();
-      }
-    };
+    return cleanup;
   }, [isOnline]);
 
   // Online/offline detection
