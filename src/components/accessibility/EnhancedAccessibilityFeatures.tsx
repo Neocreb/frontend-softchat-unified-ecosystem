@@ -189,9 +189,9 @@ const EnhancedAccessibilityFeatures: React.FC<EnhancedAccessibilityFeaturesProps
       root.style.removeProperty('--animation-duration');
     }
     
-    // Apply responsive font size
+    // Apply responsive font size with 13px base
     const isMobile = window.innerWidth < 768;
-    const adjustedFontSize = isMobile ? Math.min(settings.fontSize, 14) : settings.fontSize;
+    const adjustedFontSize = isMobile ? Math.min(settings.fontSize, 13) : settings.fontSize;
     root.style.fontSize = `${adjustedFontSize}px`;
     
     // Apply color blindness filters
