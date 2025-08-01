@@ -1095,7 +1095,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             {/* African currency equivalent amounts */}
             <div>
               <p className="text-xs text-gray-600 mb-2">African Local Currency Equivalents</p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {amounts.slice(5).map((amt, index) => (
                   <Button
                     key={`african_${index}_${amt.value}`}
