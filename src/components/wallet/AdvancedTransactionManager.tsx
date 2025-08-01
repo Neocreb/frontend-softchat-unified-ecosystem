@@ -632,6 +632,15 @@ const AdvancedTransactionManager = () => {
                   <div className="flex-1">
                     <TransactionItem transaction={transaction} />
                   </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => generateReceipt(transaction)}
+                    className="flex items-center gap-1 text-xs"
+                  >
+                    <Receipt className="h-3 w-3" />
+                    Receipt
+                  </Button>
                 </div>
               ))}
             </div>
