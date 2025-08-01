@@ -6,6 +6,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { useAuth } from "@/contexts/AuthContext";
 import {
+  SendMoneyModal,
+  RequestMoneyModal,
+  TransferModal,
+  PayBillModal,
+  TopUpModal,
+} from "./QuickActionModals";
+import {
   ArrowUpRight,
   ArrowDownLeft,
   Send,
