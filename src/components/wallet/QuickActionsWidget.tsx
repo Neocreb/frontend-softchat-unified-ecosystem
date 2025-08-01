@@ -287,13 +287,13 @@ const QuickActionsWidget = () => {
             {recommendations.map((rec) => (
               <div
                 key={rec.id}
-                className="flex items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex flex-col sm:flex-row items-start gap-3 p-4 border rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="flex-shrink-0 p-2 bg-blue-100 rounded-full">
                   {rec.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-1">
                     <h4 className="font-medium text-sm">{rec.title}</h4>
                     <Badge className={getPriorityColor(rec.priority)} variant="secondary">
                       {rec.priority}
@@ -301,7 +301,12 @@ const QuickActionsWidget = () => {
                   </div>
                   <p className="text-sm text-gray-600">{rec.description}</p>
                 </div>
-                <Button size="sm" variant="outline" onClick={rec.action.onClick}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={rec.action.onClick}
+                  className="w-full sm:w-auto mt-2 sm:mt-0"
+                >
                   {rec.action.label}
                 </Button>
               </div>
@@ -337,13 +342,13 @@ const QuickActionsWidget = () => {
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm">{recipient.name}</p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-600 truncate">
                     Last sent: ${recipient.lastAmount} • {recipient.frequency} times
                   </p>
                 </div>
-                <Button size="sm" variant="outline">
-                  <Send className="h-3 w-3 mr-1" />
-                  Send
+                <Button size="sm" variant="outline" className="shrink-0">
+                  <Send className="h-3 w-3 sm:mr-1" />
+                  <span className="hidden sm:inline">Send</span>
                 </Button>
               </div>
             ))}

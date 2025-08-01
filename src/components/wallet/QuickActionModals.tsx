@@ -138,7 +138,7 @@ export const SendMoneyModal = ({ isOpen, onClose }: SendMoneyModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full mx-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Send className="h-5 w-5 text-blue-600" />
@@ -173,11 +173,11 @@ export const SendMoneyModal = ({ isOpen, onClose }: SendMoneyModalProps) => {
           {/* Recipient Input */}
           <div className="space-y-2">
             <Label htmlFor="recipient">Send To</Label>
-            <div className="flex gap-2">
-              <Select value={formData.recipientType} onValueChange={(value) => 
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Select value={formData.recipientType} onValueChange={(value) =>
                 setFormData(prev => ({ ...prev, recipientType: value }))
               }>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -261,11 +261,11 @@ export const SendMoneyModal = ({ isOpen, onClose }: SendMoneyModalProps) => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 h-11">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="flex-1">
+            <Button type="submit" disabled={isLoading} className="flex-1 h-11">
               {isLoading ? "Sending..." : "Send Money"}
             </Button>
           </div>
@@ -326,7 +326,7 @@ export const RequestMoneyModal = ({ isOpen, onClose }: RequestMoneyModalProps) =
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full mx-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <ArrowDownLeft className="h-5 w-5 text-green-600" />
@@ -337,11 +337,11 @@ export const RequestMoneyModal = ({ isOpen, onClose }: RequestMoneyModalProps) =
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="from">Request From</Label>
-            <div className="flex gap-2">
-              <Select value={formData.fromType} onValueChange={(value) => 
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Select value={formData.fromType} onValueChange={(value) =>
                 setFormData(prev => ({ ...prev, fromType: value }))
               }>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -394,11 +394,11 @@ export const RequestMoneyModal = ({ isOpen, onClose }: RequestMoneyModalProps) =
             />
           </div>
 
-          <div className="flex gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 h-11">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="flex-1">
+            <Button type="submit" disabled={isLoading} className="flex-1 h-11">
               {isLoading ? "Sending..." : "Send Request"}
             </Button>
           </div>
@@ -477,7 +477,7 @@ export const TransferModal = ({ isOpen, onClose }: TransferModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full mx-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Repeat className="h-5 w-5 text-orange-600" />
@@ -550,11 +550,11 @@ export const TransferModal = ({ isOpen, onClose }: TransferModalProps) => {
             />
           </div>
 
-          <div className="flex gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 h-11">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="flex-1">
+            <Button type="submit" disabled={isLoading} className="flex-1 h-11">
               {isLoading ? "Processing..." : "Transfer"}
             </Button>
           </div>
@@ -738,7 +738,7 @@ export const PayBillModal = ({ isOpen, onClose }: PayBillModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full mx-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Receipt className="h-5 w-5 text-red-600" />
@@ -841,11 +841,11 @@ export const PayBillModal = ({ isOpen, onClose }: PayBillModalProps) => {
             </Select>
           </div>
 
-          <div className="flex gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 h-11">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="flex-1">
+            <Button type="submit" disabled={isLoading} className="flex-1 h-11">
               {isLoading ? "Processing..." : "Pay Bill"}
             </Button>
           </div>
@@ -921,7 +921,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
     { value: "25", label: "$25 (₦10,000)" },
     { value: "1", label: "$1 (KES 150)" },
     { value: "3.5", label: "$3.50 (KES 500)" },
-    { value: "7", label: "$7 (KES 1,000)" },
+    { value: "12", label: "$12 (KES 1,800)" },
     { value: "14", label: "$14 (KES 2,000)" },
   ];
 
@@ -988,7 +988,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full mx-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Smartphone className="h-5 w-5 text-indigo-600" />
@@ -1077,7 +1077,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             {/* Standard USD amounts */}
             <div>
               <p className="text-xs text-gray-600 mb-2">Standard Amounts (USD)</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {amounts.slice(0, 5).map((amt) => (
                   <Button
                     key={amt.value}
@@ -1095,10 +1095,10 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             {/* African currency equivalent amounts */}
             <div>
               <p className="text-xs text-gray-600 mb-2">African Local Currency Equivalents</p>
-              <div className="grid grid-cols-2 gap-2">
-                {amounts.slice(5).map((amt) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {amounts.slice(5).map((amt, index) => (
                   <Button
-                    key={amt.value + "_african"}
+                    key={`african_${index}_${amt.value}`}
                     type="button"
                     variant={formData.amount === amt.value ? "default" : "outline"}
                     size="sm"
@@ -1129,11 +1129,11 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             </div>
           </div>
 
-          <div className="flex gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 h-11">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="flex-1">
+            <Button type="submit" disabled={isLoading} className="flex-1 h-11">
               {isLoading ? "Processing..." : "Top Up"}
             </Button>
           </div>
