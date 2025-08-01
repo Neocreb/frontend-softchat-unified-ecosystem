@@ -342,13 +342,13 @@ const QuickActionsWidget = () => {
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm">{recipient.name}</p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-600 truncate">
                     Last sent: ${recipient.lastAmount} • {recipient.frequency} times
                   </p>
                 </div>
-                <Button size="sm" variant="outline">
-                  <Send className="h-3 w-3 mr-1" />
-                  Send
+                <Button size="sm" variant="outline" className="shrink-0">
+                  <Send className="h-3 w-3 sm:mr-1" />
+                  <span className="hidden sm:inline">Send</span>
                 </Button>
               </div>
             ))}
