@@ -261,11 +261,11 @@ export const SendMoneyModal = ({ isOpen, onClose }: SendMoneyModalProps) => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <div className="flex gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose} className="flex-1 h-11">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="flex-1">
+            <Button type="submit" disabled={isLoading} className="flex-1 h-11">
               {isLoading ? "Sending..." : "Send Money"}
             </Button>
           </div>
