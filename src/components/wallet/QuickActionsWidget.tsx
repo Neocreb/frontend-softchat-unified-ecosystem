@@ -21,9 +21,7 @@ import {
   Target,
   Lightbulb,
   Sparkles,
-  Moon,
-  Sun,
-  Monitor,
+
 } from "lucide-react";
 
 interface QuickAction {
