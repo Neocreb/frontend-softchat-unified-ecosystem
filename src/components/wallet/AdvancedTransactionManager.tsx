@@ -259,6 +259,11 @@ const AdvancedTransactionManager = () => {
     });
   }, [toast]);
 
+  const generateReceipt = useCallback((transaction: Transaction) => {
+    setReceiptTransaction(transaction);
+    setShowReceiptDialog(true);
+  }, []);
+
   const printTransactions = useCallback(() => {
     const selectedData = selectedTransactions.length > 0 
       ? filteredTransactions.filter(t => selectedTransactions.includes(t.id))
