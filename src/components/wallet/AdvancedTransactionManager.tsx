@@ -444,15 +444,18 @@ const AdvancedTransactionManager = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Source Filter */}
               <div className="space-y-2">
-                <Label>Sources</Label>
+                <Label>Income Sources</Label>
                 <div className="space-y-2">
-                  {uniqueSources.map(source => (
-                    <div key={source} className="flex items-center space-x-2">
+                  {platformSources.map(source => (
+                    <div key={source.value} className="flex items-center space-x-2">
                       <Checkbox
-                        checked={filters.sources.includes(source)}
-                        onCheckedChange={() => toggleArrayFilter("sources", source)}
+                        checked={filters.sources.includes(source.value)}
+                        onCheckedChange={() => toggleArrayFilter("sources", source.value)}
                       />
-                      <Label className="capitalize">{source}</Label>
+                      <div className="flex-1">
+                        <Label className="font-medium">{source.label}</Label>
+                        <p className="text-xs text-gray-500">{source.description}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -462,13 +465,16 @@ const AdvancedTransactionManager = () => {
               <div className="space-y-2">
                 <Label>Transaction Types</Label>
                 <div className="space-y-2">
-                  {uniqueTypes.map(type => (
-                    <div key={type} className="flex items-center space-x-2">
+                  {platformTypes.map(type => (
+                    <div key={type.value} className="flex items-center space-x-2">
                       <Checkbox
-                        checked={filters.types.includes(type)}
-                        onCheckedChange={() => toggleArrayFilter("types", type)}
+                        checked={filters.types.includes(type.value)}
+                        onCheckedChange={() => toggleArrayFilter("types", type.value)}
                       />
-                      <Label className="capitalize">{type}</Label>
+                      <div className="flex-1">
+                        <Label className="font-medium">{type.label}</Label>
+                        <p className="text-xs text-gray-500">{type.description}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -478,18 +484,21 @@ const AdvancedTransactionManager = () => {
               <div className="space-y-2">
                 <Label>Status</Label>
                 <div className="space-y-2">
-                  {uniqueStatuses.map(status => (
-                    <div key={status} className="flex items-center space-x-2">
+                  {platformStatuses.map(status => (
+                    <div key={status.value} className="flex items-center space-x-2">
                       <Checkbox
-                        checked={filters.status.includes(status)}
-                        onCheckedChange={() => toggleArrayFilter("status", status)}
+                        checked={filters.status.includes(status.value)}
+                        onCheckedChange={() => toggleArrayFilter("status", status.value)}
                       />
-                      <Label className="capitalize flex items-center gap-2">
-                        {status === "completed" && <CheckCircle className="h-3 w-3 text-green-500" />}
-                        {status === "pending" && <Clock className="h-3 w-3 text-yellow-500" />}
-                        {status === "failed" && <XCircle className="h-3 w-3 text-red-500" />}
-                        {status}
-                      </Label>
+                      <div className="flex-1">
+                        <Label className="font-medium flex items-center gap-2">
+                          {status.value === "completed" && <CheckCircle className="h-3 w-3 text-green-500" />}
+                          {status.value === "pending" && <Clock className="h-3 w-3 text-yellow-500" />}
+                          {status.value === "failed" && <XCircle className="h-3 w-3 text-red-500" />}
+                          {status.label}
+                        </Label>
+                        <p className="text-xs text-gray-500">{status.description}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
