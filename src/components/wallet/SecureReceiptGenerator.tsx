@@ -461,11 +461,15 @@ const generateReceiptHTML = (receiptData: ReceiptData, transaction: Transaction,
   `;
 };
 
-const SecureReceiptGenerator = () => {
+interface SecureReceiptGeneratorProps {
+  transaction?: Transaction;
+}
+
+const SecureReceiptGenerator = ({ transaction: propTransaction }: SecureReceiptGeneratorProps = {}) => {
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [showReceiptDialog, setShowReceiptDialog] = useState(false);
 
-  // Mock transaction for demo
+  // Mock transaction for demo when no transaction is provided
   const demoTransaction: Transaction = {
     id: "tx_demo_" + Date.now(),
     type: "earned",
@@ -480,6 +484,11 @@ const SecureReceiptGenerator = () => {
     setSelectedTransaction(transaction);
     setShowReceiptDialog(true);
   };
+
+  // If transaction is provided as prop, render the receipt directly
+  if (propTransaction) {
+    return <SecureReceiptDialog transaction={propTransaction} isOpen={true} onClose={() => {}} />;
+  }
 
   return (
     <div className="space-y-6">
