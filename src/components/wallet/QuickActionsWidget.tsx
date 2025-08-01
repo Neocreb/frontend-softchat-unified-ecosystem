@@ -57,7 +57,6 @@ interface RecentRecipient {
 const QuickActionsWidget = () => {
   const { walletBalance, transactions, getTotalEarnings } = useWalletContext();
   const { user } = useAuth();
-  const { theme, setTheme } = useTheme();
   
   const [recentRecipients, setRecentRecipients] = useState<RecentRecipient[]>([
     { id: "1", name: "John Doe", lastAmount: 250, frequency: 5 },
