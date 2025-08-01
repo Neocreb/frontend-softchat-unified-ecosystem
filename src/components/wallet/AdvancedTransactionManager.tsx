@@ -25,6 +25,7 @@ import { useWalletContext } from "@/contexts/WalletContext";
 import { useToast } from "@/components/ui/use-toast";
 import { Transaction } from "@/types/wallet";
 import TransactionItem from "./TransactionItem";
+import SecureReceiptGenerator from "./SecureReceiptGenerator";
 import { virtualScrolling } from "@/utils/virtualScrolling";
 import {
   Search,
@@ -44,6 +45,8 @@ import {
   CheckCircle,
   AlertCircle,
   XCircle,
+  Receipt,
+  Shield,
 } from "lucide-react";
 import { format, parseISO, isWithinInterval } from "date-fns";
 
