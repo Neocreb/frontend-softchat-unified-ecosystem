@@ -173,11 +173,11 @@ export const SendMoneyModal = ({ isOpen, onClose }: SendMoneyModalProps) => {
           {/* Recipient Input */}
           <div className="space-y-2">
             <Label htmlFor="recipient">Send To</Label>
-            <div className="flex gap-2">
-              <Select value={formData.recipientType} onValueChange={(value) => 
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Select value={formData.recipientType} onValueChange={(value) =>
                 setFormData(prev => ({ ...prev, recipientType: value }))
               }>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
