@@ -6,6 +6,20 @@ module.exports = {
     extend: {
       screens: {
         xs: "475px",
+        '2xs': "320px", // Extra small mobile devices
+      },
+      fontSize: {
+        '2xs': ['0.625rem', { lineHeight: '0.75rem' }], // 8px with 13px base
+        'xs': ['0.75rem', { lineHeight: '1rem' }],      // 10px with 13px base
+        'sm': ['0.875rem', { lineHeight: '1.25rem' }],  // 11px with 13px base
+        'base': ['1rem', { lineHeight: '1.5rem' }],     // 13px base
+        'lg': ['1.125rem', { lineHeight: '1.75rem' }],  // 15px with 13px base
+        'xl': ['1.25rem', { lineHeight: '1.75rem' }],   // 16px with 13px base
+        '2xl': ['1.5rem', { lineHeight: '2rem' }],      // 19px with 13px base
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }], // 24px with 13px base
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],   // 29px with 13px base
+        '5xl': ['3rem', { lineHeight: '1' }],           // 39px with 13px base
+        '6xl': ['3.75rem', { lineHeight: '1' }],        // 49px with 13px base
       },
       borderRadius: {
         lg: "var(--radius)",
