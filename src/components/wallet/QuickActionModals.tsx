@@ -1077,7 +1077,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             {/* Standard USD amounts */}
             <div>
               <p className="text-xs text-gray-600 mb-2">Standard Amounts (USD)</p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {amounts.slice(0, 5).map((amt) => (
                   <Button
                     key={amt.value}
