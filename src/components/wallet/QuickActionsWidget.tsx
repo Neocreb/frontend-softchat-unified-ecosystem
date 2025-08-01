@@ -371,7 +371,7 @@ const QuickActionsWidget = () => {
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">
-                {transactions.filter(t => 
+                {transactions.filter(t =>
                   new Date(t.timestamp).toDateString() === new Date().toDateString()
                 ).length}
               </div>
@@ -380,6 +380,32 @@ const QuickActionsWidget = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Quick Action Modals */}
+      <SendMoneyModal
+        isOpen={showSendModal}
+        onClose={() => setShowSendModal(false)}
+      />
+
+      <RequestMoneyModal
+        isOpen={showRequestModal}
+        onClose={() => setShowRequestModal(false)}
+      />
+
+      <TransferModal
+        isOpen={showTransferModal}
+        onClose={() => setShowTransferModal(false)}
+      />
+
+      <PayBillModal
+        isOpen={showPayBillModal}
+        onClose={() => setShowPayBillModal(false)}
+      />
+
+      <TopUpModal
+        isOpen={showTopUpModal}
+        onClose={() => setShowTopUpModal(false)}
+      />
     </div>
   );
 };
