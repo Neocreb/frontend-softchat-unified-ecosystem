@@ -51,6 +51,52 @@
 
 /* Mobile optimizations and responsive utilities */
 @layer utilities {
+  /* Mobile-first responsive text utilities */
+  .text-responsive-xs {
+    font-size: 0.75rem; /* 12px on mobile */
+  }
+
+  .text-responsive-sm {
+    font-size: 0.875rem; /* 14px on mobile */
+  }
+
+  .text-responsive-base {
+    font-size: 0.875rem; /* 14px on mobile, 16px on desktop */
+  }
+
+  .text-responsive-lg {
+    font-size: 1rem; /* 16px on mobile, 18px on desktop */
+  }
+
+  @media (min-width: 768px) {
+    .text-responsive-xs {
+      font-size: 0.875rem; /* 14px on desktop */
+    }
+
+    .text-responsive-sm {
+      font-size: 0.875rem; /* 14px on desktop */
+    }
+
+    .text-responsive-base {
+      font-size: 1rem; /* 16px on desktop */
+    }
+
+    .text-responsive-lg {
+      font-size: 1.125rem; /* 18px on desktop */
+    }
+  }
+
+  /* Font weight normalization for mobile */
+  .font-normal-mobile {
+    font-weight: 400;
+  }
+
+  @media (max-width: 767px) {
+    .font-normal-mobile {
+      font-weight: 400 !important;
+    }
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
