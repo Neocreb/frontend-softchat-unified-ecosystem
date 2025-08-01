@@ -330,7 +330,7 @@ const EnhancedAccessibilityFeatures: React.FC<EnhancedAccessibilityFeaturesProps
     setSettings({
       highContrast: false,
       reducedMotion: false,
-      fontSize: 16,
+      fontSize: getInitialFontSize(),
       colorBlindnessFilter: 'none',
       darkMode: true,
       focusIndicators: true,
