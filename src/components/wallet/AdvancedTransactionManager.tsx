@@ -93,6 +93,8 @@ const AdvancedTransactionManager = () => {
   const [selectedTransactions, setSelectedTransactions] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [receiptTransaction, setReceiptTransaction] = useState<Transaction | null>(null);
+  const [showReceiptDialog, setShowReceiptDialog] = useState(false);
 
   // Filter and sort transactions
   const filteredTransactions = useMemo(() => {
