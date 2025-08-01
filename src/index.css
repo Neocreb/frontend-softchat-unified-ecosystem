@@ -4,19 +4,99 @@
 
 /* Global layout fixes */
 @layer base {
-  html,
+  html {
+    /* Default mobile-first font size */
+    font-size: 14px;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
   body {
     overflow-x: hidden;
     max-width: 100vw;
+    font-weight: 400; /* Ensure normal font weight */
   }
 
   * {
     box-sizing: border-box;
   }
+
+  /* Responsive font sizes */
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px; /* Larger font for desktop */
+    }
+  }
+
+  /* Mobile-specific optimizations */
+  @media (max-width: 767px) {
+    body {
+      font-size: 0.875rem; /* 14px equivalent in rem */
+      line-height: 1.4;
+    }
+
+    /* Ensure text doesn't overflow containers on mobile */
+    h1, h2, h3, h4, h5, h6 {
+      word-break: break-word;
+      hyphens: auto;
+    }
+
+    /* Make sure buttons and interactive elements are properly sized for touch */
+    button, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 }
 
 /* Mobile optimizations and responsive utilities */
 @layer utilities {
+  /* Mobile-first responsive text utilities */
+  .text-responsive-xs {
+    font-size: 0.75rem; /* 12px on mobile */
+  }
+
+  .text-responsive-sm {
+    font-size: 0.875rem; /* 14px on mobile */
+  }
+
+  .text-responsive-base {
+    font-size: 0.875rem; /* 14px on mobile, 16px on desktop */
+  }
+
+  .text-responsive-lg {
+    font-size: 1rem; /* 16px on mobile, 18px on desktop */
+  }
+
+  @media (min-width: 768px) {
+    .text-responsive-xs {
+      font-size: 0.875rem; /* 14px on desktop */
+    }
+
+    .text-responsive-sm {
+      font-size: 0.875rem; /* 14px on desktop */
+    }
+
+    .text-responsive-base {
+      font-size: 1rem; /* 16px on desktop */
+    }
+
+    .text-responsive-lg {
+      font-size: 1.125rem; /* 18px on desktop */
+    }
+  }
+
+  /* Font weight normalization for mobile */
+  .font-normal-mobile {
+    font-weight: 400;
+  }
+
+  @media (max-width: 767px) {
+    .font-normal-mobile {
+      font-weight: 400 !important;
+    }
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;

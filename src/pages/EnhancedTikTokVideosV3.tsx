@@ -47,6 +47,7 @@ import {
   Target,
   Swords,
   ShoppingCart,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -78,6 +79,10 @@ import LiveBattle from "@/components/battles/LiveBattle";
 import TikTokStyleBattle from "@/components/battles/TikTokStyleBattle";
 
 import CreatorDashboard from "@/components/video/CreatorDashboard";
+import EnhancedCreatorAnalytics from "@/components/video/EnhancedCreatorAnalytics";
+import EnhancedVideoPlayer from "@/components/video/EnhancedVideoPlayer";
+import EnhancedAccessibilityFeatures from "@/components/accessibility/EnhancedAccessibilityFeatures";
+import EnhancedSearchDiscovery from "@/components/search/EnhancedSearchDiscovery";
 import { LiveStreamCreator } from "../components/livestream/LiveStreamCreator";
 import { useLiveContentContext } from "../contexts/LiveContentContext";
 import { liveContentToVideoData } from "../utils/liveContentAdapter";
@@ -132,6 +137,32 @@ interface VideoData {
     title: string;
     hashtag: string;
   };
+  // Enhanced features
+  videoSources?: {
+    quality: string;
+    url: string;
+    minWidth: number;
+    bitrate: number;
+  }[];
+  captions?: {
+    language: string;
+    label: string;
+    url: string;
+    default?: boolean;
+  }[];
+  chapters?: {
+    id: string;
+    title: string;
+    startTime: number;
+    endTime: number;
+    thumbnail?: string;
+  }[];
+  allowDownload?: boolean;
+  allowOffline?: boolean;
+  supportsPiP?: boolean;
+  supportsAirPlay?: boolean;
+  aiGenerated?: boolean;
+  transcription?: string;
 }
 
 // Mock data for battle videos
@@ -168,7 +199,7 @@ const battleVideos: VideoData[] = [
       verified: true,
       followerCount: 567000,
     },
-    description: "🎤 LIVE RAP BATTLE: Freestyle showdown! Drop bars and win SoftPoints! 💰",
+    description: "🎤 LIVE RAP BATTLE: Freestyle showdown! Drop bars and win SoftPoints! ����",
     music: { title: "Hip Hop Battle", artist: "Street Beats" },
     stats: { likes: 1890, comments: 567, shares: 123, views: "15.2K watching" },
     hashtags: ["rapbattle", "freestyle", "hiphop", "bars"],
@@ -292,6 +323,8 @@ const VideoCard: React.FC<{
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
+  const { user } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -346,19 +379,27 @@ const VideoCard: React.FC<{
 
   return (
     <div className="relative h-screen w-full bg-black snap-start snap-always">
-      {/* Video */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        loop
-        muted={isMuted}
-        playsInline
-        preload="metadata"
-        poster={video.thumbnail}
-        onClick={togglePlay}
-      >
-        <source src={video.videoUrl} type="video/mp4" />
-      </video>
+      {/* Enhanced Video Player */}
+      <div className="absolute inset-0 w-full h-full">
+        <EnhancedVideoPlayer
+          videoRef={videoRef}
+          src={video.videoUrl}
+          poster={video.thumbnail}
+          muted={isMuted}
+          autoPlay={isActive && isPlaying}
+          loop={true}
+          className="w-full h-full object-cover"
+          onClick={togglePlay}
+          onMuteChange={setIsMuted}
+          showControls={true}
+          chapters={video.chapters || []}
+          captions={video.captions || []}
+          qualities={video.videoSources || []}
+          onProgress={(progress) => {
+            // Handle progress updates if needed
+          }}
+        />
+      </div>
 
       {/* Live indicator for live streams */}
       {video.isLiveStream && (
@@ -535,6 +576,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
   const [isAdvancedRecorderOpen, setIsAdvancedRecorderOpen] = useState(false);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const [isAccessibilityOpen, setIsAccessibilityOpen] = useState(false);
   const [isLiveStreamOpen, setIsLiveStreamOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
@@ -921,9 +963,28 @@ const EnhancedTikTokVideosV3: React.FC = () => {
                   align="end"
                   className="bg-gray-900 border-gray-700 text-white"
                 >
-                  <DropdownMenuItem onClick={() => setIsDashboardOpen(true)} className="hover:bg-gray-800">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsDashboardOpen(true);
+                    }}
+                    className="hover:bg-gray-800"
+                  >
                     <Award className="w-4 h-4 mr-2" />
-                    Creator Studio
+                    Creator Analytics
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => navigate('/app/rewards')}
+                    className="hover:bg-gray-800"
+                  >
+                    <DollarSign className="w-4 h-4 mr-2" />
+                    Creator Economy
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="hover:bg-gray-800"
+                    onClick={() => setIsAccessibilityOpen(true)}
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    Accessibility
                   </DropdownMenuItem>
                   <DropdownMenuItem className="hover:bg-gray-800">
                     <Settings className="w-4 h-4 mr-2" />
@@ -1102,7 +1163,7 @@ const EnhancedTikTokVideosV3: React.FC = () => {
                       }}
                       onVote={(creatorId, amount) => {
                         toast({
-                          title: "Vote Placed! 🎯",
+                          title: "Vote Placed! ���",
                           description: `${amount} SP voted for ${creatorId === video.user.id ? video.user.displayName : 'opponent'}`,
                         });
                       }}
@@ -1257,27 +1318,22 @@ const EnhancedTikTokVideosV3: React.FC = () => {
         </div>
       )}
 
-      {/* Search Overlay */}
+      {/* Enhanced Search Overlay */}
       {showSearchOverlay && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
-          <div className="w-full max-w-md mx-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search videos, creators, sounds..."
-                className="pl-10 pr-12 py-3 bg-gray-900 border-gray-700 text-white text-lg"
-                autoFocus
-              />
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 overflow-auto">
+          <div className="min-h-full p-4">
+            <div className="flex justify-end mb-4">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSearchOverlay(false)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="text-white hover:bg-white/20"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </Button>
+            </div>
+            <div className="max-w-6xl mx-auto">
+              <EnhancedSearchDiscovery />
             </div>
           </div>
         </div>
@@ -1419,7 +1475,22 @@ const EnhancedTikTokVideosV3: React.FC = () => {
             <DialogTitle>Creator Dashboard</DialogTitle>
           </VisuallyHidden>
           <div className="h-full overflow-auto p-6">
-            <CreatorDashboard />
+            <div className="space-y-6">
+              <CreatorDashboard />
+              <EnhancedCreatorAnalytics />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Accessibility Settings */}
+      <Dialog open={isAccessibilityOpen} onOpenChange={setIsAccessibilityOpen}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[90vh] bg-gray-900 border-gray-700 p-0">
+          <VisuallyHidden>
+            <DialogTitle>Accessibility Settings</DialogTitle>
+          </VisuallyHidden>
+          <div className="h-full overflow-auto p-6">
+            <EnhancedAccessibilityFeatures />
           </div>
         </DialogContent>
       </Dialog>

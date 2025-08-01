@@ -84,8 +84,7 @@ import AdminSecurity from "./pages/admin/AdminSecurity";
 import AdminGroupsPages from "./pages/admin/AdminGroupsPages";
 import AdminRoute from "./components/admin/AdminRoute";
 import AdminLayout from "./components/layout/AdminLayout";
-import EnhancedVideos from "./pages/EnhancedVideos";
-import ImprovedVideos from "./pages/ImprovedVideos";
+
 import EnhancedVideosV2 from "./pages/EnhancedVideosV2";
 import TikTokStyleVideos from "./pages/TikTokStyleVideos";
 import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
@@ -344,8 +343,6 @@ const AppRoutes = () => {
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<EnhancedTikTokVideosV3 />} />
-          <Route path="videos-improved" element={<ImprovedVideos />} />
-          <Route path="videos-enhanced" element={<EnhancedVideos />} />
           <Route path="duet-demo" element={<DuetDemo />} />
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />

@@ -33,6 +33,22 @@ import {
   Globe,
   Star,
   Zap,
+  Subtitles,
+  Cast,
+  Gauge,
+  PictureInPicture2,
+  MonitorSpeaker,
+  Headphones,
+  Smartphone,
+  Tv,
+  Wifi,
+  WifiOff,
+  CloudDownload,
+  Repeat,
+  Shuffle,
+  Flag,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -50,8 +66,18 @@ import EnhancedVideoCreator from "@/components/video/EnhancedVideoCreator";
 import AdvancedVideoRecorder from "@/components/video/AdvancedVideoRecorder";
 import ContentDiscoveryEngine from "@/components/video/ContentDiscoveryEngine";
 import InteractiveFeatures from "@/components/video/InteractiveFeatures";
+import EnhancedVideoPlayer from "@/components/video/EnhancedVideoPlayer";
+import AdvancedSharingHub from "@/components/video/AdvancedSharingHub";
+import AutoCaptionsEngine from "@/components/video/AutoCaptionsEngine";
+import SmartContentEngine from "@/components/video/SmartContentEngine";
+import VideoEditingSuite from "@/components/video/VideoEditingSuite";
+import VideoMonetizationHub from "@/components/video/VideoMonetizationHub";
 import CreatorDashboard from "@/components/video/CreatorDashboard";
+import EnhancedCreatorAnalytics from "@/components/video/EnhancedCreatorAnalytics";
+import AccessibilityFAB from "@/components/accessibility/AccessibilityFAB";
+import EnhancedSearchDiscovery from "@/components/search/EnhancedSearchDiscovery";
 import { cn } from "@/utils/utils";
+import { toast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useVideoPlayback } from "@/hooks/use-video-playback";
 import { useAuth } from "@/contexts/AuthContext";
@@ -99,6 +125,32 @@ interface VideoData {
     title: string;
     hashtag: string;
   };
+  // Enhanced features
+  videoSources?: {
+    quality: string;
+    url: string;
+    minWidth: number;
+    bitrate: number;
+  }[];
+  captions?: {
+    language: string;
+    label: string;
+    url: string;
+    default?: boolean;
+  }[];
+  chapters?: {
+    id: string;
+    title: string;
+    startTime: number;
+    endTime: number;
+    thumbnail?: string;
+  }[];
+  allowDownload?: boolean;
+  allowOffline?: boolean;
+  supportsPiP?: boolean;
+  supportsAirPlay?: boolean;
+  aiGenerated?: boolean;
+  transcription?: string;
 }
 
 const mockVideos: VideoData[] = [
@@ -272,7 +324,8 @@ const VideoCard: React.FC<{
   video: VideoData;
   isActive: boolean;
   showControls?: boolean;
-}> = ({ video, isActive, showControls = true }) => {
+  onVideoElementReady?: (element: HTMLVideoElement | null) => void;
+}> = ({ video, isActive, showControls = true, onVideoElementReady }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showMore, setShowMore] = useState(false);
@@ -281,13 +334,25 @@ const VideoCard: React.FC<{
   const [showInVideoAd, setShowInVideoAd] = useState(false);
   const [adWatchTimer, setAdWatchTimer] = useState(0);
   const [hasEarnedReward, setHasEarnedReward] = useState(false);
+  const [currentQuality, setCurrentQuality] = useState("auto");
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [showAdvancedControls, setShowAdvancedControls] = useState(false);
+  const [isOfflineAvailable, setIsOfflineAvailable] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [connectionQuality, setConnectionQuality] = useState<"good" | "poor" | "offline">("good");
   const videoRef = useRef<HTMLVideoElement>(null);
   const isMobile = useIsMobile();
   const { safePlay, safePause, togglePlayback } = useVideoPlayback();
+  const { user } = useAuth();
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    // Notify parent component about the current video element
+    if (isActive && onVideoElementReady) {
+      onVideoElementReady(video);
+    }
 
     let isComponentMounted = true;
 
@@ -313,7 +378,7 @@ const VideoCard: React.FC<{
         safePause(video);
       }
     };
-  }, [isActive, isPlaying, safePlay, safePause]);
+  }, [isActive, isPlaying, safePlay, safePause, onVideoElementReady]);
 
   // In-video ad timer
   useEffect(() => {
@@ -403,8 +468,54 @@ const VideoCard: React.FC<{
         preload="metadata"
         poster={video.thumbnail}
         onClick={togglePlay}
+        onLoadedMetadata={() => {
+          // Set initial playback speed
+          if (videoRef.current) {
+            videoRef.current.playbackRate = playbackSpeed;
+          }
+        }}
+        onProgress={() => {
+          // Update buffer progress
+          if (videoRef.current && videoRef.current.buffered.length > 0) {
+            const bufferedEnd = videoRef.current.buffered.end(videoRef.current.buffered.length - 1);
+            const duration = videoRef.current.duration;
+            if (duration > 0) {
+              const bufferedPercent = (bufferedEnd / duration) * 100;
+              // Use this for adaptive quality if needed
+              if (bufferedPercent < 25 && connectionQuality === "good") {
+                setConnectionQuality("poor");
+              }
+            }
+          }
+        }}
+        onWaiting={() => {
+          // Video is buffering
+          setConnectionQuality("poor");
+        }}
+        onCanPlayThrough={() => {
+          // Video can play through without interruptions
+          if (connectionQuality === "poor") {
+            setConnectionQuality("good");
+          }
+        }}
       >
         <source src={video.videoUrl} type="video/mp4" />
+        {/* Add multiple quality sources if available */}
+        {video.videoSources?.map((source) => (
+          <source key={source.quality} src={source.url} type="video/mp4" media={`(min-width: ${source.minWidth}px)`} />
+        ))}
+
+        {/* Add captions if available */}
+        {video.captions?.map((caption) => (
+          <track
+            key={caption.language}
+            kind="subtitles"
+            src={caption.url}
+            srcLang={caption.language}
+            label={caption.label}
+            default={caption.default}
+          />
+        ))}
       </video>
 
       {/* Challenge Banner */}
@@ -570,22 +681,213 @@ const VideoCard: React.FC<{
             allowDuets={video.allowDuets}
             allowComments={video.allowComments}
           />
+
+          {/* Enhanced Sharing Hub */}
+          <AdvancedSharingHub
+            videoId={video.id}
+            videoTitle={video.description}
+            videoUrl={video.videoUrl}
+            videoThumbnail={video.thumbnail}
+            videoDuration={video.duration}
+            currentUser={user ? {
+              id: user.id,
+              name: user.displayName || user.username,
+              avatar: user.avatar || 'https://i.pravatar.cc/150?u=' + user.id
+            } : undefined}
+          />
+
+          {/* Video Monetization Hub */}
+          <VideoMonetizationHub
+            videoId={video.id}
+            creatorId={video.user.id}
+            videoMetrics={{
+              views: parseInt(video.stats.views.replace(/[^0-9]/g, '')) || 0,
+              likes: video.stats.likes,
+              comments: video.stats.comments,
+              shares: video.stats.shares,
+              duration: video.duration
+            }}
+            onTipSent={(amount) => {
+              toast({
+                title: "Tip Sent!",
+                description: `You sent $${amount.toFixed(2)} to support this creator`,
+              });
+            }}
+            onSubscribe={(tier) => {
+              toast({
+                title: "Subscription Active",
+                description: `You subscribed to ${tier} tier`,
+              });
+            }}
+            onPurchaseMerchandise={(itemId) => {
+              toast({
+                title: "Purchase Successful",
+                description: "Item added to your cart",
+              });
+            }}
+          />
         </div>
       </div>
 
-      {/* Volume control */}
-      <Button
-        size="icon"
-        variant="ghost"
-        className="absolute top-4 right-4 w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
-        onClick={() => setIsMuted(!isMuted)}
-      >
-        {isMuted ? (
-          <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
-        ) : (
-          <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
-        )}
-      </Button>
+      {/* Enhanced Controls Bar */}
+      <div className="absolute top-4 right-4 flex flex-col gap-2">
+        {/* Connection Quality Indicator */}
+        <div className="flex items-center gap-1">
+          {connectionQuality === "good" && (
+            <Wifi className="w-4 h-4 text-green-400" />
+          )}
+          {connectionQuality === "poor" && (
+            <WifiOff className="w-4 h-4 text-yellow-400" />
+          )}
+          {connectionQuality === "offline" && isOfflineAvailable && (
+            <CloudDownload className="w-4 h-4 text-blue-400" />
+          )}
+          <Badge variant="secondary" className="bg-black/40 text-white text-xs">
+            {currentQuality}
+          </Badge>
+        </div>
+
+        {/* Volume control */}
+        <Button
+          size="icon"
+          variant="ghost"
+          className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
+          onClick={() => setIsMuted(!isMuted)}
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          ) : (
+            <Volume2 className="w-4 h-4 md:w-5 md:h-5 text-white" />
+          )}
+        </Button>
+
+        {/* Advanced Controls Toggle */}
+        <Button
+          size="icon"
+          variant="ghost"
+          className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/30 hover:bg-black/50 border-none"
+          onClick={() => setShowAdvancedControls(!showAdvancedControls)}
+        >
+          <Settings className="w-4 h-4 md:w-5 md:h-5 text-white" />
+        </Button>
+      </div>
+
+      {/* Advanced Controls Panel */}
+      {showAdvancedControls && (
+        <div className="absolute top-20 right-4 bg-black/80 backdrop-blur-sm rounded-lg p-4 space-y-3 min-w-[200px] z-10">
+          {/* Quality Selector */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-white text-sm">
+              <MonitorSpeaker className="w-4 h-4" />
+              <span>Quality</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1">
+              {["auto", "720p", "1080p"].map((quality) => (
+                <Button
+                  key={quality}
+                  size="sm"
+                  variant={currentQuality === quality ? "default" : "ghost"}
+                  className="text-xs h-8"
+                  onClick={() => setCurrentQuality(quality)}
+                >
+                  {quality}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Playback Speed */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-white text-sm">
+              <Gauge className="w-4 h-4" />
+              <span>Speed</span>
+            </div>
+            <div className="grid grid-cols-4 gap-1">
+              {[0.5, 1, 1.5, 2].map((speed) => (
+                <Button
+                  key={speed}
+                  size="sm"
+                  variant={playbackSpeed === speed ? "default" : "ghost"}
+                  className="text-xs h-8"
+                  onClick={() => {
+                    setPlaybackSpeed(speed);
+                    if (videoRef.current) {
+                      videoRef.current.playbackRate = speed;
+                    }
+                  }}
+                >
+                  {speed}x
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Additional Features */}
+          <div className="space-y-2 border-t border-gray-600 pt-3">
+            <Button
+              size="sm"
+              variant="ghost"
+              className="w-full justify-start text-white text-xs"
+              onClick={() => {
+                // Enable Picture-in-Picture
+                if (videoRef.current && "requestPictureInPicture" in videoRef.current) {
+                  videoRef.current.requestPictureInPicture();
+                }
+              }}
+            >
+              <PictureInPicture2 className="w-4 h-4 mr-2" />
+              Picture-in-Picture
+            </Button>
+
+            <Button
+              size="sm"
+              variant="ghost"
+              className="w-full justify-start text-white text-xs"
+            >
+              <Subtitles className="w-4 h-4 mr-2" />
+              Captions
+            </Button>
+
+            <Button
+              size="sm"
+              variant="ghost"
+              className="w-full justify-start text-white text-xs"
+              onClick={() => {
+                setDownloadProgress(1);
+                // Simulate download progress
+                const interval = setInterval(() => {
+                  setDownloadProgress(prev => {
+                    if (prev >= 100) {
+                      clearInterval(interval);
+                      setIsOfflineAvailable(true);
+                      return 100;
+                    }
+                    return prev + 10;
+                  });
+                }, 200);
+              }}
+            >
+              <CloudDownload className="w-4 h-4 mr-2" />
+              Download Offline
+              {downloadProgress > 0 && downloadProgress < 100 && (
+                <span className="ml-auto text-xs">{downloadProgress}%</span>
+              )}
+              {isOfflineAvailable && (
+                <span className="ml-auto text-xs text-green-400">✓</span>
+              )}
+            </Button>
+
+            <Button
+              size="sm"
+              variant="ghost"
+              className="w-full justify-start text-white text-xs"
+            >
+              <Cast className="w-4 h-4 mr-2" />
+              Cast to Device
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Views count */}
       <div className="absolute top-4 left-4">
@@ -622,6 +924,7 @@ const Videos: React.FC = () => {
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentVideoElement, setCurrentVideoElement] = useState<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -831,6 +1134,7 @@ const Videos: React.FC = () => {
               video={video}
               isActive={index === currentVideoIndex}
               showControls={showControls}
+              onVideoElementReady={index === currentVideoIndex ? setCurrentVideoElement : undefined}
             />
           );
         })}
@@ -838,6 +1142,11 @@ const Videos: React.FC = () => {
 
       {/* Enhanced Create Button Group */}
       <div className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50 flex flex-col gap-3">
+        <AccessibilityFAB
+          videoElement={currentVideoElement}
+          className="w-12 h-12"
+        />
+
         <Button
           variant="ghost"
           size="icon"
@@ -867,43 +1176,23 @@ const Videos: React.FC = () => {
         </Button>
       </div>
 
-      {/* Search Overlay */}
+      {/* Enhanced Search Overlay */}
       {showSearchOverlay && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
-          <div className="w-full max-w-md mx-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search videos, creators, sounds..."
-                className="pl-10 pr-12 py-3 bg-gray-900 border-gray-700 text-white text-lg"
-                autoFocus
-              />
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 overflow-auto">
+          <div className="min-h-full p-4">
+            <div className="flex justify-end mb-4">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSearchOverlay(false)}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="text-white hover:bg-white/20"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </Button>
             </div>
-
-            {searchQuery && (
-              <Card className="mt-4 bg-gray-900 border-gray-700">
-                <CardContent className="p-4">
-                  <p className="text-gray-400 text-sm">
-                    Search results for "{searchQuery}"
-                  </p>
-                  <div className="mt-2 text-white">
-                    <p className="text-sm">
-                      No results found. Try a different search term.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <div className="max-w-6xl mx-auto">
+              <EnhancedSearchDiscovery />
+            </div>
           </div>
         </div>
       )}
@@ -947,7 +1236,10 @@ const Videos: React.FC = () => {
             <DialogTitle>Creator Dashboard</DialogTitle>
           </VisuallyHidden>
           <div className="h-full overflow-auto p-6">
-            <CreatorDashboard />
+            <div className="space-y-6">
+              <CreatorDashboard />
+              <EnhancedCreatorAnalytics />
+            </div>
           </div>
         </DialogContent>
       </Dialog>

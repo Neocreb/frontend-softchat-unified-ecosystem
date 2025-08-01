@@ -31,6 +31,9 @@ import {
   Award,
   Eye,
   EyeOff,
+  ShoppingBag,
+  Image,
+  ExternalLink,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -371,9 +374,10 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="gifts">Virtual Gifts</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="gifts">Gifts</TabsTrigger>
               <TabsTrigger value="tips">Tips</TabsTrigger>
+              <TabsTrigger value="merchandise">Merch</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
             </TabsList>
 
@@ -786,6 +790,72 @@ const VirtualGiftsAndTips: React.FC<VirtualGiftsAndTipsProps> = ({
                     )}
                   </CardContent>
                 </Card>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="merchandise" className="space-y-6">
+              <div className="text-center space-y-4">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <ShoppingBag className="h-5 w-5" />
+                  <h3 className="text-lg font-semibold">Creator Merchandise</h3>
+                </div>
+
+                <p className="text-muted-foreground mb-6">
+                  Support {recipientName} by purchasing their official merchandise
+                </p>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+                    <div className="text-center space-y-2">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg mx-auto flex items-center justify-center">
+                        <Image className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-medium">T-Shirts</h4>
+                      <p className="text-sm text-muted-foreground">Starting at $25</p>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+                    <div className="text-center space-y-2">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg mx-auto flex items-center justify-center">
+                        <Coffee className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-medium">Mugs</h4>
+                      <p className="text-sm text-muted-foreground">Starting at $15</p>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+                    <div className="text-center space-y-2">
+                      <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-600 rounded-lg mx-auto flex items-center justify-center">
+                        <Crown className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-medium">Accessories</h4>
+                      <p className="text-sm text-muted-foreground">Starting at $10</p>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4 hover:bg-accent cursor-pointer transition-colors">
+                    <div className="text-center space-y-2">
+                      <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-lg mx-auto flex items-center justify-center">
+                        <Star className="h-6 w-6 text-white" />
+                      </div>
+                      <h4 className="font-medium">Limited</h4>
+                      <p className="text-sm text-muted-foreground">Exclusive items</p>
+                    </div>
+                  </Card>
+                </div>
+
+                <Button
+                  className="w-full mt-6"
+                  onClick={() => {
+                    // Navigate to marketplace with creator filter
+                    window.open('/app/marketplace?creator=' + recipientId, '_blank');
+                  }}
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  View All in Marketplace
+                </Button>
               </div>
             </TabsContent>
 
