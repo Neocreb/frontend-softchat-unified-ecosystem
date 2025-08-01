@@ -83,11 +83,19 @@ const EnhancedAccessibilityFeatures: React.FC<EnhancedAccessibilityFeaturesProps
   videoElement,
   onSettingsChange
 }) => {
+  // Get initial font size based on device
+  const getInitialFontSize = () => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 14 : 16; // 14px for mobile, 16px for desktop
+    }
+    return 14;
+  };
+
   const [settings, setSettings] = useState<AccessibilitySettings>({
     // Visual Accessibility
     highContrast: false,
     reducedMotion: false,
-    fontSize: 16,
+    fontSize: getInitialFontSize(),
     colorBlindnessFilter: 'none',
     darkMode: true,
     focusIndicators: true,
