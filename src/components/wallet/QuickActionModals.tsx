@@ -1049,20 +1049,44 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             </p>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <Label>Quick Amounts</Label>
-            <div className="grid grid-cols-3 gap-2">
-              {amounts.map((amt) => (
-                <Button
-                  key={amt.value}
-                  type="button"
-                  variant={formData.amount === amt.value ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setFormData(prev => ({ ...prev, amount: amt.value }))}
-                >
-                  {amt.label}
-                </Button>
-              ))}
+
+            {/* Standard USD amounts */}
+            <div>
+              <p className="text-xs text-gray-600 mb-2">Standard Amounts (USD)</p>
+              <div className="grid grid-cols-3 gap-2">
+                {amounts.slice(0, 5).map((amt) => (
+                  <Button
+                    key={amt.value}
+                    type="button"
+                    variant={formData.amount === amt.value ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setFormData(prev => ({ ...prev, amount: amt.value }))}
+                  >
+                    {amt.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* African currency equivalent amounts */}
+            <div>
+              <p className="text-xs text-gray-600 mb-2">African Local Currency Equivalents</p>
+              <div className="grid grid-cols-2 gap-2">
+                {amounts.slice(5).map((amt) => (
+                  <Button
+                    key={amt.value + "_african"}
+                    type="button"
+                    variant={formData.amount === amt.value ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setFormData(prev => ({ ...prev, amount: amt.value }))}
+                    className="text-xs"
+                  >
+                    {amt.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
 
