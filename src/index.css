@@ -5,8 +5,8 @@
 /* Global layout fixes */
 @layer base {
   html {
-    /* Default mobile-first font size */
-    font-size: 14px;
+    /* Default font size set to 13px */
+    font-size: 13px;
     overflow-x: hidden;
     max-width: 100vw;
   }
@@ -15,23 +15,29 @@
     overflow-x: hidden;
     max-width: 100vw;
     font-weight: 400; /* Ensure normal font weight */
+    font-size: 1rem; /* 13px base */
+    line-height: 1.5;
   }
 
   * {
     box-sizing: border-box;
   }
 
-  /* Responsive font sizes */
+  /* Responsive font sizes - maintain 13px base */
   @media (min-width: 768px) {
     html {
-      font-size: 16px; /* Larger font for desktop */
+      font-size: 13px; /* Keep consistent 13px base */
     }
   }
 
   /* Mobile-specific optimizations */
   @media (max-width: 767px) {
+    html {
+      font-size: 13px; /* Consistent 13px base on mobile */
+    }
+
     body {
-      font-size: 0.875rem; /* 14px equivalent in rem */
+      font-size: 1rem; /* 13px equivalent in rem */
       line-height: 1.4;
     }
 
