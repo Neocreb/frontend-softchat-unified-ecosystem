@@ -316,10 +316,28 @@ const AdvancedTransactionManager = () => {
     }
   }, [filteredTransactions, selectedTransactions]);
 
-  // Get unique values for filter options
-  const uniqueSources = [...new Set(transactions.map(t => t.source))];
-  const uniqueTypes = [...new Set(transactions.map(t => t.type))];
-  const uniqueStatuses = [...new Set(transactions.map(t => t.status))];
+  // Platform-specific filter options
+  const platformSources = [
+    { value: "ecommerce", label: "E-commerce", description: "Marketplace sales & commissions" },
+    { value: "crypto", label: "Cryptocurrency", description: "Trading & investments" },
+    { value: "freelance", label: "Freelance", description: "Project payments & milestones" },
+    { value: "rewards", label: "Rewards", description: "Points, bonuses & achievements" },
+    { value: "bank", label: "Bank Transfer", description: "Direct bank transfers" },
+    { value: "card", label: "Card Payment", description: "Credit/debit card transactions" },
+  ];
+
+  const platformTypes = [
+    { value: "earned", label: "Earnings", description: "Income received" },
+    { value: "deposit", label: "Deposits", description: "Funds added to wallet" },
+    { value: "withdrawal", label: "Withdrawals", description: "Funds withdrawn" },
+    { value: "transfer", label: "Transfers", description: "Internal transfers" },
+  ];
+
+  const platformStatuses = [
+    { value: "completed", label: "Completed", description: "Successfully processed" },
+    { value: "pending", label: "Pending", description: "Processing in progress" },
+    { value: "failed", label: "Failed", description: "Transaction failed" },
+  ];
 
   const activeFiltersCount = [
     filters.search,
