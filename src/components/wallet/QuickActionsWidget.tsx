@@ -85,42 +85,48 @@ const QuickActionsWidget = () => {
       label: "Send Money",
       icon: <Send className="h-4 w-4" />,
       color: "bg-blue-500 hover:bg-blue-600",
-      action: () => console.log("Send money"),
+      action: () => setShowSendModal(true),
     },
     {
       id: "request",
       label: "Request",
       icon: <ArrowDownLeft className="h-4 w-4" />,
       color: "bg-green-500 hover:bg-green-600",
-      action: () => console.log("Request money"),
+      action: () => setShowRequestModal(true),
     },
     {
       id: "withdraw",
       label: "Withdraw",
       icon: <ArrowUpRight className="h-4 w-4" />,
       color: "bg-purple-500 hover:bg-purple-600",
-      action: () => console.log("Withdraw"),
+      action: () => {
+        // This will use the existing withdraw modal from the main dashboard
+        const withdrawButton = document.querySelector('[data-action="withdraw"]') as HTMLButtonElement;
+        if (withdrawButton) {
+          withdrawButton.click();
+        }
+      },
     },
     {
       id: "transfer",
       label: "Transfer",
       icon: <Repeat className="h-4 w-4" />,
       color: "bg-orange-500 hover:bg-orange-600",
-      action: () => console.log("Transfer"),
+      action: () => setShowTransferModal(true),
     },
     {
       id: "pay-bill",
       label: "Pay Bill",
       icon: <CreditCard className="h-4 w-4" />,
       color: "bg-red-500 hover:bg-red-600",
-      action: () => console.log("Pay bill"),
+      action: () => setShowPayBillModal(true),
     },
     {
       id: "top-up",
       label: "Top Up",
       icon: <Smartphone className="h-4 w-4" />,
       color: "bg-indigo-500 hover:bg-indigo-600",
-      action: () => console.log("Top up"),
+      action: () => setShowTopUpModal(true),
     },
   ];
 
