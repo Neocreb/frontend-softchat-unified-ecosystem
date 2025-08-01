@@ -64,12 +64,19 @@ interface RecentRecipient {
 const QuickActionsWidget = () => {
   const { walletBalance, transactions, getTotalEarnings } = useWalletContext();
   const { user } = useAuth();
-  
+
   const [recentRecipients, setRecentRecipients] = useState<RecentRecipient[]>([
     { id: "1", name: "John Doe", lastAmount: 250, frequency: 5 },
     { id: "2", name: "Sarah Smith", lastAmount: 100, frequency: 3 },
     { id: "3", name: "Mike Johnson", lastAmount: 75, frequency: 2 },
   ]);
+
+  // Modal states
+  const [showSendModal, setShowSendModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [showPayBillModal, setShowPayBillModal] = useState(false);
+  const [showTopUpModal, setShowTopUpModal] = useState(false);
 
   // Quick Actions
   const quickActions: QuickAction[] = [
