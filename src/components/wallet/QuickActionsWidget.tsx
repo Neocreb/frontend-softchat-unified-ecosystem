@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "next-themes";
 import {
   ArrowUpRight,
   ArrowDownLeft,
