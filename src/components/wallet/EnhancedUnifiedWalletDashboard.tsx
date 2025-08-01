@@ -121,9 +121,9 @@ const EnhancedWalletDashboardContent = () => {
 
         {/* Overview Tab - Enhanced with Quick Actions */}
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
             {/* Main Balance Card */}
-            <div className="lg:col-span-2">
+            <div className="xl:col-span-3">
               <Card className="overflow-hidden">
                 <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
                   <div className="text-center space-y-4">
@@ -160,40 +160,42 @@ const EnhancedWalletDashboardContent = () => {
             </div>
 
             {/* Quick Actions Sidebar */}
-            <div>
+            <div className="xl:col-span-1">
               <QuickActionsWidget />
             </div>
           </div>
         </TabsContent>
 
-        {/* Analytics Tab */}
-        <TabsContent value="analytics">
+        {/* Analytics Tab - Enhanced with Performance Metrics */}
+        <TabsContent value="analytics" className="space-y-6">
           <WalletAnalyticsDashboard />
         </TabsContent>
 
-        {/* Advanced Transactions Tab */}
-        <TabsContent value="transactions">
+        {/* Advanced Transactions Tab - Now includes receipt generation */}
+        <TabsContent value="transactions" className="space-y-6">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Transaction Management</h2>
+            <p className="text-gray-600">View, filter, and generate secure receipts for your transactions</p>
+          </div>
           <AdvancedTransactionManager />
         </TabsContent>
 
         {/* Security Center Tab */}
-        <TabsContent value="security">
+        <TabsContent value="security" className="space-y-6">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Security Center</h2>
+            <p className="text-gray-600">Manage your account security and verification settings</p>
+          </div>
           <WalletSecurityCenter />
         </TabsContent>
 
         {/* Integrations Tab */}
-        <TabsContent value="integrations">
+        <TabsContent value="integrations" className="space-y-6">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Financial Integrations</h2>
+            <p className="text-gray-600">Connect banks, manage bills, and track subscriptions</p>
+          </div>
           <IntegrationManager />
-        </TabsContent>
-
-        {/* Secure Receipts Tab */}
-        <TabsContent value="receipts">
-          <SecureReceiptGenerator />
-        </TabsContent>
-
-        {/* Performance Tab */}
-        <TabsContent value="performance">
-          <PerformanceOptimizedWallet />
         </TabsContent>
       </Tabs>
 
