@@ -869,12 +869,40 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   
   const services = [
-    { value: "verizon", label: "Verizon" },
-    { value: "att", label: "AT&T" },
-    { value: "tmobile", label: "T-Mobile" },
-    { value: "sprint", label: "Sprint" },
-    { value: "cricket", label: "Cricket" },
-    { value: "boost", label: "Boost Mobile" },
+    // African Mobile Networks (Primary)
+    { value: "mtn", label: "MTN" },
+    { value: "airtel", label: "Airtel" },
+    { value: "vodafone", label: "Vodafone" },
+    { value: "glo", label: "Glo" },
+    { value: "9mobile", label: "9mobile (Etisalat)" },
+    { value: "safaricom", label: "Safaricom (Kenya)" },
+    { value: "tigo", label: "Tigo" },
+    { value: "orange", label: "Orange Africa" },
+    { value: "celtel", label: "Celtel" },
+    { value: "cellc", label: "Cell C (South Africa)" },
+    { value: "telkom", label: "Telkom Mobile" },
+    { value: "econet", label: "Econet Wireless" },
+    { value: "telecel", label: "Telecel" },
+    { value: "moov", label: "Moov Africa" },
+    { value: "expresso", label: "Expresso" },
+
+    // Country-Specific Networks
+    { value: "mtn_ng", label: "MTN Nigeria" },
+    { value: "mtn_za", label: "MTN South Africa" },
+    { value: "mtn_gh", label: "MTN Ghana" },
+    { value: "mtn_ug", label: "MTN Uganda" },
+    { value: "airtel_ng", label: "Airtel Nigeria" },
+    { value: "airtel_ke", label: "Airtel Kenya" },
+    { value: "airtel_tz", label: "Airtel Tanzania" },
+    { value: "airtel_ug", label: "Airtel Uganda" },
+
+    // US/International (for global users)
+    { value: "verizon", label: "Verizon (US)" },
+    { value: "att", label: "AT&T (US)" },
+    { value: "tmobile", label: "T-Mobile (US)" },
+    { value: "sprint", label: "Sprint (US)" },
+    { value: "cricket", label: "Cricket (US)" },
+    { value: "boost", label: "Boost Mobile (US)" },
   ];
 
   const amounts = [
