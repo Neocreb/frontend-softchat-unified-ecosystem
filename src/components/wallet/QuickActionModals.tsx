@@ -921,7 +921,7 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
     { value: "25", label: "$25 (₦10,000)" },
     { value: "1", label: "$1 (KES 150)" },
     { value: "3.5", label: "$3.50 (KES 500)" },
-    { value: "7", label: "$7 (KES 1,000)" },
+    { value: "12", label: "$12 (KES 1,800)" },
     { value: "14", label: "$14 (KES 2,000)" },
   ];
 
