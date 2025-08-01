@@ -1096,9 +1096,9 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             <div>
               <p className="text-xs text-gray-600 mb-2">African Local Currency Equivalents</p>
               <div className="grid grid-cols-2 gap-2">
-                {amounts.slice(5).map((amt) => (
+                {amounts.slice(5).map((amt, index) => (
                   <Button
-                    key={amt.value + "_african"}
+                    key={`african_${index}_${amt.value}`}
                     type="button"
                     variant={formData.amount === amt.value ? "default" : "outline"}
                     size="sm"
