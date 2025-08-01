@@ -69,6 +69,7 @@ const EnhancedWalletDashboardContent = () => {
           <Button
             onClick={() => setShowDepositModal(true)}
             className="bg-green-600 hover:bg-green-700"
+            data-action="deposit"
           >
             Deposit
           </Button>
