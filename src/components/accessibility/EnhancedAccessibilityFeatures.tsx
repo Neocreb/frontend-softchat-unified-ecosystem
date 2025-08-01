@@ -158,6 +158,20 @@ const EnhancedAccessibilityFeatures: React.FC<EnhancedAccessibilityFeaturesProps
     }
   }, [settings.language]);
 
+  // Handle responsive font size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      const newFontSize = getInitialFontSize();
+      if (settings.fontSize === 16 || settings.fontSize === 14) {
+        // Only auto-adjust if using default sizes
+        setSettings(prev => ({ ...prev, fontSize: newFontSize }));
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [settings.fontSize]);
+
   // Apply accessibility settings to the page
   useEffect(() => {
     const root = document.documentElement;
