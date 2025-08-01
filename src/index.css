@@ -1058,3 +1058,86 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Final mobile responsiveness and 13px font enforcement */
+@layer base {
+  /* Ensure all text elements inherit the 13px base */
+  *:not(input):not(textarea):not(select) {
+    font-size: inherit;
+  }
+
+  /* Mobile-first approach with 13px base */
+  html, body {
+    font-size: 13px !important;
+    line-height: 1.5;
+  }
+
+  /* Improve mobile text readability */
+  @media (max-width: 480px) {
+    body {
+      line-height: 1.4;
+      word-spacing: 0.1em;
+    }
+
+    /* Ensure proper spacing on very small devices */
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Better button sizing for small mobile devices */
+    button, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 12px;
+      font-size: 1rem; /* 13px */
+    }
+  }
+
+  /* Tablet responsiveness */
+  @media (min-width: 481px) and (max-width: 768px) {
+    html, body {
+      font-size: 13px; /* Keep 13px on tablets too */
+    }
+  }
+
+  /* Desktop - still maintain 13px base */
+  @media (min-width: 769px) {
+    html, body {
+      font-size: 13px; /* Consistent 13px across all devices */
+    }
+  }
+}
+
+/* Mobile utility classes for consistent 13px usage */
+@layer utilities {
+  .text-13 {
+    font-size: 13px !important;
+  }
+
+  .mobile-responsive-text {
+    font-size: 1rem; /* 13px with our base */
+    line-height: 1.5;
+  }
+
+  @media (max-width: 480px) {
+    .mobile-responsive-text {
+      font-size: 1rem; /* Still 13px */
+      line-height: 1.4;
+    }
+  }
+
+  /* Prevent layout shift on mobile */
+  .mobile-layout-stable {
+    will-change: auto;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Better touch interaction */
+  .mobile-touch-friendly {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    touch-action: manipulation;
+    user-select: none;
+  }
+}
