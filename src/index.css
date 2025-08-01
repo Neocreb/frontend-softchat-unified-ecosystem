@@ -4,14 +4,48 @@
 
 /* Global layout fixes */
 @layer base {
-  html,
-  body {
+  html {
+    /* Default mobile-first font size */
+    font-size: 14px;
     overflow-x: hidden;
     max-width: 100vw;
   }
 
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+    font-weight: 400; /* Ensure normal font weight */
+  }
+
   * {
     box-sizing: border-box;
+  }
+
+  /* Responsive font sizes */
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px; /* Larger font for desktop */
+    }
+  }
+
+  /* Mobile-specific optimizations */
+  @media (max-width: 767px) {
+    body {
+      font-size: 0.875rem; /* 14px equivalent in rem */
+      line-height: 1.4;
+    }
+
+    /* Ensure text doesn't overflow containers on mobile */
+    h1, h2, h3, h4, h5, h6 {
+      word-break: break-word;
+      hyphens: auto;
+    }
+
+    /* Make sure buttons and interactive elements are properly sized for touch */
+    button, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 }
 
