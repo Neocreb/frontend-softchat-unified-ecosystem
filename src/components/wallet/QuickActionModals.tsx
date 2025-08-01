@@ -906,11 +906,23 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
   ];
 
   const amounts = [
+    // Standard amounts
+    { value: "5", label: "$5" },
     { value: "10", label: "$10" },
     { value: "20", label: "$20" },
-    { value: "30", label: "$30" },
     { value: "50", label: "$50" },
     { value: "100", label: "$100" },
+
+    // African-friendly amounts (converted from local currencies)
+    { value: "2", label: "$2 (₦800)" },
+    { value: "3", label: "$3 (₦1,200)" },
+    { value: "7", label: "$7 (₦2,800)" },
+    { value: "15", label: "$15 (₦6,000)" },
+    { value: "25", label: "$25 (₦10,000)" },
+    { value: "1", label: "$1 (KES 150)" },
+    { value: "3.5", label: "$3.50 (KES 500)" },
+    { value: "7", label: "$7 (KES 1,000)" },
+    { value: "14", label: "$14 (KES 2,000)" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
