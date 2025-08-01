@@ -998,21 +998,43 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="service">Mobile Service</Label>
-            <Select value={formData.service} onValueChange={(value) => 
+            <Label htmlFor="service">Mobile Service Provider</Label>
+            <Select value={formData.service} onValueChange={(value) =>
               setFormData(prev => ({ ...prev, service: value }))
             }>
               <SelectTrigger>
                 <SelectValue placeholder="Select service provider" />
               </SelectTrigger>
-              <SelectContent>
-                {services.map((service) => (
+              <SelectContent className="max-h-60 overflow-y-auto">
+                <div className="px-2 py-1 text-xs font-medium text-gray-500 border-b">
+                  African Networks (Primary)
+                </div>
+                {services.slice(0, 15).map((service) => (
+                  <SelectItem key={service.value} value={service.value}>
+                    {service.label}
+                  </SelectItem>
+                ))}
+                <div className="px-2 py-1 text-xs font-medium text-gray-500 border-b border-t mt-1">
+                  Country-Specific Networks
+                </div>
+                {services.slice(15, 23).map((service) => (
+                  <SelectItem key={service.value} value={service.value}>
+                    {service.label}
+                  </SelectItem>
+                ))}
+                <div className="px-2 py-1 text-xs font-medium text-gray-500 border-b border-t mt-1">
+                  International Networks
+                </div>
+                {services.slice(23).map((service) => (
                   <SelectItem key={service.value} value={service.value}>
                     {service.label}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            <p className="text-xs text-gray-500">
+              Supports major African networks including MTN, Airtel, Vodafone, Glo, and more
+            </p>
           </div>
 
           <div className="space-y-2">
