@@ -566,15 +566,9 @@
     @apply bg-background text-foreground;
   }
 
-  /* Mobile font size for accessibility */
+  /* Consistent 13px font size across all devices */
   html {
-    font-size: 16px; /* Default font size */
-  }
-
-  @media (max-width: 640px) {
-    html {
-      font-size: 13px; /* Mobile font size for better accessibility */
-    }
+    font-size: 13px !important; /* Ensure 13px base everywhere */
   }
 }
 
