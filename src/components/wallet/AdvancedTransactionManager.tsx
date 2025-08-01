@@ -660,6 +660,21 @@ const AdvancedTransactionManager = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Secure Receipt Modal */}
+      {receiptTransaction && (
+        <Dialog open={showReceiptDialog} onOpenChange={setShowReceiptDialog}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5 text-green-600" />
+                Generate Secure Receipt
+              </DialogTitle>
+            </DialogHeader>
+            <SecureReceiptGenerator transaction={receiptTransaction} />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
