@@ -935,10 +935,29 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
         throw new Error("Please enter a valid amount");
       }
 
-      // Validate phone number
-      const phoneRegex = /^\d{10}$/;
-      if (!phoneRegex.test(formData.phoneNumber.replace(/\D/g, ""))) {
-        throw new Error("Please enter a valid 10-digit phone number");
+      // Validate phone number (supports various African formats)
+      const cleanPhone = formData.phoneNumber.replace(/\D/g, "");
+      const phoneRegex = /^(\d{10,15})$/; // Support 10-15 digits for international formats
+
+      if (!phoneRegex.test(cleanPhone)) {
+        throw new Error("Please enter a valid phone number (10-15 digits)");
+      }
+
+      // Additional validation for common African formats
+      const isValidAfrican =
+        cleanPhone.length >= 10 &&
+        (cleanPhone.startsWith("234") || // Nigeria
+         cleanPhone.startsWith("254") || // Kenya
+         cleanPhone.startsWith("233") || // Ghana
+         cleanPhone.startsWith("27") ||  // South Africa
+         cleanPhone.startsWith("256") || // Uganda
+         cleanPhone.startsWith("255") || // Tanzania
+         cleanPhone.startsWith("260") || // Zambia
+         cleanPhone.length === 10 ||     // Local format
+         cleanPhone.length === 11);      // Local with area code
+
+      if (!isValidAfrican && cleanPhone.length < 10) {
+        throw new Error("Please enter a valid African phone number");
       }
 
       // Simulate API call
