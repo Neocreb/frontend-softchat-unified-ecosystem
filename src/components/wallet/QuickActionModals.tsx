@@ -581,20 +581,116 @@ export const PayBillModal = ({ isOpen, onClose }: PayBillModalProps) => {
   
   const billTypes = {
     utilities: {
-      label: "Utilities",
-      providers: ["Electric Company", "Gas Company", "Water Department"],
+      label: "Utilities & Electricity",
+      providers: [
+        // Nigerian Electricity Companies
+        "EEDC (Enugu Electricity)",
+        "EKEDC (Eko Electricity)",
+        "IKEDC (Ikeja Electric)",
+        "AEDC (Abuja Electricity)",
+        "PHED (Port Harcourt Electricity)",
+        "KEDCO (Kano Electricity)",
+        "YEDC (Yola Electricity)",
+        "JEDC (Jos Electricity)",
+        // Other African Utilities
+        "KPLC (Kenya Power)",
+        "ECG (Electricity Company of Ghana)",
+        "ZESCO (Zambia Electricity)",
+        "ESKOM (South Africa)",
+        "JIRAMA (Madagascar)",
+        "BEL (Botswana Energy)",
+        // US/International
+        "Electric Company",
+        "Gas Company",
+        "Water Department",
+      ],
     },
     internet: {
       label: "Internet & Cable",
-      providers: ["Comcast", "Verizon", "AT&T", "Spectrum"],
+      providers: [
+        // African ISPs
+        "MTN Fiber",
+        "Airtel Broadband",
+        "Vodafone Fiber",
+        "Safaricom Home Fiber",
+        "Liquid Telecom",
+        "MainOne",
+        "Spectranet",
+        "Swift Networks",
+        "Smile Communications",
+        "Rain (South Africa)",
+        // US/International
+        "Comcast",
+        "Verizon",
+        "AT&T",
+        "Spectrum",
+      ],
     },
     phone: {
       label: "Mobile Phone",
-      providers: ["Verizon", "AT&T", "T-Mobile", "Sprint"],
+      providers: [
+        // African Mobile Providers
+        "MTN",
+        "Airtel",
+        "Vodafone",
+        "Glo",
+        "9mobile",
+        "Safaricom",
+        "Tigo",
+        "Orange Africa",
+        "Celtel",
+        "Cell C",
+        "Telkom Mobile",
+        "Econet",
+        "Telecel",
+        // US/International
+        "Verizon",
+        "AT&T",
+        "T-Mobile",
+        "Sprint",
+      ],
+    },
+    cable_tv: {
+      label: "Cable TV & Entertainment",
+      providers: [
+        // African Pay-TV
+        "DStv",
+        "GOtv",
+        "StarTimes",
+        "Kwesé TV",
+        "MyTV",
+        "TStv",
+        "Zuku",
+        "DSTV Premium",
+        "DSTV Compact",
+        "DSTV Family",
+        // International
+        "Netflix",
+        "Amazon Prime",
+        "Hulu",
+        "Disney+",
+      ],
     },
     insurance: {
       label: "Insurance",
-      providers: ["State Farm", "Allstate", "GEICO", "Progressive"],
+      providers: [
+        // African Insurance
+        "AIICO Insurance",
+        "AXA Mansard",
+        "Old Mutual",
+        "Sanlam",
+        "Liberty Life",
+        "Leadway Assurance",
+        "Coronation Insurance",
+        "NICON Insurance",
+        "Custodian Insurance",
+        "Jubilee Insurance",
+        // US/International
+        "State Farm",
+        "Allstate",
+        "GEICO",
+        "Progressive",
+      ],
     },
   };
 
