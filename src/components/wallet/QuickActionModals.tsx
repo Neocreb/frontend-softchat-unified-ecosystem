@@ -337,11 +337,11 @@ export const RequestMoneyModal = ({ isOpen, onClose }: RequestMoneyModalProps) =
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="from">Request From</Label>
-            <div className="flex gap-2">
-              <Select value={formData.fromType} onValueChange={(value) => 
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Select value={formData.fromType} onValueChange={(value) =>
                 setFormData(prev => ({ ...prev, fromType: value }))
               }>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
