@@ -1019,16 +1019,34 @@ export const TopUpModal = ({ isOpen, onClose }: TopUpModalProps) => {
             <Label htmlFor="phoneNumber">Phone Number</Label>
             <Input
               id="phoneNumber"
-              placeholder="(555) 123-4567"
+              placeholder="e.g. +234 801 234 5678, 0801 234 5678, or (555) 123-4567"
               value={formData.phoneNumber}
               onChange={(e) => {
-                const value = e.target.value.replace(/\D/g, "");
-                const formatted = value.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
-                setFormData(prev => ({ ...prev, phoneNumber: formatted }));
+                let value = e.target.value.replace(/[^\d+\-\s\(\)]/g, "");
+
+                // Smart formatting based on input
+                if (value.startsWith("+234")) {
+                  // Nigerian format: +234 XXX XXX XXXX
+                  value = value.replace(/(\+234)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
+                } else if (value.startsWith("+254")) {
+                  // Kenyan format: +254 XXX XXX XXX
+                  value = value.replace(/(\+254)(\d{3})(\d{3})(\d{3})/, "$1 $2 $3 $4");
+                } else if (value.startsWith("0")) {
+                  // Local African format: 0XXX XXX XXXX
+                  value = value.replace(/(\d{4})(\d{3})(\d{4})/, "$1 $2 $3");
+                } else if (!value.startsWith("+") && value.length === 10) {
+                  // US format: (XXX) XXX-XXXX
+                  value = value.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+                }
+
+                setFormData(prev => ({ ...prev, phoneNumber: value }));
               }}
-              maxLength={14}
+              maxLength={20}
               required
             />
+            <p className="text-xs text-gray-500">
+              Supports African (+234, +254, +233, etc.) and US formats
+            </p>
           </div>
 
           <div className="space-y-2">
