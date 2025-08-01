@@ -21,8 +21,6 @@ import AdvancedTransactionManager from "./AdvancedTransactionManager";
 import WalletSecurityCenter from "./WalletSecurityCenter";
 import QuickActionsWidget from "./QuickActionsWidget";
 import IntegrationManager from "./IntegrationManager";
-import PerformanceOptimizedWallet from "./PerformanceOptimizedWallet";
-import SecureReceiptGenerator from "./SecureReceiptGenerator";
 
 // Original components
 import WithdrawModal from "./WithdrawModal";
