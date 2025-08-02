@@ -2798,7 +2798,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{strategy.description}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-green-600">{strategy.impact}</span>
-                          <Button size="sm" variant="outline">Implement</Button>
+                          <Button size="sm" variant="outline" onClick={() => handleImplementStrategy(strategy.strategy)}>Implement</Button>
                         </div>
                       </div>
                     ))}
