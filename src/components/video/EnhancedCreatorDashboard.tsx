@@ -2874,7 +2874,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                           {trend.difficulty}
                         </Badge>
                       </div>
-                      <Button size="sm" variant="outline" className="w-full mt-3">
+                      <Button size="sm" variant="outline" className="w-full mt-3" onClick={() => handleImplementStrategy(`${trend.trend} Content Plan`)}>
                         Create Content Plan
                       </Button>
                     </div>
