@@ -65,7 +65,7 @@ const MarketplaceCheckout = () => {
     // Validate shipping info
     const requiredFields = ['name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country'];
     const missingFields = requiredFields.filter(field => !shippingInfo[field as keyof typeof shippingInfo]);
-    
+
     if (missingFields.length > 0) {
       toast({
         title: "Missing Information",
@@ -74,7 +74,13 @@ const MarketplaceCheckout = () => {
       });
       return;
     }
-    
+
+    // Handle crypto payment
+    if (paymentMethod === 'crypto') {
+      setShowCryptoPayment(true);
+      return;
+    }
+
     setIsProcessing(true);
     
     try {
