@@ -1490,16 +1490,254 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
           {/* Content Tab */}
           <TabsContent value="content" className="space-y-6">
-            <div className="text-center py-12">
-              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Content Analytics</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Detailed content performance metrics across all platforms
-              </p>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Analyze Content
-              </Button>
+            {/* Content Analytics Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Content Analytics</h2>
+                <p className="text-gray-600 dark:text-gray-400">Comprehensive performance analysis across all content types</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  <Filter className="w-4 h-4 mr-2" />
+                  Filter Content
+                </Button>
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Content
+                </Button>
+              </div>
+            </div>
+
+            {/* Content Performance Overview */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <FileText className="w-6 h-6 text-blue-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+18.2%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-blue-900">1,423</p>
+                    <p className="text-sm text-blue-700">Total Content</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Eye className="w-6 h-6 text-green-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+24.7%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-green-900">8.4M</p>
+                    <p className="text-sm text-green-700">Total Views</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Heart className="w-6 h-6 text-purple-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+31.5%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-purple-900">892K</p>
+                    <p className="text-sm text-purple-700">Engagements</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <DollarSign className="w-6 h-6 text-orange-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+45.8%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-orange-900">$23.4K</p>
+                    <p className="text-sm text-orange-700">Content Revenue</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Content by Platform */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-blue-500" />
+                    Content Distribution by Platform
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { platform: "Video Content", count: 456, percentage: 32, color: "bg-red-500" },
+                      { platform: "Social Posts", count: 387, percentage: 27, color: "bg-blue-500" },
+                      { platform: "Marketplace Products", count: 234, percentage: 16, color: "bg-green-500" },
+                      { platform: "Live Streams", count: 189, percentage: 13, color: "bg-pink-500" },
+                      { platform: "Blog Articles", count: 157, percentage: 12, color: "bg-purple-500" },
+                    ].map((item, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-medium">{item.platform}</span>
+                          <span className="text-gray-600 dark:text-gray-400">{item.count} items</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Progress value={item.percentage} className="flex-1" />
+                          <span className="text-sm w-8">{item.percentage}%</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-500" />
+                    Content Performance Trends
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { metric: "Views per Content", value: "5.9K", change: "+28.3%", trend: "up" },
+                      { metric: "Engagement Rate", value: "12.4%", change: "+15.7%", trend: "up" },
+                      { metric: "Share Rate", value: "3.2%", change: "+45.1%", trend: "up" },
+                      { metric: "Conversion Rate", value: "2.8%", change: "+22.9%", trend: "up" },
+                      { metric: "Revenue per Content", value: "$16.45", change: "+67.2%", trend: "up" },
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div>
+                          <div className="font-medium">{item.metric}</div>
+                          <div className="text-2xl font-bold">{item.value}</div>
+                        </div>
+                        <div className="flex items-center gap-1 text-sm">
+                          <TrendingUp className="w-3 h-3 text-green-500" />
+                          <span className="text-green-600 font-medium">{item.change}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Top Performing Content (Enhanced) */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Crown className="w-5 h-5 text-yellow-500" />
+                  Top Performing Content Analysis
+                </CardTitle>
+                <CardDescription>Your highest-performing content across all platforms</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {topPerformingContent.map((content, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-all cursor-pointer"
+                      onClick={() => setSelectedContent(content)}
+                    >
+                      <div className="flex-shrink-0">
+                        <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
+                          {content.type === "Video" && <Video className="w-8 h-8 text-red-500" />}
+                          {content.type === "Product" && <ShoppingBag className="w-8 h-8 text-green-500" />}
+                          {content.type === "Post" && <FileText className="w-8 h-8 text-blue-500" />}
+                          {content.type === "Stream" && <Radio className="w-8 h-8 text-pink-500" />}
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold text-gray-900 dark:text-white truncate">{content.title}</h4>
+                          <Badge variant="outline" className="text-xs">{content.type}</Badge>
+                          <Badge variant="secondary" className="text-xs">{content.platform}</Badge>
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 truncate">{content.description}</p>
+                        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                          <span className="flex items-center gap-1">
+                            <Eye className="w-3 h-3" />
+                            {content.views}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Heart className="w-3 h-3" />
+                            {content.engagement}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <DollarSign className="w-3 h-3" />
+                            {content.revenue}
+                          </span>
+                          <span>{new Date(content.publishDate).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-green-600">{content.revenue}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Revenue</div>
+                      </div>
+                      <Button variant="ghost" size="sm">
+                        <ChevronRight className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Content Creation Tools */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <Video className="w-12 h-12 text-red-500 mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">Create Video</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Record or upload video content</p>
+                  <Button size="sm" className="w-full">Start Recording</Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <FileText className="w-12 h-12 text-blue-500 mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">Write Post</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Create engaging social posts</p>
+                  <Button size="sm" className="w-full">Write Now</Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <Radio className="w-12 h-12 text-pink-500 mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">Go Live</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Start live streaming</p>
+                  <Button size="sm" className="w-full">Start Stream</Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6 text-center">
+                  <ShoppingBag className="w-12 h-12 text-green-500 mx-auto mb-3" />
+                  <h3 className="font-semibold mb-2">List Product</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Add marketplace item</p>
+                  <Button size="sm" className="w-full">Create Listing</Button>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
