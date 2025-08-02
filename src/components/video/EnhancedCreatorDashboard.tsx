@@ -1308,49 +1308,183 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
           {/* Features Tab */}
           <TabsContent value="features" className="space-y-6">
+            {/* Feature Management Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Platform Features</h2>
+                <p className="text-gray-600 dark:text-gray-400">Manage and configure your platform features</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Global Settings
+                </Button>
+                <Button>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Feature
+                </Button>
+              </div>
+            </div>
+
+            {/* Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {platformFeatures.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
                   <Card key={index} className="hover:shadow-lg transition-all duration-200">
                     <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", feature.color)}>
-                          <Icon className="w-4 h-4 text-white" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-base">{feature.name}</CardTitle>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge variant={feature.active ? "default" : "secondary"} className="text-xs">
-                              {feature.active ? "Active" : "Inactive"}
-                            </Badge>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", feature.color)}>
+                            <Icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{feature.name}</CardTitle>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge variant={feature.active ? "default" : "secondary"} className="text-xs">
+                                {feature.active ? "Active" : "Inactive"}
+                              </Badge>
+                              <div className="flex items-center gap-1 text-sm">
+                                <TrendingUp className="w-3 h-3 text-green-500" />
+                                <span className="text-green-600">+{feature.growth}%</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-600 dark:text-gray-400">Growth Rate</span>
-                          <div className="flex items-center gap-1">
-                            <TrendingUp className="w-3 h-3 text-green-500" />
+                      <div className="space-y-4">
+                        {/* Feature Metrics Summary */}
+                        <div className="grid grid-cols-2 gap-3">
+                          {feature.metrics.slice(0, 2).map((metric, metricIndex) => {
+                            const MetricIcon = metric.icon;
+                            return (
+                              <div key={metricIndex} className="text-center p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                <MetricIcon className={cn("w-4 h-4 mx-auto mb-1", metric.color)} />
+                                <div className="text-sm font-bold">{metric.value}</div>
+                                <div className="text-xs text-gray-600 dark:text-gray-400">{metric.title}</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600 dark:text-gray-400">Performance</span>
                             <span className="text-green-600 font-medium">+{feature.growth}%</span>
                           </div>
+                          <Progress value={Math.min(feature.growth, 100)} className="h-2" />
                         </div>
-                        <Progress value={feature.growth} className="h-2" />
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm" className="flex-1">
-                            View Details
+
+                        {/* Feature Status */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600 dark:text-gray-400">Status</span>
+                            <span className={cn("font-medium", feature.active ? "text-green-600" : "text-gray-600")}>
+                              {feature.active ? "Operational" : "Disabled"}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-gray-600 dark:text-gray-400">Last Updated</span>
+                            <span className="font-medium">2 hours ago</span>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-2 pt-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex-1"
+                            onClick={() => setSelectedFeature(feature.name)}
+                          >
+                            <BarChart3 className="w-3 h-3 mr-1" />
+                            Analytics
                           </Button>
                           <Button size="sm" className="flex-1">
-                            Manage
+                            <Settings className="w-3 h-3 mr-1" />
+                            Configure
                           </Button>
+                        </div>
+
+                        {/* Toggle Feature */}
+                        <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium">Enable Feature</span>
+                            <div className={cn(
+                              "w-10 h-6 rounded-full flex items-center transition-colors cursor-pointer",
+                              feature.active ? "bg-green-500" : "bg-gray-300"
+                            )}>
+                              <div className={cn(
+                                "w-4 h-4 rounded-full bg-white transition-transform",
+                                feature.active ? "translate-x-5" : "translate-x-1"
+                              )} />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 );
               })}
+            </div>
+
+            {/* Feature Categories */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-yellow-500" />
+                    Core Features
+                  </CardTitle>
+                  <CardDescription>Essential platform functionality</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {["Feed & Social", "Video Content", "Messages & Chat"].map((feature, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <CheckCircle className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="font-medium">{feature}</span>
+                        </div>
+                        <Badge variant="default" className="text-xs">Active</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Crown className="w-5 h-5 text-purple-500" />
+                    Premium Features
+                  </CardTitle>
+                  <CardDescription>Advanced monetization and tools</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {["Marketplace", "Crypto Trading", "Live Streaming"].map((feature, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <Star className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="font-medium">{feature}</span>
+                        </div>
+                        <Badge variant="secondary" className="text-xs">Premium</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
