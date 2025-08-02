@@ -92,6 +92,7 @@ import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
+import UnifiedCreatorStudio from "./pages/UnifiedCreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
 import Explore from "./pages/Explore";
