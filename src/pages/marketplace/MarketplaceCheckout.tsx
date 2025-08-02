@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
@@ -8,15 +7,17 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { 
-  ShoppingCart, 
-  ChevronLeft, 
-  CreditCard, 
-  CheckCircle, 
+import {
+  ShoppingCart,
+  ChevronLeft,
+  CreditCard,
+  CheckCircle,
   ArrowRight,
   Wallet,
   Banknote,
-  Package
+  Package,
+  Bitcoin,
+  Zap
 } from "lucide-react";
 import { useMarketplace } from "@/contexts/MarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
