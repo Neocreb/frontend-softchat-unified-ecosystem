@@ -2199,11 +2199,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">Deep insights into your audience across all platforms</p>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline">
+                <Button variant="outline" onClick={handleAudienceSegmentation}>
                   <Users className="w-4 h-4 mr-2" />
                   Audience Segments
                 </Button>
-                <Button>
+                <Button onClick={handleTargetAnalysis}>
                   <Target className="w-4 h-4 mr-2" />
                   Target Analysis
                 </Button>
