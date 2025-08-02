@@ -51,8 +51,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useWalletContext, WalletProvider } from "@/contexts/WalletContext";
-import DepositModal from "@/components/wallet/DepositModal";
-import WithdrawModal from "@/components/wallet/WithdrawModal";
+import CryptoDepositModal from "@/components/crypto/CryptoDepositModal";
+import CryptoWithdrawModal from "@/components/crypto/CryptoWithdrawModal";
 import { cn } from "@/lib/utils";
 
 interface PortfolioAsset {
@@ -211,8 +211,9 @@ function EnhancedCryptoPortfolioContent() {
   const [timeframe, setTimeframe] = useState("30D");
   const [activeTab, setActiveTab] = useState("overview");
   const [showValues, setShowValues] = useState(true);
-  const [showDepositModal, setShowDepositModal] = useState(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [showCryptoDepositModal, setShowCryptoDepositModal] = useState(false);
+  const [showCryptoWithdrawModal, setShowCryptoWithdrawModal] = useState(false);
+  const [selectedAssetForAction, setSelectedAssetForAction] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { walletBalance, refreshWallet } = useWalletContext();
@@ -311,15 +312,15 @@ function EnhancedCryptoPortfolioContent() {
             />
           </Button>
           <Button
-            onClick={() => setShowDepositModal(true)}
+            onClick={() => setShowCryptoDepositModal(true)}
             className="bg-green-600 hover:bg-green-700"
           >
             <ArrowDownLeft className="h-4 w-4 mr-2" />
-            Deposit
+            Deposit Crypto
           </Button>
-          <Button onClick={() => setShowWithdrawModal(true)} variant="outline">
+          <Button onClick={() => setShowCryptoWithdrawModal(true)} variant="outline">
             <ArrowUpRight className="h-4 w-4 mr-2" />
-            Withdraw
+            Withdraw Crypto
           </Button>
         </div>
       </div>
@@ -569,79 +570,176 @@ function EnhancedCryptoPortfolioContent() {
 
         {/* Assets Tab */}
         <TabsContent value="assets" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Assets</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2">Asset</th>
-                      <th className="text-right py-2">Amount</th>
-                      <th className="text-right py-2">Value</th>
-                      <th className="text-right py-2">Avg Buy Price</th>
-                      <th className="text-right py-2">Current Price</th>
-                      <th className="text-right py-2">P&L</th>
-                      <th className="text-right py-2">Allocation</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {portfolioAssets.map((asset) => (
-                      <tr key={asset.id} className="border-b hover:bg-gray-50">
-                        <td className="py-3">
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="w-3 h-3 rounded-full"
-                              style={{ backgroundColor: asset.color }}
-                            />
-                            <div>
-                              <div className="font-medium">{asset.symbol}</div>
-                              <div className="text-sm text-gray-600">
-                                {asset.name}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="text-right py-3">
-                          {formatCrypto(asset.amount, asset.symbol)}
-                        </td>
-                        <td className="text-right py-3 font-medium">
-                          {showValues ? formatCurrency(asset.value) : "••••••"}
-                        </td>
-                        <td className="text-right py-3">
-                          {formatCurrency(asset.avgBuyPrice)}
-                        </td>
-                        <td className="text-right py-3">
-                          {formatCurrency(asset.currentPrice)}
-                        </td>
-                        <td
-                          className={cn(
-                            "text-right py-3",
-                            getChangeColor(asset.pnl),
-                          )}
+          {/* Quick Actions Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold">Your Crypto Assets</h3>
+              <p className="text-sm text-muted-foreground">
+                Manage your cryptocurrency holdings and perform quick actions
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => setShowCryptoDepositModal(true)}
+                size="sm"
+                className="bg-green-600 hover:bg-green-700"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Deposit
+              </Button>
+              <Button
+                onClick={() => setShowCryptoWithdrawModal(true)}
+                size="sm"
+                variant="outline"
+              >
+                <Minus className="h-4 w-4 mr-1" />
+                Withdraw
+              </Button>
+            </div>
+          </div>
+
+          {/* Enhanced Assets Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+            {portfolioAssets.map((asset) => (
+              <Card key={asset.id} className="hover:shadow-lg transition-all duration-200 group">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    {/* Asset Header */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg"
+                          style={{ backgroundColor: asset.color }}
                         >
-                          <div>
-                            {showValues ? formatCurrency(asset.pnl) : "••••••"}
+                          {asset.symbol === 'BTC' ? '₿' :
+                           asset.symbol === 'ETH' ? 'Ξ' :
+                           asset.symbol === 'SOL' ? '◎' :
+                           asset.symbol.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="font-bold text-lg">{asset.symbol}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {asset.name}
                           </div>
-                          <div className="text-sm">
-                            {formatPercent(asset.pnlPercent)}
+                        </div>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className={cn(
+                          "font-semibold",
+                          asset.pnl >= 0 ? "text-green-600 border-green-200" : "text-red-600 border-red-200"
+                        )}
+                      >
+                        {formatPercent(asset.pnlPercent)}
+                      </Badge>
+                    </div>
+
+                    {/* Asset Values */}
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Holdings</span>
+                        <div className="text-right">
+                          <div className="font-semibold">
+                            {formatCrypto(asset.amount, asset.symbol)}
                           </div>
-                        </td>
-                        <td className="text-right py-3">
-                          <div className="flex items-center justify-end gap-2">
-                            <span>{asset.allocation.toFixed(1)}%</span>
-                            <Progress
-                              value={asset.allocation}
-                              className="w-12 h-2"
-                            />
+                          <div className="text-sm text-muted-foreground">
+                            {showValues ? formatCurrency(asset.value) : "••••••"}
                           </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Current Price</span>
+                        <div className="text-right">
+                          <div className="font-medium">
+                            {formatCurrency(asset.currentPrice)}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Avg Buy Price</span>
+                        <div className="text-right">
+                          <div className="font-medium">
+                            {formatCurrency(asset.avgBuyPrice)}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">P&L</span>
+                        <div className={cn("text-right font-semibold", getChangeColor(asset.pnl))}>
+                          <div>{showValues ? formatCurrency(asset.pnl) : "••••••"}</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-muted-foreground">Portfolio Weight</span>
+                          <span className="font-medium">{asset.allocation.toFixed(1)}%</span>
+                        </div>
+                        <Progress value={asset.allocation} className="h-2" />
+                      </div>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedAssetForAction(asset.symbol);
+                          setShowCryptoDepositModal(true);
+                        }}
+                        className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                      >
+                        <ArrowDownLeft className="h-3 w-3 mr-1" />
+                        Deposit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedAssetForAction(asset.symbol);
+                          setShowCryptoWithdrawModal(true);
+                        }}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <ArrowUpRight className="h-3 w-3 mr-1" />
+                        Withdraw
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* P2P Trading Quick Access */}
+          <Card className="bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-200">
+            <CardContent className="p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="space-y-2">
+                  <h4 className="text-lg font-semibold text-purple-800 dark:text-purple-200">
+                    Start P2P Trading
+                  </h4>
+                  <p className="text-sm text-purple-600 dark:text-purple-300">
+                    Buy and sell cryptocurrencies directly with other users at competitive rates
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    className="bg-purple-600 hover:bg-purple-700"
+                    onClick={() => {
+                      // Navigate to P2P tab
+                      const event = new CustomEvent('navigate-to-p2p');
+                      window.dispatchEvent(event);
+                    }}
+                  >
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    Start Trading
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -941,17 +1039,22 @@ function EnhancedCryptoPortfolioContent() {
         </TabsContent>
       </Tabs>
 
-      {/* Modals */}
-      <DepositModal
-        isOpen={showDepositModal}
-        onClose={() => setShowDepositModal(false)}
+      {/* Crypto Modals */}
+      <CryptoDepositModal
+        isOpen={showCryptoDepositModal}
+        onClose={() => {
+          setShowCryptoDepositModal(false);
+          setSelectedAssetForAction(null);
+        }}
         onSuccess={refreshPortfolio}
       />
 
-      <WithdrawModal
-        isOpen={showWithdrawModal}
-        onClose={() => setShowWithdrawModal(false)}
-        walletBalance={walletBalance}
+      <CryptoWithdrawModal
+        isOpen={showCryptoWithdrawModal}
+        onClose={() => {
+          setShowCryptoWithdrawModal(false);
+          setSelectedAssetForAction(null);
+        }}
         onSuccess={refreshPortfolio}
       />
     </div>
