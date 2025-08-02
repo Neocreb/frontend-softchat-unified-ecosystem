@@ -1573,10 +1573,13 @@ const EnhancedCreatorDashboard: React.FC = () => {
                         <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                           <div className="flex items-center justify-between">
                             <span className="text-sm font-medium">Enable Feature</span>
-                            <div className={cn(
-                              "w-10 h-6 rounded-full flex items-center transition-colors cursor-pointer",
-                              feature.active ? "bg-green-500" : "bg-gray-300"
-                            )}>
+                            <div
+                              className={cn(
+                                "w-10 h-6 rounded-full flex items-center transition-colors cursor-pointer",
+                                feature.active ? "bg-green-500" : "bg-gray-300"
+                              )}
+                              onClick={() => handleToggleFeature(feature.name, feature.active)}
+                            >
                               <div className={cn(
                                 "w-4 h-4 rounded-full bg-white transition-transform",
                                 feature.active ? "translate-x-5" : "translate-x-1"
