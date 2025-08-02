@@ -338,8 +338,11 @@ const UnifiedCreatorStudio: React.FC = () => {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <div className="w-full overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 lg:w-auto min-w-fit">
+          <div className="w-full overflow-x-auto pb-2">
+            <TabsList className={cn(
+              "grid min-w-fit",
+              isMobile ? "grid-cols-3 gap-1" : "grid-cols-6 lg:grid-cols-8 lg:w-auto"
+            )}>
               <TabsTrigger
                 value="overview"
                 className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
