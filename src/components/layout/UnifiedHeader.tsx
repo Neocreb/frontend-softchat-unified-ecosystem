@@ -308,21 +308,13 @@ const UnifiedHeader = ({
     setIsSearching(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      // Use global search service for real API integration
+      const searchResponse = await globalSearchService.search({
+        query: searchQuery,
+        limit: 5, // Limit for header preview
+      });
 
-      const filteredResults = mockSearchResults.filter(
-        (result) =>
-          result.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          result.description
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          result.tags?.some((tag) =>
-            tag.toLowerCase().includes(searchQuery.toLowerCase()),
-          ),
-      );
-
-      setSearchResults(filteredResults);
+      setSearchResults(searchResponse.results);
       setShowSearchOverlay(true);
 
       // Save to recent searches
@@ -331,8 +323,23 @@ const UnifiedHeader = ({
         setRecentSearches(newRecent);
         localStorage.setItem("recent-searches", JSON.stringify(newRecent));
       }
+
+      // Track search analytics
+      await globalSearchService.trackSearch(searchQuery, searchResponse.totalCount);
     } catch (error) {
       console.error("Search failed:", error);
+
+      // Fallback to mock results if API fails
+      const filteredResults = mockSearchResults.filter(
+        (result) =>
+          result.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          result.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          result.tags?.some((tag) =>
+            tag.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
+      );
+      setSearchResults(filteredResults);
+      setShowSearchOverlay(true);
     } finally {
       setIsSearching(false);
     }
