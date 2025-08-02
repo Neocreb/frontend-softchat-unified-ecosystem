@@ -1665,6 +1665,14 @@ export default function EnhancedFeed() {
             </Card>
           )}
 
+          {/* Social Commerce Recommendations */}
+          <SocialCommerceWidget
+            type="recommended"
+            limit={4}
+            className="mb-6"
+            showSocialProof={true}
+          />
+
           {/* Empty State for Tab Content */}
           {getFilteredPosts().length === 0 && (
             <Card className="mb-6">
