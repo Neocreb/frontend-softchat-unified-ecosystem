@@ -599,9 +599,9 @@ function EnhancedCryptoPortfolioContent() {
                   <div className="space-y-4">
                     {/* Asset Header */}
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                         <div
-                          className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg"
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg flex-shrink-0"
                           style={{ backgroundColor: asset.color }}
                         >
                           {asset.symbol === 'BTC' ? '₿' :
@@ -609,9 +609,9 @@ function EnhancedCryptoPortfolioContent() {
                            asset.symbol === 'SOL' ? '◎' :
                            asset.symbol.charAt(0)}
                         </div>
-                        <div>
-                          <div className="font-bold text-lg">{asset.symbol}</div>
-                          <div className="text-sm text-muted-foreground">
+                        <div className="min-w-0 flex-1">
+                          <div className="font-bold text-base sm:text-lg truncate">{asset.symbol}</div>
+                          <div className="text-xs sm:text-sm text-muted-foreground truncate">
                             {asset.name}
                           </div>
                         </div>
