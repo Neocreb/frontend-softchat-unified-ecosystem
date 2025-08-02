@@ -84,6 +84,7 @@ import NotificationsDropdown from "./NotificationsDropdown";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { globalSearchService } from "@/services/globalSearchService";
 
 interface UnifiedHeaderProps {
   mobileMenuOpen?: boolean;
