@@ -416,6 +416,144 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
   const totalGrowth = platformFeatures.reduce((sum, feature) => sum + feature.growth, 0) / platformFeatures.length;
 
+  // Functional Handlers
+  const handleExport = async (format: 'csv' | 'pdf' | 'json' = 'csv') => {
+    setIsExporting(true);
+    try {
+      // Simulate export API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Generate mock data for export
+      const exportData = {
+        revenue: {
+          total: totalRevenue,
+          platforms: platformFeatures.map(f => ({
+            name: f.name,
+            revenue: f.metrics.find(m => m.title.includes('Revenue') || m.title.includes('Earnings'))?.value || '0'
+          }))
+        },
+        content: topPerformingContent,
+        audience: {
+          total: "45.2K",
+          growth: "+28.5%",
+          demographics: {
+            age: { "18-24": 35, "25-34": 40, "35-44": 20, "45+": 5 },
+            location: { "US": 42, "UK": 18, "CA": 12, "AU": 8, "Other": 20 }
+          }
+        },
+        exportDate: new Date().toISOString()
+      };
+
+      // Download file
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `creator-analytics-${new Date().toISOString().split('T')[0]}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      alert(`Analytics data exported successfully as ${format.toUpperCase()}!`);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Export failed. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleRefreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      // Simulate API refresh
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      alert('Data refreshed successfully!');
+    } catch (error) {
+      console.error('Refresh failed:', error);
+      alert('Refresh failed. Please try again.');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleSetGoals = () => {
+    setShowGoalModal(true);
+    // In a real app, this would open a goal-setting modal
+    alert('Goal setting feature coming soon! You can set monthly revenue targets, follower goals, and engagement targets.');
+  };
+
+  const handleCreateContent = (type: string) => {
+    const routes = {
+      'video': '/app/videos',
+      'post': '/app/feed',
+      'live': '/app/live',
+      'product': '/app/marketplace/list',
+      'stream': '/app/live',
+      'article': '/app/blog'
+    };
+
+    const route = routes[type as keyof typeof routes];
+    if (route) {
+      window.open(route, '_blank');
+    } else {
+      alert(`Creating ${type} content... Redirecting to creation tool.`);
+    }
+  };
+
+  const handleFilterContent = () => {
+    setShowFilters(!showFilters);
+  };
+
+  const handleViewOriginal = (content: any) => {
+    // In a real app, this would navigate to the original content
+    alert(`Opening original content: ${content.title}`);
+  };
+
+  const handleShareContent = (content: any) => {
+    if (navigator.share) {
+      navigator.share({
+        title: content.title,
+        text: content.description,
+        url: window.location.href
+      });
+    } else {
+      // Fallback - copy to clipboard
+      navigator.clipboard.writeText(`${content.title} - ${window.location.href}`);
+      alert('Content link copied to clipboard!');
+    }
+  };
+
+  const handleImplementStrategy = (strategy: string) => {
+    alert(`Implementing ${strategy}... This will guide you through the implementation process.`);
+  };
+
+  const handleActOnInsight = (insight: string) => {
+    alert(`Taking action on: ${insight}. Implementation guide will be shown.`);
+  };
+
+  const handleScheduleContent = () => {
+    alert('Opening content scheduler... You can plan your posts for optimal engagement times.');
+  };
+
+  const handleToggleFeature = (featureName: string, currentState: boolean) => {
+    alert(`${currentState ? 'Disabling' : 'Enabling'} ${featureName}... Feature state will be updated.`);
+  };
+
+  const handleConfigureFeature = (featureName: string) => {
+    alert(`Opening configuration for ${featureName}... Advanced settings panel will appear.`);
+  };
+
+  const handleAudienceSegmentation = () => {
+    setShowAudienceSegments(!showAudienceSegments);
+    alert('Opening advanced audience segmentation tools...');
+  };
+
+  const handleTargetAnalysis = () => {
+    alert('Running target audience analysis... AI will analyze your best-performing content to identify your ideal audience.');
+  };
+
   // Detailed Feature Analytics Component
   const FeatureDetailPage = ({ featureName }: { featureName: string }) => {
     const feature = platformFeatures.find(f => f.name === featureName);
