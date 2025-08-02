@@ -9,14 +9,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 import { Progress } from '../ui/progress';
-import { 
-  Search, 
-  Gavel, 
-  Scale, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  AlertTriangle, 
+import {
+  Search,
+  Gavel,
+  Scale,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
   FileText,
   Eye,
   User,
@@ -32,7 +32,9 @@ import {
   Star,
   Flag,
   Shield,
-  Send
+  Send,
+  ShoppingCart,
+  CreditCard
 } from 'lucide-react';
 import { Alert, AlertDescription } from '../ui/alert';
 
