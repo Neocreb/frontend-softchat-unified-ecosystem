@@ -48,6 +48,7 @@ import { MediaUploadModal } from "@/components/feed/MediaUploadModal";
 import { FeelingLocationModal } from "@/components/feed/FeelingLocationModal";
 import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
 import { EnhancedStoryCreation } from "@/components/feed/EnhancedStoryCreation";
+import SocialCommerceWidget from "@/components/feed/SocialCommerceWidget";
 import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
