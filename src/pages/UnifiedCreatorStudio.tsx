@@ -95,7 +95,6 @@ import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { unifiedAnalyticsService, type PlatformMetrics } from "@/services/unifiedAnalyticsService";
 import { mobileOptimization, responsiveModal, responsiveCharts } from "@/utils/mobileOptimization";
-import { MobileResponsiveWrapper } from "@/components/shared/MobileResponsiveWrapper";
 
 interface FeatureToggle {
   social: boolean;
