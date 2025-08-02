@@ -265,10 +265,102 @@ const EnhancedCreatorDashboard: React.FC = () => {
   ];
 
   const topPerformingContent = [
-    { title: "Crypto Trading Tutorial", type: "Video", views: "45.2K", engagement: "12.4%", revenue: "$234" },
-    { title: "Digital Art Masterpiece", type: "Product", views: "23.1K", engagement: "8.7%", revenue: "$450" },
-    { title: "Web Development Guide", type: "Post", views: "18.9K", engagement: "15.2%", revenue: "$89" },
-    { title: "Live Q&A Session", type: "Stream", views: "12.7K", engagement: "23.1%", revenue: "$156" },
+    {
+      id: 1,
+      title: "Crypto Trading Tutorial",
+      type: "Video",
+      views: "45.2K",
+      engagement: "12.4%",
+      revenue: "$234",
+      description: "Complete beginner's guide to cryptocurrency trading with practical examples",
+      duration: "15:32",
+      likes: "3.2K",
+      comments: "567",
+      shares: "234",
+      publishDate: "2024-01-15",
+      platform: "Video Content",
+      thumbnail: "/api/placeholder/300/200",
+      analytics: {
+        watchTime: "92%",
+        clickThrough: "8.5%",
+        retention: "78%",
+        topCountries: ["US", "UK", "Canada"],
+        ageGroups: { "18-24": 35, "25-34": 40, "35-44": 20, "45+": 5 },
+        trafficSources: { "Search": 45, "Direct": 30, "Social": 25 }
+      }
+    },
+    {
+      id: 2,
+      title: "Digital Art Masterpiece",
+      type: "Product",
+      views: "23.1K",
+      engagement: "8.7%",
+      revenue: "$450",
+      description: "Exclusive NFT collection featuring abstract digital artwork",
+      price: "$45",
+      sales: 10,
+      rating: 4.9,
+      reviews: 23,
+      publishDate: "2024-01-10",
+      platform: "Marketplace",
+      thumbnail: "/api/placeholder/300/200",
+      analytics: {
+        conversionRate: "3.2%",
+        cartAdds: "156",
+        wishlistAdds: "89",
+        topBuyers: ["Premium Users", "Art Collectors"],
+        salesTrend: [5, 8, 12, 10, 15, 18, 10],
+        refundRate: "2%"
+      }
+    },
+    {
+      id: 3,
+      title: "Web Development Guide",
+      type: "Post",
+      views: "18.9K",
+      engagement: "15.2%",
+      revenue: "$89",
+      description: "Step-by-step tutorial for building responsive websites with modern frameworks",
+      readTime: "8 min",
+      likes: "2.8K",
+      comments: "412",
+      shares: "189",
+      publishDate: "2024-01-12",
+      platform: "Feed & Social",
+      thumbnail: "/api/placeholder/300/200",
+      analytics: {
+        avgReadTime: "6:32",
+        bounceRate: "25%",
+        shares: "189",
+        saves: "456",
+        demographics: { "Male": 65, "Female": 35 },
+        topReferrers: ["Google", "Twitter", "LinkedIn"]
+      }
+    },
+    {
+      id: 4,
+      title: "Live Q&A Session",
+      type: "Stream",
+      views: "12.7K",
+      engagement: "23.1%",
+      revenue: "$156",
+      description: "Interactive live session answering community questions about freelancing",
+      duration: "2:45:00",
+      peakViewers: "1,247",
+      totalMessages: "8,934",
+      superChats: "$156",
+      publishDate: "2024-01-18",
+      platform: "Live Streaming",
+      thumbnail: "/api/placeholder/300/200",
+      analytics: {
+        avgViewDuration: "45 min",
+        chatEngagement: "78%",
+        donations: "$89",
+        newFollowers: "234",
+        repeatViewers: "45%",
+        peakTime: "8:30 PM"
+      }
+    },
   ];
 
   const formatNumber = (num: number): string => {
