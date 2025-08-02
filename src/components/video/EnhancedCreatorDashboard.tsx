@@ -759,6 +759,9 @@ const EnhancedCreatorDashboard: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {selectedFeature ? (
+          <FeatureDetailPage featureName={selectedFeature} />
+        ) : (
         <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
           <div className="w-full overflow-x-auto pb-2">
             <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
@@ -1096,6 +1099,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
             </div>
           </TabsContent>
         </Tabs>
+        )}
       </div>
     </div>
   );
