@@ -2642,7 +2642,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   </p>
                   <div className="flex items-center justify-between">
                     <Badge variant="default" className="bg-purple-100 text-purple-800">High Impact</Badge>
-                    <Button size="sm" variant="outline">Implement</Button>
+                    <Button size="sm" variant="outline" onClick={() => handleImplementStrategy("Revenue Boost")}>Implement</Button>
                   </div>
                 </CardContent>
               </Card>
