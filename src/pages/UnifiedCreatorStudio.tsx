@@ -94,7 +94,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
 import { unifiedAnalyticsService, type PlatformMetrics } from "@/services/unifiedAnalyticsService";
-import { mobileOptimization, responsiveModal, responsiveCharts } from "@/utils/mobileOptimization";
+import {
+  isMobileDevice,
+  getResponsiveClass,
+  responsiveModal,
+  responsiveCharts,
+  touchTarget
+} from "@/utils/mobileOptimization";
 
 interface FeatureToggle {
   social: boolean;
