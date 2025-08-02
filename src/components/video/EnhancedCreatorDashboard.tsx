@@ -314,6 +314,287 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
   const totalGrowth = platformFeatures.reduce((sum, feature) => sum + feature.growth, 0) / platformFeatures.length;
 
+  // Detailed Feature Analytics Component
+  const FeatureDetailPage = ({ featureName }: { featureName: string }) => {
+    const feature = platformFeatures.find(f => f.name === featureName);
+    if (!feature) return null;
+
+    const Icon = feature.icon;
+
+    // Generate additional detailed metrics for the subpage
+    const detailedMetrics = {
+      "Feed & Social": [
+        { category: "Content Performance", metrics: [
+          { name: "Total Posts", value: "1,247", change: "+18.2%", trend: "up", description: "Posts published this period" },
+          { name: "Viral Posts", value: "23", change: "+45.7%", trend: "up", description: "Posts with >10K engagement" },
+          { name: "Average Likes", value: "892", change: "+12.3%", trend: "up", description: "Per post engagement" },
+          { name: "Comment Rate", value: "4.2%", change: "+8.9%", trend: "up", description: "Comments per view" },
+        ]},
+        { category: "Audience Growth", metrics: [
+          { name: "New Followers", value: "2,341", change: "+25.4%", trend: "up", description: "This month" },
+          { name: "Follower Growth Rate", value: "15.7%", change: "+3.2%", trend: "up", description: "Monthly growth" },
+          { name: "Audience Retention", value: "87.3%", change: "+2.1%", trend: "up", description: "Active followers" },
+          { name: "Demographics Score", value: "92/100", change: "+5.0%", trend: "up", description: "Target audience match" },
+        ]},
+        { category: "Engagement Analytics", metrics: [
+          { name: "Engagement Rate", value: "8.4%", change: "+12.3%", trend: "up", description: "Overall engagement" },
+          { name: "Share Rate", value: "2.1%", change: "+18.7%", trend: "up", description: "Shares per post" },
+          { name: "Save Rate", value: "3.8%", change: "+22.1%", trend: "up", description: "Saves per post" },
+          { name: "Story Views", value: "45.2K", change: "+31.4%", trend: "up", description: "Story impressions" },
+        ]},
+      ],
+      "Video Content": [
+        { category: "Video Performance", metrics: [
+          { name: "Total Videos", value: "156", change: "+22.4%", trend: "up", description: "Videos created" },
+          { name: "Total Views", value: "2.1M", change: "+35.2%", trend: "up", description: "All-time views" },
+          { name: "Avg View Duration", value: "3:24", change: "+8.1%", trend: "up", description: "Average watch time" },
+          { name: "Completion Rate", value: "68.7%", change: "+12.5%", trend: "up", description: "Videos watched to end" },
+        ]},
+        { category: "Monetization", metrics: [
+          { name: "Ad Revenue", value: "$2,340", change: "+45.8%", trend: "up", description: "From video ads" },
+          { name: "Sponsorship Deals", value: "12", change: "+200%", trend: "up", description: "Brand partnerships" },
+          { name: "Tips Received", value: "$567", change: "+78.9%", trend: "up", description: "Viewer tips" },
+          { name: "RPM", value: "$1.12", change: "+23.4%", trend: "up", description: "Revenue per mile" },
+        ]},
+        { category: "Audience Insights", metrics: [
+          { name: "Subscribers", value: "89.2K", change: "+28.7%", trend: "up", description: "Video subscribers" },
+          { name: "Notification Rate", value: "23.4%", change: "+5.6%", trend: "up", description: "Bell icon clicks" },
+          { name: "Repeat Viewers", value: "45.8%", change: "+18.2%", trend: "up", description: "Return audience" },
+          { name: "Peak Concurrent", value: "1,847", change: "+67.3%", trend: "up", description: "Live stream peak" },
+        ]},
+      ],
+      "Marketplace": [
+        { category: "Sales Performance", metrics: [
+          { name: "Products Sold", value: "389", change: "+52.1%", trend: "up", description: "Units sold this period" },
+          { name: "Total Revenue", value: "$12,450", change: "+38.7%", trend: "up", description: "Gross sales revenue" },
+          { name: "Conversion Rate", value: "3.2%", change: "+15.4%", trend: "up", description: "Visitors to buyers" },
+          { name: "Avg Order Value", value: "$32", change: "+8.9%", trend: "up", description: "Per transaction" },
+        ]},
+        { category: "Product Analytics", metrics: [
+          { name: "Active Listings", value: "47", change: "+12.8%", trend: "up", description: "Live products" },
+          { name: "Product Views", value: "45.2K", change: "+28.4%", trend: "up", description: "Product page visits" },
+          { name: "Wishlist Adds", value: "1,234", change: "+67.8%", trend: "up", description: "Items saved" },
+          { name: "Cart Abandonment", value: "23.4%", change: "-8.9%", trend: "down", description: "Checkout dropoff" },
+        ]},
+        { category: "Customer Metrics", metrics: [
+          { name: "New Customers", value: "156", change: "+34.5%", trend: "up", description: "First-time buyers" },
+          { name: "Repeat Customers", value: "89", change: "+45.2%", trend: "up", description: "Return buyers" },
+          { name: "Customer Rating", value: "4.8/5", change: "+2.1%", trend: "up", description: "Average rating" },
+          { name: "Return Rate", value: "2.1%", change: "-12.3%", trend: "down", description: "Product returns" },
+        ]},
+      ],
+      "Freelance": [
+        { category: "Project Performance", metrics: [
+          { name: "Projects Completed", value: "47", change: "+31.2%", trend: "up", description: "Finished projects" },
+          { name: "Active Projects", value: "8", change: "+60.0%", trend: "up", description: "In progress" },
+          { name: "Project Success Rate", value: "95.7%", change: "+3.2%", trend: "up", description: "Successful completion" },
+          { name: "Avg Project Value", value: "$890", change: "+25.3%", trend: "up", description: "Per project earning" },
+        ]},
+        { category: "Client Relations", metrics: [
+          { name: "Client Rating", value: "4.9/5", change: "+2.1%", trend: "up", description: "Average client rating" },
+          { name: "Repeat Clients", value: "67%", change: "+15.4%", trend: "up", description: "Return customers" },
+          { name: "Response Time", value: "2.1h", change: "-12.4%", trend: "down", description: "Avg response time" },
+          { name: "Communication Score", value: "98/100", change: "+5.2%", trend: "up", description: "Client feedback" },
+        ]},
+        { category: "Skills & Growth", metrics: [
+          { name: "Skill Endorsements", value: "234", change: "+45.8%", trend: "up", description: "LinkedIn endorsements" },
+          { name: "Portfolio Views", value: "2,340", change: "+67.2%", trend: "up", description: "Profile visits" },
+          { name: "Proposal Win Rate", value: "23.4%", change: "+8.9%", trend: "up", description: "Proposals accepted" },
+          { name: "Hourly Rate", value: "$45", change: "+12.5%", trend: "up", description: "Current rate" },
+        ]},
+      ],
+      "Crypto Trading": [
+        { category: "Portfolio Performance", metrics: [
+          { name: "Portfolio Value", value: "$24,567", change: "+22.8%", trend: "up", description: "Total portfolio worth" },
+          { name: "Total P&L", value: "+$3,456", change: "+145%", trend: "up", description: "Profit/Loss this period" },
+          { name: "Best Performing", value: "ETH +45%", change: "+45.2%", trend: "up", description: "Top asset gain" },
+          { name: "Portfolio Diversity", value: "12 assets", change: "+20.0%", trend: "up", description: "Different cryptocurrencies" },
+        ]},
+        { category: "Trading Analytics", metrics: [
+          { name: "Total Trades", value: "234", change: "+56.7%", trend: "up", description: "Executed trades" },
+          { name: "Win Rate", value: "72%", change: "+8.3%", trend: "up", description: "Profitable trades" },
+          { name: "Avg Profit", value: "$156", change: "+23.4%", trend: "up", description: "Per winning trade" },
+          { name: "Trading Volume", value: "$156K", change: "+45.1%", trend: "up", description: "Total volume traded" },
+        ]},
+        { category: "Risk Management", metrics: [
+          { name: "Risk Score", value: "Medium", change: "Stable", trend: "neutral", description: "Portfolio risk level" },
+          { name: "Stop Loss Hit", value: "15%", change: "-5.2%", trend: "down", description: "Stop losses triggered" },
+          { name: "Max Drawdown", value: "8.4%", change: "-12.1%", trend: "down", description: "Largest portfolio drop" },
+          { name: "Sharpe Ratio", value: "1.89", change: "+15.6%", trend: "up", description: "Risk-adjusted return" },
+        ]},
+      ],
+      "Messages & Chat": [
+        { category: "Communication Stats", metrics: [
+          { name: "Messages Sent", value: "2,341", change: "+15.6%", trend: "up", description: "Total messages sent" },
+          { name: "Messages Received", value: "3,456", change: "+23.4%", trend: "up", description: "Incoming messages" },
+          { name: "Active Chats", value: "89", change: "+12.8%", trend: "up", description: "Ongoing conversations" },
+          { name: "Group Chats", value: "23", change: "+35.7%", trend: "up", description: "Group conversations" },
+        ]},
+        { category: "Response Metrics", metrics: [
+          { name: "Response Rate", value: "94%", change: "+3.2%", trend: "up", description: "Messages responded to" },
+          { name: "Avg Response Time", value: "5min", change: "-8.1%", trend: "down", description: "Time to respond" },
+          { name: "Peak Hours", value: "2-6 PM", change: "Stable", trend: "neutral", description: "Most active time" },
+          { name: "Read Rate", value: "98.7%", change: "+1.4%", trend: "up", description: "Messages read" },
+        ]},
+        { category: "Engagement Quality", metrics: [
+          { name: "Video Calls", value: "67", change: "+89.3%", trend: "up", description: "Video calls made" },
+          { name: "Voice Messages", value: "234", change: "+45.2%", trend: "up", description: "Voice notes sent" },
+          { name: "Media Shared", value: "456", change: "+67.8%", trend: "up", description: "Photos/videos shared" },
+          { name: "Reaction Rate", value: "78%", change: "+12.5%", trend: "up", description: "Messages with reactions" },
+        ]},
+      ],
+      "Live Streaming": [
+        { category: "Stream Performance", metrics: [
+          { name: "Live Sessions", value: "23", change: "+83.2%", trend: "up", description: "Streams this period" },
+          { name: "Total Stream Time", value: "34.2h", change: "+28.9%", trend: "up", description: "Hours streamed" },
+          { name: "Peak Viewers", value: "1,247", change: "+45.7%", trend: "up", description: "Highest concurrent viewers" },
+          { name: "Avg Stream Duration", value: "1.5h", change: "+12.3%", trend: "up", description: "Average stream length" },
+        ]},
+        { category: "Monetization", metrics: [
+          { name: "Super Chats", value: "$445", change: "+92.1%", trend: "up", description: "Paid chat messages" },
+          { name: "Donations", value: "$234", change: "+156%", trend: "up", description: "Direct donations" },
+          { name: "Subscriber Revenue", value: "$567", change: "+78.4%", trend: "up", description: "From subscriptions" },
+          { name: "Sponsorship Revenue", value: "$890", change: "+234%", trend: "up", description: "Brand partnerships" },
+        ]},
+        { category: "Audience Engagement", metrics: [
+          { name: "Chat Messages", value: "12.3K", change: "+67.8%", trend: "up", description: "Chat interactions" },
+          { name: "New Followers", value: "567", change: "+89.2%", trend: "up", description: "From live streams" },
+          { name: "Stream Saves", value: "89", change: "+45.6%", trend: "up", description: "Streams saved by viewers" },
+          { name: "Clip Creation", value: "34", change: "+123%", trend: "up", description: "Viewer-created clips" },
+        ]},
+      ],
+      "Events & Calendar": [
+        { category: "Event Performance", metrics: [
+          { name: "Events Created", value: "12", change: "+50.0%", trend: "up", description: "Events organized" },
+          { name: "Total Attendees", value: "2,134", change: "+42.3%", trend: "up", description: "Across all events" },
+          { name: "Avg Attendance Rate", value: "78.5%", change: "+12.4%", trend: "up", description: "RSVP vs actual" },
+          { name: "Event Completion", value: "91.7%", change: "+8.3%", trend: "up", description: "Successfully completed" },
+        ]},
+        { category: "Revenue & Monetization", metrics: [
+          { name: "Event Revenue", value: "$3,240", change: "+67.8%", trend: "up", description: "Ticket sales" },
+          { name: "Avg Ticket Price", value: "$27", change: "+12.5%", trend: "up", description: "Per ticket" },
+          { name: "Premium Tickets", value: "234", change: "+89.7%", trend: "up", description: "VIP/Premium sales" },
+          { name: "Merchandise Sales", value: "$567", change: "+123%", trend: "up", description: "Event merchandise" },
+        ]},
+        { category: "Engagement & Feedback", metrics: [
+          { name: "Event Rating", value: "4.7/5", change: "+8.7%", trend: "up", description: "Average rating" },
+          { name: "Repeat Attendees", value: "45%", change: "+23.4%", trend: "up", description: "Return participants" },
+          { name: "Social Shares", value: "567", change: "+78.9%", trend: "up", description: "Event shares" },
+          { name: "Follow-up Engagement", value: "67%", change: "+34.2%", trend: "up", description: "Post-event interaction" },
+        ]},
+      ],
+    };
+
+    const currentDetailedMetrics = detailedMetrics[featureName as keyof typeof detailedMetrics] || [];
+
+    return (
+      <div className="space-y-6">
+        {/* Feature Header */}
+        <div className="flex items-center gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSelectedFeature(null)}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back to Overview
+          </Button>
+          <div className="flex items-center gap-3">
+            <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", feature.color)}>
+              <Icon className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{featureName} Analytics</h2>
+              <p className="text-gray-600 dark:text-gray-400">Detailed performance metrics and insights</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Stats for this feature */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {feature.metrics.map((metric, index) => {
+            const MetricIcon = metric.icon;
+            return (
+              <Card key={index} className="bg-gradient-to-r from-gray-50 to-white border">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <MetricIcon className={cn("w-6 h-6", metric.color)} />
+                    <div className="flex items-center gap-1 text-sm">
+                      {getTrendIcon(metric.trend)}
+                      <span className={cn(
+                        "font-medium",
+                        metric.trend === "up" ? "text-green-600" :
+                        metric.trend === "down" ? "text-red-600" : "text-gray-600"
+                      )}>
+                        {metric.change > 0 ? '+' : ''}{metric.change}%
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{metric.value}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{metric.title}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Detailed Analytics Categories */}
+        <div className="space-y-6">
+          {currentDetailedMetrics.map((category, categoryIndex) => (
+            <Card key={categoryIndex}>
+              <CardHeader>
+                <CardTitle className="text-lg">{category.category}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {category.metrics.map((metric, metricIndex) => (
+                    <div key={metricIndex} className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium text-gray-900 dark:text-white">{metric.name}</h4>
+                        <span className={cn(
+                          "text-sm font-medium",
+                          metric.trend === "up" ? "text-green-600" :
+                          metric.trend === "down" ? "text-red-600" : "text-gray-600"
+                        )}>
+                          {metric.change}
+                        </span>
+                      </div>
+                      <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                        {metric.value}
+                      </div>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">
+                        {metric.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-4">
+          <Button className="flex items-center gap-2">
+            <ExternalLink className="w-4 h-4" />
+            Open {featureName}
+          </Button>
+          <Button variant="outline" className="flex items-center gap-2">
+            <Download className="w-4 h-4" />
+            Export Data
+          </Button>
+          <Button variant="outline" className="flex items-center gap-2">
+            <Settings className="w-4 h-4" />
+            Configure
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
