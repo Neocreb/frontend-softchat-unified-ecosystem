@@ -2555,11 +2555,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">Smart recommendations and predictive analytics for growth</p>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Refresh Insights
+                <Button variant="outline" onClick={handleRefreshData} disabled={isRefreshing}>
+                  <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
+                  {isRefreshing ? 'Refreshing...' : 'Refresh Insights'}
                 </Button>
-                <Button>
+                <Button onClick={handleSetGoals}>
                   <Target className="w-4 h-4 mr-2" />
                   Set Goals
                 </Button>
