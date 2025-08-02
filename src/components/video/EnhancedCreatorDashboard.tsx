@@ -1654,11 +1654,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">Comprehensive performance analysis across all content types</p>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline">
+                <Button variant="outline" onClick={handleFilterContent}>
                   <Filter className="w-4 h-4 mr-2" />
                   Filter Content
                 </Button>
-                <Button>
+                <Button onClick={() => setShowCreateModal(true)}>
                   <Plus className="w-4 h-4 mr-2" />
                   Create Content
                 </Button>
