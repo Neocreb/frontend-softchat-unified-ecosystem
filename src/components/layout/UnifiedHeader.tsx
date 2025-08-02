@@ -656,7 +656,7 @@ const UnifiedHeader = ({
                 <Input
                   ref={searchRef}
                   type="search"
-                  placeholder="Search products, users, jobs..."
+                  placeholder="Search across all features - users, products, jobs, videos, crypto..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSearchOverlay(true)}
