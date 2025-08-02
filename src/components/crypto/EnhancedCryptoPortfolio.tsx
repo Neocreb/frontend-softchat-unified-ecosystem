@@ -281,44 +281,58 @@ function EnhancedCryptoPortfolioContent() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold">Portfolio Dashboard</h2>
-          <p className="text-gray-600">
-            Track your cryptocurrency investments and performance
-          </p>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold">Portfolio Dashboard</h2>
+            <p className="text-sm sm:text-base text-muted-foreground">
+              Track your cryptocurrency investments and performance
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <Button
+              variant="outline"
+              onClick={() => setShowValues(!showValues)}
+              size="sm"
+              className="flex-shrink-0"
+            >
+              {showValues ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={refreshPortfolio}
+              disabled={isRefreshing}
+              size="sm"
+              className="flex-shrink-0"
+            >
+              <RefreshCw
+                className={cn("h-4 w-4", isRefreshing && "animate-spin")}
+              />
+            </Button>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setShowValues(!showValues)}
-            size="sm"
-          >
-            {showValues ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={refreshPortfolio}
-            disabled={isRefreshing}
-            size="sm"
-          >
-            <RefreshCw
-              className={cn("h-4 w-4", isRefreshing && "animate-spin")}
-            />
-          </Button>
+        {/* Main Action Buttons - Mobile Responsive */}
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <Button
             onClick={() => setShowCryptoDepositModal(true)}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none sm:min-w-[140px]"
+            size="default"
           >
             <ArrowDownLeft className="h-4 w-4 mr-2" />
             Deposit Crypto
           </Button>
-          <Button onClick={() => setShowCryptoWithdrawModal(true)} variant="outline">
+          <Button
+            onClick={() => setShowCryptoWithdrawModal(true)}
+            variant="outline"
+            className="flex-1 sm:flex-none sm:min-w-[140px]"
+            size="default"
+          >
             <ArrowUpRight className="h-4 w-4 mr-2" />
             Withdraw Crypto
           </Button>
@@ -330,12 +344,11 @@ function EnhancedCryptoPortfolioContent() {
         onValueChange={setActiveTab}
         className="space-y-6"
       >
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="assets">Assets</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
-          <TabsTrigger value="tax">Tax Report</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -570,32 +583,12 @@ function EnhancedCryptoPortfolioContent() {
 
         {/* Assets Tab */}
         <TabsContent value="assets" className="space-y-6">
-          {/* Quick Actions Header */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h3 className="text-lg font-semibold">Your Crypto Assets</h3>
-              <p className="text-sm text-muted-foreground">
-                Manage your cryptocurrency holdings and perform quick actions
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={() => setShowCryptoDepositModal(true)}
-                size="sm"
-                className="bg-green-600 hover:bg-green-700"
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                Deposit
-              </Button>
-              <Button
-                onClick={() => setShowCryptoWithdrawModal(true)}
-                size="sm"
-                variant="outline"
-              >
-                <Minus className="h-4 w-4 mr-1" />
-                Withdraw
-              </Button>
-            </div>
+          {/* Assets Header */}
+          <div>
+            <h3 className="text-lg font-semibold">Your Crypto Assets</h3>
+            <p className="text-sm text-muted-foreground">
+              Manage your cryptocurrency holdings and perform quick actions
+            </p>
           </div>
 
           {/* Enhanced Assets Grid */}
@@ -914,129 +907,7 @@ function EnhancedCryptoPortfolioContent() {
           </Card>
         </TabsContent>
 
-        {/* Tax Report Tab */}
-        <TabsContent value="tax" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calculator className="h-5 w-5" />
-                Tax Reporting Tools
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Tax Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 border rounded-lg">
-                  <div className="text-sm text-gray-600">
-                    Total Realized Gains
-                  </div>
-                  <div className="text-xl font-bold text-green-600">
-                    {formatCurrency(2456.78)}
-                  </div>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <div className="text-sm text-gray-600">
-                    Total Realized Losses
-                  </div>
-                  <div className="text-xl font-bold text-red-600">
-                    {formatCurrency(567.23)}
-                  </div>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <div className="text-sm text-gray-600">Net Capital Gains</div>
-                  <div className="text-xl font-bold text-green-600">
-                    {formatCurrency(1889.55)}
-                  </div>
-                </div>
-              </div>
 
-              <Separator />
-
-              {/* Tax Actions */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Generate Reports</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Card className="p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <FileText className="h-8 w-8 text-blue-500" />
-                      <div>
-                        <h4 className="font-medium">8949 Form</h4>
-                        <p className="text-sm text-gray-600">
-                          Capital gains and losses report
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="outline" className="w-full">
-                      <Download className="h-4 w-4 mr-2" />
-                      Generate 8949
-                    </Button>
-                  </Card>
-
-                  <Card className="p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Calculator className="h-8 w-8 text-green-500" />
-                      <div>
-                        <h4 className="font-medium">Tax Summary</h4>
-                        <p className="text-sm text-gray-600">
-                          Complete tax overview
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="outline" className="w-full">
-                      <Download className="h-4 w-4 mr-2" />
-                      Generate Summary
-                    </Button>
-                  </Card>
-                </div>
-              </div>
-
-              <Separator />
-
-              {/* Tax Settings */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Settings</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Accounting Method</div>
-                      <div className="text-sm text-gray-600">
-                        FIFO (First In, First Out)
-                      </div>
-                    </div>
-                    <Select defaultValue="fifo">
-                      <SelectTrigger className="w-[200px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="fifo">FIFO</SelectItem>
-                        <SelectItem value="lifo">LIFO</SelectItem>
-                        <SelectItem value="specific">Specific ID</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-medium">Tax Year</div>
-                      <div className="text-sm text-gray-600">
-                        Current reporting year
-                      </div>
-                    </div>
-                    <Select defaultValue="2024">
-                      <SelectTrigger className="w-[200px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="2024">2024</SelectItem>
-                        <SelectItem value="2023">2023</SelectItem>
-                        <SelectItem value="2022">2022</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
       {/* Crypto Modals */}
