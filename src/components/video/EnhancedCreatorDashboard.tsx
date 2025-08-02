@@ -1264,7 +1264,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {topPerformingContent.map((content, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                        onClick={() => setSelectedContent(content)}
+                      >
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
