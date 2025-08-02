@@ -2180,7 +2180,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                         </div>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{tip.description}</p>
-                      <Button size="sm" variant="outline" className="w-full">
+                      <Button size="sm" variant="outline" className="w-full" onClick={() => handleImplementStrategy(tip.title)}>
                         Implement Strategy
                       </Button>
                     </div>
