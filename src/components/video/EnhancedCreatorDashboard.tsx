@@ -133,6 +133,14 @@ const EnhancedCreatorDashboard: React.FC = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [selectedContent, setSelectedContent] = useState<any | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showGoalModal, setShowGoalModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [filterType, setFilterType] = useState("all");
+  const [sortBy, setSortBy] = useState("recent");
+  const [showAudienceSegments, setShowAudienceSegments] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
