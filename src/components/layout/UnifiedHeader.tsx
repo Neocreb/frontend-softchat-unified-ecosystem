@@ -782,8 +782,12 @@ const UnifiedHeader = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setShowMobileSearch(true)}
+              onClick={() => {
+                // On mobile, navigate directly to global search for better UX
+                navigate('/app/global-search?source=mobile');
+              }}
               className="lg:hidden"
+              title="Search across all platform features"
             >
               <Search className="h-5 w-5" />
             </Button>
