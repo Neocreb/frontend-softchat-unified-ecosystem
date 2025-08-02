@@ -389,6 +389,7 @@ const AppRoutes = () => {
           <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
+          <Route path="unified-creator-studio" element={<UnifiedCreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
