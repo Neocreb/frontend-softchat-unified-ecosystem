@@ -44,8 +44,13 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
-      {/* Admin Sidebar */}
-      <AdminSidebar />
+      {/* Mobile Navigation */}
+      <MobileAdminNavigation />
+
+      {/* Desktop Admin Sidebar */}
+      <div className="hidden lg:block">
+        <AdminSidebar />
+      </div>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-h-screen">
@@ -54,13 +59,14 @@ const AdminLayout = () => {
           <Outlet />
         </main>
 
-        {/* Footer */}
+        {/* Enhanced Footer */}
         <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-6 py-4">
           <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-4">
-              <span>SoftChat Admin Panel v2.0</span>
+              <span>SoftChat Admin Panel v3.0</span>
               <span>•</span>
               <span>Logged in as: {currentAdmin.name}</span>
+              <AdminConnectionStatus />
             </div>
             <div className="flex items-center gap-4">
               <span>Roles: {currentAdmin.roles.join(", ")}</span>
@@ -70,6 +76,9 @@ const AdminLayout = () => {
           </div>
         </footer>
       </div>
+
+      {/* Mobile FAB */}
+      <MobileAdminFAB />
     </div>
   );
 };
