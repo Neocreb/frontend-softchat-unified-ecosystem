@@ -509,7 +509,10 @@ const UnifiedCreatorStudio: React.FC = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className={cn(
+                  "grid gap-3 sm:gap-4",
+                  getResponsiveGrid("grid-cols-1", "grid-cols-2", "grid-cols-4")
+                )}>
                   {platformMetrics.crossPlatform.insights.revenueDistribution.map((item, index) => (
                     <div
                       key={item.source}
