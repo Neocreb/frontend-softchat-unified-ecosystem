@@ -123,6 +123,15 @@ const UnifiedCreatorStudio: React.FC = () => {
     crossPlatform: true,
   });
 
+  // Mobile optimization hooks
+  const isMobile = mobileOptimization.isMobile();
+  const isTablet = mobileOptimization.isTablet();
+  const getResponsiveGrid = (base: string, md?: string, lg?: string) => {
+    if (isMobile) return "grid-cols-1";
+    if (isTablet && md) return md;
+    return lg || base;
+  };
+
   useEffect(() => {
     loadPlatformMetrics();
   }, [timeRange]);
