@@ -1319,7 +1319,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       place
                     </p>
                     <Button
-                      onClick={() => navigate("/app/creator-studio")}
+                      onClick={() => navigate("/app/unified-creator-studio")}
                       className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
                     >
                       <BarChart3 className="h-4 w-4 mr-2" />
