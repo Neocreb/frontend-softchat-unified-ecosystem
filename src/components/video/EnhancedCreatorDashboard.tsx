@@ -1860,39 +1860,39 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
             {/* Content Creation Tools */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCreateContent('video')}>
                 <CardContent className="p-6 text-center">
                   <Video className="w-12 h-12 text-red-500 mx-auto mb-3" />
                   <h3 className="font-semibold mb-2">Create Video</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Record or upload video content</p>
-                  <Button size="sm" className="w-full">Start Recording</Button>
+                  <Button size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); handleCreateContent('video'); }}>Start Recording</Button>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCreateContent('post')}>
                 <CardContent className="p-6 text-center">
                   <FileText className="w-12 h-12 text-blue-500 mx-auto mb-3" />
                   <h3 className="font-semibold mb-2">Write Post</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Create engaging social posts</p>
-                  <Button size="sm" className="w-full">Write Now</Button>
+                  <Button size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); handleCreateContent('post'); }}>Write Now</Button>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCreateContent('live')}>
                 <CardContent className="p-6 text-center">
                   <Radio className="w-12 h-12 text-pink-500 mx-auto mb-3" />
                   <h3 className="font-semibold mb-2">Go Live</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Start live streaming</p>
-                  <Button size="sm" className="w-full">Start Stream</Button>
+                  <Button size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); handleCreateContent('live'); }}>Start Stream</Button>
                 </CardContent>
               </Card>
 
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCreateContent('product')}>
                 <CardContent className="p-6 text-center">
                   <ShoppingBag className="w-12 h-12 text-green-500 mx-auto mb-3" />
                   <h3 className="font-semibold mb-2">List Product</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Add marketplace item</p>
-                  <Button size="sm" className="w-full">Create Listing</Button>
+                  <Button size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); handleCreateContent('product'); }}>Create Listing</Button>
                 </CardContent>
               </Card>
             </div>
