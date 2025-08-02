@@ -92,6 +92,18 @@ export default function EnhancedCrypto() {
     return () => clearInterval(interval);
   }, [selectedPair]);
 
+  // Listen for P2P navigation events from portfolio
+  useEffect(() => {
+    const handleNavigateToP2P = () => {
+      setActiveTab("p2p");
+    };
+
+    window.addEventListener('navigate-to-p2p', handleNavigateToP2P);
+    return () => {
+      window.removeEventListener('navigate-to-p2p', handleNavigateToP2P);
+    };
+  }, []);
+
   const loadCryptoData = async () => {
     setIsLoading(true);
     try {
