@@ -914,8 +914,940 @@ const UnifiedCreatorStudio: React.FC = () => {
             </TabsContent>
           )}
 
-          {/* Continue with other tabs... */}
-          {/* I'll create the remaining tabs in the next part */}
+          {/* Freelance Tab */}
+          {featureToggles.freelance && (
+            <TabsContent value="freelance" className="space-y-6">
+              {/* Freelance Metrics */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-green-700">
+                        Total Earnings
+                      </p>
+                      <DollarSign className="w-4 h-4 text-green-600" />
+                    </div>
+                    <p className="text-2xl font-bold text-green-900">
+                      {formatNumber(platformMetrics.freelance.earnings.totalEarnings, "currency")}
+                    </p>
+                    <p className="text-xs text-green-600 mt-1">
+                      +{platformMetrics.freelance.earnings.earningsGrowth}% growth
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Projects Completed
+                      </p>
+                      <CheckCircle className="w-4 h-4 text-blue-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {formatNumber(platformMetrics.freelance.projects.completedProjects)}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {platformMetrics.freelance.projects.completionRate}% completion rate
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Hourly Rate
+                      </p>
+                      <Timer className="w-4 h-4 text-purple-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {formatNumber(platformMetrics.freelance.earnings.avgHourlyRate, "currency")}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      Average hourly rate
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Client Rating
+                      </p>
+                      <Star className="w-4 h-4 text-yellow-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {platformMetrics.freelance.clients.avgClientRating}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {formatNumber(platformMetrics.freelance.clients.totalClients)} clients
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Top Skills & Performance */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Award className="w-5 h-5 text-yellow-500" />
+                      Top Performing Skills
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {platformMetrics.freelance.projects.topSkills.map((skill, index) => (
+                        <div
+                          key={skill.skill}
+                          className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                        >
+                          <div className="text-sm font-medium text-gray-500 w-6">
+                            #{index + 1}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-medium text-sm mb-1">
+                              {skill.skill}
+                            </h4>
+                            <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                              <span>{skill.projects} projects</span>
+                              <span>{skill.avgRating} ⭐</span>
+                              <span>Demand: {skill.demand}%</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm font-medium">
+                              {formatNumber(skill.avgPrice, "currency")}
+                            </div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400">
+                              avg price
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Performance Metrics</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Overall Rating</span>
+                          <span className="font-medium">{platformMetrics.freelance.performance.overallRating}/5.0</span>
+                        </div>
+                        <Progress value={platformMetrics.freelance.performance.overallRating * 20} className="h-2" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>On-Time Delivery</span>
+                          <span className="font-medium">{platformMetrics.freelance.performance.deliveryTime}%</span>
+                        </div>
+                        <Progress value={platformMetrics.freelance.performance.deliveryTime} className="h-2" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Client Retention</span>
+                          <span className="font-medium">{platformMetrics.freelance.clients.clientRetention}%</span>
+                        </div>
+                        <Progress value={platformMetrics.freelance.clients.clientRetention} className="h-2" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Success Score</span>
+                          <span className="font-medium">{platformMetrics.freelance.performance.successScore}%</span>
+                        </div>
+                        <Progress value={platformMetrics.freelance.performance.successScore} className="h-2" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Client & Project Analytics */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Statistics</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Total Projects</span>
+                        <span className="font-medium">{platformMetrics.freelance.projects.totalProjects}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Active Projects</span>
+                        <span className="font-medium text-blue-600">{platformMetrics.freelance.projects.activeProjects}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Avg Project Value</span>
+                        <span className="font-medium">{formatNumber(platformMetrics.freelance.projects.avgProjectValue, "currency")}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Response Time</span>
+                        <span className="font-medium">{platformMetrics.freelance.performance.responseTime}h</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Client Analytics</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Total Clients</span>
+                        <span className="font-medium">{platformMetrics.freelance.clients.totalClients}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Repeat Clients</span>
+                        <span className="font-medium text-green-600">{platformMetrics.freelance.clients.repeatClients}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Client Satisfaction</span>
+                        <span className="font-medium">{platformMetrics.freelance.clients.clientSatisfaction}%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Client Growth</span>
+                        <span className="font-medium text-blue-600">+{platformMetrics.freelance.clients.clientGrowth}%</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Earnings Breakdown</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Monthly Recurring</span>
+                        <span className="font-medium">{formatNumber(platformMetrics.freelance.earnings.monthlyRecurring, "currency")}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Payment Success</span>
+                        <span className="font-medium text-green-600">{platformMetrics.freelance.earnings.paymentSuccess}%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Revision Rate</span>
+                        <span className="font-medium">{platformMetrics.freelance.performance.revisionRate}%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Dispute Rate</span>
+                        <span className="font-medium text-orange-600">{platformMetrics.freelance.performance.disputeRate}%</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Crypto Tab */}
+          {featureToggles.crypto && (
+            <TabsContent value="crypto" className="space-y-6">
+              {/* Crypto Metrics */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-orange-700">
+                        Portfolio Value
+                      </p>
+                      <Wallet className="w-4 h-4 text-orange-600" />
+                    </div>
+                    <p className="text-2xl font-bold text-orange-900">
+                      {formatNumber(platformMetrics.crypto.portfolio.totalValue, "currency")}
+                    </p>
+                    <p className="text-xs text-orange-600 mt-1">
+                      {platformMetrics.crypto.portfolio.totalPnL > 0 ? '+' : ''}{formatNumber(platformMetrics.crypto.portfolio.totalPnL, "currency")} P&L
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Trading Win Rate
+                      </p>
+                      <CandlestickChart className="w-4 h-4 text-green-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {platformMetrics.crypto.trading.winRate}%
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {formatNumber(platformMetrics.crypto.trading.totalTrades)} total trades
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        P2P Rating
+                      </p>
+                      <Handshake className="w-4 h-4 text-blue-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {platformMetrics.crypto.p2p.userRating}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {formatNumber(platformMetrics.crypto.p2p.totalP2PTrades)} P2P trades
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Staking APY
+                      </p>
+                      <Coins className="w-4 h-4 text-purple-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {platformMetrics.crypto.staking.avgAPY}%
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {formatNumber(platformMetrics.crypto.staking.totalStaked, "currency")} staked
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Portfolio Performance */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-green-500" />
+                      Best Performing Assets
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {platformMetrics.crypto.portfolio.bestPerforming.map((coin, index) => (
+                        <div
+                          key={coin.symbol}
+                          className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                        >
+                          <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center">
+                            <span className="text-xs font-bold text-orange-600">{coin.symbol}</span>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-medium text-sm mb-1">
+                              {coin.name}
+                            </h4>
+                            <div className="text-xs text-gray-600 dark:text-gray-400">
+                              {coin.holdings} {coin.symbol}
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm font-medium">
+                              {formatNumber(coin.value, "currency")}
+                            </div>
+                            <div className="text-xs text-green-600">
+                              +{coin.pnlPercentage}%
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Trading Analytics</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                          <div className="text-sm text-green-600 dark:text-green-400">Avg Profit</div>
+                          <div className="text-lg font-bold text-green-700 dark:text-green-300">
+                            {formatNumber(platformMetrics.crypto.trading.avgProfit, "currency")}
+                          </div>
+                        </div>
+                        <div className="text-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                          <div className="text-sm text-red-600 dark:text-red-400">Avg Loss</div>
+                          <div className="text-lg font-bold text-red-700 dark:text-red-300">
+                            {formatNumber(platformMetrics.crypto.trading.avgLoss, "currency")}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Total Volume</span>
+                          <span className="font-medium">{formatNumber(platformMetrics.crypto.trading.totalVolume, "currency")}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Trading Frequency</span>
+                          <span className="font-medium">{platformMetrics.crypto.trading.tradingFrequency}/week</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Risk Score</span>
+                          <span className="font-medium">{platformMetrics.crypto.portfolio.riskScore}/100</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Diversification</span>
+                          <span className="font-medium">{platformMetrics.crypto.portfolio.diversificationScore}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* P2P & Staking */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Handshake className="w-5 h-5 text-blue-500" />
+                      P2P Trading
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Completion Rate</span>
+                        <span className="text-lg font-bold text-green-600">{platformMetrics.crypto.p2p.completionRate}%</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Trust Score</span>
+                        <span className="text-lg font-bold">{platformMetrics.crypto.p2p.trustScore}/100</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Avg Trade Time</span>
+                        <span className="text-lg font-bold">{platformMetrics.crypto.p2p.avgTradeTime}min</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Total P2P Volume</span>
+                        <span className="text-lg font-bold">{formatNumber(platformMetrics.crypto.p2p.totalP2PVolume, "currency")}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Coins className="w-5 h-5 text-purple-500" />
+                      Staking Rewards
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg">
+                        <div className="text-sm text-purple-600 dark:text-purple-400 mb-1">Total Rewards</div>
+                        <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
+                          {formatNumber(platformMetrics.crypto.staking.stakingRewards, "currency")}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Average APY</span>
+                          <span className="font-medium">{platformMetrics.crypto.staking.avgAPY}%</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Staking Duration</span>
+                          <span className="font-medium">{platformMetrics.crypto.staking.stakingDuration} days</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Total Transactions</span>
+                          <span className="font-medium">{formatNumber(platformMetrics.crypto.transactions.totalTransactions)}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Avg Transaction Fee</span>
+                          <span className="font-medium">{formatNumber(platformMetrics.crypto.transactions.avgFees, "currency")}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+          )}
+
+          {/* Creator Economy Tab */}
+          {featureToggles.creatorEconomy && (
+            <TabsContent value="creator" className="space-y-6">
+              {/* Creator Economy Metrics */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-purple-700">
+                        Total Revenue
+                      </p>
+                      <Crown className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <p className="text-2xl font-bold text-purple-900">
+                      {formatNumber(platformMetrics.creatorEconomy.revenue.totalRevenue, "currency")}
+                    </p>
+                    <p className="text-xs text-purple-600 mt-1">
+                      Creator earnings
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Tips Received
+                      </p>
+                      <Gift className="w-4 h-4 text-pink-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {formatNumber(platformMetrics.creatorEconomy.revenue.tipsReceived, "currency")}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {formatNumber(platformMetrics.creatorEconomy.monetization.tipsCount)} tips
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Subscribers
+                      </p>
+                      <Users className="w-4 h-4 text-blue-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {formatNumber(platformMetrics.creatorEconomy.monetization.subscriptionCount)}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {formatNumber(platformMetrics.creatorEconomy.revenue.subscriptionRevenue, "currency")} revenue
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        Creator Score
+                      </p>
+                      <Star className="w-4 h-4 text-yellow-500" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      {platformMetrics.creatorEconomy.creator.creatorScore}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      Performance rating
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Revenue Streams */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-purple-500" />
+                    Revenue Streams
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[
+                      { name: 'Tips', amount: platformMetrics.creatorEconomy.revenue.tipsReceived, icon: Gift, color: 'text-pink-500' },
+                      { name: 'Subscriptions', amount: platformMetrics.creatorEconomy.revenue.subscriptionRevenue, icon: Users, color: 'text-blue-500' },
+                      { name: 'Ad Revenue', amount: platformMetrics.creatorEconomy.revenue.adRevenue, icon: Eye, color: 'text-green-500' },
+                      { name: 'Sponsorships', amount: platformMetrics.creatorEconomy.revenue.sponsorshipDeals, icon: Handshake, color: 'text-purple-500' },
+                    ].map((stream) => {
+                      const Icon = stream.icon;
+                      return (
+                        <div
+                          key={stream.name}
+                          className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-center"
+                        >
+                          <Icon className={cn("w-8 h-8 mx-auto mb-2", stream.color)} />
+                          <div className="text-xl font-bold">{formatNumber(stream.amount, "currency")}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">{stream.name}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Creator Analytics */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Content Performance</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Content Created</span>
+                        <span className="text-lg font-bold">{platformMetrics.creatorEconomy.creator.contentCreated}</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Monetized Content</span>
+                        <span className="text-lg font-bold text-green-600">{platformMetrics.creatorEconomy.creator.monetizedContent}</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Fanbase</span>
+                        <span className="text-lg font-bold">{formatNumber(platformMetrics.creatorEconomy.creator.fanbase)}</span>
+                      </div>
+                      <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <span className="text-sm font-medium">Superfans</span>
+                        <span className="text-lg font-bold text-purple-600">{formatNumber(platformMetrics.creatorEconomy.creator.superfans)}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Monetization Metrics</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Conversion Rate</span>
+                          <span className="font-medium">{platformMetrics.creatorEconomy.monetization.conversionRate}%</span>
+                        </div>
+                        <Progress value={platformMetrics.creatorEconomy.monetization.conversionRate} className="h-2" />
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Avg Tip Amount</span>
+                        <span className="font-medium">{formatNumber(platformMetrics.creatorEconomy.monetization.avgTipAmount, "currency")}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Avg Subscription Value</span>
+                        <span className="font-medium">{formatNumber(platformMetrics.creatorEconomy.monetization.avgSubscriptionValue, "currency")}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Churn Rate</span>
+                        <span className="font-medium text-orange-600">{platformMetrics.creatorEconomy.monetization.churRate}%</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Activity & Rewards</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="text-center p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 rounded-lg">
+                        <div className="text-sm text-yellow-600 dark:text-yellow-400 mb-1">Reward Points</div>
+                        <div className="text-2xl font-bold text-yellow-700 dark:text-yellow-300">
+                          {formatNumber(platformMetrics.creatorEconomy.activity.rewardPoints)}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Activity Streak</span>
+                          <span className="font-medium">{platformMetrics.creatorEconomy.activity.activityStreak} days</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Level Progress</span>
+                          <span className="font-medium">{platformMetrics.creatorEconomy.activity.levelProgress}%</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Achievements</span>
+                          <span className="font-medium">{platformMetrics.creatorEconomy.activity.achievements}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Referral Earnings</span>
+                          <span className="font-medium text-green-600">{formatNumber(platformMetrics.creatorEconomy.activity.referralEarnings, "currency")}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Partnerships */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Handshake className="w-5 h-5 text-blue-500" />
+                    Brand Partnerships
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="text-2xl font-bold text-blue-600">{platformMetrics.creatorEconomy.partnerships.activePartnerships}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Active</div>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">{platformMetrics.creatorEconomy.partnerships.completedDeals}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Completed</div>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="text-2xl font-bold">{formatNumber(platformMetrics.creatorEconomy.partnerships.avgDealValue, "currency")}</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Avg Deal</div>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="text-2xl font-bold text-purple-600">{platformMetrics.creatorEconomy.partnerships.partnershipSuccess}%</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Success Rate</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {/* Cross-Platform Insights Tab */}
+          {featureToggles.crossPlatform && (
+            <TabsContent value="insights" className="space-y-6">
+              {/* AI Insights & Predictions */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Brain className="w-5 h-5 text-purple-500" />
+                    AI-Powered Insights & Predictions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-3">Revenue Forecasts</h4>
+                      <div className="space-y-3">
+                        {platformMetrics.crossPlatform.predictions.revenueForecasts.map((forecast, index) => (
+                          <div
+                            key={index}
+                            className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg"
+                          >
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="font-medium">{forecast.period}</span>
+                              <span className="text-lg font-bold text-blue-600">
+                                {formatNumber(forecast.predictedRevenue, "currency")}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <Progress value={forecast.confidence} className="flex-1 h-1" />
+                              <span className="text-gray-600 dark:text-gray-400">{forecast.confidence}% confidence</span>
+                            </div>
+                            <div className="mt-2">
+                              <div className="text-xs text-gray-600 dark:text-gray-400">Key factors:</div>
+                              <div className="text-xs text-gray-500 dark:text-gray-500">
+                                {forecast.factors.join(', ')}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium mb-3">Growth Opportunities</h4>
+                      <div className="space-y-3">
+                        {platformMetrics.crossPlatform.predictions.opportunities.map((opportunity, index) => (
+                          <div
+                            key={index}
+                            className="p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg"
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <h5 className="font-medium">{opportunity.opportunity}</h5>
+                              <Badge
+                                variant="secondary"
+                                className={cn(
+                                  "text-xs",
+                                  opportunity.priority > 80 && "bg-red-100 text-red-800",
+                                  opportunity.priority > 60 && opportunity.priority <= 80 && "bg-yellow-100 text-yellow-800",
+                                  opportunity.priority <= 60 && "bg-green-100 text-green-800"
+                                )}
+                              >
+                                Priority: {opportunity.priority}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                              {opportunity.description}
+                            </p>
+                            <div className="flex justify-between text-xs">
+                              <span>Potential: {opportunity.potential}%</span>
+                              <span>Effort: {opportunity.effort}%</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Cross-Platform Performance */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Top Performing Platform</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-center p-6">
+                      <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Heart className="w-8 h-8 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">
+                        {platformMetrics.crossPlatform.insights.topPerformingFeature}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">
+                        Your highest performing platform this month
+                      </p>
+                      <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+                        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <div className="font-bold text-lg">{formatNumber(platformMetrics.social.engagement.totalEngagements)}</div>
+                          <div className="text-gray-600 dark:text-gray-400">Engagements</div>
+                        </div>
+                        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <div className="font-bold text-lg">{platformMetrics.social.engagement.engagementRate}%</div>
+                          <div className="text-gray-600 dark:text-gray-400">Rate</div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Platform Comparison</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {[
+                        { name: 'Social Media', value: 89, revenue: 35240, color: 'bg-pink-500' },
+                        { name: 'E-commerce', value: 78, revenue: 125400, color: 'bg-blue-500' },
+                        { name: 'Freelance', value: 95, revenue: 72450, color: 'bg-green-500' },
+                        { name: 'Crypto', value: 67, revenue: 54834, color: 'bg-orange-500' },
+                      ].map((platform) => (
+                        <div key={platform.name} className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="font-medium">{platform.name}</span>
+                            <span className="text-gray-600 dark:text-gray-400">
+                              {formatNumber(platform.revenue, "currency")}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Progress value={platform.value} className="flex-1" />
+                            <span className="text-sm w-8">{platform.value}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Cross-Platform Recommendations */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Lightbulb className="w-5 h-5 text-yellow-500" />
+                    Smart Recommendations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[
+                      {
+                        title: "Cross-Platform Content Strategy",
+                        description: "Leverage your social media success to drive e-commerce sales by creating product showcase videos",
+                        impact: "High",
+                        difficulty: "Medium"
+                      },
+                      {
+                        title: "Crypto Payment Integration",
+                        description: "Enable crypto payments in your marketplace to tap into your crypto user base",
+                        impact: "Medium",
+                        difficulty: "Low"
+                      },
+                      {
+                        title: "Freelance Service Promotion",
+                        description: "Promote your freelance services through social content to increase project bookings",
+                        impact: "High",
+                        difficulty: "Low"
+                      }
+                    ].map((rec, index) => (
+                      <div
+                        key={index}
+                        className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow"
+                      >
+                        <h4 className="font-medium mb-2">{rec.title}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                          {rec.description}
+                        </p>
+                        <div className="flex gap-2">
+                          <Badge
+                            variant="secondary"
+                            className={cn(
+                              "text-xs",
+                              rec.impact === "High" && "bg-red-100 text-red-800",
+                              rec.impact === "Medium" && "bg-yellow-100 text-yellow-800"
+                            )}
+                          >
+                            {rec.impact} Impact
+                          </Badge>
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "text-xs",
+                              rec.difficulty === "Low" && "border-green-300 text-green-700",
+                              rec.difficulty === "Medium" && "border-yellow-300 text-yellow-700"
+                            )}
+                          >
+                            {rec.difficulty} Effort
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
+          {/* Compare Tab */}
+          <TabsContent value="compare" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-blue-500" />
+                  Cross-Platform Performance Comparison
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8 text-gray-500">
+                  <BarChart3 className="w-12 h-12 mx-auto mb-4" />
+                  <p className="text-lg font-medium mb-2">Advanced Comparison Tools</p>
+                  <p className="text-sm mb-4">
+                    Compare your performance across platforms, benchmark against industry standards, and identify optimization opportunities
+                  </p>
+                  <Button>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Set Up Comparisons
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
           
         </Tabs>
       </div>
