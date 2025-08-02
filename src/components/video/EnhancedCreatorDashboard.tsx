@@ -479,31 +479,31 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
-          <div className="w-full overflow-x-auto">
-            <TabsList className="grid grid-cols-4 lg:grid-cols-6 min-w-fit">
-              <TabsTrigger value="overview" className="flex items-center gap-2">
+          <div className="w-full overflow-x-auto pb-2">
+            <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
+              <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Eye className="w-4 h-4" />
-                <span className="hidden sm:inline">Overview</span>
+                <span>Overview</span>
               </TabsTrigger>
-              <TabsTrigger value="features" className="flex items-center gap-2">
+              <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Layers className="w-4 h-4" />
-                <span className="hidden sm:inline">Features</span>
+                <span>Features</span>
               </TabsTrigger>
-              <TabsTrigger value="content" className="flex items-center gap-2">
+              <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <FileText className="w-4 h-4" />
-                <span className="hidden sm:inline">Content</span>
+                <span>Content</span>
               </TabsTrigger>
-              <TabsTrigger value="revenue" className="flex items-center gap-2">
+              <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <DollarSign className="w-4 h-4" />
-                <span className="hidden sm:inline">Revenue</span>
+                <span>Revenue</span>
               </TabsTrigger>
-              <TabsTrigger value="audience" className="flex items-center gap-2">
+              <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">Audience</span>
+                <span>Audience</span>
               </TabsTrigger>
-              <TabsTrigger value="insights" className="flex items-center gap-2">
+              <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Insights</span>
+                <span>Insights</span>
               </TabsTrigger>
             </TabsList>
           </div>
