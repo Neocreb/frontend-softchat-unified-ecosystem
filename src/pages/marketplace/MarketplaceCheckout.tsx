@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
@@ -8,19 +7,23 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { 
-  ShoppingCart, 
-  ChevronLeft, 
-  CreditCard, 
-  CheckCircle, 
+import {
+  ShoppingCart,
+  ChevronLeft,
+  CreditCard,
+  CheckCircle,
   ArrowRight,
   Wallet,
   Banknote,
-  Package
+  Package,
+  Bitcoin,
+  Zap
 } from "lucide-react";
 import { useMarketplace } from "@/contexts/MarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import UniversalCryptoPaymentModal from "@/components/payments/UniversalCryptoPaymentModal";
+import { type PaymentRequest } from "@/services/unifiedCryptoPaymentService";
 
 const MarketplaceCheckout = () => {
   const { cart, getCartTotal, checkout } = useMarketplace();
@@ -29,6 +32,7 @@ const MarketplaceCheckout = () => {
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [showCryptoPayment, setShowCryptoPayment] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
     name: user?.user_metadata?.name || "",
     email: user?.email || "",
@@ -61,7 +65,7 @@ const MarketplaceCheckout = () => {
     // Validate shipping info
     const requiredFields = ['name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country'];
     const missingFields = requiredFields.filter(field => !shippingInfo[field as keyof typeof shippingInfo]);
-    
+
     if (missingFields.length > 0) {
       toast({
         title: "Missing Information",
@@ -70,7 +74,13 @@ const MarketplaceCheckout = () => {
       });
       return;
     }
-    
+
+    // Handle crypto payment
+    if (paymentMethod === 'crypto') {
+      setShowCryptoPayment(true);
+      return;
+    }
+
     setIsProcessing(true);
     
     try {
@@ -89,6 +99,45 @@ const MarketplaceCheckout = () => {
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleCryptoPaymentSuccess = async () => {
+    setShowCryptoPayment(false);
+    setIsProcessing(true);
+
+    try {
+      await checkout();
+      navigate('/app/marketplace');
+      toast({
+        title: "Order Placed Successfully",
+        description: "Thank you for your cryptocurrency purchase!",
+      });
+    } catch (error) {
+      toast({
+        title: "Order Processing Failed",
+        description: "Payment was successful but order processing failed. Please contact support.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const createCryptoPaymentRequest = (): PaymentRequest => {
+    return {
+      amount: total,
+      purpose: 'marketplace',
+      recipientId: 'marketplace',
+      metadata: {
+        cartItems: cart.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.product.price,
+        })),
+        shippingInfo,
+        orderId: 'order_' + Date.now(),
+      },
+    };
   };
   
   const subTotal = getCartTotal();
@@ -259,6 +308,17 @@ const MarketplaceCheckout = () => {
                     </Label>
                   </div>
                   
+                  <div className="flex items-center space-x-2 border rounded-md p-3 mb-3 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <RadioGroupItem value="crypto" id="payment-crypto" />
+                    <Label htmlFor="payment-crypto" className="flex items-center gap-2 cursor-pointer">
+                      <Bitcoin className="h-5 w-5 text-orange-500" />
+                      <div className="flex flex-col">
+                        <span>Cryptocurrency</span>
+                        <span className="text-xs text-muted-foreground">Pay with Bitcoin, Ethereum, USDT, or Solana</span>
+                      </div>
+                    </Label>
+                  </div>
+
                   <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-gray-50 transition-colors">
                     <RadioGroupItem value="cash" id="payment-cash" />
                     <Label htmlFor="payment-cash" className="flex items-center gap-2 cursor-pointer">
@@ -273,6 +333,23 @@ const MarketplaceCheckout = () => {
                     <p className="text-muted-foreground text-sm">
                       For demo purposes, no actual payment will be processed.
                     </p>
+                  </div>
+                )}
+
+                {paymentMethod === 'crypto' && (
+                  <div className="mt-4 border rounded-md p-4 bg-orange-50 border-orange-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Zap className="h-4 w-4 text-orange-600" />
+                      <span className="font-medium text-orange-800">Fast & Secure Crypto Payment</span>
+                    </div>
+                    <p className="text-orange-700 text-sm">
+                      Pay instantly with your crypto wallet. Transactions are secured by blockchain technology and typically confirm within minutes.
+                    </p>
+                    <div className="mt-2 text-sm text-orange-600">
+                      • No chargebacks or payment disputes
+                      • Lower transaction fees
+                      • Enhanced privacy protection
+                    </div>
                   </div>
                 )}
               </CardContent>
@@ -341,6 +418,11 @@ const MarketplaceCheckout = () => {
                       <Package className="h-4 w-4 animate-spin" />
                       Processing...
                     </>
+                  ) : paymentMethod === 'crypto' ? (
+                    <>
+                      <Bitcoin className="h-4 w-4" />
+                      Pay with Crypto
+                    </>
                   ) : (
                     <>
                       <CheckCircle className="h-4 w-4" />
@@ -357,6 +439,20 @@ const MarketplaceCheckout = () => {
           </div>
         </div>
       )}
+
+      {/* Crypto Payment Modal */}
+      <UniversalCryptoPaymentModal
+        isOpen={showCryptoPayment}
+        onClose={() => setShowCryptoPayment(false)}
+        paymentRequest={createCryptoPaymentRequest()}
+        onSuccess={handleCryptoPaymentSuccess}
+        onError={(error) => {
+          console.error('Crypto payment error:', error);
+          setShowCryptoPayment(false);
+        }}
+        title="Complete Your Purchase"
+        description="Pay for your marketplace order using cryptocurrency"
+      />
     </div>
   );
 };

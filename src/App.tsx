@@ -92,6 +92,7 @@ import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import CreatorStudio from "./pages/CreatorStudio";
+import UnifiedCreatorStudio from "./pages/UnifiedCreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
 import Explore from "./pages/Explore";
@@ -388,6 +389,7 @@ const AppRoutes = () => {
           <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
+          <Route path="unified-creator-studio" element={<UnifiedCreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />

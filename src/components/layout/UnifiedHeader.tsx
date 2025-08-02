@@ -84,6 +84,7 @@ import NotificationsDropdown from "./NotificationsDropdown";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { globalSearchService } from "@/services/globalSearchService";
 
 interface UnifiedHeaderProps {
   mobileMenuOpen?: boolean;
@@ -307,21 +308,13 @@ const UnifiedHeader = ({
     setIsSearching(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      // Use global search service for real API integration
+      const searchResponse = await globalSearchService.search({
+        query: searchQuery,
+        limit: 5, // Limit for header preview
+      });
 
-      const filteredResults = mockSearchResults.filter(
-        (result) =>
-          result.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          result.description
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          result.tags?.some((tag) =>
-            tag.toLowerCase().includes(searchQuery.toLowerCase()),
-          ),
-      );
-
-      setSearchResults(filteredResults);
+      setSearchResults(searchResponse.results);
       setShowSearchOverlay(true);
 
       // Save to recent searches
@@ -330,8 +323,23 @@ const UnifiedHeader = ({
         setRecentSearches(newRecent);
         localStorage.setItem("recent-searches", JSON.stringify(newRecent));
       }
+
+      // Track search analytics
+      await globalSearchService.trackSearch(searchQuery, searchResponse.totalCount);
     } catch (error) {
       console.error("Search failed:", error);
+
+      // Fallback to mock results if API fails
+      const filteredResults = mockSearchResults.filter(
+        (result) =>
+          result.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          result.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          result.tags?.some((tag) =>
+            tag.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
+      );
+      setSearchResults(filteredResults);
+      setShowSearchOverlay(true);
     } finally {
       setIsSearching(false);
     }
@@ -340,13 +348,23 @@ const UnifiedHeader = ({
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      // Navigate to global search with enhanced URL params
       navigate(
-        `/app/global-search?q=${encodeURIComponent(searchQuery.trim())}`,
+        `/app/global-search?q=${encodeURIComponent(searchQuery.trim())}&source=header`,
       );
       setSearchQuery("");
       setShowSearchOverlay(false);
       setShowMobileSearch(false);
     }
+  };
+
+  const handleQuickSearch = (query: string, type?: string) => {
+    const searchUrl = `/app/global-search?q=${encodeURIComponent(query)}`;
+    const typeParam = type ? `&type=${type}` : '';
+    navigate(searchUrl + typeParam + '&source=header');
+    setSearchQuery("");
+    setShowSearchOverlay(false);
+    setShowMobileSearch(false);
   };
 
   const handleResultSelect = (result: SearchResult) => {
@@ -638,7 +656,7 @@ const UnifiedHeader = ({
                 <Input
                   ref={searchRef}
                   type="search"
-                  placeholder="Search products, users, jobs..."
+                  placeholder="Search across all features - users, products, jobs, videos, crypto..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSearchOverlay(true)}
@@ -764,8 +782,12 @@ const UnifiedHeader = ({
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setShowMobileSearch(true)}
+              onClick={() => {
+                // On mobile, navigate directly to global search for better UX
+                navigate('/app/global-search?source=mobile');
+              }}
               className="lg:hidden"
+              title="Search across all platform features"
             >
               <Search className="h-5 w-5" />
             </Button>
