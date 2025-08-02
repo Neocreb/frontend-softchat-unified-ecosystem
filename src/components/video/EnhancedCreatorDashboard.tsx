@@ -1743,17 +1743,294 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
           {/* Revenue Tab */}
           <TabsContent value="revenue" className="space-y-6">
-            <div className="text-center py-12">
-              <DollarSign className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Revenue Analytics</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Comprehensive revenue tracking and forecasting
-              </p>
-              <Button>
-                <BarChart3 className="w-4 h-4 mr-2" />
-                View Revenue Dashboard
-              </Button>
+            {/* Revenue Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Revenue Analytics</h2>
+                <p className="text-gray-600 dark:text-gray-400">Comprehensive revenue tracking across all income streams</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Report
+                </Button>
+                <Button>
+                  <Target className="w-4 h-4 mr-2" />
+                  Set Goals
+                </Button>
+              </div>
             </div>
+
+            {/* Revenue Overview Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card className="bg-gradient-to-r from-green-50 to-emerald-100 border-green-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <DollarSign className="w-6 h-6 text-green-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+38.7%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-green-900">{formatCurrency(totalRevenue)}</p>
+                    <p className="text-sm text-green-700">Total Revenue</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <TrendingUp className="w-6 h-6 text-blue-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+24.3%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-blue-900">$8,234</p>
+                    <p className="text-sm text-blue-700">This Month</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <BarChart3 className="w-6 h-6 text-purple-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+15.8%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-purple-900">$267</p>
+                    <p className="text-sm text-purple-700">Avg Daily</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Target className="w-6 h-6 text-orange-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">87%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-orange-900">$12K</p>
+                    <p className="text-sm text-orange-700">Monthly Goal</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Revenue by Platform */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <PieChart className="w-5 h-5 text-blue-500" />
+                    Revenue by Platform
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { platform: "Marketplace", amount: 12450, percentage: 45, color: "bg-green-500", growth: "+52.1%" },
+                      { platform: "Freelance", amount: 8920, percentage: 32, color: "bg-orange-500", growth: "+31.2%" },
+                      { platform: "Video Content", amount: 3240, percentage: 12, color: "bg-red-500", growth: "+45.8%" },
+                      { platform: "Live Streaming", amount: 1890, percentage: 7, color: "bg-pink-500", growth: "+92.1%" },
+                      { platform: "Crypto Trading", amount: 1100, percentage: 4, color: "bg-yellow-500", growth: "+22.8%" },
+                    ].map((item, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between items-center text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className={cn("w-3 h-3 rounded-full", item.color)}></div>
+                            <span className="font-medium">{item.platform}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold">{formatCurrency(item.amount)}</span>
+                            <span className="text-green-600 text-xs">{item.growth}</span>
+                          </div>
+                        </div>
+                        <Progress value={item.percentage} className="h-2" />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-500" />
+                    Revenue Growth Trend
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { period: "Last 7 days", amount: 1890, change: "+23.4%", trend: "up" },
+                      { period: "Last 30 days", amount: 8234, change: "+38.7%", trend: "up" },
+                      { period: "Last 90 days", amount: 24567, change: "+45.2%", trend: "up" },
+                      { period: "Year to date", amount: 67890, change: "+67.8%", trend: "up" },
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div>
+                          <div className="font-medium">{item.period}</div>
+                          <div className="text-2xl font-bold">{formatCurrency(item.amount)}</div>
+                        </div>
+                        <div className="flex items-center gap-1 text-sm">
+                          <TrendingUp className="w-3 h-3 text-green-500" />
+                          <span className="text-green-600 font-medium">{item.change}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Revenue Forecasting */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-purple-500" />
+                  Revenue Forecasting & Goals
+                </CardTitle>
+                <CardDescription>AI-powered revenue predictions based on your performance trends</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-semibold">Next Month Prediction</h4>
+                    <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <div className="text-3xl font-bold text-blue-600">$9,450</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">+14.8% vs this month</div>
+                      <div className="mt-2">
+                        <Progress value={87} className="h-2" />
+                        <div className="text-xs text-gray-500 mt-1">87% confidence</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-semibold">Next Quarter Goal</h4>
+                    <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                      <div className="text-3xl font-bold text-green-600">$35K</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Target revenue</div>
+                      <div className="mt-2">
+                        <Progress value={68} className="h-2" />
+                        <div className="text-xs text-gray-500 mt-1">68% progress</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-semibold">Annual Projection</h4>
+                    <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <div className="text-3xl font-bold text-purple-600">$98K</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">Year-end estimate</div>
+                      <div className="mt-2">
+                        <Progress value={73} className="h-2" />
+                        <div className="text-xs text-gray-500 mt-1">On track</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Top Revenue Streams */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Crown className="w-5 h-5 text-yellow-500" />
+                  Top Revenue Generating Content
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {topPerformingContent.map((content, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="text-sm font-medium text-gray-500 w-6">#{index + 1}</div>
+                        <div>
+                          <h4 className="font-medium">{content.title}</h4>
+                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <Badge variant="outline" className="text-xs">{content.type}</Badge>
+                            <span>{content.views} views</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-green-600">{content.revenue}</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Revenue</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Revenue Optimization Tips */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-yellow-500" />
+                  Revenue Optimization Recommendations
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    {
+                      title: "Optimize Video Content",
+                      description: "Your videos have high engagement but low monetization. Consider adding sponsored segments.",
+                      impact: "High",
+                      effort: "Low"
+                    },
+                    {
+                      title: "Expand Marketplace",
+                      description: "Add premium product tiers to increase average order value by 35%.",
+                      impact: "High",
+                      effort: "Medium"
+                    },
+                    {
+                      title: "Leverage Live Streaming",
+                      description: "Your live streams generate 3x more revenue per viewer. Increase frequency.",
+                      impact: "Medium",
+                      effort: "Low"
+                    },
+                    {
+                      title: "Cross-Platform Promotion",
+                      description: "Promote high-value content across all platforms to maximize reach.",
+                      impact: "Medium",
+                      effort: "Low"
+                    }
+                  ].map((tip, index) => (
+                    <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium">{tip.title}</h4>
+                        <div className="flex gap-1">
+                          <Badge variant={tip.impact === "High" ? "default" : "secondary"} className="text-xs">
+                            {tip.impact} Impact
+                          </Badge>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{tip.description}</p>
+                      <Button size="sm" variant="outline" className="w-full">
+                        Implement Strategy
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Audience Tab */}
