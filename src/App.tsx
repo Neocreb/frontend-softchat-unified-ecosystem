@@ -487,6 +487,14 @@ const AppRoutes = () => {
       <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
       <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
       <Route path="/events" element={<Navigate to="/app/events" replace />} />
+      <Route
+        path="/creator-studio"
+        element={<Navigate to="/app/creator-studio" replace />}
+      />
+      <Route
+        path="/unified-creator-studio"
+        element={<Navigate to="/app/unified-creator-studio" replace />}
+      />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
