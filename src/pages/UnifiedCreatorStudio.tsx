@@ -129,8 +129,8 @@ const UnifiedCreatorStudio: React.FC = () => {
   });
 
   // Mobile optimization hooks
-  const isMobile = mobileOptimization.isMobile();
-  const isTablet = mobileOptimization.isTablet();
+  const isMobile = isMobileDevice();
+  const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
   const getResponsiveGrid = (base: string, md?: string, lg?: string) => {
     if (isMobile) return "grid-cols-1";
     if (isTablet && md) return md;
@@ -867,7 +867,7 @@ const UnifiedCreatorStudio: React.FC = () => {
                           <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                             <span>{formatNumber(product.sales)} sales</span>
                             <span>{formatNumber(product.revenue, "currency")} revenue</span>
-                            <span>{product.rating} ⭐ ({formatNumber(product.reviews)} reviews)</span>
+                            <span>{product.rating} ��� ({formatNumber(product.reviews)} reviews)</span>
                           </div>
                         </div>
                         <div className="text-right">
