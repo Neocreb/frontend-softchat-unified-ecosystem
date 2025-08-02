@@ -70,6 +70,7 @@ import {
   Layers,
   Grid3X3,
   List,
+  Lightbulb,
   
   // Money & Revenue
   DollarSign,
