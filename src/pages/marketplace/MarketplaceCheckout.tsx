@@ -100,6 +100,45 @@ const MarketplaceCheckout = () => {
       setIsProcessing(false);
     }
   };
+
+  const handleCryptoPaymentSuccess = async () => {
+    setShowCryptoPayment(false);
+    setIsProcessing(true);
+
+    try {
+      await checkout();
+      navigate('/app/marketplace');
+      toast({
+        title: "Order Placed Successfully",
+        description: "Thank you for your cryptocurrency purchase!",
+      });
+    } catch (error) {
+      toast({
+        title: "Order Processing Failed",
+        description: "Payment was successful but order processing failed. Please contact support.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const createCryptoPaymentRequest = (): PaymentRequest => {
+    return {
+      amount: total,
+      purpose: 'marketplace',
+      recipientId: 'marketplace',
+      metadata: {
+        cartItems: cart.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.product.price,
+        })),
+        shippingInfo,
+        orderId: 'order_' + Date.now(),
+      },
+    };
+  };
   
   const subTotal = getCartTotal();
   const shippingCost = subTotal > 0 ? 5.99 : 0;
