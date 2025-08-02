@@ -437,7 +437,7 @@ const UnifiedCreatorStudio: React.FC = () => {
                 "hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200",
                 isMobile && "active:scale-95 transition-transform"
               )}>
-                <CardContent className={cn("p-3 sm:p-4", mobileOptimization.touchTarget.size)}>
+                <CardContent className={cn("p-3 sm:p-4", touchTarget.base)}>
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-purple-700">
                       Total Revenue
@@ -867,7 +867,7 @@ const UnifiedCreatorStudio: React.FC = () => {
                           <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                             <span>{formatNumber(product.sales)} sales</span>
                             <span>{formatNumber(product.revenue, "currency")} revenue</span>
-                            <span>{product.rating} ��� ({formatNumber(product.reviews)} reviews)</span>
+                            <span>{product.rating} ⭐ ({formatNumber(product.reviews)} reviews)</span>
                           </div>
                         </div>
                         <div className="text-right">
