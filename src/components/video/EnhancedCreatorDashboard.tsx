@@ -131,6 +131,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
   const [timeRange, setTimeRange] = useState("30d");
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
+  const [selectedContent, setSelectedContent] = useState<any | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
