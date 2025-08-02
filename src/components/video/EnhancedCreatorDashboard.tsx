@@ -2035,17 +2035,358 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
           {/* Audience Tab */}
           <TabsContent value="audience" className="space-y-6">
-            <div className="text-center py-12">
-              <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Audience Analytics</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Deep insights into your audience across all platforms
-              </p>
-              <Button>
-                <Eye className="w-4 h-4 mr-2" />
-                Analyze Audience
-              </Button>
+            {/* Audience Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Audience Analytics</h2>
+                <p className="text-gray-600 dark:text-gray-400">Deep insights into your audience across all platforms</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  <Users className="w-4 h-4 mr-2" />
+                  Audience Segments
+                </Button>
+                <Button>
+                  <Target className="w-4 h-4 mr-2" />
+                  Target Analysis
+                </Button>
+              </div>
             </div>
+
+            {/* Audience Overview */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Users className="w-6 h-6 text-blue-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+28.5%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-blue-900">45.2K</p>
+                    <p className="text-sm text-blue-700">Total Followers</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <UserPlus className="w-6 h-6 text-green-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+45.7%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-green-900">2.3K</p>
+                    <p className="text-sm text-green-700">New This Month</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Heart className="w-6 h-6 text-purple-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+12.8%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-purple-900">87.4%</p>
+                    <p className="text-sm text-purple-700">Engagement Rate</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <Activity className="w-6 h-6 text-orange-600" />
+                    <div className="flex items-center gap-1 text-sm">
+                      <TrendingUp className="w-3 h-3 text-green-500" />
+                      <span className="text-green-600">+8.9%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-orange-900">92.1%</p>
+                    <p className="text-sm text-orange-700">Retention Rate</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Demographics */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-blue-500" />
+                    Age Demographics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { range: "18-24", percentage: 35, count: "15.8K" },
+                      { range: "25-34", percentage: 40, count: "18.1K" },
+                      { range: "35-44", percentage: 20, count: "9.0K" },
+                      { range: "45-54", percentage: 4, count: "1.8K" },
+                      { range: "55+", percentage: 1, count: "450" },
+                    ].map((age, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="font-medium">{age.range} years</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-600 dark:text-gray-400">{age.count}</span>
+                            <span className="font-medium">{age.percentage}%</span>
+                          </div>
+                        </div>
+                        <Progress value={age.percentage} className="h-2" />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-green-500" />
+                    Gender Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <div className="text-2xl font-bold text-blue-600">58%</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Male</div>
+                        <div className="text-xs text-gray-500 mt-1">26.2K followers</div>
+                      </div>
+                      <div className="text-center p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg">
+                        <div className="text-2xl font-bold text-pink-600">42%</div>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">Female</div>
+                        <div className="text-xs text-gray-500 mt-1">19.0K followers</div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <h4 className="font-medium">Top Interests</h4>
+                      {[
+                        { interest: "Technology", percentage: 78 },
+                        { interest: "Finance", percentage: 65 },
+                        { interest: "Business", percentage: 52 },
+                        { interest: "Education", percentage: 47 },
+                        { interest: "Entertainment", percentage: 38 },
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-center justify-between">
+                          <span className="text-sm">{item.interest}</span>
+                          <div className="flex items-center gap-2 flex-1 mx-3">
+                            <Progress value={item.percentage} className="flex-1" />
+                            <span className="text-sm w-8">{item.percentage}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Geographic Distribution */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-purple-500" />
+                  Geographic Distribution
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium mb-3">Top Countries</h4>
+                    <div className="space-y-3">
+                      {[
+                        { country: "United States", percentage: 42, count: "18.9K" },
+                        { country: "United Kingdom", percentage: 18, count: "8.1K" },
+                        { country: "Canada", percentage: 12, count: "5.4K" },
+                        { country: "Australia", percentage: 8, count: "3.6K" },
+                        { country: "Germany", percentage: 6, count: "2.7K" },
+                        { country: "Others", percentage: 14, count: "6.3K" },
+                      ].map((location, index) => (
+                        <div key={index} className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{location.country}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-gray-600 dark:text-gray-400">{location.count}</span>
+                            <span className="text-sm font-medium w-8">{location.percentage}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-3">Top Cities</h4>
+                    <div className="space-y-3">
+                      {[
+                        { city: "New York", percentage: 15, count: "6.8K" },
+                        { city: "London", percentage: 12, count: "5.4K" },
+                        { city: "Los Angeles", percentage: 9, count: "4.1K" },
+                        { city: "Toronto", percentage: 7, count: "3.2K" },
+                        { city: "San Francisco", percentage: 6, count: "2.7K" },
+                        { city: "Others", percentage: 51, count: "23.0K" },
+                      ].map((city, index) => (
+                        <div key={index} className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{city.city}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-gray-600 dark:text-gray-400">{city.count}</span>
+                            <span className="text-sm font-medium w-8">{city.percentage}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Audience Behavior */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-orange-500" />
+                    Activity Patterns
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-3">Peak Hours (GMT)</h4>
+                      <div className="grid grid-cols-4 gap-2 text-center">
+                        {[
+                          { time: "6-9 AM", activity: 25 },
+                          { time: "12-3 PM", activity: 45 },
+                          { time: "6-9 PM", activity: 85 },
+                          { time: "9-12 PM", activity: 92 },
+                        ].map((hour, index) => (
+                          <div key={index} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <div className="text-lg font-bold">{hour.activity}%</div>
+                            <div className="text-xs text-gray-600 dark:text-gray-400">{hour.time}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium mb-3">Best Days</h4>
+                      <div className="space-y-2">
+                        {[
+                          { day: "Tuesday", activity: 92 },
+                          { day: "Wednesday", activity: 88 },
+                          { day: "Thursday", activity: 85 },
+                          { day: "Monday", activity: 78 },
+                          { day: "Friday", activity: 72 },
+                        ].map((day, index) => (
+                          <div key={index} className="flex items-center justify-between">
+                            <span className="text-sm font-medium">{day.day}</span>
+                            <div className="flex items-center gap-2 flex-1 mx-3">
+                              <Progress value={day.activity} className="flex-1" />
+                              <span className="text-sm w-8">{day.activity}%</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-500" />
+                    Engagement Metrics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { metric: "Average Session", value: "8:34", description: "Time spent per visit" },
+                      { metric: "Pages per Session", value: "4.2", description: "Average page views" },
+                      { metric: "Return Visitor Rate", value: "68%", description: "Repeat audience" },
+                      { metric: "Share Rate", value: "12.4%", description: "Content sharing" },
+                      { metric: "Comment Rate", value: "8.9%", description: "Active commenting" },
+                      { metric: "Save Rate", value: "15.2%", description: "Content saves" },
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div>
+                          <div className="font-medium">{item.metric}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400">{item.description}</div>
+                        </div>
+                        <div className="text-xl font-bold text-green-600">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Audience Segments */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="w-5 h-5 text-blue-500" />
+                  Audience Segments
+                </CardTitle>
+                <CardDescription>Custom audience groups based on behavior and demographics</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    {
+                      name: "Tech Enthusiasts",
+                      size: "12.3K",
+                      percentage: 27,
+                      description: "Highly engaged with tech content",
+                      growth: "+34.5%"
+                    },
+                    {
+                      name: "Business Professionals",
+                      size: "8.9K",
+                      percentage: 20,
+                      description: "Focus on business and finance",
+                      growth: "+28.7%"
+                    },
+                    {
+                      name: "Content Creators",
+                      size: "6.1K",
+                      percentage: 13,
+                      description: "Fellow creators and influencers",
+                      growth: "+45.2%"
+                    }
+                  ].map((segment, index) => (
+                    <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium">{segment.name}</h4>
+                        <Badge variant="secondary" className="text-xs">{segment.percentage}%</Badge>
+                      </div>
+                      <div className="text-2xl font-bold mb-1">{segment.size}</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{segment.description}</p>
+                      <div className="flex items-center gap-1 text-sm text-green-600">
+                        <TrendingUp className="w-3 h-3" />
+                        <span>{segment.growth} growth</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Insights Tab */}
