@@ -688,6 +688,222 @@ const EnhancedCreatorDashboard: React.FC = () => {
     );
   };
 
+  // Content Detail Component
+  const ContentDetailView = ({ content }: { content: any }) => {
+    const getContentIcon = (type: string) => {
+      switch (type) {
+        case "Video": return Video;
+        case "Product": return ShoppingBag;
+        case "Post": return FileText;
+        case "Stream": return Radio;
+        default: return FileText;
+      }
+    };
+
+    const ContentIcon = getContentIcon(content.type);
+
+    return (
+      <div className="space-y-6">
+        {/* Content Header */}
+        <div className="flex items-center gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSelectedContent(null)}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back to Overview
+          </Button>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+              <ContentIcon className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{content.title}</h2>
+              <div className="flex items-center gap-2 mt-1">
+                <Badge variant="secondary">{content.type}</Badge>
+                <Badge variant="outline">{content.platform}</Badge>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Published on {new Date(content.publishDate).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Preview */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Content Media */}
+            <Card>
+              <CardContent className="p-6">
+                <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-4">
+                  <ContentIcon className="w-16 h-16 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{content.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">{content.description}</p>
+                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                  {content.duration && (
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {content.duration}
+                    </span>
+                  )}
+                  {content.readTime && (
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {content.readTime}
+                    </span>
+                  )}
+                  <span className="flex items-center gap-1">
+                    <Eye className="w-4 h-4" />
+                    {content.views} views
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Heart className="w-4 h-4" />
+                    {content.likes || content.sales} {content.type === "Product" ? "sales" : "likes"}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Performance Metrics */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Performance Analytics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">{content.views}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Views</div>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">{content.engagement}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Engagement</div>
+                  </div>
+                  <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">{content.revenue}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Revenue</div>
+                  </div>
+                  <div className="text-center p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {content.type === "Product" ? content.rating + "/5" :
+                       content.type === "Stream" ? content.peakViewers : content.shares}
+                    </div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      {content.type === "Product" ? "Rating" :
+                       content.type === "Stream" ? "Peak" : "Shares"}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Detailed Analytics */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Detailed Analytics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {content.analytics && Object.entries(content.analytics).map(([key, value], index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <span className="font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                      <span className="text-lg font-bold">
+                        {Array.isArray(value) ? value.join(", ") :
+                         typeof value === "object" ? JSON.stringify(value) : value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Button className="w-full justify-start">
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  View Original
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share Content
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Data
+                </Button>
+                <Button variant="outline" className="w-full justify-start">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Edit Content
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Content Stats */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Content Statistics</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Published</span>
+                  <span className="font-medium">{new Date(content.publishDate).toLocaleDateString()}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Platform</span>
+                  <span className="font-medium">{content.platform}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Content Type</span>
+                  <span className="font-medium">{content.type}</span>
+                </div>
+                {content.comments && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Comments</span>
+                    <span className="font-medium">{content.comments}</span>
+                  </div>
+                )}
+                {content.reviews && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Reviews</span>
+                    <span className="font-medium">{content.reviews}</span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Performance Score */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Performance Score</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-green-600 mb-2">A+</div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    Excellent performance compared to similar content
+                  </p>
+                  <Progress value={92} className="h-2" />
+                  <p className="text-xs text-gray-500 mt-2">92/100 score</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
