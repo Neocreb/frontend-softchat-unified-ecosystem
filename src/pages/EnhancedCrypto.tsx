@@ -92,6 +92,18 @@ export default function EnhancedCrypto() {
     return () => clearInterval(interval);
   }, [selectedPair]);
 
+  // Listen for P2P navigation events from portfolio
+  useEffect(() => {
+    const handleNavigateToP2P = () => {
+      setActiveTab("p2p");
+    };
+
+    window.addEventListener('navigate-to-p2p', handleNavigateToP2P);
+    return () => {
+      window.removeEventListener('navigate-to-p2p', handleNavigateToP2P);
+    };
+  }, []);
+
   const loadCryptoData = async () => {
     setIsLoading(true);
     try {
@@ -249,7 +261,7 @@ export default function EnhancedCrypto() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         <div className="space-y-4 sm:space-y-6 lg:space-y-8">
           {/* Enhanced Header */}
           <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-4 sm:p-6">
@@ -291,42 +303,42 @@ export default function EnhancedCrypto() {
             >
               {/* Mobile Tabs - Horizontal Scroll */}
               <div className="block sm:hidden">
-                <div className="flex overflow-x-auto scrollbar-hide">
-                  <TabsList className="flex min-w-max bg-transparent p-2 gap-1">
+                <div className="flex overflow-x-auto scrollbar-hide px-2">
+                  <TabsList className="flex min-w-max bg-transparent p-1 gap-1">
                     <TabsTrigger
                       value="overview"
-                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all"
+                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all whitespace-nowrap"
                     >
-                      <BarChart3 className="h-3 w-3" />
-                      Overview
+                      <BarChart3 className="h-3 w-3 flex-shrink-0" />
+                      <span>Overview</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="trading"
-                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-green-500 data-[state=active]:text-white transition-all"
+                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-green-500 data-[state=active]:text-white transition-all whitespace-nowrap"
                     >
-                      <ArrowUpDown className="h-3 w-3" />
-                      Trading
+                      <ArrowUpDown className="h-3 w-3 flex-shrink-0" />
+                      <span>Trading</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="p2p"
-                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-purple-500 data-[state=active]:text-white transition-all"
+                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-purple-500 data-[state=active]:text-white transition-all whitespace-nowrap"
                     >
-                      <Users className="h-3 w-3" />
-                      P2P
+                      <Users className="h-3 w-3 flex-shrink-0" />
+                      <span>P2P</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="portfolio"
-                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all"
+                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all whitespace-nowrap"
                     >
-                      <PieChart className="h-3 w-3" />
-                      Portfolio
+                      <PieChart className="h-3 w-3 flex-shrink-0" />
+                      <span>Portfolio</span>
                     </TabsTrigger>
                     <TabsTrigger
                       value="learn"
-                      className="flex items-center gap-2 text-xs py-2.5 px-4 min-w-max rounded-lg data-[state=active]:bg-indigo-500 data-[state=active]:text-white transition-all"
+                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-indigo-500 data-[state=active]:text-white transition-all whitespace-nowrap"
                     >
-                      <BookOpen className="h-3 w-3" />
-                      Learn
+                      <BookOpen className="h-3 w-3 flex-shrink-0" />
+                      <span>Learn</span>
                     </TabsTrigger>
                   </TabsList>
                 </div>
@@ -334,13 +346,13 @@ export default function EnhancedCrypto() {
 
               {/* Desktop Tabs - Grid Layout */}
               <div className="hidden sm:block">
-                <TabsList className="grid w-full grid-cols-5 bg-gray-100 dark:bg-slate-700 p-1 rounded-lg m-2">
+                <TabsList className="grid w-full grid-cols-5 bg-gray-100 dark:bg-slate-700 p-1 rounded-lg mx-2 my-2">
                   <TabsTrigger
                     value="overview"
-                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
+                    className="flex items-center justify-center gap-2 text-sm py-3 px-2 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
                   >
-                    <BarChart3 className="h-4 w-4" />
-                    <span className="hidden lg:inline">Overview</span>
+                    <BarChart3 className="h-4 w-4 flex-shrink-0" />
+                    <span className="hidden md:inline">Overview</span>
                   </TabsTrigger>
                   <TabsTrigger
                     value="trading"
