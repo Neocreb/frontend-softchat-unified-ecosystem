@@ -263,6 +263,17 @@ const MarketplaceCheckout = () => {
                     </Label>
                   </div>
                   
+                  <div className="flex items-center space-x-2 border rounded-md p-3 mb-3 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <RadioGroupItem value="crypto" id="payment-crypto" />
+                    <Label htmlFor="payment-crypto" className="flex items-center gap-2 cursor-pointer">
+                      <Bitcoin className="h-5 w-5 text-orange-500" />
+                      <div className="flex flex-col">
+                        <span>Cryptocurrency</span>
+                        <span className="text-xs text-muted-foreground">Pay with Bitcoin, Ethereum, USDT, or Solana</span>
+                      </div>
+                    </Label>
+                  </div>
+
                   <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-gray-50 transition-colors">
                     <RadioGroupItem value="cash" id="payment-cash" />
                     <Label htmlFor="payment-cash" className="flex items-center gap-2 cursor-pointer">
