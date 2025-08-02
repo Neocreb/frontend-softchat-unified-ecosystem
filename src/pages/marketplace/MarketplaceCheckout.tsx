@@ -22,6 +22,8 @@ import {
 import { useMarketplace } from "@/contexts/MarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import UniversalCryptoPaymentModal from "@/components/payments/UniversalCryptoPaymentModal";
+import { type PaymentRequest } from "@/services/unifiedCryptoPaymentService";
 
 const MarketplaceCheckout = () => {
   const { cart, getCartTotal, checkout } = useMarketplace();
