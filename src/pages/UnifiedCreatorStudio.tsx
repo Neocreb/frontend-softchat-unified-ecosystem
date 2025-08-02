@@ -428,8 +428,11 @@ const UnifiedCreatorStudio: React.FC = () => {
               "grid gap-3 sm:gap-4",
               getResponsiveGrid("grid-cols-1", "grid-cols-2", "grid-cols-4")
             )}>
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
-                <CardContent className="p-4">
+              <Card className={cn(
+                "hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200",
+                isMobile && "active:scale-95 transition-transform"
+              )}>
+                <CardContent className={cn("p-3 sm:p-4", mobileOptimization.touchTarget.size)}>
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-medium text-purple-700">
                       Total Revenue
