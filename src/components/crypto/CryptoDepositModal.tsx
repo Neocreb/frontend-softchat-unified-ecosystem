@@ -413,29 +413,29 @@ export default function CryptoDepositModal({
           )}
         </div>
 
-        <DialogFooter className="flex-col sm:flex-row gap-2">
+        <DialogFooter className="sticky bottom-0 bg-background/95 backdrop-blur-sm pt-4 border-t flex-col gap-2 sm:flex-row">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto order-2 sm:order-1"
           >
             Cancel
           </Button>
           <Button
             onClick={handleComplete}
             disabled={!selectedCrypto || isLoading}
-            className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
+            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 order-1 sm:order-2"
           >
             {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                Processing...
+                <span className="text-sm sm:text-base">Processing...</span>
               </>
             ) : (
               <>
                 <Wallet className="h-4 w-4 mr-2" />
-                I've Sent the Funds
+                <span className="text-sm sm:text-base">I've Sent the Funds</span>
               </>
             )}
           </Button>
