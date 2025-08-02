@@ -1563,7 +1563,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                             <BarChart3 className="w-3 h-3 mr-1" />
                             Analytics
                           </Button>
-                          <Button size="sm" className="flex-1">
+                          <Button size="sm" className="flex-1" onClick={() => handleConfigureFeature(feature.name)}>
                             <Settings className="w-3 h-3 mr-1" />
                             Configure
                           </Button>
