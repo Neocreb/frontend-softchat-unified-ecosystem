@@ -1065,41 +1065,45 @@ const EnhancedCreatorDashboard: React.FC = () => {
       {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-4 gap-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+          <div className="flex flex-col gap-4 py-4">
+            {/* Title Row */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
+                <div className="min-w-0">
+                  <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white truncate">
                     Unified Creator Studio
                   </h1>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">
                     Complete analytics across all platform features
                   </p>
                 </div>
+                <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 flex-shrink-0 text-xs">
+                  Pro Analytics
+                </Badge>
               </div>
-              <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-                Pro Analytics
-              </Badge>
             </div>
 
-            <div className="flex items-center gap-3 w-full lg:w-auto">
-              <div className="flex-1 lg:flex-none lg:w-64">
+            {/* Controls Row */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              {/* Search */}
+              <div className="flex-1 sm:flex-none sm:w-48 lg:w-64">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
                     placeholder="Search features..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-9"
                   />
                 </div>
               </div>
-              
+
+              {/* Time Range */}
               <Select value={timeRange} onValueChange={setTimeRange}>
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32 h-9">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1110,44 +1114,56 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </SelectContent>
               </Select>
 
-              <div className="flex items-center gap-1 border rounded-lg p-1">
+              {/* View Mode Toggle */}
+              <div className="flex items-center gap-1 border rounded-lg p-1 w-fit">
                 <Button
                   variant={viewMode === "grid" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
-                  className="h-8 w-8 p-0"
+                  className="h-7 w-7 p-0 flex-shrink-0"
+                  title="Grid View"
                 >
-                  <Grid3X3 className="w-4 h-4" />
+                  <Grid3X3 className="w-3.5 h-3.5" />
                 </Button>
                 <Button
                   variant={viewMode === "list" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("list")}
-                  className="h-8 w-8 p-0"
+                  className="h-7 w-7 p-0 flex-shrink-0"
+                  title="List View"
                 >
-                  <List className="w-4 h-4" />
+                  <List className="w-3.5 h-3.5" />
                 </Button>
               </div>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleExport()}
-                disabled={isExporting}
-              >
-                <Download className={cn("w-4 h-4 mr-2", isExporting && "animate-spin")} />
-                {isExporting ? 'Exporting...' : 'Export'}
-              </Button>
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleExport()}
+                  disabled={isExporting}
+                  className="h-9 px-3 flex-shrink-0"
+                >
+                  <Download className={cn("w-4 h-4", isExporting && "animate-spin")} />
+                  <span className="hidden sm:inline ml-2">
+                    {isExporting ? 'Exporting...' : 'Export'}
+                  </span>
+                </Button>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefreshData}
-                disabled={isRefreshing}
-              >
-                <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
-                {isRefreshing ? 'Refreshing...' : 'Refresh'}
-              </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleRefreshData}
+                  disabled={isRefreshing}
+                  className="h-9 px-3 flex-shrink-0"
+                >
+                  <RefreshCw className={cn("w-4 h-4", isRefreshing && "animate-spin")} />
+                  <span className="hidden sm:inline ml-2">
+                    {isRefreshing ? 'Refreshing...' : 'Refresh'}
+                  </span>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
