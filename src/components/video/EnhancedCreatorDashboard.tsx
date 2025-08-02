@@ -1,118 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import {
-  BarChart3,
-  TrendingUp,
-  TrendingDown,
-  Users,
-  Eye,
-  Heart,
-  MessageCircle,
-  Share2,
-  DollarSign,
-  Calendar,
-  Clock,
-  Target,
-  Award,
-  Zap,
-  Globe,
-  Download,
-  Filter,
-  RefreshCw,
-  Settings,
-  PieChart,
-  LineChart,
-  Activity,
-  Smartphone,
-  Monitor,
-  MapPin,
-  Play,
-  Pause,
-  SkipForward,
-  UserPlus,
-  UserMinus,
-  Coins,
-  CreditCard,
-  Gift,
-  Handshake,
-  Video,
-  Music,
-  Hash,
-  Star,
-  ThumbsUp,
-  Bookmark,
-  FileText,
-  ExternalLink,
-  ArrowUpRight,
-  ArrowDownRight,
-  AlertCircle,
-  CheckCircle,
-  Lightbulb,
-  Brain,
-  Rocket,
-  Crown,
-  Flame,
-  ChevronRight,
-  MoreHorizontal,
-  Plus,
-  Minus,
-  Equal,
-  X,
-  Trophy,
-  Shield,
-  Timer,
-  Package,
-  Store,
-  Wallet,
-  Bitcoin,
-  CandlestickChart,
-  AreaChart,
-  TrendingDownIcon,
-  CalendarDays,
-  Megaphone,
-  Users2,
-  MousePointer,
-  Layers,
-  Percent,
-  TowerControl,
-  BarChart2,
-  PieChartIcon,
-  TrendingUpIcon,
-  DollarSignIcon,
-  UsersIcon,
-  EyeIcon,
-  HeartIcon,
-  MessageCircleIcon,
-  Share2Icon,
-  VideoIcon,
-  PlayIcon,
-  TargetIcon,
-  Maximize,
-  Minimize,
-  RotateCcw,
-  Info,
-  HelpCircle,
-  BookOpen,
-  GraduationCap,
-  Briefcase,
-  Building,
-  ShoppingBag,
-  CreditCardIcon,
-  BankNote,
-  Receipt,
-  Calculator,
-  ChartLine,
-  ChartBar,
-  ChartPie,
-  ChartArea,
-  ChartColumn,
-  TrendChart,
-  BarChart4
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -123,761 +20,347 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { formatDistanceToNow } from "date-fns";
+import {
+  // Analytics & Charts
+  BarChart3,
+  PieChart,
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Eye,
+  Target,
+  Zap,
+  
+  // Platform Features
+  House,
+  Search,
+  Video,
+  ShoppingBag,
+  Briefcase,
+  Coins,
+  Gift,
+  Calendar,
+  MessageSquare,
+  Users,
+  Building,
+  Radio,
+  Megaphone,
+  Award,
+  Star,
+  
+  // Actions
+  Download,
+  RefreshCw,
+  Filter,
+  Settings,
+  Plus,
+  ExternalLink,
+  MoreHorizontal,
+  Bell,
+  Heart,
+  Share2,
+  Play,
+  
+  // UI Elements
+  ChevronRight,
+  ChevronDown,
+  ArrowUpRight,
+  ArrowDownRight,
+  Layers,
+  Grid3X3,
+  List,
+  
+  // Money & Revenue
+  DollarSign,
+  CreditCard,
+  Wallet,
+  HandCoins,
+  
+  // Content & Media
+  FileText,
+  Image,
+  Film,
+  Mic,
+  Camera,
+  
+  // Social
+  ThumbsUp,
+  MessageCircle,
+  UserPlus,
+  Crown,
+  
+  // Time & Date
+  Clock,
+  Calendar as CalendarIcon,
+  Timer,
+  
+  // Status & Growth
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Info,
+  
+  // Navigation
+  Menu,
+  X,
+  ChevronLeft,
+  Home,
+} from "lucide-react";
 
-// Enhanced Analytics Interfaces
-interface DetailedMetric {
-  label: string;
-  value: number;
-  previousValue?: number;
-  change: number;
-  changeType: "increase" | "decrease" | "neutral";
-  format: "number" | "currency" | "percentage" | "duration" | "rate";
-  trend: number[];
-  goal?: number;
-  benchmark?: number;
-  description?: string;
-  confidence?: number;
-}
-
-interface ContentAnalytics {
-  id: string;
-  type: "video" | "post" | "story" | "live";
+interface MetricCard {
   title: string;
-  thumbnail: string;
-  publishedAt: Date;
-  metrics: {
-    views: number;
-    uniqueViews: number;
-    impressions: number;
-    reach: number;
-    engagement: {
-      likes: number;
-      comments: number;
-      shares: number;
-      saves: number;
-      rate: number;
-    };
-    retention: {
-      averageViewDuration: number;
-      retentionRate: number;
-      dropOffPoints: { time: number; percentage: number }[];
-    };
-    revenue: {
-      adRevenue: number;
-      tips: number;
-      subscriptions: number;
-      merchandise: number;
-      total: number;
-    };
-    demographics: {
-      age: { range: string; percentage: number }[];
-      gender: { type: string; percentage: number }[];
-      location: { country: string; percentage: number }[];
-    };
-    trafficSources: {
-      source: string;
-      percentage: number;
-      views: number;
-    }[];
-  };
-  performance: {
-    ctr: number; // Click-through rate
-    cpm: number; // Cost per mille
-    rpm: number; // Revenue per mille
-    conversionRate: number;
-    viralityCoefficient: number;
-  };
-  tags: string[];
-  category: string;
-  monetized: boolean;
-  boosted: boolean;
-}
-
-interface AudienceInsight {
-  metric: string;
   value: string | number;
-  description: string;
-  trend: "up" | "down" | "stable";
-  impact: "high" | "medium" | "low";
-  actionable: boolean;
-  recommendation?: string;
-}
-
-interface RevenueStream {
-  source: string;
-  amount: number;
-  percentage: number;
   change: number;
+  trend: "up" | "down" | "neutral";
+  icon: React.ElementType;
+  color: string;
+  description?: string;
+}
+
+interface FeatureAnalytics {
+  name: string;
+  icon: React.ElementType;
+  color: string;
+  metrics: MetricCard[];
   growth: number;
-  projection: number;
-  icon: React.ReactNode;
-  subStreams?: {
-    name: string;
-    amount: number;
-    percentage: number;
-  }[];
+  active: boolean;
 }
-
-interface PredictiveInsight {
-  id: string;
-  type: "opportunity" | "warning" | "trend" | "recommendation" | "alert";
-  title: string;
-  description: string;
-  confidence: number;
-  impact: "high" | "medium" | "low";
-  timeframe: string;
-  actionable: boolean;
-  actions?: string[];
-  estimatedValue?: number;
-  category: "content" | "audience" | "monetization" | "growth" | "optimization";
-}
-
-interface CompetitorAnalysis {
-  competitor: string;
-  metrics: {
-    followers: number;
-    avgViews: number;
-    engagementRate: number;
-    postFrequency: number;
-  };
-  comparison: {
-    followers: "higher" | "lower" | "similar";
-    engagement: "higher" | "lower" | "similar";
-    content: "higher" | "lower" | "similar";
-  };
-}
-
-// Enhanced Mock Data
-const enhancedMetrics: DetailedMetric[] = [
-  {
-    label: "Total Views",
-    value: 2847291,
-    previousValue: 2156432,
-    change: 32.1,
-    changeType: "increase",
-    format: "number",
-    trend: [2156432, 2287654, 2456789, 2634567, 2847291],
-    goal: 3000000,
-    benchmark: 2500000,
-    description: "Total video views across all content",
-    confidence: 95
-  },
-  {
-    label: "Unique Viewers",
-    value: 1547832,
-    previousValue: 1298765,
-    change: 19.2,
-    changeType: "increase",
-    format: "number",
-    trend: [1298765, 1367890, 1423456, 1487654, 1547832],
-    goal: 1800000,
-    benchmark: 1400000,
-    description: "Individual users who watched your content",
-    confidence: 92
-  },
-  {
-    label: "Engagement Rate",
-    value: 12.7,
-    previousValue: 10.3,
-    change: 23.3,
-    changeType: "increase",
-    format: "percentage",
-    trend: [10.3, 10.8, 11.4, 12.1, 12.7],
-    goal: 15.0,
-    benchmark: 8.5,
-    description: "Percentage of viewers who engaged with content",
-    confidence: 89
-  },
-  {
-    label: "Total Revenue",
-    value: 18540,
-    previousValue: 14230,
-    change: 30.3,
-    changeType: "increase",
-    format: "currency",
-    trend: [14230, 15678, 16445, 17890, 18540],
-    goal: 25000,
-    benchmark: 15000,
-    description: "Total earnings from all revenue streams",
-    confidence: 97
-  },
-  {
-    label: "Subscriber Growth",
-    value: 4.2,
-    previousValue: 2.8,
-    change: 50.0,
-    changeType: "increase",
-    format: "percentage",
-    trend: [2.8, 3.1, 3.6, 3.9, 4.2],
-    goal: 6.0,
-    benchmark: 3.5,
-    description: "Monthly subscriber growth rate",
-    confidence: 85
-  },
-  {
-    label: "Average Watch Time",
-    value: 324,
-    previousValue: 298,
-    change: 8.7,
-    changeType: "increase",
-    format: "duration",
-    trend: [298, 305, 312, 318, 324],
-    goal: 400,
-    benchmark: 280,
-    description: "Average time viewers spend watching videos",
-    confidence: 91
-  },
-  {
-    label: "CTR (Click-through Rate)",
-    value: 8.4,
-    previousValue: 6.9,
-    change: 21.7,
-    changeType: "increase",
-    format: "percentage",
-    trend: [6.9, 7.2, 7.8, 8.1, 8.4],
-    goal: 10.0,
-    benchmark: 7.0,
-    description: "Percentage of impressions that resulted in views",
-    confidence: 88
-  },
-  {
-    label: "Revenue Per View",
-    value: 0.0065,
-    previousValue: 0.0052,
-    change: 25.0,
-    changeType: "increase",
-    format: "currency",
-    trend: [0.0052, 0.0055, 0.0058, 0.0062, 0.0065],
-    goal: 0.008,
-    benchmark: 0.005,
-    description: "Average revenue generated per video view",
-    confidence: 93
-  }
-];
-
-const topContent: ContentAnalytics[] = [
-  {
-    id: "1",
-    type: "video",
-    title: "AI Art Creation: Complete Tutorial for Beginners",
-    thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=300",
-    publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2),
-    metrics: {
-      views: 456789,
-      uniqueViews: 387654,
-      impressions: 892456,
-      reach: 567890,
-      engagement: {
-        likes: 23456,
-        comments: 1876,
-        shares: 3456,
-        saves: 2134,
-        rate: 15.2
-      },
-      retention: {
-        averageViewDuration: 387,
-        retentionRate: 68.4,
-        dropOffPoints: [
-          { time: 30, percentage: 15 },
-          { time: 120, percentage: 35 },
-          { time: 300, percentage: 55 }
-        ]
-      },
-      revenue: {
-        adRevenue: 234.50,
-        tips: 156.78,
-        subscriptions: 89.23,
-        merchandise: 45.67,
-        total: 526.18
-      },
-      demographics: {
-        age: [
-          { range: "18-24", percentage: 35 },
-          { range: "25-34", percentage: 40 },
-          { range: "35-44", percentage: 20 },
-          { range: "45+", percentage: 5 }
-        ],
-        gender: [
-          { type: "Male", percentage: 65 },
-          { type: "Female", percentage: 32 },
-          { type: "Other", percentage: 3 }
-        ],
-        location: [
-          { country: "United States", percentage: 45 },
-          { country: "United Kingdom", percentage: 18 },
-          { country: "Canada", percentage: 12 },
-          { country: "Germany", percentage: 8 },
-          { country: "Others", percentage: 17 }
-        ]
-      },
-      trafficSources: [
-        { source: "YouTube Search", percentage: 35, views: 159876 },
-        { source: "Suggested Videos", percentage: 28, views: 127901 },
-        { source: "Direct/Subscriptions", percentage: 20, views: 91357 },
-        { source: "External", percentage: 12, views: 54814 },
-        { source: "Social Media", percentage: 5, views: 22841 }
-      ]
-    },
-    performance: {
-      ctr: 9.2,
-      cpm: 4.56,
-      rpm: 2.34,
-      conversionRate: 3.8,
-      viralityCoefficient: 1.67
-    },
-    tags: ["AI", "Art", "Tutorial", "Beginner", "Creative"],
-    category: "Education",
-    monetized: true,
-    boosted: false
-  },
-  {
-    id: "2", 
-    type: "video",
-    title: "Behind the Scenes: My Creative Process",
-    thumbnail: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=300",
-    publishedAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1),
-    metrics: {
-      views: 234567,
-      uniqueViews: 198432,
-      impressions: 567890,
-      reach: 345678,
-      engagement: {
-        likes: 18345,
-        comments: 1234,
-        shares: 2345,
-        saves: 1567,
-        rate: 12.8
-      },
-      retention: {
-        averageViewDuration: 298,
-        retentionRate: 72.1,
-        dropOffPoints: [
-          { time: 25, percentage: 12 },
-          { time: 90, percentage: 28 },
-          { time: 240, percentage: 48 }
-        ]
-      },
-      revenue: {
-        adRevenue: 145.30,
-        tips: 234.56,
-        subscriptions: 67.89,
-        merchandise: 23.45,
-        total: 471.20
-      },
-      demographics: {
-        age: [
-          { range: "18-24", percentage: 30 },
-          { range: "25-34", percentage: 45 },
-          { range: "35-44", percentage: 20 },
-          { range: "45+", percentage: 5 }
-        ],
-        gender: [
-          { type: "Female", percentage: 58 },
-          { type: "Male", percentage: 40 },
-          { type: "Other", percentage: 2 }
-        ],
-        location: [
-          { country: "United States", percentage: 38 },
-          { country: "United Kingdom", percentage: 22 },
-          { country: "Canada", percentage: 15 },
-          { country: "Australia", percentage: 10 },
-          { country: "Others", percentage: 15 }
-        ]
-      },
-      trafficSources: [
-        { source: "Subscriptions", percentage: 42, views: 98518 },
-        { source: "YouTube Search", percentage: 25, views: 58641 },
-        { source: "Suggested Videos", percentage: 20, views: 46913 },
-        { source: "Social Media", percentage: 8, views: 18765 },
-        { source: "External", percentage: 5, views: 11730 }
-      ]
-    },
-    performance: {
-      ctr: 8.7,
-      cpm: 3.89,
-      rpm: 2.01,
-      conversionRate: 4.2,
-      viralityCoefficient: 1.34
-    },
-    tags: ["Behind the Scenes", "Creative", "Process", "Inspiration"],
-    category: "Lifestyle",
-    monetized: true,
-    boosted: true
-  }
-];
-
-const audienceInsights: AudienceInsight[] = [
-  {
-    metric: "Peak Activity Time",
-    value: "8-10 PM EST",
-    description: "Your audience is most active during evening hours",
-    trend: "stable",
-    impact: "high",
-    actionable: true,
-    recommendation: "Schedule content releases between 7-9 PM for maximum reach"
-  },
-  {
-    metric: "Top Demographics",
-    value: "25-34 years (42%)",
-    description: "Young professionals make up the largest segment",
-    trend: "up",
-    impact: "high",
-    actionable: true,
-    recommendation: "Create content targeting career development and lifestyle"
-  },
-  {
-    metric: "Geographic Focus",
-    value: "North America (68%)",
-    description: "Majority of viewers from US and Canada",
-    trend: "up",
-    impact: "medium",
-    actionable: true,
-    recommendation: "Consider time zones for live content and releases"
-  },
-  {
-    metric: "Device Preference",
-    value: "Mobile (78%)",
-    description: "Most engagement happens on mobile devices",
-    trend: "up",
-    impact: "high",
-    actionable: true,
-    recommendation: "Optimize thumbnails and titles for mobile viewing"
-  },
-  {
-    metric: "Content Preference",
-    value: "Educational (65%)",
-    description: "Tutorial and educational content performs best",
-    trend: "up",
-    impact: "high",
-    actionable: true,
-    recommendation: "Focus on educational content with clear learning outcomes"
-  },
-  {
-    metric: "Average Session Duration",
-    value: "12.4 minutes",
-    description: "Users spend significant time consuming your content",
-    trend: "up",
-    impact: "medium",
-    actionable: true,
-    recommendation: "Create longer-form content to maximize engagement"
-  },
-  {
-    metric: "Subscription Rate",
-    value: "3.8%",
-    description: "Good conversion from viewers to subscribers",
-    trend: "stable",
-    impact: "medium",
-    actionable: true,
-    recommendation: "Add stronger call-to-actions in videos to increase rate"
-  },
-  {
-    metric: "Return Viewer Rate",
-    value: "67%",
-    description: "Strong audience loyalty and retention",
-    trend: "up",
-    impact: "high",
-    actionable: false,
-    recommendation: "Continue current content strategy to maintain loyalty"
-  }
-];
-
-const revenueStreams: RevenueStream[] = [
-  {
-    source: "Video Ad Revenue",
-    amount: 8750,
-    percentage: 47,
-    change: 18.3,
-    growth: 23.5,
-    projection: 11200,
-    icon: <Video className="w-4 h-4" />,
-    subStreams: [
-      { name: "Pre-roll Ads", amount: 3500, percentage: 40 },
-      { name: "Mid-roll Ads", amount: 2800, percentage: 32 },
-      { name: "End Screens", amount: 1750, percentage: 20 },
-      { name: "Overlay Ads", amount: 700, percentage: 8 }
-    ]
-  },
-  {
-    source: "Tips & Donations",
-    amount: 4200,
-    percentage: 23,
-    change: 35.7,
-    growth: 42.1,
-    projection: 6100,
-    icon: <Gift className="w-4 h-4" />,
-    subStreams: [
-      { name: "Super Chat", amount: 1680, percentage: 40 },
-      { name: "Direct Tips", amount: 1260, percentage: 30 },
-      { name: "Live Stream Gifts", amount: 840, percentage: 20 },
-      { name: "Fan Funding", amount: 420, percentage: 10 }
-    ]
-  },
-  {
-    source: "Subscription Revenue",
-    amount: 3590,
-    percentage: 19,
-    change: 12.7,
-    growth: 15.4,
-    projection: 4200,
-    icon: <Users className="w-4 h-4" />,
-    subStreams: [
-      { name: "Tier 1 ($4.99)", amount: 1795, percentage: 50 },
-      { name: "Tier 2 ($9.99)", amount: 1077, percentage: 30 },
-      { name: "Tier 3 ($24.99)", amount: 718, percentage: 20 }
-    ]
-  },
-  {
-    source: "Brand Partnerships",
-    amount: 1890,
-    percentage: 10,
-    change: 45.2,
-    growth: 67.8,
-    projection: 3200,
-    icon: <Handshake className="w-4 h-4" />,
-    subStreams: [
-      { name: "Sponsored Videos", amount: 1323, percentage: 70 },
-      { name: "Product Placements", amount: 378, percentage: 20 },
-      { name: "Affiliate Commissions", amount: 189, percentage: 10 }
-    ]
-  },
-  {
-    source: "Merchandise Sales",
-    amount: 110,
-    percentage: 1,
-    change: -5.3,
-    growth: -2.1,
-    projection: 105,
-    icon: <Star className="w-4 h-4" />,
-    subStreams: [
-      { name: "T-shirts", amount: 55, percentage: 50 },
-      { name: "Accessories", amount: 33, percentage: 30 },
-      { name: "Digital Products", amount: 22, percentage: 20 }
-    ]
-  }
-];
-
-const predictiveInsights: PredictiveInsight[] = [
-  {
-    id: "1",
-    type: "opportunity",
-    title: "AI Content Trend Surge",
-    description: "AI-related content is trending 340% this week. Your AI art tutorial performed exceptionally well. Consider creating a series.",
-    confidence: 92,
-    impact: "high",
-    timeframe: "Next 2 weeks",
-    actionable: true,
-    actions: ["Create AI tutorial series", "Collaborate with AI tools", "Join AI-related conversations"],
-    estimatedValue: 2500,
-    category: "content"
-  },
-  {
-    id: "2",
-    type: "recommendation",
-    title: "Optimal Publishing Schedule",
-    description: "Based on audience analysis, posting at 7 PM EST on Wednesdays could increase engagement by 28%.",
-    confidence: 87,
-    impact: "medium",
-    timeframe: "Immediate",
-    actionable: true,
-    actions: ["Schedule Wednesday releases", "Prepare content in advance", "Monitor engagement patterns"],
-    estimatedValue: 350,
-    category: "optimization"
-  },
-  {
-    id: "3",
-    type: "warning",
-    title: "Content Saturation Risk",
-    description: "Your niche is becoming saturated. Diversifying content topics could maintain growth trajectory.",
-    confidence: 76,
-    impact: "medium",
-    timeframe: "Next month",
-    actionable: true,
-    actions: ["Research new topics", "Survey audience interests", "Test different content formats"],
-    estimatedValue: -500,
-    category: "growth"
-  },
-  {
-    id: "4",
-    type: "trend",
-    title: "Mobile Engagement Growth",
-    description: "Mobile viewership increased 45% this month. Optimizing for mobile could boost overall engagement.",
-    confidence: 94,
-    impact: "high",
-    timeframe: "Ongoing",
-    actionable: true,
-    actions: ["Optimize thumbnails for mobile", "Create vertical content", "Test mobile-first strategies"],
-    estimatedValue: 800,
-    category: "audience"
-  },
-  {
-    id: "5",
-    type: "alert",
-    title: "Revenue Plateau Warning",
-    description: "Ad revenue growth is slowing. Diversifying income streams is recommended to maintain growth.",
-    confidence: 83,
-    impact: "high",
-    timeframe: "Next 3 months",
-    actionable: true,
-    actions: ["Launch merchandise line", "Increase sponsored content", "Develop premium offerings"],
-    estimatedValue: 1200,
-    category: "monetization"
-  }
-];
-
-const competitorData: CompetitorAnalysis[] = [
-  {
-    competitor: "TechCreator123",
-    metrics: {
-      followers: 234567,
-      avgViews: 45678,
-      engagementRate: 8.4,
-      postFrequency: 3.2
-    },
-    comparison: {
-      followers: "higher",
-      engagement: "lower",
-      content: "similar"
-    }
-  },
-  {
-    competitor: "ArtTutorialPro",
-    metrics: {
-      followers: 156789,
-      avgViews: 67890,
-      engagementRate: 12.1,
-      postFrequency: 2.8
-    },
-    comparison: {
-      followers: "lower",
-      engagement: "similar",
-      content: "higher"
-    }
-  }
-];
 
 const EnhancedCreatorDashboard: React.FC = () => {
   const [timeRange, setTimeRange] = useState("30d");
-  const [activeTab, setActiveTab] = useState("overview");
-  const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
-  const [showInsights, setShowInsights] = useState(true);
-  const [comparisonMode, setComparisonMode] = useState(false);
-  const [selectedContent, setSelectedContent] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState("overview");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const formatNumber = (num: number, format: string = "number"): string => {
-    switch (format) {
-      case "currency":
-        return new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-          minimumFractionDigits: num < 1 ? 4 : 0,
-        }).format(num);
-      case "percentage":
-        return `${num.toFixed(1)}%`;
-      case "duration":
-        const minutes = Math.floor(num / 60);
-        const seconds = num % 60;
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-      case "rate":
-        return `${num.toFixed(2)}%`;
+  // Mock data for comprehensive analytics
+  const platformFeatures: FeatureAnalytics[] = [
+    {
+      name: "Feed & Social",
+      icon: House,
+      color: "bg-blue-500",
+      growth: 23.5,
+      active: true,
+      metrics: [
+        { title: "Total Posts", value: "1,247", change: 18.2, trend: "up", icon: FileText, color: "text-blue-600" },
+        { title: "Engagement Rate", value: "8.4%", change: 12.3, trend: "up", icon: Heart, color: "text-pink-600" },
+        { title: "Followers", value: "45.2K", change: 15.7, trend: "up", icon: Users, color: "text-green-600" },
+        { title: "Reach", value: "892K", change: 28.1, trend: "up", icon: Eye, color: "text-purple-600" },
+      ]
+    },
+    {
+      name: "Video Content",
+      icon: Video,
+      color: "bg-red-500",
+      growth: 31.8,
+      active: true,
+      metrics: [
+        { title: "Videos Created", value: "156", change: 22.4, trend: "up", icon: Film, color: "text-red-600" },
+        { title: "Total Views", value: "2.1M", change: 35.2, trend: "up", icon: Play, color: "text-blue-600" },
+        { title: "Watch Time", value: "45.2h", change: 18.9, trend: "up", icon: Clock, color: "text-green-600" },
+        { title: "Avg Duration", value: "3:24", change: 8.1, trend: "up", icon: Timer, color: "text-orange-600" },
+      ]
+    },
+    {
+      name: "Marketplace",
+      icon: ShoppingBag,
+      color: "bg-green-500",
+      growth: 45.2,
+      active: true,
+      metrics: [
+        { title: "Products Sold", value: "389", change: 52.1, trend: "up", icon: ShoppingBag, color: "text-green-600" },
+        { title: "Revenue", value: "$12,450", change: 38.7, trend: "up", icon: DollarSign, color: "text-emerald-600" },
+        { title: "Conversion Rate", value: "3.2%", change: 15.4, trend: "up", icon: Target, color: "text-blue-600" },
+        { title: "Avg Order Value", value: "$32", change: 8.9, trend: "up", icon: CreditCard, color: "text-purple-600" },
+      ]
+    },
+    {
+      name: "Freelance",
+      icon: Briefcase,
+      color: "bg-orange-500",
+      growth: 28.9,
+      active: true,
+      metrics: [
+        { title: "Projects Completed", value: "47", change: 31.2, trend: "up", icon: CheckCircle, color: "text-green-600" },
+        { title: "Client Rating", value: "4.9", change: 2.1, trend: "up", icon: Star, color: "text-yellow-600" },
+        { title: "Earnings", value: "$8,920", change: 25.3, trend: "up", icon: Wallet, color: "text-green-600" },
+        { title: "Response Time", value: "2.1h", change: -12.4, trend: "down", icon: Clock, color: "text-blue-600" },
+      ]
+    },
+    {
+      name: "Crypto Trading",
+      icon: Coins,
+      color: "bg-yellow-500",
+      growth: 18.7,
+      active: true,
+      metrics: [
+        { title: "Portfolio Value", value: "$24,567", change: 22.8, trend: "up", icon: TrendingUp, color: "text-green-600" },
+        { title: "Trading Volume", value: "$156K", change: 45.1, trend: "up", icon: BarChart3, color: "text-blue-600" },
+        { title: "Win Rate", value: "72%", change: 8.3, trend: "up", icon: Target, color: "text-emerald-600" },
+        { title: "P&L Today", value: "+$342", change: 0, trend: "up", icon: HandCoins, color: "text-green-600" },
+      ]
+    },
+    {
+      name: "Messages & Chat",
+      icon: MessageSquare,
+      color: "bg-purple-500",
+      growth: 19.4,
+      active: true,
+      metrics: [
+        { title: "Messages Sent", value: "2,341", change: 15.6, trend: "up", icon: MessageCircle, color: "text-blue-600" },
+        { title: "Active Chats", value: "89", change: 12.8, trend: "up", icon: Users, color: "text-green-600" },
+        { title: "Response Rate", value: "94%", change: 3.2, trend: "up", icon: CheckCircle, color: "text-emerald-600" },
+        { title: "Avg Response", value: "5min", change: -8.1, trend: "down", icon: Timer, color: "text-orange-600" },
+      ]
+    },
+    {
+      name: "Live Streaming",
+      icon: Radio,
+      color: "bg-pink-500",
+      growth: 67.3,
+      active: true,
+      metrics: [
+        { title: "Live Sessions", value: "23", change: 83.2, trend: "up", icon: Radio, color: "text-pink-600" },
+        { title: "Peak Viewers", value: "1,247", change: 45.7, trend: "up", icon: Eye, color: "text-blue-600" },
+        { title: "Stream Time", value: "34.2h", change: 28.9, trend: "up", icon: Clock, color: "text-green-600" },
+        { title: "Super Chats", value: "$445", change: 92.1, trend: "up", icon: Gift, color: "text-yellow-600" },
+      ]
+    },
+    {
+      name: "Events & Calendar",
+      icon: Calendar,
+      color: "bg-indigo-500",
+      growth: 34.6,
+      active: true,
+      metrics: [
+        { title: "Events Created", value: "12", change: 50.0, trend: "up", icon: CalendarIcon, color: "text-indigo-600" },
+        { title: "Attendees", value: "2,134", change: 42.3, trend: "up", icon: Users, color: "text-blue-600" },
+        { title: "Event Revenue", value: "$3,240", change: 67.8, trend: "up", icon: DollarSign, color: "text-green-600" },
+        { title: "Avg Rating", value: "4.7", change: 8.7, trend: "up", icon: Star, color: "text-yellow-600" },
+      ]
+    },
+  ];
+
+  const quickActions = [
+    { name: "Create Post", icon: Plus, color: "bg-blue-500", href: "/feed" },
+    { name: "New Video", icon: Video, color: "bg-red-500", href: "/videos" },
+    { name: "List Product", icon: ShoppingBag, color: "bg-green-500", href: "/marketplace" },
+    { name: "Find Job", icon: Briefcase, color: "bg-orange-500", href: "/freelance" },
+    { name: "Trade Crypto", icon: Coins, color: "bg-yellow-500", href: "/crypto" },
+    { name: "Go Live", icon: Radio, color: "bg-pink-500", href: "/live" },
+    { name: "Create Event", icon: Calendar, color: "bg-indigo-500", href: "/events" },
+    { name: "Start Chat", icon: MessageSquare, color: "bg-purple-500", href: "/chat" },
+  ];
+
+  const recentActivities = [
+    { type: "video", content: "Your video 'How to Trade Crypto' reached 10K views", time: "2 hours ago", icon: Video, color: "text-red-500" },
+    { type: "marketplace", content: "Product 'Digital Art Collection' sold for $89", time: "4 hours ago", icon: ShoppingBag, color: "text-green-500" },
+    { type: "freelance", content: "New project proposal received from TechCorp", time: "6 hours ago", icon: Briefcase, color: "text-orange-500" },
+    { type: "social", content: "Your post received 500+ likes and 50 comments", time: "8 hours ago", icon: Heart, color: "text-pink-500" },
+    { type: "crypto", content: "Portfolio gained $234 from BTC trade", time: "12 hours ago", icon: TrendingUp, color: "text-green-500" },
+  ];
+
+  const topPerformingContent = [
+    { title: "Crypto Trading Tutorial", type: "Video", views: "45.2K", engagement: "12.4%", revenue: "$234" },
+    { title: "Digital Art Masterpiece", type: "Product", views: "23.1K", engagement: "8.7%", revenue: "$450" },
+    { title: "Web Development Guide", type: "Post", views: "18.9K", engagement: "15.2%", revenue: "$89" },
+    { title: "Live Q&A Session", type: "Stream", views: "12.7K", engagement: "23.1%", revenue: "$156" },
+  ];
+
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + "M";
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + "K";
+    }
+    return num.toString();
+  };
+
+  const formatCurrency = (amount: string | number): string => {
+    const numAmount = typeof amount === 'string' ? parseFloat(amount.replace(/[^0-9.-]/g, '')) : amount;
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    }).format(numAmount);
+  };
+
+  const getTrendIcon = (trend: "up" | "down" | "neutral") => {
+    switch (trend) {
+      case "up":
+        return <TrendingUp className="w-3 h-3 text-green-500" />;
+      case "down":
+        return <TrendingDown className="w-3 h-3 text-red-500" />;
       default:
-        if (num >= 1000000) {
-          return (num / 1000000).toFixed(1) + "M";
-        } else if (num >= 1000) {
-          return (num / 1000).toFixed(1) + "K";
-        }
-        return num.toLocaleString();
+        return <Activity className="w-3 h-3 text-gray-500" />;
     }
   };
 
-  const getChangeIndicator = (change: number, type: string = "increase") => {
-    const isPositive = change > 0;
-    const isNegative = change < 0;
+  const filteredFeatures = platformFeatures.filter(feature =>
+    feature.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedFeatures.length === 0 || selectedFeatures.includes(feature.name))
+  );
 
-    return (
-      <div
-        className={cn(
-          "flex items-center gap-1 text-sm font-medium",
-          isPositive && "text-green-600 dark:text-green-400",
-          isNegative && "text-red-600 dark:text-red-400",
-          change === 0 && "text-gray-500 dark:text-gray-400",
-        )}
-      >
-        {isPositive && <TrendingUp className="w-3 h-3" />}
-        {isNegative && <TrendingDown className="w-3 h-3" />}
-        {change === 0 && <Equal className="w-3 h-3" />}
-        <span>{isPositive ? '+' : ''}{change.toFixed(1)}%</span>
-      </div>
-    );
-  };
-
-  const getInsightIcon = (type: string) => {
-    switch (type) {
-      case "opportunity":
-        return <Rocket className="w-5 h-5 text-green-600" />;
-      case "warning":
-        return <AlertCircle className="w-5 h-5 text-orange-600" />;
-      case "alert":
-        return <AlertCircle className="w-5 h-5 text-red-600" />;
-      case "recommendation":
-        return <Lightbulb className="w-5 h-5 text-blue-600" />;
-      case "trend":
-        return <TrendingUp className="w-5 h-5 text-purple-600" />;
-      default:
-        return <Brain className="w-5 h-5 text-gray-600" />;
+  const totalRevenue = platformFeatures.reduce((sum, feature) => {
+    const revenueMetric = feature.metrics.find(m => m.title.includes("Revenue") || m.title.includes("Earnings"));
+    if (revenueMetric && typeof revenueMetric.value === 'string') {
+      return sum + parseFloat(revenueMetric.value.replace(/[^0-9.-]/g, ''));
     }
-  };
+    return sum;
+  }, 0);
+
+  const totalGrowth = platformFeatures.reduce((sum, feature) => sum + feature.growth, 0) / platformFeatures.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>Enhanced Creator Dashboard | Softchat</title>
+        <title>Unified Creator Studio - Analytics Dashboard | SoftChat</title>
         <meta
           name="description"
-          content="Comprehensive analytics dashboard for content creators with detailed insights and predictions"
+          content="Comprehensive analytics dashboard for all platform features - social media, videos, marketplace, freelance, crypto, and more"
         />
       </Helmet>
 
-      {/* Enhanced Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      {/* Header */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-4 lg:h-20 gap-4">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-4 gap-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
-                    Enhanced Creator Studio
+                    Unified Creator Studio
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Advanced analytics & insights platform
+                    Complete analytics across all platform features
                   </p>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Badge
-                  variant="secondary"
-                  className="bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800 dark:from-purple-900 dark:to-blue-900 dark:text-purple-200 text-xs lg:text-sm"
-                >
-                  Pro Analytics
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="text-green-700 border-green-300 dark:text-green-400 dark:border-green-600 text-xs"
-                >
-                  Real-time
-                </Badge>
-              </div>
+              <Badge variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                Pro Analytics
+              </Badge>
             </div>
 
-            <div className="flex items-center gap-2 lg:gap-3 w-full lg:w-auto">
+            <div className="flex items-center gap-3 w-full lg:w-auto">
+              <div className="flex-1 lg:flex-none lg:w-64">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Input
+                    placeholder="Search features..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+              
               <Select value={timeRange} onValueChange={setTimeRange}>
-                <SelectTrigger className="w-32 lg:w-36">
+                <SelectTrigger className="w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -885,391 +368,451 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <SelectItem value="30d">Last 30 days</SelectItem>
                   <SelectItem value="90d">Last 3 months</SelectItem>
                   <SelectItem value="1y">Last year</SelectItem>
-                  <SelectItem value="custom">Custom range</SelectItem>
                 </SelectContent>
               </Select>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setComparisonMode(!comparisonMode)}
-                className={cn(
-                  "hidden lg:flex",
-                  comparisonMode && "bg-blue-50 border-blue-300 text-blue-700 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-300"
-                )}
-              >
-                <AreaChart className="w-4 h-4 mr-2" />
-                Compare
-              </Button>
+              <div className="flex items-center gap-1 border rounded-lg p-1">
+                <Button
+                  variant={viewMode === "grid" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("grid")}
+                  className="h-8 w-8 p-0"
+                >
+                  <Grid3X3 className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setViewMode("list")}
+                  className="h-8 w-8 p-0"
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+              </div>
 
-              <Button variant="outline" size="sm" className="hidden lg:flex">
+              <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </Button>
 
               <Button variant="outline" size="sm">
-                <RefreshCw className="w-4 h-4 mr-2 lg:mr-2" />
-                <span className="hidden sm:inline">Refresh</span>
-              </Button>
-
-              <Button variant="outline" size="sm">
-                <Settings className="w-4 h-4" />
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Refresh
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="space-y-6"
-        >
-          {/* Enhanced Tab Navigation */}
+      {/* Quick Stats Overview */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-700">Total Revenue</p>
+                    <p className="text-2xl font-bold text-blue-900">{formatCurrency(totalRevenue)}</p>
+                  </div>
+                  <DollarSign className="w-8 h-8 text-blue-600" />
+                </div>
+                <div className="flex items-center mt-2 text-sm">
+                  <TrendingUp className="w-3 h-3 text-green-500 mr-1" />
+                  <span className="text-green-600">+{totalGrowth.toFixed(1)}%</span>
+                  <span className="text-gray-600 ml-1">vs last period</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-green-700">Active Features</p>
+                    <p className="text-2xl font-bold text-green-900">{platformFeatures.filter(f => f.active).length}</p>
+                  </div>
+                  <Zap className="w-8 h-8 text-green-600" />
+                </div>
+                <div className="flex items-center mt-2 text-sm">
+                  <CheckCircle className="w-3 h-3 text-green-500 mr-1" />
+                  <span className="text-green-600">All systems operational</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-purple-700">Avg Growth</p>
+                    <p className="text-2xl font-bold text-purple-900">{totalGrowth.toFixed(1)}%</p>
+                  </div>
+                  <TrendingUp className="w-8 h-8 text-purple-600" />
+                </div>
+                <div className="flex items-center mt-2 text-sm">
+                  <ArrowUpRight className="w-3 h-3 text-purple-500 mr-1" />
+                  <span className="text-purple-600">Across all features</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-orange-50 to-orange-100 border-orange-200">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-orange-700">Performance</p>
+                    <p className="text-2xl font-bold text-orange-900">Excellent</p>
+                  </div>
+                  <Target className="w-8 h-8 text-orange-600" />
+                </div>
+                <div className="flex items-center mt-2 text-sm">
+                  <Star className="w-3 h-3 text-orange-500 mr-1" />
+                  <span className="text-orange-600">Above benchmarks</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Tabs value={activeSection} onValueChange={setActiveSection} className="space-y-6">
           <div className="w-full overflow-x-auto">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 lg:w-auto min-w-fit gap-2 h-12 lg:h-auto p-1 bg-gray-100 dark:bg-gray-800">
-              <TabsTrigger
-                value="overview"
-                className="flex items-center gap-2 text-sm lg:text-base data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
+            <TabsList className="grid grid-cols-4 lg:grid-cols-6 min-w-fit">
+              <TabsTrigger value="overview" className="flex items-center gap-2">
                 <Eye className="w-4 h-4" />
                 <span className="hidden sm:inline">Overview</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="content"
-                className="flex items-center gap-2 text-sm lg:text-base data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <Video className="w-4 h-4" />
+              <TabsTrigger value="features" className="flex items-center gap-2">
+                <Layers className="w-4 h-4" />
+                <span className="hidden sm:inline">Features</span>
+              </TabsTrigger>
+              <TabsTrigger value="content" className="flex items-center gap-2">
+                <FileText className="w-4 h-4" />
                 <span className="hidden sm:inline">Content</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="audience"
-                className="flex items-center gap-2 text-sm lg:text-base data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">Audience</span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="revenue"
-                className="flex items-center gap-2 text-sm lg:text-base data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
+              <TabsTrigger value="revenue" className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4" />
                 <span className="hidden sm:inline">Revenue</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="insights"
-                className="flex items-center gap-2 text-sm lg:text-base data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <Brain className="w-4 h-4" />
-                <span className="hidden sm:inline">AI Insights</span>
+              <TabsTrigger value="audience" className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">Audience</span>
               </TabsTrigger>
-              <TabsTrigger
-                value="growth"
-                className="flex items-center gap-2 text-sm lg:text-base data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                <Rocket className="w-4 h-4" />
-                <span className="hidden sm:inline">Growth</span>
+              <TabsTrigger value="insights" className="flex items-center gap-2">
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline">Insights</span>
               </TabsTrigger>
             </TabsList>
           </div>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
-            {/* Enhanced Key Metrics Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {enhancedMetrics.slice(0, 8).map((metric, index) => (
-                <Card
-                  key={index}
-                  className={cn(
-                    "hover:shadow-lg transition-all duration-200 cursor-pointer border-0 shadow-md",
-                    selectedMetric === metric.label && "ring-2 ring-blue-500 shadow-xl",
-                    "bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900"
-                  )}
-                  onClick={() => setSelectedMetric(selectedMetric === metric.label ? null : metric.label)}
-                >
-                  <CardContent className="p-4 lg:p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                            {metric.label}
-                          </p>
-                          {metric.confidence && (
-                            <Badge variant="outline" className="text-xs py-0">
-                              {metric.confidence}%
-                            </Badge>
-                          )}
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-yellow-500" />
+                  Quick Actions
+                </CardTitle>
+                <CardDescription>
+                  Jump to any platform feature to create content or manage your presence
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+                  {quickActions.map((action, index) => {
+                    const Icon = action.icon;
+                    return (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        className="h-auto p-4 flex flex-col items-center gap-2 hover:shadow-md transition-all duration-200"
+                        onClick={() => window.open(action.href, '_blank')}
+                      >
+                        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", action.color)}>
+                          <Icon className="w-4 h-4 text-white" />
                         </div>
-                        <p className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                          {formatNumber(metric.value, metric.format)}
-                        </p>
-                        {metric.goal && (
-                          <div className="space-y-1">
-                            <div className="flex justify-between text-xs text-gray-500">
-                              <span>Goal: {formatNumber(metric.goal, metric.format)}</span>
-                              <span>{((metric.value / metric.goal) * 100).toFixed(0)}%</span>
+                        <span className="text-xs font-medium text-center">{action.name}</span>
+                      </Button>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Platform Features Grid */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Platform Analytics</h2>
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-gray-400" />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    {filteredFeatures.length} of {platformFeatures.length} features
+                  </span>
+                </div>
+              </div>
+
+              <div className={cn(
+                "grid gap-6",
+                viewMode === "grid" ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1"
+              )}>
+                {filteredFeatures.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
+                    <Card key={index} className="hover:shadow-lg transition-all duration-200 group">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", feature.color)}>
+                              <Icon className="w-5 h-5 text-white" />
                             </div>
-                            <Progress 
-                              value={(metric.value / metric.goal) * 100} 
-                              className="h-1"
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex flex-col items-end">
-                        {getChangeIndicator(metric.change, metric.changeType)}
-                        {metric.trend && (
-                          <div className="mt-2">
-                            <div className="flex items-end gap-1 h-8">
-                              {metric.trend.slice(-5).map((value, idx) => {
-                                const height = ((value - Math.min(...metric.trend)) / 
-                                  (Math.max(...metric.trend) - Math.min(...metric.trend))) * 100;
-                                return (
-                                  <div
-                                    key={idx}
-                                    className={cn(
-                                      "w-1 rounded-t",
-                                      idx === metric.trend.length - 1 ? "bg-blue-500" : "bg-gray-300 dark:bg-gray-600"
-                                    )}
-                                    style={{ height: `${Math.max(height, 10)}%` }}
-                                  />
-                                );
-                              })}
+                            <div>
+                              <CardTitle className="text-lg">{feature.name}</CardTitle>
+                              <div className="flex items-center gap-2 mt-1">
+                                <Badge variant={feature.active ? "default" : "secondary"} className="text-xs">
+                                  {feature.active ? "Active" : "Inactive"}
+                                </Badge>
+                                <div className="flex items-center gap-1 text-sm">
+                                  <TrendingUp className="w-3 h-3 text-green-500" />
+                                  <span className="text-green-600">+{feature.growth}%</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {metric.description && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                        {metric.description}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <ExternalLink className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 gap-4">
+                          {feature.metrics.map((metric, metricIndex) => {
+                            const MetricIcon = metric.icon;
+                            return (
+                              <div key={metricIndex} className="space-y-2">
+                                <div className="flex items-center gap-2">
+                                  <MetricIcon className={cn("w-4 h-4", metric.color)} />
+                                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                                    {metric.title}
+                                  </span>
+                                </div>
+                                <div className="space-y-1">
+                                  <div className="text-xl font-bold text-gray-900 dark:text-white">
+                                    {typeof metric.value === 'string' && metric.value.includes('$') 
+                                      ? metric.value 
+                                      : metric.value
+                                    }
+                                  </div>
+                                  <div className="flex items-center gap-1 text-sm">
+                                    {getTrendIcon(metric.trend)}
+                                    <span className={cn(
+                                      "font-medium",
+                                      metric.trend === "up" ? "text-green-600" : 
+                                      metric.trend === "down" ? "text-red-600" : "text-gray-600"
+                                    )}>
+                                      {metric.change > 0 ? '+' : ''}{metric.change}%
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Quick Insights Panel */}
-            {showInsights && (
-              <Card className="border-0 shadow-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
-                <CardHeader className="flex flex-row items-center justify-between pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Zap className="w-5 h-5 text-yellow-500" />
-                    Quick Insights
-                    <Badge variant="secondary" className="text-xs">
-                      AI-Powered
-                    </Badge>
+            {/* Recent Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Activity className="w-5 h-5 text-blue-500" />
+                    Recent Activity
                   </CardTitle>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowInsights(false)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    {predictiveInsights.slice(0, 3).map((insight) => (
-                      <div
-                        key={insight.id}
-                        className="p-4 bg-white dark:bg-gray-800 rounded-lg border shadow-sm hover:shadow-md transition-shadow"
-                      >
-                        <div className="flex items-start gap-3">
-                          {getInsightIcon(insight.type)}
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-medium text-sm">{insight.title}</h4>
-                              <Badge
-                                variant="outline"
-                                className={cn(
-                                  "text-xs",
-                                  insight.impact === "high" && "border-red-300 text-red-700 dark:border-red-600 dark:text-red-400",
-                                  insight.impact === "medium" && "border-yellow-300 text-yellow-700 dark:border-yellow-600 dark:text-yellow-400",
-                                  insight.impact === "low" && "border-green-300 text-green-700 dark:border-green-600 dark:text-green-400"
-                                )}
-                              >
-                                {insight.impact}
-                              </Badge>
-                            </div>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
-                              {insight.description}
+                  <div className="space-y-4">
+                    {recentActivities.map((activity, index) => {
+                      const Icon = activity.icon;
+                      return (
+                        <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                          <div className="flex-shrink-0">
+                            <Icon className={cn("w-5 h-5", activity.color)} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                              {activity.content}
                             </p>
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <Progress value={insight.confidence} className="w-16 h-1" />
-                                <span className="text-xs text-gray-500">{insight.confidence}%</span>
-                              </div>
-                              {insight.actionable && (
-                                <Button size="sm" variant="outline" className="text-xs h-6 px-2">
-                                  Act
-                                </Button>
-                              )}
-                            </div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                              {activity.time}
+                            </p>
                           </div>
                         </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Crown className="w-5 h-5 text-yellow-500" />
+                    Top Performing Content
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {topPerformingContent.map((content, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                              {content.title}
+                            </h4>
+                            <Badge variant="outline" className="text-xs">
+                              {content.type}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                            <span className="flex items-center gap-1">
+                              <Eye className="w-3 h-3" />
+                              {content.views}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Heart className="w-3 h-3" />
+                              {content.engagement}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <DollarSign className="w-3 h-3" />
+                              {content.revenue}
+                            </span>
+                          </div>
+                        </div>
+                        <Button variant="ghost" size="sm">
+                          <ChevronRight className="w-4 h-4" />
+                        </Button>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-            )}
+            </div>
+          </TabsContent>
 
-            {/* Enhanced Top Content Performance */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-yellow-500" />
-                    Top Performing Content
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Eye className="w-4 h-4 mr-2" />
-                    View All
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {topContent.map((content, index) => (
-                    <div
-                      key={content.id}
-                      className={cn(
-                        "p-4 rounded-lg border transition-all duration-200 cursor-pointer",
-                        selectedContent === content.id 
-                          ? "bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-700" 
-                          : "bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      )}
-                      onClick={() => setSelectedContent(selectedContent === content.id ? null : content.id)}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="text-sm font-medium text-gray-500 w-8 text-center">
-                          #{index + 1}
+          {/* Features Tab */}
+          <TabsContent value="features" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {platformFeatures.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <Card key={index} className="hover:shadow-lg transition-all duration-200">
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", feature.color)}>
+                          <Icon className="w-4 h-4 text-white" />
                         </div>
-                        <img
-                          src={content.thumbnail}
-                          alt={content.title}
-                          className="w-16 h-12 lg:w-20 lg:h-14 rounded object-cover shadow-sm"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <h4 className="font-medium text-sm lg:text-base truncate">
-                              {content.title}
-                            </h4>
-                            <div className="flex gap-1">
-                              {content.monetized && (
-                                <Badge variant="outline" className="text-xs">
-                                  <DollarSign className="w-3 h-3 mr-1" />
-                                  Monetized
-                                </Badge>
-                              )}
-                              {content.boosted && (
-                                <Badge variant="outline" className="text-xs">
-                                  <Zap className="w-3 h-3 mr-1" />
-                                  Boosted
-                                </Badge>
-                              )}
-                            </div>
+                        <div>
+                          <CardTitle className="text-base">{feature.name}</CardTitle>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant={feature.active ? "default" : "secondary"} className="text-xs">
+                              {feature.active ? "Active" : "Inactive"}
+                            </Badge>
                           </div>
-                          
-                          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-                            <div className="flex items-center gap-1">
-                              <Eye className="w-3 h-3 text-blue-500" />
-                              <span className="font-medium">{formatNumber(content.metrics.views)}</span>
-                              <span className="text-gray-500">views</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Heart className="w-3 h-3 text-red-500" />
-                              <span className="font-medium">{content.metrics.engagement.rate}%</span>
-                              <span className="text-gray-500">engagement</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <DollarSign className="w-3 h-3 text-green-500" />
-                              <span className="font-medium">{formatNumber(content.metrics.revenue.total, "currency")}</span>
-                              <span className="text-gray-500">revenue</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-purple-500" />
-                              <span className="font-medium">{formatDistanceToNow(content.publishedAt)}</span>
-                              <span className="text-gray-500">ago</span>
-                            </div>
-                          </div>
-
-                          {selectedContent === content.id && (
-                            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
-                              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs">
-                                <div>
-                                  <h5 className="font-medium mb-2">Performance Metrics</h5>
-                                  <div className="space-y-1">
-                                    <div className="flex justify-between">
-                                      <span>CTR:</span>
-                                      <span>{content.performance.ctr}%</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span>Retention:</span>
-                                      <span>{content.metrics.retention.retentionRate}%</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span>RPM:</span>
-                                      <span>${content.performance.rpm}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div>
-                                  <h5 className="font-medium mb-2">Top Traffic Sources</h5>
-                                  <div className="space-y-1">
-                                    {content.metrics.trafficSources.slice(0, 3).map((source) => (
-                                      <div key={source.source} className="flex justify-between">
-                                        <span className="truncate">{source.source}:</span>
-                                        <span>{source.percentage}%</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                                <div>
-                                  <h5 className="font-medium mb-2">Revenue Breakdown</h5>
-                                  <div className="space-y-1">
-                                    <div className="flex justify-between">
-                                      <span>Ads:</span>
-                                      <span>{formatNumber(content.metrics.revenue.adRevenue, "currency")}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span>Tips:</span>
-                                      <span>{formatNumber(content.metrics.revenue.tips, "currency")}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span>Subs:</span>
-                                      <span>{formatNumber(content.metrics.revenue.subscriptions, "currency")}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
                         </div>
-                        
-                        <div className="flex flex-col items-end gap-2">
-                          <Button variant="ghost" size="sm">
-                            <ExternalLink className="w-4 h-4" />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600 dark:text-gray-400">Growth Rate</span>
+                          <div className="flex items-center gap-1">
+                            <TrendingUp className="w-3 h-3 text-green-500" />
+                            <span className="text-green-600 font-medium">+{feature.growth}%</span>
+                          </div>
+                        </div>
+                        <Progress value={feature.growth} className="h-2" />
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="flex-1">
+                            View Details
                           </Button>
-                          <Button variant="ghost" size="sm">
-                            <MoreHorizontal className="w-4 h-4" />
+                          <Button size="sm" className="flex-1">
+                            Manage
                           </Button>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
           </TabsContent>
 
-          {/* Additional tabs would continue here with similar enhanced designs... */}
-          
+          {/* Content Tab */}
+          <TabsContent value="content" className="space-y-6">
+            <div className="text-center py-12">
+              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Content Analytics</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Detailed content performance metrics across all platforms
+              </p>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Analyze Content
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Revenue Tab */}
+          <TabsContent value="revenue" className="space-y-6">
+            <div className="text-center py-12">
+              <DollarSign className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Revenue Analytics</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Comprehensive revenue tracking and forecasting
+              </p>
+              <Button>
+                <BarChart3 className="w-4 h-4 mr-2" />
+                View Revenue Dashboard
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Audience Tab */}
+          <TabsContent value="audience" className="space-y-6">
+            <div className="text-center py-12">
+              <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Audience Analytics</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Deep insights into your audience across all platforms
+              </p>
+              <Button>
+                <Eye className="w-4 h-4 mr-2" />
+                Analyze Audience
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Insights Tab */}
+          <TabsContent value="insights" className="space-y-6">
+            <div className="text-center py-12">
+              <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">AI-Powered Insights</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Smart recommendations and predictive analytics
+              </p>
+              <Button>
+                <Target className="w-4 h-4 mr-2" />
+                Get Insights
+              </Button>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </div>
