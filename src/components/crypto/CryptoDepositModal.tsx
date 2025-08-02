@@ -214,12 +214,12 @@ export default function CryptoDepositModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+        <DialogHeader className="sticky top-0 bg-background/95 backdrop-blur-sm pb-2 border-b">
+          <DialogTitle className="flex items-center gap-2 text-lg">
             <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30">
-              <ArrowDownLeft className="h-5 w-5 text-green-600" />
+              <ArrowDownLeft className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
-            Deposit Cryptocurrency
+            <span className="truncate">Deposit Cryptocurrency</span>
           </DialogTitle>
         </DialogHeader>
 
