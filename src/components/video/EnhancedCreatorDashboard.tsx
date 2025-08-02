@@ -2941,6 +2941,94 @@ const EnhancedCreatorDashboard: React.FC = () => {
           </TabsContent>
         </Tabs>
         )}
+
+        {/* Filter Modal */}
+        {showFilters && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 max-w-[90vw]">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Filter Content</h3>
+                <Button variant="ghost" size="sm" onClick={() => setShowFilters(false)}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Content Type</label>
+                  <Select value={filterType} onValueChange={setFilterType}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Content</SelectItem>
+                      <SelectItem value="video">Videos</SelectItem>
+                      <SelectItem value="post">Posts</SelectItem>
+                      <SelectItem value="product">Products</SelectItem>
+                      <SelectItem value="stream">Live Streams</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Sort By</label>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="recent">Most Recent</SelectItem>
+                      <SelectItem value="views">Most Views</SelectItem>
+                      <SelectItem value="engagement">Highest Engagement</SelectItem>
+                      <SelectItem value="revenue">Highest Revenue</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="flex gap-2 mt-6">
+                <Button variant="outline" className="flex-1" onClick={() => setShowFilters(false)}>
+                  Cancel
+                </Button>
+                <Button className="flex-1" onClick={() => { setShowFilters(false); alert('Filters applied!'); }}>
+                  Apply Filters
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Create Content Modal */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-96 max-w-[90vw]">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Create New Content</h3>
+                <Button variant="ghost" size="sm" onClick={() => setShowCreateModal(false)}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => { handleCreateContent('video'); setShowCreateModal(false); }}>
+                  <Video className="w-6 h-6" />
+                  <span className="text-sm">Video</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => { handleCreateContent('post'); setShowCreateModal(false); }}>
+                  <FileText className="w-6 h-6" />
+                  <span className="text-sm">Post</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => { handleCreateContent('live'); setShowCreateModal(false); }}>
+                  <Radio className="w-6 h-6" />
+                  <span className="text-sm">Live Stream</span>
+                </Button>
+                <Button variant="outline" className="h-20 flex flex-col gap-2" onClick={() => { handleCreateContent('product'); setShowCreateModal(false); }}>
+                  <ShoppingBag className="w-6 h-6" />
+                  <span className="text-sm">Product</span>
+                </Button>
+              </div>
+              <Button variant="outline" className="w-full mt-4" onClick={() => setShowCreateModal(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
