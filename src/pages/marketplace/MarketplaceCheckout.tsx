@@ -32,6 +32,7 @@ const MarketplaceCheckout = () => {
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [showCryptoPayment, setShowCryptoPayment] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
     name: user?.user_metadata?.name || "",
     email: user?.email || "",
