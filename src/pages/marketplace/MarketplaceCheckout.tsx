@@ -439,6 +439,20 @@ const MarketplaceCheckout = () => {
           </div>
         </div>
       )}
+
+      {/* Crypto Payment Modal */}
+      <UniversalCryptoPaymentModal
+        isOpen={showCryptoPayment}
+        onClose={() => setShowCryptoPayment(false)}
+        paymentRequest={createCryptoPaymentRequest()}
+        onSuccess={handleCryptoPaymentSuccess}
+        onError={(error) => {
+          console.error('Crypto payment error:', error);
+          setShowCryptoPayment(false);
+        }}
+        title="Complete Your Purchase"
+        description="Pay for your marketplace order using cryptocurrency"
+      />
     </div>
   );
 };
