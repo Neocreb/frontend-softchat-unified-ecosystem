@@ -235,20 +235,20 @@ export default function CryptoWithdrawModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+      <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="sticky top-0 bg-background/95 backdrop-blur-sm pb-2 border-b">
+          <DialogTitle className="flex items-center gap-2 text-lg">
             <div className="p-2 rounded-full bg-red-100 dark:bg-red-900/30">
-              <ArrowUpRight className="h-5 w-5 text-red-600" />
+              <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
             </div>
-            Withdraw Cryptocurrency
+            <span className="truncate">Withdraw Cryptocurrency</span>
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 px-1">
           {/* Crypto Selection */}
-          <div className="space-y-3">
-            <Label>Select Cryptocurrency</Label>
+          <div className="space-y-2 sm:space-y-3">
+            <Label className="text-sm font-medium">Select Cryptocurrency</Label>
             <Select
               value={selectedCrypto?.symbol}
               onValueChange={(symbol) => {
@@ -263,20 +263,20 @@ export default function CryptoWithdrawModal({
               <SelectContent>
                 {mockBalances.map((crypto) => (
                   <SelectItem key={crypto.symbol} value={crypto.symbol}>
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-3">
-                        <span className={cn("text-lg font-bold", crypto.color)}>
+                    <div className="flex items-center justify-between w-full gap-2">
+                      <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                        <span className={cn("text-base sm:text-lg font-bold flex-shrink-0", crypto.color)}>
                           {crypto.icon}
                         </span>
-                        <div>
-                          <div className="font-medium">{crypto.name}</div>
-                          <div className="text-xs text-muted-foreground">
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-sm sm:text-base truncate">{crypto.name}</div>
+                          <div className="text-xs text-muted-foreground truncate">
                             {crypto.network}
                           </div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-medium">{crypto.balance} {crypto.symbol}</div>
+                      <div className="text-right flex-shrink-0">
+                        <div className="font-medium text-xs sm:text-sm">{crypto.balance} {crypto.symbol}</div>
                         <div className="text-xs text-muted-foreground">
                           ${crypto.usdValue.toFixed(2)}
                         </div>
@@ -319,8 +319,8 @@ export default function CryptoWithdrawModal({
           {selectedCrypto && (
             <>
               {/* Amount Input */}
-              <div className="space-y-3">
-                <Label htmlFor="amount">Withdrawal Amount</Label>
+              <div className="space-y-2 sm:space-y-3">
+                <Label htmlFor="amount" className="text-sm font-medium">Withdrawal Amount</Label>
                 <div className="relative">
                   <Input
                     id="amount"
@@ -367,8 +367,8 @@ export default function CryptoWithdrawModal({
               </div>
 
               {/* Withdrawal Address */}
-              <div className="space-y-3">
-                <Label htmlFor="address">Withdrawal Address</Label>
+              <div className="space-y-2 sm:space-y-3">
+                <Label htmlFor="address" className="text-sm font-medium">Withdrawal Address</Label>
                 <Input
                   id="address"
                   value={address}
@@ -449,29 +449,29 @@ export default function CryptoWithdrawModal({
           )}
         </form>
 
-        <DialogFooter className="flex-col sm:flex-row gap-2">
+        <DialogFooter className="sticky bottom-0 bg-background/95 backdrop-blur-sm pt-4 border-t flex-col gap-2 sm:flex-row">
           <Button
             type="button"
             variant="outline"
             onClick={onClose}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto order-2 sm:order-1"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!selectedCrypto || !amount || !address || isLoading}
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
+            className="w-full sm:w-auto bg-red-600 hover:bg-red-700 order-1 sm:order-2"
           >
             {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                Processing...
+                <span className="text-sm sm:text-base">Processing...</span>
               </>
             ) : (
               <>
                 <Shield className="h-4 w-4 mr-2" />
-                Confirm Withdrawal
+                <span className="text-sm sm:text-base">Confirm Withdrawal</span>
               </>
             )}
           </Button>
