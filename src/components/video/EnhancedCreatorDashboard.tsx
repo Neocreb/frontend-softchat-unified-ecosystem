@@ -562,7 +562,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 {filteredFeatures.map((feature, index) => {
                   const Icon = feature.icon;
                   return (
-                    <Card key={index} className="hover:shadow-lg transition-all duration-200 group">
+                    <Card key={index} className="hover:shadow-lg transition-all duration-200 group cursor-pointer" onClick={() => setSelectedFeature(feature.name)}>
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
@@ -583,7 +583,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                             </div>
                           </div>
                           <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            <ExternalLink className="w-4 h-4" />
+                            <ChevronRight className="w-4 h-4" />
                           </Button>
                         </div>
                       </CardHeader>
