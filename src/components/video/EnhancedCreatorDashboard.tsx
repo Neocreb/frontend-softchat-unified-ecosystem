@@ -1472,11 +1472,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">Manage and configure your platform features</p>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline">
+                <Button variant="outline" onClick={() => alert('Opening global platform settings...')}>
                   <Settings className="w-4 h-4 mr-2" />
                   Global Settings
                 </Button>
-                <Button>
+                <Button onClick={() => alert('Feature marketplace coming soon! You\'ll be able to add new platform features.')}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Feature
                 </Button>
