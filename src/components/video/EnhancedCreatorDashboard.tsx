@@ -2392,17 +2392,393 @@ const EnhancedCreatorDashboard: React.FC = () => {
 
           {/* Insights Tab */}
           <TabsContent value="insights" className="space-y-6">
-            <div className="text-center py-12">
-              <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">AI-Powered Insights</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Smart recommendations and predictive analytics
-              </p>
-              <Button>
-                <Target className="w-4 h-4 mr-2" />
-                Get Insights
-              </Button>
+            {/* Insights Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">AI-Powered Insights</h2>
+                <p className="text-gray-600 dark:text-gray-400">Smart recommendations and predictive analytics for growth</p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refresh Insights
+                </Button>
+                <Button>
+                  <Target className="w-4 h-4 mr-2" />
+                  Set Goals
+                </Button>
+              </div>
             </div>
+
+            {/* AI Performance Score */}
+            <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-2">Overall Performance Score</h3>
+                    <p className="text-gray-600 dark:text-gray-400">AI-calculated performance across all platforms</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-purple-600 mb-2">94/100</div>
+                    <Badge variant="default" className="bg-purple-600">Excellent</Badge>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <Progress value={94} className="h-3" />
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    <span>Poor</span>
+                    <span>Average</span>
+                    <span>Good</span>
+                    <span>Excellent</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Key Insights */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="border-l-4 border-l-green-500">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-green-500" />
+                    <CardTitle className="text-lg">Growth Opportunity</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Your video content has 3x higher engagement than posts. Increase video production by 40% to boost overall performance.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <Badge variant="default" className="bg-green-100 text-green-800">High Impact</Badge>
+                    <Button size="sm" variant="outline">Act Now</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-blue-500">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-2">
+                    <Target className="w-5 h-5 text-blue-500" />
+                    <CardTitle className="text-lg">Optimization</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Post content between 6-9 PM for 45% higher engagement. Your current posting time is suboptimal.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800">Medium Impact</Badge>
+                    <Button size="sm" variant="outline">Schedule</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-purple-500">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-purple-500" />
+                    <CardTitle className="text-lg">Revenue Boost</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Add premium tiers to your marketplace. Similar creators see 60% revenue increase with tiered pricing.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <Badge variant="default" className="bg-purple-100 text-purple-800">High Impact</Badge>
+                    <Button size="sm" variant="outline">Implement</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Predictive Analytics */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-blue-500" />
+                  Predictive Analytics
+                </CardTitle>
+                <CardDescription>AI-powered forecasts based on your performance trends</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">65.3K</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Followers by Month End</div>
+                    <div className="flex items-center justify-center gap-1 mt-2 text-sm text-green-600">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>+44% growth</span>
+                    </div>
+                  </div>
+
+                  <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">$15.2K</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Next Month Revenue</div>
+                    <div className="flex items-center justify-center gap-1 mt-2 text-sm text-green-600">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>+24% increase</span>
+                    </div>
+                  </div>
+
+                  <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">2.8M</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Content Views Projection</div>
+                    <div className="flex items-center justify-center gap-1 mt-2 text-sm text-green-600">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>+67% growth</span>
+                    </div>
+                  </div>
+
+                  <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600">18.9%</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Engagement Rate Target</div>
+                    <div className="flex items-center justify-center gap-1 mt-2 text-sm text-green-600">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>+52% improvement</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Content Recommendations */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-green-500" />
+                    Content Recommendations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        type: "Video Tutorial",
+                        topic: "Advanced Crypto Trading Strategies",
+                        reason: "High demand topic in your audience",
+                        potential: "2.3K views, $450 revenue",
+                        confidence: 92
+                      },
+                      {
+                        type: "Live Stream",
+                        topic: "Q&A: Building Online Business",
+                        reason: "Your live content performs 3x better",
+                        potential: "1.8K viewers, $280 revenue",
+                        confidence: 87
+                      },
+                      {
+                        type: "Product Launch",
+                        topic: "Premium Course: Freelance Mastery",
+                        reason: "Your audience shows high interest in education",
+                        potential: "250 sales, $12.5K revenue",
+                        confidence: 78
+                      }
+                    ].map((rec, index) => (
+                      <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-xs">{rec.type}</Badge>
+                            <span className="font-medium">{rec.topic}</span>
+                          </div>
+                          <span className="text-sm text-green-600">{rec.confidence}% confidence</span>
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{rec.reason}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-green-600">{rec.potential}</span>
+                          <Button size="sm" variant="outline">Create Content</Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-blue-500" />
+                    Audience Growth Strategy
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        strategy: "Cross-Platform Promotion",
+                        description: "Promote your video content on social media",
+                        impact: "25% more views",
+                        effort: "Low"
+                      },
+                      {
+                        strategy: "Collaboration Opportunities",
+                        description: "Partner with creators in your niche",
+                        impact: "40% audience growth",
+                        effort: "Medium"
+                      },
+                      {
+                        strategy: "Trending Topic Integration",
+                        description: "Create content around #CryptoEducation",
+                        impact: "60% more reach",
+                        effort: "Low"
+                      },
+                      {
+                        strategy: "Community Building",
+                        description: "Start a Discord or Telegram group",
+                        impact: "80% higher engagement",
+                        effort: "High"
+                      }
+                    ].map((strategy, index) => (
+                      <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-medium">{strategy.strategy}</h4>
+                          <div className="flex gap-1">
+                            <Badge variant={strategy.effort === "Low" ? "default" : strategy.effort === "Medium" ? "secondary" : "outline"} className="text-xs">
+                              {strategy.effort} Effort
+                            </Badge>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{strategy.description}</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-green-600">{strategy.impact}</span>
+                          <Button size="sm" variant="outline">Implement</Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Market Trends */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-purple-500" />
+                  Market Trends & Opportunities
+                </CardTitle>
+                <CardDescription>Stay ahead with trending topics and emerging opportunities</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    {
+                      trend: "AI & Automation",
+                      growth: "+145%",
+                      opportunity: "Create AI tool reviews and tutorials",
+                      timeline: "Next 30 days",
+                      difficulty: "Medium"
+                    },
+                    {
+                      trend: "Sustainable Tech",
+                      growth: "+89%",
+                      opportunity: "Green technology investment content",
+                      timeline: "Next 60 days",
+                      difficulty: "Low"
+                    },
+                    {
+                      trend: "Remote Work Tools",
+                      growth: "+67%",
+                      opportunity: "Productivity and freelance tools reviews",
+                      timeline: "Ongoing",
+                      difficulty: "Low"
+                    },
+                    {
+                      trend: "Crypto Regulations",
+                      growth: "+234%",
+                      opportunity: "Educational content on compliance",
+                      timeline: "Immediate",
+                      difficulty: "High"
+                    },
+                    {
+                      trend: "Creator Economy",
+                      growth: "+156%",
+                      opportunity: "Monetization strategy guides",
+                      timeline: "Next 14 days",
+                      difficulty: "Medium"
+                    },
+                    {
+                      trend: "Web3 Development",
+                      growth: "+198%",
+                      opportunity: "DeFi and blockchain tutorials",
+                      timeline: "Next 45 days",
+                      difficulty: "High"
+                    }
+                  ].map((trend, index) => (
+                    <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium">{trend.trend}</h4>
+                        <Badge variant="default" className="bg-green-100 text-green-800 text-xs">{trend.growth}</Badge>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{trend.opportunity}</p>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-500">{trend.timeline}</span>
+                        <Badge variant={trend.difficulty === "Low" ? "secondary" : trend.difficulty === "Medium" ? "outline" : "destructive"} className="text-xs">
+                          {trend.difficulty}
+                        </Badge>
+                      </div>
+                      <Button size="sm" variant="outline" className="w-full mt-3">
+                        Create Content Plan
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* AI Assistant */}
+            <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 border-indigo-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-indigo-500" />
+                  AI Growth Assistant
+                </CardTitle>
+                <CardDescription>Get personalized recommendations and automated insights</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-lg border">
+                    <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
+                      <Zap className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium">Daily Growth Insight</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        "Your Tuesday content performs 34% better than other days. Consider scheduling your best content for Tuesdays."
+                      </p>
+                    </div>
+                    <Button size="sm" variant="outline">Apply</Button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <BarChart3 className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <h4 className="font-medium mb-1">Auto Analytics</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Weekly performance reports</p>
+                    </div>
+
+                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
+                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Target className="w-6 h-6 text-green-600" />
+                      </div>
+                      <h4 className="font-medium mb-1">Smart Goals</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">AI-suggested targets</p>
+                    </div>
+
+                    <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg border">
+                      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Zap className="w-6 h-6 text-purple-600" />
+                      </div>
+                      <h4 className="font-medium mb-1">Growth Automation</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Automated optimizations</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
         )}
