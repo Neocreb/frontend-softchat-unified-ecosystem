@@ -223,7 +223,7 @@ export default function CryptoDepositModal({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6 px-1">
           {/* Crypto Selection */}
           <div className="space-y-3">
             <Label>Select Cryptocurrency</Label>
