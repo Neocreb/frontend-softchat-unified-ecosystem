@@ -1907,11 +1907,11 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-400">Comprehensive revenue tracking across all income streams</p>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export Report
+                <Button variant="outline" onClick={() => handleExport('pdf')} disabled={isExporting}>
+                  <Download className={cn("w-4 h-4 mr-2", isExporting && "animate-spin")} />
+                  {isExporting ? 'Exporting...' : 'Export Report'}
                 </Button>
-                <Button>
+                <Button onClick={handleSetGoals}>
                   <Target className="w-4 h-4 mr-2" />
                   Set Goals
                 </Button>
