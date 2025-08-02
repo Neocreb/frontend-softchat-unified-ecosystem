@@ -129,7 +129,7 @@ async function handleNavigationRequest(request) {
 // Handle API requests with cache-first for specific endpoints
 async function handleApiRequest(request) {
   const url = new URL(request.url);
-  const isCacheableAPI = CACHEABLE_APIs.some((api) =>
+  const isCacheableAPI = CACHEABLE_APIS.some((api) =>
     url.pathname.startsWith(api),
   );
 
