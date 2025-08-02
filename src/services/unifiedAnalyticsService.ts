@@ -708,7 +708,6 @@ class UnifiedAnalyticsService {
             name: 'Ethereum',
             holdings: 12.0,
             value: 18000,
-            value: 18000,
             pnl: 3200,
             pnlPercentage: 21.6
           }
