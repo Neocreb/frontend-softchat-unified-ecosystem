@@ -1,9 +1,6 @@
-import { 
-  socialCommerceService 
-} from './socialCommerceService';
-import { 
-  globalSearchService 
-} from './globalSearchService';
+// Note: Import actual services here when connecting to real APIs
+// import { socialCommerceService } from './socialCommerceService';
+// import { globalSearchService } from './globalSearchService';
 
 // Unified Analytics Data Types
 export interface PlatformMetrics {
