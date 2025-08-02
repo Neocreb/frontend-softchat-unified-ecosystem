@@ -1128,14 +1128,24 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 </Button>
               </div>
 
-              <Button variant="outline" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Export
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleExport()}
+                disabled={isExporting}
+              >
+                <Download className={cn("w-4 h-4 mr-2", isExporting && "animate-spin")} />
+                {isExporting ? 'Exporting...' : 'Export'}
               </Button>
 
-              <Button variant="outline" size="sm">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Refresh
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRefreshData}
+                disabled={isRefreshing}
+              >
+                <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
+                {isRefreshing ? 'Refreshing...' : 'Refresh'}
               </Button>
             </div>
           </div>
