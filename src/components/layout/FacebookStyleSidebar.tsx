@@ -178,8 +178,8 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     },
     {
       icon: <BarChart3 className="w-6 h-6 text-purple-600" />,
-      label: "Creator Studio",
-      href: "/app/creator-studio",
+      label: "Unified Creator Studio",
+      href: "/app/unified-creator-studio",
     },
     {
       icon: <Video className="w-6 h-6 text-red-600" />,
