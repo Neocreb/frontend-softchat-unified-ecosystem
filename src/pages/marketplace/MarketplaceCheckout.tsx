@@ -290,6 +290,23 @@ const MarketplaceCheckout = () => {
                     </p>
                   </div>
                 )}
+
+                {paymentMethod === 'crypto' && (
+                  <div className="mt-4 border rounded-md p-4 bg-orange-50 border-orange-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Zap className="h-4 w-4 text-orange-600" />
+                      <span className="font-medium text-orange-800">Fast & Secure Crypto Payment</span>
+                    </div>
+                    <p className="text-orange-700 text-sm">
+                      Pay instantly with your crypto wallet. Transactions are secured by blockchain technology and typically confirm within minutes.
+                    </p>
+                    <div className="mt-2 text-sm text-orange-600">
+                      • No chargebacks or payment disputes
+                      • Lower transaction fees
+                      • Enhanced privacy protection
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
