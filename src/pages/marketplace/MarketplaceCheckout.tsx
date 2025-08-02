@@ -373,6 +373,11 @@ const MarketplaceCheckout = () => {
                       <Package className="h-4 w-4 animate-spin" />
                       Processing...
                     </>
+                  ) : paymentMethod === 'crypto' ? (
+                    <>
+                      <Bitcoin className="h-4 w-4" />
+                      Pay with Crypto
+                    </>
                   ) : (
                     <>
                       <CheckCircle className="h-4 w-4" />
