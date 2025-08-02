@@ -348,13 +348,23 @@ const UnifiedHeader = ({
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      // Navigate to global search with enhanced URL params
       navigate(
-        `/app/global-search?q=${encodeURIComponent(searchQuery.trim())}`,
+        `/app/global-search?q=${encodeURIComponent(searchQuery.trim())}&source=header`,
       );
       setSearchQuery("");
       setShowSearchOverlay(false);
       setShowMobileSearch(false);
     }
+  };
+
+  const handleQuickSearch = (query: string, type?: string) => {
+    const searchUrl = `/app/global-search?q=${encodeURIComponent(query)}`;
+    const typeParam = type ? `&type=${type}` : '';
+    navigate(searchUrl + typeParam + '&source=header');
+    setSearchQuery("");
+    setShowSearchOverlay(false);
+    setShowMobileSearch(false);
   };
 
   const handleResultSelect = (result: SearchResult) => {
