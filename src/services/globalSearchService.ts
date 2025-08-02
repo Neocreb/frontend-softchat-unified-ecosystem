@@ -305,11 +305,88 @@ const allMockData: SearchResult[] = [
 ];
 
 class GlobalSearchService {
+  private baseUrl = '/api';
+
   private async delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   async search(params: SearchParams): Promise<SearchResponse> {
+    try {
+      // Try real API first, fallback to mock data
+      const realResults = await this.searchRealAPIs(params);
+      if (realResults.totalCount > 0) {
+        return realResults;
+      }
+    } catch (error) {
+      console.warn('Real API search failed, using mock data:', error);
+    }
+
+    // Fallback to enhanced mock data search
+    return this.searchMockData(params);
+  }
+
+  private async searchRealAPIs(params: SearchParams): Promise<SearchResponse> {
+    const { query, type, filters = {}, page = 1, limit = 20 } = params;
+
+    const searchPromises = [];
+
+    // Search across all platform APIs simultaneously
+    if (!type || type === 'all' || type === 'users') {
+      searchPromises.push(this.searchUsers(query, filters));
+    }
+    if (!type || type === 'all' || type === 'products') {
+      searchPromises.push(this.searchProducts(query, filters));
+    }
+    if (!type || type === 'all' || type === 'services' || type === 'jobs') {
+      searchPromises.push(this.searchFreelance(query, filters));
+    }
+    if (!type || type === 'all' || type === 'posts') {
+      searchPromises.push(this.searchPosts(query, filters));
+    }
+    if (!type || type === 'all' || type === 'videos') {
+      searchPromises.push(this.searchVideos(query, filters));
+    }
+    if (!type || type === 'all' || type === 'crypto') {
+      searchPromises.push(this.searchCrypto(query, filters));
+    }
+
+    const searchResults = await Promise.allSettled(searchPromises);
+
+    // Combine results from all APIs
+    let allResults: SearchResult[] = [];
+    searchResults.forEach(result => {
+      if (result.status === 'fulfilled' && result.value) {
+        allResults = allResults.concat(result.value);
+      }
+    });
+
+    // Filter by type if specified
+    let results = allResults;
+    if (type && type !== 'all') {
+      const targetType = type.endsWith('s') ? type.slice(0, -1) : type;
+      results = results.filter((item) => item.type === targetType);
+    }
+
+    // Apply additional filters and sorting
+    results = this.applyFiltersAndSort(results, filters, query);
+
+    // Pagination
+    const startIndex = (page - 1) * limit;
+    const paginatedResults = results.slice(startIndex, startIndex + limit);
+
+    return {
+      results: paginatedResults,
+      totalCount: results.length,
+      currentPage: page,
+      totalPages: Math.ceil(results.length / limit),
+      suggestions: await this.getSuggestions(query),
+      relatedSearches: this.generateRelatedSearches(query),
+      facets: this.generateFacets(results),
+    };
+  }
+
+  private async searchMockData(params: SearchParams): Promise<SearchResponse> {
     // Simulate API delay
     await this.delay(200);
 
@@ -328,16 +405,214 @@ class GlobalSearchService {
       results = results.filter((item) => item.type === targetType);
     }
 
+    // Apply filters and sorting
+    results = this.applyFiltersAndSort(results, filters, query);
+
+
+
+    // Pagination
+    const startIndex = (page - 1) * limit;
+    const paginatedResults = results.slice(startIndex, startIndex + limit);
+
+    // Generate suggestions (simple implementation)
+    const suggestions = this.generateSuggestions(query);
+
+    // Generate related searches
+    const relatedSearches = this.generateRelatedSearches(query);
+
+    // Generate facets
+    const facets = this.generateFacets(results);
+
+    return {
+      results: paginatedResults,
+      totalCount: results.length,
+      currentPage: page,
+      totalPages: Math.ceil(results.length / limit),
+      suggestions: this.generateSuggestions(query),
+      relatedSearches: this.generateRelatedSearches(query),
+      facets: this.generateFacets(results),
+    };
+  }
+
+  // Real API search methods
+  private async searchUsers(query: string, filters: SearchFilters): Promise<SearchResult[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/users/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Users search API failed');
+
+      const data = await response.json();
+      return data.users?.map((user: any) => ({
+        id: user.id,
+        type: 'user' as const,
+        title: user.name || user.username,
+        description: user.bio || `${user.name} - ${user.location || 'User'}`,
+        image: user.avatar,
+        location: user.location,
+        tags: user.skills || [],
+        author: { name: user.name, verified: user.verified },
+        stats: { views: user.profileViews },
+      })) || [];
+    } catch (error) {
+      console.warn('Users search failed:', error);
+      return [];
+    }
+  }
+
+  private async searchProducts(query: string, filters: SearchFilters): Promise<SearchResult[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/products/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Products search API failed');
+
+      const data = await response.json();
+      return data.products?.map((product: any) => ({
+        id: product.id,
+        type: 'product' as const,
+        title: product.name,
+        description: product.description,
+        image: product.images?.[0],
+        price: product.price,
+        rating: product.rating,
+        category: product.category,
+        tags: product.tags,
+        author: { name: product.seller?.name, verified: product.seller?.verified },
+        stats: { views: product.views, likes: product.likes },
+      })) || [];
+    } catch (error) {
+      console.warn('Products search failed:', error);
+      return [];
+    }
+  }
+
+  private async searchFreelance(query: string, filters: SearchFilters): Promise<SearchResult[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/freelance/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Freelance search API failed');
+
+      const data = await response.json();
+
+      const jobResults = data.jobs?.map((job: any) => ({
+        id: job.id,
+        type: 'job' as const,
+        title: job.title,
+        description: job.description,
+        price: job.budget,
+        category: job.category,
+        location: job.location,
+        tags: job.skills,
+        author: { name: job.client?.name, verified: job.client?.verified },
+        stats: { views: job.views },
+      })) || [];
+
+      const serviceResults = data.services?.map((service: any) => ({
+        id: service.id,
+        type: 'service' as const,
+        title: service.title,
+        description: service.description,
+        image: service.images?.[0],
+        price: service.price,
+        rating: service.rating,
+        category: service.category,
+        tags: service.tags,
+        author: { name: service.freelancer?.name, verified: service.freelancer?.verified },
+        stats: { views: service.views, likes: service.likes },
+      })) || [];
+
+      return [...jobResults, ...serviceResults];
+    } catch (error) {
+      console.warn('Freelance search failed:', error);
+      return [];
+    }
+  }
+
+  private async searchPosts(query: string, filters: SearchFilters): Promise<SearchResult[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/posts/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Posts search API failed');
+
+      const data = await response.json();
+      return data.posts?.map((post: any) => ({
+        id: post.id,
+        type: 'post' as const,
+        title: post.title || post.content.substring(0, 50) + '...',
+        description: post.content,
+        timestamp: new Date(post.createdAt),
+        category: post.category,
+        tags: post.hashtags,
+        author: {
+          name: post.author?.name,
+          avatar: post.author?.avatar,
+          verified: post.author?.verified
+        },
+        stats: {
+          views: post.views,
+          likes: post.likes,
+          comments: post.commentsCount,
+          shares: post.sharesCount
+        },
+      })) || [];
+    } catch (error) {
+      console.warn('Posts search failed:', error);
+      return [];
+    }
+  }
+
+  private async searchVideos(query: string, filters: SearchFilters): Promise<SearchResult[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/videos/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Videos search API failed');
+
+      const data = await response.json();
+      return data.videos?.map((video: any) => ({
+        id: video.id,
+        type: 'video' as const,
+        title: video.title,
+        description: video.description,
+        image: video.thumbnail,
+        author: { name: video.creator?.name, verified: video.creator?.verified },
+        category: video.category,
+        tags: video.tags,
+        stats: { views: video.views, likes: video.likes, comments: video.commentsCount },
+      })) || [];
+    } catch (error) {
+      console.warn('Videos search failed:', error);
+      return [];
+    }
+  }
+
+  private async searchCrypto(query: string, filters: SearchFilters): Promise<SearchResult[]> {
+    try {
+      const response = await fetch(`${this.baseUrl}/crypto/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('Crypto search API failed');
+
+      const data = await response.json();
+      return data.cryptos?.map((crypto: any) => ({
+        id: crypto.id,
+        type: 'crypto' as const,
+        title: `${crypto.name} (${crypto.symbol})`,
+        description: crypto.description,
+        price: crypto.price,
+        category: 'Cryptocurrency',
+        tags: [crypto.symbol, crypto.name, 'crypto'],
+        stats: { views: crypto.views },
+      })) || [];
+    } catch (error) {
+      console.warn('Crypto search failed:', error);
+      return [];
+    }
+  }
+
+  private applyFiltersAndSort(results: SearchResult[], filters: SearchFilters, query: string): SearchResult[] {
+    let filteredResults = [...results];
+
     // Apply filters
     if (filters.category) {
-      results = results.filter(
-        (item) =>
-          item.category?.toLowerCase() === filters.category?.toLowerCase(),
+      filteredResults = filteredResults.filter(
+        (item) => item.category?.toLowerCase() === filters.category?.toLowerCase(),
       );
     }
 
     if (filters.priceMin || filters.priceMax) {
-      results = results.filter((item) => {
+      filteredResults = filteredResults.filter((item) => {
         if (!item.price) return false;
         const min = filters.priceMin ? parseFloat(filters.priceMin) : 0;
         const max = filters.priceMax ? parseFloat(filters.priceMax) : Infinity;
@@ -347,21 +622,19 @@ class GlobalSearchService {
 
     if (filters.rating) {
       const minRating = parseFloat(filters.rating);
-      results = results.filter(
+      filteredResults = filteredResults.filter(
         (item) => item.rating && item.rating >= minRating,
       );
     }
 
     if (filters.location) {
-      results = results.filter((item) =>
-        item.location
-          ?.toLowerCase()
-          .includes(filters.location?.toLowerCase() || ""),
+      filteredResults = filteredResults.filter((item) =>
+        item.location?.toLowerCase().includes(filters.location?.toLowerCase() || ""),
       );
     }
 
     // Sort results
-    results.sort((a, b) => {
+    filteredResults.sort((a, b) => {
       const order = filters.sortOrder === "asc" ? 1 : -1;
 
       switch (filters.sortBy) {
@@ -383,43 +656,48 @@ class GlobalSearchService {
           return a.title.localeCompare(b.title) * order;
 
         default: // relevance
-          // Simple relevance scoring based on title match
-          const titleMatchA = a.title
-            .toLowerCase()
-            .includes(query.toLowerCase())
-            ? 1
-            : 0;
-          const titleMatchB = b.title
-            .toLowerCase()
-            .includes(query.toLowerCase())
-            ? 1
-            : 0;
-          return (titleMatchB - titleMatchA) * order;
+          // Enhanced relevance scoring
+          const scoreA = this.calculateRelevanceScore(a, query);
+          const scoreB = this.calculateRelevanceScore(b, query);
+          return (scoreB - scoreA) * order;
       }
     });
 
-    // Pagination
-    const startIndex = (page - 1) * limit;
-    const paginatedResults = results.slice(startIndex, startIndex + limit);
+    return filteredResults;
+  }
 
-    // Generate suggestions (simple implementation)
-    const suggestions = this.generateSuggestions(query);
+  private calculateRelevanceScore(item: SearchResult, query: string): number {
+    const lowerQuery = query.toLowerCase();
+    const lowerTitle = item.title.toLowerCase();
+    const lowerDescription = item.description.toLowerCase();
 
-    // Generate related searches
-    const relatedSearches = this.generateRelatedSearches(query);
+    let score = 0;
 
-    // Generate facets
-    const facets = this.generateFacets(results);
+    // Exact title match
+    if (lowerTitle === lowerQuery) score += 100;
+    // Title starts with query
+    else if (lowerTitle.startsWith(lowerQuery)) score += 80;
+    // Title contains query
+    else if (lowerTitle.includes(lowerQuery)) score += 60;
 
-    return {
-      results: paginatedResults,
-      totalCount: results.length,
-      currentPage: page,
-      totalPages: Math.ceil(results.length / limit),
-      suggestions,
-      relatedSearches,
-      facets,
-    };
+    // Description contains query
+    if (lowerDescription.includes(lowerQuery)) score += 20;
+
+    // Tags match
+    if (item.tags) {
+      item.tags.forEach(tag => {
+        if (tag.toLowerCase().includes(lowerQuery)) score += 30;
+      });
+    }
+
+    // Category match
+    if (item.category && item.category.toLowerCase().includes(lowerQuery)) score += 40;
+
+    // Boost by popularity
+    if (item.stats?.views) score += Math.log(item.stats.views) * 0.1;
+    if (item.rating) score += item.rating * 5;
+
+    return score;
   }
 
   private generateSuggestions(query: string): string[] {
