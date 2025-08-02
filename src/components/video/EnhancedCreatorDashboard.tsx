@@ -2743,7 +2743,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{rec.reason}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-green-600">{rec.potential}</span>
-                          <Button size="sm" variant="outline">Create Content</Button>
+                          <Button size="sm" variant="outline" onClick={() => handleCreateContent(rec.type.toLowerCase().replace(' ', ''))}>Create Content</Button>
                         </div>
                       </div>
                     ))}
