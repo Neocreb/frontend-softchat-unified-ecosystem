@@ -106,6 +106,7 @@ import {
   X,
   ChevronLeft,
   Home,
+  Globe,
 } from "lucide-react";
 
 interface MetricCard {
