@@ -424,7 +424,10 @@ const UnifiedCreatorStudio: React.FC = () => {
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
             {/* Unified Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className={cn(
+              "grid gap-3 sm:gap-4",
+              getResponsiveGrid("grid-cols-1", "grid-cols-2", "grid-cols-4")
+            )}>
               <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
