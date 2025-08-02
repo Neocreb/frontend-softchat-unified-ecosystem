@@ -1,6 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import { MobileAdminNavigation, MobileAdminFAB } from "@/components/admin/MobileAdminNavigation";
+import { RealtimeAdminNotifications, AdminConnectionStatus } from "@/components/admin/RealtimeAdminNotifications";
 import { useAdmin } from "@/contexts/AdminContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Shield, AlertTriangle } from "lucide-react";
