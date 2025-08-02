@@ -977,19 +977,19 @@ const EnhancedCreatorDashboard: React.FC = () => {
                 <CardTitle className="text-lg">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full justify-start">
+                <Button className="w-full justify-start" onClick={() => handleViewOriginal(content)}>
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Original
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={() => handleShareContent(content)}>
                   <Share2 className="w-4 h-4 mr-2" />
                   Share Content
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export Data
+                <Button variant="outline" className="w-full justify-start" onClick={() => handleExport('json')} disabled={isExporting}>
+                  <Download className={cn("w-4 h-4 mr-2", isExporting && "animate-spin")} />
+                  {isExporting ? 'Exporting...' : 'Export Data'}
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={() => alert(`Editing ${content.title}... Opening content editor.`)}>
                   <Settings className="w-4 h-4 mr-2" />
                   Edit Content
                 </Button>
