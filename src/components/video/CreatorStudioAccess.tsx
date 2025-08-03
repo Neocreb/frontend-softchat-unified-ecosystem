@@ -183,7 +183,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
           variant="ghost"
           size="sm"
           className="justify-start"
-          onClick={() => navigate("/app/creator-studio?tab=content")}
+          onClick={() => navigate("/app/unified-creator-studio?tab=content")}
         >
           <TrendingUp className="w-4 h-4 mr-2" />
           Content Analytics
