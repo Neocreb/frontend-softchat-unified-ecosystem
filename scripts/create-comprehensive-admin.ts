@@ -2,10 +2,10 @@
 
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
+import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import readline from "readline";
 import { wallets, adminUsers } from "../shared/enhanced-schema";
-
 import { users, profiles } from "../shared/schema";
 
 // Setup database connection
