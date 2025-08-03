@@ -285,9 +285,7 @@ POST /api/admin/boosts/:id/approve   # Approve boost
    - P2P Trading: 0.3% fee
 
 2. **Premium Subscriptions**
-   - Silver: $9.99/month
-   - Gold: $19.99/month
-   - Pro: $39.99/month
+   - Verified Premium: $9.99/month or $99.99/year (save 2 months!)
 
 3. **Boost System**
    - Featured listings
@@ -302,26 +300,22 @@ POST /api/admin/boosts/:id/approve   # Approve boost
 
 ### Premium Benefits
 
-#### Silver Tier
+#### Verified Premium Features
 
-- 5 free boosts/month
-- 5% fee discount
+- Blue Verified Badge across entire platform
+- Unlimited video uploads
+- 100GB storage (vs 5GB free)
+- No content auto-deletion (vs 90-day retention)
+- HD/4K upload & streaming quality
 - Priority support
-- Enhanced profile
-
-#### Gold Tier
-
-- 15 free boosts/month
-- 10% fee discount
+- Custom thumbnails
+- 100 AI credits monthly
+- SoftPoints bonus and cashback
+- Scheduled content
 - Advanced analytics
-- Custom branding
-
-#### Pro Tier
-
-- 50 free boosts/month
-- 20% fee discount
-- API access
-- White-label options
+- Verified spotlight in feeds
+- Verified collaborations
+- Co-host & stitched videos
 
 ## 🔄 Real-time Features
 
@@ -614,6 +608,7 @@ Common issues and solutions:
 
 ### Upcoming Features
 
+- [ ] DeFi features (staking, yield farming, DAO governance) - See [DEFI_ROADMAP.md](./DEFI_ROADMAP.md)
 - [ ] Video calling for premium users
 - [ ] AI-powered matching algorithms
 - [ ] Mobile applications (React Native)

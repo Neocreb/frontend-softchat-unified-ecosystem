@@ -22,6 +22,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { africanPaymentService } from "@/services/africanPaymentService";
 import {
   Send,
   ArrowDownLeft,

@@ -178,6 +178,8 @@ const IntegrationManager = () => {
     bankName: "",
     accountNumber: "",
     routingNumber: "",
+    sortCode: "",
+    swiftCode: "",
     accountType: "checking" as "checking" | "savings",
   });
 
@@ -208,6 +210,8 @@ const IntegrationManager = () => {
         bankName: "",
         accountNumber: "",
         routingNumber: "",
+        sortCode: "",
+        swiftCode: "",
         accountType: "checking",
       });
 
@@ -438,12 +442,72 @@ const IntegrationManager = () => {
                         <SelectValue placeholder="Select your bank" />
                       </SelectTrigger>
                       <SelectContent>
+                        {/* US Banks */}
                         <SelectItem value="Chase Bank">Chase Bank</SelectItem>
                         <SelectItem value="Wells Fargo">Wells Fargo</SelectItem>
                         <SelectItem value="Bank of America">Bank of America</SelectItem>
                         <SelectItem value="Citibank">Citibank</SelectItem>
                         <SelectItem value="Capital One">Capital One</SelectItem>
                         <SelectItem value="TD Bank">TD Bank</SelectItem>
+
+                        {/* Nigerian Banks */}
+                        <SelectItem value="Access Bank">Access Bank Nigeria</SelectItem>
+                        <SelectItem value="Zenith Bank">Zenith Bank</SelectItem>
+                        <SelectItem value="First Bank Nigeria">First Bank Nigeria</SelectItem>
+                        <SelectItem value="Guaranty Trust Bank">Guaranty Trust Bank (GTBank)</SelectItem>
+                        <SelectItem value="United Bank for Africa">United Bank for Africa (UBA)</SelectItem>
+                        <SelectItem value="Fidelity Bank">Fidelity Bank Nigeria</SelectItem>
+                        <SelectItem value="Sterling Bank">Sterling Bank</SelectItem>
+                        <SelectItem value="Union Bank Nigeria">Union Bank Nigeria</SelectItem>
+                        <SelectItem value="Wema Bank">Wema Bank</SelectItem>
+                        <SelectItem value="Polaris Bank">Polaris Bank</SelectItem>
+                        <SelectItem value="Stanbic IBTC">Stanbic IBTC Bank</SelectItem>
+                        <SelectItem value="Ecobank Nigeria">Ecobank Nigeria</SelectItem>
+                        <SelectItem value="FCMB">First City Monument Bank (FCMB)</SelectItem>
+                        <SelectItem value="Keystone Bank">Keystone Bank</SelectItem>
+                        <SelectItem value="Unity Bank">Unity Bank</SelectItem>
+
+                        {/* South African Banks */}
+                        <SelectItem value="Standard Bank SA">Standard Bank South Africa</SelectItem>
+                        <SelectItem value="ABSA Bank">ABSA Bank</SelectItem>
+                        <SelectItem value="First National Bank SA">First National Bank (FNB)</SelectItem>
+                        <SelectItem value="Nedbank">Nedbank</SelectItem>
+                        <SelectItem value="Capitec Bank">Capitec Bank</SelectItem>
+                        <SelectItem value="African Bank">African Bank</SelectItem>
+
+                        {/* Kenyan Banks */}
+                        <SelectItem value="KCB Bank Kenya">KCB Bank Kenya</SelectItem>
+                        <SelectItem value="Equity Bank Kenya">Equity Bank Kenya</SelectItem>
+                        <SelectItem value="Cooperative Bank Kenya">Cooperative Bank of Kenya</SelectItem>
+                        <SelectItem value="Standard Chartered Kenya">Standard Chartered Kenya</SelectItem>
+                        <SelectItem value="NCBA Bank Kenya">NCBA Bank Kenya</SelectItem>
+
+                        {/* Ghanaian Banks */}
+                        <SelectItem value="GCB Bank Ghana">GCB Bank Ghana</SelectItem>
+                        <SelectItem value="Ecobank Ghana">Ecobank Ghana</SelectItem>
+                        <SelectItem value="Standard Chartered Ghana">Standard Chartered Ghana</SelectItem>
+                        <SelectItem value="Zenith Bank Ghana">Zenith Bank Ghana</SelectItem>
+                        <SelectItem value="Access Bank Ghana">Access Bank Ghana</SelectItem>
+
+                        {/* Other African Banks */}
+                        <SelectItem value="Bank of Africa">Bank of Africa (Multiple Countries)</SelectItem>
+                        <SelectItem value="Ecobank Group">Ecobank (Pan-African)</SelectItem>
+                        <SelectItem value="Standard Bank Group">Standard Bank Group (Pan-African)</SelectItem>
+
+                        {/* Digital/Mobile Banks */}
+                        <SelectItem value="Kuda Bank">Kuda Bank (Nigeria)</SelectItem>
+                        <SelectItem value="VBank">VBank (Nigeria)</SelectItem>
+                        <SelectItem value="Opay">Opay (Nigeria)</SelectItem>
+                        <SelectItem value="PalmPay">PalmPay (Nigeria)</SelectItem>
+                        <SelectItem value="TymeBank">TymeBank (South Africa)</SelectItem>
+
+                        {/* Mobile Money */}
+                        <SelectItem value="MTN Mobile Money">MTN Mobile Money</SelectItem>
+                        <SelectItem value="Airtel Money">Airtel Money</SelectItem>
+                        <SelectItem value="Vodacom M-Pesa">Vodacom M-Pesa</SelectItem>
+                        <SelectItem value="Orange Money">Orange Money</SelectItem>
+
+                        <SelectItem value="Other">Other Bank</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -459,13 +523,39 @@ const IntegrationManager = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="routing-number">Routing Number</Label>
+                    <Label htmlFor="routing-number">Routing Number (US Banks)</Label>
                     <Input
                       id="routing-number"
-                      placeholder="Enter routing number"
+                      placeholder="021000021"
                       value={newBankAccount.routingNumber}
                       onChange={(e) => setNewBankAccount(prev => ({ ...prev, routingNumber: e.target.value }))}
+                      maxLength={9}
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="sort-code">Sort Code (UK/SA Banks)</Label>
+                    <Input
+                      id="sort-code"
+                      placeholder="12-34-56"
+                      value={newBankAccount.sortCode}
+                      onChange={(e) => setNewBankAccount(prev => ({ ...prev, sortCode: e.target.value }))}
+                      maxLength={8}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="swift-code">SWIFT/BIC Code (International)</Label>
+                    <Input
+                      id="swift-code"
+                      placeholder="ABNANL2A"
+                      value={newBankAccount.swiftCode}
+                      onChange={(e) => setNewBankAccount(prev => ({ ...prev, swiftCode: e.target.value }))}
+                      maxLength={11}
+                    />
+                    <p className="text-xs text-gray-500">
+                      Required for international transfers and most African banks
+                    </p>
                   </div>
 
                   <div className="space-y-2">

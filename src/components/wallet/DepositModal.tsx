@@ -20,7 +20,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { walletService } from "@/services/walletService";
+import { africanPaymentService, type PaymentResponse } from "@/services/africanPaymentService";
 import { useToast } from "@/components/ui/use-toast";
+import AfricanCountryCurrencySelector from "./AfricanCountryCurrencySelector";
+import PaymentStatusDisplay from "./PaymentStatusDisplay";
 // import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
 // import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
 import {
@@ -53,6 +56,9 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<any>(null);
+  const [showCountrySelector, setShowCountrySelector] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<{transactionId: string, amount: number, method: string, provider?: string} | null>(null);
   const { toast } = useToast();
   // const { currentCurrency, availablePaymentMethods, formatCurrency } = useI18n(); // Temporarily disabled
 
@@ -74,6 +80,18 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
       label: "Cryptocurrency",
       icon: Bitcoin,
       color: "text-orange-600",
+    },
+    {
+      value: "mobile",
+      label: "Mobile Money",
+      icon: Smartphone,
+      color: "text-purple-600",
+    },
+    {
+      value: "ewallet",
+      label: "E-Wallet/Digital Payment",
+      icon: Building,
+      color: "text-indigo-600",
     },
   ];
 
@@ -138,21 +156,50 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
     setIsLoading(true);
 
     try {
-      const result = await walletService.processDeposit({
-        amount: depositAmount,
-        method,
-        source,
-        description: description || undefined,
-      });
+      let result: PaymentResponse;
+
+      // Route to appropriate payment service based on method
+      if (method === "mobile") {
+        result = await africanPaymentService.processMobileMoneyDeposit({
+          provider: selectedPaymentMethod,
+          phoneNumber: "user-phone", // This would come from user profile
+          amount: depositAmount,
+          currency: "USD",
+          reference: `DEP_${Date.now()}`,
+        });
+      } else if (method === "ewallet") {
+        result = await africanPaymentService.processPaymentGateway(
+          selectedPaymentMethod,
+          depositAmount,
+          "deposit"
+        );
+      } else {
+        // Fall back to original wallet service for card/bank/crypto
+        const walletResult = await walletService.processDeposit({
+          amount: depositAmount,
+          method,
+          source,
+          description: description || undefined,
+        });
+
+        result = {
+          success: walletResult.success,
+          transactionId: `TXN_${Date.now()}`,
+          reference: `REF_${Date.now()}`,
+          status: walletResult.success ? "completed" : "failed",
+          message: walletResult.message,
+        };
+      }
 
       if (result.success) {
-        toast({
-          title: "Deposit Successful",
-          description: result.message,
+        // Show payment status instead of immediate close
+        setPaymentStatus({
+          transactionId: result.transactionId || `TXN_${Date.now()}`,
+          amount: depositAmount,
+          method: method,
+          provider: selectedPaymentMethod || selectedCountry?.name
         });
         onSuccess();
-        onClose();
-        resetForm();
       } else {
         toast({
           title: "Deposit Failed",
@@ -163,7 +210,7 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to process deposit",
+        description: "Failed to process deposit. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -215,6 +262,33 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
             </div>
             <p className="text-sm text-gray-500">Minimum deposit: $1.00</p>
           </div>
+
+          {/* Country & Currency Selection */}
+          {(method === "mobile" || method === "ewallet" || method === "bank") && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label>Regional Payment Settings</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCountrySelector(!showCountrySelector)}
+                >
+                  {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.name}` : "Select Country"}
+                </Button>
+              </div>
+              {showCountrySelector && (
+                <AfricanCountryCurrencySelector
+                  selectedCountry={selectedCountry?.code}
+                  onCountryChange={(country) => {
+                    setSelectedCountry(country);
+                    setShowCountrySelector(false);
+                  }}
+                  showPaymentMethods={true}
+                />
+              )}
+            </div>
+          )}
 
           {/* Payment Method Selection */}
           <div className="space-y-3">
@@ -305,13 +379,64 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
                     <p className="text-xs text-gray-500">
                       {method === "card" && "Instant processing, 2.9% fee"}
                       {method === "bank" && "1-3 business days, no fee"}
-                      {method === "crypto" &&
-                        "Network fees apply, varies by blockchain"}
+                      {method === "crypto" && "Network fees apply, varies by blockchain"}
+                      {method === "mobile" && "Instant via Mobile Money (MTN, Airtel, M-Pesa), 1.5% fee"}
+                      {method === "ewallet" && "Instant via PayStack, Flutterwave, Opay, 2.5% fee"}
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
+          )}
+
+          {/* Mobile Money Provider Selection */}
+          {method === "mobile" && (
+            <div className="space-y-3">
+              <Label htmlFor="mobile-provider">Mobile Money Provider</Label>
+              <Select value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your mobile money provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mtn_momo">MTN Mobile Money</SelectItem>
+                  <SelectItem value="airtel_money">Airtel Money</SelectItem>
+                  <SelectItem value="vodacom_mpesa">Vodacom M-Pesa</SelectItem>
+                  <SelectItem value="orange_money">Orange Money</SelectItem>
+                  <SelectItem value="tigo_pesa">Tigo Pesa</SelectItem>
+                  <SelectItem value="safaricom_mpesa">Safaricom M-Pesa (Kenya)</SelectItem>
+                  <SelectItem value="equity_eazzy">Equity Eazzy Pay</SelectItem>
+                  <SelectItem value="kcb_mpesa">KCB M-Pesa</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* E-Wallet Provider Selection */}
+          {method === "ewallet" && (
+            <div className="space-y-3">
+              <Label htmlFor="ewallet-provider">Digital Payment Provider</Label>
+              <Select value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your payment provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="paystack">PayStack</SelectItem>
+                  <SelectItem value="flutterwave">Flutterwave</SelectItem>
+                  <SelectItem value="opay">OPay</SelectItem>
+                  <SelectItem value="palmpay">PalmPay</SelectItem>
+                  <SelectItem value="kuda_bank">Kuda Bank</SelectItem>
+                  <SelectItem value="vbank">VBank</SelectItem>
+                  <SelectItem value="chipper_cash">Chipper Cash</SelectItem>
+                  <SelectItem value="carbon">Carbon (Formerly Paylater)</SelectItem>
+                  <SelectItem value="fairmoney">FairMoney</SelectItem>
+                  <SelectItem value="cowrywise">Cowrywise</SelectItem>
+                  <SelectItem value="piggyvest">PiggyVest</SelectItem>
+                  <SelectItem value="quickteller">Quickteller</SelectItem>
+                  <SelectItem value="remita">Remita</SelectItem>
+                  <SelectItem value="interswitch">Interswitch</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           )}
 
           {/* Description */}
