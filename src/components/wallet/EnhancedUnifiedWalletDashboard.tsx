@@ -123,9 +123,9 @@ const EnhancedWalletDashboardContent = () => {
 
         {/* Overview Tab - Enhanced with Quick Actions */}
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {/* Main Balance Card */}
-            <div className="xl:col-span-3">
+            <div className="md:col-span-2 lg:col-span-3">
               <Card className="overflow-hidden">
                 <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
                   <div className="text-center space-y-4">
@@ -162,7 +162,7 @@ const EnhancedWalletDashboardContent = () => {
             </div>
 
             {/* Quick Actions Sidebar */}
-            <div className="xl:col-span-1">
+            <div className="md:col-span-1">
               <QuickActionsWidget />
             </div>
           </div>
