@@ -287,6 +287,31 @@ const WithdrawModal = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Country & Currency Selection */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label>Regional Banking Settings</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setShowCountrySelector(!showCountrySelector)}
+              >
+                {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.name}` : "Select Country"}
+              </Button>
+            </div>
+            {showCountrySelector && (
+              <AfricanCountryCurrencySelector
+                selectedCountry={selectedCountry?.code}
+                onCountryChange={(country) => {
+                  setSelectedCountry(country);
+                  setShowCountrySelector(false);
+                }}
+                showPaymentMethods={true}
+              />
+            )}
+          </div>
+
           {/* Source Selection */}
           <div className="space-y-3">
             <Label htmlFor="source">Withdraw From</Label>
