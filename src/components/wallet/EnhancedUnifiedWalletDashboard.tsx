@@ -59,14 +59,14 @@ const EnhancedWalletDashboardContent = () => {
       {/* Enhanced Header */}
       <div className="mobile-flex sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Enhanced Wallet Dashboard
           </h1>
-          <p className="text-base text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             Complete financial management with advanced security
           </p>
         </div>
-        <div className="flex gap-2 flex-shrink-0">
+        <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0 w-full sm:w-auto mt-4 sm:mt-0">
           <Button
             onClick={() => setShowDepositModal(true)}
             className="bg-green-600 hover:bg-green-700"
