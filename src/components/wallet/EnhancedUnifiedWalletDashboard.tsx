@@ -116,8 +116,8 @@ const EnhancedWalletDashboardContent = () => {
                   `}
                   aria-current={activeTab === tab.id ? 'page' : undefined}
                 >
-                  <tab.icon className="h-5 w-5" />
-                  <span className="text-xs font-medium">{tab.label}</span>
+                  <tab.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="text-2xs sm:text-xs font-medium">{tab.label}</span>
                 </button>
               ))}
             </nav>
