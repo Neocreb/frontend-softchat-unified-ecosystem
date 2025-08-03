@@ -1910,7 +1910,7 @@ const EnhancedSettings = () => {
                   <Button
                     variant="outline"
                     className="h-auto p-4 flex flex-col items-center gap-2"
-                    onClick={() => window.open("/app/creator-studio", "_blank")}
+                    onClick={() => window.open("/app/unified-creator-studio", "_blank")}
                   >
                     <BarChart3 className="w-6 h-6 text-blue-600" />
                     <span className="font-medium">Creator Analytics</span>
