@@ -55,7 +55,7 @@ const ProfileDirectAccess: React.FC = () => {
   };
 
   const handleNavigateToCreatorStudio = () => {
-    navigate("/app/creator-studio");
+    navigate("/app/unified-creator-studio");
   };
 
   return (

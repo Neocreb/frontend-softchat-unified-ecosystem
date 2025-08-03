@@ -70,6 +70,8 @@ export const useChatThread = (threadId?: string) => {
       content: string,
       attachments?: string[],
       replyTo?: string,
+      messageType?: "text" | "image" | "file" | "voice",
+      metadata?: any,
     ): Promise<ChatMessage | null> => {
       if (!threadId || !content.trim()) return null;
 
@@ -79,7 +81,8 @@ export const useChatThread = (threadId?: string) => {
           content: content.trim(),
           attachments,
           replyTo,
-          messageType: "text",
+          messageType: messageType || "text",
+          metadata,
           currentUserId: user?.id,
         });
 

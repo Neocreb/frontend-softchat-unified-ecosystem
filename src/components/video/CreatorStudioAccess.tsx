@@ -160,7 +160,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
       <div className="flex gap-2">
         {showFullButton && (
           <Button
-            onClick={() => navigate("/app/creator-studio")}
+            onClick={() => navigate("/app/unified-creator-studio")}
             className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
           >
             Open Creator Studio
@@ -169,7 +169,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
         )}
         <Button
           variant="outline"
-          onClick={() => navigate("/app/creator-studio?tab=insights")}
+          onClick={() => navigate("/app/unified-creator-studio?tab=insights")}
           className="flex-1"
         >
           View Insights
@@ -183,7 +183,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
           variant="ghost"
           size="sm"
           className="justify-start"
-          onClick={() => navigate("/app/creator-studio?tab=content")}
+          onClick={() => navigate("/app/unified-creator-studio?tab=content")}
         >
           <TrendingUp className="w-4 h-4 mr-2" />
           Content Analytics
@@ -192,7 +192,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
           variant="ghost"
           size="sm"
           className="justify-start"
-          onClick={() => navigate("/app/creator-studio?tab=revenue")}
+          onClick={() => navigate("/app/unified-creator-studio?tab=revenue")}
         >
           <DollarSign className="w-4 h-4 mr-2" />
           Revenue Tracking

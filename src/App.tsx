@@ -53,6 +53,7 @@ import JobDetailPage from "./pages/freelance/JobDetailPage";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
+import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
@@ -395,6 +396,7 @@ const AppRoutes = () => {
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
+          <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
           <Route
             path="ai-assistant"
             element={<AIPersonalAssistantDashboard />}

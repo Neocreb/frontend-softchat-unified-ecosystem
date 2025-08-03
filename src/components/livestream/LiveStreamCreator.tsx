@@ -333,7 +333,7 @@ export function LiveStreamCreator({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate("/app/creator-studio")}
+            onClick={() => navigate("/app/unified-creator-studio")}
             className="flex items-center gap-2"
           >
             <BarChart3 className="h-4 w-4" />

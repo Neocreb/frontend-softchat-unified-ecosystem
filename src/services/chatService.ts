@@ -423,6 +423,7 @@ export const chatService = {
       readBy: [currentUserId],
       messageType: request.messageType || "text",
       replyTo: request.replyTo,
+      metadata: request.metadata,
     };
 
     // Add message to mock data

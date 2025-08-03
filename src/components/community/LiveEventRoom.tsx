@@ -271,7 +271,7 @@ const LiveEventRoom: React.FC<LiveEventRoomProps> = ({
               <Monitor className="w-4 h-4 mr-2" />
               Screen Share
             </Button>
-            <Link to="/app/creator-studio">
+            <Link to="/app/unified-creator-studio">
               <Button variant="outline" size="sm" className="w-full">
                 <Award className="w-4 h-4 mr-2" />
                 Creator Studio
