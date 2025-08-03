@@ -92,6 +92,19 @@ export interface SendMessageRequest {
   attachments?: string[];
   replyTo?: string;
   messageType?: "text" | "image" | "file" | "voice";
+  metadata?: {
+    fileName?: string;
+    fileSize?: number;
+    fileType?: string;
+    mediaType?: "image" | "video" | "file";
+    caption?: string;
+    duration?: number;
+    transcription?: string;
+    stickerName?: string;
+    pack?: string;
+    animated?: boolean;
+    [key: string]: any;
+  };
 }
 
 export interface ChatNotification {
