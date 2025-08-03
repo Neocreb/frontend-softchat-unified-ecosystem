@@ -460,19 +460,34 @@ class I18nService {
   private translations: Map<string, any> = new Map();
 
   constructor() {
-    this.detectUserLanguage();
-    this.detectUserCurrency();
-    this.detectUserRegion();
-    this.loadTranslations();
+    // Only initialize in browser environment
+    if (typeof window !== "undefined") {
+      try {
+        this.detectUserLanguage();
+        this.detectUserCurrency();
+        this.detectUserRegion();
+        this.loadTranslations();
+      } catch (error) {
+        console.warn("Failed to initialize i18n service:", error);
+        // Use defaults on error
+      }
+    }
   }
 
   // Language Management
   detectUserLanguage(): void {
-    const browserLang = navigator.language.split("-")[0];
-    const supportedLang = SUPPORTED_LANGUAGES.find(
-      (lang) => lang.code === browserLang,
-    );
-    this.currentLanguage = supportedLang ? browserLang : "en";
+    try {
+      if (typeof navigator !== "undefined" && navigator.language) {
+        const browserLang = navigator.language.split("-")[0];
+        const supportedLang = SUPPORTED_LANGUAGES.find(
+          (lang) => lang.code === browserLang,
+        );
+        this.currentLanguage = supportedLang ? browserLang : "en";
+      }
+    } catch (error) {
+      console.warn("Failed to detect language:", error);
+      this.currentLanguage = "en";
+    }
   }
 
   setLanguage(langCode: string): void {
