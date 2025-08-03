@@ -20,4 +20,16 @@ if (!process.env.DATABASE_URL) {
 }
 
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle({ client: pool, schema });
+const allSchemas = {
+  ...schema,
+  ...enhancedSchema,
+  ...adminSchema,
+  ...activityEconomySchema,
+  ...engagementSchema,
+  ...videoSchema,
+  ...socialSchema,
+  ...aiSchema,
+  ...notificationsSchema
+};
+
+export const db = drizzle({ client: pool, schema: allSchemas });
