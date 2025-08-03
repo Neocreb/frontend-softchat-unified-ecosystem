@@ -282,7 +282,7 @@ const AIAssistantFAB: React.FC = () => {
                   size="sm"
                   className="h-auto p-2 flex flex-col items-center gap-1"
                   onClick={() => {
-                    navigate("/app/creator-studio");
+                    navigate("/app/unified-creator-studio");
                     setIsOpen(false);
                   }}
                 >
