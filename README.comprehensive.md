@@ -608,6 +608,7 @@ Common issues and solutions:
 
 ### Upcoming Features
 
+- [ ] DeFi features (staking, yield farming, DAO governance) - See [DEFI_ROADMAP.md](./DEFI_ROADMAP.md)
 - [ ] Video calling for premium users
 - [ ] AI-powered matching algorithms
 - [ ] Mobile applications (React Native)
