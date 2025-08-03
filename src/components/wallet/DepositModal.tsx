@@ -317,8 +317,9 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
                     <p className="text-xs text-gray-500">
                       {method === "card" && "Instant processing, 2.9% fee"}
                       {method === "bank" && "1-3 business days, no fee"}
-                      {method === "crypto" &&
-                        "Network fees apply, varies by blockchain"}
+                      {method === "crypto" && "Network fees apply, varies by blockchain"}
+                      {method === "mobile" && "Instant via Mobile Money (MTN, Airtel, M-Pesa), 1.5% fee"}
+                      {method === "ewallet" && "Instant via PayStack, Flutterwave, Opay, 2.5% fee"}
                     </p>
                   </div>
                 </div>
