@@ -28,6 +28,9 @@ const BankAccountSettings = () => {
         bank_account_number: accountNumber,
         bank_account_name: accountName,
         bank_name: bankName,
+        routing_number: routingNumber,
+        sort_code: sortCode,
+        swift_code: swiftCode,
       });
 
       toast({
