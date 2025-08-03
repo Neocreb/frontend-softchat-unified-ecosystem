@@ -32,10 +32,13 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  // Initialize theme state with immediate localStorage check to avoid hydration issues
+  // Initialize theme state with safe localStorage check
   const [theme, setTheme] = useState<Theme>(() => {
+    // Always default to light theme initially to prevent hydration issues
     try {
-      if (typeof window !== "undefined" && window.localStorage) {
+      if (typeof window !== "undefined" &&
+          window.localStorage &&
+          typeof window.localStorage.getItem === "function") {
         const savedTheme = localStorage.getItem("theme") as Theme;
         if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
           return savedTheme;
@@ -44,7 +47,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     } catch (error) {
       console.warn("Failed to read theme from localStorage:", error);
     }
-    return "light"; // Default fallback
+    return "light"; // Safe default fallback
   });
 
   const [isDark, setIsDark] = useState(false);
