@@ -210,6 +210,8 @@ const IntegrationManager = () => {
         bankName: "",
         accountNumber: "",
         routingNumber: "",
+        sortCode: "",
+        swiftCode: "",
         accountType: "checking",
       });
 
