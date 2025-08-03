@@ -249,6 +249,21 @@ app.use("/api", adminComprehensiveRoutes);
 // Duet API Routes
 app.use("/api/duets", duetApiRoutes);
 
+// Video API Routes
+app.use("/api/videos", videoApiRoutes);
+
+// Social API Routes
+app.use("/api/social", socialApiRoutes);
+
+// AI API Routes
+app.use("/api/ai", aiApiRoutes);
+
+// Notifications API Routes
+app.use("/api/notifications", notificationsApiRoutes);
+
+// Analytics API Routes
+app.use("/api/analytics", analyticsApiRoutes);
+
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);
 
