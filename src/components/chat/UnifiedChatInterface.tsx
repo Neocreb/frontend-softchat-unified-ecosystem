@@ -26,7 +26,7 @@ import {
   VideoIcon,
   X,
 } from "lucide-react";
-import { EnhancedChatInput } from "./EnhancedChatInput";
+import WhatsAppChatInput from "./WhatsAppChatInput";
 import { VoiceVideoCall } from "./VoiceVideoCall";
 import { GroupVideoRoom } from "./GroupVideoRoom";
 import { EnhancedMessage, EnhancedChatMessage } from "./EnhancedMessage";
