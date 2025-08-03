@@ -30,6 +30,7 @@ import {
   Sparkles,
 
 } from "lucide-react";
+import AfricanPaymentQuickLinks from "./AfricanPaymentQuickLinks";
 
 interface QuickAction {
   id: string;
