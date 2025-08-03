@@ -37,7 +37,21 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
 
   const [isDark, setIsDark] = useState(false);
 
-  // Remove the initialization effect since we're handling it in useState
+  // Load theme from localStorage after component mounts
+  useEffect(() => {
+    try {
+      if (typeof window !== "undefined" &&
+          window.localStorage &&
+          typeof window.localStorage.getItem === "function") {
+        const savedTheme = localStorage.getItem("theme") as Theme;
+        if (savedTheme && ["light", "dark", "system"].includes(savedTheme)) {
+          setTheme(savedTheme);
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to read theme from localStorage:", error);
+    }
+  }, []);
 
   // Determine if dark mode is active
   useEffect(() => {
