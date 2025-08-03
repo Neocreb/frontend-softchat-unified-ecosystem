@@ -55,7 +55,7 @@ const EnhancedWalletDashboardContent = () => {
   }
 
   return (
-    <div className="mobile-container mobile-space-y">
+    <MobileResponsiveWrapper className="mobile-container mobile-space-y">
       {/* Enhanced Header */}
       <div className="mobile-flex sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
@@ -215,7 +215,7 @@ const EnhancedWalletDashboardContent = () => {
         onClose={() => setShowDepositModal(false)}
         onSuccess={refreshWallet}
       />
-    </div>
+    </MobileResponsiveWrapper>
   );
 };
 
