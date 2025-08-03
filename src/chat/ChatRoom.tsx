@@ -724,71 +724,18 @@ export const ChatRoom: React.FC = () => {
         </div>
       )}
 
-      {/* Message Input */}
-      <div className="border-t flex-shrink-0 bg-gradient-to-r from-background via-background to-background backdrop-blur-sm p-4 relative">
-        <div className="flex items-end gap-2">
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            onChange={handleFileUpload}
-            className="hidden"
-            accept="image/*,.pdf,.doc,.docx,.txt"
-          />
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-            className="hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200"
-          >
-            <Paperclip className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          </Button>
-
-          <div className="flex-1 relative">
-            <Input
-              placeholder="Type a message..."
-              value={messageInput}
-              onChange={(e) => {
-                setMessageInput(e.target.value);
-                sendTypingIndicator();
-              }}
-              onKeyPress={handleKeyPress}
-              disabled={sending || uploading}
-              className="pr-12 rounded-full border-2 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-gray-50 dark:bg-gray-900 shadow-inner"
-            />
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 h-8 w-8 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200"
-            >
-              <Smile className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
-            </Button>
-          </div>
-
-          {messageInput.trim() ? (
-            <Button
-              onClick={handleSendMessage}
-              disabled={sending || uploading}
-              className="rounded-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-200 hover:scale-105"
-              size="sm"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="rounded-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-lg shadow-green-500/25 hover:shadow-green-500/40 transition-all duration-200 hover:scale-105 text-white"
-              disabled={true}
-            >
-              <Smile className="w-4 h-4" />
-            </Button>
-          )}
-        </div>
-      </div>
+      {/* WhatsApp-Style Message Input */}
+      <WhatsAppChatInput
+        messageInput={messageInput}
+        setMessageInput={(value) => {
+          setMessageInput(value);
+          sendTypingIndicator();
+        }}
+        onSendMessage={handleSendEnhancedMessage}
+        isMobile={isMobile}
+        disabled={sending || uploading}
+        placeholder={`Message ${thread ? formatChatTitle(thread, user?.id || '') : 'chat'}...`}
+      />
 
       {/* Enhanced Video Call */}
       {(showVideoCall || showVoiceCall) && callData && (
