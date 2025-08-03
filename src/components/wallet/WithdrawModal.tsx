@@ -21,6 +21,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { WalletBalance, BankAccount } from "@/types/wallet";
 import { walletService } from "@/services/walletService";
+import { africanPaymentService, type PaymentResponse, type BankTransferRequest } from "@/services/africanPaymentService";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Loader2,
