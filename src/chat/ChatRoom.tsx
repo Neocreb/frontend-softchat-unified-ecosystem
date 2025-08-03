@@ -363,7 +363,35 @@ export const ChatRoom: React.FC = () => {
     let messageType: "text" | "voice" | "sticker" | "media" = "text";
     let metadata: any = undefined;
 
-    if (message.messageType === "voice") {
+    // Check if message has custom metadata (from WhatsApp-style input)
+    if (message.metadata) {
+      // Handle WhatsApp-style messages with metadata
+      if (message.metadata.mediaType) {
+        messageType = "media";
+        metadata = {
+          fileName: message.metadata.fileName || "File",
+          fileSize: message.metadata.fileSize || 0,
+          fileType: message.metadata.fileType || "unknown",
+          mediaType: message.metadata.mediaType,
+          caption: message.metadata.caption,
+        };
+      } else if (message.metadata.duration !== undefined) {
+        messageType = "voice";
+        metadata = {
+          transcription: message.metadata.transcription || "Voice message",
+          duration: message.metadata.duration,
+        };
+      } else if (message.metadata.stickerName || message.metadata.pack) {
+        messageType = "sticker";
+        metadata = {
+          stickerName: message.metadata.name || message.metadata.stickerName || "Sticker",
+          pack: message.metadata.pack,
+          animated: message.metadata.animated,
+        };
+      }
+    }
+    // Legacy message type handling
+    else if (message.messageType === "voice") {
       messageType = "voice";
       metadata = {
         transcription: "Voice message",
