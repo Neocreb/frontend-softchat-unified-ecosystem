@@ -163,6 +163,16 @@ class WalletServiceClass {
     }
   }
 
+  async getBankAccounts(): Promise<BankAccount[]> {
+    try {
+      const response = await apiCall("/api/wallet/bank-accounts");
+      return response.bankAccounts || [];
+    } catch (error) {
+      console.error("Failed to get bank accounts:", error);
+      return [];
+    }
+  }
+
   static formatBalance(balance: string, currency: string): string {
     const amount = parseFloat(balance);
 
