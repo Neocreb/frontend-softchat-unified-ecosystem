@@ -159,6 +159,67 @@ export const ChatRoom: React.FC = () => {
     }
   };
 
+  const handleSendEnhancedMessage = async (
+    type: "text" | "voice" | "sticker" | "media" | "emoji",
+    content: string,
+    metadata?: any,
+  ) => {
+    if (sending) return;
+
+    try {
+      switch (type) {
+        case "text":
+        case "emoji":
+          if (replyingTo) {
+            const replyContent = `Replying to: "${replyingTo.content.substring(0, 50)}${replyingTo.content.length > 50 ? "..." : ""}"\n\n${content}`;
+            await sendMessage(replyContent);
+            setReplyingTo(null);
+          } else {
+            await sendMessage(content);
+          }
+          break;
+
+        case "sticker":
+          const stickerMessage = content; // Emoji content
+          await sendMessage(stickerMessage);
+          toast({
+            title: "Sticker sent!",
+            description: `Sent ${metadata?.name || "sticker"}`,
+          });
+          break;
+
+        case "media":
+          if (metadata?.file) {
+            await sendFiles([metadata.file]);
+            toast({
+              title: "Media sent!",
+              description: `Sent ${metadata.fileName}`,
+            });
+          }
+          break;
+
+        case "voice":
+          // For now, send a placeholder message since voice needs backend support
+          await sendMessage("🎤 Voice message");
+          toast({
+            title: "Voice message sent!",
+            description: `Duration: ${metadata?.duration || 0}s`,
+          });
+          break;
+
+        default:
+          await sendMessage(content);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
