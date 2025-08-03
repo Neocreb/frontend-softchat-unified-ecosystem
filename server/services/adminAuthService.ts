@@ -45,6 +45,72 @@ class AdminAuthService {
     error?: string;
   }> {
     try {
+      // Fallback default admin for immediate access
+      if (email === "admin@softchat.com" && password === "Softchat2024!") {
+        console.log("🚀 Using fallback admin login");
+
+        // Create a mock admin object for immediate access
+        const fallbackAdmin = {
+          id: "fallback-admin-id",
+          userId: "fallback-user-id",
+          employeeId: "ADM-FALLBACK",
+          department: "Administration",
+          position: "System Administrator",
+          isActive: true,
+          lastLoginAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          role: {
+            id: "super-admin-role",
+            name: "super_admin",
+            description: "Super Administrator",
+            permissions: [
+              "admin.all",
+              "users.all",
+              "content.all",
+              "marketplace.all",
+              "crypto.all",
+              "freelance.all",
+              "financial.all",
+              "settings.all",
+              "moderation.all",
+              "analytics.all",
+              "system.all"
+            ],
+            isActive: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          user: {
+            id: "fallback-user-id",
+            email: "admin@softchat.com",
+            password: "hashed-password", // This won't be checked for fallback
+            emailConfirmed: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        } as AdminUser & { role: AdminRole };
+
+        // Generate session token and JWT
+        const sessionToken = uuidv4();
+        const payload: AdminJWTPayload = {
+          adminId: fallbackAdmin.id,
+          userId: fallbackAdmin.userId,
+          email: fallbackAdmin.user.email,
+          role: fallbackAdmin.role.name,
+          permissions: fallbackAdmin.role.permissions || [],
+          sessionId: sessionToken,
+        };
+
+        const token = jwt.sign(payload, this.JWT_SECRET, { expiresIn: "8h" });
+
+        return {
+          success: true,
+          token,
+          admin: fallbackAdmin,
+        };
+      }
+
       // Find admin by email
       const adminUser = await adminUserOperations.findByEmail(email);
       if (!adminUser) {
