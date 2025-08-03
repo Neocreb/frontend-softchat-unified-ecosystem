@@ -160,7 +160,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
       <div className="flex gap-2">
         {showFullButton && (
           <Button
-            onClick={() => navigate("/app/creator-studio")}
+            onClick={() => navigate("/app/unified-creator-studio")}
             className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
           >
             Open Creator Studio
