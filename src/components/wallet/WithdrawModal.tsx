@@ -428,7 +428,7 @@ const WithdrawModal = ({
             </Button>
             <Button
               type="submit"
-              disabled={isLoading || !selectedBank || bankAccounts.length === 0}
+              disabled={isLoading || !selectedBank || displayBanks.length === 0}
               className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
             >
               {isLoading ? (
