@@ -169,7 +169,7 @@ export const ChatRoom: React.FC = () => {
         case "emoji":
           if (replyingTo) {
             const replyContent = `Replying to: "${replyingTo.content.substring(0, 50)}${replyingTo.content.length > 50 ? "..." : ""}"\n\n${content}`;
-            await sendMessage(replyContent);
+            await sendMessage(replyContent, undefined, replyingTo.id);
             setReplyingTo(null);
           } else {
             await sendMessage(content);
@@ -177,8 +177,11 @@ export const ChatRoom: React.FC = () => {
           break;
 
         case "sticker":
-          const stickerMessage = content; // Emoji content
-          await sendMessage(stickerMessage);
+          await sendMessage(content, undefined, undefined, "text", {
+            stickerName: metadata?.name || "Sticker",
+            pack: metadata?.pack,
+            animated: metadata?.animated,
+          });
           toast({
             title: "Sticker sent!",
             description: `Sent ${metadata?.name || "sticker"}`,
@@ -187,7 +190,19 @@ export const ChatRoom: React.FC = () => {
 
         case "media":
           if (metadata?.file) {
-            await sendFiles([metadata.file]);
+            await sendMessage(
+              metadata.caption || content,
+              [content], // File URL
+              undefined,
+              metadata.mediaType === "image" ? "image" : "file",
+              {
+                fileName: metadata.fileName,
+                fileSize: metadata.fileSize,
+                fileType: metadata.fileType,
+                mediaType: metadata.mediaType,
+                caption: metadata.caption,
+              }
+            );
             toast({
               title: "Media sent!",
               description: `Sent ${metadata.fileName}`,
@@ -196,8 +211,10 @@ export const ChatRoom: React.FC = () => {
           break;
 
         case "voice":
-          // For now, send a placeholder message since voice needs backend support
-          await sendMessage("🎤 Voice message");
+          await sendMessage(content, [content], undefined, "voice", {
+            duration: metadata?.duration || 0,
+            transcription: metadata?.transcription || "Voice message",
+          });
           toast({
             title: "Voice message sent!",
             description: `Duration: ${metadata?.duration || 0}s`,
