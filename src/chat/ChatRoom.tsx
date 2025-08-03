@@ -52,6 +52,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { EnhancedVideoCall } from "@/components/chat/EnhancedVideoCall";
 import { EnhancedMessage, EnhancedChatMessage } from "@/components/chat/EnhancedMessage";
 import { TypingIndicator } from "@/components/chat/TypingIndicator";
+import WhatsAppChatInput from "@/components/chat/WhatsAppChatInput";
 
 export const ChatRoom: React.FC = () => {
   const { threadId } = useParams<{ threadId: string }>();
