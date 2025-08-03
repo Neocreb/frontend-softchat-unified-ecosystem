@@ -150,6 +150,42 @@ const BankAccountSettings = () => {
             />
           </div>
 
+          <div className="space-y-2">
+            <Label htmlFor="routingNumber">Routing Number (US Banks)</Label>
+            <Input
+              id="routingNumber"
+              value={routingNumber}
+              onChange={(e) => setRoutingNumber(e.target.value)}
+              placeholder="021000021"
+              maxLength={9}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="sortCode">Sort Code (UK/SA Banks)</Label>
+            <Input
+              id="sortCode"
+              value={sortCode}
+              onChange={(e) => setSortCode(e.target.value)}
+              placeholder="12-34-56"
+              maxLength={8}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="swiftCode">SWIFT/BIC Code (International)</Label>
+            <Input
+              id="swiftCode"
+              value={swiftCode}
+              onChange={(e) => setSwiftCode(e.target.value)}
+              placeholder="ABNANL2A"
+              maxLength={11}
+            />
+            <p className="text-xs text-gray-500">
+              Required for international transfers and most African banks
+            </p>
+          </div>
+
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? "Saving..." : "Save Bank Information"}
           </Button>
