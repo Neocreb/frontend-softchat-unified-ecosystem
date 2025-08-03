@@ -69,16 +69,18 @@ const EnhancedWalletDashboardContent = () => {
         <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0 w-full sm:w-auto mt-4 sm:mt-0">
           <Button
             onClick={() => setShowDepositModal(true)}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
             data-action="deposit"
+            size="sm"
           >
             Deposit
           </Button>
           <Button
             onClick={() => setShowWithdrawModal(true)}
             variant="outline"
-            className="border-red-200 text-red-600 hover:bg-red-50"
+            className="border-red-200 text-red-600 hover:bg-red-50 w-full sm:w-auto"
             data-action="withdraw"
+            size="sm"
           >
             Withdraw
           </Button>
