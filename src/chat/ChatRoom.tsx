@@ -226,19 +226,7 @@ export const ChatRoom: React.FC = () => {
     }
   };
 
-  const handleFileUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
 
-    await sendFiles(files);
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const handleReaction = async (messageId: string, emoji: string) => {
     await addReaction(messageId, emoji);
