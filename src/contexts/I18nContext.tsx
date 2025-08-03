@@ -53,16 +53,17 @@ const I18nContext = createContext<I18nContextType | undefined>(undefined);
 export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isLoading, setIsLoading] = useState(true);
+  // Use safe defaults to prevent initialization errors
+  const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>(
-    SUPPORTED_LANGUAGES[0],
+    () => SUPPORTED_LANGUAGES[0] || { code: 'en', name: 'English', flag: '🇺🇸' }
   );
   const [currentCurrency, setCurrentCurrency] = useState<Currency>(
-    SUPPORTED_CURRENCIES[0],
+    () => SUPPORTED_CURRENCIES[0] || { code: 'USD', name: 'US Dollar', symbol: '$' }
   );
   const [currentRegion, setCurrentRegion] = useState<Region>(
-    REGIONAL_CONFIG[0],
+    () => REGIONAL_CONFIG[0] || { code: 'US', name: 'United States' }
   );
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<
     PaymentMethod[]
