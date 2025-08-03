@@ -19,7 +19,7 @@ import { ChatProvider } from "./contexts/ChatContext";
 import { WalletProvider } from "./contexts/WalletContext";
 import { LiveContentProvider } from "./contexts/LiveContentContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
-import { I18nProvider } from "./contexts/I18nContext";
+import SafeI18nProvider from "./contexts/SafeI18nProvider";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
