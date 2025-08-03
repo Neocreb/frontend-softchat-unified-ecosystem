@@ -198,7 +198,7 @@ const WithdrawModal = ({
     setSelectedBank("");
   };
 
-  const selectedBankAccount = bankAccounts.find(
+  const selectedBankAccount = displayBanks.find(
     (acc) => acc.id === selectedBank,
   );
   const sourceInfo = getSourceInfo();
