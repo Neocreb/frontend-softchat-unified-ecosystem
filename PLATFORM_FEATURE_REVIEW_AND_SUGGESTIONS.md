@@ -482,10 +482,10 @@ interface PartnershipEcosystem {
 
 ### **Direct Revenue Generators**
 
-- **Enterprise Solutions**: $50k-500k+ per client
-- **Premium Features**: $9.99-29.99/month per user
-- **API Access**: $0.001-0.01 per API call
-- **White-label Solutions**: $10k-100k setup + monthly fees
+- **Enterprise Solutions**: $50k-500k+ per client (future roadmap)
+- **Verified Premium**: $9.99/month or $99.99/year per user
+- **API Access**: $0.001-0.01 per API call (future roadmap)
+- **White-label Solutions**: $10k-100k setup + monthly fees (future roadmap)
 
 ### **Indirect Revenue Enhancers**
 
