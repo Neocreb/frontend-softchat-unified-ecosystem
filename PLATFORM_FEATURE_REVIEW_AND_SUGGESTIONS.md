@@ -1,5 +1,9 @@
 # 🚀 Softchat Platform: Comprehensive Feature Review & Enhancement Suggestions
 
+> **⚠️ Note**: This document has been updated to reflect the actual current implementation. Previously mentioned DeFi features (staking, yield farming) are planned for future implementation - see [DEFI_ROADMAP.md](./DEFI_ROADMAP.md) for details.
+
+> **✅ Premium Features**: Updated to reflect current Verified Premium pricing ($9.99/month or $99.99/year) and actual feature set.
+
 ## 📋 Current Feature Inventory
 
 ### 🔐 **Authentication & User Management**
