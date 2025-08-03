@@ -1,5 +1,5 @@
 import { apiCall } from "@/lib/api";
-import { WalletBalance, Transaction as WalletTransaction } from "@/types/wallet";
+import { WalletBalance, Transaction as WalletTransaction, BankAccount } from "@/types/wallet";
 
 export interface Wallet {
   id: string;
