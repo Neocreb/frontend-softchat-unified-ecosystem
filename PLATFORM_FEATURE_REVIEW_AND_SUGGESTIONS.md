@@ -87,14 +87,6 @@
   - Trader verification and ratings
   - Dispute resolution mechanism
 
-- ✅ **DeFi & Staking**
-
-  - Flexible and locked staking options
-  - Yield farming opportunities
-  - Liquidity provision features
-  - Governance token integration
-  - Cross-chain bridging capabilities
-
 - ✅ **Crypto Education**
   - Comprehensive learning courses
   - Interactive quizzes with rewards
