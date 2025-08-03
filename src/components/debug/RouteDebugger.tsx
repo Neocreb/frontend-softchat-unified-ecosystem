@@ -22,7 +22,7 @@ const RouteDebugger = () => {
     { path: "/rewards", label: "Rewards", protected: true },
     { path: "/settings", label: "Settings", protected: true },
     { path: "/notifications", label: "Notifications", protected: true },
-    { path: "/creator-studio", label: "Creator Studio", protected: true },
+    { path: "/unified-creator-studio", label: "Creator Studio", protected: true },
     { path: "/ai-assistant", label: "AI Assistant", protected: true },
     { path: "/blog", label: "Blog", protected: false },
     { path: "/", label: "Landing Page", protected: false },
