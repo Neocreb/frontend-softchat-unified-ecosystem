@@ -79,26 +79,37 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({
     setHasError(false);
 
     try {
-      // Load saved preferences or detect automatically
-      const savedLanguage = localStorage.getItem("softchat_language");
-      const savedCurrency = localStorage.getItem("softchat_currency");
-      const savedRegion = localStorage.getItem("softchat_region");
+      // Safe localStorage access
+      if (typeof window !== "undefined" && window.localStorage) {
+        try {
+          const savedLanguage = localStorage.getItem("softchat_language");
+          const savedCurrency = localStorage.getItem("softchat_currency");
+          const savedRegion = localStorage.getItem("softchat_region");
 
-      if (savedLanguage) {
-        i18nService.setLanguage(savedLanguage);
-      }
-      if (savedCurrency) {
-        i18nService.setCurrency(savedCurrency);
-      }
-      if (savedRegion) {
-        i18nService.setRegion(savedRegion);
+          if (savedLanguage) {
+            i18nService.setLanguage(savedLanguage);
+          }
+          if (savedCurrency) {
+            i18nService.setCurrency(savedCurrency);
+          }
+          if (savedRegion) {
+            i18nService.setRegion(savedRegion);
+          }
+        } catch (storageError) {
+          console.warn("Failed to access localStorage for i18n:", storageError);
+        }
       }
 
       // Update state with current settings
       updateCurrentSettings();
 
-      // Load translations
-      await i18nService.loadTranslations();
+      // Load translations with timeout
+      await Promise.race([
+        i18nService.loadTranslations(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Translation loading timeout")), 5000)
+        )
+      ]);
     } catch (error) {
       console.error("Failed to initialize i18n:", error);
       setHasError(true);
