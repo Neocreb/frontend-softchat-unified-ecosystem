@@ -228,7 +228,7 @@ export const aiModelPerformance = pgTable('ai_model_performance', {
   accuracy: decimal('accuracy', { precision: 5, scale: 2 }),
   precision: decimal('precision', { precision: 5, scale: 2 }),
   recall: decimal('recall', { precision: 5, scale: 2 }),
-  f1Score: decimal('f1_score', { precision: 5, scale, }),
+  f1Score: decimal('f1_score', { precision: 5, scale: 2 }),
   auc: decimal('auc', { precision: 5, scale: 2 }),
   processingTime: integer('processing_time'), // milliseconds
   throughput: integer('throughput'), // requests per second
