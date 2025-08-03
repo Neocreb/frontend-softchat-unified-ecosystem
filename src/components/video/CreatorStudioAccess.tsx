@@ -169,7 +169,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
         )}
         <Button
           variant="outline"
-          onClick={() => navigate("/app/creator-studio?tab=insights")}
+          onClick={() => navigate("/app/unified-creator-studio?tab=insights")}
           className="flex-1"
         >
           View Insights
