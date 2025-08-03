@@ -260,6 +260,33 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
             <p className="text-sm text-gray-500">Minimum deposit: $1.00</p>
           </div>
 
+          {/* Country & Currency Selection */}
+          {(method === "mobile" || method === "ewallet" || method === "bank") && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label>Regional Payment Settings</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCountrySelector(!showCountrySelector)}
+                >
+                  {selectedCountry ? `${selectedCountry.flag} ${selectedCountry.name}` : "Select Country"}
+                </Button>
+              </div>
+              {showCountrySelector && (
+                <AfricanCountryCurrencySelector
+                  selectedCountry={selectedCountry?.code}
+                  onCountryChange={(country) => {
+                    setSelectedCountry(country);
+                    setShowCountrySelector(false);
+                  }}
+                  showPaymentMethods={true}
+                />
+              )}
+            </div>
+          )}
+
           {/* Payment Method Selection */}
           <div className="space-y-3">
             <Label htmlFor="method">Payment Method</Label>
