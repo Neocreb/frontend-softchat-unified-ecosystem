@@ -67,6 +67,36 @@ const WithdrawModal = ({
     }
   }, [isOpen]);
 
+  // Mock African banks if no accounts loaded
+  const mockAfricanBanks = [
+    {
+      id: "mock_gtbank",
+      name: "GTBank",
+      bankName: "Guaranty Trust Bank",
+      accountNumber: "****1234",
+      isDefault: false,
+      isVerified: true,
+    },
+    {
+      id: "mock_access",
+      name: "Access Bank",
+      bankName: "Access Bank Nigeria",
+      accountNumber: "****5678",
+      isDefault: true,
+      isVerified: true,
+    },
+    {
+      id: "mock_zenith",
+      name: "Zenith Bank",
+      bankName: "Zenith Bank",
+      accountNumber: "****9012",
+      isDefault: false,
+      isVerified: true,
+    },
+  ];
+
+  const displayBanks = bankAccounts.length > 0 ? bankAccounts : mockAfricanBanks;
+
   const loadBankAccounts = async () => {
     setIsLoadingBanks(true);
     try {
