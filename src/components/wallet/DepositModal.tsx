@@ -327,6 +327,56 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
             </Card>
           )}
 
+          {/* Mobile Money Provider Selection */}
+          {method === "mobile" && (
+            <div className="space-y-3">
+              <Label htmlFor="mobile-provider">Mobile Money Provider</Label>
+              <Select value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your mobile money provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mtn_momo">MTN Mobile Money</SelectItem>
+                  <SelectItem value="airtel_money">Airtel Money</SelectItem>
+                  <SelectItem value="vodacom_mpesa">Vodacom M-Pesa</SelectItem>
+                  <SelectItem value="orange_money">Orange Money</SelectItem>
+                  <SelectItem value="tigo_pesa">Tigo Pesa</SelectItem>
+                  <SelectItem value="safaricom_mpesa">Safaricom M-Pesa (Kenya)</SelectItem>
+                  <SelectItem value="equity_eazzy">Equity Eazzy Pay</SelectItem>
+                  <SelectItem value="kcb_mpesa">KCB M-Pesa</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* E-Wallet Provider Selection */}
+          {method === "ewallet" && (
+            <div className="space-y-3">
+              <Label htmlFor="ewallet-provider">Digital Payment Provider</Label>
+              <Select value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your payment provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="paystack">PayStack</SelectItem>
+                  <SelectItem value="flutterwave">Flutterwave</SelectItem>
+                  <SelectItem value="opay">OPay</SelectItem>
+                  <SelectItem value="palmpay">PalmPay</SelectItem>
+                  <SelectItem value="kuda_bank">Kuda Bank</SelectItem>
+                  <SelectItem value="vbank">VBank</SelectItem>
+                  <SelectItem value="chipper_cash">Chipper Cash</SelectItem>
+                  <SelectItem value="carbon">Carbon (Formerly Paylater)</SelectItem>
+                  <SelectItem value="fairmoney">FairMoney</SelectItem>
+                  <SelectItem value="cowrywise">Cowrywise</SelectItem>
+                  <SelectItem value="piggyvest">PiggyVest</SelectItem>
+                  <SelectItem value="quickteller">Quickteller</SelectItem>
+                  <SelectItem value="remita">Remita</SelectItem>
+                  <SelectItem value="interswitch">Interswitch</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           {/* Description */}
           <div className="space-y-2">
             <Label htmlFor="description">Description (Optional)</Label>
