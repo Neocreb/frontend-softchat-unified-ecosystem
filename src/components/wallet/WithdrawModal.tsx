@@ -23,6 +23,7 @@ import { WalletBalance, BankAccount } from "@/types/wallet";
 import { walletService } from "@/services/walletService";
 import { africanPaymentService, type PaymentResponse, type BankTransferRequest } from "@/services/africanPaymentService";
 import { useToast } from "@/components/ui/use-toast";
+import AfricanCountryCurrencySelector from "./AfricanCountryCurrencySelector";
 import {
   Loader2,
   CreditCard,
@@ -55,6 +56,8 @@ const WithdrawModal = ({
   const [description, setDescription] = useState("");
   const [bankAccounts, setBankAccounts] = useState<BankAccount[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<any>(null);
+  const [showCountrySelector, setShowCountrySelector] = useState(false);
   const [isLoadingBanks, setIsLoadingBanks] = useState(false);
   const { toast } = useToast();
 

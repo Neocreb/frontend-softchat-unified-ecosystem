@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { walletService } from "@/services/walletService";
 import { africanPaymentService, type PaymentResponse } from "@/services/africanPaymentService";
 import { useToast } from "@/components/ui/use-toast";
+import AfricanCountryCurrencySelector from "./AfricanCountryCurrencySelector";
 // import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
 // import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
 import {
@@ -54,6 +55,8 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<any>(null);
+  const [showCountrySelector, setShowCountrySelector] = useState(false);
   const { toast } = useToast();
   // const { currentCurrency, availablePaymentMethods, formatCurrency } = useI18n(); // Temporarily disabled
 
