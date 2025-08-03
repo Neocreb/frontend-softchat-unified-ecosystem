@@ -96,7 +96,7 @@ const EnhancedWalletDashboardContent = () => {
         {/* Responsive Tab Navigation */}
         <div className="w-full">
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hide" aria-label="Tabs">
+            <nav className="-mb-px flex space-x-4 sm:space-x-8 overflow-x-auto scrollbar-hide" aria-label="Tabs">
               {[
                 { id: "overview", label: "Overview", icon: Wallet, description: "Wallet summary" },
                 { id: "analytics", label: "Analytics", icon: BarChart3, description: "Performance insights" },
