@@ -15,7 +15,6 @@ import {
 import {
   ArrowLeft,
   Send,
-  Paperclip,
   Smile,
   MoreVertical,
   Phone,
@@ -27,7 +26,6 @@ import {
   VolumeX,
   Trash2,
   Image as ImageIcon,
-  File,
   Download,
   Reply,
   Copy,
