@@ -548,7 +548,7 @@ const App = () => {
               </div>
             }
           >
-            <I18nProvider>
+            <SafeI18nProvider>
               <AuthProvider>
                 <AdminProvider>
                   <AccessibilityProvider>
@@ -573,7 +573,7 @@ const App = () => {
                   </AccessibilityProvider>
                 </AdminProvider>
               </AuthProvider>
-            </I18nProvider>
+            </SafeI18nProvider>
           </ErrorBoundary>
         </SafeThemeProvider>
       </QueryClientProvider>
