@@ -13,6 +13,9 @@ const BankAccountSettings = () => {
   const [accountNumber, setAccountNumber] = useState(user?.profile?.bank_account_number || "");
   const [accountName, setAccountName] = useState(user?.profile?.bank_account_name || "");
   const [bankName, setBankName] = useState(user?.profile?.bank_name || "");
+  const [routingNumber, setRoutingNumber] = useState(user?.profile?.routing_number || "");
+  const [sortCode, setSortCode] = useState(user?.profile?.sort_code || "");
+  const [swiftCode, setSwiftCode] = useState(user?.profile?.swift_code || "");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
