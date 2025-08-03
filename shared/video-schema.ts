@@ -1,471 +1,335 @@
-import {
-  pgTable,
-  text,
-  serial,
-  integer,
-  boolean,
-  timestamp,
-  uuid,
-  decimal,
-  jsonb,
-  unique,
-  index,
-} from "drizzle-orm/pg-core";
-import { users, profiles } from "./schema";
+import { pgTable, text, timestamp, integer, boolean, uuid, decimal, jsonb, varchar, index } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
-// =============================================================================
-// VIDEO CONTENT SYSTEM
-// =============================================================================
+// Videos table - Main video content
+export const videos = pgTable('videos', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  filename: text('filename').notNull(),
+  originalFilename: text('original_filename').notNull(),
+  fileSize: integer('file_size').notNull(),
+  duration: integer('duration'), // in seconds
+  thumbnail: text('thumbnail'),
+  status: varchar('status', { length: 20 }).notNull().default('processing'), // processing, ready, failed
+  visibility: varchar('visibility', { length: 20 }).notNull().default('public'), // public, private, unlisted
+  category: varchar('category', { length: 50 }),
+  tags: jsonb('tags').$type<string[]>().default([]),
+  hashtags: jsonb('hashtags').$type<string[]>().default([]),
+  viewCount: integer('view_count').notNull().default(0),
+  likeCount: integer('like_count').notNull().default(0),
+  commentCount: integer('comment_count').notNull().default(0),
+  shareCount: integer('share_count').notNull().default(0),
+  allowComments: boolean('allow_comments').notNull().default(true),
+  allowDuets: boolean('allow_duets').notNull().default(true),
+  allowDownloads: boolean('allow_downloads').notNull().default(false),
+  location: text('location'),
+  musicId: uuid('music_id'),
+  aspectRatio: varchar('aspect_ratio', { length: 10 }).default('9:16'), // 9:16, 16:9, 1:1
+  quality: varchar('quality', { length: 10 }).default('720p'), // 480p, 720p, 1080p, 4k
+  contentWarning: boolean('content_warning').default(false),
+  ageRestricted: boolean('age_restricted').default(false),
+  monetizationEnabled: boolean('monetization_enabled').default(false),
+  processingData: jsonb('processing_data').$type<any>(),
+  metadata: jsonb('metadata').$type<any>(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index('videos_user_idx').on(table.userId),
+  statusIdx: index('videos_status_idx').on(table.status),
+  visibilityIdx: index('videos_visibility_idx').on(table.visibility),
+  categoryIdx: index('videos_category_idx').on(table.category),
+  createdAtIdx: index('videos_created_at_idx').on(table.createdAt),
+}));
 
-export const videos = pgTable("videos", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  creatorId: uuid("creator_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+// Video views tracking
+export const videoViews = pgTable('video_views', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  videoId: uuid('video_id').notNull(),
+  userId: uuid('user_id'), // null for anonymous views
+  ipAddress: varchar('ip_address', { length: 45 }),
+  userAgent: text('user_agent'),
+  watchDuration: integer('watch_duration').notNull().default(0), // in seconds
+  watchPercentage: decimal('watch_percentage', { precision: 5, scale: 2 }).default('0.00'),
+  completed: boolean('completed').default(false),
+  deviceType: varchar('device_type', { length: 20 }), // mobile, desktop, tablet
+  referrer: text('referrer'),
+  location: text('location'),
+  timestamp: timestamp('timestamp').defaultNow().notNull(),
+}, (table) => ({
+  videoIdx: index('video_views_video_idx').on(table.videoId),
+  userIdx: index('video_views_user_idx').on(table.userId),
+  timestampIdx: index('video_views_timestamp_idx').on(table.timestamp),
+}));
 
-  // Video content
-  caption: text("caption"),
-  videoUrl: text("video_url").notNull(),
-  thumbnailUrl: text("thumbnail_url"),
-  duration: integer("duration").default(0), // in seconds
-  
-  // Metadata
-  hashtags: jsonb("hashtags").$type<string[]>().default([]),
-  mentions: jsonb("mentions").$type<string[]>().default([]),
-  location: text("location"),
-  
-  // Privacy and permissions
-  isPrivate: boolean("is_private").default(false),
-  allowComments: boolean("allow_comments").default(true),
-  allowDuets: boolean("allow_duets").default(true),
-  allowStitch: boolean("allow_stitch").default(true),
-  
-  // Duet information
-  isDuet: boolean("is_duet").default(false),
-  duetOriginalId: uuid("duet_original_id").references(() => videos.id),
-  duetStyle: text("duet_style"), // 'side-by-side', 'react-respond', 'picture-in-picture'
-  audioSource: text("audio_source"), // 'original', 'voiceover', 'both'
-  
-  // Battle information
-  isBattle: boolean("is_battle").default(false),
-  battleOpponentId: uuid("battle_opponent_id").references(() => users.id),
-  battleType: text("battle_type"),
-  
-  // Processing status
-  processingStatus: text("processing_status").default("pending"), // 'pending', 'processing', 'completed', 'failed'
-  qualityVersions: jsonb("quality_versions"), // Different quality URLs
-  
-  // Monetization
-  monetizationSettings: jsonb("monetization_settings"),
-  
-  // Moderation
-  isDeleted: boolean("is_deleted").default(false),
-  deletedAt: timestamp("deleted_at"),
-  deletedBy: uuid("deleted_by").references(() => users.id),
-  
-  // Category and tags
-  category: text("category"),
-  ageRating: text("age_rating").default("all"), // 'all', '13+', '16+', '18+'
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    creatorIdIdx: index("videos_creator_id_idx").on(table.creatorId),
-    duetOriginalIdIdx: index("videos_duet_original_id_idx").on(table.duetOriginalId),
-    categoryIdx: index("videos_category_idx").on(table.category),
-    createdAtIdx: index("videos_created_at_idx").on(table.createdAt),
-  };
-});
+// Video likes
+export const videoLikes = pgTable('video_likes', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  videoId: uuid('video_id').notNull(),
+  userId: uuid('user_id').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  videoUserIdx: index('video_likes_video_user_idx').on(table.videoId, table.userId),
+  userIdx: index('video_likes_user_idx').on(table.userId),
+}));
 
-export const videoViews = pgTable("video_views", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  watchTime: integer("watch_time").default(0), // seconds watched
-  watchPercentage: decimal("watch_percentage", { precision: 5, scale: 2 }).default("0"),
-  completedView: boolean("completed_view").default(false),
-  
-  // Device and session info
-  deviceInfo: jsonb("device_info"),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  sessionId: text("session_id"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    videoUserIdx: index("video_views_video_user_idx").on(table.videoId, table.userId),
-    videoIdIdx: index("video_views_video_id_idx").on(table.videoId),
-    userIdIdx: index("video_views_user_id_idx").on(table.userId),
-    uniqueView: unique("unique_video_view").on(table.videoId, table.userId),
-  };
-});
+// Video comments
+export const videoComments = pgTable('video_comments', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  videoId: uuid('video_id').notNull(),
+  userId: uuid('user_id').notNull(),
+  content: text('content').notNull(),
+  parentId: uuid('parent_id'), // for replies
+  likeCount: integer('like_count').notNull().default(0),
+  replyCount: integer('reply_count').notNull().default(0),
+  pinned: boolean('pinned').default(false),
+  edited: boolean('edited').default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+  videoIdx: index('video_comments_video_idx').on(table.videoId),
+  userIdx: index('video_comments_user_idx').on(table.userId),
+  parentIdx: index('video_comments_parent_idx').on(table.parentId),
+  createdAtIdx: index('video_comments_created_at_idx').on(table.createdAt),
+}));
 
-export const videoLikes = pgTable("video_likes", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    videoUserIdx: index("video_likes_video_user_idx").on(table.videoId, table.userId),
-    uniqueLike: unique("unique_video_like").on(table.videoId, table.userId),
-  };
-});
+// Video comment likes
+export const videoCommentLikes = pgTable('video_comment_likes', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  commentId: uuid('comment_id').notNull(),
+  userId: uuid('user_id').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  commentUserIdx: index('video_comment_likes_comment_user_idx').on(table.commentId, table.userId),
+}));
 
-export const videoComments = pgTable("video_comments", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  parentCommentId: uuid("parent_comment_id").references(() => videoComments.id),
-  
-  content: text("content").notNull(),
-  likesCount: integer("likes_count").default(0),
-  repliesCount: integer("replies_count").default(0),
-  
-  isDeleted: boolean("is_deleted").default(false),
-  deletedAt: timestamp("deleted_at"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    videoIdIdx: index("video_comments_video_id_idx").on(table.videoId),
-    userIdIdx: index("video_comments_user_id_idx").on(table.userId),
-    parentCommentIdIdx: index("video_comments_parent_id_idx").on(table.parentCommentId),
-  };
-});
+// Video shares tracking
+export const videoShares = pgTable('video_shares', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  videoId: uuid('video_id').notNull(),
+  userId: uuid('user_id'),
+  platform: varchar('platform', { length: 30 }).notNull(), // internal, facebook, twitter, etc.
+  shareType: varchar('share_type', { length: 20 }).notNull(), // link, embed, download
+  metadata: jsonb('metadata').$type<any>(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  videoIdx: index('video_shares_video_idx').on(table.videoId),
+  platformIdx: index('video_shares_platform_idx').on(table.platform),
+}));
 
-export const videoShares = pgTable("video_shares", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  shareType: text("share_type").notNull(), // 'platform', 'external', 'download'
-  platform: text("platform"), // 'facebook', 'twitter', 'instagram', 'whatsapp'
-  
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    videoIdIdx: index("video_shares_video_id_idx").on(table.videoId),
-    userIdIdx: index("video_shares_user_id_idx").on(table.userId),
-  };
-});
+// Live streams
+export const liveStreams = pgTable('live_streams', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').notNull(),
+  title: text('title').notNull(),
+  description: text('description'),
+  thumbnail: text('thumbnail'),
+  status: varchar('status', { length: 20 }).notNull().default('waiting'), // waiting, live, ended, error
+  viewerCount: integer('viewer_count').notNull().default(0),
+  maxViewers: integer('max_viewers').notNull().default(0),
+  streamKey: text('stream_key').notNull(),
+  streamUrl: text('stream_url'),
+  playbackUrl: text('playback_url'),
+  category: varchar('category', { length: 50 }),
+  tags: jsonb('tags').$type<string[]>().default([]),
+  allowChat: boolean('allow_chat').notNull().default(true),
+  allowGifts: boolean('allow_gifts').notNull().default(true),
+  monetizationEnabled: boolean('monetization_enabled').default(false),
+  scheduledStartTime: timestamp('scheduled_start_time'),
+  actualStartTime: timestamp('actual_start_time'),
+  endTime: timestamp('end_time'),
+  duration: integer('duration'), // in seconds
+  recordingEnabled: boolean('recording_enabled').default(true),
+  recordingUrl: text('recording_url'),
+  settings: jsonb('settings').$type<any>(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index('live_streams_user_idx').on(table.userId),
+  statusIdx: index('live_streams_status_idx').on(table.status),
+  scheduledStartIdx: index('live_streams_scheduled_start_idx').on(table.scheduledStartTime),
+}));
 
-export const videoAnalytics = pgTable("video_analytics", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-    
-  // View metrics
-  views: integer("views").default(0),
-  uniqueViews: integer("unique_views").default(0),
-  totalWatchTime: integer("total_watch_time").default(0), // in seconds
-  averageWatchTime: decimal("average_watch_time", { precision: 10, scale: 2 }).default("0"),
-  completionRate: decimal("completion_rate", { precision: 5, scale: 2 }).default("0"),
-  
-  // Engagement metrics
-  likes: integer("likes").default(0),
-  comments: integer("comments").default(0),
-  shares: integer("shares").default(0),
-  saves: integer("saves").default(0),
-  duets: integer("duets").default(0),
-  
-  // Performance metrics
-  engagementRate: decimal("engagement_rate", { precision: 5, scale: 2 }).default("0"),
-  reachRate: decimal("reach_rate", { precision: 5, scale: 2 }).default("0"),
-  viralScore: decimal("viral_score", { precision: 10, scale: 2 }).default("0"),
-  
-  // Demographics
-  viewerDemographics: jsonb("viewer_demographics"),
-  geographicData: jsonb("geographic_data"),
-  deviceBreakdown: jsonb("device_breakdown"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    videoIdIdx: index("video_analytics_video_id_idx").on(table.videoId),
-  };
-});
+// Live stream viewers
+export const liveStreamViewers = pgTable('live_stream_viewers', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  streamId: uuid('stream_id').notNull(),
+  userId: uuid('user_id'), // null for anonymous viewers
+  joinedAt: timestamp('joined_at').defaultNow().notNull(),
+  leftAt: timestamp('left_at'),
+  watchDuration: integer('watch_duration').default(0), // in seconds
+  deviceType: varchar('device_type', { length: 20 }),
+  ipAddress: varchar('ip_address', { length: 45 }),
+}, (table) => ({
+  streamIdx: index('live_stream_viewers_stream_idx').on(table.streamId),
+  userIdx: index('live_stream_viewers_user_idx').on(table.userId),
+}));
 
-// =============================================================================
-// LIVE STREAMING
-// =============================================================================
+// Video duets
+export const videoDuets = pgTable('video_duets', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  originalVideoId: uuid('original_video_id').notNull(),
+  duetVideoId: uuid('duet_video_id').notNull(),
+  userId: uuid('user_id').notNull(),
+  duetType: varchar('duet_type', { length: 20 }).notNull().default('split'), // split, reaction, stitch
+  splitPosition: varchar('split_position', { length: 10 }).default('right'), // left, right, top, bottom
+  syncOffset: integer('sync_offset').default(0), // milliseconds offset for sync
+  approved: boolean('approved').default(true),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  originalIdx: index('video_duets_original_idx').on(table.originalVideoId),
+  duetIdx: index('video_duets_duet_idx').on(table.duetVideoId),
+  userIdx: index('video_duets_user_idx').on(table.userId),
+}));
 
-export const liveStreams = pgTable("live_streams", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  streamerId: uuid("streamer_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  title: text("title").notNull(),
-  description: text("description"),
-  thumbnailUrl: text("thumbnail_url"),
-  
-  // Stream configuration
-  streamKey: text("stream_key").notNull(),
-  streamUrl: text("stream_url"),
-  quality: text("quality").default("720p"), // '480p', '720p', '1080p', '4K'
-  frameRate: integer("frame_rate").default(30),
-  bitrate: integer("bitrate").default(2500),
-  
-  // Status
-  status: text("status").default("scheduled"), // 'scheduled', 'live', 'ended', 'cancelled'
-  scheduledFor: timestamp("scheduled_for"),
-  startedAt: timestamp("started_at"),
-  endedAt: timestamp("ended_at"),
-  
-  // Settings
-  isPrivate: boolean("is_private").default(false),
-  allowChat: boolean("allow_chat").default(true),
-  allowGifts: boolean("allow_gifts").default(true),
-  allowRecording: boolean("allow_recording").default(true),
-  
-  // Monetization
-  enableTips: boolean("enable_tips").default(false),
-  minTipAmount: decimal("min_tip_amount", { precision: 10, scale: 2 }).default("1"),
-  
-  // Analytics
-  peakViewers: integer("peak_viewers").default(0),
-  totalViewers: integer("total_viewers").default(0),
-  duration: integer("duration").default(0), // in seconds
-  
-  category: text("category"),
-  tags: jsonb("tags").$type<string[]>().default([]),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    streamerIdIdx: index("live_streams_streamer_id_idx").on(table.streamerId),
-    statusIdx: index("live_streams_status_idx").on(table.status),
-    scheduledForIdx: index("live_streams_scheduled_for_idx").on(table.scheduledFor),
-  };
-});
+// Video battles
+export const videoBattles = pgTable('video_battles', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  creatorId: uuid('creator_id').notNull(),
+  challengerId: uuid('challenger_id'),
+  video1Id: uuid('video1_id').notNull(),
+  video2Id: uuid('video2_id'),
+  title: text('title').notNull(),
+  description: text('description'),
+  category: varchar('category', { length: 50 }),
+  status: varchar('status', { length: 20 }).notNull().default('open'), // open, ongoing, completed, cancelled
+  startTime: timestamp('start_time'),
+  endTime: timestamp('end_time'),
+  duration: integer('duration').notNull().default(7), // days
+  votingEnabled: boolean('voting_enabled').notNull().default(true),
+  video1Votes: integer('video1_votes').notNull().default(0),
+  video2Votes: integer('video2_votes').notNull().default(0),
+  winnerId: uuid('winner_id'),
+  prizePool: decimal('prize_pool', { precision: 10, scale: 2 }).default('0.00'),
+  entryFee: decimal('entry_fee', { precision: 10, scale: 2 }).default('0.00'),
+  rules: jsonb('rules').$type<any>(),
+  judgeIds: jsonb('judge_ids').$type<string[]>().default([]),
+  publicVoting: boolean('public_voting').default(true),
+  minFollowers: integer('min_followers').default(0),
+  ageRestricted: boolean('age_restricted').default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+  creatorIdx: index('video_battles_creator_idx').on(table.creatorId),
+  challengerIdx: index('video_battles_challenger_idx').on(table.challengerId),
+  statusIdx: index('video_battles_status_idx').on(table.status),
+  categoryIdx: index('video_battles_category_idx').on(table.category),
+}));
 
-export const streamViewers = pgTable("stream_viewers", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  streamId: uuid("stream_id")
-    .notNull()
-    .references(() => liveStreams.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  joinedAt: timestamp("joined_at").defaultNow(),
-  leftAt: timestamp("left_at"),
-  watchTime: integer("watch_time").default(0), // in seconds
-  
-  // Interaction tracking
-  messagesSent: integer("messages_sent").default(0),
-  giftsSent: integer("gifts_sent").default(0),
-  tipAmount: decimal("tip_amount", { precision: 10, scale: 2 }).default("0"),
-  
-  isActive: boolean("is_active").default(true),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    streamUserIdx: index("stream_viewers_stream_user_idx").on(table.streamId, table.userId),
-    streamIdIdx: index("stream_viewers_stream_id_idx").on(table.streamId),
-    uniqueViewer: unique("unique_stream_viewer").on(table.streamId, table.userId),
-  };
-});
+// Battle votes
+export const battleVotes = pgTable('battle_votes', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  battleId: uuid('battle_id').notNull(),
+  userId: uuid('user_id').notNull(),
+  videoId: uuid('video_id').notNull(), // which video they voted for
+  voteWeight: decimal('vote_weight', { precision: 3, scale: 2 }).default('1.00'),
+  isJudgeVote: boolean('is_judge_vote').default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  battleUserIdx: index('battle_votes_battle_user_idx').on(table.battleId, table.userId),
+  battleIdx: index('battle_votes_battle_idx').on(table.battleId),
+}));
 
-export const streamChatMessages = pgTable("stream_chat_messages", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  streamId: uuid("stream_id")
-    .notNull()
-    .references(() => liveStreams.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  content: text("content").notNull(),
-  messageType: text("message_type").default("chat"), // 'chat', 'gift', 'tip', 'system'
-  
-  // Gift/tip data
-  giftData: jsonb("gift_data"),
-  tipAmount: decimal("tip_amount", { precision: 10, scale: 2 }),
-  
-  // Moderation
-  isDeleted: boolean("is_deleted").default(false),
-  deletedBy: uuid("deleted_by").references(() => users.id),
-  deletedAt: timestamp("deleted_at"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    streamIdIdx: index("stream_chat_messages_stream_id_idx").on(table.streamId),
-    userIdIdx: index("stream_chat_messages_user_id_idx").on(table.userId),
-    createdAtIdx: index("stream_chat_messages_created_at_idx").on(table.createdAt),
-  };
-});
+// Video processing jobs
+export const videoProcessingJobs = pgTable('video_processing_jobs', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  videoId: uuid('video_id').notNull(),
+  jobType: varchar('job_type', { length: 30 }).notNull(), // transcode, thumbnail, analysis
+  status: varchar('status', { length: 20 }).notNull().default('pending'), // pending, processing, completed, failed
+  priority: integer('priority').notNull().default(5), // 1-10, higher = more priority
+  inputData: jsonb('input_data').$type<any>(),
+  outputData: jsonb('output_data').$type<any>(),
+  errorMessage: text('error_message'),
+  progress: decimal('progress', { precision: 5, scale: 2 }).default('0.00'), // 0.00 to 100.00
+  startedAt: timestamp('started_at'),
+  completedAt: timestamp('completed_at'),
+  retryCount: integer('retry_count').notNull().default(0),
+  maxRetries: integer('max_retries').notNull().default(3),
+  processingNode: varchar('processing_node', { length: 50 }),
+  estimatedDuration: integer('estimated_duration'), // seconds
+  actualDuration: integer('actual_duration'), // seconds
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+  videoIdx: index('video_processing_jobs_video_idx').on(table.videoId),
+  statusIdx: index('video_processing_jobs_status_idx').on(table.status),
+  jobTypeIdx: index('video_processing_jobs_job_type_idx').on(table.jobType),
+  priorityIdx: index('video_processing_jobs_priority_idx').on(table.priority),
+}));
 
-export const streamGifts = pgTable("stream_gifts", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  streamId: uuid("stream_id")
-    .notNull()
-    .references(() => liveStreams.id, { onDelete: "cascade" }),
-  senderId: uuid("sender_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-    
-  giftType: text("gift_type").notNull(), // 'rose', 'heart', 'diamond', 'rocket'
-  giftValue: decimal("gift_value", { precision: 10, scale: 2 }).notNull(),
-  quantity: integer("quantity").default(1),
-  totalValue: decimal("total_value", { precision: 10, scale: 2 }).notNull(),
-  
-  message: text("message"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    streamIdIdx: index("stream_gifts_stream_id_idx").on(table.streamId),
-    senderIdIdx: index("stream_gifts_sender_id_idx").on(table.senderId),
-  };
-});
+// Video playlists
+export const videoPlaylists = pgTable('video_playlists', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  userId: uuid('user_id').notNull(),
+  name: text('name').notNull(),
+  description: text('description'),
+  thumbnail: text('thumbnail'),
+  visibility: varchar('visibility', { length: 20 }).notNull().default('public'), // public, private, unlisted
+  videoCount: integer('video_count').notNull().default(0),
+  totalDuration: integer('total_duration').notNull().default(0), // seconds
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+}, (table) => ({
+  userIdx: index('video_playlists_user_idx').on(table.userId),
+  visibilityIdx: index('video_playlists_visibility_idx').on(table.visibility),
+}));
 
-// =============================================================================
-// VIDEO BATTLES
-// =============================================================================
+// Playlist items
+export const playlistItems = pgTable('playlist_items', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  playlistId: uuid('playlist_id').notNull(),
+  videoId: uuid('video_id').notNull(),
+  position: integer('position').notNull(),
+  addedBy: uuid('added_by').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  playlistIdx: index('playlist_items_playlist_idx').on(table.playlistId),
+  playlistPositionIdx: index('playlist_items_playlist_position_idx').on(table.playlistId, table.position),
+}));
 
-export const videoBattles = pgTable("video_battles", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  video1Id: uuid("video1_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-  video2Id: uuid("video2_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-    
-  battleType: text("battle_type").notNull(), // 'dance', 'comedy', 'talent', 'custom'
-  title: text("title"),
-  description: text("description"),
-  
-  // Battle configuration
-  duration: integer("duration").default(300), // 5 minutes default
-  votingEndTime: timestamp("voting_end_time").notNull(),
-  
-  // Results
-  status: text("status").default("active"), // 'active', 'completed', 'cancelled'
-  winnerId: uuid("winner_id").references(() => users.id),
-  video1Votes: integer("video1_votes").default(0),
-  video2Votes: integer("video2_votes").default(0),
-  totalVotes: integer("total_votes").default(0),
-  
-  // Prize information
-  prizePool: decimal("prize_pool", { precision: 10, scale: 2 }).default("0"),
-  prizeCurrency: text("prize_currency").default("SOFT_POINTS"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    video1IdIdx: index("video_battles_video1_id_idx").on(table.video1Id),
-    video2IdIdx: index("video_battles_video2_id_idx").on(table.video2Id),
-    statusIdx: index("video_battles_status_idx").on(table.status),
-    votingEndTimeIdx: index("video_battles_voting_end_time_idx").on(table.votingEndTime),
-  };
-});
+// Video analytics summary (for performance)
+export const videoAnalytics = pgTable('video_analytics', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  videoId: uuid('video_id').notNull(),
+  date: timestamp('date').notNull(),
+  views: integer('views').notNull().default(0),
+  uniqueViews: integer('unique_views').notNull().default(0),
+  likes: integer('likes').notNull().default(0),
+  comments: integer('comments').notNull().default(0),
+  shares: integer('shares').notNull().default(0),
+  avgWatchTime: decimal('avg_watch_time', { precision: 8, scale: 2 }).default('0.00'),
+  completionRate: decimal('completion_rate', { precision: 5, scale: 2 }).default('0.00'),
+  engagement: decimal('engagement', { precision: 5, scale: 2 }).default('0.00'),
+  revenue: decimal('revenue', { precision: 10, scale: 2 }).default('0.00'),
+  impressions: integer('impressions').notNull().default(0),
+  clickThroughRate: decimal('click_through_rate', { precision: 5, scale: 2 }).default('0.00'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  videoDateIdx: index('video_analytics_video_date_idx').on(table.videoId, table.date),
+  dateIdx: index('video_analytics_date_idx').on(table.date),
+}));
 
-export const battleVotes = pgTable("battle_votes", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  battleId: uuid("battle_id")
-    .notNull()
-    .references(() => videoBattles.id, { onDelete: "cascade" }),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-    
-  voteWeight: integer("vote_weight").default(1), // Premium users might have higher weight
-  
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    battleUserIdx: index("battle_votes_battle_user_idx").on(table.battleId, table.userId),
-    uniqueVote: unique("unique_battle_vote").on(table.battleId, table.userId),
-  };
-});
-
-// =============================================================================
-// VIDEO PROCESSING
-// =============================================================================
-
-export const videoProcessingJobs = pgTable("video_processing_jobs", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-    
-  jobType: text("job_type").notNull(), // 'video_processing', 'thumbnail_generation', 'duet_merge'
-  status: text("status").default("queued"), // 'queued', 'processing', 'completed', 'failed'
-  priority: integer("priority").default(5), // 1-10, higher = more priority
-  
-  inputUrl: text("input_url"),
-  outputUrl: text("output_url"),
-  parameters: jsonb("parameters"),
-  
-  progress: integer("progress").default(0), // 0-100
-  errorMessage: text("error_message"),
-  
-  startedAt: timestamp("started_at"),
-  completedAt: timestamp("completed_at"),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-}, (table) => {
-  return {
-    videoIdIdx: index("video_processing_jobs_video_id_idx").on(table.videoId),
-    statusIdx: index("video_processing_jobs_status_idx").on(table.status),
-    priorityIdx: index("video_processing_jobs_priority_idx").on(table.priority),
-  };
-});
-
-export const videoVersions = pgTable("video_versions", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  videoId: uuid("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-    
-  quality: text("quality").notNull(), // '240p', '360p', '480p', '720p', '1080p'
-  format: text("format").notNull(), // 'mp4', 'webm', 'mov'
-  videoUrl: text("video_url").notNull(),
-  fileSize: integer("file_size"), // in bytes
-  bitrate: integer("bitrate"),
-  frameRate: integer("frame_rate"),
-  
-  isDefault: boolean("is_default").default(false),
-  
-  createdAt: timestamp("created_at").defaultNow(),
-}, (table) => {
-  return {
-    videoIdIdx: index("video_versions_video_id_idx").on(table.videoId),
-    qualityIdx: index("video_versions_quality_idx").on(table.quality),
-  };
-});
+// Music library for videos
+export const musicLibrary = pgTable('music_library', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  title: text('title').notNull(),
+  artist: text('artist').notNull(),
+  duration: integer('duration').notNull(), // seconds
+  fileUrl: text('file_url').notNull(),
+  genre: varchar('genre', { length: 50 }),
+  mood: varchar('mood', { length: 30 }),
+  bpm: integer('bpm'),
+  key: varchar('key', { length: 10 }),
+  copyrightFree: boolean('copyright_free').notNull().default(false),
+  licenseCost: decimal('license_cost', { precision: 8, scale: 2 }).default('0.00'),
+  popularityScore: integer('popularity_score').notNull().default(0),
+  tags: jsonb('tags').$type<string[]>().default([]),
+  waveformData: jsonb('waveform_data').$type<any>(),
+  approved: boolean('approved').notNull().default(false),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+}, (table) => ({
+  genreIdx: index('music_library_genre_idx').on(table.genre),
+  artistIdx: index('music_library_artist_idx').on(table.artist),
+  popularityIdx: index('music_library_popularity_idx').on(table.popularityScore),
+}));
