@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -60,11 +59,65 @@ const BankAccountSettings = () => {
                 <SelectValue placeholder="Select your bank" />
               </SelectTrigger>
               <SelectContent>
+                {/* US Banks */}
                 <SelectItem value="chase">Chase Bank</SelectItem>
                 <SelectItem value="bankofamerica">Bank of America</SelectItem>
                 <SelectItem value="wellsfargo">Wells Fargo</SelectItem>
                 <SelectItem value="citibank">Citibank</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+
+                {/* Nigerian Banks */}
+                <SelectItem value="access_bank">Access Bank Nigeria</SelectItem>
+                <SelectItem value="zenith_bank">Zenith Bank</SelectItem>
+                <SelectItem value="first_bank">First Bank Nigeria</SelectItem>
+                <SelectItem value="gtbank">Guaranty Trust Bank (GTBank)</SelectItem>
+                <SelectItem value="uba">United Bank for Africa (UBA)</SelectItem>
+                <SelectItem value="fidelity_bank">Fidelity Bank Nigeria</SelectItem>
+                <SelectItem value="sterling_bank">Sterling Bank</SelectItem>
+                <SelectItem value="union_bank">Union Bank Nigeria</SelectItem>
+                <SelectItem value="wema_bank">Wema Bank</SelectItem>
+                <SelectItem value="polaris_bank">Polaris Bank</SelectItem>
+                <SelectItem value="stanbic_ibtc">Stanbic IBTC Bank</SelectItem>
+                <SelectItem value="ecobank_nigeria">Ecobank Nigeria</SelectItem>
+                <SelectItem value="fcmb">First City Monument Bank (FCMB)</SelectItem>
+                <SelectItem value="keystone_bank">Keystone Bank</SelectItem>
+                <SelectItem value="unity_bank">Unity Bank</SelectItem>
+
+                {/* South African Banks */}
+                <SelectItem value="standard_bank_sa">Standard Bank South Africa</SelectItem>
+                <SelectItem value="absa_bank">ABSA Bank</SelectItem>
+                <SelectItem value="fnb_sa">First National Bank (FNB)</SelectItem>
+                <SelectItem value="nedbank">Nedbank</SelectItem>
+                <SelectItem value="capitec_bank">Capitec Bank</SelectItem>
+                <SelectItem value="african_bank">African Bank</SelectItem>
+
+                {/* Kenyan Banks */}
+                <SelectItem value="kcb_kenya">KCB Bank Kenya</SelectItem>
+                <SelectItem value="equity_bank_kenya">Equity Bank Kenya</SelectItem>
+                <SelectItem value="coop_bank_kenya">Cooperative Bank of Kenya</SelectItem>
+                <SelectItem value="stanchart_kenya">Standard Chartered Kenya</SelectItem>
+                <SelectItem value="ncba_kenya">NCBA Bank Kenya</SelectItem>
+
+                {/* Ghanaian Banks */}
+                <SelectItem value="gcb_ghana">GCB Bank Ghana</SelectItem>
+                <SelectItem value="ecobank_ghana">Ecobank Ghana</SelectItem>
+                <SelectItem value="stanchart_ghana">Standard Chartered Ghana</SelectItem>
+                <SelectItem value="zenith_ghana">Zenith Bank Ghana</SelectItem>
+                <SelectItem value="access_ghana">Access Bank Ghana</SelectItem>
+
+                {/* Digital/Mobile Banks */}
+                <SelectItem value="kuda_bank">Kuda Bank (Nigeria)</SelectItem>
+                <SelectItem value="vbank">VBank (Nigeria)</SelectItem>
+                <SelectItem value="opay">Opay (Nigeria)</SelectItem>
+                <SelectItem value="palmpay">PalmPay (Nigeria)</SelectItem>
+                <SelectItem value="tymebank">TymeBank (South Africa)</SelectItem>
+
+                {/* Mobile Money */}
+                <SelectItem value="mtn_momo">MTN Mobile Money</SelectItem>
+                <SelectItem value="airtel_money">Airtel Money</SelectItem>
+                <SelectItem value="mpesa">Vodacom M-Pesa</SelectItem>
+                <SelectItem value="orange_money">Orange Money</SelectItem>
+
+                <SelectItem value="other">Other Bank</SelectItem>
               </SelectContent>
             </Select>
           </div>
