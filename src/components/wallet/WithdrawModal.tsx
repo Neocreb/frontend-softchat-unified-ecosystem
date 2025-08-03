@@ -353,7 +353,7 @@ const WithdrawModal = ({
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 Loading bank accounts...
               </div>
-            ) : bankAccounts.length > 0 ? (
+            ) : displayBanks.length > 0 ? (
               <Select value={selectedBank} onValueChange={setSelectedBank}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select bank account" />
