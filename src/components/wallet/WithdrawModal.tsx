@@ -359,7 +359,7 @@ const WithdrawModal = ({
                   <SelectValue placeholder="Select bank account" />
                 </SelectTrigger>
                 <SelectContent>
-                  {bankAccounts.map((account) => (
+                  {displayBanks.map((account) => (
                     <SelectItem key={account.id} value={account.id}>
                       <div className="flex items-center justify-between w-full">
                         <span>
