@@ -514,30 +514,39 @@ class I18nService {
 
   // Currency Management
   detectUserCurrency(): void {
-    // Try to detect based on user's location/timezone
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    try {
+      // Try to detect based on user's location/timezone
+      if (typeof Intl !== "undefined" && Intl.DateTimeFormat) {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Simple mapping based on timezone
-    if (timezone.includes("Europe")) {
-      this.currentCurrency = "EUR";
-    } else if (timezone.includes("London")) {
-      this.currentCurrency = "GBP";
-    } else if (
-      timezone.includes("Lagos") ||
-      timezone.includes("Africa/Lagos")
-    ) {
-      this.currentCurrency = "NGN";
-    } else if (timezone.includes("Africa/Accra")) {
-      this.currentCurrency = "GHS";
-    } else if (timezone.includes("Africa/Johannesburg")) {
-      this.currentCurrency = "ZAR";
-    } else if (timezone.includes("Africa/Nairobi")) {
-      this.currentCurrency = "KES";
-    } else if (timezone.includes("Asia/Shanghai")) {
-      this.currentCurrency = "CNY";
-    } else if (timezone.includes("Asia/Tokyo")) {
-      this.currentCurrency = "JPY";
-    } else {
+        // Simple mapping based on timezone
+        if (timezone.includes("Europe")) {
+          this.currentCurrency = "EUR";
+        } else if (timezone.includes("London")) {
+          this.currentCurrency = "GBP";
+        } else if (
+          timezone.includes("Lagos") ||
+          timezone.includes("Africa/Lagos")
+        ) {
+          this.currentCurrency = "NGN";
+        } else if (timezone.includes("Africa/Accra")) {
+          this.currentCurrency = "GHS";
+        } else if (timezone.includes("Africa/Johannesburg")) {
+          this.currentCurrency = "ZAR";
+        } else if (timezone.includes("Africa/Nairobi")) {
+          this.currentCurrency = "KES";
+        } else if (timezone.includes("Asia/Shanghai")) {
+          this.currentCurrency = "CNY";
+        } else if (timezone.includes("Asia/Tokyo")) {
+          this.currentCurrency = "JPY";
+        } else {
+          this.currentCurrency = "USD";
+        }
+      } else {
+        this.currentCurrency = "USD";
+      }
+    } catch (error) {
+      console.warn("Failed to detect user currency:", error);
       this.currentCurrency = "USD";
     }
   }
