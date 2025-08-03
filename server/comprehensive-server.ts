@@ -20,6 +20,11 @@ import adminComprehensiveRoutes from "./routes/admin-comprehensive";
 import marketplaceApiRoutes from "./routes/marketplace-api";
 import activityEconomyApiRoutes from "./routes/activity-economy-api";
 import duetApiRoutes from "./routes/duet-api";
+import videoApiRoutes from "./routes/video-api";
+import socialApiRoutes from "./routes/social-api";
+import aiApiRoutes from "./routes/ai-api";
+import notificationsApiRoutes from "./routes/notifications-api";
+import analyticsApiRoutes from "./routes/analytics-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
