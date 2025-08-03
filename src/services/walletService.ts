@@ -180,6 +180,10 @@ class WalletServiceClass {
     }
   }
 
+  getCurrencyIcon(currency: string): string {
+    return WalletServiceClass.getCurrencyIcon(currency);
+  }
+
   static getCurrencyIcon(currency: string): string {
     switch (currency) {
       case "USDT":
