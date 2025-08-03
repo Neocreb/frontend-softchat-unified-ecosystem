@@ -192,7 +192,7 @@ const CreatorStudioAccess: React.FC<CreatorStudioAccessProps> = ({
           variant="ghost"
           size="sm"
           className="justify-start"
-          onClick={() => navigate("/app/creator-studio?tab=revenue")}
+          onClick={() => navigate("/app/unified-creator-studio?tab=revenue")}
         >
           <DollarSign className="w-4 h-4 mr-2" />
           Revenue Tracking
