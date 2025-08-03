@@ -521,13 +521,39 @@ const IntegrationManager = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="routing-number">Routing Number</Label>
+                    <Label htmlFor="routing-number">Routing Number (US Banks)</Label>
                     <Input
                       id="routing-number"
-                      placeholder="Enter routing number"
+                      placeholder="021000021"
                       value={newBankAccount.routingNumber}
                       onChange={(e) => setNewBankAccount(prev => ({ ...prev, routingNumber: e.target.value }))}
+                      maxLength={9}
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="sort-code">Sort Code (UK/SA Banks)</Label>
+                    <Input
+                      id="sort-code"
+                      placeholder="12-34-56"
+                      value={newBankAccount.sortCode}
+                      onChange={(e) => setNewBankAccount(prev => ({ ...prev, sortCode: e.target.value }))}
+                      maxLength={8}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="swift-code">SWIFT/BIC Code (International)</Label>
+                    <Input
+                      id="swift-code"
+                      placeholder="ABNANL2A"
+                      value={newBankAccount.swiftCode}
+                      onChange={(e) => setNewBankAccount(prev => ({ ...prev, swiftCode: e.target.value }))}
+                      maxLength={11}
+                    />
+                    <p className="text-xs text-gray-500">
+                      Required for international transfers and most African banks
+                    </p>
                   </div>
 
                   <div className="space-y-2">
