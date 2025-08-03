@@ -63,6 +63,106 @@ class WalletServiceClass {
     return response.transactions;
   }
 
+  async getWalletBalance(): Promise<WalletBalance> {
+    try {
+      const wallet = await this.getWallet();
+
+      // Convert string balances to numbers and aggregate them
+      const usdtBalance = parseFloat(wallet.usdtBalance || "0");
+      const ethBalance = parseFloat(wallet.ethBalance || "0");
+      const btcBalance = parseFloat(wallet.btcBalance || "0");
+      const softPointsBalance = parseFloat(wallet.softPointsBalance || "0");
+
+      // For now, map all crypto balances to the crypto source
+      // In a real implementation, you'd have separate tracking
+      const cryptoTotal = usdtBalance + ethBalance + btcBalance;
+      const rewardsTotal = softPointsBalance;
+
+      return {
+        total: cryptoTotal + rewardsTotal,
+        ecommerce: 0, // Not tracked in current wallet structure
+        crypto: cryptoTotal,
+        rewards: rewardsTotal,
+        freelance: 0, // Not tracked in current wallet structure
+      };
+    } catch (error) {
+      console.error("Failed to get wallet balance:", error);
+      return {
+        total: 0,
+        ecommerce: 0,
+        crypto: 0,
+        rewards: 0,
+        freelance: 0,
+      };
+    }
+  }
+
+  async getTransactions(): Promise<WalletTransaction[]> {
+    try {
+      const transactions = await this.getTransactionHistory();
+
+      // Transform the API transactions to match the expected format
+      return transactions.map((tx): WalletTransaction => ({
+        id: tx.id,
+        type: this.mapTransactionType(tx.type),
+        amount: parseFloat(tx.amount),
+        source: this.mapCurrencyToSource(tx.currency),
+        description: tx.description,
+        timestamp: tx.createdAt,
+        status: this.mapTransactionStatus(tx.status),
+        sourceIcon: this.getCurrencyIcon(tx.currency),
+      }));
+    } catch (error) {
+      console.error("Failed to get transactions:", error);
+      return [];
+    }
+  }
+
+  private mapTransactionType(type: string): "deposit" | "withdrawal" | "earned" | "transfer" {
+    switch (type.toLowerCase()) {
+      case "deposit":
+        return "deposit";
+      case "withdrawal":
+        return "withdrawal";
+      case "earned":
+      case "reward":
+        return "earned";
+      case "transfer":
+      case "send":
+        return "transfer";
+      default:
+        return "transfer";
+    }
+  }
+
+  private mapCurrencyToSource(currency: string): "ecommerce" | "crypto" | "rewards" | "freelance" | "bank" | "card" {
+    switch (currency.toUpperCase()) {
+      case "USDT":
+      case "ETH":
+      case "BTC":
+        return "crypto";
+      case "SOFT_POINTS":
+        return "rewards";
+      default:
+        return "crypto";
+    }
+  }
+
+  private mapTransactionStatus(status: string): "pending" | "completed" | "failed" {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "pending";
+      case "completed":
+      case "success":
+        return "completed";
+      case "failed":
+      case "error":
+        return "failed";
+      default:
+        return "pending";
+    }
+  }
+
   static formatBalance(balance: string, currency: string): string {
     const amount = parseFloat(balance);
 
