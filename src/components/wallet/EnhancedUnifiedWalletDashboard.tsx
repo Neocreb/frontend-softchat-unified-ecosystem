@@ -25,6 +25,7 @@ import IntegrationManager from "./IntegrationManager";
 // Original components
 import WithdrawModal from "./WithdrawModal";
 import DepositModal from "./DepositModal";
+import MobileResponsiveWrapper from "@/components/shared/MobileResponsiveWrapper";
 
 const EnhancedWalletDashboardContent = () => {
   const {
