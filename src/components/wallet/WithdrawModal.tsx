@@ -159,17 +159,29 @@ const WithdrawModal = ({
     setIsLoading(true);
 
     try {
-      const result = await walletService.processWithdrawal({
+      const selectedAccount = displayBanks.find(acc => acc.id === selectedBank);
+
+      if (!selectedAccount) {
+        throw new Error("Please select a valid bank account");
+      }
+
+      // Create bank transfer request
+      const bankTransferRequest: BankTransferRequest = {
+        bankName: selectedAccount.bankName || selectedAccount.name || "Unknown Bank",
+        accountNumber: selectedAccount.accountNumber,
+        accountName: selectedAccount.name || "Account Holder",
         amount: withdrawAmount,
-        source,
-        bankAccount: selectedBank,
-        description: description || undefined,
-      });
+        currency: "USD",
+        reference: `WTH_${Date.now()}`,
+        swiftCode: "MOCK123", // This would come from the bank data
+      };
+
+      const result = await africanPaymentService.processWithdrawalToBankAccount(bankTransferRequest);
 
       if (result.success) {
         toast({
           title: "Withdrawal Successful",
-          description: result.message,
+          description: `${result.message}${result.fees ? ` (Fee: $${result.fees.toFixed(2)})` : ""}`,
         });
         onSuccess();
         onClose();
@@ -184,7 +196,7 @@ const WithdrawModal = ({
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to process withdrawal",
+        description: error instanceof Error ? error.message : "Failed to process withdrawal",
         variant: "destructive",
       });
     } finally {
