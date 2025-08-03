@@ -20,6 +20,11 @@ import adminComprehensiveRoutes from "./routes/admin-comprehensive";
 import marketplaceApiRoutes from "./routes/marketplace-api";
 import activityEconomyApiRoutes from "./routes/activity-economy-api";
 import duetApiRoutes from "./routes/duet-api";
+import videoApiRoutes from "./routes/video-api";
+import socialApiRoutes from "./routes/social-api";
+import aiApiRoutes from "./routes/ai-api";
+import notificationsApiRoutes from "./routes/notifications-api";
+import analyticsApiRoutes from "./routes/analytics-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
@@ -243,6 +248,21 @@ app.use("/api", adminComprehensiveRoutes);
 
 // Duet API Routes
 app.use("/api/duets", duetApiRoutes);
+
+// Video API Routes
+app.use("/api/videos", videoApiRoutes);
+
+// Social API Routes
+app.use("/api/social", socialApiRoutes);
+
+// AI API Routes
+app.use("/api/ai", aiApiRoutes);
+
+// Notifications API Routes
+app.use("/api/notifications", notificationsApiRoutes);
+
+// Analytics API Routes
+app.use("/api/analytics", analyticsApiRoutes);
 
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);

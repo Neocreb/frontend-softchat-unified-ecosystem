@@ -70,6 +70,7 @@ import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ComprehensiveAdminDashboard from "./pages/admin/ComprehensiveAdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import AdminLogin from "./pages/AdminLogin";
 import AdminManagement from "./pages/admin/AdminManagement";
@@ -427,7 +428,7 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="dashboard" element={<ComprehensiveAdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="management" element={<AdminManagement />} />
         <Route path="settings" element={<PlatformSettings />} />
