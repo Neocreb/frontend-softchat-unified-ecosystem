@@ -75,6 +75,18 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
       icon: Bitcoin,
       color: "text-orange-600",
     },
+    {
+      value: "mobile",
+      label: "Mobile Money",
+      icon: Smartphone,
+      color: "text-purple-600",
+    },
+    {
+      value: "ewallet",
+      label: "E-Wallet/Digital Payment",
+      icon: Building,
+      color: "text-indigo-600",
+    },
   ];
 
   const depositSources = [
