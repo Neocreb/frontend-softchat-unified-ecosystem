@@ -23,6 +23,7 @@ import { walletService } from "@/services/walletService";
 import { africanPaymentService, type PaymentResponse } from "@/services/africanPaymentService";
 import { useToast } from "@/components/ui/use-toast";
 import AfricanCountryCurrencySelector from "./AfricanCountryCurrencySelector";
+import PaymentStatusDisplay from "./PaymentStatusDisplay";
 // import { useI18n } from "@/contexts/I18nContext"; // Temporarily disabled
 // import { RegionalPaymentMethods } from "@/components/i18n/LanguageCurrencySelector"; // Temporarily disabled
 import {
@@ -57,6 +58,7 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<any>(null);
   const [showCountrySelector, setShowCountrySelector] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<{transactionId: string, amount: number, method: string, provider?: string} | null>(null);
   const { toast } = useToast();
   // const { currentCurrency, availablePaymentMethods, formatCurrency } = useI18n(); // Temporarily disabled
 
@@ -190,13 +192,14 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
       }
 
       if (result.success) {
-        toast({
-          title: "Deposit Successful",
-          description: `${result.message}${result.fees ? ` (Fee: $${result.fees.toFixed(2)})` : ""}`,
+        // Show payment status instead of immediate close
+        setPaymentStatus({
+          transactionId: result.transactionId || `TXN_${Date.now()}`,
+          amount: depositAmount,
+          method: method,
+          provider: selectedPaymentMethod || selectedCountry?.name
         });
         onSuccess();
-        onClose();
-        resetForm();
       } else {
         toast({
           title: "Deposit Failed",
