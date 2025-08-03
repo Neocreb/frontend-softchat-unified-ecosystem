@@ -70,6 +70,7 @@ import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ComprehensiveAdminDashboard from "./pages/admin/ComprehensiveAdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import AdminLogin from "./pages/AdminLogin";
 import AdminManagement from "./pages/admin/AdminManagement";
