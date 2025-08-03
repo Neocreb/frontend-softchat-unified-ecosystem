@@ -557,7 +557,13 @@ class I18nService {
     );
     if (supported) {
       this.currentCurrency = currencyCode;
-      localStorage.setItem("softchat_currency", currencyCode);
+      try {
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem("softchat_currency", currencyCode);
+        }
+      } catch (error) {
+        console.warn("Failed to save currency:", error);
+      }
     }
   }
 
