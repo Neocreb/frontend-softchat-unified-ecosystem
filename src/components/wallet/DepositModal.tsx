@@ -151,17 +151,45 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
     setIsLoading(true);
 
     try {
-      const result = await walletService.processDeposit({
-        amount: depositAmount,
-        method,
-        source,
-        description: description || undefined,
-      });
+      let result: PaymentResponse;
+
+      // Route to appropriate payment service based on method
+      if (method === "mobile") {
+        result = await africanPaymentService.processMobileMoneyDeposit({
+          provider: selectedPaymentMethod,
+          phoneNumber: "user-phone", // This would come from user profile
+          amount: depositAmount,
+          currency: "USD",
+          reference: `DEP_${Date.now()}`,
+        });
+      } else if (method === "ewallet") {
+        result = await africanPaymentService.processPaymentGateway(
+          selectedPaymentMethod,
+          depositAmount,
+          "deposit"
+        );
+      } else {
+        // Fall back to original wallet service for card/bank/crypto
+        const walletResult = await walletService.processDeposit({
+          amount: depositAmount,
+          method,
+          source,
+          description: description || undefined,
+        });
+
+        result = {
+          success: walletResult.success,
+          transactionId: `TXN_${Date.now()}`,
+          reference: `REF_${Date.now()}`,
+          status: walletResult.success ? "completed" : "failed",
+          message: walletResult.message,
+        };
+      }
 
       if (result.success) {
         toast({
           title: "Deposit Successful",
-          description: result.message,
+          description: `${result.message}${result.fees ? ` (Fee: $${result.fees.toFixed(2)})` : ""}`,
         });
         onSuccess();
         onClose();
@@ -176,7 +204,7 @@ const DepositModal = ({ isOpen, onClose, onSuccess }: DepositModalProps) => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to process deposit",
+        description: "Failed to process deposit. Please try again.",
         variant: "destructive",
       });
     } finally {
