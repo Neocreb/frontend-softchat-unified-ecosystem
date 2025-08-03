@@ -124,7 +124,7 @@ const utilityNavItems: NavItem[] = [
   },
   {
     label: "Creator Studio",
-    href: "/creator-studio",
+    href: "/unified-creator-studio",
     icon: Zap,
     color: "text-blue-600",
     description: "Content creation tools",
