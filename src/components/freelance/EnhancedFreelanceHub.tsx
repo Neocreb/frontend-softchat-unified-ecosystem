@@ -117,6 +117,13 @@ export const EnhancedFreelanceHub: React.FC = () => {
       premium: false,
     },
     {
+      label: "Create Profile",
+      icon: <Users className="w-4 h-4" />,
+      action: () => navigate("/app/freelance/update-profile"),
+      variant: "outline" as const,
+      premium: false,
+    },
+    {
       label: "AI Match",
       icon: <Sparkles className="w-4 h-4" />,
       action: () => setActiveTab("recommended"),
