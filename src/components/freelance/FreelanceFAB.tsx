@@ -53,7 +53,7 @@ const FreelanceFAB: React.FC<FreelanceFABProps> = ({ className }) => {
     {
       label: "Post a Job",
       icon: <Plus className="w-4 h-4" />,
-      onClick: () => navigate("/app/create"),
+      onClick: () => navigate("/app/freelance/post-job"),
       className: "bg-orange-600 hover:bg-orange-700 text-white",
       badge: "Popular",
     },
