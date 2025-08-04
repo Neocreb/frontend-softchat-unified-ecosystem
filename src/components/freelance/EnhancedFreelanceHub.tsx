@@ -112,7 +112,7 @@ export const EnhancedFreelanceHub: React.FC = () => {
     {
       label: "Post a Job",
       icon: <Plus className="w-4 h-4" />,
-      action: () => navigate("/app/create"),
+      action: () => navigate("/app/freelance/post-job"),
       variant: "default" as const,
       premium: false,
     },
