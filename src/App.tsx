@@ -293,7 +293,7 @@ const AppRoutes = () => {
           <Route path="freelance/browse-jobs" element={<BrowseJobs />} />
           <Route path="freelance/earnings" element={<Earnings />} />
           <Route path="freelance/post-job" element={<PostJob />} />
-          <Route path="freelance/post-skill" element={<UpdateProfile />} />
+          <Route path="freelance/post-skill" element={<PostSkill />} />
           <Route path="freelance/find-freelancers" element={<FindFreelancers />} />
           <Route path="freelance/manage-projects" element={<ManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
