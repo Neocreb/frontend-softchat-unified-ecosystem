@@ -117,9 +117,9 @@ export const EnhancedFreelanceHub: React.FC = () => {
       premium: false,
     },
     {
-      label: "Create Profile",
-      icon: <Users className="w-4 h-4" />,
-      action: () => navigate("/app/freelance/update-profile"),
+      label: "Post Skill",
+      icon: <Award className="w-4 h-4" />,
+      action: () => navigate("/app/freelance/post-skill"),
       variant: "outline" as const,
       premium: false,
     },
