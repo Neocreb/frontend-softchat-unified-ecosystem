@@ -530,11 +530,19 @@ export const EnhancedFreelanceHub: React.FC = () => {
                   <Award className="w-4 h-4 mr-2" />
                   Post Skill/Talent
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate('/app/chat')}
+                >
                   <MessageSquare className="w-4 h-4 mr-2" />
                   View Messages
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate('/app/analytics')}
+                >
                   <BarChart3 className="w-4 h-4 mr-2" />
                   Analytics Dashboard
                 </Button>
