@@ -54,14 +54,7 @@ const EnhancedFreelance: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<SearchFilters>({});
 
-  // Show upgrade notice for new freelance system
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate("/freelance");
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [navigate]);
+  // Legacy freelance component - consider migrating users to new /app/freelance
   const [categories, setCategories] = useState<string[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
