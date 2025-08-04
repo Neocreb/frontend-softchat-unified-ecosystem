@@ -112,8 +112,15 @@ export const EnhancedFreelanceHub: React.FC = () => {
     {
       label: "Post a Job",
       icon: <Plus className="w-4 h-4" />,
-      action: () => navigate("/app/create"),
+      action: () => navigate("/app/freelance/post-job"),
       variant: "default" as const,
+      premium: false,
+    },
+    {
+      label: "Post Skill",
+      icon: <Award className="w-4 h-4" />,
+      action: () => navigate("/app/freelance/post-skill"),
+      variant: "outline" as const,
       premium: false,
     },
     {
@@ -510,10 +517,18 @@ export const EnhancedFreelanceHub: React.FC = () => {
               <CardContent className="space-y-3">
                 <Button
                   className="w-full justify-start"
-                  onClick={() => navigate("/app/create")}
+                  onClick={() => navigate("/app/freelance/post-job")}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Post a New Job
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate("/app/freelance/post-skill")}
+                >
+                  <Award className="w-4 h-4 mr-2" />
+                  Post Skill/Talent
                 </Button>
                 <Button variant="outline" className="w-full justify-start">
                   <MessageSquare className="w-4 h-4 mr-2" />

@@ -246,7 +246,7 @@ const AIAssistantFAB: React.FC = () => {
                   size="sm"
                   className="h-auto p-2 flex flex-col items-center gap-1"
                   onClick={() => {
-                    navigate("/app/create");
+                    navigate("/app/freelance/post-job");
                     setIsOpen(false);
                   }}
                 >
