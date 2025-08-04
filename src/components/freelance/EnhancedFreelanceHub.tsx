@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +64,6 @@ import TalentsList, { Talent } from "./TalentsList";
 import TalentProfile from "./TalentProfile";
 import { useFreelance } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import AdvancedFreelanceFilters from "./AdvancedFreelanceFilters";
 import SmartRecommendations from "./SmartRecommendations";
 
@@ -530,11 +530,19 @@ export const EnhancedFreelanceHub: React.FC = () => {
                   <Award className="w-4 h-4 mr-2" />
                   Post Skill/Talent
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate('/app/chat')}
+                >
                   <MessageSquare className="w-4 h-4 mr-2" />
                   View Messages
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate('/app/unified-creator-studio')}
+                >
                   <BarChart3 className="w-4 h-4 mr-2" />
                   Analytics Dashboard
                 </Button>
