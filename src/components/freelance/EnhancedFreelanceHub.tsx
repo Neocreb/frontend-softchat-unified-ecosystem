@@ -510,7 +510,7 @@ export const EnhancedFreelanceHub: React.FC = () => {
               <CardContent className="space-y-3">
                 <Button
                   className="w-full justify-start"
-                  onClick={() => navigate("/app/create")}
+                  onClick={() => navigate("/app/freelance/post-job")}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Post a New Job
