@@ -866,9 +866,9 @@ const UnifiedHeader = ({
                   <Briefcase className="h-4 w-4 mr-2" />
                   Post Job
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/app/freelance/update-profile")}>
-                  <User className="h-4 w-4 mr-2" />
-                  Create Freelancer Profile
+                <DropdownMenuItem onClick={() => navigate("/app/freelance/post-skill")}>
+                  <Award className="h-4 w-4 mr-2" />
+                  Post Skill/Talent
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate("/app/marketplace/sell")}>
                   <ShoppingCart className="h-4 w-4 mr-2" />
