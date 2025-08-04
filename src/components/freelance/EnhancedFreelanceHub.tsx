@@ -541,7 +541,7 @@ export const EnhancedFreelanceHub: React.FC = () => {
                 <Button
                   variant="outline"
                   className="w-full justify-start"
-                  onClick={() => navigate('/app/analytics')}
+                  onClick={() => navigate('/app/unified-creator-studio')}
                 >
                   <BarChart3 className="w-4 h-4 mr-2" />
                   Analytics Dashboard
