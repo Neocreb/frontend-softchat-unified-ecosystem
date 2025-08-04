@@ -34,6 +34,8 @@ import {
   Crown,
   ShieldCheck,
   CreditCard,
+  ChevronDown,
+  ShoppingCart,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
