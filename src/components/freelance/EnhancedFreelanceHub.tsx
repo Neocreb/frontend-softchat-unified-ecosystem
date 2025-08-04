@@ -522,6 +522,14 @@ export const EnhancedFreelanceHub: React.FC = () => {
                   <Plus className="w-4 h-4 mr-2" />
                   Post a New Job
                 </Button>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => navigate("/app/freelance/update-profile")}
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Create Freelancer Profile
+                </Button>
                 <Button variant="outline" className="w-full justify-start">
                   <MessageSquare className="w-4 h-4 mr-2" />
                   View Messages
