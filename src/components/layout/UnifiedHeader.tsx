@@ -845,15 +845,33 @@ const UnifiedHeader = ({
             </Button>
 
             {/* Create button */}
-            <Button
-              variant="default"
-              size="sm"
-              onClick={() => navigate("/app/create")}
-              className="hidden md:flex items-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Create
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="hidden md:flex items-center gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create
+                  <ChevronDown className="h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => navigate("/app/feed")}>
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Create Post
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/app/freelance/post-job")}>
+                  <Briefcase className="h-4 w-4 mr-2" />
+                  Post Job
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/app/marketplace/sell")}>
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  List Product
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Notifications */}
             <NotificationsDropdown />
