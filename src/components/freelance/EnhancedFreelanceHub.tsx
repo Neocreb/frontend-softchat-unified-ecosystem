@@ -64,7 +64,6 @@ import TalentsList, { Talent } from "./TalentsList";
 import TalentProfile from "./TalentProfile";
 import { useFreelance } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 import AdvancedFreelanceFilters from "./AdvancedFreelanceFilters";
 import SmartRecommendations from "./SmartRecommendations";
 
