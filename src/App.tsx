@@ -46,6 +46,7 @@ import UpdateProfile from "./pages/freelance/UpdateProfile";
 import BrowseJobs from "./pages/freelance/BrowseJobs";
 import Earnings from "./pages/freelance/Earnings";
 import PostJob from "./pages/freelance/PostJob";
+import PostSkill from "./pages/freelance/PostSkill";
 import FindFreelancers from "./pages/freelance/FindFreelancers";
 import ManageProjects from "./pages/freelance/ManageProjects";
 import ApproveWork from "./pages/freelance/ApproveWork";
