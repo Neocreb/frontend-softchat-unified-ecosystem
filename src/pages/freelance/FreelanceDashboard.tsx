@@ -4,8 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
 import {
   DollarSign,
   TrendingUp,
@@ -35,6 +44,23 @@ import {
   TrendingDown,
   Sparkles,
   Layers,
+  Menu,
+  Search,
+  Filter,
+  MoreVertical,
+  ArrowUp,
+  ArrowDown,
+  ChevronDown,
+  Home,
+  FolderOpen,
+  UserCheck,
+  CreditCard,
+  HelpCircle,
+  LogOut,
+  Eye,
+  Edit3,
+  Download,
+  Share2,
 } from "lucide-react";
 import { SmartFreelanceMatching } from "@/components/freelance/SmartFreelanceMatching";
 import { FreelanceBusinessIntelligence } from "@/components/freelance/FreelanceBusinessIntelligence";
@@ -50,6 +76,95 @@ import NegotiationChat from "@/components/freelance/NegotiationChat";
 import ReviewForm from "@/components/freelance/ReviewForm";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UnifiedCampaignManager } from "@/components/campaigns/UnifiedCampaignManager";
+import { cn } from "@/lib/utils";
+
+// Navigation items for the sidebar
+const navigationItems = [
+  {
+    id: "overview",
+    label: "Overview",
+    icon: Home,
+    description: "Dashboard overview",
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    icon: FolderOpen,
+    description: "Active & completed projects",
+    badge: "3",
+  },
+  {
+    id: "proposals",
+    label: "Proposals",
+    icon: FileText,
+    description: "Submitted proposals",
+  },
+  {
+    id: "earnings",
+    label: "Earnings",
+    icon: DollarSign,
+    description: "Revenue & analytics",
+  },
+  {
+    id: "messages",
+    label: "Messages",
+    icon: MessageCircle,
+    description: "Client communications",
+    badge: "2",
+  },
+  {
+    id: "campaigns",
+    label: "Campaigns",
+    icon: Sparkles,
+    description: "Boost your profile",
+  },
+  {
+    id: "ai-matching",
+    label: "AI Matching",
+    icon: Brain,
+    description: "Smart job recommendations",
+  },
+  {
+    id: "business-intel",
+    label: "Analytics",
+    icon: BarChart3,
+    description: "Business intelligence",
+  },
+  {
+    id: "collaboration",
+    label: "Collaboration",
+    icon: Users,
+    description: "Team tools",
+  },
+];
+
+// Secondary navigation items
+const secondaryItems = [
+  {
+    id: "profile",
+    label: "Profile",
+    icon: UserCheck,
+    href: "/app/profile",
+  },
+  {
+    id: "wallet",
+    label: "Wallet",
+    icon: Wallet,
+    href: "/app/wallet",
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    href: "/app/settings",
+  },
+  {
+    id: "help",
+    label: "Help & Support",
+    icon: HelpCircle,
+    href: "/app/support",
+  },
+];
 
 export const FreelanceDashboard: React.FC = () => {
   const [activeProjects, setActiveProjects] = useState<Project[]>([]);
@@ -57,10 +172,22 @@ export const FreelanceDashboard: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const { getProjects, getFreelanceStats, loading } = useFreelance();
   const { getUserEscrows } = useEscrow();
   const { user } = useAuth();
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -81,15 +208,15 @@ export const FreelanceDashboard: React.FC = () => {
   const getProjectStatusColor = (status: string) => {
     switch (status) {
       case "active":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
       case "completed":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
       case "cancelled":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
       case "disputed":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
     }
   };
 
@@ -139,78 +266,97 @@ export const FreelanceDashboard: React.FC = () => {
   };
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
-    <Card
-      className="hover:shadow-lg hover:scale-[1.02] transition-all duration-200 cursor-pointer border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50"
-      onClick={() => setSelectedProject(project)}
-    >
-      <CardContent className="pt-6 pb-6">
+    <Card className="group hover:shadow-lg transition-all duration-200 cursor-pointer border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-lg line-clamp-1 mb-2 text-gray-900 dark:text-white">
+            <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
               {project.job.title}
             </h3>
             <div className="flex items-center gap-3 mb-3">
-              <Avatar className="w-8 h-8 ring-2 ring-white dark:ring-gray-800 shadow-sm">
+              <Avatar className="w-10 h-10 border-2 border-white dark:border-gray-700 shadow-sm">
                 <AvatarImage src={project.client.avatar} />
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-medium">
                   {project.client.name[0]}
                 </AvatarFallback>
               </Avatar>
               <div>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-gray-900 dark:text-white">
                   {project.client.name}
-                </span>
-                <div className="text-xs text-muted-foreground">Client</div>
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Client</p>
               </div>
             </div>
           </div>
-          <Badge
-            className={`${getProjectStatusColor(project.status)} px-3 py-1 font-medium shadow-sm`}
-          >
-            {project.status}
-          </Badge>
+          <div className="flex flex-col items-end gap-2">
+            <Badge className={`${getProjectStatusColor(project.status)} font-medium`}>
+              {project.status}
+            </Badge>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setSelectedProject(project)}>
+                  <Eye className="mr-2 h-4 w-4" />
+                  View Details
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Edit3 className="mr-2 h-4 w-4" />
+                  Edit Project
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Message Client
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Download className="mr-2 h-4 w-4" />
+                  Export Data
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <div className="space-y-4">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground font-medium">Progress</span>
-            <span className="font-bold text-blue-600 dark:text-blue-400">
-              75%
-            </span>
+            <span className="text-gray-600 dark:text-gray-400 font-medium">Progress</span>
+            <span className="font-semibold text-blue-600 dark:text-blue-400">75%</span>
           </div>
-          <Progress value={75} className="h-3 bg-gray-100 dark:bg-gray-800" />
+          <Progress value={75} className="h-2 bg-gray-100 dark:bg-gray-700" />
 
-          <div className="grid grid-cols-2 gap-6 text-sm">
-            <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-              <div className="text-muted-foreground font-medium mb-1">
-                Budget
-              </div>
-              <div className="font-bold text-lg text-gray-900 dark:text-white">
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+              <p className="text-gray-600 dark:text-gray-400 font-medium mb-1">Budget</p>
+              <p className="font-bold text-lg text-gray-900 dark:text-white">
                 ${project.budget.agreed.toLocaleString()}
-              </div>
+              </p>
             </div>
             <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-              <div className="text-muted-foreground font-medium mb-1">
-                Earned
-              </div>
-              <div className="font-bold text-lg text-green-600 dark:text-green-400">
+              <p className="text-gray-600 dark:text-gray-400 font-medium mb-1">Earned</p>
+              <p className="font-bold text-lg text-green-600 dark:text-green-400">
                 ${project.budget.paid.toLocaleString()}
-              </div>
+              </p>
             </div>
           </div>
 
-          <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-800">
-            <div className="text-sm text-muted-foreground font-medium">
-              <Clock className="w-4 h-4 inline mr-1" />
-              Due:{" "}
-              {project.deadline
-                ? new Date(project.deadline).toLocaleDateString()
-                : "No deadline"}
+          <div className="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-gray-700">
+            <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+              <Clock className="w-4 h-4 inline mr-2" />
+              Due: {project.deadline ? new Date(project.deadline).toLocaleDateString() : "No deadline"}
             </div>
-            <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
-              <span className="text-xs font-medium">View Details</span>
-              <ChevronRight className="w-4 h-4" />
-            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSelectedProject(project)}
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            >
+              View Details
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
           </div>
         </div>
       </CardContent>
@@ -221,604 +367,592 @@ export const FreelanceDashboard: React.FC = () => {
     title: string;
     value: string | number;
     change?: string;
+    changeType?: "increase" | "decrease";
     icon: React.ReactNode;
     color: string;
-  }> = ({ title, value, change, icon, color }) => (
-    <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 hover:shadow-lg transition-all duration-200">
-      <CardContent className="pt-6 pb-6">
+  }> = ({ title, value, change, changeType = "increase", icon, color }) => (
+    <Card className="border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:shadow-lg transition-all duration-200">
+      <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-muted-foreground mb-2">
-              {title}
-            </p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              {value}
-            </p>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">{title}</p>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{value}</p>
             {change && (
-              <p className="text-sm font-medium">
-                <TrendingUp className="w-4 h-4 inline mr-1 text-green-500" />
-                <span className="text-green-600 dark:text-green-400">
+              <div className="flex items-center text-sm">
+                {changeType === "increase" ? (
+                  <ArrowUp className="w-4 h-4 mr-1 text-green-500" />
+                ) : (
+                  <ArrowDown className="w-4 h-4 mr-1 text-red-500" />
+                )}
+                <span className={changeType === "increase" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
                   {change}
                 </span>
-              </p>
+              </div>
             )}
           </div>
-          <div className={`p-4 rounded-xl ${color} shadow-lg`}>{icon}</div>
+          <div className={`p-4 rounded-xl ${color} shadow-sm`}>{icon}</div>
         </div>
       </CardContent>
     </Card>
   );
 
+  // Sidebar component
+  const Sidebar = ({ className }: { className?: string }) => (
+    <div className={cn("flex flex-col h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700", className)}>
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+            <Briefcase className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Freelance Hub</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Welcome back, {user?.username}</p>
+          </div>
+        </div>
+      </div>
+      
+      <ScrollArea className="flex-1 px-4 py-4">
+        <nav className="space-y-2">
+          {navigationItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-all duration-200",
+                activeTab === item.id
+                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+              )}
+            >
+              <item.icon className="w-5 h-5 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium">{item.label}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.description}</p>
+              </div>
+              {item.badge && (
+                <Badge variant="secondary" className="text-xs">
+                  {item.badge}
+                </Badge>
+              )}
+            </button>
+          ))}
+        </nav>
+        
+        <div className="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 px-3">
+            Quick Links
+          </p>
+          <nav className="space-y-1">
+            {secondaryItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+              >
+                <item.icon className="w-4 h-4" />
+                <span className="text-sm">{item.label}</span>
+                <ExternalLink className="w-3 h-3 ml-auto" />
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </ScrollArea>
+      
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <Avatar className="w-10 h-10">
+            <AvatarImage src={user?.avatar} />
+            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+              {user?.username?.[0]?.toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="font-medium text-sm text-gray-900 dark:text-white truncate">
+              {user?.username}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Freelancer</p>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/app/profile">
+                  <UserCheck className="mr-2 h-4 w-4" />
+                  Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/app/settings">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-600">
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    </div>
+  );
+
   // If a project is selected, show project details
   if (selectedProject) {
     return (
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-          <Button
-            variant="outline"
-            onClick={() => setSelectedProject(null)}
-            className="w-full sm:w-auto"
-          >
-            ← Back to Dashboard
-          </Button>
-          <div className="w-full sm:w-auto">
-            <h1 className="text-xl sm:text-2xl font-bold">
-              {selectedProject.job.title}
-            </h1>
-            <p className="text-muted-foreground">Project Management</p>
+      <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
+        <div className="flex">
+          {isDesktop && <Sidebar className="w-80 fixed left-0 top-0 h-screen z-40" />}
+          
+          <div className={cn("flex-1", isDesktop && "ml-80")}>
+            <div className="sticky top-0 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+              <div className="flex items-center gap-4">
+                {!isDesktop && (
+                  <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <Menu className="h-5 w-5" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="p-0 w-80">
+                      <Sidebar />
+                    </SheetContent>
+                  </Sheet>
+                )}
+                
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedProject(null)}
+                  className="shrink-0"
+                >
+                  ← Back to Dashboard
+                </Button>
+                
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white truncate">
+                    {selectedProject.job.title}
+                  </h1>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Project Management</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div className="lg:col-span-3 space-y-6">
+                  <TaskTracker projectId={selectedProject.id} userRole="freelancer" />
+                </div>
+                
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Project Details</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 gap-4">
+                        <div className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Budget</p>
+                          <p className="text-lg font-bold">${selectedProject.budget.agreed.toLocaleString()}</p>
+                        </div>
+                        <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Earned</p>
+                          <p className="text-lg font-bold text-green-600">${selectedProject.budget.paid.toLocaleString()}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                        <Avatar className="w-10 h-10">
+                          <AvatarImage src={selectedProject.client.avatar} />
+                          <AvatarFallback>{selectedProject.client.name[0]}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{selectedProject.client.name}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">Client</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Button className="w-full">
+                          <MessageCircle className="w-4 h-4 mr-2" />
+                          Message Client
+                        </Button>
+                        <Button variant="outline" className="w-full">
+                          <Share2 className="w-4 h-4 mr-2" />
+                          Share Progress
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <Tabs defaultValue="tasks" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1">
-            <TabsTrigger value="tasks" className="text-xs sm:text-sm">
-              <span className="hidden sm:inline">Tasks & Progress</span>
-              <span className="sm:hidden">Tasks</span>
-            </TabsTrigger>
-            <TabsTrigger value="messages" className="text-xs sm:text-sm">
-              <span className="hidden sm:inline">Messages</span>
-              <span className="sm:hidden">💬</span>
-            </TabsTrigger>
-            <TabsTrigger value="files" className="text-xs sm:text-sm">
-              <span className="hidden sm:inline">Files</span>
-              <span className="sm:hidden">📁</span>
-            </TabsTrigger>
-            <TabsTrigger value="billing" className="text-xs sm:text-sm">
-              <span className="hidden sm:inline">Billing</span>
-              <span className="sm:hidden">���</span>
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="tasks">
-            <TaskTracker projectId={selectedProject.id} userRole="freelancer" />
-          </TabsContent>
-
-          <TabsContent value="messages">
-            <NegotiationChat
-              projectId={selectedProject.id}
-              currentUserId={user?.id || ""}
-              projectStatus={selectedProject.status as any}
-              participants={{
-                client: {
-                  id: selectedProject.client.id,
-                  name: selectedProject.client.name,
-                  avatar: selectedProject.client.avatar,
-                },
-                freelancer: {
-                  id: selectedProject.freelancer.id,
-                  name: selectedProject.freelancer.name,
-                  avatar: selectedProject.freelancer.avatar,
-                },
-              }}
-            />
-          </TabsContent>
-
-          <TabsContent value="files">
-            <FileUpload
-              projectId={selectedProject.id}
-              allowedTypes={['*']}
-              maxSize={25}
-              multiple={true}
-              onFileUploaded={(file) => {
-                console.log('File uploaded:', file);
-                // Here you would typically update the project's file list
-              }}
-              onFileDeleted={(fileId) => {
-                console.log('File deleted:', fileId);
-                // Here you would typically remove the file from the project
-              }}
-            />
-          </TabsContent>
-
-          <TabsContent value="billing">
-            <Card>
-              <CardHeader>
-                <CardTitle>Billing & Payments</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-4 bg-green-50 rounded-lg">
-                      <div className="text-sm text-muted-foreground">
-                        Total Earned
-                      </div>
-                      <div className="text-2xl font-bold text-green-600">
-                        ${selectedProject.budget.paid.toLocaleString()}
-                      </div>
-                    </div>
-                    <div className="p-4 bg-blue-50 rounded-lg">
-                      <div className="text-sm text-muted-foreground">
-                        Pending
-                      </div>
-                      <div className="text-2xl font-bold text-blue-600">
-                        ${selectedProject.budget.remaining.toLocaleString()}
-                      </div>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <div className="text-sm text-muted-foreground">
-                        Total Budget
-                      </div>
-                      <div className="text-2xl font-bold">
-                        ${selectedProject.budget.agreed.toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
       </div>
     );
   }
 
   // Main dashboard view
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-2">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
-              <Briefcase className="w-8 h-8 text-white" />
+    <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
+      <div className="flex">
+        {/* Desktop Sidebar */}
+        {isDesktop && <Sidebar className="w-80 fixed left-0 top-0 h-screen z-40" />}
+        
+        {/* Main Content */}
+        <div className={cn("flex-1", isDesktop && "ml-80")}>
+          {/* Mobile Header */}
+          {!isDesktop && (
+            <div className="sticky top-0 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+              <div className="flex items-center justify-between">
+                <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      <Menu className="h-5 w-5" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="p-0 w-80">
+                    <Sidebar />
+                  </SheetContent>
+                </Sheet>
+                
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+                    <Briefcase className="w-5 h-5 text-white" />
+                  </div>
+                  <h1 className="font-bold text-gray-900 dark:text-white">Freelance Hub</h1>
+                </div>
+                
+                <Button variant="ghost" size="sm">
+                  <Bell className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Freelance Dashboard
-              </h1>
-              <p className="text-muted-foreground text-lg font-medium">
-                Manage your projects and track your progress
-              </p>
+          )}
+
+          {/* Page Header */}
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                  {navigationItems.find(item => item.id === activeTab)?.label || "Overview"}
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {navigationItems.find(item => item.id === activeTab)?.description}
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <Button variant="outline" asChild className="w-full sm:w-auto">
+                  <Link to="/app/profile">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Edit Profile
+                  </Link>
+                </Button>
+                <Button asChild className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700">
+                  <Link to="/app/wallet">
+                    <Wallet className="w-4 h-4 mr-2" />
+                    View Wallet
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <Button
-              variant="outline"
-              asChild
-              className="w-full sm:w-auto h-12 px-6 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-            >
-              <Link to="/app/profile">
-                <Plus className="w-5 h-5 mr-2" />
-                Edit Profile
-              </Link>
-            </Button>
-            <Button
-              asChild
-              className="w-full sm:w-auto h-12 px-6 font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg"
-            >
-              <Link to="/app/wallet">
-                <Wallet className="w-5 h-5 mr-2" />
-                View Wallet
-              </Link>
-            </Button>
+
+          {/* Dashboard Content */}
+          <div className="p-6">
+            {activeTab === "overview" && (
+              <div className="space-y-6">
+                {/* Stats Overview */}
+                {loading ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <Card key={i}>
+                        <CardContent className="p-6">
+                          <Skeleton className="h-20 w-full" />
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : stats ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <StatCard
+                      title="Total Earnings"
+                      value={`$${stats.totalEarnings.toLocaleString()}`}
+                      change="+12% this month"
+                      icon={<DollarSign className="w-6 h-6 text-white" />}
+                      color="bg-gradient-to-br from-green-500 to-emerald-600"
+                    />
+                    <StatCard
+                      title="Active Projects"
+                      value={stats.activeProjects}
+                      icon={<Briefcase className="w-6 h-6 text-white" />}
+                      color="bg-gradient-to-br from-blue-500 to-cyan-600"
+                    />
+                    <StatCard
+                      title="Completed Projects"
+                      value={stats.completedProjects}
+                      icon={<CheckCircle2 className="w-6 h-6 text-white" />}
+                      color="bg-gradient-to-br from-purple-500 to-violet-600"
+                    />
+                    <StatCard
+                      title="Success Rate"
+                      value={`${stats.successRate}%`}
+                      icon={<Star className="w-6 h-6 text-white" />}
+                      color="bg-gradient-to-br from-orange-500 to-amber-600"
+                    />
+                  </div>
+                ) : null}
+
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                  {/* Active Projects */}
+                  <div className="xl:col-span-2 space-y-6">
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle className="flex items-center gap-2">
+                          <Layers className="w-5 h-5 text-blue-600" />
+                          Active Projects
+                        </CardTitle>
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to="/app/freelance">
+                            View All
+                            <ExternalLink className="w-4 h-4 ml-1" />
+                          </Link>
+                        </Button>
+                      </CardHeader>
+                      <CardContent>
+                        {loading ? (
+                          <div className="space-y-4">
+                            {Array.from({ length: 3 }).map((_, i) => (
+                              <Skeleton key={i} className="h-40 w-full" />
+                            ))}
+                          </div>
+                        ) : activeProjects.length > 0 ? (
+                          <div className="space-y-4">
+                            {activeProjects.slice(0, 3).map((project) => (
+                              <ProjectCard key={project.id} project={project} />
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-12">
+                            <Briefcase className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                              No active projects
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-400 mb-4">
+                              Start applying to jobs to see your projects here
+                            </p>
+                            <Button asChild>
+                              <Link to="/app/freelance">Browse Jobs</Link>
+                            </Button>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    {/* Recent Activity */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Activity className="w-5 h-5 text-purple-600" />
+                          Recent Activity
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {getRecentActivities().map((activity) => (
+                            <div key={activity.id} className="flex items-center gap-3 p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                              <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-full">
+                                {activity.type === "message" && <MessageCircle className="w-4 h-4 text-blue-600" />}
+                                {activity.type === "payment" && <DollarSign className="w-4 h-4 text-green-600" />}
+                                {activity.type === "milestone" && <Target className="w-4 h-4 text-purple-600" />}
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-medium text-sm text-gray-900 dark:text-white">
+                                  {activity.title}
+                                </p>
+                                <p className="text-xs text-gray-600 dark:text-gray-400">
+                                  {activity.project}
+                                </p>
+                              </div>
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {activity.timestamp}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Sidebar */}
+                  <div className="space-y-6">
+                    {/* Urgent Tasks */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <AlertTriangle className="w-5 h-5 text-orange-600" />
+                          Urgent Tasks
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {getUrgentTasks().map((task) => (
+                            <div key={task.id} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                              <p className="font-medium text-sm mb-1 text-gray-900 dark:text-white">
+                                {task.title}
+                              </p>
+                              <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                                {task.project}
+                              </p>
+                              <div className="flex items-center justify-between">
+                                <Badge variant={task.priority === "high" ? "destructive" : "secondary"}>
+                                  {task.priority}
+                                </Badge>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                  Due: {new Date(task.dueDate).toLocaleDateString()}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Performance Metrics */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <TrendingUp className="w-5 h-5 text-purple-600" />
+                          This Month
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">Response Time</span>
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">&lt; 2 hours</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">Client Rating</span>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">4.9</span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">On-time Delivery</span>
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">98%</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600 dark:text-gray-400">Repeat Clients</span>
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">67%</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Quick Tools */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Zap className="w-5 h-5 text-green-600" />
+                          Quick Tools
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <RateCalculator
+                          trigger={
+                            <Button variant="outline" className="w-full justify-start">
+                              <BarChart3 className="w-4 h-4 mr-2" />
+                              Rate Calculator
+                            </Button>
+                          }
+                        />
+                        <ProjectPlanner
+                          trigger={
+                            <Button variant="outline" className="w-full justify-start">
+                              <Target className="w-4 h-4 mr-2" />
+                              Project Planner
+                            </Button>
+                          }
+                        />
+                        <Button variant="outline" className="w-full justify-start" asChild>
+                          <Link to="/app/rewards">
+                            <Trophy className="w-4 h-4 mr-2" />
+                            Achievements
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === "projects" && (
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">My Projects</h2>
+                    <p className="text-gray-600 dark:text-gray-400">Manage all your active and completed projects</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">
+                      <Filter className="w-4 h-4 mr-2" />
+                      Filter
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      <Search className="w-4 h-4 mr-2" />
+                      Search
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {activeProjects.map((project) => (
+                    <ProjectCard key={project.id} project={project} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === "campaigns" && (
+              <UnifiedCampaignManager
+                context="freelancer"
+                entityId={user?.id}
+                entityType="profile"
+                showCreateButton={true}
+                compact={false}
+              />
+            )}
+
+            {activeTab === "ai-matching" && <SmartFreelanceMatching userType="freelancer" />}
+            {activeTab === "business-intel" && <FreelanceBusinessIntelligence />}
+            {activeTab === "collaboration" && <FreelanceCollaborationTools />}
+
+            {/* Placeholder for other tabs */}
+            {!["overview", "projects", "campaigns", "ai-matching", "business-intel", "collaboration"].includes(activeTab) && (
+              <div className="text-center py-12">
+                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full w-16 h-16 mx-auto mb-4">
+                  <Briefcase className="w-8 h-8 text-gray-400 mx-auto" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  {navigationItems.find(item => item.id === activeTab)?.label}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  This section is coming soon. Check back later for updates.
+                </p>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Advanced Features Tabs */}
-        <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-5 gap-2 bg-gray-100 dark:bg-gray-800 p-2 rounded-xl h-auto">
-            <TabsTrigger
-              value="overview"
-              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
-            >
-              <BarChart3 className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Overview</span>
-              <span className="sm:hidden">📊</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="campaigns"
-              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Campaigns</span>
-              <span className="sm:hidden">🎯</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="smart-matching"
-              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
-            >
-              <Brain className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">AI Matching</span>
-              <span className="sm:hidden">🧠</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="business-intel"
-              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
-            >
-              <TrendingUp className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Business Intelligence</span>
-              <span className="sm:hidden">📈</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="collaboration"
-              className="text-xs sm:text-sm h-12 rounded-lg font-medium data-[state=active]:bg-white data-[state=active]:shadow-md"
-            >
-              <Users className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">Collaboration</span>
-              <span className="sm:hidden">🤝</span>
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            {/* Stats Overview */}
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <Card key={i}>
-                    <CardContent className="pt-4">
-                      <Skeleton className="h-16 w-full" />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : stats ? (
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <StatCard
-                  title="Total Earnings"
-                  value={`$${stats.totalEarnings.toLocaleString()}`}
-                  change="+12% this month"
-                  icon={<DollarSign className="w-7 h-7 text-white" />}
-                  color="bg-gradient-to-br from-green-500 to-emerald-600"
-                />
-                <StatCard
-                  title="Active Projects"
-                  value={stats.activeProjects}
-                  icon={<Briefcase className="w-7 h-7 text-white" />}
-                  color="bg-gradient-to-br from-blue-500 to-cyan-600"
-                />
-                <StatCard
-                  title="Completed Projects"
-                  value={stats.completedProjects}
-                  icon={<CheckCircle2 className="w-7 h-7 text-white" />}
-                  color="bg-gradient-to-br from-purple-500 to-violet-600"
-                />
-                <StatCard
-                  title="Success Rate"
-                  value={`${stats.successRate}%`}
-                  icon={<Star className="w-7 h-7 text-white" />}
-                  color="bg-gradient-to-br from-orange-500 to-amber-600"
-                />
-              </div>
-            ) : null}
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Main Content */}
-              <div className="lg:col-span-2 space-y-6">
-                {/* Active Projects */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
-                  <CardHeader className="flex flex-row items-center justify-between pb-6">
-                    <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                        <Layers className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      Active Projects
-                    </CardTitle>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      asChild
-                      className="font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      <Link to="/app/freelance">
-                        View All
-                        <ExternalLink className="w-4 h-4 ml-1" />
-                      </Link>
-                    </Button>
-                  </CardHeader>
-                  <CardContent>
-                    {loading ? (
-                      <div className="space-y-4">
-                        {Array.from({ length: 3 }).map((_, i) => (
-                          <Skeleton key={i} className="h-32 w-full" />
-                        ))}
-                      </div>
-                    ) : activeProjects.length > 0 ? (
-                      <div className="space-y-4">
-                        {activeProjects.map((project) => (
-                          <ProjectCard key={project.id} project={project} />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-12">
-                        <Briefcase className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                        <h3 className="text-lg font-medium">
-                          No active projects
-                        </h3>
-                        <p className="text-muted-foreground mb-4">
-                          Start applying to jobs to see your projects here
-                        </p>
-                        <Button asChild>
-                          <Link to="/app/freelance">Browse Jobs</Link>
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Recent Activity */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
-                  <CardHeader className="pb-6">
-                    <CardTitle className="flex items-center gap-3 text-xl font-bold">
-                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                        <Activity className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                      </div>
-                      Recent Activity
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {getRecentActivities().map((activity) => (
-                        <div
-                          key={activity.id}
-                          className="flex items-center gap-3 p-3 border rounded-lg"
-                        >
-                          <div className="p-2 bg-blue-50 rounded-full">
-                            {activity.type === "message" && (
-                              <MessageCircle className="w-4 h-4 text-blue-600" />
-                            )}
-                            {activity.type === "payment" && (
-                              <DollarSign className="w-4 h-4 text-green-600" />
-                            )}
-                            {activity.type === "milestone" && (
-                              <Target className="w-4 h-4 text-purple-600" />
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <div className="font-medium text-sm">
-                              {activity.title}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              {activity.project}
-                            </div>
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {activity.timestamp}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Sidebar */}
-              <div className="space-y-6">
-                {/* Urgent Tasks */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
-                  <CardHeader className="pb-6">
-                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
-                      <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-                        <AlertTriangle className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                      </div>
-                      Urgent Tasks
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {getUrgentTasks().map((task) => (
-                        <div key={task.id} className="p-3 border rounded-lg">
-                          <div className="font-medium text-sm line-clamp-2 mb-1">
-                            {task.title}
-                          </div>
-                          <div className="text-xs text-muted-foreground mb-2">
-                            {task.project}
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Badge
-                              variant={
-                                task.priority === "high"
-                                  ? "destructive"
-                                  : "secondary"
-                              }
-                            >
-                              {task.priority}
-                            </Badge>
-                            <div className="text-xs text-muted-foreground">
-                              Due: {new Date(task.dueDate).toLocaleDateString()}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Quick Actions */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
-                  <CardHeader className="pb-6">
-                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
-                      <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                        <Zap className="w-6 h-6 text-green-600 dark:text-green-400" />
-                      </div>
-                      Quick Actions
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                      asChild
-                    >
-                      <Link to="/app/wallet">
-                        <Wallet className="w-5 h-5 mr-3" />
-                        View Wallet
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                      asChild
-                    >
-                      <Link to="/app/profile">
-                        <Users className="w-5 h-5 mr-3" />
-                        Edit Profile
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                      asChild
-                    >
-                      <Link to="/app/settings">
-                        <Settings className="w-5 h-5 mr-3" />
-                        Settings
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                      asChild
-                    >
-                      <Link to="/app/support">
-                        <MessageCircle className="w-5 h-5 mr-3" />
-                        Contact Support
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                {/* Freelance-Specific Features */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
-                  <CardHeader className="pb-6">
-                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
-                      <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                        <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      Freelance Tools
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                      asChild
-                    >
-                      <Link to="/app/freelance">
-                        <Brain className="w-5 h-5 mr-3" />
-                        AI Job Matching
-                      </Link>
-                    </Button>
-                    <RateCalculator
-                      trigger={
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                        >
-                          <BarChart3 className="w-5 h-5 mr-3" />
-                          Rate Calculator
-                        </Button>
-                      }
-                    />
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                      asChild
-                    >
-                      <Link to="/app/rewards">
-                        <Trophy className="w-5 h-5 mr-3" />
-                        Achievements
-                      </Link>
-                    </Button>
-                    <ProjectPlanner
-                      trigger={
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start h-12 font-medium hover:bg-gray-50 dark:hover:bg-gray-800"
-                        >
-                          <Target className="w-5 h-5 mr-3" />
-                          Project Planner
-                        </Button>
-                      }
-                    />
-                  </CardContent>
-                </Card>
-
-                {/* Performance Metrics */}
-                <Card className="border-0 bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50 shadow-lg">
-                  <CardHeader className="pb-6">
-                    <CardTitle className="flex items-center gap-3 text-lg font-bold">
-                      <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                        <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                      </div>
-                      This Month
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">
-                        Response Time
-                      </span>
-                      <span className="text-sm font-medium">&lt; 2 hours</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">
-                        Client Rating
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">4.9</span>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">
-                        On-time Delivery
-                      </span>
-                      <span className="text-sm font-medium">98%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">
-                        Repeat Clients
-                      </span>
-                      <span className="text-sm font-medium">67%</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="campaigns">
-            <UnifiedCampaignManager
-              context="freelancer"
-              entityId={user?.id}
-              entityType="profile"
-              showCreateButton={true}
-              compact={false}
-            />
-          </TabsContent>
-
-          <TabsContent value="smart-matching">
-            <SmartFreelanceMatching userType="freelancer" />
-          </TabsContent>
-
-          <TabsContent value="business-intel">
-            <FreelanceBusinessIntelligence />
-          </TabsContent>
-
-          <TabsContent value="collaboration">
-            <FreelanceCollaborationTools />
-          </TabsContent>
-        </Tabs>
       </div>
 
       {/* Review Modal */}
