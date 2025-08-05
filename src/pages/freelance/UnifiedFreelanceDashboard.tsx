@@ -4,9 +4,9 @@ import { useFreelance } from "@/hooks/use-freelance";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Users, 
-  UserCheck, 
+import {
+  Users,
+  UserCheck,
   Briefcase,
   TrendingUp,
   Loader2,
@@ -14,7 +14,8 @@ import {
   Star,
   CheckCircle,
   Target,
-  Zap
+  Zap,
+  AlertTriangle
 } from "lucide-react";
 import FreelanceDashboard from "./FreelanceDashboard";
 import ClientDashboard from "./ClientDashboard";
