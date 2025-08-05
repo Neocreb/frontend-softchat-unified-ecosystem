@@ -426,6 +426,7 @@ const AppRoutes = () => {
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
+          <Route path="freelance-route-test" element={<FreelanceDashboardRouteTest />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
           <Route
             path="ai-assistant"
