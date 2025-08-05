@@ -297,6 +297,7 @@ const AppRoutes = () => {
           <Route path="freelance/post-skill" element={<PostSkill />} />
           <Route path="freelance/find-freelancers" element={<FindFreelancers />} />
           <Route path="freelance/manage-projects" element={<ManageProjects />} />
+          <Route path="freelance/freelancer-projects" element={<FreelancerManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
           <Route path="freelance/job/:jobId" element={<JobDetailPage />} />
           <Route path="chat" element={<Chat />} />
