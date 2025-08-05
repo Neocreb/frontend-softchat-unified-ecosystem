@@ -43,6 +43,7 @@ import EnhancedFreelance from "./pages/EnhancedFreelance";
 import FreelanceJobs from "./pages/freelance/FreelanceJobs";
 import RoleSwitcherDashboard from "./pages/freelance/RoleSwitcherDashboard";
 import UnifiedFreelanceDashboard from "./pages/freelance/UnifiedFreelanceDashboard";
+import { DashboardRouteGuard } from "./components/freelance/DashboardRouteGuard";
 import UpdateProfile from "./pages/freelance/UpdateProfile";
 import BrowseJobs from "./pages/freelance/BrowseJobs";
 import Earnings from "./pages/freelance/Earnings";
