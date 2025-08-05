@@ -138,6 +138,12 @@ const RoleSwitcherDashboard: React.FC = () => {
                     Earnings
                   </Link>
                 </Button>
+                <Button size="sm" variant="outline" className="text-xs" asChild>
+                  <Link to="/app/freelance/freelancer-projects">
+                    <Eye className="w-3 h-3 mr-1" />
+                    Manage Projects
+                  </Link>
+                </Button>
               </>
             ) : (
               <>
