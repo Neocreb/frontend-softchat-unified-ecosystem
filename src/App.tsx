@@ -291,9 +291,30 @@ const AppRoutes = () => {
           <Route path="feed" element={<EnhancedFeed />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
-          <Route path="freelance/dashboard" element={<UnifiedFreelanceDashboard />} />
-          <Route path="freelance/dashboard/freelancer" element={<UnifiedFreelanceDashboard />} />
-          <Route path="freelance/dashboard/client" element={<UnifiedFreelanceDashboard />} />
+          <Route
+            path="freelance/dashboard"
+            element={
+              <DashboardRouteGuard>
+                <UnifiedFreelanceDashboard />
+              </DashboardRouteGuard>
+            }
+          />
+          <Route
+            path="freelance/dashboard/freelancer"
+            element={
+              <DashboardRouteGuard>
+                <UnifiedFreelanceDashboard />
+              </DashboardRouteGuard>
+            }
+          />
+          <Route
+            path="freelance/dashboard/client"
+            element={
+              <DashboardRouteGuard>
+                <UnifiedFreelanceDashboard />
+              </DashboardRouteGuard>
+            }
+          />
           <Route path="freelance/update-profile" element={<UpdateProfile />} />
           <Route path="freelance/browse-jobs" element={<BrowseJobs />} />
           <Route path="freelance/earnings" element={<Earnings />} />
