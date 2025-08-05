@@ -6,31 +6,25 @@ import { cn } from "@/lib/utils";
 interface AccessibleDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  children: React.ReactNode;
   title: string;
   hideTitle?: boolean;
-  children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
 }
 
-/**
- * Accessible Dialog Component that automatically includes DialogTitle
- * for screen reader accessibility.
- *
- * @param title - The dialog title (required for accessibility)
- * @param hideTitle - Whether to visually hide the title (default: false)
- * @param className - Additional CSS classes for DialogContent
- */
 export const AccessibleDialog: React.FC<AccessibleDialogProps> = ({
   open,
   onOpenChange,
+  children,
   title,
   hideTitle = false,
-  children,
   className,
+  contentClassName,
 }) => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(className)}>
+    <Dialog open={open} onOpenChange={onOpenChange} {...(className && { className })}>
+      <DialogContent className={cn("sm:max-w-[425px]", contentClassName)}>
         {hideTitle ? (
           <VisuallyHidden>
             <DialogTitle>{title}</DialogTitle>
