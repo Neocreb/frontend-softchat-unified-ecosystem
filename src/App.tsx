@@ -489,6 +489,7 @@ const AppRoutes = () => {
         <Route path="logs" element={<AdminLogs />} />
         <Route path="security" element={<AdminSecurity />} />
         <Route path="groups-pages" element={<AdminGroupsPages />} />
+        <Route path="dispatch" element={<AdminDispatchPartners />} />
       </Route>
 
       {/* Legacy route redirects */}
