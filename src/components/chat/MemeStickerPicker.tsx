@@ -440,6 +440,36 @@ const StickerCard: React.FC<StickerCardProps> = ({
   onReport,
   onShare,
 }) => {
+  const [isLongPress, setIsLongPress] = useState(false);
+  const longPressTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const handleTouchStart = () => {
+    if (isMobile) {
+      longPressTimer.current = setTimeout(() => {
+        setIsLongPress(true);
+        onToggleFavorite(new MouseEvent('click') as any);
+      }, 500); // 500ms long press
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    if (!isLongPress) {
+      onClick();
+    }
+    setIsLongPress(false);
+  };
+
+  const handleMouseLeave = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+    setIsLongPress(false);
+  };
   if (viewMode === "list") {
     return (
       <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 cursor-pointer group">
