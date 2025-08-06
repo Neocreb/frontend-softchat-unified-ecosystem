@@ -396,110 +396,70 @@ export const FreelanceDashboard: React.FC = () => {
     </Card>
   );
 
-  // Sidebar component
-  const Sidebar = ({ className }: { className?: string }) => (
-    <div className={cn("flex flex-col h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700", className)}>
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-            <Briefcase className="w-6 h-6 text-white" />
+  // Header component with user info and quick actions
+  const FreelanceHeader = () => (
+    <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+      <div className="px-4 sm:px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
+              <Briefcase className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="font-bold text-lg text-gray-900 dark:text-white">Freelance Hub</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Welcome back, {user?.username}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Freelance Hub</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Welcome back, {user?.username}</p>
+
+          <div className="flex items-center gap-3">
+            {/* Quick action buttons */}
+            <div className="hidden sm:flex items-center gap-2">
+              {secondaryItems.slice(0, 2).map((item) => (
+                <Button key={item.id} variant="outline" size="sm" asChild>
+                  <Link to={item.href} className="flex items-center gap-2">
+                    <item.icon className="w-4 h-4" />
+                    <span className="hidden md:inline">{item.label}</span>
+                  </Link>
+                </Button>
+              ))}
+            </div>
+
+            {/* User menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="p-2">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={user?.avatar} />
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm">
+                      {user?.username?.[0]?.toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div>
+                    <p className="font-medium">{user?.username}</p>
+                    <p className="text-xs text-gray-500">Freelancer</p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {secondaryItems.map((item) => (
+                  <DropdownMenuItem key={item.id} asChild>
+                    <Link to={item.href}>
+                      <item.icon className="mr-2 h-4 w-4" />
+                      {item.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-red-600">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-        </div>
-      </div>
-      
-      <ScrollArea className="flex-1 px-4 py-4">
-        <nav className="space-y-2">
-          {navigationItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={cn(
-                "w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-all duration-200",
-                activeTab === item.id
-                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-              )}
-            >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium">{item.label}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{item.description}</p>
-              </div>
-              {item.badge && (
-                <Badge variant="secondary" className="text-xs">
-                  {item.badge}
-                </Badge>
-              )}
-            </button>
-          ))}
-        </nav>
-        
-        <div className="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3 px-3">
-            Quick Links
-          </p>
-          <nav className="space-y-1">
-            {secondaryItems.map((item) => (
-              <Link
-                key={item.id}
-                to={item.href}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
-              >
-                <item.icon className="w-4 h-4" />
-                <span className="text-sm">{item.label}</span>
-                <ExternalLink className="w-3 h-3 ml-auto" />
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </ScrollArea>
-      
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-          <Avatar className="w-10 h-10">
-            <AvatarImage src={user?.avatar} />
-            <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-              {user?.username?.[0]?.toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="font-medium text-sm text-gray-900 dark:text-white truncate">
-              {user?.username}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Freelancer</p>
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link to="/app/profile">
-                  <UserCheck className="mr-2 h-4 w-4" />
-                  Profile
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/app/settings">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600">
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
     </div>
