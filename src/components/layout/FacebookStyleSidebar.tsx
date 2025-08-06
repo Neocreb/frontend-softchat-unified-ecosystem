@@ -21,6 +21,8 @@ import {
   Building,
   Megaphone,
   Target,
+  Truck,
+  Package,
 } from "lucide-react";
 
 interface MenuItemProps {
