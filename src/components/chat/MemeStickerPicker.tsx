@@ -783,30 +783,48 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
     setIsCreating(true);
 
     try {
-      // In a real app, you would upload images to your backend/storage
-      // For demo purposes, we'll create a mock pack with data URLs
+      // Enhanced error handling for file processing
       const stickers: StickerData[] = await Promise.all(
         selectedImages.map(async (file, index) => {
-          const reader = new FileReader();
-          return new Promise<StickerData>((resolve) => {
+          return new Promise<StickerData>((resolve, reject) => {
+            const reader = new FileReader();
+
             reader.onload = (e) => {
-              resolve({
-                id: `custom_${Date.now()}_${index}`,
-                name: file.name.replace(/\.[^/.]+$/, ""),
-                emoji: "", // No emoji for custom image stickers
-                fileUrl: e.target?.result as string,
-                thumbnailUrl: e.target?.result as string,
-                type: "image",
-                tags: ["custom", "user-generated"],
-                usageCount: 0,
-                packId: `pack_${Date.now()}`,
-                packName: packName,
-                width: 512,
-                height: 512,
-                animated: false,
-              });
+              try {
+                const result = e.target?.result;
+                if (!result || typeof result !== 'string') {
+                  throw new Error(`Failed to read file: ${file.name}`);
+                }
+
+                resolve({
+                  id: `custom_${Date.now()}_${index}`,
+                  name: file.name.replace(/\.[^/.]+$/, ""),
+                  emoji: "", // No emoji for custom image stickers
+                  fileUrl: result,
+                  thumbnailUrl: result,
+                  type: "image",
+                  tags: ["custom", "user-generated"],
+                  usageCount: 0,
+                  packId: `pack_${Date.now()}`,
+                  packName: packName,
+                  width: 512,
+                  height: 512,
+                  animated: false,
+                });
+              } catch (error) {
+                reject(new Error(`Error processing ${file.name}: ${error instanceof Error ? error.message : 'Unknown error'}`));
+              }
             };
-            reader.readAsDataURL(file);
+
+            reader.onerror = () => {
+              reject(new Error(`Failed to read file: ${file.name}`));
+            };
+
+            try {
+              reader.readAsDataURL(file);
+            } catch (error) {
+              reject(new Error(`Invalid file format: ${file.name}`));
+            }
           });
         })
       );
