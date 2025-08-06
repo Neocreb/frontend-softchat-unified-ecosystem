@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -76,6 +75,10 @@ const RegisterForm = ({
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </Button>
+        </div>
+        <div className="text-xs text-muted-foreground">
+          <p>• At least 8 characters</p>
+          <p>• Use a strong, unique password</p>
         </div>
       </div>
 
