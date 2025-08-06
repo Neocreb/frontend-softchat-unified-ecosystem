@@ -113,54 +113,132 @@ export const StickerCreationModal: React.FC<StickerCreationModalProps> = ({
   const [stickerText, setStickerText] = useState("");
 
   const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(event.target.files || []);
-    
-    const validFiles = selectedFiles.filter(file => {
-      if (!SUPPORTED_FORMATS.includes(file.type)) {
-        toast({
-          title: "Unsupported format",
-          description: `${file.name} is not a supported image format`,
-          variant: "destructive",
-        });
-        return false;
-      }
-      
-      if (file.size > MAX_FILE_SIZE) {
-        toast({
-          title: "File too large",
-          description: `${file.name} exceeds 5MB limit`,
-          variant: "destructive",
-        });
-        return false;
-      }
-      
-      return true;
-    });
+    try {
+      const selectedFiles = Array.from(event.target.files || []);
 
-    validFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const newFile: StickerCreationFile = {
-            id: Math.random().toString(36).substr(2, 9),
-            originalName: file.name,
-            fileUrl: e.target?.result as string,
-            type: file.type,
-            size: file.size,
-            width: img.width,
-            height: img.height,
-          };
-          
-          setFiles(prev => [...prev, newFile]);
+      if (selectedFiles.length === 0) {
+        return;
+      }
+
+      const invalidFiles: string[] = [];
+      const validFiles = selectedFiles.filter(file => {
+        if (!SUPPORTED_FORMATS.includes(file.type)) {
+          invalidFiles.push(`${file.name} (unsupported format)`);
+          return false;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+          invalidFiles.push(`${file.name} (exceeds 5MB limit)`);
+          return false;
+        }
+
+        return true;
+      });
+
+      // Show errors for invalid files
+      if (invalidFiles.length > 0) {
+        toast({
+          title: "Some files were skipped",
+          description: `Invalid files: ${invalidFiles.join(', ')}`,
+          variant: "destructive",
+        });
+      }
+
+      // Process valid files
+      validFiles.forEach(file => {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          try {
+            const result = e.target?.result;
+            if (!result || typeof result !== 'string') {
+              throw new Error(`Failed to read file: ${file.name}`);
+            }
+
+            const img = new Image();
+            img.onload = () => {
+              try {
+                const newFile: StickerCreationFile = {
+                  id: Math.random().toString(36).substr(2, 9),
+                  originalName: file.name,
+                  fileUrl: result,
+                  type: file.type,
+                  size: file.size,
+                  width: img.width,
+                  height: img.height,
+                };
+
+                setFiles(prev => [...prev, newFile]);
+              } catch (error) {
+                console.error(`Error processing ${file.name}:`, error);
+                toast({
+                  title: "File processing error",
+                  description: `Failed to process ${file.name}`,
+                  variant: "destructive",
+                });
+              }
+            };
+
+            img.onerror = () => {
+              toast({
+                title: "Invalid image",
+                description: `${file.name} appears to be corrupted or invalid`,
+                variant: "destructive",
+              });
+            };
+
+            img.src = result;
+          } catch (error) {
+            console.error(`Error loading ${file.name}:`, error);
+            toast({
+              title: "File load error",
+              description: `Failed to load ${file.name}`,
+              variant: "destructive",
+            });
+          }
         };
-        img.src = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    });
 
-    if (validFiles.length > 0 && currentStep === "upload") {
-      setCurrentStep("edit");
+        reader.onerror = () => {
+          toast({
+            title: "File read error",
+            description: `Failed to read ${file.name}`,
+            variant: "destructive",
+          });
+        };
+
+        try {
+          reader.readAsDataURL(file);
+        } catch (error) {
+          console.error(`Error reading ${file.name}:`, error);
+          toast({
+            title: "File read error",
+            description: `Cannot read ${file.name}`,
+            variant: "destructive",
+          });
+        }
+      });
+
+      if (validFiles.length > 0) {
+        if (currentStep === "upload") {
+          setCurrentStep("edit");
+        }
+        toast({
+          title: "Files added",
+          description: `${validFiles.length} file(s) added successfully`,
+        });
+      }
+    } catch (error) {
+      console.error('Error in file selection:', error);
+      toast({
+        title: "Selection error",
+        description: "Failed to process selected files. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      // Reset file input
+      if (event.target) {
+        event.target.value = '';
+      }
     }
   }, [currentStep, toast]);
 
