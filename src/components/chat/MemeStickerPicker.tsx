@@ -522,12 +522,15 @@ const StickerCard: React.FC<StickerCardProps> = ({
       <Button
         variant="ghost"
         className={cn(
-          "p-0 text-2xl hover:bg-muted/70 rounded-lg transition-all duration-200 relative",
+          "p-0 text-2xl hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
           isMobile
             ? "h-12 w-12 min-h-[48px] min-w-[48px] active:scale-95 hover:scale-105"
             : "h-14 w-14 hover:scale-110 active:scale-95"
         )}
-        onClick={onClick}
+        onClick={isMobile ? undefined : onClick}
+        onTouchStart={isMobile ? handleTouchStart : undefined}
+        onTouchEnd={isMobile ? handleTouchEnd : undefined}
+        onMouseLeave={handleMouseLeave}
       >
         <span className={cn(isMobile ? "text-xl" : "text-2xl")}>
           {sticker.emoji}
