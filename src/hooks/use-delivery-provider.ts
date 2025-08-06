@@ -29,9 +29,21 @@ export function useDeliveryProvider(): DeliveryProviderStatus {
     // Check if user is a delivery provider
     const checkProviderStatus = async () => {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.warn("No auth token found for delivery provider check");
+          setProviderStatus({
+            isProvider: false,
+            status: "not_applied",
+            loading: false,
+          });
+          return;
+        }
+
         const response = await fetch("/api/delivery/providers/profile", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         });
 
