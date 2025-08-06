@@ -22,7 +22,7 @@ import {
   Search,
   Bell,
   Plus,
-  Trending,
+  TrendingUp,
   Zap,
   Star,
   CheckCircle,
@@ -237,7 +237,7 @@ export function ThemeTestPage() {
                   {['Trending', 'Popular', 'Recent'].map((item) => (
                     <div key={item} className={themeComponents.cardCompact()}>
                       <div className="flex items-center space-x-2 mb-2">
-                        <Trending className="w-4 h-4 text-primary" />
+                        <TrendingUp className="w-4 h-4 text-primary" />
                         <span className="font-medium">{item}</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
