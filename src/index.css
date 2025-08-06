@@ -553,6 +553,7 @@
 
 @layer base {
   :root {
+    /* Base colors */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -590,9 +591,37 @@
     --softchat-accent: 297 83% 72%;
     --softchat-600: 265 89% 42%;
     --softchat-700: 265 100% 34%;
+
+    /* Enhanced platform colors */
+    --platform-background: 0 0% 100%;
+    --platform-foreground: 222.2 84% 4.9%;
+    --platform-surface: 0 0% 98%;
+    --platform-surface-variant: 210 40% 95%;
+    --platform-outline: 214.3 31.8% 91.4%;
+    --platform-outline-variant: 220 13% 85%;
+
+    /* Social colors */
+    --social-like: 0 84% 60%;
+    --social-comment: 221.2 83.2% 53.3%;
+    --social-share: 142 71% 45%;
+    --social-bookmark: 38 92% 50%;
+
+    /* Status colors */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 9%;
+    --info: 221.2 83.2% 53.3%;
+    --info-foreground: 210 40% 98%;
+
+    /* Interactive states */
+    --hover-overlay: 0 0% 0% / 0.05;
+    --active-overlay: 0 0% 0% / 0.1;
+    --focus-ring: 221.2 83.2% 53.3%;
   }
 
   .dark {
+    /* Base colors */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
@@ -625,10 +654,37 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --softchat-primary: 265 100% 50%;
-    --softchat-accent: 297 83% 72%;
-    --softchat-600: 265 89% 42%;
-    --softchat-700: 265 100% 34%;
+    --softchat-primary: 265 100% 60%;
+    --softchat-accent: 297 83% 82%;
+    --softchat-600: 265 89% 52%;
+    --softchat-700: 265 100% 44%;
+
+    /* Enhanced platform colors */
+    --platform-background: 222.2 84% 4.9%;
+    --platform-foreground: 210 40% 98%;
+    --platform-surface: 217.2 32.6% 8%;
+    --platform-surface-variant: 217.2 32.6% 12%;
+    --platform-outline: 217.2 32.6% 25%;
+    --platform-outline-variant: 217.2 32.6% 20%;
+
+    /* Social colors (adjusted for dark mode) */
+    --social-like: 0 84% 70%;
+    --social-comment: 217.2 91.2% 69.8%;
+    --social-share: 142 71% 55%;
+    --social-bookmark: 38 92% 60%;
+
+    /* Status colors (adjusted for dark mode) */
+    --success: 142 71% 55%;
+    --success-foreground: 0 0% 9%;
+    --warning: 38 92% 60%;
+    --warning-foreground: 0 0% 9%;
+    --info: 217.2 91.2% 69.8%;
+    --info-foreground: 222.2 84% 4.9%;
+
+    /* Interactive states */
+    --hover-overlay: 0 0% 100% / 0.1;
+    --active-overlay: 0 0% 100% / 0.2;
+    --focus-ring: 217.2 91.2% 59.8%;
   }
 }
 
