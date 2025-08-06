@@ -114,6 +114,7 @@ import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
 import ProfileDemo from "./components/profile/ProfileDemo";
 import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
+import CurrencyDemo from "./components/currency/CurrencyDemo";
 import DataManagement from "./components/data/DataManagement";
 import GamificationSystem from "./components/gamification/GamificationSystem";
 import AIFeatures from "./components/ai/AIFeatures";
