@@ -187,6 +187,15 @@ const EnhancedWalletDashboardContent = () => {
           <AdvancedTransactionManager />
         </TabsContent>
 
+        {/* Currency Conversion Tab */}
+        <TabsContent value="currency" className="space-y-6">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Currency Conversion</h2>
+            <p className="text-gray-600">Real-time currency rates and conversion tools for all your financial needs</p>
+          </div>
+          <CurrencyDemo />
+        </TabsContent>
+
         {/* Security Center Tab */}
         <TabsContent value="security" className="space-y-6">
           <div className="mb-4">
