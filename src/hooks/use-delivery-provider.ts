@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface DeliveryProviderStatus {
   isProvider: boolean;
-  status: "not_applied" | "pending" | "verified" | "rejected";
+  status: "not_applied" | "pending" | "verified" | "rejected" | "suspended";
   providerId?: string;
   loading: boolean;
 }
