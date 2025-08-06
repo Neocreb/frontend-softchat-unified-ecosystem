@@ -13,6 +13,7 @@ import {
   Settings,
   Receipt,
   TrendingUp,
+  ArrowUpDown,
 } from "lucide-react";
 
 // Import all the new components
@@ -25,6 +26,9 @@ import IntegrationManager from "./IntegrationManager";
 // Original components
 import WithdrawModal from "./WithdrawModal";
 import DepositModal from "./DepositModal";
+
+// Currency components
+import CurrencyDemo from "@/components/currency/CurrencyDemo";
 
 const EnhancedWalletDashboardContent = () => {
   const {
@@ -98,6 +102,7 @@ const EnhancedWalletDashboardContent = () => {
                 { id: "overview", label: "Overview", icon: Wallet, description: "Wallet summary" },
                 { id: "analytics", label: "Analytics", icon: BarChart3, description: "Performance insights" },
                 { id: "transactions", label: "Transactions", icon: Search, description: "Transaction history & receipts" },
+                { id: "currency", label: "Currency", icon: ArrowUpDown, description: "Real-time currency conversion" },
                 { id: "security", label: "Security", icon: Shield, description: "Security settings" },
                 { id: "integrations", label: "Integrations", icon: Settings, description: "Bank & bill management" },
               ].map((tab) => (
@@ -180,6 +185,15 @@ const EnhancedWalletDashboardContent = () => {
             <p className="text-gray-600">View, filter, and generate secure receipts for your transactions</p>
           </div>
           <AdvancedTransactionManager />
+        </TabsContent>
+
+        {/* Currency Conversion Tab */}
+        <TabsContent value="currency" className="space-y-6">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-900">Currency Conversion</h2>
+            <p className="text-gray-600">Real-time currency rates and conversion tools for all your financial needs</p>
+          </div>
+          <CurrencyDemo />
         </TabsContent>
 
         {/* Security Center Tab */}

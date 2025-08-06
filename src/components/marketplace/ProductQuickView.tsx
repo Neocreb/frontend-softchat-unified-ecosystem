@@ -25,6 +25,8 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Price } from "@/components/ui/currency-display";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ProductQuickViewProps {
   product: {
@@ -104,12 +106,7 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
     }
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
+  const { formatPrice: formatCurrencyPrice } = useCurrency();
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -224,13 +221,18 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
 
             {/* Pricing */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl font-bold text-primary">
-                {formatPrice(product.salePrice || product.originalPrice)}
-              </span>
+              <Price
+                amount={product.salePrice || product.originalPrice}
+                currency="USD"
+                size="lg"
+                className="text-2xl font-bold text-primary"
+              />
               {product.salePrice && (
-                <span className="text-lg text-gray-500 line-through">
-                  {formatPrice(product.originalPrice)}
-                </span>
+                <Price
+                  amount={product.originalPrice}
+                  currency="USD"
+                  className="text-lg text-gray-500 line-through"
+                />
               )}
               {product.discount && (
                 <Badge variant="destructive">Save {product.discount}%</Badge>

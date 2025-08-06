@@ -81,6 +81,7 @@ import {
   Trash,
   ChevronRight,
   Award,
+  ArrowUpDown,
   Calendar,
   Wifi,
   WifiOff,
@@ -117,6 +118,7 @@ import { useToast } from "@/components/ui/use-toast";
 import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
 import BankAccountSettings from "@/components/wallet/BankAccountSettings";
 import DataManagement from "@/components/data/DataManagement";
+import CurrencyDemo from "@/components/currency/CurrencyDemo";
 import AIFeatures from "@/components/ai/AIFeatures";
 import MobileTabsFix from "@/components/layout/MobileTabsFix";
 
@@ -1749,6 +1751,22 @@ const EnhancedSettings = () => {
                     </div>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Currency Conversion */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ArrowUpDown className="w-5 h-5" />
+                  Currency Conversion
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Real-time currency conversion tools and exchange rates for all your financial needs
+                </p>
+              </CardHeader>
+              <CardContent>
+                <CurrencyDemo />
               </CardContent>
             </Card>
           </TabsContent>

@@ -20,6 +20,7 @@ import { WalletProvider } from "./contexts/WalletContext";
 import { LiveContentProvider } from "./contexts/LiveContentContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
+import { CurrencyProvider } from "./contexts/CurrencyContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
@@ -99,6 +100,7 @@ import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import FreelanceDashboardRouteTest from "./components/debug/FreelanceDashboardRouteTest";
 import CreatorStudio from "./pages/CreatorStudio";
+import EnhancedDashboardDemo from "./components/freelance/EnhancedDashboardDemo";
 import UnifiedCreatorStudio from "./pages/UnifiedCreatorStudio";
 import Chat from "./pages/Chat";
 import Messages from "./pages/Messages";
@@ -112,6 +114,7 @@ import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
 import ProfileDemo from "./components/profile/ProfileDemo";
 import AnalyticsDashboard from "./components/analytics/AnalyticsDashboard";
+import CurrencyDemo from "./components/currency/CurrencyDemo";
 import DataManagement from "./components/data/DataManagement";
 import GamificationSystem from "./components/gamification/GamificationSystem";
 import AIFeatures from "./components/ai/AIFeatures";
@@ -427,7 +430,10 @@ const AppRoutes = () => {
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
           <Route path="freelance-route-test" element={<FreelanceDashboardRouteTest />} />
+          <Route path="enhanced-freelance-demo" element={<EnhancedDashboardDemo userType="freelancer" />} />
+          <Route path="enhanced-client-demo" element={<EnhancedDashboardDemo userType="client" />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
+          <Route path="currency-demo" element={<CurrencyDemo />} />
           <Route
             path="ai-assistant"
             element={<AIPersonalAssistantDashboard />}
@@ -584,30 +590,32 @@ const App = () => {
             }
           >
             <I18nProvider>
-              <AuthProvider>
-                <AdminProvider>
-                  <AccessibilityProvider>
-                    <TooltipProvider>
-                      <GlobalCallProvider>
-                        <AppRoutes />
+              <CurrencyProvider>
+                <AuthProvider>
+                  <AdminProvider>
+                    <AccessibilityProvider>
+                      <TooltipProvider>
+                        <GlobalCallProvider>
+                          <AppRoutes />
 
-                        {/* Global Components */}
-                        <OnboardingTour />
-                        <NotificationSystem />
-                        <AccessibilityControlPanel />
-                        <KeyboardNavigationHelper />
-                        <ReadingGuide />
-                        <ConnectionStatus />
-                        <PWAInstallPrompt />
+                          {/* Global Components */}
+                          <OnboardingTour />
+                          <NotificationSystem />
+                          <AccessibilityControlPanel />
+                          <KeyboardNavigationHelper />
+                          <ReadingGuide />
+                          <ConnectionStatus />
+                          <PWAInstallPrompt />
 
-                        {/* Toasters */}
-                        <Toaster />
-                        <Sonner />
-                      </GlobalCallProvider>
-                    </TooltipProvider>
-                  </AccessibilityProvider>
-                </AdminProvider>
-              </AuthProvider>
+                          {/* Toasters */}
+                          <Toaster />
+                          <Sonner />
+                        </GlobalCallProvider>
+                      </TooltipProvider>
+                    </AccessibilityProvider>
+                  </AdminProvider>
+                </AuthProvider>
+              </CurrencyProvider>
             </I18nProvider>
           </ErrorBoundary>
         </SafeThemeProvider>
