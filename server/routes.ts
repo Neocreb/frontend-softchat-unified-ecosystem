@@ -8,6 +8,7 @@ import {
   insertProductSchema,
 } from "@shared/schema";
 import challengesApi from "./routes/challenges-api.js";
+import stickerApi from "./routes/sticker-api.js";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Blog RSS Feed endpoint
