@@ -5,7 +5,7 @@ import { db } from '../db.js';
 import { posts, users, profiles } from '../../shared/schema.js';
 import { eq, and } from 'drizzle-orm';
 import { authenticateToken as authMiddleware } from '../middleware/auth.js';
-import { FileService } from '../services/fileService.js';
+import { FileService } from '../services/FileService.js';
 
 const router = express.Router();
 
@@ -178,7 +178,7 @@ router.post('/create', authMiddleware, upload.fields([
     const originalCreator = originalCreatorProfile[0];
 
     // Upload duet video to storage
-    const duetVideoUrl = await fileService.uploadFile({
+    const duetVideoUrl = await FileService.uploadFile({
       buffer: duetVideoFile.buffer,
       mimetype: duetVideoFile.mimetype,
       originalname: duetVideoFile.originalname,
@@ -188,7 +188,7 @@ router.post('/create', authMiddleware, upload.fields([
     // Upload thumbnail if provided
     let thumbnailUrl = null;
     if (thumbnailFile) {
-      thumbnailUrl = await fileService.uploadFile({
+      thumbnailUrl = await FileService.uploadFile({
         buffer: thumbnailFile.buffer,
         mimetype: thumbnailFile.mimetype,
         originalname: thumbnailFile.originalname,
@@ -433,10 +433,10 @@ router.delete('/:postId', authMiddleware, async (req, res) => {
 
     // Delete files from storage
     if (duetPost.videoUrl) {
-      await fileService.deleteFile(duetPost.videoUrl);
+      await FileService.deleteFile(duetPost.videoUrl);
     }
     if (duetPost.imageUrl) {
-      await fileService.deleteFile(duetPost.imageUrl);
+      await FileService.deleteFile(duetPost.imageUrl);
     }
 
     // Delete post from database
