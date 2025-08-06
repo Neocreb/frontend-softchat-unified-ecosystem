@@ -106,12 +106,7 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
     }
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
+  const { formatPrice: formatCurrencyPrice } = useCurrency();
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
