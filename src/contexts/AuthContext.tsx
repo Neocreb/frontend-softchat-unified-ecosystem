@@ -321,6 +321,52 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     return user?.role === "admin" || user?.profile?.role === "admin";
   }, [user]);
 
+  // Check if user has a specific role
+  const hasRole = useCallback((role: UserRole): boolean => {
+    if (!user) return false;
+    return user.user_metadata?.roles?.includes(role) || user.role === role;
+  }, [user]);
+
+  // Switch active role
+  const switchRole = useCallback(
+    async (role: UserRole): Promise<void> => {
+      try {
+        if (!user || !hasRole(role)) {
+          throw new Error("User doesn't have access to this role");
+        }
+
+        const { error } = await supabase.auth.updateUser({
+          data: {
+            ...user.user_metadata,
+            active_role: role,
+          },
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        // Update local user state
+        setUser((prev) =>
+          prev
+            ? {
+                ...prev,
+                active_role: role,
+                user_metadata: {
+                  ...prev.user_metadata,
+                  active_role: role,
+                },
+              }
+            : null,
+        );
+      } catch (error) {
+        console.error("Role switch error:", error);
+        throw error;
+      }
+    },
+    [user, hasRole],
+  );
+
   // Update user profile
   const updateProfile = useCallback(
     async (data: Partial<UserProfile>): Promise<void> => {
