@@ -246,43 +246,47 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   return (
     <div className={cn(
       "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg",
-      isMobile ? "w-full h-screen" : "w-96 h-[500px]",
+      isMobile
+        ? "w-full max-w-full h-[70vh] max-h-[500px] flex flex-col"
+        : "w-96 h-[500px] flex flex-col",
       className
     )}>
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-700 p-4">
+      <div className="border-b border-gray-200 dark:border-gray-700 p-3 md:p-4 flex-shrink-0">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-lg font-semibold">Stickers</h3>
+          <h3 className={cn("font-semibold", isMobile ? "text-base" : "text-lg")}>Stickers</h3>
           <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
-              className="h-8 w-8"
-            >
-              {viewMode === "grid" ? <List className="w-4 h-4" /> : <Grid3X3 className="w-4 h-4" />}
-            </Button>
+            {!isMobile && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
+                className="h-8 w-8"
+              >
+                {viewMode === "grid" ? <List className="w-4 h-4" /> : <Grid3X3 className="w-4 h-4" />}
+              </Button>
+            )}
             {onClose && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="h-8 w-8"
+                className={cn(isMobile ? "h-9 w-9" : "h-8 w-8")}
               >
                 ×
               </Button>
             )}
           </div>
         </div>
-        
+
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search stickers..."
+            placeholder={isMobile ? "Search..." : "Search stickers..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 h-9"
+            className={cn("pl-10", isMobile ? "h-10" : "h-9")}
           />
         </div>
       </div>
