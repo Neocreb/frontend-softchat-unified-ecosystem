@@ -140,6 +140,11 @@ export const ClientDashboard: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [isMobile, setIsMobile] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isCustomizing, setIsCustomizing] = useState(false);
+  const [hasSeenTour, setHasSeenTour] = useState(() => {
+    return localStorage.getItem('client-tour-completed') === 'true';
+  });
 
   const { getProjects, loading } = useFreelance();
   const { getUserEscrows } = useEscrow();
