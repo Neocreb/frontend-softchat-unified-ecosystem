@@ -343,19 +343,37 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200"
+                  className={cn(
+                    "hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200",
+                    isMobile ? "h-9 w-9" : "h-8 w-8"
+                  )}
                 >
                   <Sticker className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent 
-                side="top" 
-                className="p-0 border-0 shadow-none bg-transparent w-auto"
+              <PopoverContent
+                side={isMobile ? "top" : "top"}
+                className={cn(
+                  "p-0 border-0 shadow-none bg-transparent",
+                  isMobile
+                    ? "w-screen max-w-full mx-auto"
+                    : "w-auto"
+                )}
                 align={isMobile ? "center" : "end"}
+                alignOffset={isMobile ? 0 : -20}
+                sideOffset={isMobile ? 10 : 5}
+                avoidCollisions={true}
+                collisionPadding={isMobile ? 16 : 8}
               >
-                <div className="flex flex-col gap-2">
+                <div className={cn(
+                  "flex flex-col",
+                  isMobile ? "gap-2 px-4" : "gap-2"
+                )}>
                   {/* Mode toggle */}
-                  <div className="flex gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1">
+                  <div className={cn(
+                    "flex gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1",
+                    isMobile && "mx-auto"
+                  )}>
                     <Button
                       size="sm"
                       variant={stickerPickerMode === "enhanced" ? "default" : "ghost"}
@@ -373,7 +391,7 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
                       Classic
                     </Button>
                   </div>
-                  
+
                   {/* Sticker picker */}
                   {stickerPickerMode === "enhanced" ? (
                     <MemeStickerPicker
