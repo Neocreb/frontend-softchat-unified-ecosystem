@@ -84,6 +84,28 @@ module.exports = {
           600: "hsl(var(--softchat-600))",
           700: "hsl(var(--softchat-700))",
         },
+        platform: {
+          background: "hsl(var(--platform-background))",
+          foreground: "hsl(var(--platform-foreground))",
+          surface: "hsl(var(--platform-surface))",
+          "surface-variant": "hsl(var(--platform-surface-variant))",
+          outline: "hsl(var(--platform-outline))",
+          "outline-variant": "hsl(var(--platform-outline-variant))",
+        },
+        social: {
+          like: "hsl(var(--social-like))",
+          comment: "hsl(var(--social-comment))",
+          share: "hsl(var(--social-share))",
+          bookmark: "hsl(var(--social-bookmark))",
+        },
+        status: {
+          success: "hsl(var(--success))",
+          "success-foreground": "hsl(var(--success-foreground))",
+          warning: "hsl(var(--warning))",
+          "warning-foreground": "hsl(var(--warning-foreground))",
+          info: "hsl(var(--info))",
+          "info-foreground": "hsl(var(--info-foreground))",
+        },
       },
       keyframes: {
         "accordion-down": {
