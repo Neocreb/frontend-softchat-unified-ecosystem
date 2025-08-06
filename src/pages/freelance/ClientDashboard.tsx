@@ -188,6 +188,19 @@ export const ClientDashboard: React.FC = () => {
     loadData();
   }, [user, getProjects]);
 
+  useEffect(() => {
+    // Show onboarding for new users
+    if (!hasSeenTour && user) {
+      setTimeout(() => setShowOnboarding(true), 1000);
+    }
+  }, [hasSeenTour, user]);
+
+  const handleTourComplete = () => {
+    localStorage.setItem('client-tour-completed', 'true');
+    setHasSeenTour(true);
+    setShowOnboarding(false);
+  };
+
   const getProjectStatusColor = (status: string) => {
     switch (status) {
       case "active":
