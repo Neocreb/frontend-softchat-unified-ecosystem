@@ -9,6 +9,7 @@ import CreatorStudioFAB from "@/components/video/CreatorStudioFAB";
 import AIAssistantFAB from "@/components/ai/AIAssistantFAB";
 import FreelanceFAB from "@/components/freelance/FreelanceFAB";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { themeComponents, cn } from "@/utils/themeUtils";
 
 const AppLayout = () => {
   const isMobile = useIsMobile();
@@ -20,7 +21,7 @@ const AppLayout = () => {
 
   if (isVideoPage) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className={themeComponents.themeContent()}>
         <Outlet />
         {/* Video pages handle their own navigation */}
       </div>
@@ -28,7 +29,7 @@ const AppLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className={cn(themeComponents.themeContent(), "flex flex-col")}>
       <UnifiedHeader
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
