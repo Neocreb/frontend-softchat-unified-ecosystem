@@ -92,6 +92,14 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
         location.pathname.startsWith("/app/freelance"),
     },
     {
+      icon: Truck,
+      label: "Delivery",
+      href: "/app/dispatch/apply",
+      active:
+        location.pathname.startsWith("/app/dispatch"),
+      highlight: true, // Special highlight for new feature
+    },
+    {
       icon: Coins,
       label: "Crypto",
       href: "/app/crypto",
