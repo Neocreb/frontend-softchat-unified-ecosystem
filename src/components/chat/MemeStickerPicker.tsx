@@ -487,38 +487,53 @@ const StickerCard: React.FC<StickerCardProps> = ({
       <Button
         variant="ghost"
         className={cn(
-          "h-14 w-14 p-0 text-2xl hover:bg-muted/70 rounded-lg transition-all duration-200 relative",
-          "hover:scale-110 active:scale-95"
+          "p-0 text-2xl hover:bg-muted/70 rounded-lg transition-all duration-200 relative",
+          isMobile
+            ? "h-12 w-12 min-h-[48px] min-w-[48px] active:scale-95 hover:scale-105"
+            : "h-14 w-14 hover:scale-110 active:scale-95"
         )}
         onClick={onClick}
       >
-        {sticker.emoji}
-        
+        <span className={cn(isMobile ? "text-xl" : "text-2xl")}>
+          {sticker.emoji}
+        </span>
+
         {/* Animated indicator */}
         {sticker.type === "animated" && (
           <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
         )}
       </Button>
-      
-      {/* Hover actions */}
-      <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <Button
-          variant="secondary"
-          size="icon"
-          className="h-6 w-6 rounded-full shadow-md"
-          onClick={onToggleFavorite}
-        >
-          {isFavorite ? 
-            <Heart className="w-3 h-3 text-red-500 fill-current" /> : 
-            <Heart className="w-3 h-3" />
-          }
-        </Button>
-      </div>
-      
-      {/* Tooltip */}
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-        {sticker.name}
-      </div>
+
+      {/* Hover/Touch actions - better positioning for mobile */}
+      {!isMobile && (
+        <div className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-6 w-6 rounded-full shadow-md"
+            onClick={onToggleFavorite}
+          >
+            {isFavorite ?
+              <Heart className="w-3 h-3 text-red-500 fill-current" /> :
+              <Heart className="w-3 h-3" />
+            }
+          </Button>
+        </div>
+      )}
+
+      {/* Mobile: Show favorite status as small indicator */}
+      {isMobile && isFavorite && (
+        <div className="absolute -top-1 -right-1">
+          <Heart className="w-3 h-3 text-red-500 fill-current" />
+        </div>
+      )}
+
+      {/* Tooltip - only on desktop */}
+      {!isMobile && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+          {sticker.name}
+        </div>
+      )}
     </div>
   );
 };
