@@ -96,7 +96,7 @@ const FeaturesSection = () => {
         <div className="mt-12">
           {/* Tabs Navigation - Fixed positioning */}
           <div className="mb-16">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {features.map((feature) => (
                 <button
                   key={feature.id}
