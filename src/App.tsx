@@ -433,6 +433,7 @@ const AppRoutes = () => {
           <Route path="enhanced-freelance-demo" element={<EnhancedDashboardDemo userType="freelancer" />} />
           <Route path="enhanced-client-demo" element={<EnhancedDashboardDemo userType="client" />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
+          <Route path="currency-demo" element={<CurrencyDemo />} />
           <Route
             path="ai-assistant"
             element={<AIPersonalAssistantDashboard />}
