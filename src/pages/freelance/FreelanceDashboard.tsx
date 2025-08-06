@@ -63,7 +63,6 @@ import ProjectPlanner from "@/components/freelance/ProjectPlanner";
 import FileUpload from "@/components/freelance/FileUpload";
 import { FreelanceNavigationTabs, TabItem } from "@/components/freelance/FreelanceNavigationTabs";
 import { ActivityIndicator } from "@/components/freelance/RealTimeNotifications";
-import { CustomizableDashboard } from "@/components/freelance/DashboardWidgets";
 import { OnboardingTour, HelpCenter, ContextualHelp, EmptyStateGuidance } from "@/components/freelance/OnboardingTour";
 import { KeyboardShortcuts, AccessibilitySettings, SkipToContent } from "@/components/freelance/KeyboardShortcuts";
 import { PerformanceMonitor, DashboardSkeleton, OptimisticUpdate, LazyComponent, MemoizedCard } from "@/components/freelance/PerformanceOptimizations";
