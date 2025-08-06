@@ -67,6 +67,8 @@ import { CustomizableDashboard } from "@/components/freelance/DashboardWidgets";
 import { OnboardingTour, HelpCenter, ContextualHelp, EmptyStateGuidance } from "@/components/freelance/OnboardingTour";
 import { KeyboardShortcuts, AccessibilitySettings, SkipToContent } from "@/components/freelance/KeyboardShortcuts";
 import { PerformanceMonitor, DashboardSkeleton, OptimisticUpdate, LazyComponent, MemoizedCard } from "@/components/freelance/PerformanceOptimizations";
+import FreelancerProposals from "@/components/freelance/FreelancerProposals";
+import FreelancerEarnings from "@/components/freelance/FreelancerEarnings";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
