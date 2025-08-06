@@ -286,6 +286,7 @@ const AppRoutes = () => {
       <Route path="/cookies" element={<CookiesPolicy />} />
       <Route path="/advertising" element={<AdvertisingPolicy />} />
       <Route path="/dispatch-partner-terms" element={<DispatchPartnerTerms />} />
+      <Route path="/legal" element={<LegalInformation />} />
 
       {/* Auth route - handle loading state and redirects */}
       <Route
