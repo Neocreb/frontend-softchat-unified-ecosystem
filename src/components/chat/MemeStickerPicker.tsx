@@ -1003,7 +1003,18 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
           />
           <Button
             variant="outline"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => {
+              try {
+                fileInputRef.current?.click();
+              } catch (error) {
+                console.error('Error opening file dialog:', error);
+                toast?.({
+                  title: "Error",
+                  description: "Failed to open file dialog. Please try again.",
+                  variant: "destructive",
+                });
+              }
+            }}
             className="w-full h-auto p-4 border-dashed"
           >
             <div className="flex flex-col items-center gap-2">
