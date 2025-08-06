@@ -115,6 +115,8 @@ const PrivacyPolicy = () => {
                 <li>Marketplace listings, purchases, and transaction history</li>
                 <li>Freelance job postings, applications, and project communications</li>
                 <li>Cryptocurrency trading activities and wallet interactions</li>
+                <li>Delivery service requests, tracking information, and provider ratings</li>
+                <li>Delivery provider applications, service areas, and performance metrics</li>
                 <li>AI assistant interactions and content preferences</li>
               </ul>
             </div>
