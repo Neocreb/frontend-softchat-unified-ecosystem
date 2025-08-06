@@ -221,13 +221,18 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
 
             {/* Pricing */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl font-bold text-primary">
-                {formatPrice(product.salePrice || product.originalPrice)}
-              </span>
+              <Price
+                amount={product.salePrice || product.originalPrice}
+                currency="USD"
+                size="lg"
+                className="text-2xl font-bold text-primary"
+              />
               {product.salePrice && (
-                <span className="text-lg text-gray-500 line-through">
-                  {formatPrice(product.originalPrice)}
-                </span>
+                <Price
+                  amount={product.originalPrice}
+                  currency="USD"
+                  className="text-lg text-gray-500 line-through"
+                />
               )}
               {product.discount && (
                 <Badge variant="destructive">Save {product.discount}%</Badge>
