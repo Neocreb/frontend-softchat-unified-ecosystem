@@ -375,6 +375,13 @@ const AppRoutes = () => {
             element={<MarketplaceCheckout />}
           />
 
+          {/* Delivery routes */}
+          <Route path="delivery" element={<DeliveryHub />} />
+          <Route path="delivery/provider/register" element={<DeliveryProviderRegistration />} />
+          <Route path="delivery/provider/dashboard" element={<DeliveryProviderDashboard />} />
+          <Route path="delivery/track" element={<DeliveryTracking />} />
+          <Route path="delivery/track/:trackingNumber" element={<DeliveryTracking />} />
+
           <Route path="crypto" element={<EnhancedCrypto />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
