@@ -78,18 +78,22 @@ const PrivacyPolicy = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-2">KYC Verification Data (Premium Users)</h4>
+              <h4 className="font-semibold mb-2">KYC Verification Data (Premium Users & Delivery Providers)</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Government-issued photo identification documents (front and back)</li>
                 <li>Real-time selfie images with liveness detection data</li>
                 <li>Phone number and email verification records</li>
                 <li>Identity verification status and compliance records</li>
                 <li>Biometric data derived from selfie verification (securely processed and stored)</li>
+                <li>Driver's license and vehicle registration documents (delivery providers)</li>
+                <li>Vehicle insurance certificates and business licenses (delivery providers)</li>
+                <li>Background check results and driving record verification (delivery providers)</li>
               </ul>
               <p className="text-sm mt-2 text-gray-600">
                 KYC data is encrypted, stored separately from general user data, and only used for
-                identity verification and compliance purposes. This data is retained as required by
-                applicable laws and regulations.
+                identity verification and compliance purposes. Delivery provider verification data
+                is additionally used for safety and security screening. This data is retained as
+                required by applicable laws and regulations.
               </p>
             </div>
 
