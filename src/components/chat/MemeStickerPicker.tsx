@@ -433,23 +433,13 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
           </DialogHeader>
           <ErrorBoundary
             fallback={
-              <div className="p-6 text-center">
-                <XCircle className="w-12 h-12 mx-auto mb-4 text-destructive" />
-                <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  There was an error loading the sticker pack creator. Please try again.
-                </p>
-                <Button
-                  onClick={() => {
-                    setShowCreateDialog(false);
-                    setTimeout(() => setShowCreateDialog(true), 100);
-                  }}
-                  variant="outline"
-                >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Try Again
-                </Button>
-              </div>
+              <StickerUploadErrorFallback
+                onRetry={() => {
+                  setShowCreateDialog(false);
+                  setTimeout(() => setShowCreateDialog(true), 100);
+                }}
+                onClose={() => setShowCreateDialog(false)}
+              />
             }
           >
             <StickerPackCreationDialog
