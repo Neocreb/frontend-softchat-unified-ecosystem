@@ -204,6 +204,37 @@ export default function DeliveryProviderStatus({
             </Card>
           );
 
+        case "suspended":
+          return (
+            <Card className="bg-orange-50 border-orange-200">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-orange-600 p-2 rounded-lg">
+                    <AlertCircle className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-orange-900">Account Suspended</h3>
+                    <p className="text-sm text-orange-700">Your delivery provider account has been temporarily suspended</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">What happened?</h4>
+                    <ul className="text-sm space-y-1">
+                      <li>• Your account is under review for policy violations</li>
+                      <li>• Delivery privileges are temporarily disabled</li>
+                      <li>• Contact support for more information</li>
+                    </ul>
+                  </div>
+                  <Button variant="outline" size="sm" className="w-full">
+                    <Phone className="h-4 w-4 mr-2" />
+                    Contact Support for Appeal
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          );
+
         default:
           return (
             <Card className="bg-green-50 border-green-200">
