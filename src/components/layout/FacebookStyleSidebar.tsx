@@ -191,7 +191,13 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       href: "/app/campaigns",
       badge: "Hot",
     },
-  ];
+  ].filter(Boolean);
+
+  // Add dynamic delivery provider shortcut if available
+  const deliveryProviderShortcut = getDeliveryProviderShortcut();
+  if (deliveryProviderShortcut) {
+    shortcuts.splice(-1, 0, deliveryProviderShortcut); // Insert before campaigns
+  }
 
   const menuItems = [
     {
