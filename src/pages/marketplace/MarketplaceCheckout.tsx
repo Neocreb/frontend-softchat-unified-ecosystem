@@ -216,10 +216,117 @@ const MarketplaceCheckout = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
+            {/* Delivery Method Selection */}
+            <Card>
+              <CardHeader className="border-b">
+                <h2 className="text-lg font-medium">Delivery Method</h2>
+              </CardHeader>
+
+              <CardContent className="pt-6">
+                <RadioGroup
+                  value={deliveryMethod}
+                  onValueChange={setDeliveryMethod}
+                >
+                  <div className="flex items-center space-x-2 border rounded-md p-3 mb-3 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <RadioGroupItem value="delivery" id="delivery-method" />
+                    <Label htmlFor="delivery-method" className="flex items-center gap-2 cursor-pointer flex-1">
+                      <Truck className="h-5 w-5 text-blue-600" />
+                      <div>
+                        <div className="font-medium">Home Delivery</div>
+                        <div className="text-sm text-gray-500">Get your items delivered to your doorstep</div>
+                      </div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <RadioGroupItem value="pickup" id="pickup-method" />
+                    <Label htmlFor="pickup-method" className="flex items-center gap-2 cursor-pointer flex-1">
+                      <MapPin className="h-5 w-5 text-green-600" />
+                      <div>
+                        <div className="font-medium">Store Pickup</div>
+                        <div className="text-sm text-gray-500">Pick up from nearest store location</div>
+                      </div>
+                    </Label>
+                  </div>
+                </RadioGroup>
+
+                {deliveryMethod === "delivery" && (
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-medium">Delivery Provider</h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowDeliverySelection(true)}
+                      >
+                        {selectedDeliveryProvider ? "Change Provider" : "Select Provider"}
+                      </Button>
+                    </div>
+
+                    {selectedDeliveryProvider ? (
+                      <div className="bg-white p-3 rounded border">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{selectedDeliveryProvider.businessName}</span>
+                              {selectedDeliveryProvider.isVerified && (
+                                <Badge variant="secondary" className="text-xs">
+                                  <Shield className="h-3 w-3 mr-1" />
+                                  Verified
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 text-sm text-gray-600 mt-1">
+                              <div className="flex items-center gap-1">
+                                <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                                <span>{selectedDeliveryProvider.rating}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                <span>~{selectedDeliveryProvider.estimatedDeliveryTime}h</span>
+                              </div>
+                              <Badge variant="outline" className="text-xs">
+                                {deliveryServiceType.replace('_', ' ')}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-medium text-green-600">
+                              ${calculateDeliveryFee().toFixed(2)}
+                            </div>
+                            <div className="text-xs text-gray-500">delivery fee</div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-4 text-gray-500">
+                        <Truck className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+                        <p>Select a delivery provider to see pricing and delivery times</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {deliveryMethod === "pickup" && (
+                  <div className="mt-4 p-4 bg-green-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-green-800">
+                      <CheckCircle className="h-5 w-5" />
+                      <span className="font-medium">Free Pickup Available</span>
+                    </div>
+                    <p className="text-sm text-green-700 mt-1">
+                      Pick up your order from our store locations within 3-5 business days.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Shipping Information */}
             <Card>
               <CardHeader className="border-b">
-                <h2 className="text-lg font-medium">Shipping Information</h2>
+                <h2 className="text-lg font-medium">
+                  {deliveryMethod === "delivery" ? "Delivery Information" : "Pickup Information"}
+                </h2>
               </CardHeader>
               
               <CardContent className="pt-6 space-y-4">
