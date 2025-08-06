@@ -20,7 +20,9 @@ export interface UserProfile {
   is_verified?: boolean;
   points?: number;
   level?: UserLevel;
-  role?: string;
+  role?: UserRole;
+  roles?: UserRole[]; // Support for multiple roles
+  active_role?: UserRole; // Currently active role
   reputation?: number;
   followers_count?: number;
   following_count?: number;
@@ -51,6 +53,7 @@ export interface UserProfile {
   crypto_profile?: CryptoProfile;
   social_profile?: SocialProfile;
   business_profile?: BusinessProfile;
+  dispatch_profile?: DispatchProfile;
   skills?: string[];
   interests?: string[];
   languages?: string[];
@@ -324,7 +327,7 @@ export interface ExtendedUser extends User {
   avatar: string;
   points: number;
   level: string;
-  role: string;
+  role: UserRole;
   profile?: UserProfile;
   app_metadata: {
     provider?: string;
@@ -376,6 +379,37 @@ export interface ChatConversation {
 }
 
 export type UserLevel = "bronze" | "silver" | "gold" | "platinum" | "diamond";
+
+// User Roles
+export type UserRole = "user" | "admin" | "freelancer" | "dispatch_rider" | "seller" | "creator";
+
+// Dispatch-specific profile information
+export interface DispatchProfile {
+  partner_id?: string;
+  application_status?: "pending" | "approved" | "rejected" | "suspended";
+  vehicle_type?: "motorcycle" | "bicycle" | "car" | "van" | "truck";
+  license_number?: string;
+  is_online?: boolean;
+  current_location?: {
+    lat: number;
+    lng: number;
+  };
+  service_areas?: string[];
+  delivery_types?: string[];
+  max_delivery_distance?: number;
+  total_deliveries?: number;
+  completed_deliveries?: number;
+  average_rating?: number;
+  total_earnings?: number;
+  is_verified_driver?: boolean;
+  working_hours?: {
+    [key: string]: {
+      start: string;
+      end: string;
+      available: boolean;
+    };
+  };
+}
 
 // P2P marketplace types
 export interface P2POffer {
