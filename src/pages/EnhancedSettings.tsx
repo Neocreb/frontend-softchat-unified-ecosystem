@@ -81,6 +81,7 @@ import {
   Trash,
   ChevronRight,
   Award,
+  ArrowUpDown,
   Calendar,
   Wifi,
   WifiOff,
