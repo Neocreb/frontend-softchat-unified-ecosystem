@@ -120,10 +120,38 @@ const EnhancedAuthForm = () => {
   // Use the combined error from auth context and local state
   const displayError = error || (authError ? authError.message : null);
 
+  // Helper component for error display with actionable guidance
+  const ErrorHelper = ({ error }: { error: string | null }) => {
+    if (!error) return null;
+
+    const isLoginCredentialsError = error.includes("Invalid email or password");
+    const isUserExistsError = error.includes("account with this email already exists");
+
+    return (
+      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+        <p className="text-sm text-red-600 mb-2">{error}</p>
+        {isLoginCredentialsError && (
+          <div className="text-xs text-red-500">
+            <p>• Double-check your email address</p>
+            <p>• Make sure your password is correct</p>
+            <p>• Try the demo login if you don't have an account</p>
+          </div>
+        )}
+        {isUserExistsError && (
+          <div className="text-xs text-red-500">
+            <p>• Use the Login tab instead of Register</p>
+            <p>• Click "Forgot password?" if you don't remember it</p>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto shawdow-2xl rounded-lg">
       <CardHeader className="space-y-1 text-center">
         <AuthHeader isLogin={isLogin} />
+        <ErrorHelper error={displayError} />
       </CardHeader>
       <Tabs defaultValue="login" onValueChange={(val) => setIsLogin(val === "login")}>
         <TabsList className="grid w-full grid-cols-2">
