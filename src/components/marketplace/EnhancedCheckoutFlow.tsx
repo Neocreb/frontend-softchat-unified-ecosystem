@@ -133,7 +133,13 @@ export default function EnhancedCheckoutFlow({
     if (defaultShipping) setSelectedShippingAddress(defaultShipping.id!);
     if (defaultBilling) setSelectedBillingAddress(defaultBilling.id!);
     if (defaultPayment) setSelectedPaymentMethod(defaultPayment.id);
-  }, [addresses, paymentMethods]);
+
+    // Check if cart contains physical items
+    const physicalItems = cartItems.some(item =>
+      item.product.type === "physical" || !item.product.type
+    );
+    setHasPhysicalItems(physicalItems);
+  }, [addresses, paymentMethods, cartItems]);
 
   // Calculate order summary
   useEffect(() => {
