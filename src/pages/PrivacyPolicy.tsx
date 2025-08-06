@@ -149,6 +149,8 @@ const PrivacyPolicy = () => {
                 <li>Process marketplace transactions and payments</li>
                 <li>Facilitate freelance job matching and project management</li>
                 <li>Enable cryptocurrency trading and wallet services</li>
+                <li>Connect customers with delivery providers and track deliveries</li>
+                <li>Verify delivery provider credentials and maintain service quality</li>
                 <li>Deliver personalized AI-powered recommendations</li>
               </ul>
             </div>
