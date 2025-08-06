@@ -25,6 +25,8 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Price } from "@/components/ui/currency-display";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 interface ProductQuickViewProps {
   product: {
