@@ -102,16 +102,10 @@ const navigationItems: TabItem[] = [
     badge: "5",
   },
   {
-    id: "post-job",
-    label: "Post Job",
-    icon: Plus,
-    description: "Create new job posting",
-  },
-  {
-    id: "freelancers",
-    label: "Freelancers",
+    id: "manage",
+    label: "Manage",
     icon: Users,
-    description: "Find & hire talent",
+    description: "Post jobs & find freelancers",
   },
   {
     id: "proposals",
@@ -119,19 +113,6 @@ const navigationItems: TabItem[] = [
     icon: FileText,
     description: "Review received proposals",
     badge: "12",
-  },
-  {
-    id: "messages",
-    label: "Messages",
-    icon: MessageCircle,
-    description: "Client communications",
-    badge: "3",
-  },
-  {
-    id: "payments",
-    label: "Payments",
-    icon: CreditCard,
-    description: "Billing & transactions",
   },
   {
     id: "campaigns",
