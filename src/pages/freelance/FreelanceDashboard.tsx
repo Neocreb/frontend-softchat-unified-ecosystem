@@ -402,13 +402,12 @@ export const FreelanceDashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <RealTimeNotifications userType="freelancer" />
             <Button
               variant={isCustomizing ? "default" : "outline"}
               size="sm"
               onClick={() => setIsCustomizing(!isCustomizing)}
               data-testid="customize-button"
-              className="hidden sm:flex items-center gap-2"
+              className="flex items-center gap-2"
             >
               <Settings className="w-4 h-4" />
               {isCustomizing ? "Done" : "Customize"}
