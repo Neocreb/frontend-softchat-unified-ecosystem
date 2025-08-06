@@ -963,25 +963,50 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
                 "grid gap-2",
                 isMobile ? "grid-cols-3" : "grid-cols-4"
               )}>
-                {selectedImages.map((file, index) => (
-                  <div key={index} className="relative group">
-                    <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={file.name}
-                        className="w-full h-full object-cover"
-                      />
+                {selectedImages.map((file, index) => {
+                  let imageSrc;
+                  try {
+                    imageSrc = URL.createObjectURL(file);
+                  } catch (error) {
+                    console.error('Error creating object URL for file:', file.name, error);
+                    imageSrc = '';
+                  }
+
+                  return (
+                    <div key={index} className="relative group">
+                      <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                        {imageSrc ? (
+                          <img
+                            src={imageSrc}
+                            alt={file.name}
+                            className="w-full h-full object-cover"
+                            onError={() => console.error('Error loading image:', file.name)}
+                          />
+                        ) : (
+                          <div className="text-xs text-muted-foreground text-center p-2">
+                            {file.name}
+                            <br />
+                            <span className="text-red-500">Preview Error</span>
+                          </div>
+                        )}
+                      </div>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={() => {
+                          try {
+                            removeImage(index);
+                          } catch (error) {
+                            console.error('Error removing image:', error);
+                          }
+                        }}
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
                     </div>
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={() => removeImage(index)}
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
