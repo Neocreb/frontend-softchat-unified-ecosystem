@@ -138,6 +138,11 @@ export const FreelanceDashboard: React.FC = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [isMobile, setIsMobile] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isCustomizing, setIsCustomizing] = useState(false);
+  const [hasSeenTour, setHasSeenTour] = useState(() => {
+    return localStorage.getItem('freelance-tour-completed') === 'true';
+  });
 
   const { getProjects, getFreelanceStats, loading } = useFreelance();
   const { getUserEscrows } = useEscrow();
