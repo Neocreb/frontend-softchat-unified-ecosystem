@@ -58,7 +58,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
-import { StickerUploadErrorFallback } from "./StickerUploadErrorFallback";
+import StickerUploadErrorFallback from "./StickerUploadErrorFallback";
 import { StickerCategory, StickerCreationFile, StickerCreationRequest } from "@/types/sticker";
 import { stickerService } from "@/services/stickerService";
 
