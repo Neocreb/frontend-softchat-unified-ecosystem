@@ -278,6 +278,10 @@ const AppRoutes = () => {
       <Route path="/delivery/track" element={<DeliveryTrackingPublic />} />
       <Route path="/delivery/apply" element={<DriverApplicationPublic />} />
 
+      {/* Public Legal routes - accessible to everyone */}
+      <Route path="/terms" element={<TermsOfService />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
