@@ -47,7 +47,7 @@ const FooterNav = () => {
       icon: ShoppingCart,
       label: "Market",
       href: "/app/marketplace",
-      active: location.pathname === "/app/marketplace",
+      active: location.pathname === "/app/marketplace" || location.pathname.startsWith("/app/delivery"),
     },
     {
       icon: TrendingUp,
