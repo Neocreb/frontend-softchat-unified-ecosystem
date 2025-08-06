@@ -20,7 +20,7 @@ import adminComprehensiveRoutes from "./routes/admin-comprehensive";
 import marketplaceApiRoutes from "./routes/marketplace-api";
 import activityEconomyApiRoutes from "./routes/activity-economy-api";
 import duetApiRoutes from "./routes/duet-api";
-import videoApiRoutes from "./routes/video-api";
+// import videoApiRoutes from "./routes/video-api"; // Temporarily disabled due to missing schema exports
 import socialApiRoutes from "./routes/social-api";
 import aiApiRoutes from "./routes/ai-api";
 import notificationsApiRoutes from "./routes/notifications-api";
@@ -250,7 +250,7 @@ app.use("/api", adminComprehensiveRoutes);
 app.use("/api/duets", duetApiRoutes);
 
 // Video API Routes
-app.use("/api/videos", videoApiRoutes);
+// app.use("/api/videos", videoApiRoutes); // Temporarily disabled
 
 // Social API Routes
 app.use("/api/social", socialApiRoutes);
