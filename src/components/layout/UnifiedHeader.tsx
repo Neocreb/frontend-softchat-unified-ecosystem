@@ -273,6 +273,12 @@ const UnifiedHeader = ({
       href: "/app/events",
       active: location.pathname === "/app/events",
     },
+    {
+      icon: Truck,
+      label: "Delivery",
+      href: "/app/delivery",
+      active: location.pathname.startsWith("/app/delivery"),
+    },
   ];
 
   // Load search history on mount
