@@ -292,29 +292,38 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       </div>
 
       {/* Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
-        <div className="border-b border-gray-200 dark:border-gray-700">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
+        <div className="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <ScrollArea orientation="horizontal" className="w-full">
-            <TabsList className="inline-flex h-auto p-1 bg-transparent w-full justify-start">
+            <TabsList className={cn(
+              "inline-flex h-auto p-1 bg-transparent w-full",
+              isMobile ? "justify-start" : "justify-start"
+            )}>
               {STICKER_TABS.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
                   className={cn(
-                    "flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-all",
+                    "flex items-center gap-1 px-2 py-2 text-xs rounded-lg transition-all whitespace-nowrap",
                     "data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900",
-                    "data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300"
+                    "data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300",
+                    isMobile ? "min-w-[44px] flex-col gap-0.5" : "flex-row gap-2"
                   )}
                 >
-                  {tab.icon}
-                  <span className={isMobile ? "hidden" : ""}>{tab.name}</span>
+                  <span className={isMobile ? "text-sm" : ""}>{tab.icon}</span>
+                  <span className={cn(
+                    isMobile ? "text-[10px] leading-tight" : "text-xs",
+                    isMobile && tab.name.length > 6 ? "hidden" : ""
+                  )}>
+                    {isMobile ? tab.name.slice(0, 4) : tab.name}
+                  </span>
                   {tab.count && tab.count > 0 && (
-                    <Badge variant="secondary" className="text-xs px-1.5 py-0 h-4">
-                      {tab.count}
+                    <Badge variant="secondary" className="text-xs px-1 py-0 h-3 min-w-[12px]">
+                      {tab.count > 9 ? "9+" : tab.count}
                     </Badge>
                   )}
                   {tab.premium && (
-                    <Crown className="w-3 h-3 text-yellow-500" />
+                    <Crown className="w-2.5 h-2.5 text-yellow-500" />
                   )}
                 </TabsTrigger>
               ))}
