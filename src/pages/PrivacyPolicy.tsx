@@ -49,9 +49,10 @@ const PrivacyPolicy = () => {
               and marketplace platform.
             </p>
             <p>
-              SoftChat is a comprehensive platform that includes social networking features, 
-              marketplace functionality, freelancing services, cryptocurrency trading, and 
-              AI-powered content recommendations. Your privacy is fundamental to our operations.
+              SoftChat is a comprehensive platform that includes social networking features,
+              marketplace functionality, freelancing services, cryptocurrency trading,
+              delivery services, and AI-powered content recommendations. Your privacy is
+              fundamental to our operations.
             </p>
           </CardContent>
         </Card>
