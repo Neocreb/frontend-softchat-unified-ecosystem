@@ -428,6 +428,8 @@ const AppRoutes = () => {
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
           <Route path="freelance-route-test" element={<FreelanceDashboardRouteTest />} />
+          <Route path="enhanced-freelance-demo" element={<EnhancedDashboardDemo userType="freelancer" />} />
+          <Route path="enhanced-client-demo" element={<EnhancedDashboardDemo userType="client" />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
           <Route
             path="ai-assistant"
