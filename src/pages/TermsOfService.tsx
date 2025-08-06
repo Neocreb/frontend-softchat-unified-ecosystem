@@ -40,10 +40,10 @@ const TermsOfService = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered 
-              social media and marketplace platform that includes social networking, 
-              marketplace functionality, freelancing services, cryptocurrency trading, 
-              verified premium subscriptions, and advanced analytics features.
+              These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered
+              social media and marketplace platform that includes social networking,
+              marketplace functionality, freelancing services, cryptocurrency trading,
+              delivery services, verified premium subscriptions, and advanced analytics features.
             </p>
             <p>
               By accessing or using SoftChat, you agree to be bound by these Terms.
