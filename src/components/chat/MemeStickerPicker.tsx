@@ -667,6 +667,280 @@ const StickerPackCard: React.FC<StickerPackCardProps> = ({
   );
 };
 
+// Sticker pack creation dialog component
+interface StickerPackCreationDialogProps {
+  isMobile: boolean;
+  onClose: () => void;
+  onPackCreated: (pack: StickerPackData) => void;
+}
+
+const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
+  isMobile,
+  onClose,
+  onPackCreated,
+}) => {
+  const { toast } = useToast();
+  const [packName, setPackName] = useState("");
+  const [packDescription, setPackDescription] = useState("");
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [creationMethod, setCreationMethod] = useState<"upload" | "camera" | "ai">("upload");
+  const [isCreating, setIsCreating] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length > 0) {
+      if (selectedImages.length + files.length > 20) {
+        toast({
+          title: "Too many images",
+          description: "A sticker pack can have maximum 20 stickers",
+          variant: "destructive",
+        });
+        return;
+      }
+      setSelectedImages(prev => [...prev, ...files]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleCreatePack = async () => {
+    if (!packName.trim()) {
+      toast({
+        title: "Pack name required",
+        description: "Please enter a name for your sticker pack",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (selectedImages.length === 0) {
+      toast({
+        title: "No stickers added",
+        description: "Please add at least one sticker to create a pack",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCreating(true);
+
+    try {
+      // In a real app, you would upload images to your backend/storage
+      // For demo purposes, we'll create a mock pack with data URLs
+      const stickers: StickerData[] = await Promise.all(
+        selectedImages.map(async (file, index) => {
+          const reader = new FileReader();
+          return new Promise<StickerData>((resolve) => {
+            reader.onload = (e) => {
+              resolve({
+                id: `custom_${Date.now()}_${index}`,
+                name: file.name.replace(/\.[^/.]+$/, ""),
+                emoji: "", // No emoji for custom image stickers
+                fileUrl: e.target?.result as string,
+                thumbnailUrl: e.target?.result as string,
+                type: "image",
+                tags: ["custom", "user-generated"],
+                usageCount: 0,
+                packId: `pack_${Date.now()}`,
+                packName: packName,
+                width: 512,
+                height: 512,
+                animated: false,
+              });
+            };
+            reader.readAsDataURL(file);
+          });
+        })
+      );
+
+      const newPack: StickerPackData = {
+        id: `pack_${Date.now()}`,
+        name: packName,
+        description: packDescription || `Custom pack with ${stickers.length} stickers`,
+        category: "custom" as StickerCategory,
+        stickers,
+        creatorId: "current_user", // Would be actual user ID
+        creatorName: "You",
+        downloadCount: 0,
+        rating: 5,
+        isOfficial: false,
+        isPremium: false,
+        isCustom: true,
+        tags: ["custom", "user-generated"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        thumbnailUrl: stickers[0]?.fileUrl || "",
+        price: 0,
+      };
+
+      onPackCreated(newPack);
+    } catch (error) {
+      toast({
+        title: "Creation failed",
+        description: "Failed to create sticker pack. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Pack Details */}
+      <div className="space-y-3">
+        <div>
+          <label className="text-sm font-medium mb-1 block">Pack Name</label>
+          <Input
+            placeholder="Enter pack name..."
+            value={packName}
+            onChange={(e) => setPackName(e.target.value)}
+            maxLength={50}
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium mb-1 block">Description (Optional)</label>
+          <Input
+            placeholder="Describe your sticker pack..."
+            value={packDescription}
+            onChange={(e) => setPackDescription(e.target.value)}
+            maxLength={200}
+          />
+        </div>
+      </div>
+
+      {/* Creation Method */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Creation Method</label>
+        <div className="grid grid-cols-1 gap-2">
+          <Button
+            variant={creationMethod === "upload" ? "default" : "outline"}
+            onClick={() => setCreationMethod("upload")}
+            className="justify-start h-auto p-3"
+          >
+            <Upload className="w-4 h-4 mr-2" />
+            <div className="text-left">
+              <p className="font-medium text-sm">Upload Images</p>
+              <p className="text-xs text-muted-foreground">Select images from your device</p>
+            </div>
+          </Button>
+          <Button
+            variant="outline"
+            disabled
+            className="justify-start h-auto p-3 opacity-50"
+          >
+            <Camera className="w-4 h-4 mr-2" />
+            <div className="text-left">
+              <p className="font-medium text-sm">Take Photos</p>
+              <p className="text-xs text-muted-foreground">Coming soon</p>
+            </div>
+          </Button>
+          <Button
+            variant="outline"
+            disabled
+            className="justify-start h-auto p-3 opacity-50"
+          >
+            <Sparkles className="w-4 h-4 mr-2" />
+            <div className="text-left">
+              <p className="font-medium text-sm">AI Generator</p>
+              <p className="text-xs text-muted-foreground">Coming soon</p>
+            </div>
+          </Button>
+        </div>
+      </div>
+
+      {/* File Upload */}
+      {creationMethod === "upload" && (
+        <div className="space-y-3">
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImageSelect}
+            className="hidden"
+          />
+          <Button
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full h-auto p-4 border-dashed"
+          >
+            <div className="flex flex-col items-center gap-2">
+              <Upload className="w-6 h-6 text-muted-foreground" />
+              <div className="text-center">
+                <p className="font-medium">Choose Images</p>
+                <p className="text-xs text-muted-foreground">
+                  Select up to 20 images (PNG, JPG, GIF)
+                </p>
+              </div>
+            </div>
+          </Button>
+
+          {/* Selected Images Preview */}
+          {selectedImages.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium">
+                Selected Images ({selectedImages.length}/20)
+              </p>
+              <div className={cn(
+                "grid gap-2",
+                isMobile ? "grid-cols-3" : "grid-cols-4"
+              )}>
+                {selectedImages.map((file, index) => (
+                  <div key={index} className="relative group">
+                    <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="absolute -top-2 -right-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => removeImage(index)}
+                    >
+                      <X className="w-3 h-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Actions */}
+      <div className="flex gap-2 pt-4">
+        <Button variant="outline" onClick={onClose} className="flex-1">
+          Cancel
+        </Button>
+        <Button
+          onClick={handleCreatePack}
+          disabled={isCreating || !packName.trim() || selectedImages.length === 0}
+          className="flex-1"
+        >
+          {isCreating ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+              Creating...
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4 mr-2" />
+              Create Pack
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 // Sticker creation panel component
 interface StickerCreationPanelProps {
   isMobile: boolean;
