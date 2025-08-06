@@ -141,7 +141,6 @@ export const FreelanceDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [isMobile, setIsMobile] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [isCustomizing, setIsCustomizing] = useState(false);
   const [hasSeenTour, setHasSeenTour] = useState(() => {
     return localStorage.getItem('freelance-tour-completed') === 'true';
   });
@@ -403,18 +402,6 @@ export const FreelanceDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button
-              variant={isCustomizing ? "default" : "outline"}
-              size="sm"
-              onClick={() => setIsCustomizing(!isCustomizing)}
-              data-testid="customize-button"
-              className="flex items-center gap-2"
-            >
-              <Settings className="w-4 h-4" />
-              {isCustomizing ? "Done" : "Customize"}
-            </Button>
-          </div>
         </div>
       </div>
     </div>
@@ -804,7 +791,6 @@ export const FreelanceDashboard: React.FC = () => {
       {/* Enhanced Components */}
       <KeyboardShortcuts
         onNavigate={setActiveTab}
-        onToggleCustomization={() => setIsCustomizing(!isCustomizing)}
       />
       <AccessibilitySettings />
       <HelpCenter />
