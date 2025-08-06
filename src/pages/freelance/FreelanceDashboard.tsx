@@ -117,7 +117,7 @@ const navigationItems: TabItem[] = [
     description: "Smart job recommendations",
   },
   {
-    id: "business-intel",
+    id: "analytics",
     label: "Analytics",
     icon: BarChart3,
     description: "Business intelligence",
