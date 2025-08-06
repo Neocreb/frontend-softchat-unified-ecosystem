@@ -173,8 +173,7 @@ export const FreelanceDashboard: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { getProjects, getFreelanceStats, loading } = useFreelance();
   const { getUserEscrows } = useEscrow();
