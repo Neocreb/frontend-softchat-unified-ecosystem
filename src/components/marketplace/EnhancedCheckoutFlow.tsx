@@ -301,11 +301,28 @@ export default function EnhancedCheckoutFlow({
     }
   };
 
+  const handleDeliveryProviderSelect = (provider: any, serviceType: string) => {
+    setSelectedDeliveryProvider(provider);
+    setSelectedServiceType(serviceType);
+    setShowDeliverySelection(false);
+
+    toast({
+      title: "Delivery Provider Selected",
+      description: `${provider.businessName} will handle your delivery with ${serviceType.replace('_', ' ')} service.`,
+    });
+  };
+
   const handlePlaceOrder = async () => {
-    if (!selectedShippingAddress || !selectedPaymentMethod) {
+    const requiredChecks = hasPhysicalItems
+      ? (!selectedShippingAddress || !selectedPaymentMethod)
+      : (!selectedPaymentMethod);
+
+    if (requiredChecks) {
       toast({
         title: "Missing information",
-        description: "Please select shipping address and payment method.",
+        description: hasPhysicalItems
+          ? "Please select shipping address and payment method."
+          : "Please select payment method.",
         variant: "destructive",
       });
       return;
