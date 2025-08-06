@@ -71,7 +71,7 @@ import FileUpload from "@/components/freelance/FileUpload";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UnifiedCampaignManager } from "@/components/campaigns/UnifiedCampaignManager";
 import { FreelanceNavigationTabs, TabItem } from "@/components/freelance/FreelanceNavigationTabs";
-import { RealTimeNotifications, ActivityIndicator } from "@/components/freelance/RealTimeNotifications";
+import { ActivityIndicator } from "@/components/freelance/RealTimeNotifications";
 import { CustomizableDashboard } from "@/components/freelance/DashboardWidgets";
 import { OnboardingTour, HelpCenter, ContextualHelp, EmptyStateGuidance } from "@/components/freelance/OnboardingTour";
 import { KeyboardShortcuts, AccessibilitySettings, SkipToContent } from "@/components/freelance/KeyboardShortcuts";
