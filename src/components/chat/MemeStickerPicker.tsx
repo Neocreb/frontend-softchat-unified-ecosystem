@@ -704,7 +704,8 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
   onClose,
   onPackCreated,
 }) => {
-  const { toast } = useToast();
+  const toastHook = useToast();
+  const toast = toastHook?.toast;
   const [packName, setPackName] = useState("");
   const [packDescription, setPackDescription] = useState("");
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
