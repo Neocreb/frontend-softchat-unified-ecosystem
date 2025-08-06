@@ -99,6 +99,7 @@ const EnhancedWalletDashboardContent = () => {
                 { id: "overview", label: "Overview", icon: Wallet, description: "Wallet summary" },
                 { id: "analytics", label: "Analytics", icon: BarChart3, description: "Performance insights" },
                 { id: "transactions", label: "Transactions", icon: Search, description: "Transaction history & receipts" },
+                { id: "currency", label: "Currency", icon: ArrowUpDown, description: "Real-time currency conversion" },
                 { id: "security", label: "Security", icon: Shield, description: "Security settings" },
                 { id: "integrations", label: "Integrations", icon: Settings, description: "Bank & bill management" },
               ].map((tab) => (
