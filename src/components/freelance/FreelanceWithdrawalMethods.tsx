@@ -101,7 +101,7 @@ const FreelanceWithdrawalMethods: React.FC = () => {
 
   const getMethodIcon = (type: PaymentMethod["type"]) => {
     switch (type) {
-      case "bank": return <Bank className="w-5 h-5" />;
+      case "bank": return <Landmark className="w-5 h-5" />;
       case "mobile_money": return <Smartphone className="w-5 h-5" />;
       case "crypto": return <Wallet className="w-5 h-5" />;
       case "paypal": return <CreditCard className="w-5 h-5" />;
