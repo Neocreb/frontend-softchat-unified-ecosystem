@@ -63,3 +63,6 @@ export const optionalAuth = (
 
   next();
 };
+
+// Export alias for compatibility
+export const authMiddleware = authenticateToken;
