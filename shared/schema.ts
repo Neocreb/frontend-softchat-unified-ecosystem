@@ -153,8 +153,17 @@ export const chatMessages = pgTable("chat_messages", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
+  type: text("type").default("text"), // 'text', 'image', 'sticker', 'voice', 'file'
+  stickerId: uuid("sticker_id"), // Reference to sticker if type is 'sticker'
+  attachments: text("attachments").array(),
+  metadata: jsonb("metadata"), // For sticker info, file details, etc.
+  replyToId: uuid("reply_to_id").references(() => chatMessages.id),
   read: boolean("read").default(false),
+  editedAt: timestamp("edited_at"),
+  deletedAt: timestamp("deleted_at"),
+  reactions: jsonb("reactions"), // Array of reaction objects {emoji, userId, timestamp}
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Notifications table
