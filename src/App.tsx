@@ -76,6 +76,7 @@ import DeliveryHub from "./pages/DeliveryHub";
 import DeliveryProviderRegistration from "./components/delivery/DeliveryProviderRegistration";
 import DeliveryProviderDashboard from "./components/delivery/DeliveryProviderDashboard";
 import DeliveryTracking from "./components/delivery/DeliveryTracking";
+import DeliveryProvidersAdmin from "./components/admin/DeliveryProvidersAdmin";
 
 import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
