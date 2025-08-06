@@ -26,7 +26,7 @@ import UniversalCryptoPaymentModal from "@/components/payments/UniversalCryptoPa
 import { type PaymentRequest } from "@/services/unifiedCryptoPaymentService";
 
 const MarketplaceCheckout = () => {
-  const { cart, getCartTotal, checkout } = useMarketplace();
+  const { cart, getCartTotal, checkout } = useEnhancedMarketplace();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
