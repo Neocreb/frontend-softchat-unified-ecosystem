@@ -765,16 +765,16 @@ export const StickerCreationModal: React.FC<StickerCreationModalProps> = ({
         )}>
           <ErrorBoundary
             fallback={
-              <div className="p-6 text-center">
-                <XCircle className="w-12 h-12 mx-auto mb-4 text-destructive" />
-                <h3 className="text-lg font-semibold mb-2">Sticker Creator Error</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  There was an error with the sticker creation tool. Please close and try again.
-                </p>
-                <Button onClick={onClose} variant="outline">
-                  Close
-                </Button>
-              </div>
+              <StickerUploadErrorFallback
+                onRetry={() => {
+                  // Reset the modal state and try again
+                  setFiles([]);
+                  setCurrentStep("upload");
+                  setIsProcessing(false);
+                }}
+                onClose={onClose}
+                className="m-6"
+              />
             }
           >
           <DialogHeader>
