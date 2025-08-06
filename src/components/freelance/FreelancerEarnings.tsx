@@ -474,19 +474,31 @@ export const FreelancerEarnings: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="justify-start h-auto p-4">
+            <Button
+              variant="outline"
+              className="justify-start h-auto p-4"
+              onClick={() => setActiveModal("withdrawal")}
+            >
               <div className="text-left">
                 <p className="font-medium">Withdrawal Methods</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Manage payment methods</p>
               </div>
             </Button>
-            <Button variant="outline" className="justify-start h-auto p-4">
+            <Button
+              variant="outline"
+              className="justify-start h-auto p-4"
+              onClick={() => setActiveModal("tax")}
+            >
               <div className="text-left">
                 <p className="font-medium">Tax Documents</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Download tax forms</p>
               </div>
             </Button>
-            <Button variant="outline" className="justify-start h-auto p-4">
+            <Button
+              variant="outline"
+              className="justify-start h-auto p-4"
+              onClick={() => setActiveModal("invoicing")}
+            >
               <div className="text-left">
                 <p className="font-medium">Invoicing</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Create and send invoices</p>
