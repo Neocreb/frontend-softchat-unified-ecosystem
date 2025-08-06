@@ -20,6 +20,7 @@ import {
   Crown,
   FileText,
   ShoppingCart,
+  Truck,
   Bitcoin,
   Briefcase,
   MessageSquare,
