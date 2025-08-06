@@ -271,6 +271,10 @@ const AppRoutes = () => {
       />
       <Route path="/blog/:slug" element={<BlogPost />} />
 
+      {/* Public Delivery routes - accessible to everyone */}
+      <Route path="/delivery/track" element={<DeliveryTrackingPublic />} />
+      <Route path="/delivery/apply" element={<DriverApplicationPublic />} />
+
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
