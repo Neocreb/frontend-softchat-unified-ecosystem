@@ -197,6 +197,9 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
 
         {/* Right section - Search, Actions, User */}
         <div className="flex items-center gap-2">
+          {/* Role Switcher */}
+          <RoleSwitcher />
+
           {/* Search (Desktop) */}
           <div className="hidden lg:block w-64">
             <form onSubmit={handleSearch} className="relative">
