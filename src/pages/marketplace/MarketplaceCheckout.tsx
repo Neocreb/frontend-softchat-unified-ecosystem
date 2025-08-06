@@ -367,14 +367,21 @@ const MarketplaceCheckout = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Textarea 
-                    id="address" 
-                    name="address" 
-                    placeholder="123 Main St, Apt 4B" 
+                  <Label htmlFor="address">
+                    {deliveryMethod === "delivery" ? "Delivery Address" : "Contact Address"}
+                  </Label>
+                  <Textarea
+                    id="address"
+                    name="address"
+                    placeholder={deliveryMethod === "delivery" ? "123 Main St, Apt 4B" : "Your contact address"}
                     value={shippingInfo.address}
                     onChange={handleInputChange}
                   />
+                  {deliveryMethod === "pickup" && (
+                    <p className="text-sm text-gray-500">
+                      We'll notify you when your order is ready for pickup at the selected store location.
+                    </p>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
