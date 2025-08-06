@@ -53,6 +53,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { 
   StickerData, 
   StickerPackData, 
