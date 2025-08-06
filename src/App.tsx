@@ -263,6 +263,9 @@ const AppRoutes = () => {
       <Route path="/test" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
 
+      {/* Public dispatch partners directory */}
+      <Route path="/dispatch-partners" element={<DispatchPartners />} />
+
       {/* Public Blog routes - accessible to everyone */}
       <Route
         path="/blog"
