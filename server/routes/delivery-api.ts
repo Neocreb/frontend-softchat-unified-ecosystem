@@ -74,7 +74,21 @@ router.get("/providers/profile", authenticateToken, async (req, res) => {
       return res.status(404).json({ error: "Delivery provider not found" });
     }
 
-    res.json(provider[0]);
+    // Validate the provider data before sending
+    const providerData = provider[0];
+    if (!providerData.id || !providerData.providerId) {
+      console.error("Invalid provider data structure:", providerData);
+      return res.status(500).json({ error: "Invalid provider data structure" });
+    }
+
+    // Ensure verificationStatus is valid
+    const validStatuses = ["pending", "verified", "rejected", "suspended"];
+    if (providerData.verificationStatus && !validStatuses.includes(providerData.verificationStatus)) {
+      console.warn(`Invalid verification status: ${providerData.verificationStatus}, defaulting to pending`);
+      providerData.verificationStatus = "pending";
+    }
+
+    res.json(providerData);
   } catch (error) {
     console.error("Error fetching delivery provider profile:", error);
     res.status(500).json({ error: "Failed to fetch provider profile" });
