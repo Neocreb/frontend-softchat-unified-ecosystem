@@ -63,6 +63,9 @@ import AdminDispatchPartners from "./pages/admin/AdminDispatchPartners";
 
 // Unified Dashboard
 import UnifiedDashboard from "./pages/UnifiedDashboard";
+
+// Public Pages
+import DispatchPartners from "./pages/DispatchPartners";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
