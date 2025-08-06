@@ -419,6 +419,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       signup,
       isAdmin,
       updateProfile,
+      switchRole,
+      hasRole,
+      activeRole: user?.user_metadata?.active_role || user?.role || "user",
     }),
     [
       session,
@@ -430,6 +433,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       signup,
       isAdmin,
       updateProfile,
+      switchRole,
+      hasRole,
     ],
   );
 
