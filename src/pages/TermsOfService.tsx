@@ -544,6 +544,9 @@ const TermsOfService = () => {
             <Button onClick={() => navigate("/privacy")}>
               Privacy Policy
             </Button>
+            <Button variant="outline" onClick={() => navigate("/dispatch-partner-terms")}>
+              Dispatch Partner Terms
+            </Button>
             <Button variant="outline" onClick={() => navigate("/app/cookies")}>
               Cookie Policy
             </Button>
