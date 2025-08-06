@@ -767,22 +767,84 @@ export const ClientDashboard: React.FC = () => {
           </div>
         )}
 
-        {activeTab === "post-job" && (
-          <div className="max-w-4xl mx-auto">
-            <Card>
-              <CardHeader>
-                <CardTitle>Post a New Job</CardTitle>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Create a detailed job posting to attract the best freelancers
-                </p>
-              </CardHeader>
-              <CardContent>
-                <Button onClick={() => setShowCreateJobModal(true)} className="w-full">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Job Posting
-                </Button>
-              </CardContent>
-            </Card>
+        {activeTab === "manage" && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Post Job Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Plus className="w-5 h-5 text-blue-600" />
+                    Post a New Job
+                  </CardTitle>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Create a detailed job posting to attract the best freelancers
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button onClick={() => setShowCreateJobModal(true)} className="w-full">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Job Posting
+                  </Button>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-center">
+                      <p className="text-2xl font-bold text-blue-600">3</p>
+                      <p className="text-gray-600 dark:text-gray-400">Active Jobs</p>
+                    </div>
+                    <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg text-center">
+                      <p className="text-2xl font-bold text-green-600">24</p>
+                      <p className="text-gray-600 dark:text-gray-400">Proposals</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Find Freelancers Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Search className="w-5 h-5 text-green-600" />
+                    Find Freelancers
+                  </CardTitle>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Browse and hire talented freelancers for your projects
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button variant="outline" className="w-full">
+                    <Search className="w-4 h-4 mr-2" />
+                    Browse Freelancers
+                  </Button>
+                  <div className="space-y-3">
+                    {getMockFreelancers().slice(0, 2).map((freelancer) => (
+                      <div key={freelancer.id} className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="w-10 h-10">
+                            <AvatarImage src={freelancer.avatar} />
+                            <AvatarFallback>{freelancer.name[0]}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm text-gray-900 dark:text-white truncate">
+                              {freelancer.name}
+                            </p>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                              {freelancer.title}
+                            </p>
+                            <div className="flex items-center justify-between mt-1">
+                              <div className="flex items-center gap-1">
+                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                <span className="text-xs">{freelancer.rating}</span>
+                              </div>
+                              <span className="text-xs text-gray-500">${freelancer.hourlyRate}/hr</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         )}
 
