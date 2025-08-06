@@ -231,8 +231,8 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const renderPackGrid = (packs: StickerPackData[]) => {
     return (
       <div className={cn(
-        "grid gap-4",
-        isMobile ? "grid-cols-1" : "grid-cols-2"
+        "grid",
+        isMobile ? "grid-cols-1 gap-3" : "grid-cols-2 gap-4"
       )}>
         {packs.map((pack) => (
           <StickerPackCard
