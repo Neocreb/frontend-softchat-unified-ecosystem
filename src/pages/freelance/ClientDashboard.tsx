@@ -127,33 +127,6 @@ const navigationItems: TabItem[] = [
   },
 ];
 
-// Secondary navigation items
-const secondaryItems = [
-  {
-    id: "profile",
-    label: "Profile",
-    icon: UserCheck,
-    href: "/app/profile",
-  },
-  {
-    id: "wallet",
-    label: "Wallet",
-    icon: Wallet,
-    href: "/app/wallet",
-  },
-  {
-    id: "settings",
-    label: "Settings",
-    icon: Settings,
-    href: "/app/settings",
-  },
-  {
-    id: "help",
-    label: "Help & Support",
-    icon: HelpCircle,
-    href: "/app/support",
-  },
-];
 
 export const ClientDashboard: React.FC = () => {
   const [activeProjects, setActiveProjects] = useState<Project[]>([]);
