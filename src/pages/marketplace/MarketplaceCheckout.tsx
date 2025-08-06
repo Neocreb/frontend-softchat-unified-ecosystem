@@ -63,6 +63,29 @@ const MarketplaceCheckout = () => {
       [name]: value
     }));
   };
+
+  const handleDeliveryProviderSelect = (provider: any, serviceType: string) => {
+    setSelectedDeliveryProvider(provider);
+    setDeliveryServiceType(serviceType);
+    setShowDeliverySelection(false);
+    toast({
+      title: "Delivery Provider Selected",
+      description: `${provider.businessName} - ${serviceType.replace('_', ' ')} delivery`,
+    });
+  };
+
+  const calculateDeliveryFee = () => {
+    if (deliveryMethod === "pickup") return 0;
+    if (!selectedDeliveryProvider) return 5.99; // Default shipping
+
+    const serviceMultiplier = {
+      standard: 1.0,
+      express: 1.5,
+      same_day: 1.3,
+    }[deliveryServiceType] || 1.0;
+
+    return selectedDeliveryProvider.estimatedFee * serviceMultiplier;
+  };
   
   const handlePlaceOrder = async () => {
     if (cart.length === 0) {
