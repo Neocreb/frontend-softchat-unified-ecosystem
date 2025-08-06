@@ -76,6 +76,7 @@ import { CustomizableDashboard } from "@/components/freelance/DashboardWidgets";
 import { OnboardingTour, HelpCenter, ContextualHelp, EmptyStateGuidance } from "@/components/freelance/OnboardingTour";
 import { KeyboardShortcuts, AccessibilitySettings, SkipToContent } from "@/components/freelance/KeyboardShortcuts";
 import { PerformanceMonitor, DashboardSkeleton, MemoizedCard } from "@/components/freelance/PerformanceOptimizations";
+import ClientProposals from "@/components/freelance/ClientProposals";
 import { cn } from "@/lib/utils";
 
 interface ClientStats {
