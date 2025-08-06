@@ -174,6 +174,19 @@ export const FreelanceDashboard: React.FC = () => {
     loadData();
   }, [user, getProjects, getFreelanceStats]);
 
+  useEffect(() => {
+    // Show onboarding for new users
+    if (!hasSeenTour && user) {
+      setTimeout(() => setShowOnboarding(true), 1000);
+    }
+  }, [hasSeenTour, user]);
+
+  const handleTourComplete = () => {
+    localStorage.setItem('freelance-tour-completed', 'true');
+    setHasSeenTour(true);
+    setShowOnboarding(false);
+  };
+
   const getProjectStatusColor = (status: string) => {
     switch (status) {
       case "active":
