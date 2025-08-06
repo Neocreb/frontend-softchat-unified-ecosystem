@@ -1753,6 +1753,22 @@ const EnhancedSettings = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Currency Conversion */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ArrowUpDown className="w-5 h-5" />
+                  Currency Conversion
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Real-time currency conversion tools and exchange rates for all your financial needs
+                </p>
+              </CardHeader>
+              <CardContent>
+                <CurrencyDemo />
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Premium Settings */}
