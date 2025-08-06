@@ -612,6 +612,20 @@ const MarketplaceCheckout = () => {
         title="Complete Your Purchase"
         description="Pay for your marketplace order using cryptocurrency"
       />
+
+      {/* Delivery Provider Selection Modal */}
+      <DeliveryProviderSelection
+        open={showDeliverySelection}
+        onClose={() => setShowDeliverySelection(false)}
+        pickupAddress={{ address: "Store Location" }} // In real app, this would be seller's address
+        deliveryAddress={{ address: shippingInfo.address }}
+        packageDetails={{
+          weight: cart.reduce((total, item) => total + (item.quantity * 0.5), 0), // Estimate 0.5kg per item
+          value: subTotal,
+          description: `${cart.length} item(s) from marketplace`
+        }}
+        onProviderSelect={handleDeliveryProviderSelect}
+      />
     </div>
   );
 };
