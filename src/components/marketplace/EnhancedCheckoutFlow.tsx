@@ -819,7 +819,7 @@ export default function EnhancedCheckoutFlow({
               </Card>
             )}
 
-            {currentStep === 3 && (
+            {currentStep === (hasPhysicalItems ? 4 : 2) && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
