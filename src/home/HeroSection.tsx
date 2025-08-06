@@ -49,9 +49,9 @@ const HeroSection = () => {
 
           {/* Delivery Quick Access Section */}
           <div className="mt-8 pt-8 border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Quick Access</h3>
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Delivery Network</h3>
             <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-lg mx-auto">
-              <Link to="/app/delivery/track" className="flex-1">
+              <Link to="/delivery/track" className="flex-1">
                 <Button
                   variant="outline"
                   size="sm"
@@ -60,7 +60,7 @@ const HeroSection = () => {
                   📦 Track Package
                 </Button>
               </Link>
-              <Link to="/app/delivery/provider/register" className="flex-1">
+              <Link to="/delivery/apply" className="flex-1">
                 <Button
                   variant="outline"
                   size="sm"
@@ -71,7 +71,7 @@ const HeroSection = () => {
               </Link>
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              Track deliveries or apply to be a delivery provider
+              Track deliveries or apply to join our delivery network
             </p>
           </div>
 
