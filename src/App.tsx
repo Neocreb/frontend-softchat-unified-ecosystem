@@ -334,6 +334,11 @@ const AppRoutes = () => {
           <Route path="freelance/freelancer-projects" element={<FreelancerManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
           <Route path="freelance/job/:jobId" element={<JobDetailPage />} />
+
+          {/* Dispatch/Delivery Routes */}
+          <Route path="dispatch/apply" element={<DispatchApplication />} />
+          <Route path="dispatch/dashboard" element={<DispatchDashboard />} />
+
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
