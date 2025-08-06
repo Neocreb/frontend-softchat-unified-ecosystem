@@ -715,108 +715,32 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('handleImageSelect called', event);
+
+    // Minimal implementation to test
     try {
-      // Defensive check for event and target
-      if (!event || !event.target || !event.target.files) {
-        console.warn('Invalid file selection event');
+      const files = event.target.files;
+      console.log('Files selected:', files?.length);
+
+      if (!files || files.length === 0) {
+        console.log('No files selected');
         return;
       }
 
-      const files = Array.from(event.target.files || []);
+      // Just add the files without validation for now
+      const fileArray = Array.from(files);
+      console.log('Converting to array:', fileArray.length);
 
-      if (files.length === 0) {
-        return;
-      }
-
-      // Validate file count
-      if (selectedImages.length + files.length > 20) {
-        toast?.({
-          title: "Too many images",
-          description: "A sticker pack can have maximum 20 stickers",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Validate each file with defensive checks
-      const invalidFiles: string[] = [];
-      const validFiles = files.filter(file => {
-        if (!file || !file.name || typeof file.size !== 'number') {
-          invalidFiles.push('Invalid file object');
-          return false;
-        }
-
-        // Check file size (5MB limit)
-        if (file.size > 5 * 1024 * 1024) {
-          invalidFiles.push(`${file.name} (too large - max 5MB)`);
-          return false;
-        }
-
-        // Check file type
-        const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
-        if (!file.type || !validTypes.includes(file.type)) {
-          invalidFiles.push(`${file.name} (unsupported format)`);
-          return false;
-        }
-
-        return true;
+      setSelectedImages(prev => {
+        console.log('Previous images:', prev.length);
+        const newImages = [...prev, ...fileArray];
+        console.log('New images total:', newImages.length);
+        return newImages;
       });
 
-      // Show errors for invalid files
-      if (invalidFiles.length > 0) {
-        toast?.({
-          title: "Some files were skipped",
-          description: `Invalid files: ${invalidFiles.slice(0, 3).join(', ')}${invalidFiles.length > 3 ? '...' : ''}`,
-          variant: "destructive",
-        });
-      }
+      console.log('Files added successfully');
 
-      // Add valid files with defensive state update
-      if (validFiles.length > 0) {
-        try {
-          setSelectedImages(prev => {
-            if (!Array.isArray(prev)) {
-              console.warn('selectedImages state is not an array, resetting');
-              return validFiles;
-            }
-            return [...prev, ...validFiles];
-          });
-
-          toast?.({
-            title: "Images added",
-            description: `${validFiles.length} image(s) added to your sticker pack`,
-          });
-        } catch (stateError) {
-          console.error('Error updating selectedImages state:', stateError);
-          toast?.({
-            title: "State Error",
-            description: "Failed to update image selection. Please try again.",
-            variant: "destructive",
-          });
-        }
-      }
     } catch (error) {
       console.error('Error in handleImageSelect:', error);
-
-      // Safe toast call
-      try {
-        toast?.({
-          title: "Error",
-          description: "Failed to process selected images. Please try again.",
-          variant: "destructive",
-        });
-      } catch (toastError) {
-        console.error('Error showing toast:', toastError);
-      }
-    } finally {
-      // Safe file input reset
-      try {
-        if (event?.target) {
-          event.target.value = '';
-        }
-      } catch (resetError) {
-        console.error('Error resetting file input:', resetError);
-      }
     }
   };
 
