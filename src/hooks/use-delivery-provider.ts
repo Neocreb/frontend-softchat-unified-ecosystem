@@ -111,11 +111,24 @@ export function useDeliveryProvider(): DeliveryProviderStatus {
         }
       } catch (error) {
         console.error("Error checking delivery provider status:", error);
-        console.error("Error details:", {
-          message: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined,
-          name: error instanceof Error ? error.name : undefined,
-        });
+
+        // Handle specific error types
+        if (error instanceof Error) {
+          if (error.name === 'AbortError') {
+            console.warn("Delivery provider status check timed out");
+          } else if (error.message.includes('Failed to fetch')) {
+            console.warn("Network error when checking delivery provider status");
+          } else {
+            console.error("Error details:", {
+              message: error.message,
+              stack: error.stack,
+              name: error.name,
+            });
+          }
+        } else {
+          console.error("Unknown error type:", error);
+        }
+
         setProviderStatus({
           isProvider: false,
           status: "not_applied",
