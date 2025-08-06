@@ -78,6 +78,7 @@ import {
   Star,
   MapPin,
   ToggleLeft,
+  Truck,
 } from "lucide-react";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
