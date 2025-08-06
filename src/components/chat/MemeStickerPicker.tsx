@@ -714,6 +714,7 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('handleImageSelect called', event);
     try {
       // Defensive check for event and target
       if (!event || !event.target || !event.target.files) {
