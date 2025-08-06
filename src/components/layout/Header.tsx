@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
+import RoleSwitcher from "@/components/layout/RoleSwitcher";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
