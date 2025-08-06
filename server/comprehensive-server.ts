@@ -269,6 +269,9 @@ app.use("/api/analytics", analyticsApiRoutes);
 // Delivery API Routes
 app.use("/api/delivery", deliveryApiRoutes);
 
+// Sticker API Routes
+app.use("/api/stickers", stickerApiRoutes);
+
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);
 
