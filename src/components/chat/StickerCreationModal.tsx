@@ -762,6 +762,20 @@ export const StickerCreationModal: React.FC<StickerCreationModalProps> = ({
           "max-w-4xl max-h-[90vh] overflow-y-auto",
           isMobile && "w-full h-full max-w-none rounded-none"
         )}>
+          <ErrorBoundary
+            fallback={
+              <div className="p-6 text-center">
+                <XCircle className="w-12 h-12 mx-auto mb-4 text-destructive" />
+                <h3 className="text-lg font-semibold mb-2">Sticker Creator Error</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  There was an error with the sticker creation tool. Please close and try again.
+                </p>
+                <Button onClick={onClose} variant="outline">
+                  Close
+                </Button>
+              </div>
+            }
+          >
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Sparkles className="w-5 h-5" />
@@ -829,6 +843,7 @@ export const StickerCreationModal: React.FC<StickerCreationModalProps> = ({
               )}
             </div>
           </DialogFooter>
+          </ErrorBoundary>
         </DialogContent>
       </Dialog>
 
