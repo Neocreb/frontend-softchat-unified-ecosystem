@@ -148,6 +148,7 @@ import CookiesPolicy from "./pages/CookiesPolicy";
 import AdvertisingPolicy from "./pages/AdvertisingPolicy";
 import AdChoices from "./pages/AdChoices";
 import MonetizationPolicy from "./pages/MonetizationPolicy";
+import ThemeTestPage from "./components/debug/ThemeTestPage";
 import Premium from "./pages/Premium";
 import CampaignCenter from "./components/campaigns/CampaignCenter";
 
@@ -250,6 +251,7 @@ const AppRoutes = () => {
       {/* Root path shows original feature-rich landing page */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
+      <Route path="/theme-test" element={<ThemeTestPage />} />
       <Route path="/home" element={<Home />} />
 
       {/* Public Blog routes - accessible to everyone */}
