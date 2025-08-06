@@ -2311,4 +2311,19 @@ export type InsertSoftPointsLog = typeof softPointsLog.$inferInsert;
 export type InsertMonetizedContent = typeof monetizedContent.$inferInsert;
 export type InsertRevenueHistory = typeof revenueHistory.$inferInsert;
 export type InsertSubscription = typeof subscriptions.$inferInsert;
+
+// Delivery system types
+export type DeliveryProvider = typeof deliveryProviders.$inferSelect;
+export type DeliveryAssignment = typeof deliveryAssignments.$inferSelect;
+export type DeliveryTrackingEvent = typeof deliveryTrackingEvents.$inferSelect;
+export type DeliveryReview = typeof deliveryReviews.$inferSelect;
+export type DeliveryZone = typeof deliveryZones.$inferSelect;
+export type DeliveryDispute = typeof deliveryDisputes.$inferSelect;
+
+export type InsertDeliveryProvider = typeof deliveryProviders.$inferInsert;
+export type InsertDeliveryAssignment = typeof deliveryAssignments.$inferInsert;
+export type InsertDeliveryTrackingEvent = typeof deliveryTrackingEvents.$inferInsert;
+export type InsertDeliveryReview = typeof deliveryReviews.$inferInsert;
+export type InsertDeliveryZone = typeof deliveryZones.$inferInsert;
+export type InsertDeliveryDispute = typeof deliveryDisputes.$inferInsert;
 export type InsertCreatorPayout = typeof creatorPayouts.$inferInsert;
