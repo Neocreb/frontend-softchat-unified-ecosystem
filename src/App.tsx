@@ -70,6 +70,12 @@ import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
 import SellerDashboard from "./pages/marketplace/SellerDashboard";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
+
+// Delivery system imports
+import DeliveryProviderRegistration from "./components/delivery/DeliveryProviderRegistration";
+import DeliveryProviderDashboard from "./components/delivery/DeliveryProviderDashboard";
+import DeliveryTracking from "./components/delivery/DeliveryTracking";
+
 import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
 import NotFound from "./pages/NotFound";
