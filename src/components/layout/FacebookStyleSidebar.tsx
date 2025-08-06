@@ -148,6 +148,16 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       badge: "New",
     },
     {
+      icon: <Truck className="w-8 h-8 text-indigo-600" />,
+      label: "Delivery Hub",
+      href: "/app/delivery",
+    },
+    {
+      icon: <Package className="w-8 h-8 text-teal-600" />,
+      label: "Track Package",
+      href: "/app/delivery/track",
+    },
+    {
       icon: <Megaphone className="w-8 h-8 text-pink-600" />,
       label: "Campaigns",
       href: "/app/campaigns",
