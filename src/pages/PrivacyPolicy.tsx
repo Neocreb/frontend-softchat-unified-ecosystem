@@ -358,9 +358,12 @@ const PrivacyPolicy = () => {
 
         {/* Navigation */}
         <Card>
-          <CardContent className="flex gap-4 justify-center">
+          <CardContent className="flex gap-4 justify-center flex-wrap">
             <Button onClick={() => navigate("/terms")}>
               Terms of Service
+            </Button>
+            <Button variant="outline" onClick={() => navigate("/dispatch-partner-terms")}>
+              Dispatch Partner Terms
             </Button>
             <Button variant="outline" onClick={() => navigate("/app/cookies")}>
               Cookie Policy
