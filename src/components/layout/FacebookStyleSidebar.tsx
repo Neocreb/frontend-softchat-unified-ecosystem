@@ -92,6 +92,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
 }) => {
   const { user } = useAuth();
   const location = useLocation();
+  const providerStatus = useDeliveryProvider();
 
   const isActive = (path: string) => location.pathname === path;
 
