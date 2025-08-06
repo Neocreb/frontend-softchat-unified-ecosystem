@@ -73,6 +73,7 @@ const PrivacyPolicy = () => {
                 <li>Profile information including bio, interests, and preferences</li>
                 <li>Authentication credentials (securely hashed)</li>
                 <li>Payment and banking information for marketplace transactions</li>
+                <li>Delivery provider business information and service areas</li>
               </ul>
             </div>
 
