@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
-import { cn } from "@/utils/utils";
+import { cn, themeComponents, themeClasses } from "@/utils/themeUtils";
 
 export type Post = {
   id: string;
@@ -55,8 +54,8 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   return (
-    <Card className="overflow-hidden max-w-full">
-      <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
+    <Card className={cn(themeComponents.postCard(), "overflow-hidden max-w-full mb-4")}>
+      <CardHeader className={cn(themeComponents.postHeader(), "pb-3 pt-4 px-4 gap-3 items-start")}>
         <Avatar className="h-9 w-9 flex-shrink-0">
           <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
           <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
