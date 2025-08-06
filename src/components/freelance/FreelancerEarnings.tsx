@@ -507,6 +507,34 @@ export const FreelancerEarnings: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Payment Settings Modals */}
+      <Dialog open={activeModal === "withdrawal"} onOpenChange={() => setActiveModal(null)}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Withdrawal Methods</DialogTitle>
+          </DialogHeader>
+          <FreelanceWithdrawalMethods />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={activeModal === "tax"} onOpenChange={() => setActiveModal(null)}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Tax Documents</DialogTitle>
+          </DialogHeader>
+          <FreelanceTaxDocuments />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={activeModal === "invoicing"} onOpenChange={() => setActiveModal(null)}>
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Invoicing</DialogTitle>
+          </DialogHeader>
+          <FreelanceInvoicing />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
