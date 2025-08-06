@@ -102,9 +102,13 @@ export const FreelanceNavigationTabs: React.FC<FreelanceNavigationTabsProps> = (
         {/* Scrollable tabs container */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto scrollbar-hide scroll-smooth"
+          className="flex overflow-x-auto scroll-smooth"
           onScroll={checkScroll}
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          style={{
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitScrollbar: { display: 'none' }
+          }}
         >
           <div className="flex min-w-fit">
             {tabs.map((tab) => {
