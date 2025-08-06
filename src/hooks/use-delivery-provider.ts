@@ -79,6 +79,11 @@ export function useDeliveryProvider(): DeliveryProviderStatus {
         }
       } catch (error) {
         console.error("Error checking delivery provider status:", error);
+        console.error("Error details:", {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          name: error instanceof Error ? error.name : undefined,
+        });
         setProviderStatus({
           isProvider: false,
           status: "not_applied",
