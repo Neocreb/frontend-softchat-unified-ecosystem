@@ -1866,6 +1866,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Challenges API routes
   app.use("/api", challengesApi);
 
+  // Sticker API routes
+  app.use("/api/stickers", stickerApi);
+
   // Talent API endpoints
   app.get("/api/talents", async (req, res) => {
     try {
