@@ -24,9 +24,13 @@ export interface ChatMessage {
   attachments?: string[];
   timestamp: string;
   readBy: string[];
-  messageType?: "text" | "image" | "file" | "system" | "voice";
+  messageType?: "text" | "image" | "file" | "system" | "voice" | "sticker";
+  stickerId?: string; // Reference to sticker from database
   replyTo?: string; // ID of message being replied to
   reactions?: MessageReaction[];
+  isEdited?: boolean;
+  editedAt?: string;
+  deletedAt?: string;
   metadata?: {
     fileName?: string;
     fileSize?: number;
@@ -35,9 +39,16 @@ export interface ChatMessage {
     caption?: string;
     duration?: number;
     transcription?: string;
+    // Sticker-specific metadata
     stickerName?: string;
-    pack?: string;
-    animated?: boolean;
+    stickerPackId?: string;
+    stickerPackName?: string;
+    stickerUrl?: string;
+    stickerThumbnailUrl?: string;
+    isAnimated?: boolean;
+    stickerType?: "static" | "animated" | "gif";
+    stickerWidth?: number;
+    stickerHeight?: number;
     [key: string]: any;
   };
 }
