@@ -10,7 +10,7 @@ import {
 } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
-import { ExtendedUser, UserProfile } from "@/types/user";
+import { ExtendedUser, UserProfile, UserRole } from "@/types/user";
 
 // Define types for our context
 type AuthContextType = {
@@ -28,6 +28,9 @@ type AuthContextType = {
   ) => Promise<{ error?: Error }>;
   isAdmin: () => boolean;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
+  switchRole: (role: UserRole) => Promise<void>;
+  hasRole: (role: UserRole) => boolean;
+  activeRole: UserRole;
 };
 
 // Create the auth context with default values
@@ -42,6 +45,9 @@ const AuthContext = createContext<AuthContextType>({
   signup: async () => ({ error: undefined }),
   isAdmin: () => false,
   updateProfile: async () => {},
+  switchRole: async () => {},
+  hasRole: () => false,
+  activeRole: "user" as UserRole,
 });
 
 // Custom hook to use the auth context
@@ -75,6 +81,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
           points: rawUser.user_metadata?.points || 0,
           level: rawUser.user_metadata?.level || "bronze",
           role: rawUser.user_metadata?.role || "user",
+          roles: rawUser.user_metadata?.roles || [rawUser.user_metadata?.role || "user"],
+          active_role: rawUser.user_metadata?.active_role || rawUser.user_metadata?.role || "user",
           profile: {
             id: rawUser.id,
             username: rawUser.user_metadata?.username,
@@ -87,6 +95,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
             points: rawUser.user_metadata?.points || 0,
             level: rawUser.user_metadata?.level || "bronze",
             role: rawUser.user_metadata?.role || "user",
+            roles: rawUser.user_metadata?.roles || ["user"],
+            active_role: rawUser.user_metadata?.active_role || "user",
             is_verified: rawUser.user_metadata?.is_verified || false,
             bank_account_name: rawUser.user_metadata?.bank_account_name,
             bank_account_number: rawUser.user_metadata?.bank_account_number,
@@ -112,6 +122,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
             points: 0,
             level: "bronze",
             role: "user",
+            roles: ["user"],
+            active_role: "user",
             is_verified: false,
             bank_account_name: null,
             bank_account_number: null,
