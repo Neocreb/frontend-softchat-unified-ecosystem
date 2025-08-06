@@ -19,7 +19,7 @@ import {
   Bitcoin,
   Zap
 } from "lucide-react";
-import { useMarketplace } from "@/contexts/MarketplaceContext";
+import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import UniversalCryptoPaymentModal from "@/components/payments/UniversalCryptoPaymentModal";
