@@ -191,10 +191,15 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const renderStickerGrid = (stickers: StickerData[]) => {
     if (stickers.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
-          <Sparkles className="w-12 h-12 mb-4 opacity-50" />
-          <p className="text-lg font-medium">No stickers found</p>
-          <p className="text-sm">Try searching for something else</p>
+        <div className={cn(
+          "flex flex-col items-center justify-center text-muted-foreground text-center",
+          isMobile ? "h-32 px-4" : "h-48"
+        )}>
+          <Sparkles className={cn("mb-4 opacity-50", isMobile ? "w-8 h-8" : "w-12 h-12")} />
+          <p className={cn("font-medium", isMobile ? "text-sm" : "text-lg")}>No stickers found</p>
+          <p className={cn(isMobile ? "text-xs mt-1" : "text-sm")}>
+            {searchQuery ? "Try a different search" : "No stickers available"}
+          </p>
         </div>
       );
     }
