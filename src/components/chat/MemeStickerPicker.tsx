@@ -202,8 +202,8 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
     return (
       <div className={cn(
         "grid gap-2",
-        viewMode === "grid" 
-          ? (isMobile ? "grid-cols-4" : "grid-cols-6")
+        viewMode === "grid"
+          ? (isMobile ? "grid-cols-5 gap-3" : "grid-cols-6 gap-2")
           : "grid-cols-1"
       )}>
         {stickers.map((sticker) => (
