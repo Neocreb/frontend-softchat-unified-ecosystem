@@ -22,7 +22,7 @@ import {
   MoreVertical,
   CheckCircle,
   AlertCircle,
-  Bank,
+  Landmark,
   Smartphone,
   Wallet,
   Edit3,
