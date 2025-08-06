@@ -13,6 +13,7 @@ import {
   Settings,
   Receipt,
   TrendingUp,
+  ArrowUpDown,
 } from "lucide-react";
 
 // Import all the new components
