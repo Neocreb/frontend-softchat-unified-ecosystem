@@ -178,7 +178,7 @@ const MarketplaceCheckout = () => {
   };
   
   const subTotal = getCartTotal();
-  const shippingCost = subTotal > 0 ? 5.99 : 0;
+  const shippingCost = subTotal > 0 ? calculateDeliveryFee() : 0;
   const tax = subTotal * 0.08; // 8% tax
   const total = subTotal + shippingCost + tax;
   
