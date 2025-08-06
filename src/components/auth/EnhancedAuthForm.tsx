@@ -159,6 +159,17 @@ const EnhancedAuthForm = () => {
           <TabsTrigger value="register">Register</TabsTrigger>
         </TabsList>
         <CardContent className="pt-4">
+          {/* Demo Account Info */}
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <h4 className="text-sm font-medium text-blue-800 mb-1">Demo Account Available</h4>
+            <p className="text-xs text-blue-600">
+              Email: demo@softchat.com | Password: password123
+            </p>
+            <p className="text-xs text-blue-500 mt-1">
+              Click "Demo Login" for quick access, or create your own account.
+            </p>
+          </div>
+
           <TabsContent value="login">
             <LoginForm
               email={email}
