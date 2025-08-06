@@ -173,16 +173,22 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
               key={item.href}
               to={item.href}
               className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-muted/60",
+                "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-muted/60 relative",
                 item.active
                   ? "bg-primary/10 text-primary border border-primary/20"
                   : "text-muted-foreground hover:text-foreground",
+                (item as any).highlight && "bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border border-green-200 dark:border-green-700"
               )}
             >
               <item.icon
                 className={cn("h-4 w-4", item.active ? "text-primary" : "")}
               />
               <span className="hidden lg:block">{item.label}</span>
+              {(item as any).highlight && (
+                <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold animate-pulse">
+                  NEW
+                </span>
+              )}
             </Link>
           ))}
         </nav>
