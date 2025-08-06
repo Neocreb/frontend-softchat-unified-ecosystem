@@ -55,6 +55,11 @@ import ManageProjects from "./pages/freelance/ManageProjects";
 import FreelancerManageProjects from "./pages/freelance/FreelancerManageProjects";
 import ApproveWork from "./pages/freelance/ApproveWork";
 import JobDetailPage from "./pages/freelance/JobDetailPage";
+
+// Dispatch/Delivery Components
+import DispatchApplication from "./pages/dispatch/DispatchApplication";
+import DispatchDashboard from "./pages/dispatch/DispatchDashboard";
+import AdminDispatchPartners from "./pages/admin/AdminDispatchPartners";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
