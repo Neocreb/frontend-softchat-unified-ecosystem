@@ -41,12 +41,10 @@ interface KeyboardShortcut {
 
 interface KeyboardShortcutsProps {
   onNavigate: (tab: string) => void;
-  onToggleCustomization?: () => void;
 }
 
 export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
   onNavigate,
-  onToggleCustomization,
 }) => {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
@@ -112,13 +110,6 @@ export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
       action: () => setIsHelpOpen(true),
       category: "actions",
     },
-    {
-      id: "customize",
-      keys: ["cmd", "d"],
-      description: "Toggle Dashboard Customization",
-      action: () => onToggleCustomization?.(),
-      category: "actions",
-    },
 
     // Accessibility shortcuts
     {
@@ -168,7 +159,7 @@ export const KeyboardShortcuts: React.FC<KeyboardShortcutsProps> = ({
         singleKeyShortcut.action();
       }
     }
-  }, [pressedKeys, shortcuts, onNavigate, onToggleCustomization]);
+  }, [pressedKeys, shortcuts, onNavigate]);
 
   const handleKeyUp = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
