@@ -117,6 +117,7 @@ import { useToast } from "@/components/ui/use-toast";
 import KYCVerificationModal from "@/components/kyc/KYCVerificationModal";
 import BankAccountSettings from "@/components/wallet/BankAccountSettings";
 import DataManagement from "@/components/data/DataManagement";
+import CurrencyDemo from "@/components/currency/CurrencyDemo";
 import AIFeatures from "@/components/ai/AIFeatures";
 import MobileTabsFix from "@/components/layout/MobileTabsFix";
 
