@@ -253,6 +253,21 @@ class StickerService {
 
   async uploadStickerFile(file: File, requestId: string): Promise<string> {
     try {
+      // Validate file before upload
+      if (!file) {
+        throw new Error("No file provided for upload");
+      }
+
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        throw new Error(`File size ${(file.size / 1024 / 1024).toFixed(1)}MB exceeds maximum limit of 5MB`);
+      }
+
+      const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error(`File type ${file.type} is not supported. Please use PNG, JPEG, GIF, or WebP`);
+      }
+
       const formData = new FormData();
       formData.append("file", file);
       formData.append("requestId", requestId);
@@ -262,13 +277,48 @@ class StickerService {
         body: formData,
       });
 
-      if (!response.ok) throw new Error("Failed to upload sticker file");
-      
+      if (!response.ok) {
+        let errorMessage = "Failed to upload sticker file";
+
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If we can't parse the error response, use status-based messages
+          if (response.status === 413) {
+            errorMessage = "File too large - maximum size is 5MB";
+          } else if (response.status === 415) {
+            errorMessage = "Unsupported file format";
+          } else if (response.status >= 500) {
+            errorMessage = "Server error - please try again later";
+          } else if (response.status === 400) {
+            errorMessage = "Invalid file or request";
+          }
+        }
+
+        throw new Error(errorMessage);
+      }
+
       const data = await response.json();
+
+      if (!data.fileUrl) {
+        throw new Error("Server did not return a file URL");
+      }
+
       return data.fileUrl;
     } catch (error) {
       console.error("Error uploading sticker file:", error);
-      throw error;
+
+      // Enhance error messages for common issues
+      if (error instanceof TypeError && error.message.includes("fetch")) {
+        throw new Error("Network error - please check your internet connection");
+      }
+
+      if (error instanceof Error) {
+        throw error;
+      }
+
+      throw new Error("Unknown error occurred during file upload");
     }
   }
 
