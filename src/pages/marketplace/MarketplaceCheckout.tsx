@@ -41,6 +41,10 @@ const MarketplaceCheckout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
+  const [showDeliverySelection, setShowDeliverySelection] = useState(false);
+  const [selectedDeliveryProvider, setSelectedDeliveryProvider] = useState<any>(null);
+  const [deliveryServiceType, setDeliveryServiceType] = useState<string>("standard");
+  const [deliveryMethod, setDeliveryMethod] = useState("delivery"); // "pickup" or "delivery"
   const [shippingInfo, setShippingInfo] = useState({
     name: user?.user_metadata?.name || "",
     email: user?.email || "",
