@@ -689,8 +689,14 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    if (files.length > 0) {
+    try {
+      const files = Array.from(event.target.files || []);
+
+      if (files.length === 0) {
+        return;
+      }
+
+      // Validate file count
       if (selectedImages.length + files.length > 20) {
         toast({
           title: "Too many images",
@@ -699,7 +705,55 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
         });
         return;
       }
-      setSelectedImages(prev => [...prev, ...files]);
+
+      // Validate each file
+      const invalidFiles: string[] = [];
+      const validFiles = files.filter(file => {
+        // Check file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+          invalidFiles.push(`${file.name} (too large - max 5MB)`);
+          return false;
+        }
+
+        // Check file type
+        const validTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+          invalidFiles.push(`${file.name} (unsupported format)`);
+          return false;
+        }
+
+        return true;
+      });
+
+      // Show errors for invalid files
+      if (invalidFiles.length > 0) {
+        toast({
+          title: "Some files were skipped",
+          description: `Invalid files: ${invalidFiles.join(', ')}`,
+          variant: "destructive",
+        });
+      }
+
+      // Add valid files
+      if (validFiles.length > 0) {
+        setSelectedImages(prev => [...prev, ...validFiles]);
+        toast({
+          title: "Images added",
+          description: `${validFiles.length} image(s) added to your sticker pack`,
+        });
+      }
+    } catch (error) {
+      console.error('Error selecting images:', error);
+      toast({
+        title: "Error",
+        description: "Failed to process selected images. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      // Reset file input
+      if (event.target) {
+        event.target.value = '';
+      }
     }
   };
 
