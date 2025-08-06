@@ -157,6 +157,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
 import AdvertisingPolicy from "./pages/AdvertisingPolicy";
+import DispatchPartnerTerms from "./pages/DispatchPartnerTerms";
 import AdChoices from "./pages/AdChoices";
 import MonetizationPolicy from "./pages/MonetizationPolicy";
 import Premium from "./pages/Premium";
