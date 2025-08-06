@@ -62,7 +62,7 @@ const FooterNav = () => {
   return (
     <div className={cn(
       "fixed bottom-0 inset-x-0 backdrop-blur md:hidden z-[100] safe-area-pb",
-      themeComponents.themeNav()
+      themeClasses.surface, themeClasses.border, "border-t"
     )}>
       <div className="grid grid-cols-6 h-14 sm:h-16 px-1 w-full max-w-full">
         {navItems.map((item) => (
