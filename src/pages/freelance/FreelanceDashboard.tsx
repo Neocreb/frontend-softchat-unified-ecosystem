@@ -62,7 +62,7 @@ import RateCalculator from "@/components/freelance/RateCalculator";
 import ProjectPlanner from "@/components/freelance/ProjectPlanner";
 import FileUpload from "@/components/freelance/FileUpload";
 import { FreelanceNavigationTabs, TabItem } from "@/components/freelance/FreelanceNavigationTabs";
-import { RealTimeNotifications, ActivityIndicator, NotificationBadge } from "@/components/freelance/RealTimeNotifications";
+import { ActivityIndicator } from "@/components/freelance/RealTimeNotifications";
 import { CustomizableDashboard } from "@/components/freelance/DashboardWidgets";
 import { OnboardingTour, HelpCenter, ContextualHelp, EmptyStateGuidance } from "@/components/freelance/OnboardingTour";
 import { KeyboardShortcuts, AccessibilitySettings, SkipToContent } from "@/components/freelance/KeyboardShortcuts";
