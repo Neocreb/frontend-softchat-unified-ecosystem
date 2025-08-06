@@ -180,8 +180,10 @@ export default function EnhancedCheckoutFlow({
     cartItems,
     selectedShippingAddress,
     selectedShippingMethod,
+    selectedDeliveryProvider,
     appliedPromo,
     onCalculateShipping,
+    hasPhysicalItems,
   ]);
 
   const steps = [
