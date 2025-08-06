@@ -87,13 +87,27 @@ export function useDeliveryProvider(): DeliveryProviderStatus {
             status: "not_applied",
             loading: false,
           });
-        } else {
-          // Error occurred
+        } else if (response.status === 401) {
+          // Unauthorized - token might be invalid
+          console.warn("Unauthorized access to delivery provider profile");
+          localStorage.removeItem("token"); // Clear invalid token
           setProviderStatus({
             isProvider: false,
             status: "not_applied",
             loading: false,
           });
+        } else if (response.status === 500) {
+          // Server error
+          console.error("Server error when fetching delivery provider profile");
+          const errorData = await response.json().catch(() => ({}));
+          console.error("Server error details:", errorData);
+          throw new Error(`Server error: ${errorData.error || 'Unknown server error'}`);
+        } else {
+          // Other error status codes
+          console.error(`Unexpected response status: ${response.status}`);
+          const errorData = await response.json().catch(() => ({}));
+          console.error("Error response data:", errorData);
+          throw new Error(`HTTP ${response.status}: ${errorData.error || 'Unknown error'}`);
         }
       } catch (error) {
         console.error("Error checking delivery provider status:", error);
