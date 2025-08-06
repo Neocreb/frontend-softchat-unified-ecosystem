@@ -38,7 +38,9 @@ import {
   Gift,
   AlertCircle,
   Lock,
+  Users,
 } from "lucide-react";
+import DeliveryProviderSelection from "@/components/delivery/DeliveryProviderSelection";
 import { CartItem, Address, PaymentMethod, Order } from "@/types/marketplace";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
