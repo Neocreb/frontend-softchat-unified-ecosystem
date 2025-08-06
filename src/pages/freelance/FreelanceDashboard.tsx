@@ -68,6 +68,7 @@ import { FreelanceCollaborationTools } from "@/components/freelance/FreelanceCol
 import RateCalculator from "@/components/freelance/RateCalculator";
 import ProjectPlanner from "@/components/freelance/ProjectPlanner";
 import FileUpload from "@/components/freelance/FileUpload";
+import { FreelanceNavigationTabs, TabItem } from "@/components/freelance/FreelanceNavigationTabs";
 import { Project, FreelanceStats } from "@/types/freelance";
 import { useFreelance, useEscrow } from "@/hooks/use-freelance";
 import { useAuth } from "@/contexts/AuthContext";
