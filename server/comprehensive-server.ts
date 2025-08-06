@@ -265,6 +265,9 @@ app.use("/api/notifications", notificationsApiRoutes);
 // Analytics API Routes
 app.use("/api/analytics", analyticsApiRoutes);
 
+// Delivery API Routes
+app.use("/api/delivery", deliveryApiRoutes);
+
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);
 
