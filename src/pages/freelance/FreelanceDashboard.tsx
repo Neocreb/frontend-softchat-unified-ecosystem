@@ -79,8 +79,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { UnifiedCampaignManager } from "@/components/campaigns/UnifiedCampaignManager";
 import { cn } from "@/lib/utils";
 
-// Navigation items for the sidebar
-const navigationItems = [
+// Navigation items for the tabs
+const navigationItems: TabItem[] = [
   {
     id: "overview",
     label: "Overview",
