@@ -1298,6 +1298,22 @@ export default function EnhancedCheckoutFlow({
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Delivery Provider Selection */}
+        <DeliveryProviderSelection
+          open={showDeliverySelection}
+          onClose={() => setShowDeliverySelection(false)}
+          pickupAddress={{
+            address: "Store Location", // This would come from the seller's address
+          }}
+          deliveryAddress={addresses.find(addr => addr.id === selectedShippingAddress)}
+          packageDetails={{
+            weight: cartItems.reduce((total, item) => total + (item.product.weight || 1), 0),
+            value: orderSummary.subtotal,
+            items: cartItems.length,
+          }}
+          onProviderSelect={handleDeliveryProviderSelect}
+        />
       </DialogContent>
     </Dialog>
   );
