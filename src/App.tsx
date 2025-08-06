@@ -42,6 +42,8 @@ import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
 import FreelanceJobs from "./pages/freelance/FreelanceJobs";
 import RoleSwitcherDashboard from "./pages/freelance/RoleSwitcherDashboard";
+import UnifiedFreelanceDashboard from "./pages/freelance/UnifiedFreelanceDashboard";
+import { DashboardRouteGuard } from "./components/freelance/DashboardRouteGuard";
 import UpdateProfile from "./pages/freelance/UpdateProfile";
 import BrowseJobs from "./pages/freelance/BrowseJobs";
 import Earnings from "./pages/freelance/Earnings";
@@ -95,6 +97,7 @@ import EnhancedTikTokVideos from "./pages/EnhancedTikTokVideos";
 import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
+import FreelanceDashboardRouteTest from "./components/debug/FreelanceDashboardRouteTest";
 import CreatorStudio from "./pages/CreatorStudio";
 import UnifiedCreatorStudio from "./pages/UnifiedCreatorStudio";
 import Chat from "./pages/Chat";
@@ -289,7 +292,30 @@ const AppRoutes = () => {
           <Route path="feed" element={<EnhancedFeed />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
-          <Route path="freelance/dashboard" element={<RoleSwitcherDashboard />} />
+          <Route
+            path="freelance/dashboard"
+            element={
+              <DashboardRouteGuard>
+                <UnifiedFreelanceDashboard />
+              </DashboardRouteGuard>
+            }
+          />
+          <Route
+            path="freelance/dashboard/freelancer"
+            element={
+              <DashboardRouteGuard>
+                <UnifiedFreelanceDashboard />
+              </DashboardRouteGuard>
+            }
+          />
+          <Route
+            path="freelance/dashboard/client"
+            element={
+              <DashboardRouteGuard>
+                <UnifiedFreelanceDashboard />
+              </DashboardRouteGuard>
+            }
+          />
           <Route path="freelance/update-profile" element={<UpdateProfile />} />
           <Route path="freelance/browse-jobs" element={<BrowseJobs />} />
           <Route path="freelance/earnings" element={<Earnings />} />
@@ -400,6 +426,7 @@ const AppRoutes = () => {
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
+          <Route path="freelance-route-test" element={<FreelanceDashboardRouteTest />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
           <Route
             path="ai-assistant"
@@ -494,6 +521,8 @@ const AppRoutes = () => {
       <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
       <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
       <Route path="/events" element={<Navigate to="/app/events" replace />} />
+      <Route path="/freelance" element={<Navigate to="/app/freelance" replace />} />
+      <Route path="/freelance/dashboard" element={<Navigate to="/app/freelance/dashboard" replace />} />
       <Route
         path="/creator-studio"
         element={<Navigate to="/app/creator-studio" replace />}
