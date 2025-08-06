@@ -391,7 +391,7 @@ const AppRoutes = () => {
           />
 
           {/* Delivery routes */}
-          <Route path="delivery" element={<DeliveryHub />} />
+          <Route path="delivery" element={<DeliveryProviderStatus />} />
           <Route path="delivery/provider/register" element={<DeliveryProviderRegistration />} />
           <Route path="delivery/provider/dashboard" element={<DeliveryProviderDashboard />} />
           <Route path="delivery/track" element={<DeliveryTracking />} />
