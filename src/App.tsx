@@ -487,6 +487,7 @@ const AppRoutes = () => {
         <Route path="settings" element={<PlatformSettings />} />
         <Route path="moderation" element={<ContentModeration />} />
         <Route path="marketplace" element={<AdminMarketplace />} />
+        <Route path="delivery" element={<DeliveryProvidersAdmin />} />
         <Route path="crypto" element={<AdminCrypto />} />
         <Route path="freelance" element={<AdminFreelance />} />
         <Route path="analytics" element={<AdminAnalytics />} />
