@@ -84,7 +84,8 @@ const MarketplaceCheckout = () => {
     setIsProcessing(true);
     
     try {
-      await checkout();
+      const order = await checkout();
+      clearCart();
       navigate('/marketplace');
       toast({
         title: "Order Placed Successfully",
