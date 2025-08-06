@@ -92,6 +92,10 @@ export default function EnhancedCheckoutFlow({
     useState<string>("");
   const [selectedShippingMethod, setSelectedShippingMethod] =
     useState<string>("standard");
+  const [selectedDeliveryProvider, setSelectedDeliveryProvider] = useState<any>(null);
+  const [selectedServiceType, setSelectedServiceType] = useState<string>("standard");
+  const [showDeliverySelection, setShowDeliverySelection] = useState(false);
+  const [hasPhysicalItems, setHasPhysicalItems] = useState(true);
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<{
     discount: number;
