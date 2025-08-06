@@ -37,9 +37,16 @@ export function useDeliveryProvider(): DeliveryProviderStatus {
 
         if (response.ok) {
           const provider = await response.json();
+
+          // Validate the verification status
+          const validStatuses = ["pending", "verified", "rejected", "suspended"];
+          const status = validStatuses.includes(provider.verificationStatus)
+            ? provider.verificationStatus
+            : "pending";
+
           setProviderStatus({
             isProvider: true,
-            status: provider.verificationStatus || "pending",
+            status: status as "pending" | "verified" | "rejected" | "suspended",
             providerId: provider.id,
             loading: false,
           });
