@@ -92,6 +92,10 @@ const RegisterForm = ({
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? "Processing..." : "Create Account"}
       </Button>
+
+      <div className="mt-4 text-center text-xs text-muted-foreground">
+        <p>Already have an account? Switch to the Login tab.</p>
+      </div>
     </form>
   );
 };
