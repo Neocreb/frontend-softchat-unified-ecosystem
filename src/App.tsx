@@ -110,6 +110,7 @@ import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import FreelanceDashboardRouteTest from "./components/debug/FreelanceDashboardRouteTest";
+import StickerPackCreationTest from "./components/debug/StickerPackCreationTest";
 import CreatorStudio from "./pages/CreatorStudio";
 import EnhancedDashboardDemo from "./components/freelance/EnhancedDashboardDemo";
 import UnifiedCreatorStudio from "./pages/UnifiedCreatorStudio";
