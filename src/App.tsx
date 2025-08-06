@@ -588,30 +588,32 @@ const App = () => {
             }
           >
             <I18nProvider>
-              <AuthProvider>
-                <AdminProvider>
-                  <AccessibilityProvider>
-                    <TooltipProvider>
-                      <GlobalCallProvider>
-                        <AppRoutes />
+              <CurrencyProvider>
+                <AuthProvider>
+                  <AdminProvider>
+                    <AccessibilityProvider>
+                      <TooltipProvider>
+                        <GlobalCallProvider>
+                          <AppRoutes />
 
-                        {/* Global Components */}
-                        <OnboardingTour />
-                        <NotificationSystem />
-                        <AccessibilityControlPanel />
-                        <KeyboardNavigationHelper />
-                        <ReadingGuide />
-                        <ConnectionStatus />
-                        <PWAInstallPrompt />
+                          {/* Global Components */}
+                          <OnboardingTour />
+                          <NotificationSystem />
+                          <AccessibilityControlPanel />
+                          <KeyboardNavigationHelper />
+                          <ReadingGuide />
+                          <ConnectionStatus />
+                          <PWAInstallPrompt />
 
-                        {/* Toasters */}
-                        <Toaster />
-                        <Sonner />
-                      </GlobalCallProvider>
-                    </TooltipProvider>
-                  </AccessibilityProvider>
-                </AdminProvider>
-              </AuthProvider>
+                          {/* Toasters */}
+                          <Toaster />
+                          <Sonner />
+                        </GlobalCallProvider>
+                      </TooltipProvider>
+                    </AccessibilityProvider>
+                  </AdminProvider>
+                </AuthProvider>
+              </CurrencyProvider>
             </I18nProvider>
           </ErrorBoundary>
         </SafeThemeProvider>
