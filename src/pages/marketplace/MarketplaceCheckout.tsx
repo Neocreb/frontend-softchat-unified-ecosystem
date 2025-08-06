@@ -86,7 +86,7 @@ const MarketplaceCheckout = () => {
     try {
       const order = await checkout();
       clearCart();
-      navigate('/marketplace');
+      navigate('/app/marketplace');
       toast({
         title: "Order Placed Successfully",
         description: "Thank you for your purchase!",
