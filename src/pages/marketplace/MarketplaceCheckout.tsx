@@ -30,6 +30,7 @@ import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import UniversalCryptoPaymentModal from "@/components/payments/UniversalCryptoPaymentModal";
+import DeliveryProviderSelection from "@/components/delivery/DeliveryProviderSelection";
 import { type PaymentRequest } from "@/services/unifiedCryptoPaymentService";
 
 const MarketplaceCheckout = () => {
