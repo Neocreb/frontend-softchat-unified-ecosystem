@@ -614,46 +614,57 @@ const StickerCreationPanel: React.FC<StickerCreationPanelProps> = ({
   onCreatePack,
 }) => {
   return (
-    <div className="space-y-4">
+    <div className={cn("space-y-4", isMobile && "px-2")}>
       <div className="text-center">
-        <Palette className="w-12 h-12 mx-auto mb-4 text-primary" />
-        <h3 className="text-lg font-semibold mb-2">Create Your Own Stickers</h3>
-        <p className="text-sm text-muted-foreground mb-6">
+        <Palette className={cn("mx-auto mb-4 text-primary", isMobile ? "w-8 h-8" : "w-12 h-12")} />
+        <h3 className={cn("font-semibold mb-2", isMobile ? "text-base" : "text-lg")}>
+          Create Your Own Stickers
+        </h3>
+        <p className={cn("text-muted-foreground mb-6", isMobile ? "text-xs" : "text-sm")}>
           Turn your images into stickers and share them with the world
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 gap-3">
-        <Button onClick={onCreatePack} className="justify-start h-auto p-4">
+        <Button
+          onClick={onCreatePack}
+          className={cn("justify-start h-auto", isMobile ? "p-3" : "p-4")}
+        >
           <div className="flex items-center gap-3">
-            <Upload className="w-5 h-5" />
+            <Upload className={cn(isMobile ? "w-4 h-4" : "w-5 h-5")} />
             <div className="text-left">
-              <p className="font-medium">Upload Images</p>
-              <p className="text-xs text-muted-foreground">
+              <p className={cn("font-medium", isMobile ? "text-sm" : "")}>Upload Images</p>
+              <p className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-xs")}>
                 Create a pack from your photos
               </p>
             </div>
           </div>
         </Button>
-        
-        <Button variant="outline" className="justify-start h-auto p-4">
+
+        <Button
+          variant="outline"
+          className={cn("justify-start h-auto", isMobile ? "p-3" : "p-4")}
+        >
           <div className="flex items-center gap-3">
-            <Camera className="w-5 h-5" />
+            <Camera className={cn(isMobile ? "w-4 h-4" : "w-5 h-5")} />
             <div className="text-left">
-              <p className="font-medium">Take Photos</p>
-              <p className="text-xs text-muted-foreground">
+              <p className={cn("font-medium", isMobile ? "text-sm" : "")}>Take Photos</p>
+              <p className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-xs")}>
                 Use camera to create stickers
               </p>
             </div>
           </div>
         </Button>
-        
-        <Button variant="outline" className="justify-start h-auto p-4">
+
+        <Button
+          variant="outline"
+          className={cn("justify-start h-auto", isMobile ? "p-3" : "p-4")}
+        >
           <div className="flex items-center gap-3">
-            <ImageIcon className="w-5 h-5" />
+            <ImageIcon className={cn(isMobile ? "w-4 h-4" : "w-5 h-5")} />
             <div className="text-left">
-              <p className="font-medium">AI Generator</p>
-              <p className="text-xs text-muted-foreground">
+              <p className={cn("font-medium", isMobile ? "text-sm" : "")}>AI Generator</p>
+              <p className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-xs")}>
                 Generate with AI (Coming Soon)
               </p>
             </div>
