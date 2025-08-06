@@ -78,6 +78,7 @@ import {
   Star,
   MapPin,
   ToggleLeft,
+  Truck,
 } from "lucide-react";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
 import NotificationsDropdown from "./NotificationsDropdown";
@@ -272,6 +273,12 @@ const UnifiedHeader = ({
       label: "Events",
       href: "/app/events",
       active: location.pathname === "/app/events",
+    },
+    {
+      icon: Truck,
+      label: "Delivery",
+      href: "/app/delivery",
+      active: location.pathname.startsWith("/app/delivery"),
     },
   ];
 

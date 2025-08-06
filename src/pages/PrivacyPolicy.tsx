@@ -49,9 +49,10 @@ const PrivacyPolicy = () => {
               and marketplace platform.
             </p>
             <p>
-              SoftChat is a comprehensive platform that includes social networking features, 
-              marketplace functionality, freelancing services, cryptocurrency trading, and 
-              AI-powered content recommendations. Your privacy is fundamental to our operations.
+              SoftChat is a comprehensive platform that includes social networking features,
+              marketplace functionality, freelancing services, cryptocurrency trading,
+              delivery services, and AI-powered content recommendations. Your privacy is
+              fundamental to our operations.
             </p>
           </CardContent>
         </Card>
@@ -72,22 +73,27 @@ const PrivacyPolicy = () => {
                 <li>Profile information including bio, interests, and preferences</li>
                 <li>Authentication credentials (securely hashed)</li>
                 <li>Payment and banking information for marketplace transactions</li>
+                <li>Delivery provider business information and service areas</li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-2">KYC Verification Data (Premium Users)</h4>
+              <h4 className="font-semibold mb-2">KYC Verification Data (Premium Users & Delivery Providers)</h4>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Government-issued photo identification documents (front and back)</li>
                 <li>Real-time selfie images with liveness detection data</li>
                 <li>Phone number and email verification records</li>
                 <li>Identity verification status and compliance records</li>
                 <li>Biometric data derived from selfie verification (securely processed and stored)</li>
+                <li>Driver's license and vehicle registration documents (delivery providers)</li>
+                <li>Vehicle insurance certificates and business licenses (delivery providers)</li>
+                <li>Background check results and driving record verification (delivery providers)</li>
               </ul>
               <p className="text-sm mt-2 text-gray-600">
                 KYC data is encrypted, stored separately from general user data, and only used for
-                identity verification and compliance purposes. This data is retained as required by
-                applicable laws and regulations.
+                identity verification and compliance purposes. Delivery provider verification data
+                is additionally used for safety and security screening. This data is retained as
+                required by applicable laws and regulations.
               </p>
             </div>
 
@@ -109,6 +115,8 @@ const PrivacyPolicy = () => {
                 <li>Marketplace listings, purchases, and transaction history</li>
                 <li>Freelance job postings, applications, and project communications</li>
                 <li>Cryptocurrency trading activities and wallet interactions</li>
+                <li>Delivery service requests, tracking information, and provider ratings</li>
+                <li>Delivery provider applications, service areas, and performance metrics</li>
                 <li>AI assistant interactions and content preferences</li>
               </ul>
             </div>
@@ -141,6 +149,8 @@ const PrivacyPolicy = () => {
                 <li>Process marketplace transactions and payments</li>
                 <li>Facilitate freelance job matching and project management</li>
                 <li>Enable cryptocurrency trading and wallet services</li>
+                <li>Connect customers with delivery providers and track deliveries</li>
+                <li>Verify delivery provider credentials and maintain service quality</li>
                 <li>Deliver personalized AI-powered recommendations</li>
               </ul>
             </div>
@@ -349,14 +359,14 @@ const PrivacyPolicy = () => {
         {/* Navigation */}
         <Card>
           <CardContent className="flex gap-4 justify-center">
-            <Button onClick={() => navigate("/app/terms")}>
+            <Button onClick={() => navigate("/terms")}>
               Terms of Service
             </Button>
             <Button variant="outline" onClick={() => navigate("/app/cookies")}>
               Cookie Policy
             </Button>
-            <Button variant="outline" onClick={() => navigate("/app/feed")}>
-              Back to Feed
+            <Button variant="outline" onClick={() => navigate("/")}>
+              Back to Home
             </Button>
           </CardContent>
         </Card>

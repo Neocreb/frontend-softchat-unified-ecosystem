@@ -47,6 +47,34 @@ const HeroSection = () => {
             </a>
           </div>
 
+          {/* Delivery Quick Access Section */}
+          <div className="mt-8 pt-8 border-t border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-700 mb-4">Delivery Network</h3>
+            <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-lg mx-auto">
+              <Link to="/delivery/track" className="flex-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full border-blue-200 hover:bg-blue-50 text-blue-700 text-sm px-4 py-3"
+                >
+                  📦 Track Package
+                </Button>
+              </Link>
+              <Link to="/delivery/apply" className="flex-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full border-green-200 hover:bg-green-50 text-green-700 text-sm px-4 py-3"
+                >
+                  🚛 Become Driver
+                </Button>
+              </Link>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Track deliveries or apply to join our delivery network
+            </p>
+          </div>
+
           <div className="mt-16 relative">
             <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-softchat-500 to-teal-400 opacity-70 blur-sm"></div>
             <div className="relative rounded-xl bg-white shadow-xl overflow-hidden border border-gray-100">

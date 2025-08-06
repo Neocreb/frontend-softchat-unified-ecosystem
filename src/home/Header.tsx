@@ -87,9 +87,10 @@ const Header = () => {
 // NavLinks component for reusability between desktop and mobile
 const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
   const links = [
-    { text: "Home", href: "/ " },
+    { text: "Home", href: "/" },
     { text: "Features", href: "#features" },
-    { text: "Why Softchat", href: "#why-softchat" },
+    { text: "Track Package", href: "/delivery/track" },
+    { text: "Become Driver", href: "/delivery/apply" },
     { text: "Blog", href: "/blog" },
     { text: "Newsletter", href: "#contact" },
   ];

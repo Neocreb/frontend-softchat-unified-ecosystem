@@ -20,6 +20,7 @@ import {
   Crown,
   FileText,
   ShoppingCart,
+  Truck,
   Bitcoin,
   Briefcase,
   MessageSquare,
@@ -111,6 +112,13 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = "" }) => {
       icon: <ShoppingCart className="w-5 h-5" />,
       requiredPermission: "marketplace.view",
       description: "Manage marketplace",
+    },
+    {
+      path: "/admin/delivery",
+      label: "Delivery Providers",
+      icon: <Truck className="w-5 h-5" />,
+      requiredPermission: "marketplace.view",
+      description: "Manage delivery providers",
     },
     {
       path: "/admin/crypto",

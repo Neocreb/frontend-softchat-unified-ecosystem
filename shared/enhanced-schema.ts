@@ -1956,6 +1956,319 @@ export const insertAdminUserSchema = createInsertSchema(adminUsers).omit({
 });
 
 // =============================================================================
+// DELIVERY SYSTEM TABLES
+// =============================================================================
+
+// Delivery service providers table
+export const deliveryProviders = pgTable("delivery_providers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  // Provider information
+  providerId: uuid("provider_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  businessName: text("business_name").notNull(),
+  businessRegistrationNumber: text("business_registration_number"),
+
+  // Contact details
+  contactName: text("contact_name").notNull(),
+  contactEmail: text("contact_email").notNull(),
+  contactPhone: text("contact_phone").notNull(),
+  alternatePhone: text("alternate_phone"),
+
+  // Service area
+  serviceAreas: jsonb("service_areas").notNull(), // Array of {city, state, country, radius, postcodes}
+  coverageRadius: integer("coverage_radius").default(10), // km
+
+  // Vehicle and capacity information
+  vehicleTypes: text("vehicle_types").array().notNull(), // 'bike', 'car', 'van', 'truck'
+  maxWeight: decimal("max_weight", { precision: 8, scale: 2 }), // kg
+  maxDimensions: jsonb("max_dimensions"), // {length, width, height} in cm
+
+  // Service options
+  servicesOffered: text("services_offered").array().notNull(), // 'same_day', 'next_day', 'express', 'standard', 'scheduled'
+  specialServices: text("special_services").array(), // 'fragile', 'cold_chain', 'documents', 'heavy_items'
+
+  // Pricing structure
+  baseRate: decimal("base_rate", { precision: 10, scale: 2 }).notNull(),
+  ratePerKm: decimal("rate_per_km", { precision: 10, scale: 2 }).notNull(),
+  ratePerKg: decimal("rate_per_kg", { precision: 10, scale: 2 }).default("0"),
+  expressMultiplier: decimal("express_multiplier", { precision: 3, scale: 2 }).default("1.5"),
+  fuelSurcharge: decimal("fuel_surcharge", { precision: 5, scale: 2 }).default("0"),
+
+  // Operating hours
+  operatingHours: jsonb("operating_hours").notNull(), // {monday: {start, end, isOpen}, ...}
+  timeZone: text("time_zone").notNull(),
+
+  // Verification and documents
+  verificationStatus: text("verification_status").default("pending"), // 'pending', 'verified', 'rejected', 'suspended'
+  documents: jsonb("documents"), // {license, insurance, registration, etc.}
+  verifiedBy: uuid("verified_by").references(() => adminUsers.id),
+  verifiedAt: timestamp("verified_at"),
+  rejectionReason: text("rejection_reason"),
+
+  // Performance metrics
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("5.0"),
+  reviewCount: integer("review_count").default(0),
+  completedDeliveries: integer("completed_deliveries").default(0),
+  onTimeRate: decimal("on_time_rate", { precision: 5, scale: 2 }).default("100"),
+  cancellationRate: decimal("cancellation_rate", { precision: 5, scale: 2 }).default("0"),
+
+  // Availability
+  isActive: boolean("is_active").default(true),
+  isAvailable: boolean("is_available").default(true),
+  lastActiveAt: timestamp("last_active_at").defaultNow(),
+
+  // Financial information
+  bankAccountName: text("bank_account_name"),
+  bankAccountNumber: text("bank_account_number"),
+  bankName: text("bank_name"),
+  taxId: text("tax_id"),
+
+  // Terms and commission
+  platformCommission: decimal("platform_commission", { precision: 5, scale: 2 }).default("10.0"),
+  paymentTerms: text("payment_terms").default("weekly"), // 'daily', 'weekly', 'monthly'
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Delivery assignments table
+export const deliveryAssignments = pgTable("delivery_assignments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  // Order and provider references
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => marketplaceOrders.id, { onDelete: "cascade" }),
+  providerId: uuid("provider_id")
+    .notNull()
+    .references(() => deliveryProviders.id, { onDelete: "cascade" }),
+  driverId: uuid("driver_id").references(() => users.id), // If different from provider
+
+  // Pickup and delivery information
+  pickupAddress: jsonb("pickup_address").notNull(),
+  deliveryAddress: jsonb("delivery_address").notNull(),
+  distance: decimal("distance", { precision: 8, scale: 2 }), // km
+
+  // Scheduling
+  requestedPickupTime: timestamp("requested_pickup_time"),
+  scheduledPickupTime: timestamp("scheduled_pickup_time"),
+  actualPickupTime: timestamp("actual_pickup_time"),
+  estimatedDeliveryTime: timestamp("estimated_delivery_time"),
+  actualDeliveryTime: timestamp("actual_delivery_time"),
+
+  // Package details
+  packageDetails: jsonb("package_details"), // {weight, dimensions, value, description, fragile}
+  specialInstructions: text("special_instructions"),
+
+  // Pricing
+  deliveryFee: decimal("delivery_fee", { precision: 10, scale: 2 }).notNull(),
+  platformCommission: decimal("platform_commission", { precision: 10, scale: 2 }),
+  driverEarnings: decimal("driver_earnings", { precision: 10, scale: 2 }),
+
+  // Status tracking
+  status: text("status").default("pending"), // 'pending', 'accepted', 'picked_up', 'in_transit', 'delivered', 'failed', 'cancelled'
+  trackingNumber: text("tracking_number").unique(),
+
+  // Communication
+  chatThreadId: uuid("chat_thread_id").references(() => chatThreads.id),
+
+  // Photos and proof
+  pickupPhotos: text("pickup_photos").array(),
+  deliveryPhotos: text("delivery_photos").array(),
+  signatureUrl: text("signature_url"),
+  recipientName: text("recipient_name"),
+
+  // Notes
+  driverNotes: text("driver_notes"),
+  customerNotes: text("customer_notes"),
+  adminNotes: text("admin_notes"),
+
+  // Cancellation/failure
+  cancelledBy: uuid("cancelled_by").references(() => users.id),
+  cancellationReason: text("cancellation_reason"),
+  failureReason: text("failure_reason"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Delivery tracking events table
+export const deliveryTrackingEvents = pgTable("delivery_tracking_events", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  assignmentId: uuid("assignment_id")
+    .notNull()
+    .references(() => deliveryAssignments.id, { onDelete: "cascade" }),
+
+  eventType: text("event_type").notNull(), // 'created', 'accepted', 'picked_up', 'in_transit', 'delivered', 'failed', 'cancelled'
+  description: text("description").notNull(),
+  location: jsonb("location"), // {latitude, longitude, address}
+  timestamp: timestamp("timestamp").defaultNow(),
+
+  // Additional data
+  metadata: jsonb("metadata"), // Additional event-specific data
+  photos: text("photos").array(),
+
+  createdBy: uuid("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Delivery reviews table
+export const deliveryReviews = pgTable("delivery_reviews", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  assignmentId: uuid("assignment_id")
+    .notNull()
+    .references(() => deliveryAssignments.id, { onDelete: "cascade" }),
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => marketplaceOrders.id, { onDelete: "cascade" }),
+
+  reviewerId: uuid("reviewer_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  providerId: uuid("provider_id")
+    .notNull()
+    .references(() => deliveryProviders.id, { onDelete: "cascade" }),
+
+  // Ratings (1-5 scale)
+  overallRating: integer("overall_rating").notNull(),
+  speedRating: integer("speed_rating").notNull(),
+  careRating: integer("care_rating").notNull(),
+  communicationRating: integer("communication_rating").notNull(),
+
+  // Review content
+  comment: text("comment"),
+  wouldRecommend: boolean("would_recommend").default(true),
+
+  // Response
+  providerResponse: text("provider_response"),
+  respondedAt: timestamp("responded_at"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Delivery zones and pricing table
+export const deliveryZones = pgTable("delivery_zones", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  providerId: uuid("provider_id")
+    .notNull()
+    .references(() => deliveryProviders.id, { onDelete: "cascade" }),
+
+  zoneName: text("zone_name").notNull(),
+  description: text("description"),
+
+  // Geographic boundaries
+  boundaries: jsonb("boundaries").notNull(), // GeoJSON polygon or array of coordinates
+  postalCodes: text("postal_codes").array(),
+  cities: text("cities").array(),
+
+  // Pricing for this zone
+  baseRate: decimal("base_rate", { precision: 10, scale: 2 }).notNull(),
+  ratePerKm: decimal("rate_per_km", { precision: 10, scale: 2 }).notNull(),
+  minimumFee: decimal("minimum_fee", { precision: 10, scale: 2 }),
+
+  // Service options
+  standardDeliveryTime: integer("standard_delivery_time").default(24), // hours
+  expressDeliveryTime: integer("express_delivery_time").default(4), // hours
+  isExpressAvailable: boolean("is_express_available").default(true),
+
+  isActive: boolean("is_active").default(true),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Delivery disputes table
+export const deliveryDisputes = pgTable("delivery_disputes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  assignmentId: uuid("assignment_id")
+    .notNull()
+    .references(() => deliveryAssignments.id, { onDelete: "cascade" }),
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => marketplaceOrders.id, { onDelete: "cascade" }),
+
+  raisedBy: uuid("raised_by")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  againstProviderId: uuid("against_provider_id")
+    .notNull()
+    .references(() => deliveryProviders.id, { onDelete: "cascade" }),
+
+  disputeType: text("dispute_type").notNull(), // 'damage', 'late_delivery', 'not_delivered', 'wrong_address', 'poor_service'
+  description: text("description").notNull(),
+  evidence: text("evidence").array(), // Photo URLs, documents
+
+  status: text("status").default("open"), // 'open', 'investigating', 'resolved', 'closed'
+  priority: text("priority").default("medium"), // 'low', 'medium', 'high', 'urgent'
+
+  // Resolution
+  assignedTo: uuid("assigned_to").references(() => adminUsers.id),
+  resolution: text("resolution"),
+  compensationAmount: decimal("compensation_amount", { precision: 10, scale: 2 }),
+  resolvedBy: uuid("resolved_by").references(() => adminUsers.id),
+  resolvedAt: timestamp("resolved_at"),
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Insert schemas for delivery system
+export const insertDeliveryProviderSchema = createInsertSchema(deliveryProviders).omit({
+  id: true,
+  rating: true,
+  reviewCount: true,
+  completedDeliveries: true,
+  onTimeRate: true,
+  cancellationRate: true,
+  verifiedAt: true,
+  lastActiveAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryAssignmentSchema = createInsertSchema(deliveryAssignments).omit({
+  id: true,
+  trackingNumber: true,
+  actualPickupTime: true,
+  actualDeliveryTime: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryTrackingEventSchema = createInsertSchema(deliveryTrackingEvents).omit({
+  id: true,
+  timestamp: true,
+  createdAt: true,
+});
+
+export const insertDeliveryReviewSchema = createInsertSchema(deliveryReviews).omit({
+  id: true,
+  respondedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryZoneSchema = createInsertSchema(deliveryZones).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDeliveryDisputeSchema = createInsertSchema(deliveryDisputes).omit({
+  id: true,
+  resolvedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// =============================================================================
 // TYPE EXPORTS
 // =============================================================================
 
@@ -1998,4 +2311,19 @@ export type InsertSoftPointsLog = typeof softPointsLog.$inferInsert;
 export type InsertMonetizedContent = typeof monetizedContent.$inferInsert;
 export type InsertRevenueHistory = typeof revenueHistory.$inferInsert;
 export type InsertSubscription = typeof subscriptions.$inferInsert;
+
+// Delivery system types
+export type DeliveryProvider = typeof deliveryProviders.$inferSelect;
+export type DeliveryAssignment = typeof deliveryAssignments.$inferSelect;
+export type DeliveryTrackingEvent = typeof deliveryTrackingEvents.$inferSelect;
+export type DeliveryReview = typeof deliveryReviews.$inferSelect;
+export type DeliveryZone = typeof deliveryZones.$inferSelect;
+export type DeliveryDispute = typeof deliveryDisputes.$inferSelect;
+
+export type InsertDeliveryProvider = typeof deliveryProviders.$inferInsert;
+export type InsertDeliveryAssignment = typeof deliveryAssignments.$inferInsert;
+export type InsertDeliveryTrackingEvent = typeof deliveryTrackingEvents.$inferInsert;
+export type InsertDeliveryReview = typeof deliveryReviews.$inferInsert;
+export type InsertDeliveryZone = typeof deliveryZones.$inferInsert;
+export type InsertDeliveryDispute = typeof deliveryDisputes.$inferInsert;
 export type InsertCreatorPayout = typeof creatorPayouts.$inferInsert;

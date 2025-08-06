@@ -38,7 +38,9 @@ import {
   Gift,
   AlertCircle,
   Lock,
+  Users,
 } from "lucide-react";
+import DeliveryProviderSelection from "@/components/delivery/DeliveryProviderSelection";
 import { CartItem, Address, PaymentMethod, Order } from "@/types/marketplace";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
@@ -90,6 +92,10 @@ export default function EnhancedCheckoutFlow({
     useState<string>("");
   const [selectedShippingMethod, setSelectedShippingMethod] =
     useState<string>("standard");
+  const [selectedDeliveryProvider, setSelectedDeliveryProvider] = useState<any>(null);
+  const [selectedServiceType, setSelectedServiceType] = useState<string>("standard");
+  const [showDeliverySelection, setShowDeliverySelection] = useState(false);
+  const [hasPhysicalItems, setHasPhysicalItems] = useState(true);
   const [promoCode, setPromoCode] = useState("");
   const [appliedPromo, setAppliedPromo] = useState<{
     discount: number;
@@ -127,7 +133,13 @@ export default function EnhancedCheckoutFlow({
     if (defaultShipping) setSelectedShippingAddress(defaultShipping.id!);
     if (defaultBilling) setSelectedBillingAddress(defaultBilling.id!);
     if (defaultPayment) setSelectedPaymentMethod(defaultPayment.id);
-  }, [addresses, paymentMethods]);
+
+    // Check if cart contains physical items
+    const physicalItems = cartItems.some(item =>
+      item.product.type === "physical" || !item.product.type
+    );
+    setHasPhysicalItems(physicalItems);
+  }, [addresses, paymentMethods, cartItems]);
 
   // Calculate order summary
   useEffect(() => {
@@ -140,11 +152,17 @@ export default function EnhancedCheckoutFlow({
       );
 
       let shipping = 0;
-      if (selectedShippingAddress) {
+      if (selectedShippingAddress && hasPhysicalItems) {
         try {
-          shipping = await onCalculateShipping(selectedShippingAddress);
-          if (selectedShippingMethod === "express") shipping += 10;
-          if (selectedShippingMethod === "overnight") shipping += 25;
+          if (selectedDeliveryProvider) {
+            // Use delivery provider pricing
+            shipping = selectedDeliveryProvider.estimatedFee || 0;
+          } else {
+            // Use traditional shipping calculation
+            shipping = await onCalculateShipping(selectedShippingAddress);
+            if (selectedShippingMethod === "express") shipping += 10;
+            if (selectedShippingMethod === "overnight") shipping += 25;
+          }
         } catch (error) {
           console.error("Failed to calculate shipping:", error);
         }
@@ -162,14 +180,20 @@ export default function EnhancedCheckoutFlow({
     cartItems,
     selectedShippingAddress,
     selectedShippingMethod,
+    selectedDeliveryProvider,
     appliedPromo,
     onCalculateShipping,
+    hasPhysicalItems,
   ]);
 
-  const steps = [
+  const steps = hasPhysicalItems ? [
     { id: 1, title: "Shipping", icon: Truck },
-    { id: 2, title: "Payment", icon: CreditCard },
-    { id: 3, title: "Review", icon: Check },
+    { id: 2, title: "Delivery", icon: Users },
+    { id: 3, title: "Payment", icon: CreditCard },
+    { id: 4, title: "Review", icon: Check },
+  ] : [
+    { id: 1, title: "Payment", icon: CreditCard },
+    { id: 2, title: "Review", icon: Check },
   ];
 
   const shippingMethods = [
@@ -277,11 +301,28 @@ export default function EnhancedCheckoutFlow({
     }
   };
 
+  const handleDeliveryProviderSelect = (provider: any, serviceType: string) => {
+    setSelectedDeliveryProvider(provider);
+    setSelectedServiceType(serviceType);
+    setShowDeliverySelection(false);
+
+    toast({
+      title: "Delivery Provider Selected",
+      description: `${provider.businessName} will handle your delivery with ${serviceType.replace('_', ' ')} service.`,
+    });
+  };
+
   const handlePlaceOrder = async () => {
-    if (!selectedShippingAddress || !selectedPaymentMethod) {
+    const requiredChecks = hasPhysicalItems
+      ? (!selectedShippingAddress || !selectedPaymentMethod)
+      : (!selectedPaymentMethod);
+
+    if (requiredChecks) {
       toast({
         title: "Missing information",
-        description: "Please select shipping address and payment method.",
+        description: hasPhysicalItems
+          ? "Please select shipping address and payment method."
+          : "Please select payment method.",
         variant: "destructive",
       });
       return;
@@ -405,7 +446,7 @@ export default function EnhancedCheckoutFlow({
             </div>
 
             {/* Step Content */}
-            {currentStep === 1 && (
+            {currentStep === 1 && hasPhysicalItems && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -615,7 +656,71 @@ export default function EnhancedCheckoutFlow({
               </Card>
             )}
 
-            {currentStep === 2 && (
+            {currentStep === 2 && hasPhysicalItems && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Delivery Service
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="text-sm text-gray-600 mb-4">
+                    Choose a delivery provider for your physical items. Our verified delivery partners will ensure safe and timely delivery.
+                  </div>
+
+                  {selectedDeliveryProvider ? (
+                    <div className="p-4 border-2 border-primary rounded-lg bg-primary/5">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h4 className="font-medium">{selectedDeliveryProvider.businessName}</h4>
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <div className="flex items-center gap-1">
+                              <Shield className="h-3 w-3 text-green-500" />
+                              <span>Verified Provider</span>
+                            </div>
+                            <span>•</span>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>~{selectedDeliveryProvider.estimatedDeliveryTime}h delivery</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">
+                            {formatPrice(selectedDeliveryProvider.estimatedFee)}
+                          </p>
+                          <p className="text-xs text-gray-500 capitalize">
+                            {selectedServiceType.replace('_', ' ')}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowDeliverySelection(true)}
+                      >
+                        Change Provider
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                      <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <h4 className="font-medium text-gray-900 mb-2">Select Delivery Provider</h4>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Choose from our verified delivery partners for safe and reliable delivery
+                      </p>
+                      <Button onClick={() => setShowDeliverySelection(true)}>
+                        <Truck className="h-4 w-4 mr-2" />
+                        Find Delivery Providers
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {currentStep === (hasPhysicalItems ? 3 : 1) && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -714,7 +819,7 @@ export default function EnhancedCheckoutFlow({
               </Card>
             )}
 
-            {currentStep === 3 && (
+            {currentStep === (hasPhysicalItems ? 4 : 2) && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -812,12 +917,13 @@ export default function EnhancedCheckoutFlow({
                 Previous
               </Button>
               <div className="flex gap-2">
-                {currentStep < 3 ? (
+                {currentStep < (hasPhysicalItems ? 4 : 2) ? (
                   <Button
-                    onClick={() => setCurrentStep(Math.min(3, currentStep + 1))}
+                    onClick={() => setCurrentStep(Math.min(hasPhysicalItems ? 4 : 2, currentStep + 1))}
                     disabled={
-                      (currentStep === 1 && !selectedShippingAddress) ||
-                      (currentStep === 2 && !selectedPaymentMethod)
+                      (hasPhysicalItems && currentStep === 1 && !selectedShippingAddress) ||
+                      (hasPhysicalItems && currentStep === 2 && !selectedDeliveryProvider) ||
+                      ((hasPhysicalItems ? currentStep === 3 : currentStep === 1) && !selectedPaymentMethod)
                     }
                   >
                     Next
@@ -827,7 +933,7 @@ export default function EnhancedCheckoutFlow({
                     onClick={handlePlaceOrder}
                     disabled={
                       isProcessing ||
-                      !selectedShippingAddress ||
+                      (hasPhysicalItems && !selectedShippingAddress) ||
                       !selectedPaymentMethod
                     }
                     className="bg-green-600 hover:bg-green-700"
@@ -1192,6 +1298,22 @@ export default function EnhancedCheckoutFlow({
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Delivery Provider Selection */}
+        <DeliveryProviderSelection
+          open={showDeliverySelection}
+          onClose={() => setShowDeliverySelection(false)}
+          pickupAddress={{
+            address: "Store Location", // This would come from the seller's address
+          }}
+          deliveryAddress={addresses.find(addr => addr.id === selectedShippingAddress)}
+          packageDetails={{
+            weight: cartItems.reduce((total, item) => total + (item.product.weight || 1), 0),
+            value: orderSummary.subtotal,
+            items: cartItems.length,
+          }}
+          onProviderSelect={handleDeliveryProviderSelect}
+        />
       </DialogContent>
     </Dialog>
   );

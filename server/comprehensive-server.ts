@@ -25,6 +25,7 @@ import socialApiRoutes from "./routes/social-api";
 import aiApiRoutes from "./routes/ai-api";
 import notificationsApiRoutes from "./routes/notifications-api";
 import analyticsApiRoutes from "./routes/analytics-api";
+import deliveryApiRoutes from "./routes/delivery-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
@@ -263,6 +264,9 @@ app.use("/api/notifications", notificationsApiRoutes);
 
 // Analytics API Routes
 app.use("/api/analytics", analyticsApiRoutes);
+
+// Delivery API Routes
+app.use("/api/delivery", deliveryApiRoutes);
 
 // Legacy Enhanced Routes (for backward compatibility)
 await registerEnhancedRoutes(app);

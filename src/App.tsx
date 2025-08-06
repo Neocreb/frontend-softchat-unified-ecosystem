@@ -70,6 +70,17 @@ import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
 import SellerDashboard from "./pages/marketplace/SellerDashboard";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
+
+// Delivery system imports
+import DeliveryHub from "./pages/DeliveryHub";
+import DeliveryProviderRegistration from "./components/delivery/DeliveryProviderRegistration";
+import DeliveryProviderDashboard from "./components/delivery/DeliveryProviderDashboard";
+import DeliveryTracking from "./components/delivery/DeliveryTracking";
+import DeliveryProviderStatus from "./components/delivery/DeliveryProviderStatus";
+import DeliveryProvidersAdmin from "./components/admin/DeliveryProvidersAdmin";
+import DeliveryTrackingPublic from "./pages/DeliveryTrackingPublic";
+import DriverApplicationPublic from "./pages/DriverApplicationPublic";
+
 import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
 import NotFound from "./pages/NotFound";
@@ -263,6 +274,14 @@ const AppRoutes = () => {
       />
       <Route path="/blog/:slug" element={<BlogPost />} />
 
+      {/* Public Delivery routes - accessible to everyone */}
+      <Route path="/delivery/track" element={<DeliveryTrackingPublic />} />
+      <Route path="/delivery/apply" element={<DriverApplicationPublic />} />
+
+      {/* Public Legal routes - accessible to everyone */}
+      <Route path="/terms" element={<TermsOfService />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
+
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
@@ -375,6 +394,13 @@ const AppRoutes = () => {
             element={<MarketplaceCheckout />}
           />
 
+          {/* Delivery routes */}
+          <Route path="delivery" element={<DeliveryProviderStatus />} />
+          <Route path="delivery/provider/register" element={<DeliveryProviderRegistration />} />
+          <Route path="delivery/provider/dashboard" element={<DeliveryProviderDashboard />} />
+          <Route path="delivery/track" element={<DeliveryTracking />} />
+          <Route path="delivery/track/:trackingNumber" element={<DeliveryTracking />} />
+
           <Route path="crypto" element={<EnhancedCrypto />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
@@ -473,6 +499,7 @@ const AppRoutes = () => {
         <Route path="settings" element={<PlatformSettings />} />
         <Route path="moderation" element={<ContentModeration />} />
         <Route path="marketplace" element={<AdminMarketplace />} />
+        <Route path="delivery" element={<DeliveryProvidersAdmin />} />
         <Route path="crypto" element={<AdminCrypto />} />
         <Route path="freelance" element={<AdminFreelance />} />
         <Route path="analytics" element={<AdminAnalytics />} />

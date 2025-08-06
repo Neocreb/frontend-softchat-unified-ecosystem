@@ -40,10 +40,10 @@ const TermsOfService = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered 
-              social media and marketplace platform that includes social networking, 
-              marketplace functionality, freelancing services, cryptocurrency trading, 
-              verified premium subscriptions, and advanced analytics features.
+              These Terms of Service ("Terms") govern your use of SoftChat, an AI-powered
+              social media and marketplace platform that includes social networking,
+              marketplace functionality, freelancing services, cryptocurrency trading,
+              delivery services, verified premium subscriptions, and advanced analytics features.
             </p>
             <p>
               By accessing or using SoftChat, you agree to be bound by these Terms.
@@ -218,6 +218,85 @@ const TermsOfService = () => {
                 <li>Real-time market data and analytics</li>
                 <li>DeFi integrations and yield farming</li>
               </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2 flex items-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                Delivery Services
+              </h4>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Professional delivery network for marketplace items</li>
+                <li>Real-time package tracking and delivery updates</li>
+                <li>Delivery provider verification and background checks</li>
+                <li>Secure delivery confirmations with photo and signature proof</li>
+                <li>Insurance coverage and dispute resolution for deliveries</li>
+                <li>Flexible delivery scheduling and location-based matching</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Delivery Services Terms */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              Delivery Services Terms
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold mb-2">Delivery Provider Requirements</h4>
+              <p className="text-sm mb-2">To become a delivery provider, you must:</p>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Be at least 21 years old with a valid driver's license (2+ years experience)</li>
+                <li>Provide current vehicle registration, insurance, and safety inspection</li>
+                <li>Complete background check and driving record verification</li>
+                <li>Upload required documents including business license (if applicable)</li>
+                <li>Maintain minimum service standards and customer ratings</li>
+                <li>Comply with local delivery and transportation regulations</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Delivery Provider Responsibilities</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Safely transport packages from pickup to delivery locations</li>
+                <li>Provide accurate real-time tracking and status updates</li>
+                <li>Handle packages with appropriate care for fragile/valuable items</li>
+                <li>Obtain delivery confirmation through photos and signatures</li>
+                <li>Communicate professionally with customers and support</li>
+                <li>Maintain vehicle in safe and clean operating condition</li>
+                <li>Follow delivery instructions and respect customer preferences</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Customer Delivery Terms</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm">
+                <li>Delivery fees are calculated based on distance, weight, and service level</li>
+                <li>Estimated delivery times are approximate and subject to traffic/weather</li>
+                <li>Customers must provide accurate delivery addresses and contact information</li>
+                <li>Someone must be available to receive packages requiring signature</li>
+                <li>Additional fees may apply for failed delivery attempts or address changes</li>
+                <li>Insurance coverage is included for items up to declared value</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-2">Liability and Insurance</h4>
+              <p className="text-sm mb-2">
+                SoftChat provides comprehensive delivery insurance coverage. Delivery providers
+                are covered under our commercial liability policy during active deliveries.
+                Claims for damaged, lost, or stolen items will be processed according to our
+                dispute resolution procedures. Maximum liability per package is limited to
+                the declared item value, up to $500 unless additional insurance is purchased.
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -462,7 +541,7 @@ const TermsOfService = () => {
         {/* Navigation */}
         <Card>
           <CardContent className="flex gap-4 justify-center flex-wrap">
-            <Button onClick={() => navigate("/app/privacy")}>
+            <Button onClick={() => navigate("/privacy")}>
               Privacy Policy
             </Button>
             <Button variant="outline" onClick={() => navigate("/app/cookies")}>
@@ -471,8 +550,8 @@ const TermsOfService = () => {
             <Button variant="outline" onClick={() => navigate("/app/advertising")}>
               Advertising Policy
             </Button>
-            <Button variant="outline" onClick={() => navigate("/app/feed")}>
-              Back to Feed
+            <Button variant="outline" onClick={() => navigate("/")}>
+              Back to Home
             </Button>
           </CardContent>
         </Card>

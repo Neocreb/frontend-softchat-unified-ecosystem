@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDeliveryProvider } from "@/hooks/use-delivery-provider";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Users,
@@ -21,6 +22,8 @@ import {
   Building,
   Megaphone,
   Target,
+  Truck,
+  Package,
 } from "lucide-react";
 
 interface MenuItemProps {
@@ -89,6 +92,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
 }) => {
   const { user } = useAuth();
   const location = useLocation();
+  const providerStatus = useDeliveryProvider();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -96,6 +100,42 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     if (isMobile && onClose) {
       onClose();
     }
+  };
+
+  // Dynamic delivery provider shortcut based on user status
+  const getDeliveryProviderShortcut = () => {
+    if (!providerStatus.loading) {
+      if (providerStatus.isProvider && providerStatus.status === "verified") {
+        return {
+          icon: <Truck className="w-8 h-8 text-emerald-600" />,
+          label: "Provider Dashboard",
+          href: "/app/delivery/provider/dashboard",
+          badge: "Active",
+        };
+      } else if (providerStatus.isProvider && providerStatus.status === "pending") {
+        return {
+          icon: <Truck className="w-8 h-8 text-yellow-600" />,
+          label: "Provider Status",
+          href: "/app/delivery",
+          badge: "Pending",
+        };
+      } else if (providerStatus.isProvider && (providerStatus.status === "rejected" || providerStatus.status === "suspended")) {
+        return {
+          icon: <Truck className="w-8 h-8 text-red-600" />,
+          label: "Provider Status",
+          href: "/app/delivery",
+          badge: providerStatus.status === "suspended" ? "Suspended" : "Rejected",
+        };
+      } else {
+        return {
+          icon: <Truck className="w-8 h-8 text-blue-600" />,
+          label: "Become Provider",
+          href: "/app/delivery",
+          badge: "Apply",
+        };
+      }
+    }
+    return null;
   };
 
   const shortcuts = [
@@ -148,12 +188,23 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       badge: "New",
     },
     {
+      icon: <Package className="w-8 h-8 text-teal-600" />,
+      label: "Track Package",
+      href: "/app/delivery/track",
+    },
+    {
       icon: <Megaphone className="w-8 h-8 text-pink-600" />,
       label: "Campaigns",
       href: "/app/campaigns",
       badge: "Hot",
     },
-  ];
+  ].filter(Boolean);
+
+  // Add dynamic delivery provider shortcut if available
+  const deliveryProviderShortcut = getDeliveryProviderShortcut();
+  if (deliveryProviderShortcut) {
+    shortcuts.splice(-1, 0, deliveryProviderShortcut); // Insert before campaigns
+  }
 
   const menuItems = [
     {
