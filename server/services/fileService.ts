@@ -464,3 +464,6 @@ export const uploadMiddleware = {
   productImages: upload.array("images", 10),
   projectFiles: upload.array("files", 20),
 };
+
+// Export singleton instance for compatibility
+export const fileService = new FileService();
