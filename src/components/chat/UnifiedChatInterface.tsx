@@ -1389,14 +1389,14 @@ export const UnifiedChatInterface: React.FC<UnifiedChatInterfaceProps> = ({
                             </div>
                           )}
 
-                          {/* WhatsApp-style Chat Input */}
+                          {/* WhatsApp-style Chat Input with Sticker Support */}
                           <WhatsAppChatInput
                             messageInput={messageInput}
                             setMessageInput={setMessageInput}
                             onSendMessage={handleSendEnhancedMessage}
                             isMobile={isMobile}
                             disabled={loading}
-                            placeholder={`Message ${selectedThread?.name || 'chat'}...`}
+                            placeholder={`Message ${selectedChat?.participant_profile?.name || 'chat'}...`}
                           />
                         </>
                       ) : (
