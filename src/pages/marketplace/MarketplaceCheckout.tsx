@@ -542,8 +542,16 @@ const MarketplaceCheckout = () => {
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span>{formatCurrency(shippingCost)}</span>
+                    <span className="text-muted-foreground">
+                      {deliveryMethod === "delivery" ? (
+                        selectedDeliveryProvider ?
+                        `Delivery (${deliveryServiceType.replace('_', ' ')})` :
+                        "Delivery"
+                      ) : "Pickup"}
+                    </span>
+                    <span className={deliveryMethod === "pickup" ? "text-green-600" : ""}>
+                      {deliveryMethod === "pickup" ? "FREE" : formatCurrency(shippingCost)}
+                    </span>
                   </div>
                   
                   <div className="flex justify-between">
