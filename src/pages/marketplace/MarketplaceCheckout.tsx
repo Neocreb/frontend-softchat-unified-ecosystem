@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Badge } from "@/components/ui/badge";
 import {
   ShoppingCart,
   ChevronLeft,
@@ -17,7 +18,13 @@ import {
   Banknote,
   Package,
   Bitcoin,
-  Zap
+  Zap,
+  Truck,
+  MapPin,
+  Clock,
+  Star,
+  Shield,
+  Info
 } from "lucide-react";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
