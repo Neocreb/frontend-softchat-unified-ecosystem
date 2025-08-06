@@ -365,19 +365,19 @@ const MarketplaceCheckout = () => {
               <CardContent className="pt-6 divide-y">
                 <div className="space-y-4 pb-4">
                   {cart.map(item => (
-                    <div key={item.productId} className="flex gap-3">
+                    <div key={item.productId || item.id} className="flex gap-3">
                       <div className="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-                        <img 
-                          src={item.product.image} 
-                          alt={item.product.name}
-                          className="w-full h-full object-cover" 
+                        <img
+                          src={item.product?.image || ""}
+                          alt={item.product?.name || "Product"}
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium line-clamp-1">{item.product.name}</p>
+                        <p className="font-medium line-clamp-1">{item.product?.name || "Product"}</p>
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                         <p className="font-semibold">
-                          ${((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}
+                          ${(item.priceSnapshot * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
