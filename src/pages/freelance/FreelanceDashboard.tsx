@@ -767,6 +767,10 @@ export const FreelanceDashboard: React.FC = () => {
           </div>
         )}
 
+        {activeTab === "proposals" && <FreelancerProposals />}
+
+        {activeTab === "earnings" && <FreelancerEarnings />}
+
         {activeTab === "campaigns" && (
           <UnifiedCampaignManager
             context="freelancer"
@@ -782,7 +786,7 @@ export const FreelanceDashboard: React.FC = () => {
         {activeTab === "collaboration" && <FreelanceCollaborationTools />}
 
         {/* Placeholder for other tabs */}
-        {!["overview", "projects", "campaigns", "ai-matching", "analytics", "collaboration"].includes(activeTab) && (
+        {!["overview", "projects", "proposals", "earnings", "campaigns", "ai-matching", "analytics", "collaboration"].includes(activeTab) && (
           <div className="text-center py-12">
             <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full w-16 h-16 mx-auto mb-4">
               <Briefcase className="w-8 h-8 text-gray-400 mx-auto" />
