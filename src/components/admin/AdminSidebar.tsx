@@ -113,6 +113,13 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ className = "" }) => {
       description: "Manage marketplace",
     },
     {
+      path: "/admin/delivery",
+      label: "Delivery Providers",
+      icon: <Truck className="w-5 h-5" />,
+      requiredPermission: "marketplace.view",
+      description: "Manage delivery providers",
+    },
+    {
       path: "/admin/crypto",
       label: "Cryptocurrency",
       icon: <Bitcoin className="w-5 h-5" />,
