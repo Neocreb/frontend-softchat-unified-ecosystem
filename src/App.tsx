@@ -281,6 +281,8 @@ const AppRoutes = () => {
       {/* Public Legal routes - accessible to everyone */}
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/cookies" element={<CookiesPolicy />} />
+      <Route path="/advertising" element={<AdvertisingPolicy />} />
 
       {/* Auth route - handle loading state and redirects */}
       <Route
@@ -444,10 +446,8 @@ const AppRoutes = () => {
           <Route path="pages/:pageId/manage" element={<PageManagement />} />
           <Route path="privacy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
-          <Route path="advertising" element={<AdvertisingPolicy />} />
           <Route path="ad-choices" element={<AdChoices />} />
           <Route path="monetization-policy" element={<MonetizationPolicy />} />
-          <Route path="cookies" element={<CookiesPolicy />} />
           <Route path="help" element={<HelpPage />} />
           <Route path="creator-studio" element={<CreatorStudio />} />
           <Route path="unified-creator-studio" element={<UnifiedCreatorStudio />} />
