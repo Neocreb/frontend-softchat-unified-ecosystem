@@ -541,7 +541,7 @@ const TermsOfService = () => {
         {/* Navigation */}
         <Card>
           <CardContent className="flex gap-4 justify-center flex-wrap">
-            <Button onClick={() => navigate("/app/privacy")}>
+            <Button onClick={() => navigate("/privacy")}>
               Privacy Policy
             </Button>
             <Button variant="outline" onClick={() => navigate("/app/cookies")}>
@@ -550,8 +550,8 @@ const TermsOfService = () => {
             <Button variant="outline" onClick={() => navigate("/app/advertising")}>
               Advertising Policy
             </Button>
-            <Button variant="outline" onClick={() => navigate("/app/feed")}>
-              Back to Feed
+            <Button variant="outline" onClick={() => navigate("/")}>
+              Back to Home
             </Button>
           </CardContent>
         </Card>
