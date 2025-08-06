@@ -36,6 +36,7 @@ import {
   CreditCard,
   ChevronDown,
   ShoppingCart,
+  Truck,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
