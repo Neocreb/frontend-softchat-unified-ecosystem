@@ -401,73 +401,17 @@ export const ClientDashboard: React.FC = () => {
     </Card>
   );
 
-  // Header component with user info and quick actions
+  // Simple header component
   const ClientHeader = () => (
     <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
       <div className="px-4 sm:px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg">
-              <Users className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg text-gray-900 dark:text-white">Client Dashboard</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Welcome back, {user?.username}</p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg">
+            <Users className="w-6 h-6 text-white" />
           </div>
-          
-          <div className="flex items-center gap-3">
-            {/* Quick action buttons */}
-            <div className="hidden sm:flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => setShowCreateJobModal(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                <span className="hidden md:inline">Post Job</span>
-              </Button>
-              {secondaryItems.slice(0, 2).map((item) => (
-                <Button key={item.id} variant="outline" size="sm" asChild>
-                  <Link to={item.href} className="flex items-center gap-2">
-                    <item.icon className="w-4 h-4" />
-                    <span className="hidden md:inline">{item.label}</span>
-                  </Link>
-                </Button>
-              ))}
-            </div>
-            
-            {/* User menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="p-2">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={user?.avatar} />
-                    <AvatarFallback className="bg-gradient-to-br from-green-500 to-blue-600 text-white text-sm">
-                      {user?.username?.[0]?.toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div>
-                    <p className="font-medium">{user?.username}</p>
-                    <p className="text-xs text-gray-500">Client</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {secondaryItems.map((item) => (
-                  <DropdownMenuItem key={item.id} asChild>
-                    <Link to={item.href}>
-                      <item.icon className="mr-2 h-4 w-4" />
-                      {item.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div>
+            <h1 className="font-bold text-lg text-gray-900 dark:text-white">Client Dashboard</h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Hire freelancers and manage projects</p>
           </div>
         </div>
       </div>
