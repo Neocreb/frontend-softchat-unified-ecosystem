@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -34,7 +33,13 @@ const EnhancedAuthForm = () => {
       if (isLogin) {
         const result = await login(email, password);
         if (result.error) {
-          const errorMessage = result.error.message || "Login failed";
+          let errorMessage = result.error.message || "Login failed";
+
+          // Provide more helpful error messages
+          if (errorMessage === "Invalid login credentials") {
+            errorMessage = "Invalid email or password. Please check your credentials and try again.";
+          }
+
           setError(errorMessage);
           notification.error(errorMessage);
           console.error("Login error:", result.error);
@@ -54,7 +59,18 @@ const EnhancedAuthForm = () => {
 
         const result = await signup(email, password, name);
         if (result.error) {
-          const errorMessage = result.error.message || "Registration failed";
+          let errorMessage = result.error.message || "Registration failed";
+
+          // Provide more helpful error messages
+          if (errorMessage === "User already registered") {
+            errorMessage = "An account with this email already exists. Please try logging in instead.";
+            // Automatically switch to login tab when user already exists
+            setTimeout(() => {
+              setIsLogin(true);
+              notification.info("Switched to login. Please enter your password to sign in.");
+            }, 2000);
+          }
+
           setError(errorMessage);
           notification.error(errorMessage);
           console.error("Registration error:", result.error);
