@@ -26,6 +26,7 @@ import aiApiRoutes from "./routes/ai-api";
 import notificationsApiRoutes from "./routes/notifications-api";
 import analyticsApiRoutes from "./routes/analytics-api";
 import deliveryApiRoutes from "./routes/delivery-api";
+import stickerApiRoutes from "./routes/sticker-api";
 
 // Import services
 import { initializeWebSocketService } from "./services/websocketService";
