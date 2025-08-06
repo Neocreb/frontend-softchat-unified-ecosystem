@@ -428,22 +428,53 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
               Create your own custom sticker pack by uploading images or using AI generation
             </DialogDescription>
           </DialogHeader>
-          <StickerPackCreationDialog
-            isMobile={isMobile}
-            onClose={() => setShowCreateDialog(false)}
-            onPackCreated={(pack) => {
-              // Add the new pack to user's custom packs
-              setUserLibrary(prev => ({
-                ...prev,
-                customPacks: [...prev.customPacks, pack]
-              }));
-              setShowCreateDialog(false);
-              toast({
-                title: "Pack created!",
-                description: `${pack.name} has been added to your collection`,
-              });
-            }}
-          />
+          <ErrorBoundary
+            fallback={
+              <div className="p-6 text-center">
+                <XCircle className="w-12 h-12 mx-auto mb-4 text-destructive" />
+                <h3 className="text-lg font-semibold mb-2">Something went wrong</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  There was an error loading the sticker pack creator. Please try again.
+                </p>
+                <Button
+                  onClick={() => {
+                    setShowCreateDialog(false);
+                    setTimeout(() => setShowCreateDialog(true), 100);
+                  }}
+                  variant="outline"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Try Again
+                </Button>
+              </div>
+            }
+          >
+            <StickerPackCreationDialog
+              isMobile={isMobile}
+              onClose={() => setShowCreateDialog(false)}
+              onPackCreated={(pack) => {
+                try {
+                  // Add the new pack to user's custom packs
+                  setUserLibrary(prev => ({
+                    ...prev,
+                    customPacks: [...prev.customPacks, pack]
+                  }));
+                  setShowCreateDialog(false);
+                  toast({
+                    title: "Pack created!",
+                    description: `${pack.name} has been added to your collection`,
+                  });
+                } catch (error) {
+                  console.error('Error adding pack to library:', error);
+                  toast({
+                    title: "Pack created but...",
+                    description: "Your pack was created but couldn't be added to your library. Please refresh the page.",
+                    variant: "destructive",
+                  });
+                }
+              }}
+            />
+          </ErrorBoundary>
         </DialogContent>
       </Dialog>
     </div>
