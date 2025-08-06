@@ -300,6 +300,7 @@ const AppRoutes = () => {
           }
         >
           <Route index element={<Navigate to="feed" replace />} />
+          <Route path="dashboard" element={<UnifiedDashboard />} />
           <Route path="feed" element={<EnhancedFeed />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
