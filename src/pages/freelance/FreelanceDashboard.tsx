@@ -105,13 +105,6 @@ const navigationItems: TabItem[] = [
     description: "Revenue & analytics",
   },
   {
-    id: "messages",
-    label: "Messages",
-    icon: MessageCircle,
-    description: "Client communications",
-    badge: "2",
-  },
-  {
     id: "campaigns",
     label: "Campaigns",
     icon: Sparkles,
