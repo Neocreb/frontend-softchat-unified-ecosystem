@@ -948,7 +948,10 @@ export default function DeliveryProviderRegistration() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <steps[currentStep - 1].icon className="h-5 w-5" />
+              {(() => {
+                const StepIcon = steps[currentStep - 1].icon;
+                return <StepIcon className="h-5 w-5" />;
+              })()}
               {steps[currentStep - 1].title}
             </CardTitle>
           </CardHeader>
