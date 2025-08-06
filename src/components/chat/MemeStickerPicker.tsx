@@ -745,7 +745,18 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
   };
 
   const removeImage = (index: number) => {
-    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    try {
+      console.log('Removing image at index:', index);
+      setSelectedImages(prev => {
+        if (!Array.isArray(prev)) {
+          console.warn('selectedImages is not an array');
+          return [];
+        }
+        return prev.filter((_, i) => i !== index);
+      });
+    } catch (error) {
+      console.error('Error removing image:', error);
+    }
   };
 
   const handleCreatePack = async () => {
