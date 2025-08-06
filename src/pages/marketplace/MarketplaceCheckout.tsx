@@ -169,9 +169,9 @@ const MarketplaceCheckout = () => {
               <p className="text-muted-foreground max-w-md mx-auto">
                 You haven't added any products to your cart yet. Browse the marketplace to find products you love.
               </p>
-              <Button 
+              <Button
                 className="mt-4"
-                onClick={() => navigate('/marketplace')}
+                onClick={() => navigate('/app/marketplace')}
               >
                 Browse Products
               </Button>
