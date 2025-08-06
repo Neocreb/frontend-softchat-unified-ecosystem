@@ -27,6 +27,9 @@ import IntegrationManager from "./IntegrationManager";
 import WithdrawModal from "./WithdrawModal";
 import DepositModal from "./DepositModal";
 
+// Currency components
+import CurrencyDemo from "@/components/currency/CurrencyDemo";
+
 const EnhancedWalletDashboardContent = () => {
   const {
     walletBalance,
