@@ -57,6 +57,16 @@ const FeaturesSection = () => {
         "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1280",
     },
     {
+      id: "delivery",
+      icon: <Truck className="h-6 w-6" />,
+      title: "Delivery Network",
+      tagline: "Professional delivery services",
+      description:
+        "Comprehensive delivery network with verified providers, real-time tracking, and secure payments. Track packages, apply to become a driver, and manage delivery services all in one place.",
+      image:
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=1280",
+    },
+    {
       id: "platform",
       icon: <Zap className="h-6 w-6" />,
       title: "Platform & Rewards",
