@@ -656,7 +656,71 @@ export default function EnhancedCheckoutFlow({
               </Card>
             )}
 
-            {currentStep === 2 && (
+            {currentStep === 2 && hasPhysicalItems && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users className="h-5 w-5" />
+                    Delivery Service
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="text-sm text-gray-600 mb-4">
+                    Choose a delivery provider for your physical items. Our verified delivery partners will ensure safe and timely delivery.
+                  </div>
+
+                  {selectedDeliveryProvider ? (
+                    <div className="p-4 border-2 border-primary rounded-lg bg-primary/5">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <h4 className="font-medium">{selectedDeliveryProvider.businessName}</h4>
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <div className="flex items-center gap-1">
+                              <Shield className="h-3 w-3 text-green-500" />
+                              <span>Verified Provider</span>
+                            </div>
+                            <span>•</span>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>~{selectedDeliveryProvider.estimatedDeliveryTime}h delivery</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">
+                            {formatPrice(selectedDeliveryProvider.estimatedFee)}
+                          </p>
+                          <p className="text-xs text-gray-500 capitalize">
+                            {selectedServiceType.replace('_', ' ')}
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowDeliverySelection(true)}
+                      >
+                        Change Provider
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                      <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                      <h4 className="font-medium text-gray-900 mb-2">Select Delivery Provider</h4>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Choose from our verified delivery partners for safe and reliable delivery
+                      </p>
+                      <Button onClick={() => setShowDeliverySelection(true)}>
+                        <Truck className="h-4 w-4 mr-2" />
+                        Find Delivery Providers
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {currentStep === (hasPhysicalItems ? 3 : 1) && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
