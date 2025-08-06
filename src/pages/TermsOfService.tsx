@@ -560,7 +560,7 @@ const TermsOfService = () => {
             <Button variant="outline" onClick={() => navigate("/dispatch-partner-terms")}>
               Dispatch Partner Terms
             </Button>
-            <Button variant="outline" onClick={() => navigate("/app/cookies")}>
+            <Button variant="outline" onClick={() => navigate("/cookies")}>
               Cookie Policy
             </Button>
             <Button variant="outline" onClick={() => navigate("/app/advertising")}>
