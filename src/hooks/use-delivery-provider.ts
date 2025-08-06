@@ -38,16 +38,28 @@ export function useDeliveryProvider(): DeliveryProviderStatus {
         if (response.ok) {
           const provider = await response.json();
 
+          // Validate the provider data structure
+          if (!provider || typeof provider !== 'object') {
+            console.error("Invalid provider data structure:", provider);
+            throw new Error("Invalid provider data received from server");
+          }
+
           // Validate the verification status
           const validStatuses = ["pending", "verified", "rejected", "suspended"];
-          const status = validStatuses.includes(provider.verificationStatus)
+          const status = provider.verificationStatus && validStatuses.includes(provider.verificationStatus)
             ? provider.verificationStatus
             : "pending";
+
+          // Validate provider ID
+          if (!provider.id) {
+            console.error("Provider data missing ID:", provider);
+            throw new Error("Provider data is missing required ID field");
+          }
 
           setProviderStatus({
             isProvider: true,
             status: status as "pending" | "verified" | "rejected" | "suspended",
-            providerId: provider.id,
+            providerId: String(provider.id), // Ensure it's a string
             loading: false,
           });
         } else if (response.status === 404) {
