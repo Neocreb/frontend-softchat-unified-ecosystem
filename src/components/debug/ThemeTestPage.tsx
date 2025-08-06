@@ -235,7 +235,7 @@ export function ThemeTestPage() {
               <TabsContent value="explore" className="mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {['Trending', 'Popular', 'Recent'].map((item) => (
-                    <div key={item} className={themeComponents.cardCompact()}>
+                    <div key={item} className={cn(themeClasses.card, "p-4")}>
                       <div className="flex items-center space-x-2 mb-2">
                         <TrendingUp className="w-4 h-4 text-primary" />
                         <span className="font-medium">{item}</span>
