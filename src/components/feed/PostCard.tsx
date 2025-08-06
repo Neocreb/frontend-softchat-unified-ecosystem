@@ -107,8 +107,9 @@ const PostCard = ({ post }: PostCardProps) => {
           variant="ghost"
           size="sm"
           className={cn(
-            "flex items-center gap-1 text-muted-foreground",
-            liked && "text-softchat-accent"
+            "flex items-center gap-1",
+            themeComponents.postActionButton(),
+            liked ? themeClasses.socialLike : themeClasses.textMuted
           )}
           onClick={handleLike}
         >
@@ -118,7 +119,11 @@ const PostCard = ({ post }: PostCardProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1 text-muted-foreground"
+          className={cn(
+            "flex items-center gap-1",
+            themeComponents.postActionButton(),
+            themeClasses.socialComment
+          )}
         >
           <MessageCircle className="h-4 w-4" />
           <span>{post.comments}</span>
@@ -126,7 +131,11 @@ const PostCard = ({ post }: PostCardProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1 text-muted-foreground"
+          className={cn(
+            "flex items-center gap-1",
+            themeComponents.postActionButton(),
+            themeClasses.socialShare
+          )}
         >
           <Share2 className="h-4 w-4" />
           <span>{post.shares}</span>
@@ -135,8 +144,8 @@ const PostCard = ({ post }: PostCardProps) => {
           variant="ghost"
           size="sm"
           className={cn(
-            "text-muted-foreground",
-            bookmarked && "text-softchat-primary"
+            themeComponents.postActionButton(),
+            bookmarked ? themeClasses.socialBookmark : themeClasses.textMuted
           )}
           onClick={handleBookmark}
         >
