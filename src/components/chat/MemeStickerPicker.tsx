@@ -851,9 +851,12 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
 
       onPackCreated(newPack);
     } catch (error) {
+      console.error('Sticker pack creation error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+
       toast({
         title: "Creation failed",
-        description: "Failed to create sticker pack. Please try again.",
+        description: `Failed to create sticker pack: ${errorMessage}. Please try again.`,
         variant: "destructive",
       });
     } finally {
