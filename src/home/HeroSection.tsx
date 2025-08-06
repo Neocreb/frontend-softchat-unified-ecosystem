@@ -29,7 +29,7 @@ const HeroSection = () => {
             <Link to="/auth" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded w-full sm:w-auto hover:bg-blue-700 transition-all duration-200"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded w-full sm:w-auto transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 🚀 Launch App
               </Button>
