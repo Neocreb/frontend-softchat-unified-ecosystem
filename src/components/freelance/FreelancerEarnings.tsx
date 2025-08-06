@@ -30,6 +30,15 @@ import {
   Target,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import FreelanceWithdrawalMethods from "./FreelanceWithdrawalMethods";
+import FreelanceTaxDocuments from "./FreelanceTaxDocuments";
+import FreelanceInvoicing from "./FreelanceInvoicing";
 
 interface EarningRecord {
   id: string;
@@ -127,6 +136,7 @@ export const FreelancerEarnings: React.FC = () => {
   const [stats, setStats] = useState<EarningsStats>(mockStats);
   const [timeFilter, setTimeFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [activeModal, setActiveModal] = useState<"withdrawal" | "tax" | "invoicing" | null>(null);
 
   const getStatusColor = (status: EarningRecord["status"]) => {
     switch (status) {
