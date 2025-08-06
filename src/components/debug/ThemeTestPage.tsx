@@ -10,6 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import ThemeValidator from './ThemeValidator';
 import { 
   Heart, 
   MessageCircle, 
@@ -326,6 +327,19 @@ export function ThemeTestPage() {
                 This element shows the active/selected state
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Theme Validator */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Theme Validation & Testing</CardTitle>
+            <CardDescription>
+              Comprehensive validation of theme implementation and CSS variables
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ThemeValidator />
           </CardContent>
         </Card>
 
