@@ -152,11 +152,17 @@ export default function EnhancedCheckoutFlow({
       );
 
       let shipping = 0;
-      if (selectedShippingAddress) {
+      if (selectedShippingAddress && hasPhysicalItems) {
         try {
-          shipping = await onCalculateShipping(selectedShippingAddress);
-          if (selectedShippingMethod === "express") shipping += 10;
-          if (selectedShippingMethod === "overnight") shipping += 25;
+          if (selectedDeliveryProvider) {
+            // Use delivery provider pricing
+            shipping = selectedDeliveryProvider.estimatedFee || 0;
+          } else {
+            // Use traditional shipping calculation
+            shipping = await onCalculateShipping(selectedShippingAddress);
+            if (selectedShippingMethod === "express") shipping += 10;
+            if (selectedShippingMethod === "overnight") shipping += 25;
+          }
         } catch (error) {
           console.error("Failed to calculate shipping:", error);
         }
