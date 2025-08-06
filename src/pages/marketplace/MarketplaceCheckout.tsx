@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Badge } from "@/components/ui/badge";
 import {
   ShoppingCart,
   ChevronLeft,
@@ -17,22 +18,33 @@ import {
   Banknote,
   Package,
   Bitcoin,
-  Zap
+  Zap,
+  Truck,
+  MapPin,
+  Clock,
+  Star,
+  Shield,
+  Info
 } from "lucide-react";
-import { useMarketplace } from "@/contexts/MarketplaceContext";
+import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import UniversalCryptoPaymentModal from "@/components/payments/UniversalCryptoPaymentModal";
+import DeliveryProviderSelection from "@/components/delivery/DeliveryProviderSelection";
 import { type PaymentRequest } from "@/services/unifiedCryptoPaymentService";
 
 const MarketplaceCheckout = () => {
-  const { cart, getCartTotal, checkout } = useMarketplace();
+  const { cart, getCartTotal, checkout, clearCart } = useEnhancedMarketplace();
   const { toast } = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [showCryptoPayment, setShowCryptoPayment] = useState(false);
+  const [showDeliverySelection, setShowDeliverySelection] = useState(false);
+  const [selectedDeliveryProvider, setSelectedDeliveryProvider] = useState<any>(null);
+  const [deliveryServiceType, setDeliveryServiceType] = useState<string>("standard");
+  const [deliveryMethod, setDeliveryMethod] = useState("delivery"); // "pickup" or "delivery"
   const [shippingInfo, setShippingInfo] = useState({
     name: user?.user_metadata?.name || "",
     email: user?.email || "",
@@ -50,6 +62,29 @@ const MarketplaceCheckout = () => {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleDeliveryProviderSelect = (provider: any, serviceType: string) => {
+    setSelectedDeliveryProvider(provider);
+    setDeliveryServiceType(serviceType);
+    setShowDeliverySelection(false);
+    toast({
+      title: "Delivery Provider Selected",
+      description: `${provider.businessName} - ${serviceType.replace('_', ' ')} delivery`,
+    });
+  };
+
+  const calculateDeliveryFee = () => {
+    if (deliveryMethod === "pickup") return 0;
+    if (!selectedDeliveryProvider) return 5.99; // Default shipping
+
+    const serviceMultiplier = {
+      standard: 1.0,
+      express: 1.5,
+      same_day: 1.3,
+    }[deliveryServiceType] || 1.0;
+
+    return selectedDeliveryProvider.estimatedFee * serviceMultiplier;
   };
   
   const handlePlaceOrder = async () => {
@@ -84,8 +119,9 @@ const MarketplaceCheckout = () => {
     setIsProcessing(true);
     
     try {
-      await checkout();
-      navigate('/marketplace');
+      const order = await checkout();
+      clearCart();
+      navigate('/app/marketplace');
       toast({
         title: "Order Placed Successfully",
         description: "Thank you for your purchase!",
@@ -106,7 +142,8 @@ const MarketplaceCheckout = () => {
     setIsProcessing(true);
 
     try {
-      await checkout();
+      const order = await checkout();
+      clearCart();
       navigate('/app/marketplace');
       toast({
         title: "Order Placed Successfully",
@@ -141,7 +178,7 @@ const MarketplaceCheckout = () => {
   };
   
   const subTotal = getCartTotal();
-  const shippingCost = subTotal > 0 ? 5.99 : 0;
+  const shippingCost = subTotal > 0 ? calculateDeliveryFee() : 0;
   const tax = subTotal * 0.08; // 8% tax
   const total = subTotal + shippingCost + tax;
   
@@ -152,7 +189,7 @@ const MarketplaceCheckout = () => {
   return (
     <div className="container py-6">
       <div className="flex items-center gap-2 mb-6">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/marketplace/cart")}>
+        <Button variant="ghost" size="icon" onClick={() => navigate("/app/marketplace/cart")}>
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <h1 className="text-2xl font-bold">Checkout</h1>
@@ -167,9 +204,9 @@ const MarketplaceCheckout = () => {
               <p className="text-muted-foreground max-w-md mx-auto">
                 You haven't added any products to your cart yet. Browse the marketplace to find products you love.
               </p>
-              <Button 
+              <Button
                 className="mt-4"
-                onClick={() => navigate('/marketplace')}
+                onClick={() => navigate('/app/marketplace')}
               >
                 Browse Products
               </Button>
@@ -179,10 +216,117 @@ const MarketplaceCheckout = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
+            {/* Delivery Method Selection */}
+            <Card>
+              <CardHeader className="border-b">
+                <h2 className="text-lg font-medium">Delivery Method</h2>
+              </CardHeader>
+
+              <CardContent className="pt-6">
+                <RadioGroup
+                  value={deliveryMethod}
+                  onValueChange={setDeliveryMethod}
+                >
+                  <div className="flex items-center space-x-2 border rounded-md p-3 mb-3 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <RadioGroupItem value="delivery" id="delivery-method" />
+                    <Label htmlFor="delivery-method" className="flex items-center gap-2 cursor-pointer flex-1">
+                      <Truck className="h-5 w-5 text-blue-600" />
+                      <div>
+                        <div className="font-medium">Home Delivery</div>
+                        <div className="text-sm text-gray-500">Get your items delivered to your doorstep</div>
+                      </div>
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-gray-50 transition-colors">
+                    <RadioGroupItem value="pickup" id="pickup-method" />
+                    <Label htmlFor="pickup-method" className="flex items-center gap-2 cursor-pointer flex-1">
+                      <MapPin className="h-5 w-5 text-green-600" />
+                      <div>
+                        <div className="font-medium">Store Pickup</div>
+                        <div className="text-sm text-gray-500">Pick up from nearest store location</div>
+                      </div>
+                    </Label>
+                  </div>
+                </RadioGroup>
+
+                {deliveryMethod === "delivery" && (
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-medium">Delivery Provider</h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowDeliverySelection(true)}
+                      >
+                        {selectedDeliveryProvider ? "Change Provider" : "Select Provider"}
+                      </Button>
+                    </div>
+
+                    {selectedDeliveryProvider ? (
+                      <div className="bg-white p-3 rounded border">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{selectedDeliveryProvider.businessName}</span>
+                              {selectedDeliveryProvider.isVerified && (
+                                <Badge variant="secondary" className="text-xs">
+                                  <Shield className="h-3 w-3 mr-1" />
+                                  Verified
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 text-sm text-gray-600 mt-1">
+                              <div className="flex items-center gap-1">
+                                <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                                <span>{selectedDeliveryProvider.rating}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                <span>~{selectedDeliveryProvider.estimatedDeliveryTime}h</span>
+                              </div>
+                              <Badge variant="outline" className="text-xs">
+                                {deliveryServiceType.replace('_', ' ')}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-medium text-green-600">
+                              ${calculateDeliveryFee().toFixed(2)}
+                            </div>
+                            <div className="text-xs text-gray-500">delivery fee</div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-4 text-gray-500">
+                        <Truck className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+                        <p>Select a delivery provider to see pricing and delivery times</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {deliveryMethod === "pickup" && (
+                  <div className="mt-4 p-4 bg-green-50 rounded-lg">
+                    <div className="flex items-center gap-2 text-green-800">
+                      <CheckCircle className="h-5 w-5" />
+                      <span className="font-medium">Free Pickup Available</span>
+                    </div>
+                    <p className="text-sm text-green-700 mt-1">
+                      Pick up your order from our store locations within 3-5 business days.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Shipping Information */}
             <Card>
               <CardHeader className="border-b">
-                <h2 className="text-lg font-medium">Shipping Information</h2>
+                <h2 className="text-lg font-medium">
+                  {deliveryMethod === "delivery" ? "Delivery Information" : "Pickup Information"}
+                </h2>
               </CardHeader>
               
               <CardContent className="pt-6 space-y-4">
@@ -223,14 +367,21 @@ const MarketplaceCheckout = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
-                  <Textarea 
-                    id="address" 
-                    name="address" 
-                    placeholder="123 Main St, Apt 4B" 
+                  <Label htmlFor="address">
+                    {deliveryMethod === "delivery" ? "Delivery Address" : "Contact Address"}
+                  </Label>
+                  <Textarea
+                    id="address"
+                    name="address"
+                    placeholder={deliveryMethod === "delivery" ? "123 Main St, Apt 4B" : "Your contact address"}
                     value={shippingInfo.address}
                     onChange={handleInputChange}
                   />
+                  {deliveryMethod === "pickup" && (
+                    <p className="text-sm text-gray-500">
+                      We'll notify you when your order is ready for pickup at the selected store location.
+                    </p>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -365,19 +516,19 @@ const MarketplaceCheckout = () => {
               <CardContent className="pt-6 divide-y">
                 <div className="space-y-4 pb-4">
                   {cart.map(item => (
-                    <div key={item.productId} className="flex gap-3">
+                    <div key={item.productId || item.id} className="flex gap-3">
                       <div className="w-16 h-16 flex-shrink-0 rounded-md overflow-hidden">
-                        <img 
-                          src={item.product.image} 
-                          alt={item.product.name}
-                          className="w-full h-full object-cover" 
+                        <img
+                          src={item.product?.image || ""}
+                          alt={item.product?.name || "Product"}
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium line-clamp-1">{item.product.name}</p>
+                        <p className="font-medium line-clamp-1">{item.product?.name || "Product"}</p>
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                         <p className="font-semibold">
-                          ${((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)}
+                          ${(item.priceSnapshot * item.quantity).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -391,8 +542,16 @@ const MarketplaceCheckout = () => {
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span>{formatCurrency(shippingCost)}</span>
+                    <span className="text-muted-foreground">
+                      {deliveryMethod === "delivery" ? (
+                        selectedDeliveryProvider ?
+                        `Delivery (${deliveryServiceType.replace('_', ' ')})` :
+                        "Delivery"
+                      ) : "Pickup"}
+                    </span>
+                    <span className={deliveryMethod === "pickup" ? "text-green-600" : ""}>
+                      {deliveryMethod === "pickup" ? "FREE" : formatCurrency(shippingCost)}
+                    </span>
                   </div>
                   
                   <div className="flex justify-between">
@@ -452,6 +611,20 @@ const MarketplaceCheckout = () => {
         }}
         title="Complete Your Purchase"
         description="Pay for your marketplace order using cryptocurrency"
+      />
+
+      {/* Delivery Provider Selection Modal */}
+      <DeliveryProviderSelection
+        open={showDeliverySelection}
+        onClose={() => setShowDeliverySelection(false)}
+        pickupAddress={{ address: "Store Location" }} // In real app, this would be seller's address
+        deliveryAddress={{ address: shippingInfo.address }}
+        packageDetails={{
+          weight: cart.reduce((total, item) => total + (item.quantity * 0.5), 0), // Estimate 0.5kg per item
+          value: subTotal,
+          description: `${cart.length} item(s) from marketplace`
+        }}
+        onProviderSelect={handleDeliveryProviderSelect}
       />
     </div>
   );

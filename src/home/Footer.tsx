@@ -92,6 +92,14 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link
+                  to="/dispatch-partner-terms"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Dispatch Partner Terms
+                </Link>
+              </li>
+              <li>
                 <a
                   href="#contact"
                   className="text-gray-400 hover:text-white transition-colors"

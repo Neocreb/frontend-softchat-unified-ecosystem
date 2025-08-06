@@ -157,6 +157,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
 import AdvertisingPolicy from "./pages/AdvertisingPolicy";
+import DispatchPartnerTerms from "./pages/DispatchPartnerTerms";
+import LegalInformation from "./pages/LegalInformation";
 import AdChoices from "./pages/AdChoices";
 import MonetizationPolicy from "./pages/MonetizationPolicy";
 import Premium from "./pages/Premium";
@@ -283,6 +285,8 @@ const AppRoutes = () => {
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/cookies" element={<CookiesPolicy />} />
       <Route path="/advertising" element={<AdvertisingPolicy />} />
+      <Route path="/dispatch-partner-terms" element={<DispatchPartnerTerms />} />
+      <Route path="/legal" element={<LegalInformation />} />
 
       {/* Auth route - handle loading state and redirects */}
       <Route

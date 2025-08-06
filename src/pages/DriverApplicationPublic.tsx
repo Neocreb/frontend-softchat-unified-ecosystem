@@ -378,8 +378,23 @@ export default function DriverApplicationPublic() {
                 onCheckedChange={(checked) => handleInputChange("agreeToTerms", checked)}
               />
               <Label htmlFor="agreeToTerms" className="text-sm leading-relaxed">
-                I agree to the terms and conditions, privacy policy, and background check authorization. 
-                I understand that my application is subject to verification and approval. *
+                I agree to the{" "}
+                <button
+                  type="button"
+                  onClick={() => window.open("/dispatch-partner-terms", "_blank")}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Dispatch Partner Terms of Use
+                </button>
+                , including the Data Privacy Policy and Earnings Agreement,{" "}
+                <button
+                  type="button"
+                  onClick={() => window.open("/privacy", "_blank")}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Privacy Policy
+                </button>
+                , and background check authorization. I understand that my application is subject to verification and approval. *
               </Label>
             </div>
           </div>

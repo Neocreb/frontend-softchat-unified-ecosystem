@@ -95,6 +95,19 @@ const PrivacyPolicy = () => {
                 is additionally used for safety and security screening. This data is retained as
                 required by applicable laws and regulations.
               </p>
+              <div className="bg-blue-50 p-3 rounded-lg mt-3">
+                <p className="text-sm text-blue-800">
+                  <strong>Delivery Partners:</strong> Additional data privacy terms specific to delivery partners
+                  are detailed in our{" "}
+                  <button
+                    onClick={() => navigate("/dispatch-partner-terms")}
+                    className="text-blue-600 hover:text-blue-800 underline font-medium"
+                  >
+                    Dispatch Partner Terms of Use
+                  </button>
+                  .
+                </p>
+              </div>
             </div>
 
             <div>
@@ -358,11 +371,14 @@ const PrivacyPolicy = () => {
 
         {/* Navigation */}
         <Card>
-          <CardContent className="flex gap-4 justify-center">
+          <CardContent className="flex gap-4 justify-center flex-wrap">
             <Button onClick={() => navigate("/terms")}>
               Terms of Service
             </Button>
-            <Button variant="outline" onClick={() => navigate("/app/cookies")}>
+            <Button variant="outline" onClick={() => navigate("/dispatch-partner-terms")}>
+              Dispatch Partner Terms
+            </Button>
+            <Button variant="outline" onClick={() => navigate("/cookies")}>
               Cookie Policy
             </Button>
             <Button variant="outline" onClick={() => navigate("/")}>

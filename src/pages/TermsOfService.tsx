@@ -250,6 +250,19 @@ const TermsOfService = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            <div className="bg-blue-50 p-4 rounded-lg mb-4">
+              <p className="text-sm text-blue-800">
+                <strong>Note for Delivery Partners:</strong> Individuals applying to become delivery providers
+                are subject to additional terms outlined in our{" "}
+                <button
+                  onClick={() => navigate("/dispatch-partner-terms")}
+                  className="text-blue-600 hover:text-blue-800 underline font-medium"
+                >
+                  Dispatch Partner Terms of Use
+                </button>
+                , which includes comprehensive Data Privacy Policy and Earnings Agreement specifically for delivery partners.
+              </p>
+            </div>
             <div>
               <h4 className="font-semibold mb-2">Delivery Provider Requirements</h4>
               <p className="text-sm mb-2">To become a delivery provider, you must:</p>
@@ -544,7 +557,10 @@ const TermsOfService = () => {
             <Button onClick={() => navigate("/privacy")}>
               Privacy Policy
             </Button>
-            <Button variant="outline" onClick={() => navigate("/app/cookies")}>
+            <Button variant="outline" onClick={() => navigate("/dispatch-partner-terms")}>
+              Dispatch Partner Terms
+            </Button>
+            <Button variant="outline" onClick={() => navigate("/cookies")}>
               Cookie Policy
             </Button>
             <Button variant="outline" onClick={() => navigate("/app/advertising")}>
