@@ -414,6 +414,37 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Create Pack Dialog */}
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+        <DialogContent className={cn("max-w-md", isMobile && "w-[95vw] max-h-[90vh] overflow-y-auto")}>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Palette className="w-5 h-5 text-primary" />
+              Create Sticker Pack
+            </DialogTitle>
+            <DialogDescription>
+              Create your own custom sticker pack by uploading images or using AI generation
+            </DialogDescription>
+          </DialogHeader>
+          <StickerPackCreationDialog
+            isMobile={isMobile}
+            onClose={() => setShowCreateDialog(false)}
+            onPackCreated={(pack) => {
+              // Add the new pack to user's custom packs
+              setUserLibrary(prev => ({
+                ...prev,
+                customPacks: [...prev.customPacks, pack]
+              }));
+              setShowCreateDialog(false);
+              toast({
+                title: "Pack created!",
+                description: `${pack.name} has been added to your collection`,
+              });
+            }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
