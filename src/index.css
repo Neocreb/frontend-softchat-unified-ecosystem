@@ -1139,15 +1139,15 @@
   }
 }
 
-/* Better mobile input styling */
+/* Better mobile input styling and theme components */
 @layer components {
   .mobile-input {
-    @apply text-base;
+    @apply text-base platform-input;
     font-size: 16px; /* Keep 16px to prevent zoom on iOS */
   }
 
   .mobile-select {
-    @apply text-base;
+    @apply text-base platform-input;
     font-size: 16px; /* Keep 16px to prevent zoom on iOS */
   }
 
@@ -1155,6 +1155,82 @@
   .mobile-text-content {
     font-size: 1rem; /* 13px with our base */
     line-height: 1.5;
+    @apply text-foreground;
+  }
+
+  /* Enhanced theme components */
+  .theme-card {
+    @apply platform-card p-6;
+  }
+
+  .theme-card-compact {
+    @apply platform-card p-4;
+  }
+
+  .theme-nav {
+    @apply theme-surface theme-border border-b;
+  }
+
+  .theme-sidebar {
+    @apply bg-sidebar border-sidebar-border border-r text-sidebar-foreground;
+  }
+
+  .theme-content {
+    @apply bg-background text-foreground min-h-screen;
+  }
+
+  .theme-modal {
+    @apply theme-surface shadow-lg border theme-border rounded-lg;
+  }
+
+  .theme-dropdown {
+    @apply theme-surface theme-border border rounded-md shadow-md;
+  }
+
+  .theme-tooltip {
+    @apply bg-popover text-popover-foreground border theme-border rounded-md shadow-sm px-3 py-1.5 text-sm;
+  }
+
+  /* Social interaction components */
+  .social-button {
+    @apply platform-button px-3 py-1.5 theme-interactive;
+  }
+
+  .social-button-like {
+    @apply social-button theme-social-like;
+  }
+
+  .social-button-comment {
+    @apply social-button theme-social-comment;
+  }
+
+  .social-button-share {
+    @apply social-button theme-social-share;
+  }
+
+  .social-button-bookmark {
+    @apply social-button theme-social-bookmark;
+  }
+
+  /* Status indicators */
+  .status-success {
+    color: hsl(var(--success));
+    background-color: hsl(var(--success) / 0.1);
+  }
+
+  .status-warning {
+    color: hsl(var(--warning));
+    background-color: hsl(var(--warning) / 0.1);
+  }
+
+  .status-info {
+    color: hsl(var(--info));
+    background-color: hsl(var(--info) / 0.1);
+  }
+
+  .status-error {
+    @apply text-destructive;
+    background-color: hsl(var(--destructive) / 0.1);
   }
 }
 
@@ -1269,5 +1345,84 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
     touch-action: manipulation;
     user-select: none;
+  }
+
+  /* Comprehensive dark mode utilities */
+  .theme-surface {
+    @apply bg-card text-card-foreground;
+  }
+
+  .theme-surface-variant {
+    background-color: hsl(var(--platform-surface-variant));
+    color: hsl(var(--platform-foreground));
+  }
+
+  .theme-outline {
+    border-color: hsl(var(--platform-outline));
+  }
+
+  .theme-interactive {
+    @apply transition-colors duration-200 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+  }
+
+  .theme-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .theme-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80;
+  }
+
+  .theme-social-like {
+    color: hsl(var(--social-like));
+  }
+
+  .theme-social-comment {
+    color: hsl(var(--social-comment));
+  }
+
+  .theme-social-share {
+    color: hsl(var(--social-share));
+  }
+
+  .theme-social-bookmark {
+    color: hsl(var(--social-bookmark));
+  }
+
+  .theme-text-muted {
+    @apply text-muted-foreground;
+  }
+
+  .theme-border {
+    @apply border-border;
+  }
+
+  .theme-hover {
+    background-color: hsl(var(--hover-overlay));
+  }
+
+  .theme-active {
+    background-color: hsl(var(--active-overlay));
+  }
+
+  /* Platform specific utilities */
+  .platform-card {
+    @apply theme-surface theme-border border rounded-lg shadow-sm;
+  }
+
+  .platform-input {
+    @apply bg-background border-input border rounded-md px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .platform-button {
+    @apply theme-interactive inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .platform-nav-item {
+    @apply theme-interactive flex items-center px-3 py-2 rounded-md text-sm font-medium;
+  }
+
+  .platform-nav-active {
+    @apply bg-accent text-accent-foreground;
   }
 }
