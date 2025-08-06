@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 // Import enhanced components
-import { RealTimeNotifications, ActivityIndicator } from "./RealTimeNotifications";
+import { ActivityIndicator } from "./RealTimeNotifications";
 import { CustomizableDashboard } from "./DashboardWidgets";
 import { OnboardingTour, HelpCenter, ContextualHelp } from "./OnboardingTour";
 import { KeyboardShortcuts, AccessibilitySettings, SkipToContent } from "./KeyboardShortcuts";
@@ -251,7 +251,7 @@ export const EnhancedDashboardDemo: React.FC<EnhancedDashboardDemoProps> = ({ us
                     
                     <div className="flex flex-wrap gap-2 pt-4 border-t">
                       <Badge variant="outline">✨ Onboarding Tour</Badge>
-                      <Badge variant="outline">🎯 Contextual Help</Badge>
+                      <Badge variant="outline">���� Contextual Help</Badge>
                       <Badge variant="outline">♿ Accessibility Features</Badge>
                       <Badge variant="outline">📊 Performance Monitor</Badge>
                       <Badge variant="outline">🚀 Optimistic UI</Badge>
