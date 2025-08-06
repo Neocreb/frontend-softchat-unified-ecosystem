@@ -61,7 +61,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  to="/app/terms"
+                  to="/terms"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Terms of Service
@@ -69,7 +69,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/app/privacy"
+                  to="/privacy"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Privacy Policy
