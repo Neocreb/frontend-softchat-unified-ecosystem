@@ -393,17 +393,41 @@ export const ClientDashboard: React.FC = () => {
     </Card>
   );
 
-  // Simple header component
+  // Enhanced header component
   const ClientHeader = () => (
     <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
       <div className="px-4 sm:px-6 py-4">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg">
-            <Users className="w-6 h-6 text-white" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg">
+              <Users className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <ContextualHelp
+                title="Client Dashboard"
+                content="Your central hub for posting jobs, managing projects, and working with freelancers."
+              >
+                <h1 className="font-bold text-lg text-gray-900 dark:text-white">Client Dashboard</h1>
+              </ContextualHelp>
+              <div className="flex items-center gap-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">Hire freelancers and manage projects</p>
+                <ActivityIndicator isActive={true} label="Live" />
+              </div>
+            </div>
           </div>
-          <div>
-            <h1 className="font-bold text-lg text-gray-900 dark:text-white">Client Dashboard</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Hire freelancers and manage projects</p>
+
+          <div className="flex items-center gap-3">
+            <RealTimeNotifications userType="client" />
+            <Button
+              variant={isCustomizing ? "default" : "outline"}
+              size="sm"
+              onClick={() => setIsCustomizing(!isCustomizing)}
+              data-testid="customize-button"
+              className="hidden sm:flex items-center gap-2"
+            >
+              <Settings className="w-4 h-4" />
+              {isCustomizing ? "Done" : "Customize"}
+            </Button>
           </div>
         </div>
       </div>
