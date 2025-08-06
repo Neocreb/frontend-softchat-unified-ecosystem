@@ -917,12 +917,13 @@ export default function EnhancedCheckoutFlow({
                 Previous
               </Button>
               <div className="flex gap-2">
-                {currentStep < 3 ? (
+                {currentStep < (hasPhysicalItems ? 4 : 2) ? (
                   <Button
-                    onClick={() => setCurrentStep(Math.min(3, currentStep + 1))}
+                    onClick={() => setCurrentStep(Math.min(hasPhysicalItems ? 4 : 2, currentStep + 1))}
                     disabled={
-                      (currentStep === 1 && !selectedShippingAddress) ||
-                      (currentStep === 2 && !selectedPaymentMethod)
+                      (hasPhysicalItems && currentStep === 1 && !selectedShippingAddress) ||
+                      (hasPhysicalItems && currentStep === 2 && !selectedDeliveryProvider) ||
+                      ((hasPhysicalItems ? currentStep === 3 : currentStep === 1) && !selectedPaymentMethod)
                     }
                   >
                     Next
@@ -932,7 +933,7 @@ export default function EnhancedCheckoutFlow({
                     onClick={handlePlaceOrder}
                     disabled={
                       isProcessing ||
-                      !selectedShippingAddress ||
+                      (hasPhysicalItems && !selectedShippingAddress) ||
                       !selectedPaymentMethod
                     }
                     className="bg-green-600 hover:bg-green-700"
