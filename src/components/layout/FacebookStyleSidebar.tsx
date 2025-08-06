@@ -119,6 +119,13 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
           href: "/app/delivery",
           badge: "Pending",
         };
+      } else if (providerStatus.isProvider && (providerStatus.status === "rejected" || providerStatus.status === "suspended")) {
+        return {
+          icon: <Truck className="w-8 h-8 text-red-600" />,
+          label: "Provider Status",
+          href: "/app/delivery",
+          badge: providerStatus.status === "suspended" ? "Suspended" : "Rejected",
+        };
       } else {
         return {
           icon: <Truck className="w-8 h-8 text-blue-600" />,
