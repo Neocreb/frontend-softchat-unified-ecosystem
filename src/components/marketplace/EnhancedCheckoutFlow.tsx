@@ -186,10 +186,14 @@ export default function EnhancedCheckoutFlow({
     hasPhysicalItems,
   ]);
 
-  const steps = [
+  const steps = hasPhysicalItems ? [
     { id: 1, title: "Shipping", icon: Truck },
-    { id: 2, title: "Payment", icon: CreditCard },
-    { id: 3, title: "Review", icon: Check },
+    { id: 2, title: "Delivery", icon: Users },
+    { id: 3, title: "Payment", icon: CreditCard },
+    { id: 4, title: "Review", icon: Check },
+  ] : [
+    { id: 1, title: "Payment", icon: CreditCard },
+    { id: 2, title: "Review", icon: Check },
   ];
 
   const shippingMethods = [
