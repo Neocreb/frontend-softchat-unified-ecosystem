@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,6 +76,10 @@ const RegisterForm = ({
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </Button>
         </div>
+        <div className="text-xs text-muted-foreground">
+          <p>• At least 8 characters</p>
+          <p>• Use a strong, unique password</p>
+        </div>
       </div>
 
       {error && (
@@ -89,6 +92,10 @@ const RegisterForm = ({
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? "Processing..." : "Create Account"}
       </Button>
+
+      <div className="mt-4 text-center text-xs text-muted-foreground">
+        <p>Already have an account? Switch to the Login tab.</p>
+      </div>
     </form>
   );
 };
