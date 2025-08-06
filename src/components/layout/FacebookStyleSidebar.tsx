@@ -102,6 +102,35 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
     }
   };
 
+  // Dynamic delivery provider shortcut based on user status
+  const getDeliveryProviderShortcut = () => {
+    if (!providerStatus.loading) {
+      if (providerStatus.isProvider && providerStatus.status === "verified") {
+        return {
+          icon: <Truck className="w-8 h-8 text-emerald-600" />,
+          label: "Provider Dashboard",
+          href: "/app/delivery/provider/dashboard",
+          badge: "Active",
+        };
+      } else if (providerStatus.isProvider && providerStatus.status === "pending") {
+        return {
+          icon: <Truck className="w-8 h-8 text-yellow-600" />,
+          label: "Provider Status",
+          href: "/app/delivery",
+          badge: "Pending",
+        };
+      } else {
+        return {
+          icon: <Truck className="w-8 h-8 text-blue-600" />,
+          label: "Become Provider",
+          href: "/app/delivery/provider/register",
+          badge: "Apply",
+        };
+      }
+    }
+    return null;
+  };
+
   const shortcuts = [
     {
       icon: <MessageCircle className="w-8 h-8 text-blue-600" />,
