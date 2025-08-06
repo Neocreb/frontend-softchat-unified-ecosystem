@@ -796,6 +796,22 @@ export const FreelanceDashboard: React.FC = () => {
         )}
       </div>
 
+      {/* Enhanced Components */}
+      <KeyboardShortcuts
+        onNavigate={setActiveTab}
+        onToggleCustomization={() => setIsCustomizing(!isCustomizing)}
+      />
+      <AccessibilitySettings />
+      <HelpCenter />
+      <PerformanceMonitor />
+
+      <OnboardingTour
+        userType="freelancer"
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+        onComplete={handleTourComplete}
+      />
+
       {/* Review Modal */}
       {showReviewModal && selectedProject && (
         <ReviewForm
