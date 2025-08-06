@@ -332,9 +332,9 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden min-h-0">
           <ScrollArea className="h-full">
-            <div className="p-4">
+            <div className={cn("p-3 md:p-4", isMobile && "pb-6")}>
               {/* Recent Stickers */}
               <TabsContent value="recent" className="mt-0">
                 {renderStickerGrid(filteredStickers)}
