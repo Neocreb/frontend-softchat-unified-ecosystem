@@ -123,7 +123,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
         return {
           icon: <Truck className="w-8 h-8 text-blue-600" />,
           label: "Become Provider",
-          href: "/app/delivery/provider/register",
+          href: "/app/delivery",
           badge: "Apply",
         };
       }
