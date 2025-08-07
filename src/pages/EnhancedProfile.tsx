@@ -1027,7 +1027,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* About Tab */}
                   <TabsTrigger
                     value="about"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
+                    className="group relative flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 hover:bg-gray-50/80 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Users className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
