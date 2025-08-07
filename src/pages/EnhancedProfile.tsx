@@ -1118,8 +1118,14 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </div>
               </div>
 
-              {/* Tab Contents */}
-              <div className="p-3 sm:p-4 lg:p-6">
+              {/* Enhanced Tab Contents */}
+              <div className="relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-white via-gray-50/30 to-white">
+                {/* Subtle background pattern */}
+                <div className="absolute inset-0 opacity-[0.02]">
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }}></div>
+                </div>
                 {/* Posts Tab */}
                 <TabsContent value="posts" className="space-y-6 mt-0">
                   <div className="flex items-center justify-between">
