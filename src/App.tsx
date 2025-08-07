@@ -71,6 +71,7 @@ import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
 import SellerDashboard from "./pages/marketplace/SellerDashboard";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
+import MarketplaceOrders from "./pages/marketplace/MarketplaceOrders";
 
 // Delivery system imports
 import DeliveryHub from "./pages/DeliveryHub";
