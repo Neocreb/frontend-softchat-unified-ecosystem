@@ -989,72 +989,133 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
             </div>
           </Card>
 
-          {/* Enhanced Horizontal Scrolling Tabs */}
-          <Card>
+          {/* Modern Beautiful Button Tabs */}
+          <Card className="backdrop-blur-sm bg-white/95 border border-gray-100/50 shadow-xl">
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <div className="relative border-b overflow-hidden">
-                <TabsList className="flex w-full overflow-x-auto gap-0 p-0 h-auto bg-transparent whitespace-nowrap scrollbar-hide horizontal-tabs-scroll">
+              {/* Beautiful tab header with gradient background */}
+              <div className="relative overflow-hidden bg-gradient-to-r from-slate-50/80 via-white to-slate-50/80 p-2 sm:p-3">
+                {/* Animated background decoration */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-purple-50/20 to-pink-50/30 opacity-50"></div>
+                <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-radial from-blue-100/40 to-transparent rounded-full blur-2xl transform -translate-x-16 -translate-y-16"></div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-radial from-purple-100/40 to-transparent rounded-full blur-2xl transform translate-x-16 translate-y-16"></div>
+
+                <TabsList className="relative flex w-full overflow-x-auto gap-2 sm:gap-3 p-1 h-auto bg-white/60 backdrop-blur-md rounded-xl border border-white/20 shadow-lg whitespace-nowrap scrollbar-hide">
+                  {/* Posts Tab */}
                   <TabsTrigger
                     value="posts"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
                   >
-                    <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Posts</span>
+                    <div className="relative">
+                      <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "posts" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">Posts</span>
                     <Badge
                       variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
+                      className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
                       {mockPosts.length}
                     </Badge>
+                    {activeTab === "posts" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/20 to-blue-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
 
+                  {/* Media Tab */}
                   <TabsTrigger
                     value="media"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
                   >
-                    <Camera className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Media</span>
+                    <div className="relative">
+                      <Camera className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "media" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">Media</span>
                     <Badge
                       variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
+                      className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
                       {mockMedia.length}
                     </Badge>
+                    {activeTab === "media" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-400/20 to-purple-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
+
+                  {/* Studio Tab */}
                   <TabsTrigger
                     value="studio"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
                     onClick={() => navigate("/app/unified-creator-studio")}
                   >
-                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span className="hidden sm:inline">Creator Studio</span>
-                    <span className="sm:hidden">Studio</span>
+                    <div className="relative">
+                      <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "studio" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium hidden sm:inline">Creator Studio</span>
+                    <span className="font-medium sm:hidden">Studio</span>
+                    {activeTab === "studio" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-400/20 to-indigo-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
+
+                  {/* Activity Tab */}
                   <TabsTrigger
                     value="activity"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
                   >
-                    <Activity className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Activity</span>
+                    <div className="relative">
+                      <Activity className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "activity" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">Activity</span>
                     <Badge
                       variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
+                      className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
                       {mockActivity.length}
                     </Badge>
+                    {activeTab === "activity" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
+
+                  {/* About Tab */}
                   <TabsTrigger
                     value="about"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
                   >
-                    <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>About</span>
+                    <div className="relative">
+                      <Users className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "about" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">About</span>
+                    {activeTab === "about" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-orange-400/20 to-orange-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
                 </TabsList>
+
+                {/* Scroll indicator dots */}
+                <div className="flex justify-center mt-3 gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-60"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 opacity-40"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-pink-400 to-orange-400 opacity-60"></div>
+                </div>
               </div>
 
               {/* Tab Contents */}
