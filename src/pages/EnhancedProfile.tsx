@@ -826,7 +826,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     {/* Followers */}
                     <div
                       className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${username}/followers`)}
+                      onClick={() => navigate(`/app/profile/${targetUsername}/followers`)}
                     >
                       <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
                         <div className="text-center">
