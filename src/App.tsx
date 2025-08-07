@@ -66,7 +66,6 @@ import ProfileStats from "./pages/profile/ProfileStats";
 import ProfileFollowers from "./pages/profile/ProfileFollowers";
 import ProfileFollowing from "./pages/profile/ProfileFollowing";
 import ProfileViews from "./pages/profile/ProfileViews";
-import ProfileViews from "./pages/profile/ProfileViews";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
 import EnhancedMarketplace from "./pages/EnhancedMarketplace";
