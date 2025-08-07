@@ -180,71 +180,43 @@ const UnifiedNotifications: React.FC = () => {
     return filtered;
   }, [notifications, activeCategory, viewMode, searchQuery, sortMode]);
 
-  // Utility functions
-  const markAsRead = (id: string) => {
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, read: true } : n)
-    );
-  };
-
-  const markAsUnread = (id: string) => {
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, read: false } : n)
-    );
-  };
-
-  const toggleStar = (id: string) => {
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, starred: !n.starred } : n)
-    );
-  };
-
-  const archiveNotification = (id: string) => {
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, archived: true } : n)
-    );
+  // Utility functions using context methods
+  const handleArchive = (id: string) => {
+    archiveNotification(id);
     toast({ title: "Notification archived" });
   };
 
-  const deleteNotification = (id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
+  const handleDelete = (id: string) => {
+    deleteNotification(id);
     toast({ title: "Notification deleted" });
   };
 
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  const handleMarkAllAsRead = () => {
+    markAllAsRead();
     toast({ title: "All notifications marked as read" });
   };
 
   const handleBulkAction = (action: "read" | "unread" | "star" | "archive" | "delete") => {
     const ids = Array.from(selectedNotifications);
-    
+
     switch (action) {
       case "read":
-        setNotifications(prev => 
-          prev.map(n => ids.includes(n.id) ? { ...n, read: true } : n)
-        );
+        bulkMarkAsRead(ids);
         break;
       case "unread":
-        setNotifications(prev => 
-          prev.map(n => ids.includes(n.id) ? { ...n, read: false } : n)
-        );
+        ids.forEach(id => markAsUnread(id));
         break;
       case "star":
-        setNotifications(prev => 
-          prev.map(n => ids.includes(n.id) ? { ...n, starred: true } : n)
-        );
+        ids.forEach(id => toggleStar(id));
         break;
       case "archive":
-        setNotifications(prev => 
-          prev.map(n => ids.includes(n.id) ? { ...n, archived: true } : n)
-        );
+        bulkArchive(ids);
         break;
       case "delete":
-        setNotifications(prev => prev.filter(n => !ids.includes(n.id)));
+        bulkDelete(ids);
         break;
     }
-    
+
     setSelectedNotifications(new Set());
     toast({ title: `${ids.length} notifications ${action === "delete" ? "deleted" : action === "read" ? "marked as read" : action === "unread" ? "marked as unread" : action === "star" ? "starred" : "archived"}` });
   };
