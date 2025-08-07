@@ -66,6 +66,10 @@ import {
   Trophy,
   Zap,
   Play,
+  Wallet,
+  Bell,
+  Send,
+  Truck,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
