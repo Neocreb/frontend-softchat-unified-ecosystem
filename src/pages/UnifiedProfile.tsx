@@ -107,7 +107,7 @@ const UnifiedProfile: React.FC<UnifiedProfileProps> = ({
   const { username: paramUsername } = useParams<{ username: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { balance, transactions, isLoading: walletLoading } = useWallet();
+  const { walletBalance, transactions, isLoading: walletLoading } = useWalletContext();
   const { toast } = useToast();
 
   const targetUsername = propUsername || paramUsername;
