@@ -596,12 +596,12 @@ const UnifiedNotifications: React.FC = () => {
                                           {notification.starred ? "Unstar" : "Star"}
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={() => archiveNotification(notification.id)}>
+                                        <DropdownMenuItem onClick={() => handleArchive(notification.id)}>
                                           <Archive className="w-4 h-4 mr-2" />
                                           Archive
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem 
-                                          onClick={() => deleteNotification(notification.id)}
+                                        <DropdownMenuItem
+                                          onClick={() => handleDelete(notification.id)}
                                           className="text-destructive"
                                         >
                                           <Trash2 className="w-4 h-4 mr-2" />
