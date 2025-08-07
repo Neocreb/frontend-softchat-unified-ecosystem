@@ -51,6 +51,12 @@ export const MobileMarketplaceNav: React.FC<MobileMarketplaceNavProps> = ({
       badge: null,
     },
     {
+      icon: Package,
+      label: "Orders",
+      path: "/marketplace/orders",
+      badge: null,
+    },
+    {
       icon: ShoppingBag,
       label: "Cart",
       path: "/marketplace/cart",
