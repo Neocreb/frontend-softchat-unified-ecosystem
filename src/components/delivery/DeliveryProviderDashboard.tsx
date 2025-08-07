@@ -71,8 +71,15 @@ import {
   PlusCircle,
   Edit,
   Trash2,
+  ArrowRight,
+  ExternalLink,
+  Send,
+  History,
+  RefreshCw,
+  Info,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useWalletContext } from "@/contexts/WalletContext";
 import { cn } from "@/lib/utils";
 
 interface DeliveryAssignment {
@@ -106,7 +113,7 @@ interface CustomerRating {
   packageConditionRating: number;
 }
 
-interface EarningsRecord {
+interface DeliveryEarnings {
   id: string;
   type: 'delivery' | 'bonus' | 'tip' | 'penalty';
   amount: number;
@@ -114,16 +121,6 @@ interface EarningsRecord {
   description: string;
   orderNumber?: string;
   status: 'completed' | 'pending' | 'processing';
-}
-
-interface WithdrawalRequest {
-  id: string;
-  amount: number;
-  method: string;
-  accountDetails: string;
-  requestDate: string;
-  status: 'pending' | 'processing' | 'completed' | 'rejected';
-  processingTime: string;
 }
 
 interface Vehicle {
@@ -149,12 +146,11 @@ interface Vehicle {
 interface ProviderStats {
   totalDeliveries: number;
   completedToday: number;
-  totalEarnings: number;
   todayEarnings: number;
   weekEarnings: number;
   monthEarnings: number;
-  availableBalance: number;
-  pendingBalance: number;
+  totalEarnings: number;
+  deliveryBalance: number; // Delivery earnings not yet transferred to wallet
   rating: number;
   onTimeRate: number;
   activeAssignments: number;
@@ -168,12 +164,11 @@ interface ProviderStats {
 const mockStats: ProviderStats = {
   totalDeliveries: 247,
   completedToday: 8,
-  totalEarnings: 3420.50,
   todayEarnings: 156.75,
   weekEarnings: 892.40,
   monthEarnings: 3420.50,
-  availableBalance: 2150.30,
-  pendingBalance: 456.20,
+  totalEarnings: 5420.50,
+  deliveryBalance: 1450.30, // Available for transfer to main wallet
   rating: 4.8,
   onTimeRate: 94.2,
   activeAssignments: 3,
@@ -209,21 +204,9 @@ const mockRatings: CustomerRating[] = [
     communicationRating: 4,
     packageConditionRating: 5,
   },
-  {
-    id: "3",
-    customerName: "Emma Davis",
-    orderNumber: "SC240003",
-    rating: 5,
-    comment: "Amazing service! Driver went above and beyond to ensure safe delivery. Highly recommend!",
-    deliveryDate: "2024-01-13T11:20:00Z",
-    responseTime: 4.9,
-    professionalismRating: 5,
-    communicationRating: 5,
-    packageConditionRating: 5,
-  },
 ];
 
-const mockEarnings: EarningsRecord[] = [
+const mockEarnings: DeliveryEarnings[] = [
   {
     id: "1",
     type: "delivery",
@@ -249,49 +232,6 @@ const mockEarnings: EarningsRecord[] = [
     date: "2024-01-15T00:00:00Z",
     description: "Peak hour delivery bonus",
     status: "completed",
-  },
-];
-
-const mockWithdrawals: WithdrawalRequest[] = [
-  {
-    id: "1",
-    amount: 500.00,
-    method: "Bank Transfer",
-    accountDetails: "****1234",
-    requestDate: "2024-01-10T10:00:00Z",
-    status: "completed",
-    processingTime: "1-2 business days",
-  },
-  {
-    id: "2",
-    amount: 250.00,
-    method: "PayPal",
-    accountDetails: "****@email.com",
-    requestDate: "2024-01-12T15:30:00Z",
-    status: "processing",
-    processingTime: "24-48 hours",
-  },
-];
-
-const mockVehicles: Vehicle[] = [
-  {
-    id: "1",
-    type: "motorcycle",
-    make: "Honda",
-    model: "PCX 150",
-    year: 2022,
-    licensePlate: "ABC-1234",
-    insurance: {
-      provider: "SafeGuard Insurance",
-      policyNumber: "POL123456789",
-      expiryDate: "2024-12-31",
-      status: "active",
-    },
-    maintenance: {
-      lastService: "2024-01-01",
-      nextService: "2024-04-01",
-      status: "good",
-    },
   },
 ];
 
@@ -330,16 +270,14 @@ export default function DeliveryProviderDashboard() {
   const [assignments, setAssignments] = useState<DeliveryAssignment[]>(mockAssignments);
   const [stats, setStats] = useState<ProviderStats>(mockStats);
   const [ratings, setRatings] = useState<CustomerRating[]>(mockRatings);
-  const [earnings, setEarnings] = useState<EarningsRecord[]>(mockEarnings);
-  const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>(mockWithdrawals);
-  const [vehicles, setVehicles] = useState<Vehicle[]>(mockVehicles);
+  const [earnings, setEarnings] = useState<DeliveryEarnings[]>(mockEarnings);
   const [selectedAssignment, setSelectedAssignment] = useState<DeliveryAssignment | null>(null);
   const [showAssignmentDetails, setShowAssignmentDetails] = useState(false);
-  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [withdrawMethod, setWithdrawMethod] = useState("");
+  const [showTransferModal, setShowTransferModal] = useState(false);
+  const [transferAmount, setTransferAmount] = useState("");
   const [isOnline, setIsOnline] = useState(true);
   const { toast } = useToast();
+  const { walletBalance, refreshWallet } = useWalletContext();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -390,51 +328,62 @@ export default function DeliveryProviderDashboard() {
     return new Date(dateString).toLocaleString();
   };
 
-  const handleWithdraw = () => {
-    if (!withdrawAmount || !withdrawMethod) {
+  const handleTransferToWallet = async () => {
+    if (!transferAmount) {
       toast({
         title: "Error",
-        description: "Please fill in all withdrawal details",
+        description: "Please enter an amount to transfer",
         variant: "destructive",
       });
       return;
     }
 
-    const amount = parseFloat(withdrawAmount);
-    if (amount > stats.availableBalance) {
+    const amount = parseFloat(transferAmount);
+    if (amount > stats.deliveryBalance) {
       toast({
         title: "Error",
-        description: "Insufficient balance for withdrawal",
+        description: "Insufficient delivery balance for transfer",
         variant: "destructive",
       });
       return;
     }
 
-    const newWithdrawal: WithdrawalRequest = {
-      id: Date.now().toString(),
-      amount,
-      method: withdrawMethod,
-      accountDetails: "****1234",
-      requestDate: new Date().toISOString(),
-      status: "pending",
-      processingTime: withdrawMethod === "PayPal" ? "24-48 hours" : "1-2 business days",
-    };
+    if (amount < 5) {
+      toast({
+        title: "Error",
+        description: "Minimum transfer amount is $5.00",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    setWithdrawals(prev => [newWithdrawal, ...prev]);
-    setStats(prev => ({
-      ...prev,
-      availableBalance: prev.availableBalance - amount,
-      pendingBalance: prev.pendingBalance + amount,
-    }));
+    try {
+      // Update local delivery balance
+      setStats(prev => ({
+        ...prev,
+        deliveryBalance: prev.deliveryBalance - amount,
+      }));
 
-    setShowWithdrawModal(false);
-    setWithdrawAmount("");
-    setWithdrawMethod("");
+      // This would typically make an API call to transfer funds to the main wallet
+      // For demo purposes, we'll simulate a successful transfer
+      
+      setShowTransferModal(false);
+      setTransferAmount("");
 
-    toast({
-      title: "Withdrawal Requested",
-      description: `Your withdrawal of ${formatCurrency(amount)} has been submitted and is being processed.`,
-    });
+      // Refresh wallet to show updated balance
+      await refreshWallet();
+
+      toast({
+        title: "Transfer Successful",
+        description: `${formatCurrency(amount)} has been transferred to your main wallet under 'Ecommerce' category as delivery earnings.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Transfer Failed",
+        description: "Unable to transfer funds. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const renderStarRating = (rating: number, size: "sm" | "md" = "sm") => {
@@ -458,11 +407,11 @@ export default function DeliveryProviderDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-6">
-      {/* Enhanced Header */}
-      <div className="flex items-center justify-between">
+      {/* Header with Status */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Delivery Provider Dashboard</h1>
-          <p className="text-gray-600">Comprehensive management hub for your delivery operations</p>
+          <h1 className="text-3xl font-bold">Delivery Provider Hub</h1>
+          <p className="text-gray-600">Professional delivery management dashboard</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -471,109 +420,191 @@ export default function DeliveryProviderDashboard() {
               isOnline ? "bg-green-500" : "bg-red-500"
             )} />
             <span className="text-sm font-medium">
-              {isOnline ? "Online" : "Offline"}
+              {isOnline ? "Online & Available" : "Offline"}
             </span>
           </div>
           <Button
             onClick={() => setIsOnline(!isOnline)}
             variant={isOnline ? "outline" : "default"}
+            size="sm"
           >
             {isOnline ? "Go Offline" : "Go Online"}
           </Button>
         </div>
       </div>
 
-      {/* Enhanced Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Available Balance</p>
-                <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.availableBalance)}</p>
-                <p className="text-xs text-gray-500">Ready to withdraw</p>
+      {/* Main Dashboard Layout */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+        {/* Left Sidebar - Earnings & Quick Actions */}
+        <div className="xl:col-span-1 space-y-6">
+          {/* Earnings Summary Card */}
+          <Card className="border-2 border-green-200 bg-gradient-to-br from-green-50 to-green-100">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-green-800">
+                <DollarSign className="h-5 w-5" />
+                Delivery Earnings
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="text-center">
+                <p className="text-sm text-green-700">Available Balance</p>
+                <p className="text-3xl font-bold text-green-800">{formatCurrency(stats.deliveryBalance)}</p>
+                <p className="text-xs text-green-600">Ready to transfer</p>
               </div>
-              <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Wallet className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Today's Earnings</p>
-                <p className="text-2xl font-bold">{formatCurrency(stats.todayEarnings)}</p>
-                <p className="text-xs text-gray-500">{stats.completedToday} deliveries</p>
-              </div>
-              <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Customer Rating</p>
-                <div className="flex items-center gap-2">
-                  <p className="text-2xl font-bold">{stats.rating}</p>
-                  <div className="flex items-center">
-                    {renderStarRating(stats.rating)}
-                  </div>
+              
+              <Button 
+                onClick={() => setShowTransferModal(true)}
+                className="w-full bg-green-600 hover:bg-green-700"
+                disabled={stats.deliveryBalance < 5}
+              >
+                <Send className="h-4 w-4 mr-2" />
+                Transfer to Wallet
+              </Button>
+              
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="text-center p-2 bg-white/50 rounded">
+                  <p className="text-xs text-green-700">Today</p>
+                  <p className="font-bold text-green-800">{formatCurrency(stats.todayEarnings)}</p>
                 </div>
-                <p className="text-xs text-gray-500">{stats.totalDeliveries} reviews</p>
+                <div className="text-center p-2 bg-white/50 rounded">
+                  <p className="text-xs text-green-700">This Week</p>
+                  <p className="font-bold text-green-800">{formatCurrency(stats.weekEarnings)}</p>
+                </div>
               </div>
-              <div className="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <Star className="h-6 w-6 text-yellow-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Completion Rate</p>
-                <p className="text-2xl font-bold">{stats.completionRate}%</p>
-                <p className="text-xs text-gray-500">Performance metric</p>
+              <div className="pt-2 border-t border-green-300">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-green-700">Main Wallet Balance:</span>
+                  <span className="font-medium text-green-800">
+                    {formatCurrency(walletBalance?.ecommerce || 0)}
+                  </span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full mt-2 border-green-300 text-green-700 hover:bg-green-50"
+                  onClick={() => window.open('/app/wallet', '_blank')}
+                >
+                  <ExternalLink className="h-3 w-3 mr-2" />
+                  View Main Wallet
+                </Button>
               </div>
-              <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <Target className="h-6 w-6 text-purple-600" />
+            </CardContent>
+          </Card>
+
+          {/* Quick Stats */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Performance</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Rating</span>
+                <div className="flex items-center gap-1">
+                  <span className="font-medium">{stats.rating}</span>
+                  {renderStarRating(stats.rating)}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">On-Time Rate</span>
+                <span className="font-medium">{stats.onTimeRate}%</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Completion Rate</span>
+                <span className="font-medium">{stats.completionRate}%</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Total Deliveries</span>
+                <span className="font-medium">{stats.totalDeliveries}</span>
+              </div>
+            </CardContent>
+          </Card>
 
-      {/* Enhanced Main Content */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="earnings">Earnings</TabsTrigger>
-          <TabsTrigger value="ratings">Ratings</TabsTrigger>
-          <TabsTrigger value="deliveries">Deliveries</TabsTrigger>
-          <TabsTrigger value="vehicles">Vehicles</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="schedule">Schedule</TabsTrigger>
-          <TabsTrigger value="support">Support</TabsTrigger>
-        </TabsList>
+          {/* Quick Actions */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Button variant="outline" size="sm" className="w-full justify-start">
+                <Route className="h-4 w-4 mr-2" />
+                Optimize Routes
+              </Button>
+              <Button variant="outline" size="sm" className="w-full justify-start">
+                <Calendar className="h-4 w-4 mr-2" />
+                Schedule
+              </Button>
+              <Button variant="outline" size="sm" className="w-full justify-start">
+                <HeadphonesIcon className="h-4 w-4 mr-2" />
+                Support
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              {/* Active Deliveries Quick View */}
+        {/* Main Content Area */}
+        <div className="xl:col-span-3">
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="deliveries">Active</TabsTrigger>
+              <TabsTrigger value="earnings">Earnings</TabsTrigger>
+              <TabsTrigger value="ratings">Reviews</TabsTrigger>
+              <TabsTrigger value="vehicles">Vehicles</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            </TabsList>
+
+            {/* Overview Tab */}
+            <TabsContent value="overview" className="space-y-6">
+              {/* Today's Summary */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600">Today's Deliveries</p>
+                        <p className="text-2xl font-bold">{stats.completedToday}</p>
+                      </div>
+                      <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Package className="h-5 w-5 text-blue-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600">Active Orders</p>
+                        <p className="text-2xl font-bold">{stats.activeAssignments}</p>
+                      </div>
+                      <div className="h-10 w-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <Truck className="h-5 w-5 text-orange-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600">Avg Delivery Time</p>
+                        <p className="text-2xl font-bold">{stats.averageDeliveryTime}m</p>
+                      </div>
+                      <div className="h-10 w-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <Timer className="h-5 w-5 text-purple-600" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Active Deliveries Preview */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Truck className="h-5 w-5" />
-                    Active Deliveries ({stats.activeAssignments})
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Active Deliveries</span>
+                    <Badge variant="secondary">{stats.activeAssignments} active</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -583,157 +614,173 @@ export default function DeliveryProviderDashboard() {
                         <Badge className={getStatusColor(assignment.status)}>
                           {assignment.status.replace('_', ' ')}
                         </Badge>
-                        <span className="font-medium">#{assignment.orderNumber}</span>
+                        <div>
+                          <p className="font-medium">#{assignment.orderNumber}</p>
+                          <p className="text-sm text-gray-500">{assignment.deliveryAddress.name}</p>
+                        </div>
                       </div>
-                      <span className="text-green-600 font-medium">{formatCurrency(assignment.deliveryFee)}</span>
+                      <div className="text-right">
+                        <p className="font-bold text-green-600">{formatCurrency(assignment.deliveryFee)}</p>
+                        <Button size="sm" variant="outline" className="mt-1">
+                          <Eye className="h-3 w-3 mr-1" />
+                          View
+                        </Button>
+                      </div>
                     </div>
                   ))}
-                  <Button variant="outline" className="w-full mt-3">
-                    View All Deliveries
-                  </Button>
+                  {assignments.filter(a => ["accepted", "picked_up", "in_transit"].includes(a.status)).length === 0 && (
+                    <p className="text-center text-gray-500 py-4">No active deliveries</p>
+                  )}
                 </CardContent>
               </Card>
 
               {/* Recent Earnings */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
-                    Recent Earnings
-                  </CardTitle>
+                  <CardTitle>Recent Earnings</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {earnings.slice(0, 5).map((earning) => (
-                    <div key={earning.id} className="flex items-center justify-between p-3 border-b last:border-b-0">
-                      <div>
-                        <p className="font-medium">{earning.description}</p>
-                        <p className="text-sm text-gray-500">{formatDateTime(earning.date)}</p>
+                  <div className="space-y-3">
+                    {earnings.slice(0, 5).map((earning) => (
+                      <div key={earning.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className={cn(
+                            "w-8 h-8 rounded-lg flex items-center justify-center",
+                            earning.type === 'delivery' ? "bg-blue-100" :
+                            earning.type === 'tip' ? "bg-green-100" :
+                            earning.type === 'bonus' ? "bg-purple-100" : "bg-red-100"
+                          )}>
+                            {earning.type === 'delivery' && <Truck className="h-4 w-4 text-blue-600" />}
+                            {earning.type === 'tip' && <DollarSign className="h-4 w-4 text-green-600" />}
+                            {earning.type === 'bonus' && <Award className="h-4 w-4 text-purple-600" />}
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">{earning.description}</p>
+                            <p className="text-xs text-gray-500">{formatDateTime(earning.date)}</p>
+                          </div>
+                        </div>
+                        <span className="font-bold text-green-600">+{formatCurrency(earning.amount)}</span>
                       </div>
-                      <span className="text-green-600 font-medium">+{formatCurrency(earning.amount)}</span>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="space-y-6">
-              {/* Performance Summary */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    Performance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>On-Time Rate</span>
-                      <span>{stats.onTimeRate}%</span>
-                    </div>
-                    <Progress value={stats.onTimeRate} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>Customer Satisfaction</span>
-                      <span>{stats.customerSatisfaction}/5</span>
-                    </div>
-                    <Progress value={(stats.customerSatisfaction / 5) * 100} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span>Completion Rate</span>
-                      <span>{stats.completionRate}%</span>
-                    </div>
-                    <Progress value={stats.completionRate} className="h-2" />
+                    ))}
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
 
-              {/* Quick Actions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Route className="h-4 w-4 mr-2" />
-                    View Optimized Routes
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Manage Schedule
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <HeadphonesIcon className="h-4 w-4 mr-2" />
-                    Contact Support
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
+            {/* Active Deliveries Tab */}
+            <TabsContent value="deliveries" className="space-y-4">
+              {assignments.filter(a => ["accepted", "picked_up", "in_transit"].includes(a.status)).map((assignment) => (
+                <Card key={assignment.id} className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => {
+                    setSelectedAssignment(assignment);
+                    setShowAssignmentDetails(true);
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <Badge className={getStatusColor(assignment.status)}>
+                          {getStatusIcon(assignment.status)}
+                          <span className="ml-1 capitalize">{assignment.status.replace('_', ' ')}</span>
+                        </Badge>
+                        <span className="font-medium">#{assignment.orderNumber}</span>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-green-600">{formatCurrency(assignment.deliveryFee)}</p>
+                        <p className="text-xs text-gray-500">Delivery fee</p>
+                      </div>
+                    </div>
 
-        {/* Enhanced Earnings Tab */}
-        <TabsContent value="earnings" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
-              {/* Earnings Summary */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card>
-                  <CardContent className="p-4">
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">This Week</p>
-                      <p className="text-xl font-bold">{formatCurrency(stats.weekEarnings)}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <div className="flex items-start gap-2">
+                          <MapPin className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium text-sm">Pickup</p>
+                            <p className="text-sm text-gray-600">{assignment.pickupAddress.name}</p>
+                            <p className="text-xs text-gray-500">{assignment.pickupAddress.address}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-start gap-2">
+                          <MapPin className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium text-sm">Delivery</p>
+                            <p className="text-sm text-gray-600">{assignment.deliveryAddress.name}</p>
+                            <p className="text-xs text-gray-500">{assignment.deliveryAddress.address}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                          <Package className="h-4 w-4" />
+                          {assignment.packageDetails.weight}kg
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          ETA: {formatDateTime(assignment.estimatedDeliveryTime)}
+                        </span>
+                      </div>
+                      <Button size="sm">
+                        <Navigation className="h-4 w-4 mr-2" />
+                        Navigate
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
+              ))}
+            </TabsContent>
+
+            {/* Earnings Tab */}
+            <TabsContent value="earnings" className="space-y-6">
+              {/* Earnings Overview */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
-                  <CardContent className="p-4">
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">This Month</p>
-                      <p className="text-xl font-bold">{formatCurrency(stats.monthEarnings)}</p>
-                    </div>
+                  <CardContent className="p-4 text-center">
+                    <p className="text-sm text-gray-600">This Week</p>
+                    <p className="text-xl font-bold">{formatCurrency(stats.weekEarnings)}</p>
                   </CardContent>
                 </Card>
                 <Card>
-                  <CardContent className="p-4">
-                    <div className="text-center">
-                      <p className="text-sm text-gray-600">Total Tips</p>
-                      <p className="text-xl font-bold text-green-600">{formatCurrency(stats.totalTips)}</p>
-                    </div>
+                  <CardContent className="p-4 text-center">
+                    <p className="text-sm text-gray-600">This Month</p>
+                    <p className="text-xl font-bold">{formatCurrency(stats.monthEarnings)}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <p className="text-sm text-gray-600">Total Tips</p>
+                    <p className="text-xl font-bold text-green-600">{formatCurrency(stats.totalTips)}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <p className="text-sm text-gray-600">Bonuses</p>
+                    <p className="text-xl font-bold text-purple-600">{formatCurrency(stats.bonusesEarned)}</p>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Earnings History */}
+              {/* Detailed Earnings History */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>Earnings History</span>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4 mr-2" />
-                        Export
-                      </Button>
-                      <Select defaultValue="all">
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All Types</SelectItem>
-                          <SelectItem value="delivery">Delivery</SelectItem>
-                          <SelectItem value="tip">Tips</SelectItem>
-                          <SelectItem value="bonus">Bonuses</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <Button variant="outline" size="sm">
+                      <Download className="h-4 w-4 mr-2" />
+                      Export
+                    </Button>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {earnings.map((earning) => (
-                      <div key={earning.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div key={earning.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className={cn(
                             "w-10 h-10 rounded-lg flex items-center justify-center",
@@ -744,7 +791,6 @@ export default function DeliveryProviderDashboard() {
                             {earning.type === 'delivery' && <Truck className="h-5 w-5 text-blue-600" />}
                             {earning.type === 'tip' && <DollarSign className="h-5 w-5 text-green-600" />}
                             {earning.type === 'bonus' && <Award className="h-5 w-5 text-purple-600" />}
-                            {earning.type === 'penalty' && <AlertCircle className="h-5 w-5 text-red-600" />}
                           </div>
                           <div>
                             <p className="font-medium">{earning.description}</p>
@@ -757,13 +803,8 @@ export default function DeliveryProviderDashboard() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className={cn(
-                            "font-bold",
-                            earning.type === 'penalty' ? "text-red-600" : "text-green-600"
-                          )}>
-                            {earning.type === 'penalty' ? '-' : '+'}{formatCurrency(earning.amount)}
-                          </p>
-                          <Badge variant={earning.status === 'completed' ? 'default' : 'secondary'} className="text-xs">
+                          <p className="font-bold text-green-600">+{formatCurrency(earning.amount)}</p>
+                          <Badge variant="default" className="text-xs">
                             {earning.status}
                           </Badge>
                         </div>
@@ -772,75 +813,10 @@ export default function DeliveryProviderDashboard() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </TabsContent>
 
-            <div className="space-y-6">
-              {/* Balance Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Wallet className="h-5 w-5" />
-                    Balance Overview
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <p className="text-sm text-gray-600">Available Balance</p>
-                    <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.availableBalance)}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600">Pending Balance</p>
-                    <p className="text-lg font-semibold text-orange-600">{formatCurrency(stats.pendingBalance)}</p>
-                  </div>
-                  <Separator />
-                  <Button 
-                    className="w-full" 
-                    onClick={() => setShowWithdrawModal(true)}
-                    disabled={stats.availableBalance < 10}
-                  >
-                    <CreditCard className="h-4 w-4 mr-2" />
-                    Withdraw Funds
-                  </Button>
-                  <p className="text-xs text-gray-500 text-center">
-                    Minimum withdrawal: $10
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Withdrawal History */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Withdrawal History</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {withdrawals.map((withdrawal) => (
-                      <div key={withdrawal.id} className="p-3 border rounded-lg">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="font-medium">{formatCurrency(withdrawal.amount)}</span>
-                          <Badge variant={
-                            withdrawal.status === 'completed' ? 'default' :
-                            withdrawal.status === 'processing' ? 'secondary' :
-                            withdrawal.status === 'pending' ? 'outline' : 'destructive'
-                          }>
-                            {withdrawal.status}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600">{withdrawal.method}</p>
-                        <p className="text-xs text-gray-500">{formatDateTime(withdrawal.requestDate)}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
-
-        {/* Ratings & Reviews Tab */}
-        <TabsContent value="ratings" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 space-y-6">
+            {/* Reviews Tab */}
+            <TabsContent value="ratings" className="space-y-6">
               {/* Rating Overview */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
@@ -875,24 +851,7 @@ export default function DeliveryProviderDashboard() {
               {/* Reviews List */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>Customer Reviews</span>
-                    <div className="flex gap-2">
-                      <Select defaultValue="all">
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All Ratings</SelectItem>
-                          <SelectItem value="5">5 Stars</SelectItem>
-                          <SelectItem value="4">4 Stars</SelectItem>
-                          <SelectItem value="3">3 Stars</SelectItem>
-                          <SelectItem value="2">2 Stars</SelectItem>
-                          <SelectItem value="1">1 Star</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </CardTitle>
+                  <CardTitle>Customer Reviews</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -912,416 +871,189 @@ export default function DeliveryProviderDashboard() {
                             {formatDateTime(rating.deliveryDate)}
                           </span>
                         </div>
-                        <p className="text-gray-700 mb-3">{rating.comment}</p>
-                        <div className="grid grid-cols-3 gap-4 text-sm">
-                          <div>
-                            <p className="text-gray-600">Professionalism</p>
-                            <div className="flex items-center gap-1">
-                              {renderStarRating(rating.professionalismRating)}
-                              <span className="text-gray-500">({rating.professionalismRating})</span>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="text-gray-600">Communication</p>
-                            <div className="flex items-center gap-1">
-                              {renderStarRating(rating.communicationRating)}
-                              <span className="text-gray-500">({rating.communicationRating})</span>
-                            </div>
-                          </div>
-                          <div>
-                            <p className="text-gray-600">Package Condition</p>
-                            <div className="flex items-center gap-1">
-                              {renderStarRating(rating.packageConditionRating)}
-                              <span className="text-gray-500">({rating.packageConditionRating})</span>
-                            </div>
-                          </div>
-                        </div>
+                        <p className="text-gray-700">{rating.comment}</p>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </TabsContent>
 
-            <div className="space-y-6">
-              {/* Rating Breakdown */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Rating Breakdown</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {[5, 4, 3, 2, 1].map((star) => {
-                    const count = ratings.filter(r => Math.floor(r.rating) === star).length;
-                    const percentage = (count / ratings.length) * 100;
-                    return (
-                      <div key={star} className="flex items-center gap-3">
-                        <span className="text-sm w-6">{star}</span>
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <Progress value={percentage} className="flex-1 h-2" />
-                        <span className="text-sm text-gray-500 w-8">{count}</span>
-                      </div>
-                    );
-                  })}
-                </CardContent>
-              </Card>
+            {/* Vehicles Tab */}
+            <TabsContent value="vehicles" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Vehicle Management</h3>
+                <Button>
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add Vehicle
+                </Button>
+              </div>
 
-              {/* Improvement Tips */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" />
-                    Improvement Tips
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <p className="text-sm font-medium text-blue-800">Communication</p>
-                    <p className="text-sm text-blue-600">Send delivery updates to maintain high ratings</p>
-                  </div>
-                  <div className="p-3 bg-green-50 rounded-lg">
-                    <p className="text-sm font-medium text-green-800">Timeliness</p>
-                    <p className="text-sm text-green-600">Arrive within estimated time windows</p>
-                  </div>
-                  <div className="p-3 bg-purple-50 rounded-lg">
-                    <p className="text-sm font-medium text-purple-800">Package Care</p>
-                    <p className="text-sm text-purple-600">Handle packages with extra care for fragile items</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </TabsContent>
-
-        {/* Deliveries Tab (existing content) */}
-        <TabsContent value="deliveries" className="space-y-4">
-          {assignments.filter(a => ["accepted", "picked_up", "in_transit"].includes(a.status)).map((assignment) => (
-            <Card key={assignment.id} className="cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => {
-                setSelectedAssignment(assignment);
-                setShowAssignmentDetails(true);
-              }}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <Badge className={getStatusColor(assignment.status)}>
-                      {getStatusIcon(assignment.status)}
-                      <span className="ml-1 capitalize">{assignment.status.replace('_', ' ')}</span>
-                    </Badge>
-                    <span className="font-medium">#{assignment.orderNumber}</span>
-                    <span className="text-sm text-gray-500">{assignment.trackingNumber}</span>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-green-600">{formatCurrency(assignment.deliveryFee)}</p>
-                    <p className="text-xs text-gray-500">Delivery fee</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-red-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-sm">Pickup</p>
-                        <p className="text-sm text-gray-600">{assignment.pickupAddress.name}</p>
-                        <p className="text-xs text-gray-500">{assignment.pickupAddress.address}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <MapPin className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-sm">Delivery</p>
-                        <p className="text-sm text-gray-600">{assignment.deliveryAddress.name}</p>
-                        <p className="text-xs text-gray-500">{assignment.deliveryAddress.address}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <span className="flex items-center gap-1">
-                      <Package className="h-4 w-4" />
-                      {assignment.packageDetails.weight}kg
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      ETA: {formatDateTime(assignment.estimatedDeliveryTime)}
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-
-        {/* Vehicles Tab */}
-        <TabsContent value="vehicles" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold">Vehicle Management</h3>
-            <Button>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add Vehicle
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {vehicles.map((vehicle) => (
-              <Card key={vehicle.id}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Truck className="h-5 w-5" />
-                      {vehicle.make} {vehicle.model}
+                      Honda PCX 150 (2022)
                     </CardTitle>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        <DropdownMenuItem>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Remove
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">License Plate</p>
+                        <p className="font-medium">ABC-1234</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Status</p>
+                        <Badge variant="default">Active</Badge>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-medium">Insurance</p>
+                        <Badge variant="default">Active</Badge>
+                      </div>
+                      <p className="text-sm text-gray-600">SafeGuard Insurance</p>
+                      <p className="text-xs text-gray-500">Expires: Dec 31, 2024</p>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-medium">Maintenance</p>
+                        <Badge variant="default">Good</Badge>
+                      </div>
+                      <p className="text-sm text-gray-600">Last Service: Jan 1, 2024</p>
+                      <p className="text-xs text-gray-500">Next Service: Apr 1, 2024</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* Analytics Tab */}
+            <TabsContent value="analytics" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <Timer className="h-8 w-8 mx-auto mb-2 text-blue-600" />
+                    <p className="text-2xl font-bold">{stats.averageDeliveryTime} min</p>
+                    <p className="text-sm text-gray-600">Avg Delivery Time</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <Target className="h-8 w-8 mx-auto mb-2 text-green-600" />
+                    <p className="text-2xl font-bold">{stats.onTimeRate}%</p>
+                    <p className="text-sm text-gray-600">On-Time Rate</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <Activity className="h-8 w-8 mx-auto mb-2 text-purple-600" />
+                    <p className="text-2xl font-bold">{stats.completionRate}%</p>
+                    <p className="text-sm text-gray-600">Completion Rate</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="p-4 text-center">
+                    <Users className="h-8 w-8 mx-auto mb-2 text-orange-600" />
+                    <p className="text-2xl font-bold">{stats.customerSatisfaction}</p>
+                    <p className="text-sm text-gray-600">Customer Score</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Performance Insights</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="text-gray-600">Year</p>
-                      <p className="font-medium">{vehicle.year}</p>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <TrendingUp className="h-5 w-5 text-green-600" />
+                        <div>
+                          <p className="font-medium text-green-800">Excellent Performance</p>
+                          <p className="text-sm text-green-600">Your on-time delivery rate is above 90%</p>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-gray-600">License Plate</p>
-                      <p className="font-medium">{vehicle.licensePlate}</p>
+                    <div className="p-4 bg-blue-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Star className="h-5 w-5 text-blue-600" />
+                        <div>
+                          <p className="font-medium text-blue-800">High Customer Satisfaction</p>
+                          <p className="text-sm text-blue-600">Customers consistently rate your service highly</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Insurance</p>
-                      <Badge variant={vehicle.insurance.status === 'active' ? 'default' : 'destructive'}>
-                        {vehicle.insurance.status}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-gray-600">{vehicle.insurance.provider}</p>
-                    <p className="text-xs text-gray-500">Expires: {vehicle.insurance.expiryDate}</p>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Maintenance</p>
-                      <Badge variant={
-                        vehicle.maintenance.status === 'good' ? 'default' :
-                        vehicle.maintenance.status === 'due' ? 'secondary' : 'destructive'
-                      }>
-                        {vehicle.maintenance.status}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-gray-600">Last Service: {vehicle.maintenance.lastService}</p>
-                    <p className="text-xs text-gray-500">Next Service: {vehicle.maintenance.nextService}</p>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </TabsContent>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
 
-        {/* Performance Tab */}
-        <TabsContent value="performance" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Timer className="h-8 w-8 mx-auto mb-2 text-blue-600" />
-                <p className="text-2xl font-bold">{stats.averageDeliveryTime} min</p>
-                <p className="text-sm text-gray-600">Avg Delivery Time</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Target className="h-8 w-8 mx-auto mb-2 text-green-600" />
-                <p className="text-2xl font-bold">{stats.onTimeRate}%</p>
-                <p className="text-sm text-gray-600">On-Time Rate</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Activity className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-                <p className="text-2xl font-bold">{stats.completionRate}%</p>
-                <p className="text-sm text-gray-600">Completion Rate</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <Users className="h-8 w-8 mx-auto mb-2 text-orange-600" />
-                <p className="text-2xl font-bold">{stats.customerSatisfaction}</p>
-                <p className="text-sm text-gray-600">Customer Score</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Performance Insights</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <TrendingUp className="h-5 w-5 text-green-600" />
-                    <div>
-                      <p className="font-medium text-green-800">Excellent Performance</p>
-                      <p className="text-sm text-green-600">Your on-time delivery rate is above 90%</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Star className="h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="font-medium text-blue-800">High Customer Satisfaction</p>
-                      <p className="text-sm text-blue-600">Customers consistently rate your service highly</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Schedule Tab */}
-        <TabsContent value="schedule" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5" />
-                Work Schedule
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-center text-gray-500 py-8">
-                Schedule management feature coming soon
-              </p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Support Tab */}
-        <TabsContent value="support" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <HeadphonesIcon className="h-5 w-5" />
-                  Contact Support
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button variant="outline" className="w-full justify-start">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call Support: 1-800-DELIVERY
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  Live Chat Support
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="h-4 w-4 mr-2" />
-                  Submit Support Ticket
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <GraduationCap className="h-5 w-5" />
-                  Training & Resources
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button variant="outline" className="w-full justify-start">
-                  <FileText className="h-4 w-4 mr-2" />
-                  Delivery Guidelines
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Shield className="h-4 w-4 mr-2" />
-                  Safety Protocols
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Award className="h-4 w-4 mr-2" />
-                  Certification Courses
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      {/* Withdrawal Modal */}
-      <Dialog open={showWithdrawModal} onOpenChange={setShowWithdrawModal}>
+      {/* Transfer to Wallet Modal */}
+      <Dialog open={showTransferModal} onOpenChange={setShowTransferModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Withdraw Funds</DialogTitle>
+            <DialogTitle>Transfer Earnings to Main Wallet</DialogTitle>
             <DialogDescription>
-              Withdraw your available balance to your preferred payment method
+              Transfer your delivery earnings to your main platform wallet for unified fund management
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div>
-              <p className="text-sm font-medium mb-2">Available Balance</p>
-              <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.availableBalance)}</p>
+            <div className="p-4 bg-blue-50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="h-4 w-4 text-blue-600" />
+                <p className="text-sm font-medium text-blue-800">Transfer Information</p>
+              </div>
+              <p className="text-sm text-blue-700">
+                Funds will be transferred to your main wallet under "Ecommerce" category as delivery provider earnings. 
+                You can then withdraw from your main wallet to your bank account.
+              </p>
             </div>
+
             <div>
-              <label className="text-sm font-medium">Withdrawal Amount</label>
+              <p className="text-sm font-medium mb-2">Available Delivery Balance</p>
+              <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.deliveryBalance)}</p>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium">Transfer Amount</label>
               <Input
                 type="number"
                 placeholder="Enter amount"
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-                min="10"
-                max={stats.availableBalance}
+                value={transferAmount}
+                onChange={(e) => setTransferAmount(e.target.value)}
+                min="5"
+                max={stats.deliveryBalance}
               />
+              <p className="text-xs text-gray-500 mt-1">Minimum transfer: $5.00</p>
             </div>
-            <div>
-              <label className="text-sm font-medium">Payment Method</label>
-              <Select value={withdrawMethod} onValueChange={setWithdrawMethod}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select payment method" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="bank">Bank Transfer</SelectItem>
-                  <SelectItem value="paypal">PayPal</SelectItem>
-                  <SelectItem value="stripe">Stripe</SelectItem>
-                </SelectContent>
-              </Select>
+
+            <div className="p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Current Main Wallet Balance (Ecommerce): <span className="font-medium">{formatCurrency(walletBalance?.ecommerce || 0)}</span></p>
             </div>
+
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setShowWithdrawModal(false)} className="flex-1">
+              <Button variant="outline" onClick={() => setShowTransferModal(false)} className="flex-1">
                 Cancel
               </Button>
-              <Button onClick={handleWithdraw} className="flex-1">
-                Withdraw Funds
+              <Button onClick={handleTransferToWallet} className="flex-1" disabled={!transferAmount || parseFloat(transferAmount) < 5}>
+                Transfer to Wallet
               </Button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Assignment Details Dialog (existing) */}
+      {/* Assignment Details Dialog */}
       <Dialog open={showAssignmentDetails} onOpenChange={setShowAssignmentDetails}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
