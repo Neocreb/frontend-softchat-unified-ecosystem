@@ -545,14 +545,83 @@ export default function DeliveryProviderDashboard() {
         {/* Main Content Area */}
         <div className="xl:col-span-3">
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="deliveries">Active</TabsTrigger>
-              <TabsTrigger value="earnings">Earnings</TabsTrigger>
-              <TabsTrigger value="ratings">Reviews</TabsTrigger>
-              <TabsTrigger value="vehicles">Vehicles</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            </TabsList>
+            {/* Quick Actions Style Tab Navigation */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Navigation className="h-5 w-5" />
+                  Dashboard Navigation
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                  <Button
+                    variant="outline"
+                    className="bg-blue-500 hover:bg-blue-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    onClick={() => setActiveTab("overview")}
+                    data-state={activeTab === "overview" ? "active" : "inactive"}
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    <span className="text-xs font-medium">Overview</span>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-orange-500 hover:bg-orange-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    onClick={() => setActiveTab("deliveries")}
+                    data-state={activeTab === "deliveries" ? "active" : "inactive"}
+                  >
+                    <Truck className="h-4 w-4" />
+                    <span className="text-xs font-medium">Active</span>
+                    {stats.activeAssignments > 0 && (
+                      <Badge variant="secondary" className="text-xs bg-white/20">
+                        {stats.activeAssignments}
+                      </Badge>
+                    )}
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-green-500 hover:bg-green-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    onClick={() => setActiveTab("earnings")}
+                    data-state={activeTab === "earnings" ? "active" : "inactive"}
+                  >
+                    <DollarSign className="h-4 w-4" />
+                    <span className="text-xs font-medium">Earnings</span>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    onClick={() => setActiveTab("ratings")}
+                    data-state={activeTab === "ratings" ? "active" : "inactive"}
+                  >
+                    <Star className="h-4 w-4" />
+                    <span className="text-xs font-medium">Reviews</span>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-purple-500 hover:bg-purple-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    onClick={() => setActiveTab("vehicles")}
+                    data-state={activeTab === "vehicles" ? "active" : "inactive"}
+                  >
+                    <Truck className="h-4 w-4" />
+                    <span className="text-xs font-medium">Vehicles</span>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="bg-indigo-500 hover:bg-indigo-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    onClick={() => setActiveTab("analytics")}
+                    data-state={activeTab === "analytics" ? "active" : "inactive"}
+                  >
+                    <Activity className="h-4 w-4" />
+                    <span className="text-xs font-medium">Analytics</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-6">
