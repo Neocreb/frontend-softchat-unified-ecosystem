@@ -797,7 +797,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate(`/app/profile/${username}/stats`)}
+                      onClick={() => navigate(`/app/profile/${targetUsername}/stats`)}
                       className="text-xs"
                     >
                       View All
