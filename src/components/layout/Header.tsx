@@ -53,6 +53,7 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const notificationCount = useNotificationCount();
   const [searchQuery, setSearchQuery] = useState("");
 
   // Main navigation items (like mobile footer but organized for desktop)
