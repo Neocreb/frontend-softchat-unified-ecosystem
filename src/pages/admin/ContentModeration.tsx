@@ -274,6 +274,17 @@ const ContentModeration = () => {
         </Card>
       </div>
 
+      {/* Demo Data Alert */}
+      {isUsingMockData && (
+        <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20">
+          <Bot className="h-4 w-4 text-blue-600" />
+          <AlertDescription className="text-blue-800 dark:text-blue-200">
+            <strong>Demo Mode:</strong> You're viewing demo data. The content moderation database is not configured.
+            All moderation actions will be simulated.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Urgent Items Alert */}
       {stats.urgent > 0 && (
         <Alert className="border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20">
