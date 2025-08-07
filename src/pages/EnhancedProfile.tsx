@@ -111,6 +111,12 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   const [mediaFilter, setMediaFilter] = useState("all");
   const [mediaViewMode, setMediaViewMode] = useState("grid");
 
+  // User list modal states
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [showViewersModal, setShowViewersModal] = useState(false);
+  const [profileViewers, setProfileViewers] = useState(1256);
+
   const isOwnProfile =
     !targetUsername || (user && user.profile?.username === targetUsername);
 
@@ -121,7 +127,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     displayName: profile.full_name,
     bio:
       profile.bio ||
-      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n🌟 Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
+      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n���� Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
     avatar:
       profile.avatar_url ||
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
