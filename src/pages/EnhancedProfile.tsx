@@ -789,131 +789,110 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   )}
                 </div>
 
-                {/* Responsive Stats Grid */}
+                {/* Profile Stats - Horizontal Scrollable Cards */}
                 <div className="mt-6">
-                  {/* View All Stats Button */}
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">Statistics</h3>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => navigate(`/app/profile/${targetUsername}/stats`)}
-                      className="text-xs"
-                    >
-                      View All
-                    </Button>
-                  </div>
+                  <div className="relative">
+                    {/* Gradient fade effects */}
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-                  {/* Responsive Grid Layout */}
-                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
-                    {/* Posts */}
-                    <div
-                      className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${targetUsername}/posts`)}
-                    >
-                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="text-center">
-                          <div className="text-sm sm:text-lg font-bold text-blue-600">
-                            {mockProfile.posts}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
-                        Posts
-                      </div>
-                    </div>
-
-                    {/* Followers */}
-                    <div
-                      className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${targetUsername}/followers`)}
-                    >
-                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="text-center">
-                          <div className="text-sm sm:text-lg font-bold text-purple-600">
-                            {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
-                        Followers
-                      </div>
-                    </div>
-
-                    {/* Following */}
-                    <div
-                      className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${targetUsername}/following`)}
-                    >
-                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="text-center">
-                          <div className="text-sm sm:text-lg font-bold text-indigo-600">
-                            {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
-                        Following
-                      </div>
-                    </div>
-
-                    {/* Profile Views */}
-                    <div
-                      className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${targetUsername}/views`)}
-                    >
-                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="text-center">
-                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-pink-600 mx-auto mb-1" />
-                          <div className="text-xs sm:text-sm font-bold text-pink-600">
-                            {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-xs font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
-                        Views
-                      </div>
-                    </div>
-
-                    {/* Wallet Balance (Own Profile Only) */}
-                    {isOwnProfile && (
+                    {/* Scrollable stats container */}
+                    <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1">
+                      {/* Posts */}
                       <div
-                        className="text-center cursor-pointer group"
-                        onClick={() => navigate("/app/wallet")}
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate(`/app/profile/${targetUsername}/posts`)}
                       >
-                        <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 border-0 flex items-center justify-center group hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <Wallet className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mx-auto mb-1" />
-                            <div className="text-xs sm:text-sm font-bold text-green-600">
-                              $2.5k
+                            <div className="text-xl sm:text-2xl font-bold text-blue-600">
+                              {mockProfile.posts}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs font-medium text-gray-700 group-hover:text-green-600 transition-colors">
-                          Balance
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                          Posts
                         </div>
                       </div>
-                    )}
 
-                    {/* Trust Level */}
-                    <div
-                      className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${targetUsername}/trust`)}
-                    >
-                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
-                        <div className="text-center">
-                          <div className="flex items-center justify-center gap-0.5 mb-1">
-                            <Shield className="h-2 w-2 sm:h-3 sm:w-3 text-amber-600" />
-                            <Trophy className="h-2 w-2 sm:h-3 sm:w-3 text-amber-600" />
-                          </div>
-                          <div className="text-xs sm:text-sm font-bold text-amber-600">
-                            L8·9.2
+                      {/* Followers */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate(`/app/profile/${targetUsername}/followers`)}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-purple-100 to-purple-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-xl sm:text-2xl font-bold text-purple-600">
+                              {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
+                            </div>
                           </div>
                         </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+                          Followers
+                        </div>
                       </div>
-                      <div className="text-xs font-medium text-gray-700 group-hover:text-amber-600 transition-colors">
-                        Trust
+
+                      {/* Following */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate(`/app/profile/${targetUsername}/following`)}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-indigo-100 to-indigo-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-xl sm:text-2xl font-bold text-indigo-600">
+                              {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                          Following
+                        </div>
                       </div>
+
+                      {/* Profile Views */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate(`/app/profile/${targetUsername}/views`)}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-pink-100 to-pink-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Eye className="h-5 w-5 text-pink-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-pink-600">
+                              {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
+                          Views
+                        </div>
+                      </div>
+
+                      {/* Wallet Balance (Own Profile Only) */}
+                      {isOwnProfile && (
+                        <div
+                          className="flex-shrink-0 text-center cursor-pointer group"
+                          onClick={() => navigate("/app/wallet")}
+                        >
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-green-100 to-green-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                            <div className="text-center">
+                              <Wallet className="h-5 w-5 text-green-600 mx-auto mb-1" />
+                              <div className="text-lg sm:text-xl font-bold text-green-600">
+                                $2.5k
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
+                            Balance
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Scroll indicator dots */}
+                    <div className="flex justify-center mt-2 gap-1">
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
                     </div>
                   </div>
                 </div>
