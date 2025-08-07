@@ -68,46 +68,11 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
-
-// Enhanced notification interface
-interface EnhancedNotification {
-  id: string;
-  type: NotificationCategory;
-  category: NotificationCategory;
-  title: string;
-  message: string;
-  content?: string;
-  timestamp: Date;
-  read: boolean;
-  priority: "low" | "medium" | "high" | "urgent";
-  actionUrl?: string;
-  actionLabel?: string;
-  avatar?: string;
-  icon?: React.ReactNode;
-  metadata?: any;
-  userId?: string;
-  groupId?: string;
-  relatedEntityId?: string;
-  relatedEntityType?: string;
-  archived?: boolean;
-  starred?: boolean;
-  source?: string;
-}
-
-type NotificationCategory = 
-  | "all"
-  | "social" 
-  | "chat" 
-  | "marketplace" 
-  | "freelance" 
-  | "crypto" 
-  | "rewards" 
-  | "system" 
-  | "videos"
-  | "campaigns"
-  | "payments"
-  | "security";
+import {
+  useUnifiedNotifications,
+  type UnifiedNotification as EnhancedNotification,
+  type NotificationCategory
+} from "@/contexts/UnifiedNotificationContext";
 
 type ViewMode = "all" | "unread" | "starred" | "archived";
 type SortMode = "newest" | "oldest" | "priority" | "category";
