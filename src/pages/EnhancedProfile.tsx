@@ -1524,6 +1524,36 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
         onClose={() => setShowEditModal(false)}
         profile={mockProfile}
       />
+
+      {/* Followers Modal */}
+      <UserListModal
+        isOpen={showFollowersModal}
+        onClose={() => setShowFollowersModal(false)}
+        title="Followers"
+        type="followers"
+        users={mockFollowers}
+        currentUser={user?.profile?.username}
+      />
+
+      {/* Following Modal */}
+      <UserListModal
+        isOpen={showFollowingModal}
+        onClose={() => setShowFollowingModal(false)}
+        title="Following"
+        type="following"
+        users={mockFollowing}
+        currentUser={user?.profile?.username}
+      />
+
+      {/* Profile Viewers Modal */}
+      <UserListModal
+        isOpen={showViewersModal}
+        onClose={() => setShowViewersModal(false)}
+        title="Profile Views"
+        type="viewers"
+        users={mockViewers}
+        currentUser={user?.profile?.username}
+      />
     </div>
   );
 };
