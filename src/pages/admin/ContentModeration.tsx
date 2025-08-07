@@ -71,6 +71,7 @@ const ContentModeration = () => {
   const [filterStatus, setFilterStatus] = useState<string>("pending");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");
+  const [isUsingMockData, setIsUsingMockData] = useState(false);
 
   const notification = useNotification();
 
