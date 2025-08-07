@@ -403,10 +403,10 @@ const UnifiedNotifications: React.FC = () => {
               )}
 
               {/* Actions */}
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
-                onClick={markAllAsRead}
+                onClick={handleMarkAllAsRead}
                 disabled={unreadCount === 0}
               >
                 <CheckCircle2 className="w-4 h-4 mr-2" />
