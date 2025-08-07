@@ -21,6 +21,7 @@ import { LiveContentProvider } from "./contexts/LiveContentContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
+import { UnifiedNotificationProvider } from "./contexts/UnifiedNotificationContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
