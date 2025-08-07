@@ -40,6 +40,7 @@ import {
 import { Input } from "@/components/ui/input";
 import SoftchatLogo from "@/components/shared/SoftchatLogo";
 import { useToast } from "@/hooks/use-toast";
+import { useNotificationCount } from "@/contexts/UnifiedNotificationContext";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
