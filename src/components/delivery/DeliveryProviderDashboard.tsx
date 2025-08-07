@@ -545,7 +545,7 @@ export default function DeliveryProviderDashboard() {
 
         {/* Main Content Area */}
         <div className="xl:col-span-3">
-          <Tabs defaultValue="overview" className="space-y-6">
+          <div className="space-y-6">
             {/* Quick Actions Style Tab Navigation */}
             <Card>
               <CardHeader>
@@ -625,7 +625,8 @@ export default function DeliveryProviderDashboard() {
             </Card>
 
             {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-6">
+            {activeTab === "overview" && (
+              <div className="space-y-6">
               {/* Today's Summary */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
@@ -735,10 +736,12 @@ export default function DeliveryProviderDashboard() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </div>
+            )}
 
             {/* Active Deliveries Tab */}
-            <TabsContent value="deliveries" className="space-y-4">
+            {activeTab === "deliveries" && (
+              <div className="space-y-4">
               {assignments.filter(a => ["accepted", "picked_up", "in_transit"].includes(a.status)).map((assignment) => (
                 <Card key={assignment.id} className="cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => {
@@ -804,10 +807,12 @@ export default function DeliveryProviderDashboard() {
                   </CardContent>
                 </Card>
               ))}
-            </TabsContent>
+              </div>
+            )}
 
             {/* Earnings Tab */}
-            <TabsContent value="earnings" className="space-y-6">
+            {activeTab === "earnings" && (
+              <div className="space-y-6">
               {/* Earnings Overview */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
@@ -883,10 +888,12 @@ export default function DeliveryProviderDashboard() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </div>
+            )}
 
             {/* Reviews Tab */}
-            <TabsContent value="ratings" className="space-y-6">
+            {activeTab === "ratings" && (
+              <div className="space-y-6">
               {/* Rating Overview */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
@@ -947,10 +954,12 @@ export default function DeliveryProviderDashboard() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </div>
+            )}
 
             {/* Vehicles Tab */}
-            <TabsContent value="vehicles" className="space-y-6">
+            {activeTab === "vehicles" && (
+              <div className="space-y-6">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Vehicle Management</h3>
                 <Button>
@@ -1001,10 +1010,12 @@ export default function DeliveryProviderDashboard() {
                   </CardContent>
                 </Card>
               </div>
-            </TabsContent>
+              </div>
+            )}
 
             {/* Analytics Tab */}
-            <TabsContent value="analytics" className="space-y-6">
+            {activeTab === "analytics" && (
+              <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card>
                   <CardContent className="p-4 text-center">
@@ -1063,8 +1074,9 @@ export default function DeliveryProviderDashboard() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
