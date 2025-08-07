@@ -1,16 +1,8 @@
 import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
+import { useNavigate } from "react-router-dom";
+import { useNotificationCount } from "@/contexts/UnifiedNotificationContext";
 
 const NotificationsDropdown = () => {
   const { notifications, unreadCount, markAsRead, markAllAsRead } =
