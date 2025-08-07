@@ -367,7 +367,7 @@ const AppRoutes = () => {
           <Route path="user/:username" element={<EnhancedProfile />} />
           <Route path="demo/profiles" element={<ProfileDemo />} />
           <Route path="wallet" element={<Wallet />} />
-          <Route path="notifications" element={<Notifications />} />
+          <Route path="notifications" element={<UnifiedNotifications />} />
 
           {/* Marketplace routes */}
           <Route path="marketplace" element={<EnhancedMarketplace />} />
