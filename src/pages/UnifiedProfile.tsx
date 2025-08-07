@@ -153,7 +153,7 @@ const UnifiedProfile: React.FC<UnifiedProfileProps> = ({
     posts: 156,
     engagement: 94,
     profileViews: 15620,
-    walletBalance: balance?.total || 0,
+    walletBalance: walletBalance?.total || 0,
     recentTransactions: transactions?.slice(0, 3) || [],
     unreadNotifications: 5,
     onlineStatus: "online",
