@@ -926,6 +926,78 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           Trust
                         </div>
                       </div>
+
+                      {/* Marketplace Sales */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/marketplace")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Store className="h-4 w-4 text-orange-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-orange-600">
+                              156
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
+                          Sales
+                        </div>
+                      </div>
+
+                      {/* Freelance Projects */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/freelance")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-cyan-50 to-cyan-100 border border-cyan-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Code className="h-4 w-4 text-cyan-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-cyan-600">
+                              23
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
+                          Projects
+                        </div>
+                      </div>
+
+                      {/* Crypto Trades */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/crypto")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Coins className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-yellow-600">
+                              89
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
+                          Trades
+                        </div>
+                      </div>
+
+                      {/* Delivery Rating */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/delivery")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Truck className="h-4 w-4 text-violet-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-violet-600">
+                              4.8
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
+                          Delivery
+                        </div>
+                      </div>
                     </div>
 
                     {/* Scroll hint dots */}
