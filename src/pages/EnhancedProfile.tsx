@@ -521,6 +521,27 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           <Star className="h-3 w-3 mr-1" />
                           Creator Level 8
                         </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-emerald-100 text-emerald-700 border-emerald-200"
+                        >
+                          <Store className="h-3 w-3 mr-1" />
+                          Pro Seller
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-indigo-100 text-indigo-700 border-indigo-200"
+                        >
+                          <Code className="h-3 w-3 mr-1" />
+                          Top Freelancer
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-orange-100 text-orange-700 border-orange-200"
+                        >
+                          <Coins className="h-3 w-3 mr-1" />
+                          Crypto Trader
+                        </Badge>
                       </div>
 
                       <p className="text-sm sm:text-base text-muted-foreground">
