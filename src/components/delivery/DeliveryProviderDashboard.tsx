@@ -558,9 +558,13 @@ export default function DeliveryProviderDashboard() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   <Button
                     variant="outline"
-                    className="bg-blue-500 hover:bg-blue-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    className={cn(
+                      "text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4",
+                      activeTab === "overview"
+                        ? "bg-blue-600 shadow-lg ring-2 ring-blue-200 scale-105"
+                        : "bg-blue-500 hover:bg-blue-600"
+                    )}
                     onClick={() => setActiveTab("overview")}
-                    data-state={activeTab === "overview" ? "active" : "inactive"}
                   >
                     <BarChart3 className="h-4 w-4" />
                     <span className="text-xs font-medium">Overview</span>
@@ -568,9 +572,13 @@ export default function DeliveryProviderDashboard() {
 
                   <Button
                     variant="outline"
-                    className="bg-orange-500 hover:bg-orange-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    className={cn(
+                      "text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4",
+                      activeTab === "deliveries"
+                        ? "bg-orange-600 shadow-lg ring-2 ring-orange-200 scale-105"
+                        : "bg-orange-500 hover:bg-orange-600"
+                    )}
                     onClick={() => setActiveTab("deliveries")}
-                    data-state={activeTab === "deliveries" ? "active" : "inactive"}
                   >
                     <Truck className="h-4 w-4" />
                     <span className="text-xs font-medium">Active</span>
@@ -583,9 +591,13 @@ export default function DeliveryProviderDashboard() {
 
                   <Button
                     variant="outline"
-                    className="bg-green-500 hover:bg-green-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    className={cn(
+                      "text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4",
+                      activeTab === "earnings"
+                        ? "bg-green-600 shadow-lg ring-2 ring-green-200 scale-105"
+                        : "bg-green-500 hover:bg-green-600"
+                    )}
                     onClick={() => setActiveTab("earnings")}
-                    data-state={activeTab === "earnings" ? "active" : "inactive"}
                   >
                     <DollarSign className="h-4 w-4" />
                     <span className="text-xs font-medium">Earnings</span>
@@ -593,9 +605,13 @@ export default function DeliveryProviderDashboard() {
 
                   <Button
                     variant="outline"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    className={cn(
+                      "text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4",
+                      activeTab === "ratings"
+                        ? "bg-yellow-600 shadow-lg ring-2 ring-yellow-200 scale-105"
+                        : "bg-yellow-500 hover:bg-yellow-600"
+                    )}
                     onClick={() => setActiveTab("ratings")}
-                    data-state={activeTab === "ratings" ? "active" : "inactive"}
                   >
                     <Star className="h-4 w-4" />
                     <span className="text-xs font-medium">Reviews</span>
@@ -603,9 +619,13 @@ export default function DeliveryProviderDashboard() {
 
                   <Button
                     variant="outline"
-                    className="bg-purple-500 hover:bg-purple-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    className={cn(
+                      "text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4",
+                      activeTab === "vehicles"
+                        ? "bg-purple-600 shadow-lg ring-2 ring-purple-200 scale-105"
+                        : "bg-purple-500 hover:bg-purple-600"
+                    )}
                     onClick={() => setActiveTab("vehicles")}
-                    data-state={activeTab === "vehicles" ? "active" : "inactive"}
                   >
                     <Truck className="h-4 w-4" />
                     <span className="text-xs font-medium">Vehicles</span>
@@ -613,9 +633,13 @@ export default function DeliveryProviderDashboard() {
 
                   <Button
                     variant="outline"
-                    className="bg-indigo-500 hover:bg-indigo-600 text-white border-none hover:scale-105 transition-transform flex flex-col items-center gap-2 h-auto py-4"
+                    className={cn(
+                      "text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4",
+                      activeTab === "analytics"
+                        ? "bg-indigo-600 shadow-lg ring-2 ring-indigo-200 scale-105"
+                        : "bg-indigo-500 hover:bg-indigo-600"
+                    )}
                     onClick={() => setActiveTab("analytics")}
-                    data-state={activeTab === "analytics" ? "active" : "inactive"}
                   >
                     <Activity className="h-4 w-4" />
                     <span className="text-xs font-medium">Analytics</span>
