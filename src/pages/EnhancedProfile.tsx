@@ -860,7 +860,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     {/* Profile Views */}
                     <div
                       className="text-center cursor-pointer group"
-                      onClick={() => navigate(`/app/profile/${username}/views`)}
+                      onClick={() => navigate(`/app/profile/${targetUsername}/views`)}
                     >
                       <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
                         <div className="text-center">
