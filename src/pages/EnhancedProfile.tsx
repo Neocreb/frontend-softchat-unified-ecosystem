@@ -886,6 +886,101 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           </div>
                         </div>
                       )}
+
+                      {/* Trust Level */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate(`/app/profile/${targetUsername}/trust`)}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-amber-100 to-amber-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center gap-1 mb-1">
+                              <Shield className="h-3 w-3 text-amber-600" />
+                              <Trophy className="h-3 w-3 text-amber-600" />
+                            </div>
+                            <div className="text-lg sm:text-xl font-bold text-amber-600">
+                              L8·9.2
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-amber-600 transition-colors">
+                          Trust Level
+                        </div>
+                      </div>
+
+                      {/* Marketplace Sales */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/marketplace")}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-orange-100 to-orange-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Store className="h-5 w-5 text-orange-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-orange-600">
+                              156
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
+                          Sales
+                        </div>
+                      </div>
+
+                      {/* Freelance Projects */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/freelance")}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Code className="h-5 w-5 text-cyan-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-cyan-600">
+                              23
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
+                          Projects
+                        </div>
+                      </div>
+
+                      {/* Crypto Trades */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/crypto")}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Coins className="h-5 w-5 text-yellow-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-yellow-600">
+                              89
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
+                          Trades
+                        </div>
+                      </div>
+
+                      {/* Delivery Rating - Only for approved delivery providers */}
+                      {isDeliveryProvider && (
+                        <div
+                          className="flex-shrink-0 text-center cursor-pointer group"
+                          onClick={() => navigate("/app/delivery")}
+                        >
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-violet-100 to-violet-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
+                            <div className="text-center">
+                              <Truck className="h-5 w-5 text-violet-600 mx-auto mb-1" />
+                              <div className="text-lg sm:text-xl font-bold text-violet-600">
+                                4.8
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
+                            Delivery
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Scroll indicator dots */}
