@@ -99,7 +99,12 @@ const ContentModeration = () => {
       setModerationItems(items);
     } catch (error) {
       console.error("Error loading moderation data:", error);
-      notification.error("Failed to load moderation queue");
+      const errorMessage = error instanceof Error
+        ? error.message
+        : typeof error === 'string'
+        ? error
+        : "Failed to load moderation queue";
+      notification.error(`Error fetching pending moderation: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
