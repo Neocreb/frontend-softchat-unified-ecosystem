@@ -12,6 +12,7 @@ import {
   X,
   Bell,
   MessageCircle,
+  Package,
 } from "lucide-react";
 
 interface MobileMarketplaceNavProps {
