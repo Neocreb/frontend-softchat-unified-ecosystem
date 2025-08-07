@@ -237,12 +237,14 @@ const Header = ({ mobileMenuOpen, setMobileMenuOpen }: HeaderProps) => {
             className="relative"
           >
             <Bell className="h-5 w-5" />
-            <Badge
-              variant="destructive"
-              className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center"
-            >
-              3
-            </Badge>
+            {notificationCount > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs flex items-center justify-center"
+              >
+                {notificationCount > 99 ? "99+" : notificationCount}
+              </Badge>
+            )}
           </Button>
 
           <Button
