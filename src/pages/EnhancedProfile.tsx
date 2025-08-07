@@ -789,199 +789,131 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   )}
                 </div>
 
-                {/* Modern Horizontally Scrollable Stats */}
+                {/* Responsive Stats Grid */}
                 <div className="mt-6">
-                  <div className="relative">
-                    {/* Gradient fade effects */}
-                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+                  {/* View All Stats Button */}
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">Statistics</h3>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate(`/app/profile/${username}/stats`)}
+                      className="text-xs"
+                    >
+                      View All
+                    </Button>
+                  </div>
 
-                    {/* Scrollable stats container */}
-                    <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1">
-                      {/* Posts */}
-                      <div className="flex-shrink-0 text-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-blue-600">
-                              {mockProfile.posts}
-                            </div>
+                  {/* Responsive Grid Layout */}
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
+                    {/* Posts */}
+                    <div
+                      className="text-center cursor-pointer group"
+                      onClick={() => navigate(`/app/profile/${username}/posts`)}
+                    >
+                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="text-center">
+                          <div className="text-sm sm:text-lg font-bold text-blue-600">
+                            {mockProfile.posts}
                           </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700">
-                          Posts
                         </div>
                       </div>
-
-                      {/* Followers */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => setShowFollowersModal(true)}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-purple-600">
-                              {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
-                          Followers
-                        </div>
+                      <div className="text-xs font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                        Posts
                       </div>
-
-                      {/* Following */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => setShowFollowingModal(true)}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-indigo-600">
-                              {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
-                          Following
-                        </div>
-                      </div>
-
-                      {/* Profile Views with Engagement */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => setShowViewersModal(true)}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <Eye className="h-4 w-4 text-pink-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-pink-600">
-                              {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
-                          Views
-                        </div>
-                      </div>
-
-                      {/* Wallet Balance (Own Profile Only) */}
-                      {isOwnProfile && (
-                        <div
-                          className="flex-shrink-0 text-center cursor-pointer group"
-                          onClick={() => navigate("/app/wallet")}
-                        >
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                            <div className="text-center">
-                              <Wallet className="h-4 w-4 text-green-600 mx-auto mb-1" />
-                              <div className="text-sm sm:text-base font-bold text-green-600">
-                                $2.5k
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
-                            Balance
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Trust Level (Combined Trust Score + Level) */}
-                      <div className="flex-shrink-0 text-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <div className="flex items-center justify-center gap-0.5 mb-1">
-                              <Shield className="h-3 w-3 text-amber-600" />
-                              <Trophy className="h-3 w-3 text-amber-600" />
-                            </div>
-                            <div className="text-sm sm:text-base font-bold text-amber-600">
-                              L8·9.2
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700">
-                          Trust Level
-                        </div>
-                      </div>
-
-                      {/* Marketplace Sales */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => navigate("/app/marketplace")}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <Store className="h-4 w-4 text-orange-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-orange-600">
-                              156
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
-                          Sales
-                        </div>
-                      </div>
-
-                      {/* Freelance Projects */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => navigate("/app/freelance")}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-cyan-50 to-cyan-100 border border-cyan-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <Code className="h-4 w-4 text-cyan-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-cyan-600">
-                              23
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
-                          Projects
-                        </div>
-                      </div>
-
-                      {/* Crypto Trades */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => navigate("/app/crypto")}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <Coins className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-yellow-600">
-                              89
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
-                          Trades
-                        </div>
-                      </div>
-
-                      {/* Delivery Rating - Only for approved delivery providers */}
-                      {isDeliveryProvider && (
-                        <div
-                          className="flex-shrink-0 text-center cursor-pointer group"
-                          onClick={() => navigate("/app/delivery")}
-                        >
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                            <div className="text-center">
-                              <Truck className="h-4 w-4 text-violet-600 mx-auto mb-1" />
-                              <div className="text-sm sm:text-base font-bold text-violet-600">
-                                4.8
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
-                            Delivery
-                          </div>
-                        </div>
-                      )}
                     </div>
 
-                    {/* Scroll hint dots */}
-                    <div className="flex justify-center mt-2 gap-1">
-                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-                      <div className="w-1 h-1 rounded-full bg-gray-400"></div>
-                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                    {/* Followers */}
+                    <div
+                      className="text-center cursor-pointer group"
+                      onClick={() => navigate(`/app/profile/${username}/followers`)}
+                    >
+                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="text-center">
+                          <div className="text-sm sm:text-lg font-bold text-purple-600">
+                            {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+                        Followers
+                      </div>
+                    </div>
+
+                    {/* Following */}
+                    <div
+                      className="text-center cursor-pointer group"
+                      onClick={() => navigate(`/app/profile/${username}/following`)}
+                    >
+                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="text-center">
+                          <div className="text-sm sm:text-lg font-bold text-indigo-600">
+                            {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                        Following
+                      </div>
+                    </div>
+
+                    {/* Profile Views */}
+                    <div
+                      className="text-center cursor-pointer group"
+                      onClick={() => navigate(`/app/profile/${username}/views`)}
+                    >
+                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="text-center">
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 text-pink-600 mx-auto mb-1" />
+                          <div className="text-xs sm:text-sm font-bold text-pink-600">
+                            {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
+                        Views
+                      </div>
+                    </div>
+
+                    {/* Wallet Balance (Own Profile Only) */}
+                    {isOwnProfile && (
+                      <div
+                        className="text-center cursor-pointer group"
+                        onClick={() => navigate("/app/wallet")}
+                      >
+                        <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Wallet className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 mx-auto mb-1" />
+                            <div className="text-xs sm:text-sm font-bold text-green-600">
+                              $2.5k
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs font-medium text-gray-700 group-hover:text-green-600 transition-colors">
+                          Balance
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Trust Level */}
+                    <div
+                      className="text-center cursor-pointer group"
+                      onClick={() => navigate(`/app/profile/${username}/trust`)}
+                    >
+                      <div className="w-full aspect-square max-w-[80px] mx-auto mb-2 rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="text-center">
+                          <div className="flex items-center justify-center gap-0.5 mb-1">
+                            <Shield className="h-2 w-2 sm:h-3 sm:w-3 text-amber-600" />
+                            <Trophy className="h-2 w-2 sm:h-3 sm:w-3 text-amber-600" />
+                          </div>
+                          <div className="text-xs sm:text-sm font-bold text-amber-600">
+                            L8·9.2
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium text-gray-700 group-hover:text-amber-600 transition-colors">
+                        Trust
+                      </div>
                     </div>
                   </div>
                 </div>
