@@ -48,31 +48,97 @@ const HeroSection = () => {
           </div>
 
           {/* Delivery Quick Access Section */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">Delivery Network</h3>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 max-w-lg mx-auto">
-              <Link to="/delivery/track" className="flex-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-blue-200 hover:bg-blue-50 text-blue-700 text-sm px-4 py-3"
-                >
-                  📦 Track Package
-                </Button>
+          <div className="mt-8 pt-8 border-t border-gray-200/50">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
+                Delivery Network
+              </h3>
+              <p className="text-sm text-gray-600">Fast, reliable delivery services at your fingertips</p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto">
+              {/* Track Package Card */}
+              <Link to="/delivery/track" className="flex-1 group">
+                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-blue-50 via-blue-50 to-indigo-100 border border-blue-200/60 hover:border-blue-300/80 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 hover:-translate-y-1">
+                  {/* Floating Background Icon */}
+                  <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                  </div>
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center text-white text-lg font-semibold shadow-lg">
+                        📦
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-blue-900">Track Package</h4>
+                        <p className="text-xs text-blue-600">Real-time tracking</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-blue-700/80 leading-relaxed">
+                      Monitor your deliveries with live updates and precise location tracking
+                    </p>
+                    <div className="mt-4 flex items-center text-blue-600 text-sm font-medium group-hover:text-blue-700 transition-colors">
+                      Track now
+                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </Link>
-              <Link to="/delivery/apply" className="flex-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-green-200 hover:bg-green-50 text-green-700 text-sm px-4 py-3"
-                >
-                  🚛 Become Driver
-                </Button>
+
+              {/* Become Driver Card */}
+              <Link to="/delivery/apply" className="flex-1 group">
+                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 border border-green-200/60 hover:border-green-300/80 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-1">
+                  {/* Floating Background Icon */}
+                  <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center text-white text-lg font-semibold shadow-lg">
+                        🚛
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-green-900">Become Driver</h4>
+                        <p className="text-xs text-green-600">Start earning today</p>
+                      </div>
+                    </div>
+                    <p className="text-sm text-green-700/80 leading-relaxed">
+                      Join our delivery network and earn competitive rates with flexible schedules
+                    </p>
+                    <div className="mt-4 flex items-center text-green-600 text-sm font-medium group-hover:text-green-700 transition-colors">
+                      Apply now
+                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </Link>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Track deliveries or apply to join our delivery network
-            </p>
+
+            {/* Additional Features */}
+            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-gray-500">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                <span>Real-time GPS tracking</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                <span>Flexible earning opportunities</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+                <span>24/7 customer support</span>
+              </div>
+            </div>
           </div>
 
           <div className="mt-16 relative">
