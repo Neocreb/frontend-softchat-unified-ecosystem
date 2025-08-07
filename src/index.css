@@ -11,6 +11,84 @@
   display: none;
 }
 
+/* Modern Tab Enhancements */
+@keyframes tab-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.25), 0 0 35px rgba(59, 130, 246, 0.1);
+  }
+}
+
+@keyframes tab-pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes tab-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.tab-glow-active {
+  animation: tab-glow 2s ease-in-out infinite;
+}
+
+.tab-float-hover:hover {
+  animation: tab-float 0.6s ease-in-out infinite;
+}
+
+/* Gradient backgrounds for tabs */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Smooth hover scale effect */
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+}
+
+/* Tab content fade in animation */
+@keyframes tab-content-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-content-animate {
+  animation: tab-content-fade-in 0.3s ease-out;
+}
+
+/* Beautiful scroll indicator */
+@keyframes scroll-indicator-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.scroll-indicator {
+  animation: scroll-indicator-pulse 2s ease-in-out infinite;
+}
+
 /* Accessibility enhancements */
 .high-contrast {
   --background: 0 0% 0%;

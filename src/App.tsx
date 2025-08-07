@@ -61,6 +61,7 @@ import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
 import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
 import EnhancedProfile from "./pages/EnhancedProfile";
+import UnifiedProfile from "./pages/UnifiedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
 import EnhancedMarketplace from "./pages/EnhancedMarketplace";
@@ -367,6 +368,8 @@ const AppRoutes = () => {
           <Route path="profile" element={<EnhancedProfile />} />
           <Route path="profile/:username" element={<EnhancedProfile />} />
           <Route path="user/:username" element={<EnhancedProfile />} />
+          <Route path="unified-profile" element={<UnifiedProfile />} />
+          <Route path="unified-profile/:username" element={<UnifiedProfile />} />
           <Route path="demo/profiles" element={<ProfileDemo />} />
           <Route path="wallet" element={<Wallet />} />
           <Route path="notifications" element={<UnifiedNotifications />} />

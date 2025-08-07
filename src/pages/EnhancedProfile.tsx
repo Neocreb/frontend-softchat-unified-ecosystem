@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
+import UserListModal from "@/components/profile/UserListModal";
 import {
   ArrowLeft,
   Settings,
@@ -66,6 +67,10 @@ import {
   Trophy,
   Zap,
   Play,
+  Wallet,
+  Bell,
+  Send,
+  Truck,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -106,6 +111,15 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   const [mediaFilter, setMediaFilter] = useState("all");
   const [mediaViewMode, setMediaViewMode] = useState("grid");
 
+  // User list modal states
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const [showViewersModal, setShowViewersModal] = useState(false);
+  const [profileViewers, setProfileViewers] = useState(1256);
+
+  // Mock user type states
+  const [isDeliveryProvider, setIsDeliveryProvider] = useState(false); // This would come from user profile data
+
   const isOwnProfile =
     !targetUsername || (user && user.profile?.username === targetUsername);
 
@@ -116,7 +130,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     displayName: profile.full_name,
     bio:
       profile.bio ||
-      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n🌟 Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
+      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n��� Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
     avatar:
       profile.avatar_url ||
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -130,7 +144,6 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     followers: 2847,
     following: 892,
     posts: 156,
-    engagement: 94,
     profileViews: 15620,
     jobTitle: "Senior Full Stack Developer",
     company: "TechCorp Inc.",
@@ -285,6 +298,121 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     return true;
   });
 
+  // Mock data for followers, following, and viewers
+  const mockFollowers = [
+    {
+      id: "1",
+      username: "sarah_johnson",
+      displayName: "Sarah Johnson",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b977?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: false,
+      followsBack: true,
+      isOnline: true,
+      bio: "UI/UX Designer passionate about creating beautiful experiences",
+      followers: 1240,
+    },
+    {
+      id: "2",
+      username: "mike_chen",
+      displayName: "Mike Chen",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isFollowing: true,
+      followsBack: false,
+      isOnline: false,
+      bio: "Full-stack developer and crypto enthusiast",
+      followers: 567,
+    },
+    {
+      id: "3",
+      username: "emma_davis",
+      displayName: "Emma Davis",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: false,
+      followsBack: false,
+      isOnline: true,
+      bio: "Product Manager | Tech Leader | Coffee Addict",
+      followers: 2134,
+    },
+    {
+      id: "4",
+      username: "alex_wilson",
+      displayName: "Alex Wilson",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isFollowing: true,
+      followsBack: true,
+      isOnline: false,
+      bio: "Freelance developer building the future",
+      followers: 789,
+    },
+  ];
+
+  const mockFollowing = [
+    {
+      id: "5",
+      username: "tech_guru",
+      displayName: "Tech Guru",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: true,
+      followsBack: true,
+      isOnline: true,
+      bio: "Technology insights and trends",
+      followers: 15600,
+    },
+    {
+      id: "6",
+      username: "crypto_analyst",
+      displayName: "Crypto Analyst",
+      avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: true,
+      followsBack: false,
+      isOnline: false,
+      bio: "Crypto market analysis and trading insights",
+      followers: 8900,
+    },
+  ];
+
+  const mockViewers = [
+    {
+      id: "7",
+      username: "jane_doe",
+      displayName: "Jane Doe",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b977?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isOnline: true,
+      lastSeen: "2 minutes ago",
+      bio: "Marketing professional",
+      followers: 340,
+    },
+    {
+      id: "8",
+      username: "john_smith",
+      displayName: "John Smith",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isOnline: false,
+      lastSeen: "1 hour ago",
+      bio: "Software engineer at TechCorp",
+      followers: 567,
+    },
+    {
+      id: "9",
+      username: "lisa_wang",
+      displayName: "Lisa Wang",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isOnline: true,
+      lastSeen: "5 minutes ago",
+      bio: "Entrepreneur and investor",
+      followers: 1890,
+    },
+  ];
+
   // Mock profile data
   const mockProfile = profileUser
     ? createMockProfile(profileUser)
@@ -304,7 +432,6 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
         followers: 2847,
         following: 892,
         posts: 156,
-        engagement: 94,
         profileViews: 15620,
         jobTitle: "Senior Full Stack Developer",
         company: "TechCorp Inc.",
@@ -517,6 +644,27 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           <Star className="h-3 w-3 mr-1" />
                           Creator Level 8
                         </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-emerald-100 text-emerald-700 border-emerald-200"
+                        >
+                          <Store className="h-3 w-3 mr-1" />
+                          Pro Seller
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-indigo-100 text-indigo-700 border-indigo-200"
+                        >
+                          <Code className="h-3 w-3 mr-1" />
+                          Top Freelancer
+                        </Badge>
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-orange-100 text-orange-700 border-orange-200"
+                        >
+                          <Coins className="h-3 w-3 mr-1" />
+                          Crypto Trader
+                        </Badge>
                       </div>
 
                       <p className="text-sm sm:text-base text-muted-foreground">
@@ -593,10 +741,21 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           variant="outline"
                           size="sm"
                           className="text-xs sm:text-sm"
+                          onClick={() => navigate(`/app/chat?user=${targetUsername}`)}
                         >
                           <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                           <span className="hidden sm:inline">Message</span>
                           <span className="sm:hidden">Chat</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs sm:text-sm"
+                          onClick={() => navigate(`/app/wallet?action=send&recipient=${targetUsername}`)}
+                        >
+                          <Send className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Send Money</span>
+                          <span className="sm:hidden">Pay</span>
                         </Button>
                         <Button
                           variant="outline"
@@ -630,38 +789,199 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   )}
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6 py-3 sm:py-4 border-t">
-                  <div className="text-center">
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {mockProfile.posts}
+                {/* Modern Horizontally Scrollable Stats */}
+                <div className="mt-6">
+                  <div className="relative">
+                    {/* Gradient fade effects */}
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+                    {/* Scrollable stats container */}
+                    <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1">
+                      {/* Posts */}
+                      <div className="flex-shrink-0 text-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-blue-600">
+                              {mockProfile.posts}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                          Posts
+                        </div>
+                      </div>
+
+                      {/* Followers */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => setShowFollowersModal(true)}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-purple-600">
+                              {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+                          Followers
+                        </div>
+                      </div>
+
+                      {/* Following */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => setShowFollowingModal(true)}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-indigo-600">
+                              {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                          Following
+                        </div>
+                      </div>
+
+                      {/* Profile Views with Engagement */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => setShowViewersModal(true)}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Eye className="h-4 w-4 text-pink-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-pink-600">
+                              {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
+                          Views
+                        </div>
+                      </div>
+
+                      {/* Wallet Balance (Own Profile Only) */}
+                      {isOwnProfile && (
+                        <div
+                          className="flex-shrink-0 text-center cursor-pointer group"
+                          onClick={() => navigate("/app/wallet")}
+                        >
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                            <div className="text-center">
+                              <Wallet className="h-4 w-4 text-green-600 mx-auto mb-1" />
+                              <div className="text-sm sm:text-base font-bold text-green-600">
+                                $2.5k
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
+                            Balance
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Trust Level (Combined Trust Score + Level) */}
+                      <div className="flex-shrink-0 text-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="flex items-center justify-center gap-0.5 mb-1">
+                              <Shield className="h-3 w-3 text-amber-600" />
+                              <Trophy className="h-3 w-3 text-amber-600" />
+                            </div>
+                            <div className="text-sm sm:text-base font-bold text-amber-600">
+                              L8·9.2
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                          Trust Level
+                        </div>
+                      </div>
+
+                      {/* Marketplace Sales */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/marketplace")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Store className="h-4 w-4 text-orange-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-orange-600">
+                              156
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
+                          Sales
+                        </div>
+                      </div>
+
+                      {/* Freelance Projects */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/freelance")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-cyan-50 to-cyan-100 border border-cyan-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Code className="h-4 w-4 text-cyan-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-cyan-600">
+                              23
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
+                          Projects
+                        </div>
+                      </div>
+
+                      {/* Crypto Trades */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate("/app/crypto")}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Coins className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-yellow-600">
+                              89
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
+                          Trades
+                        </div>
+                      </div>
+
+                      {/* Delivery Rating - Only for approved delivery providers */}
+                      {isDeliveryProvider && (
+                        <div
+                          className="flex-shrink-0 text-center cursor-pointer group"
+                          onClick={() => navigate("/app/delivery")}
+                        >
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                            <div className="text-center">
+                              <Truck className="h-4 w-4 text-violet-600 mx-auto mb-1" />
+                              <div className="text-sm sm:text-base font-bold text-violet-600">
+                                4.8
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
+                            Delivery
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Posts
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {followerCount.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Followers
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {followingCount.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Following
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {mockProfile.engagement}%
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Engagement
+
+                    {/* Scroll hint dots */}
+                    <div className="flex justify-center mt-2 gap-1">
+                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                      <div className="w-1 h-1 rounded-full bg-gray-400"></div>
+                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
                     </div>
                   </div>
                 </div>
@@ -669,82 +989,149 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
             </div>
           </Card>
 
-          {/* Enhanced Horizontal Scrolling Tabs */}
-          <Card>
+          {/* Modern Beautiful Button Tabs */}
+          <Card className="backdrop-blur-sm bg-white/95 border border-gray-100/50 shadow-xl">
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
               className="w-full"
             >
-              <div className="relative border-b overflow-hidden">
-                <TabsList className="flex w-full overflow-x-auto gap-0 p-0 h-auto bg-transparent whitespace-nowrap scrollbar-hide horizontal-tabs-scroll">
+              {/* Beautiful tab header with gradient background */}
+              <div className="relative overflow-hidden bg-gradient-to-r from-slate-50/80 via-white to-slate-50/80 p-2 sm:p-3">
+                {/* Animated background decoration */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-50/30 via-purple-50/20 to-pink-50/30 opacity-50"></div>
+                <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-radial from-blue-100/40 to-transparent rounded-full blur-2xl transform -translate-x-16 -translate-y-16"></div>
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-radial from-purple-100/40 to-transparent rounded-full blur-2xl transform translate-x-16 translate-y-16"></div>
+
+                <TabsList className="relative flex w-full overflow-x-auto gap-2 sm:gap-3 p-2 h-auto bg-white/60 backdrop-blur-md rounded-xl border border-white/20 shadow-lg whitespace-nowrap scrollbar-hide">
+                  {/* Posts Tab */}
                   <TabsTrigger
                     value="posts"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
-                    <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Posts</span>
+                    <div className="relative">
+                      <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "posts" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">Posts</span>
                     <Badge
                       variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
+                      className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
-                      {mockPosts.length}
+                      {mockProfile.posts}
                     </Badge>
+                    {activeTab === "posts" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/20 to-blue-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
 
+                  {/* Media Tab */}
                   <TabsTrigger
                     value="media"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
-                    <Camera className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Media</span>
+                    <div className="relative">
+                      <Camera className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "media" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">Media</span>
                     <Badge
                       variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
+                      className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
                       {mockMedia.length}
                     </Badge>
+                    {activeTab === "media" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-400/20 to-purple-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
+
+                  {/* Studio Tab */}
                   <TabsTrigger
                     value="studio"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                     onClick={() => navigate("/app/unified-creator-studio")}
                   >
-                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span className="hidden sm:inline">Creator Studio</span>
-                    <span className="sm:hidden">Studio</span>
+                    <div className="relative">
+                      <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "studio" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium hidden sm:inline">Creator Studio</span>
+                    <span className="font-medium sm:hidden">Studio</span>
+                    {activeTab === "studio" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-400/20 to-indigo-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
+
+                  {/* Activity Tab */}
                   <TabsTrigger
                     value="activity"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
-                    <Activity className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>Activity</span>
+                    <div className="relative">
+                      <Activity className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "activity" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">Activity</span>
                     <Badge
                       variant="secondary"
-                      className="ml-1 text-xs h-4 px-1"
+                      className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
                       {mockActivity.length}
                     </Badge>
+                    {activeTab === "activity" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
+
+                  {/* About Tab */}
                   <TabsTrigger
                     value="about"
-                    className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent data-[state=active]:border-blue-500 data-[state=active]:text-blue-600 bg-transparent horizontal-tab-item min-w-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
-                    <Users className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                    <span>About</span>
+                    <div className="relative">
+                      <Users className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
+                      {activeTab === "about" && (
+                        <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
+                      )}
+                    </div>
+                    <span className="font-medium">About</span>
+                    {activeTab === "about" && (
+                      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-orange-400/20 to-orange-600/20 animate-pulse"></div>
+                    )}
                   </TabsTrigger>
                 </TabsList>
+
+                {/* Scroll indicator dots */}
+                <div className="flex justify-center mt-3 gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-60"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 opacity-40"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-pink-400 to-orange-400 opacity-60"></div>
+                </div>
               </div>
 
-              {/* Tab Contents */}
-              <div className="p-3 sm:p-4 lg:p-6">
+              {/* Enhanced Tab Contents */}
+              <div className="relative p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-white via-gray-50/30 to-white">
+                {/* Subtle background pattern */}
+                <div className="absolute inset-0 opacity-[0.02]">
+                  <div className="absolute inset-0" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                  }}></div>
+                </div>
                 {/* Posts Tab */}
-                <TabsContent value="posts" className="space-y-6 mt-0">
+                <TabsContent value="posts" className="space-y-6 mt-0 tab-content-animate">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">Posts</h3>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>{mockPosts.length} posts</span>
+                      <span>{mockProfile.posts} posts</span>
                       <span>•</span>
                       <span>
                         {mockPosts.reduce((sum, post) => sum + post.likes, 0)}{" "}
@@ -825,7 +1212,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Enhanced Media Tab */}
-                <TabsContent value="media" className="space-y-6 mt-0">
+                <TabsContent value="media" className="space-y-6 mt-0 tab-content-animate">
                   <div className="flex flex-col gap-3 sm:gap-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
@@ -1008,7 +1395,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Enhanced Activity Tab */}
-                <TabsContent value="activity" className="space-y-6 mt-0">
+                <TabsContent value="activity" className="space-y-6 mt-0 tab-content-animate">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-semibold">
@@ -1133,7 +1520,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Enhanced About Tab */}
-                <TabsContent value="about" className="space-y-6 mt-0">
+                <TabsContent value="about" className="space-y-6 mt-0 tab-content-animate">
                   <div>
                     <h3 className="text-lg font-semibold">
                       About {mockProfile.displayName}
@@ -1306,7 +1693,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Studio Tab - Redirects to Creator Studio */}
-                <TabsContent value="studio" className="space-y-6 mt-0">
+                <TabsContent value="studio" className="space-y-6 mt-0 tab-content-animate">
                   <div className="text-center py-12">
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                       <BarChart3 className="h-8 w-8 text-white" />
@@ -1338,6 +1725,36 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
         isOpen={showEditModal}
         onClose={() => setShowEditModal(false)}
         profile={mockProfile}
+      />
+
+      {/* Followers Modal */}
+      <UserListModal
+        isOpen={showFollowersModal}
+        onClose={() => setShowFollowersModal(false)}
+        title="Followers"
+        type="followers"
+        users={mockFollowers}
+        currentUser={user?.profile?.username}
+      />
+
+      {/* Following Modal */}
+      <UserListModal
+        isOpen={showFollowingModal}
+        onClose={() => setShowFollowingModal(false)}
+        title="Following"
+        type="following"
+        users={mockFollowing}
+        currentUser={user?.profile?.username}
+      />
+
+      {/* Profile Viewers Modal */}
+      <UserListModal
+        isOpen={showViewersModal}
+        onClose={() => setShowViewersModal(false)}
+        title="Profile Views"
+        type="viewers"
+        users={mockViewers}
+        currentUser={user?.profile?.username}
       />
     </div>
   );
