@@ -71,6 +71,7 @@ const ContentModeration = () => {
   const [filterStatus, setFilterStatus] = useState<string>("pending");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");
+  const [isUsingMockData, setIsUsingMockData] = useState(false);
 
   const notification = useNotification();
 
@@ -87,6 +88,7 @@ const ContentModeration = () => {
   const initializeModeration = async () => {
     try {
       setIsLoading(true);
+      setIsUsingMockData(false);
 
       // Get current admin
       const adminData = localStorage.getItem("admin_user");
@@ -97,9 +99,20 @@ const ContentModeration = () => {
       // Fetch pending moderation items
       const items = await AdminService.getPendingModeration();
       setModerationItems(items);
+
+      // Check if we got mock data (mock items have IDs starting with "mock-")
+      if (items.length > 0 && items.some(item => item.id.startsWith("mock-"))) {
+        setIsUsingMockData(true);
+        notification.info("Using demo data - content moderation database not configured");
+      }
     } catch (error) {
       console.error("Error loading moderation data:", error);
-      notification.error("Failed to load moderation queue");
+      const errorMessage = error instanceof Error
+        ? error.message
+        : typeof error === 'string'
+        ? error
+        : "Failed to load moderation queue";
+      notification.error(`Error fetching pending moderation: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }
@@ -125,7 +138,12 @@ const ContentModeration = () => {
       initializeModeration();
     } catch (error) {
       console.error("Error moderating content:", error);
-      notification.error("Failed to moderate content");
+      const errorMessage = error instanceof Error
+        ? error.message
+        : typeof error === 'string'
+        ? error
+        : "Failed to moderate content";
+      notification.error(`Error moderating content: ${errorMessage}`);
     }
   };
 
@@ -255,6 +273,17 @@ const ContentModeration = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Demo Data Alert */}
+      {isUsingMockData && (
+        <Alert className="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-900/20">
+          <Bot className="h-4 w-4 text-blue-600" />
+          <AlertDescription className="text-blue-800 dark:text-blue-200">
+            <strong>Demo Mode:</strong> You're viewing demo data. The content moderation database is not configured.
+            All moderation actions will be simulated.
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Urgent Items Alert */}
       {stats.urgent > 0 && (

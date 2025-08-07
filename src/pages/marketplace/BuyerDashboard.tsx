@@ -272,7 +272,10 @@ export default function BuyerDashboard() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
+        <Card
+          className="cursor-pointer hover:shadow-md transition-shadow"
+          onClick={() => navigate("/app/marketplace/orders")}
+        >
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
@@ -356,10 +359,20 @@ export default function BuyerDashboard() {
         <TabsContent value="orders" className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">My Orders</h2>
-            <Button variant="outline" size="sm">
-              <Download className="w-4 h-4 mr-2" />
-              Download All
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => navigate("/app/marketplace/orders")}
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View All Orders
+              </Button>
+              <Button variant="outline" size="sm">
+                <Download className="w-4 h-4 mr-2" />
+                Download All
+              </Button>
+            </div>
           </div>
 
           <div className="space-y-4">

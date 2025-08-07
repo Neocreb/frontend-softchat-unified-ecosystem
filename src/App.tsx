@@ -21,6 +21,7 @@ import { LiveContentProvider } from "./contexts/LiveContentContext";
 import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
+import { UnifiedNotificationProvider } from "./contexts/UnifiedNotificationContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
@@ -70,6 +71,7 @@ import MarketplaceSeller from "./pages/marketplace/MarketplaceSeller";
 import SellerDashboard from "./pages/marketplace/SellerDashboard";
 import MarketplaceWishlist from "./pages/marketplace/MarketplaceWishlist";
 import MarketplaceDashboard from "./pages/marketplace/MarketplaceDashboard";
+import MarketplaceOrders from "./pages/marketplace/MarketplaceOrders";
 
 // Delivery system imports
 import DeliveryHub from "./pages/DeliveryHub";
@@ -119,7 +121,7 @@ import Explore from "./pages/Explore";
 import GlobalSearch from "./pages/GlobalSearch";
 import LandingPage from "./pages/LandingPage";
 import TestComponent from "./pages/TestComponent";
-import Notifications from "./pages/Notifications";
+import UnifiedNotifications from "./pages/UnifiedNotifications";
 import Create from "./pages/Create";
 import EnhancedPlatform from "./pages/EnhancedPlatform";
 import EnhancedRewards from "./pages/EnhancedRewards";
@@ -367,7 +369,7 @@ const AppRoutes = () => {
           <Route path="user/:username" element={<EnhancedProfile />} />
           <Route path="demo/profiles" element={<ProfileDemo />} />
           <Route path="wallet" element={<Wallet />} />
-          <Route path="notifications" element={<Notifications />} />
+          <Route path="notifications" element={<UnifiedNotifications />} />
 
           {/* Marketplace routes */}
           <Route path="marketplace" element={<EnhancedMarketplace />} />
@@ -384,6 +386,7 @@ const AppRoutes = () => {
             element={<Navigate to="/app/marketplace" replace />}
           />
           <Route path="marketplace/my" element={<MarketplaceDashboard />} />
+          <Route path="marketplace/orders" element={<MarketplaceOrders />} />
           <Route path="marketplace/seller" element={<SellerDashboard />} />
           <Route path="marketplace/list" element={<MarketplaceList />} />
           <Route
@@ -555,6 +558,7 @@ const AppRoutes = () => {
         element={<Navigate to="/app/marketplace/list" replace />}
       />
       <Route path="/chat" element={<Navigate to="/app/chat" replace />} />
+      <Route path="/messages" element={<Navigate to="/app/chat" replace />} />
       <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
       <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
       <Route path="/events" element={<Navigate to="/app/events" replace />} />
@@ -623,7 +627,8 @@ const App = () => {
             <I18nProvider>
               <CurrencyProvider>
                 <AuthProvider>
-                  <AdminProvider>
+                  <UnifiedNotificationProvider>
+                    <AdminProvider>
                     <AccessibilityProvider>
                       <TooltipProvider>
                         <GlobalCallProvider>
@@ -644,7 +649,8 @@ const App = () => {
                         </GlobalCallProvider>
                       </TooltipProvider>
                     </AccessibilityProvider>
-                  </AdminProvider>
+                    </AdminProvider>
+                  </UnifiedNotificationProvider>
                 </AuthProvider>
               </CurrencyProvider>
             </I18nProvider>

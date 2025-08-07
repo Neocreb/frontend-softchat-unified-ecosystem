@@ -12,6 +12,7 @@ import {
   X,
   Bell,
   MessageCircle,
+  Package,
 } from "lucide-react";
 
 interface MobileMarketplaceNavProps {
@@ -40,31 +41,37 @@ export const MobileMarketplaceNav: React.FC<MobileMarketplaceNavProps> = ({
     {
       icon: Home,
       label: "Home",
-      path: "/marketplace",
+      path: "/app/marketplace",
       badge: null,
     },
     {
       icon: Grid3x3,
       label: "Browse",
-      path: "/marketplace/browse",
+      path: "/app/marketplace/browse",
+      badge: null,
+    },
+    {
+      icon: Package,
+      label: "Orders",
+      path: "/app/marketplace/orders",
       badge: null,
     },
     {
       icon: ShoppingBag,
       label: "Cart",
-      path: "/marketplace/cart",
+      path: "/app/marketplace/cart",
       badge: cartItemCount > 0 ? cartItemCount : null,
     },
     {
       icon: Heart,
       label: "Wishlist",
-      path: "/marketplace/wishlist",
+      path: "/app/marketplace/wishlist",
       badge: wishlistItemCount > 0 ? wishlistItemCount : null,
     },
     {
       icon: User,
       label: "Profile",
-      path: "/marketplace/profile",
+      path: "/app/marketplace/profile",
       badge: null,
     },
   ];
@@ -73,31 +80,31 @@ export const MobileMarketplaceNav: React.FC<MobileMarketplaceNavProps> = ({
     {
       icon: Home,
       label: "Dashboard",
-      path: "/marketplace/seller",
+      path: "/app/marketplace/seller",
       badge: null,
     },
     {
       icon: Store,
       label: "Products",
-      path: "/marketplace/seller/products",
+      path: "/app/marketplace/seller/products",
       badge: null,
     },
     {
       icon: ShoppingBag,
       label: "Orders",
-      path: "/marketplace/seller/orders",
+      path: "/app/marketplace/seller/orders",
       badge: null,
     },
     {
       icon: MessageCircle,
       label: "Messages",
-      path: "/marketplace/seller/messages",
+      path: "/app/marketplace/seller/messages",
       badge: unreadMessages > 0 ? unreadMessages : null,
     },
     {
       icon: User,
       label: "Account",
-      path: "/marketplace/seller/account",
+      path: "/app/marketplace/seller/account",
       badge: null,
     },
   ];
