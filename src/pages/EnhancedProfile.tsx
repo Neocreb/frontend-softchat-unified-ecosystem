@@ -117,6 +117,9 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
   const [showViewersModal, setShowViewersModal] = useState(false);
   const [profileViewers, setProfileViewers] = useState(1256);
 
+  // Mock user type states
+  const [isDeliveryProvider, setIsDeliveryProvider] = useState(false); // This would come from user profile data
+
   const isOwnProfile =
     !targetUsername || (user && user.profile?.username === targetUsername);
 
@@ -845,7 +848,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         </div>
                       </div>
 
-                      {/* Profile Views */}
+                      {/* Profile Views with Engagement */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
                         onClick={() => setShowViewersModal(true)}
@@ -860,20 +863,6 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         </div>
                         <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
                           Views
-                        </div>
-                      </div>
-
-                      {/* Platform Engagement */}
-                      <div className="flex-shrink-0 text-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-emerald-600">
-                              {mockProfile.engagement}%
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700">
-                          Engagement
                         </div>
                       </div>
 
@@ -897,33 +886,21 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         </div>
                       )}
 
-                      {/* Level/Rank */}
+                      {/* Trust Level (Combined Trust Score + Level) */}
                       <div className="flex-shrink-0 text-center">
                         <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <Trophy className="h-4 w-4 text-amber-600 mx-auto mb-1" />
+                            <div className="flex items-center justify-center gap-0.5 mb-1">
+                              <Shield className="h-3 w-3 text-amber-600" />
+                              <Trophy className="h-3 w-3 text-amber-600" />
+                            </div>
                             <div className="text-sm sm:text-base font-bold text-amber-600">
-                              8
+                              L8·9.2
                             </div>
                           </div>
                         </div>
                         <div className="text-xs sm:text-sm font-medium text-gray-700">
-                          Level
-                        </div>
-                      </div>
-
-                      {/* Trust Score */}
-                      <div className="flex-shrink-0 text-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100 border border-teal-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <Shield className="h-4 w-4 text-teal-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-teal-600">
-                              9.2
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700">
-                          Trust
+                          Trust Level
                         </div>
                       </div>
 
@@ -981,23 +958,25 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         </div>
                       </div>
 
-                      {/* Delivery Rating */}
-                      <div
-                        className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => navigate("/app/delivery")}
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
-                          <div className="text-center">
-                            <Truck className="h-4 w-4 text-violet-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-violet-600">
-                              4.8
+                      {/* Delivery Rating - Only for approved delivery providers */}
+                      {isDeliveryProvider && (
+                        <div
+                          className="flex-shrink-0 text-center cursor-pointer group"
+                          onClick={() => navigate("/app/delivery")}
+                        >
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                            <div className="text-center">
+                              <Truck className="h-4 w-4 text-violet-600 mx-auto mb-1" />
+                              <div className="text-sm sm:text-base font-bold text-violet-600">
+                                4.8
+                              </div>
                             </div>
                           </div>
+                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
+                            Delivery
+                          </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
-                          Delivery
-                        </div>
-                      </div>
+                      )}
                     </div>
 
                     {/* Scroll hint dots */}
