@@ -88,6 +88,7 @@ const ContentModeration = () => {
   const initializeModeration = async () => {
     try {
       setIsLoading(true);
+      setIsUsingMockData(false);
 
       // Get current admin
       const adminData = localStorage.getItem("admin_user");
@@ -98,6 +99,12 @@ const ContentModeration = () => {
       // Fetch pending moderation items
       const items = await AdminService.getPendingModeration();
       setModerationItems(items);
+
+      // Check if we got mock data (mock items have IDs starting with "mock-")
+      if (items.length > 0 && items.some(item => item.id.startsWith("mock-"))) {
+        setIsUsingMockData(true);
+        notification.info("Using demo data - content moderation database not configured");
+      }
     } catch (error) {
       console.error("Error loading moderation data:", error);
       const errorMessage = error instanceof Error
