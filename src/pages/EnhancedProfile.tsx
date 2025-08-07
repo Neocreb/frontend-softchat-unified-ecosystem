@@ -130,7 +130,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     displayName: profile.full_name,
     bio:
       profile.bio ||
-      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n��� Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
+      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n��� Passionate about creating amazing user experiences\n��� Mobile-first developer\n🎯 Always learning new technologies",
     avatar:
       profile.avatar_url ||
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -789,7 +789,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   )}
                 </div>
 
-                {/* Modern Horizontally Scrollable Stats */}
+                {/* Profile Stats - Horizontal Scrollable Cards */}
                 <div className="mt-6">
                   <div className="relative">
                     {/* Gradient fade effects */}
@@ -799,15 +799,27 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                     {/* Scrollable stats container */}
                     <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1">
                       {/* Posts */}
-                      <div className="flex-shrink-0 text-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => {
+                          setActiveTab("posts");
+                          // Scroll to tabs section smoothly
+                          setTimeout(() => {
+                            const tabsElement = document.querySelector('[role="tablist"]');
+                            if (tabsElement) {
+                              tabsElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                          }, 100);
+                        }}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-blue-100 to-blue-200 border-0 flex items-center justify-center group hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-blue-600">
+                            <div className="text-xl sm:text-2xl font-bold text-blue-600">
                               {mockProfile.posts}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
                           Posts
                         </div>
                       </div>
@@ -815,16 +827,16 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {/* Followers */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => setShowFollowersModal(true)}
+                        onClick={() => navigate(`/app/profile/${targetUsername}/followers`)}
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-purple-100 to-purple-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-purple-600">
+                            <div className="text-xl sm:text-2xl font-bold text-purple-600">
                               {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
                           Followers
                         </div>
                       </div>
@@ -832,34 +844,34 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       {/* Following */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => setShowFollowingModal(true)}
+                        onClick={() => navigate(`/app/profile/${targetUsername}/following`)}
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-indigo-100 to-indigo-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <div className="text-lg sm:text-xl font-bold text-indigo-600">
+                            <div className="text-xl sm:text-2xl font-bold text-indigo-600">
                               {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
                           Following
                         </div>
                       </div>
 
-                      {/* Profile Views with Engagement */}
+                      {/* Profile Views */}
                       <div
                         className="flex-shrink-0 text-center cursor-pointer group"
-                        onClick={() => setShowViewersModal(true)}
+                        onClick={() => navigate(`/app/profile/${targetUsername}/views`)}
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-pink-100 to-pink-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <Eye className="h-4 w-4 text-pink-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-pink-600">
+                            <Eye className="h-5 w-5 text-pink-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-pink-600">
                               {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
                           Views
                         </div>
                       </div>
@@ -870,34 +882,37 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           className="flex-shrink-0 text-center cursor-pointer group"
                           onClick={() => navigate("/app/wallet")}
                         >
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-green-100 to-green-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                             <div className="text-center">
-                              <Wallet className="h-4 w-4 text-green-600 mx-auto mb-1" />
-                              <div className="text-sm sm:text-base font-bold text-green-600">
+                              <Wallet className="h-5 w-5 text-green-600 mx-auto mb-1" />
+                              <div className="text-lg sm:text-xl font-bold text-green-600">
                                 $2.5k
                               </div>
                             </div>
                           </div>
-                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
+                          <div className="text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
                             Balance
                           </div>
                         </div>
                       )}
 
-                      {/* Trust Level (Combined Trust Score + Level) */}
-                      <div className="flex-shrink-0 text-center">
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                      {/* Trust Level */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => navigate(`/app/profile/${targetUsername}/trust`)}
+                      >
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-amber-100 to-amber-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <div className="flex items-center justify-center gap-0.5 mb-1">
+                            <div className="flex items-center justify-center gap-1 mb-1">
                               <Shield className="h-3 w-3 text-amber-600" />
                               <Trophy className="h-3 w-3 text-amber-600" />
                             </div>
-                            <div className="text-sm sm:text-base font-bold text-amber-600">
+                            <div className="text-lg sm:text-xl font-bold text-amber-600">
                               L8·9.2
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-amber-600 transition-colors">
                           Trust Level
                         </div>
                       </div>
@@ -907,15 +922,15 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         className="flex-shrink-0 text-center cursor-pointer group"
                         onClick={() => navigate("/app/marketplace")}
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-orange-100 to-orange-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <Store className="h-4 w-4 text-orange-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-orange-600">
+                            <Store className="h-5 w-5 text-orange-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-orange-600">
                               156
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-orange-600 transition-colors">
                           Sales
                         </div>
                       </div>
@@ -925,15 +940,15 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         className="flex-shrink-0 text-center cursor-pointer group"
                         onClick={() => navigate("/app/freelance")}
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-cyan-50 to-cyan-100 border border-cyan-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-cyan-100 to-cyan-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <Code className="h-4 w-4 text-cyan-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-cyan-600">
+                            <Code className="h-5 w-5 text-cyan-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-cyan-600">
                               23
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-cyan-600 transition-colors">
                           Projects
                         </div>
                       </div>
@@ -943,15 +958,15 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                         className="flex-shrink-0 text-center cursor-pointer group"
                         onClick={() => navigate("/app/crypto")}
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-yellow-100 to-yellow-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                           <div className="text-center">
-                            <Coins className="h-4 w-4 text-yellow-600 mx-auto mb-1" />
-                            <div className="text-sm sm:text-base font-bold text-yellow-600">
+                            <Coins className="h-5 w-5 text-yellow-600 mx-auto mb-1" />
+                            <div className="text-lg sm:text-xl font-bold text-yellow-600">
                               89
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
+                        <div className="text-sm font-medium text-gray-700 group-hover:text-yellow-600 transition-colors">
                           Trades
                         </div>
                       </div>
@@ -962,26 +977,26 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           className="flex-shrink-0 text-center cursor-pointer group"
                           onClick={() => navigate("/app/delivery")}
                         >
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100 border border-violet-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 rounded-3xl bg-gradient-to-br from-violet-100 to-violet-200 border-0 flex items-center justify-center hover:shadow-xl hover:scale-105 transition-all duration-300">
                             <div className="text-center">
-                              <Truck className="h-4 w-4 text-violet-600 mx-auto mb-1" />
-                              <div className="text-sm sm:text-base font-bold text-violet-600">
+                              <Truck className="h-5 w-5 text-violet-600 mx-auto mb-1" />
+                              <div className="text-lg sm:text-xl font-bold text-violet-600">
                                 4.8
                               </div>
                             </div>
                           </div>
-                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
+                          <div className="text-sm font-medium text-gray-700 group-hover:text-violet-600 transition-colors">
                             Delivery
                           </div>
                         </div>
                       )}
                     </div>
 
-                    {/* Scroll hint dots */}
+                    {/* Scroll indicator dots */}
                     <div className="flex justify-center mt-2 gap-1">
-                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
-                      <div className="w-1 h-1 rounded-full bg-gray-400"></div>
-                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-400"></div>
+                      <div className="w-1.5 h-1.5 rounded-full bg-gray-300"></div>
                     </div>
                   </div>
                 </div>
@@ -1003,11 +1018,11 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-radial from-blue-100/40 to-transparent rounded-full blur-2xl transform -translate-x-16 -translate-y-16"></div>
                 <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-radial from-purple-100/40 to-transparent rounded-full blur-2xl transform translate-x-16 translate-y-16"></div>
 
-                <TabsList className="relative flex w-full overflow-x-auto gap-2 sm:gap-3 p-2 h-auto bg-white/60 backdrop-blur-md rounded-xl border border-white/20 shadow-lg whitespace-nowrap scrollbar-hide">
+                <TabsList className="relative flex w-full overflow-x-auto gap-1 sm:gap-2 p-1 sm:p-2 h-auto bg-white/60 backdrop-blur-md rounded-xl border border-white/20 shadow-lg">
                   {/* Posts Tab */}
                   <TabsTrigger
                     value="posts"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
+                    className="group relative flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 hover:bg-gray-50/80 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
@@ -1030,7 +1045,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* Media Tab */}
                   <TabsTrigger
                     value="media"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
+                    className="group relative flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/25 hover:bg-gray-50/80 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Camera className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
@@ -1053,7 +1068,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* Studio Tab */}
                   <TabsTrigger
                     value="studio"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
+                    className="group relative flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 hover:bg-gray-50/80 min-w-fit flex-shrink-0"
                     onClick={() => navigate("/app/unified-creator-studio")}
                   >
                     <div className="relative">
@@ -1072,7 +1087,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* Activity Tab */}
                   <TabsTrigger
                     value="activity"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
+                    className="group relative flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-500/25 hover:bg-gray-50/80 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Activity className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
@@ -1095,7 +1110,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* About Tab */}
                   <TabsTrigger
                     value="about"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
+                    className="group relative flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 hover:bg-gray-50/80 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Users className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
