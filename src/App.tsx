@@ -62,6 +62,7 @@ import ChatDemo from "./pages/ChatDemo";
 import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import UnifiedProfile from "./pages/UnifiedProfile";
+import ComprehensiveUnifiedProfile from "./pages/ComprehensiveUnifiedProfile";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
 import EnhancedMarketplace from "./pages/EnhancedMarketplace";
