@@ -1131,7 +1131,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">Posts</h3>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>{mockPosts.length} posts</span>
+                      <span>{mockProfile.posts} posts</span>
                       <span>•</span>
                       <span>
                         {mockPosts.reduce((sum, post) => sum + post.likes, 0)}{" "}
