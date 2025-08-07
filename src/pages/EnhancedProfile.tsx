@@ -788,116 +788,152 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   )}
                 </div>
 
-                {/* Stats */}
-                <div className="mt-4 sm:mt-6 py-3 sm:py-4 border-t">
-                  {/* Mobile: 2x3 grid for own profile, 2x2 for others */}
-                  <div className={cn(
-                    "grid gap-2 sm:hidden",
-                    isOwnProfile ? "grid-cols-2" : "grid-cols-2"
-                  )}>
-                    <div className="text-center p-2">
-                      <div className="text-sm font-bold">{mockProfile.posts}</div>
-                      <div className="text-xs text-muted-foreground">Posts</div>
-                    </div>
-                    <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
-                      onClick={() => setShowFollowersModal(true)}
-                    >
-                      <div className="text-sm font-bold">{followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}</div>
-                      <div className="text-xs text-muted-foreground">Followers</div>
-                    </div>
-                    <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
-                      onClick={() => setShowFollowingModal(true)}
-                    >
-                      <div className="text-sm font-bold">{followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}</div>
-                      <div className="text-xs text-muted-foreground">Following</div>
-                    </div>
-                    <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
-                      onClick={() => setShowViewersModal(true)}
-                    >
-                      <div className="text-sm font-bold flex items-center justify-center gap-1">
-                        <Eye className="h-3 w-3" />
-                        {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
-                      </div>
-                      <div className="text-xs text-muted-foreground">Views</div>
-                    </div>
-                    {isOwnProfile && (
-                      <div
-                        className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors col-span-2"
-                        onClick={() => navigate("/app/wallet")}
-                      >
-                        <div className="text-sm font-bold text-green-600 flex items-center justify-center gap-1">
-                          <Wallet className="h-3 w-3" />
-                          $2,540
-                        </div>
-                        <div className="text-xs text-muted-foreground">Balance</div>
-                      </div>
-                    )}
-                  </div>
+                {/* Modern Horizontally Scrollable Stats */}
+                <div className="mt-6">
+                  <div className="relative">
+                    {/* Gradient fade effects */}
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-                  {/* Desktop: Single row */}
-                  <div className={cn(
-                    "hidden sm:grid gap-4 lg:gap-6",
-                    isOwnProfile ? "grid-cols-5" : "grid-cols-4"
-                  )}>
-                    <div className="text-center">
-                      <div className="text-base sm:text-lg lg:text-xl font-bold">
-                        {mockProfile.posts}
+                    {/* Scrollable stats container */}
+                    <div className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1">
+                      {/* Posts */}
+                      <div className="flex-shrink-0 text-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-blue-600">
+                              {mockProfile.posts}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                          Posts
+                        </div>
                       </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">
-                        Posts
-                      </div>
-                    </div>
-                    <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                      onClick={() => setShowFollowersModal(true)}
-                    >
-                      <div className="text-base sm:text-lg lg:text-xl font-bold">
-                        {followerCount.toLocaleString()}
-                      </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">
-                        Followers
-                      </div>
-                    </div>
-                    <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                      onClick={() => setShowFollowingModal(true)}
-                    >
-                      <div className="text-base sm:text-lg lg:text-xl font-bold">
-                        {followingCount.toLocaleString()}
-                      </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">
-                        Following
-                      </div>
-                    </div>
-                    <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                      onClick={() => setShowViewersModal(true)}
-                    >
-                      <div className="text-base sm:text-lg lg:text-xl font-bold flex items-center justify-center gap-1">
-                        <Eye className="h-4 w-4" />
-                        {profileViewers.toLocaleString()}
-                      </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground">
-                        Profile Views
-                      </div>
-                    </div>
-                    {isOwnProfile && (
+
+                      {/* Followers */}
                       <div
-                        className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                        onClick={() => navigate("/app/wallet")}
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => setShowFollowersModal(true)}
                       >
-                        <div className="text-base sm:text-lg lg:text-xl font-bold text-green-600 flex items-center justify-center gap-1">
-                          <Wallet className="h-4 w-4" />
-                          $2,540
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-purple-600">
+                              {followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs sm:text-sm text-muted-foreground">
-                          Balance
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-purple-600 transition-colors">
+                          Followers
                         </div>
                       </div>
-                    )}
+
+                      {/* Following */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => setShowFollowingModal(true)}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-indigo-600">
+                              {followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
+                          Following
+                        </div>
+                      </div>
+
+                      {/* Profile Views */}
+                      <div
+                        className="flex-shrink-0 text-center cursor-pointer group"
+                        onClick={() => setShowViewersModal(true)}
+                      >
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Eye className="h-4 w-4 text-pink-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-pink-600">
+                              {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-pink-600 transition-colors">
+                          Views
+                        </div>
+                      </div>
+
+                      {/* Platform Engagement */}
+                      <div className="flex-shrink-0 text-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-emerald-600">
+                              {mockProfile.engagement}%
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                          Engagement
+                        </div>
+                      </div>
+
+                      {/* Wallet Balance (Own Profile Only) */}
+                      {isOwnProfile && (
+                        <div
+                          className="flex-shrink-0 text-center cursor-pointer group"
+                          onClick={() => navigate("/app/wallet")}
+                        >
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 flex items-center justify-center hover:shadow-lg hover:scale-105 transition-all duration-300">
+                            <div className="text-center">
+                              <Wallet className="h-4 w-4 text-green-600 mx-auto mb-1" />
+                              <div className="text-sm sm:text-base font-bold text-green-600">
+                                $2.5k
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-xs sm:text-sm font-medium text-gray-700 group-hover:text-green-600 transition-colors">
+                            Balance
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Level/Rank */}
+                      <div className="flex-shrink-0 text-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Trophy className="h-4 w-4 text-amber-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-amber-600">
+                              8
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                          Level
+                        </div>
+                      </div>
+
+                      {/* Trust Score */}
+                      <div className="flex-shrink-0 text-center">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100 border border-teal-200 flex items-center justify-center group hover:shadow-lg hover:scale-105 transition-all duration-300">
+                          <div className="text-center">
+                            <Shield className="h-4 w-4 text-teal-600 mx-auto mb-1" />
+                            <div className="text-sm sm:text-base font-bold text-teal-600">
+                              9.2
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-xs sm:text-sm font-medium text-gray-700">
+                          Trust
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Scroll hint dots */}
+                    <div className="flex justify-center mt-2 gap-1">
+                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                      <div className="w-1 h-1 rounded-full bg-gray-400"></div>
+                      <div className="w-1 h-1 rounded-full bg-gray-300"></div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
