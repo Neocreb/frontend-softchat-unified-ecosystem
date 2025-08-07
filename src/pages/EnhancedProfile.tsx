@@ -1003,11 +1003,11 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-radial from-blue-100/40 to-transparent rounded-full blur-2xl transform -translate-x-16 -translate-y-16"></div>
                 <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-radial from-purple-100/40 to-transparent rounded-full blur-2xl transform translate-x-16 translate-y-16"></div>
 
-                <TabsList className="relative flex w-full overflow-x-auto gap-2 sm:gap-3 p-1 h-auto bg-white/60 backdrop-blur-md rounded-xl border border-white/20 shadow-lg whitespace-nowrap scrollbar-hide">
+                <TabsList className="relative flex w-full overflow-x-auto gap-2 sm:gap-3 p-2 h-auto bg-white/60 backdrop-blur-md rounded-xl border border-white/20 shadow-lg whitespace-nowrap scrollbar-hide">
                   {/* Posts Tab */}
                   <TabsTrigger
                     value="posts"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
@@ -1020,7 +1020,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       variant="secondary"
                       className="ml-1 sm:ml-2 text-xs h-5 px-2 bg-white/20 border-white/30 text-current backdrop-blur-sm group-data-[state=active]:bg-white/25 group-data-[state=active]:text-white transition-all duration-300"
                     >
-                      {mockPosts.length}
+                      {mockProfile.posts}
                     </Badge>
                     {activeTab === "posts" && (
                       <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/20 to-blue-600/20 animate-pulse"></div>
@@ -1030,7 +1030,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* Media Tab */}
                   <TabsTrigger
                     value="media"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-purple-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Camera className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
@@ -1053,7 +1053,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* Studio Tab */}
                   <TabsTrigger
                     value="studio"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                     onClick={() => navigate("/app/unified-creator-studio")}
                   >
                     <div className="relative">
@@ -1072,7 +1072,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* Activity Tab */}
                   <TabsTrigger
                     value="activity"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-emerald-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Activity className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
@@ -1095,7 +1095,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   {/* About Tab */}
                   <TabsTrigger
                     value="about"
-                    className="group relative flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-0 flex-shrink-0"
+                    className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base font-semibold whitespace-nowrap rounded-lg border-0 bg-transparent transition-all duration-300 ease-out data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-orange-500/25 data-[state=active]:scale-105 hover:bg-gray-50/80 hover:scale-102 min-w-fit flex-shrink-0"
                   >
                     <div className="relative">
                       <Users className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 transition-transform duration-300 group-data-[state=active]:scale-110" />
