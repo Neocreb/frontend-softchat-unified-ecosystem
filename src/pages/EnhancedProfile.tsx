@@ -1127,7 +1127,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                   }}></div>
                 </div>
                 {/* Posts Tab */}
-                <TabsContent value="posts" className="space-y-6 mt-0">
+                <TabsContent value="posts" className="space-y-6 mt-0 tab-content-animate">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold">Posts</h3>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -1212,7 +1212,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Enhanced Media Tab */}
-                <TabsContent value="media" className="space-y-6 mt-0">
+                <TabsContent value="media" className="space-y-6 mt-0 tab-content-animate">
                   <div className="flex flex-col gap-3 sm:gap-4">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
@@ -1395,7 +1395,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Enhanced Activity Tab */}
-                <TabsContent value="activity" className="space-y-6 mt-0">
+                <TabsContent value="activity" className="space-y-6 mt-0 tab-content-animate">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-semibold">
@@ -1520,7 +1520,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Enhanced About Tab */}
-                <TabsContent value="about" className="space-y-6 mt-0">
+                <TabsContent value="about" className="space-y-6 mt-0 tab-content-animate">
                   <div>
                     <h3 className="text-lg font-semibold">
                       About {mockProfile.displayName}
@@ -1693,7 +1693,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </TabsContent>
 
                 {/* Studio Tab - Redirects to Creator Studio */}
-                <TabsContent value="studio" className="space-y-6 mt-0">
+                <TabsContent value="studio" className="space-y-6 mt-0 tab-content-animate">
                   <div className="text-center py-12">
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                       <BarChart3 className="h-8 w-8 text-white" />
