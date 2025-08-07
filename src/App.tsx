@@ -370,6 +370,9 @@ const AppRoutes = () => {
           <Route path="chat-demo" element={<ChatDemo />} />
           <Route path="profile" element={<EnhancedProfile />} />
           <Route path="profile/:username" element={<EnhancedProfile />} />
+          <Route path="profile/:username/stats" element={<ProfileStats />} />
+          <Route path="profile/:username/followers" element={<ProfileFollowers />} />
+          <Route path="profile/:username/following" element={<ProfileFollowing />} />
           <Route path="user/:username" element={<EnhancedProfile />} />
           <Route path="unified-profile" element={<UnifiedProfile />} />
           <Route path="unified-profile/:username" element={<UnifiedProfile />} />
