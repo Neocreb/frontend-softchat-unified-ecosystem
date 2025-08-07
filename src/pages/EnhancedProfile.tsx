@@ -127,7 +127,7 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     displayName: profile.full_name,
     bio:
       profile.bio ||
-      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n���� Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
+      "Software Developer | Tech Enthusiast | Coffee Lover ☕\nBuilding the future one line of code at a time 🚀\n\n🌟 Passionate about creating amazing user experiences\n📱 Mobile-first developer\n🎯 Always learning new technologies",
     avatar:
       profile.avatar_url ||
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
@@ -295,6 +295,121 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
     if (mediaFilter === "videos") return item.type === "video";
     return true;
   });
+
+  // Mock data for followers, following, and viewers
+  const mockFollowers = [
+    {
+      id: "1",
+      username: "sarah_johnson",
+      displayName: "Sarah Johnson",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b977?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: false,
+      followsBack: true,
+      isOnline: true,
+      bio: "UI/UX Designer passionate about creating beautiful experiences",
+      followers: 1240,
+    },
+    {
+      id: "2",
+      username: "mike_chen",
+      displayName: "Mike Chen",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isFollowing: true,
+      followsBack: false,
+      isOnline: false,
+      bio: "Full-stack developer and crypto enthusiast",
+      followers: 567,
+    },
+    {
+      id: "3",
+      username: "emma_davis",
+      displayName: "Emma Davis",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: false,
+      followsBack: false,
+      isOnline: true,
+      bio: "Product Manager | Tech Leader | Coffee Addict",
+      followers: 2134,
+    },
+    {
+      id: "4",
+      username: "alex_wilson",
+      displayName: "Alex Wilson",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isFollowing: true,
+      followsBack: true,
+      isOnline: false,
+      bio: "Freelance developer building the future",
+      followers: 789,
+    },
+  ];
+
+  const mockFollowing = [
+    {
+      id: "5",
+      username: "tech_guru",
+      displayName: "Tech Guru",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: true,
+      followsBack: true,
+      isOnline: true,
+      bio: "Technology insights and trends",
+      followers: 15600,
+    },
+    {
+      id: "6",
+      username: "crypto_analyst",
+      displayName: "Crypto Analyst",
+      avatar: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isFollowing: true,
+      followsBack: false,
+      isOnline: false,
+      bio: "Crypto market analysis and trading insights",
+      followers: 8900,
+    },
+  ];
+
+  const mockViewers = [
+    {
+      id: "7",
+      username: "jane_doe",
+      displayName: "Jane Doe",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b977?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isOnline: true,
+      lastSeen: "2 minutes ago",
+      bio: "Marketing professional",
+      followers: 340,
+    },
+    {
+      id: "8",
+      username: "john_smith",
+      displayName: "John Smith",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: false,
+      isOnline: false,
+      lastSeen: "1 hour ago",
+      bio: "Software engineer at TechCorp",
+      followers: 567,
+    },
+    {
+      id: "9",
+      username: "lisa_wang",
+      displayName: "Lisa Wang",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      verified: true,
+      isOnline: true,
+      lastSeen: "5 minutes ago",
+      bio: "Entrepreneur and investor",
+      followers: 1890,
+    },
+  ];
 
   // Mock profile data
   const mockProfile = profileUser
