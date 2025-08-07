@@ -275,6 +275,7 @@ export default function DeliveryProviderDashboard() {
   const [showAssignmentDetails, setShowAssignmentDetails] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [transferAmount, setTransferAmount] = useState("");
+  const [activeTab, setActiveTab] = useState("overview");
   const [isOnline, setIsOnline] = useState(true);
   const { toast } = useToast();
   const { walletBalance, refreshWallet } = useWalletContext();
