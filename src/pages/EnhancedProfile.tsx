@@ -789,66 +789,116 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </div>
 
                 {/* Stats */}
-                <div className={cn(
-                  "grid gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6 py-3 sm:py-4 border-t",
-                  isOwnProfile ? "grid-cols-5" : "grid-cols-4"
-                )}>
-                  <div className="text-center">
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {mockProfile.posts}
+                <div className="mt-4 sm:mt-6 py-3 sm:py-4 border-t">
+                  {/* Mobile: 2x3 grid for own profile, 2x2 for others */}
+                  <div className={cn(
+                    "grid gap-2 sm:hidden",
+                    isOwnProfile ? "grid-cols-2" : "grid-cols-2"
+                  )}>
+                    <div className="text-center p-2">
+                      <div className="text-sm font-bold">{mockProfile.posts}</div>
+                      <div className="text-xs text-muted-foreground">Posts</div>
                     </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Posts
-                    </div>
-                  </div>
-                  <div
-                    className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                    onClick={() => setShowFollowersModal(true)}
-                  >
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {followerCount.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Followers
-                    </div>
-                  </div>
-                  <div
-                    className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                    onClick={() => setShowFollowingModal(true)}
-                  >
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {followingCount.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Following
-                    </div>
-                  </div>
-                  <div
-                    className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                    onClick={() => setShowViewersModal(true)}
-                  >
-                    <div className="text-base sm:text-lg lg:text-xl font-bold flex items-center justify-center gap-1">
-                      <Eye className="h-4 w-4" />
-                      {profileViewers.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-muted-foreground">
-                      Profile Views
-                    </div>
-                  </div>
-                  {isOwnProfile && (
                     <div
-                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
-                      onClick={() => navigate("/app/wallet")}
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
+                      onClick={() => setShowFollowersModal(true)}
                     >
-                      <div className="text-base sm:text-lg lg:text-xl font-bold text-green-600 flex items-center justify-center gap-1">
-                        <Wallet className="h-4 w-4" />
-                        $2,540
+                      <div className="text-sm font-bold">{followerCount > 999 ? `${(followerCount/1000).toFixed(1)}k` : followerCount}</div>
+                      <div className="text-xs text-muted-foreground">Followers</div>
+                    </div>
+                    <div
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
+                      onClick={() => setShowFollowingModal(true)}
+                    >
+                      <div className="text-sm font-bold">{followingCount > 999 ? `${(followingCount/1000).toFixed(1)}k` : followingCount}</div>
+                      <div className="text-xs text-muted-foreground">Following</div>
+                    </div>
+                    <div
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
+                      onClick={() => setShowViewersModal(true)}
+                    >
+                      <div className="text-sm font-bold flex items-center justify-center gap-1">
+                        <Eye className="h-3 w-3" />
+                        {profileViewers > 999 ? `${(profileViewers/1000).toFixed(1)}k` : profileViewers}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Views</div>
+                    </div>
+                    {isOwnProfile && (
+                      <div
+                        className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors col-span-2"
+                        onClick={() => navigate("/app/wallet")}
+                      >
+                        <div className="text-sm font-bold text-green-600 flex items-center justify-center gap-1">
+                          <Wallet className="h-3 w-3" />
+                          $2,540
+                        </div>
+                        <div className="text-xs text-muted-foreground">Balance</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Desktop: Single row */}
+                  <div className={cn(
+                    "hidden sm:grid gap-4 lg:gap-6",
+                    isOwnProfile ? "grid-cols-5" : "grid-cols-4"
+                  )}>
+                    <div className="text-center">
+                      <div className="text-base sm:text-lg lg:text-xl font-bold">
+                        {mockProfile.posts}
                       </div>
                       <div className="text-xs sm:text-sm text-muted-foreground">
-                        Balance
+                        Posts
                       </div>
                     </div>
-                  )}
+                    <div
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                      onClick={() => setShowFollowersModal(true)}
+                    >
+                      <div className="text-base sm:text-lg lg:text-xl font-bold">
+                        {followerCount.toLocaleString()}
+                      </div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">
+                        Followers
+                      </div>
+                    </div>
+                    <div
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                      onClick={() => setShowFollowingModal(true)}
+                    >
+                      <div className="text-base sm:text-lg lg:text-xl font-bold">
+                        {followingCount.toLocaleString()}
+                      </div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">
+                        Following
+                      </div>
+                    </div>
+                    <div
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                      onClick={() => setShowViewersModal(true)}
+                    >
+                      <div className="text-base sm:text-lg lg:text-xl font-bold flex items-center justify-center gap-1">
+                        <Eye className="h-4 w-4" />
+                        {profileViewers.toLocaleString()}
+                      </div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">
+                        Profile Views
+                      </div>
+                    </div>
+                    {isOwnProfile && (
+                      <div
+                        className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                        onClick={() => navigate("/app/wallet")}
+                      >
+                        <div className="text-base sm:text-lg lg:text-xl font-bold text-green-600 flex items-center justify-center gap-1">
+                          <Wallet className="h-4 w-4" />
+                          $2,540
+                        </div>
+                        <div className="text-xs sm:text-sm text-muted-foreground">
+                          Balance
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </div>
