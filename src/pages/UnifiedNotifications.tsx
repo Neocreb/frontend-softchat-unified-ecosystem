@@ -300,14 +300,27 @@ const getMockNotifications = (): EnhancedNotification[] => [
 const UnifiedNotifications: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [notifications, setNotifications] = useState<EnhancedNotification[]>(getMockNotifications());
+  const {
+    notifications,
+    unreadCount,
+    loading: isLoading,
+    markAsRead,
+    markAsUnread,
+    markAllAsRead,
+    deleteNotification,
+    archiveNotification,
+    toggleStar,
+    bulkMarkAsRead,
+    bulkArchive,
+    bulkDelete,
+  } = useUnifiedNotifications();
+
   const [activeCategory, setActiveCategory] = useState<NotificationCategory>("all");
   const [viewMode, setViewMode] = useState<ViewMode>("all");
   const [sortMode, setSortMode] = useState<SortMode>("newest");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedNotifications, setSelectedNotifications] = useState<Set<string>>(new Set());
   const [showSettings, setShowSettings] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   // Notification categories with counts
   const notificationCategories = useMemo(() => {
