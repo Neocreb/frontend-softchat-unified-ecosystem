@@ -275,7 +275,7 @@ const UnifiedNotifications: React.FC = () => {
     return timestamp.toLocaleDateString();
   };
 
-  const unreadCount = notifications.filter(n => !n.read && !n.archived).length;
+  // unreadCount is already provided by the context
 
   return (
     <>
