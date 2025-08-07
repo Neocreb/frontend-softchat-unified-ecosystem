@@ -518,7 +518,7 @@ export class AdminService {
     notes?: string,
   ): Promise<void> {
     try {
-      await supabase
+      const { error } = await supabase
         .from("content_moderation_queue")
         .update({
           status:
@@ -533,15 +533,29 @@ export class AdminService {
         })
         .eq("id", itemId);
 
-      await this.logAdminActivity({
-        adminId: reviewedBy,
-        action: `moderate_content_${action}`,
-        targetType: "moderation",
-        targetId: itemId,
-        details: { notes },
-      });
+      if (error) {
+        console.error("Supabase error in moderateContent:", error);
+        throw new Error(`Database error: ${error.message}`);
+      }
+
+      // Log the activity (this might also fail if tables don't exist)
+      try {
+        await this.logAdminActivity({
+          adminId: reviewedBy,
+          action: `moderate_content_${action}`,
+          targetType: "moderation",
+          targetId: itemId,
+          details: { notes },
+        });
+      } catch (logError) {
+        console.warn("Failed to log admin activity:", logError);
+        // Don't throw here - the main action succeeded
+      }
     } catch (error) {
       console.error("Error moderating content:", error);
+      if (error instanceof Error && error.message.includes('relation "content_moderation_queue" does not exist')) {
+        throw new Error("Content moderation feature is not available - database table missing");
+      }
       throw error;
     }
   }
