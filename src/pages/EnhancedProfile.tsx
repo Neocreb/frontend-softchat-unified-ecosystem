@@ -597,10 +597,21 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                           variant="outline"
                           size="sm"
                           className="text-xs sm:text-sm"
+                          onClick={() => navigate(`/app/chat?user=${targetUsername}`)}
                         >
                           <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                           <span className="hidden sm:inline">Message</span>
                           <span className="sm:hidden">Chat</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs sm:text-sm"
+                          onClick={() => navigate(`/app/wallet?action=send&recipient=${targetUsername}`)}
+                        >
+                          <Send className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                          <span className="hidden sm:inline">Send Money</span>
+                          <span className="sm:hidden">Pay</span>
                         </Button>
                         <Button
                           variant="outline"
