@@ -1146,6 +1146,13 @@ const UnifiedHeader = ({
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="pl-6"
+                        onClick={() => navigate("/app/delivery/provider/dashboard")}
+                      >
+                        <Truck className="mr-2 h-4 w-4 text-orange-600" />
+                        <span className="text-orange-600">Delivery Provider Demo</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="pl-6"
                         onClick={() => navigate("/app/send-gifts")}
                       >
                         <Gift className="mr-2 h-4 w-4 text-pink-600" />
