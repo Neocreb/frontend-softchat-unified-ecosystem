@@ -130,7 +130,12 @@ const ContentModeration = () => {
       initializeModeration();
     } catch (error) {
       console.error("Error moderating content:", error);
-      notification.error("Failed to moderate content");
+      const errorMessage = error instanceof Error
+        ? error.message
+        : typeof error === 'string'
+        ? error
+        : "Failed to moderate content";
+      notification.error(`Error moderating content: ${errorMessage}`);
     }
   };
 
