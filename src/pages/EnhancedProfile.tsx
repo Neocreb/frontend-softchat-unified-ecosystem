@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
+import UserListModal from "@/components/profile/UserListModal";
 import {
   ArrowLeft,
   Settings,
