@@ -801,7 +801,10 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       Posts
                     </div>
                   </div>
-                  <div className="text-center">
+                  <div
+                    className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                    onClick={() => setShowFollowersModal(true)}
+                  >
                     <div className="text-base sm:text-lg lg:text-xl font-bold">
                       {followerCount.toLocaleString()}
                     </div>
@@ -809,7 +812,10 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       Followers
                     </div>
                   </div>
-                  <div className="text-center">
+                  <div
+                    className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                    onClick={() => setShowFollowingModal(true)}
+                  >
                     <div className="text-base sm:text-lg lg:text-xl font-bold">
                       {followingCount.toLocaleString()}
                     </div>
@@ -817,12 +823,16 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       Following
                     </div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-base sm:text-lg lg:text-xl font-bold">
-                      {mockProfile.engagement}%
+                  <div
+                    className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                    onClick={() => setShowViewersModal(true)}
+                  >
+                    <div className="text-base sm:text-lg lg:text-xl font-bold flex items-center justify-center gap-1">
+                      <Eye className="h-4 w-4" />
+                      {profileViewers.toLocaleString()}
                     </div>
                     <div className="text-xs sm:text-sm text-muted-foreground">
-                      Engagement
+                      Profile Views
                     </div>
                   </div>
                   {isOwnProfile && (
