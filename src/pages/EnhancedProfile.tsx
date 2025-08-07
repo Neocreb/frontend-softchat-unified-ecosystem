@@ -667,7 +667,10 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                 </div>
 
                 {/* Stats */}
-                <div className="grid grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6 py-3 sm:py-4 border-t">
+                <div className={cn(
+                  "grid gap-2 sm:gap-4 lg:gap-6 mt-4 sm:mt-6 py-3 sm:py-4 border-t",
+                  isOwnProfile ? "grid-cols-5" : "grid-cols-4"
+                )}>
                   <div className="text-center">
                     <div className="text-base sm:text-lg lg:text-xl font-bold">
                       {mockProfile.posts}
@@ -700,6 +703,20 @@ const EnhancedProfile: React.FC<EnhancedProfileProps> = ({
                       Engagement
                     </div>
                   </div>
+                  {isOwnProfile && (
+                    <div
+                      className="text-center cursor-pointer hover:bg-gray-50 rounded-lg p-1 transition-colors"
+                      onClick={() => navigate("/app/wallet")}
+                    >
+                      <div className="text-base sm:text-lg lg:text-xl font-bold text-green-600 flex items-center justify-center gap-1">
+                        <Wallet className="h-4 w-4" />
+                        $2,540
+                      </div>
+                      <div className="text-xs sm:text-sm text-muted-foreground">
+                        Balance
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </div>
