@@ -370,8 +370,6 @@ const AppRoutes = () => {
           <Route path="user/:username" element={<EnhancedProfile />} />
           <Route path="unified-profile" element={<UnifiedProfile />} />
           <Route path="unified-profile/:username" element={<UnifiedProfile />} />
-          <Route path="comprehensive-profile" element={<ComprehensiveUnifiedProfile />} />
-          <Route path="comprehensive-profile/:username" element={<ComprehensiveUnifiedProfile />} />
           <Route path="demo/profiles" element={<ProfileDemo />} />
           <Route path="wallet" element={<Wallet />} />
           <Route path="notifications" element={<UnifiedNotifications />} />
