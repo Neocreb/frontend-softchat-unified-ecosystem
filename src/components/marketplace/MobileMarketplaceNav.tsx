@@ -80,31 +80,31 @@ export const MobileMarketplaceNav: React.FC<MobileMarketplaceNavProps> = ({
     {
       icon: Home,
       label: "Dashboard",
-      path: "/marketplace/seller",
+      path: "/app/marketplace/seller",
       badge: null,
     },
     {
       icon: Store,
       label: "Products",
-      path: "/marketplace/seller/products",
+      path: "/app/marketplace/seller/products",
       badge: null,
     },
     {
       icon: ShoppingBag,
       label: "Orders",
-      path: "/marketplace/seller/orders",
+      path: "/app/marketplace/seller/orders",
       badge: null,
     },
     {
       icon: MessageCircle,
       label: "Messages",
-      path: "/marketplace/seller/messages",
+      path: "/app/marketplace/seller/messages",
       badge: unreadMessages > 0 ? unreadMessages : null,
     },
     {
       icon: User,
       label: "Account",
-      path: "/marketplace/seller/account",
+      path: "/app/marketplace/seller/account",
       badge: null,
     },
   ];
