@@ -404,10 +404,24 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                     type="file"
                     ref={fileInputRef}
                     className="hidden"
-                    accept="image/*,video/*"
+                    accept="image/*"
                     onChange={handleMediaSelect}
                   />
-                  
+                  <input
+                    type="file"
+                    ref={videoInputRef}
+                    className="hidden"
+                    accept="video/*"
+                    onChange={handleMediaSelect}
+                  />
+                  <input
+                    type="file"
+                    ref={audioInputRef}
+                    className="hidden"
+                    accept="audio/*"
+                    onChange={handleMediaSelect}
+                  />
+
                   <Button
                     variant="outline"
                     className="h-12 sm:h-16 flex-col gap-1 text-xs"
@@ -416,15 +430,23 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                     <ImageIcon className="h-4 w-4 sm:h-6 sm:w-6 text-green-500" />
                     <span>Photo</span>
                   </Button>
-                  
-                  <Button variant="outline" className="h-12 sm:h-16 flex-col gap-1 text-xs">
+
+                  <Button
+                    variant="outline"
+                    className="h-12 sm:h-16 flex-col gap-1 text-xs"
+                    onClick={handleVideoSelect}
+                  >
                     <Video className="h-4 w-4 sm:h-6 sm:w-6 text-red-500" />
                     <span>Video</span>
                   </Button>
-                  
-                  <Button variant="outline" className="h-12 sm:h-16 flex-col gap-1 text-xs">
+
+                  <Button
+                    variant="outline"
+                    className="h-12 sm:h-16 flex-col gap-1 text-xs"
+                    onClick={handleAudioSelect}
+                  >
                     <Music className="h-4 w-4 sm:h-6 sm:w-6 text-purple-500" />
-                    <span>Music</span>
+                    <span>Audio</span>
                   </Button>
                 </div>
 
