@@ -441,7 +441,6 @@ const UnifiedFeedItemCard: React.FC<{
 
   // Modal states
   const [showComments, setShowComments] = React.useState(false);
-  const [showShareModal, setShowShareModal] = React.useState(false);
   const [showApplyModal, setShowApplyModal] = React.useState(false);
   const [showProductDetail, setShowProductDetail] = React.useState(false);
   const [showJobDetail, setShowJobDetail] = React.useState(false);
