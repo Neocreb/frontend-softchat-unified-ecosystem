@@ -36,6 +36,13 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  formatNumber,
+  formatTimeAgo,
+  mixContentIntelligently,
+  filterContentByFeedType,
+  getContentPriority
+} from "@/utils/feedUtils";
 
 // Unified content type interface
 interface UnifiedFeedItem {
