@@ -633,7 +633,33 @@ const EnhancedFeedWithTabs = () => {
       <StoryViewer
         isOpen={showStoryViewer}
         onClose={() => setShowStoryViewer(false)}
-        stories={[...userStories, ...stories.filter(s => !s.user.isUser && s.hasStory)]}
+        stories={[
+          ...userStories,
+          {
+            id: "2",
+            user: { id: "user-sarah", name: "Sarah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah", isUser: false },
+            timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+            content: { text: "Having a great day! 🌟" },
+            views: 45,
+            hasNew: true,
+          },
+          {
+            id: "3",
+            user: { id: "user-mike", name: "Mike", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike", isUser: false },
+            timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
+            content: { text: "Just finished a great workout! 💪" },
+            views: 23,
+            hasNew: false,
+          },
+          {
+            id: "4",
+            user: { id: "user-emma", name: "Emma", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma", isUser: false },
+            timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
+            content: { text: "Beautiful sunset today! 🌅" },
+            views: 67,
+            hasNew: true,
+          },
+        ]}
         currentStoryIndex={currentStoryIndex}
         onStoryChange={setCurrentStoryIndex}
       />
