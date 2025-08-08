@@ -926,32 +926,37 @@ const UnifiedFeedItemCard: React.FC<{
 
           {/* Modals */}
           {showJobDetail && (
-            <JobDetails
-              isOpen={showJobDetail}
-              onClose={() => setShowJobDetail(false)}
-              job={{
-                id: item.id,
-                title: item.content.title,
-                description: item.content.description,
-                budget: item.content.budget,
-                duration: item.content.duration,
-                skills: item.content.skills,
-                location: item.content.location,
-                urgency: item.content.urgency,
-                proposals: item.content.proposals,
-                clientRating: item.content.clientRating,
-                client: {
-                  id: item.author?.id || "",
-                  name: item.author?.name || "",
-                  username: item.author?.username || "",
-                  avatar: item.author?.avatar || "",
-                  verified: item.author?.verified || false,
-                  rating: item.content.clientRating,
-                },
-                createdAt: item.timestamp.toISOString(),
-                type: item.content.budget.type,
-              }}
-            />
+            <Dialog open={showJobDetail} onOpenChange={setShowJobDetail}>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{item.content.title}</DialogTitle>
+                </DialogHeader>
+                <JobDetails
+                  job={{
+                    id: item.id,
+                    title: item.content.title,
+                    description: item.content.description,
+                    budget: item.content.budget,
+                    duration: item.content.duration,
+                    skills: item.content.skills,
+                    location: item.content.location,
+                    urgency: item.content.urgency,
+                    proposals: item.content.proposals,
+                    clientRating: item.content.clientRating,
+                    client: {
+                      id: item.author?.id || "",
+                      name: item.author?.name || "",
+                      username: item.author?.username || "",
+                      avatar: item.author?.avatar || "",
+                      verified: item.author?.verified || false,
+                      rating: item.content.clientRating,
+                    },
+                    createdAt: item.timestamp.toISOString(),
+                    type: item.content.budget.type,
+                  }}
+                />
+              </DialogContent>
+            </Dialog>
           )}
 
           {showApplyModal && (
