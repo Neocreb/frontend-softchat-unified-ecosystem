@@ -96,12 +96,30 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     const file = e.target.files?.[0];
     if (file) {
       setSelectedMedia(file);
+
+      // Determine media type
+      if (file.type.startsWith('video/')) {
+        setMediaType('video');
+      } else if (file.type.startsWith('audio/')) {
+        setMediaType('audio');
+      } else {
+        setMediaType('image');
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
         setMediaPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleVideoSelect = () => {
+    videoInputRef.current?.click();
+  };
+
+  const handleAudioSelect = () => {
+    audioInputRef.current?.click();
   };
 
   const handleNext = () => {
