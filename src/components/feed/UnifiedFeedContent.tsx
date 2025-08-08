@@ -468,7 +468,7 @@ const UnifiedFeedItemCard: React.FC<{
           className="flex items-center gap-1.5 px-3 py-1.5 h-auto"
         >
           <MessageCircle className="w-4 h-4" />
-          <span className="text-sm">{item.interactions.comments}</span>
+          <span className="text-sm">{formatNumber(item.interactions.comments)}</span>
         </Button>
         <Button
           variant="ghost"
@@ -477,7 +477,7 @@ const UnifiedFeedItemCard: React.FC<{
           className="flex items-center gap-1.5 px-3 py-1.5 h-auto"
         >
           <Share2 className="w-4 h-4" />
-          <span className="text-sm">{item.interactions.shares}</span>
+          <span className="text-sm">{formatNumber(item.interactions.shares)}</span>
         </Button>
         {item.type === "product" && (
           <Button
