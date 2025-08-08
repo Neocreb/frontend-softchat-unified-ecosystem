@@ -32,6 +32,7 @@ import UnifiedFeedContent from "@/components/feed/UnifiedFeedContent";
 import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
+import StoryViewer from "@/components/feed/StoryViewer";
 
 // Stories component for the feed
 const StoriesSection = ({ onCreateStory, userStories }: { onCreateStory: () => void, userStories: any[] }) => {
