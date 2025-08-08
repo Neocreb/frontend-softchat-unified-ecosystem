@@ -434,6 +434,29 @@ const EnhancedFeedWithTabs = () => {
     }, 1000);
   };
 
+  const handleCreateStory = (storyData: any) => {
+    const newStory = {
+      id: `story-${Date.now()}`,
+      user: {
+        id: "current-user",
+        name: "Your Story",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
+        isUser: true,
+      },
+      timestamp: new Date(),
+      content: storyData,
+      views: 0,
+      hasNew: true,
+    };
+
+    setUserStories(prev => [newStory, ...prev]);
+
+    toast({
+      title: "Story created!",
+      description: "Your story has been published.",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto">
