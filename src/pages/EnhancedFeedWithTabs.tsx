@@ -530,7 +530,7 @@ const EnhancedFeedWithTabs = () => {
               {/* Stories and Create Post - Only show on "For You" tab */}
               {activeTab === "for-you" && (
                 <>
-                  <StoriesSection
+                  <EnhancedStoriesSection
                     onCreateStory={() => setShowCreateStoryModal(true)}
                     userStories={userStories}
                     onViewStory={handleViewStory}
