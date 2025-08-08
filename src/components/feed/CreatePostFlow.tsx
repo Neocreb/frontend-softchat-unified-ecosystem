@@ -39,6 +39,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useFeed } from "@/contexts/FeedContext";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import TagPeopleModal from "./TagPeopleModal";
+import FeelingActivityModal from "./FeelingActivityModal";
+import CheckInModal from "./CheckInModal";
 
 interface CreatePostFlowProps {
   isOpen: boolean;
