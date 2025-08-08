@@ -811,11 +811,11 @@ const UnifiedFeedItemCard: React.FC<{
 
           {/* Modals */}
           {showProductDetail && (
-            <EnhancedProductDetail
-              isOpen={showProductDetail}
-              onClose={() => setShowProductDetail(false)}
-              productId={item.id}
-            />
+            <Dialog open={showProductDetail} onOpenChange={setShowProductDetail}>
+              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+                <EnhancedProductDetail productId={item.id} />
+              </DialogContent>
+            </Dialog>
           )}
 
         </CardContent>
