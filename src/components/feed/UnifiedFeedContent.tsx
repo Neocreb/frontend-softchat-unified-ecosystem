@@ -461,7 +461,7 @@ const UnifiedFeedItemCard: React.FC<{
         setShowShareModal(true);
         break;
       case "gift":
-        setShowGiftModal(true);
+        // Handled inline with VirtualGiftsAndTips component
         break;
       case "buy":
         if (item.type === "product") {
