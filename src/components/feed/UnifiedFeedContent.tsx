@@ -553,15 +553,22 @@ const UnifiedFeedItemCard: React.FC<{
           <Share2 className="w-4 h-4" />
           <span className="text-xs sm:text-sm">{formatNumber(item.interactions.shares)}</span>
         </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => handleInteraction("gift")}
-          className="flex items-center gap-1 px-2 py-1.5 h-auto text-yellow-600 hover:text-yellow-700"
-        >
-          <Gift className="w-4 h-4" />
-          <span className="text-xs sm:text-sm hidden sm:inline">Gift</span>
-        </Button>
+{item.author && (
+          <VirtualGiftsAndTips
+            recipientId={item.author.id}
+            recipientName={item.author.name}
+            trigger={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 px-2 py-1.5 h-auto text-yellow-600 hover:text-yellow-700"
+              >
+                <Gift className="w-4 h-4" />
+                <span className="text-xs sm:text-sm hidden sm:inline">Gift</span>
+              </Button>
+            }
+          />
+        )}
         {item.type === "product" && (
           <Button
             variant="ghost"
@@ -1310,7 +1317,7 @@ const UnifiedFeedItemCard: React.FC<{
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <span>{formatTime(item.timestamp)}</span>
-                  <span>•</span>
+                  <span>���</span>
                   <span>{item.content.location}</span>
                 </div>
               </div>
