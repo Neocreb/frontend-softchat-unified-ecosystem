@@ -416,6 +416,7 @@ const EnhancedFeedWithTabs = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showCreateStoryModal, setShowCreateStoryModal] = useState(false);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
+  const [showCreatePostFlow, setShowCreatePostFlow] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
   const { toast } = useToast();
