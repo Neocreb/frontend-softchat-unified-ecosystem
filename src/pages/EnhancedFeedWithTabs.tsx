@@ -395,13 +395,13 @@ const EnhancedFeedWithTabs = () => {
   const tabs = [
     {
       value: "for-you",
-      label: "For You",
+      label: "All",
       icon: TrendingUp,
       description: "Personalized content based on your interests",
     },
     {
       value: "following",
-      label: "Following",
+      label: "Friends",
       icon: Users,
       description: "Posts from people you follow",
     },
