@@ -221,7 +221,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-lg w-full h-[90vh] sm:h-[85vh] p-0 overflow-hidden">
+        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[85vh] mx-2 sm:mx-auto p-0 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white sticky top-0 z-10">
             <div className="flex items-center gap-2 sm:gap-3">
