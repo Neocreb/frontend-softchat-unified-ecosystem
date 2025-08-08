@@ -40,7 +40,7 @@ const feelings = [
 // Common emojis
 const commonEmojis = [
   "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
-  "🙂", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚", "🤗",
+  "🙂", "😉", "����", "😍", "🥰", "😘", "😗", "😙", "😚", "🤗",
   "🤩", "🤔", "🤨", "😐", "😑", "😶", "🙄", "😏", "😣", "😥",
   "😮", "🤐", "😯", "😪", "😫", "🥱", "😴", "😌", "😛", "😜",
   "🤤", "😒", "😓", "😔", "😕", "🙃", "🤑", "😲", "☹️", "🙁",
@@ -82,6 +82,7 @@ const EnhancedCreatePostCard: React.FC<EnhancedCreatePostCardProps> = ({ onPostC
   const audioInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { addPost } = useFeed();
 
   const handlePost = () => {
     if (!content.trim() && !previewImage && !linkUrl) {
