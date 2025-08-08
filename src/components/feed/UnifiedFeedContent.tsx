@@ -397,11 +397,30 @@ const generateUnifiedFeed = (): UnifiedFeedItem[] => {
     },
   ];
 
-  return items.sort((a, b) => {
-    // Sort by priority and recency
-    const priorityDiff = b.priority - a.priority;
-    if (priorityDiff !== 0) return priorityDiff;
-    return b.timestamp.getTime() - a.timestamp.getTime();
+  // Calculate priorities for all items
+  const itemsWithCalculatedPriority = baseItems.map(item => ({
+    ...item,
+    priority: getContentPriority(
+      item.type,
+      item.timestamp,
+      {
+        likes: item.interactions.likes,
+        comments: item.interactions.comments,
+        shares: item.interactions.shares,
+        views: item.interactions.views || 0
+      },
+      item.type === 'sponsored_post',
+      item.author?.verified || false
+    )
+  }));
+
+  // Use intelligent mixing to distribute content types evenly
+  return mixContentIntelligently(itemsWithCalculatedPriority, {
+    posts: 50,      // 50% regular posts
+    products: 20,   // 20% product recommendations
+    jobs: 15,       // 15% job/freelancer content
+    ads: 10,        // 10% sponsored content
+    events: 5,      // 5% events
   });
 };
 
