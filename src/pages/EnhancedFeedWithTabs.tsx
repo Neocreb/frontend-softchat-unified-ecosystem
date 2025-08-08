@@ -473,7 +473,10 @@ const EnhancedFeedWithTabs = () => {
               {activeTab === "for-you" && (
                 <>
                   <StoriesSection />
-                  <EnhancedCreatePostCard />
+                  <EnhancedCreatePostCard onPostCreated={(newPost) => {
+                    // Add new post to feed by triggering a refresh
+                    handleRefresh();
+                  }} />
                 </>
               )}
 
