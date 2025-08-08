@@ -35,7 +35,15 @@ import { CreateStoryModal } from "@/components/feed/CreateStory";
 import StoryViewer from "@/components/feed/StoryViewer";
 
 // Stories component for the feed
-const StoriesSection = ({ onCreateStory, userStories }: { onCreateStory: () => void, userStories: any[] }) => {
+const StoriesSection = ({
+  onCreateStory,
+  userStories,
+  onViewStory
+}: {
+  onCreateStory: () => void,
+  userStories: any[],
+  onViewStory: (index: number) => void
+}) => {
   const { user } = useAuth();
   const [stories, setStories] = useState([
     {
