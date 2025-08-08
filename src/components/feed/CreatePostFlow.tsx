@@ -56,9 +56,11 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   const [content, setContent] = useState("");
   const [selectedMedia, setSelectedMedia] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
+  const [mediaType, setMediaType] = useState<'image' | 'video' | 'audio' | null>(null);
   const [location, setLocation] = useState("");
   const [feeling, setFeeling] = useState("");
-  const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
+  const [activity, setActivity] = useState("");
+  const [taggedUsers, setTaggedUsers] = useState<any[]>([]);
   
   // Settings
   const [audience, setAudience] = useState<AudienceType>("public");
