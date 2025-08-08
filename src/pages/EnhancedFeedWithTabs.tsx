@@ -531,6 +531,7 @@ const EnhancedFeedWithTabs = () => {
                   <StoriesSection
                     onCreateStory={() => setShowCreateStoryModal(true)}
                     userStories={userStories}
+                    onViewStory={handleViewStory}
                   />
                   <EnhancedCreatePostCard onPostCreated={(newPost) => {
                     // Add new post to feed by triggering a refresh
