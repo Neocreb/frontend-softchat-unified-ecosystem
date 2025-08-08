@@ -540,6 +540,13 @@ const EnhancedFeedWithTabs = () => {
           </div>
         </div>
       </div>
+
+      {/* Story Creation Modal */}
+      <CreateStoryModal
+        isOpen={showCreateStoryModal}
+        onClose={() => setShowCreateStoryModal(false)}
+        onSubmit={handleCreateStory}
+      />
     </div>
   );
 };
