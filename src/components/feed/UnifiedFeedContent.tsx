@@ -677,40 +677,40 @@ const UnifiedFeedItemCard: React.FC<{
 
           {/* Product Content */}
           <div className="px-4 pb-3">
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4">
               <div className="flex-shrink-0">
                 <img
                   src={item.content.images[0]}
                   alt={item.content.title}
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg"
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-base mb-2 line-clamp-2">
+                <h3 className="font-semibold text-sm sm:text-base mb-1 sm:mb-2 line-clamp-2">
                   {item.content.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2 line-clamp-2">
                   {item.content.description}
                 </p>
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2">
                   <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium">{item.content.rating}</span>
-                    <span className="text-sm text-gray-500">({item.content.reviews})</span>
+                    <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="text-xs sm:text-sm font-medium">{item.content.rating}</span>
+                    <span className="text-xs sm:text-sm text-gray-500">({formatNumber(item.content.reviews)})</span>
                   </div>
                   {item.content.fastShipping && (
                     <Badge variant="secondary" className="text-xs">
-                      Fast Shipping
+                      Fast Ship
                     </Badge>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-lg font-bold text-green-600">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <span className="text-base sm:text-lg font-bold text-green-600">
                     ${item.content.price}
                   </span>
                   {item.content.originalPrice && (
                     <>
-                      <span className="text-sm text-gray-500 line-through">
+                      <span className="text-xs sm:text-sm text-gray-500 line-through">
                         ${item.content.originalPrice}
                       </span>
                       <Badge variant="destructive" className="text-xs">
