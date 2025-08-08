@@ -444,6 +444,12 @@ const EnhancedFeedWithTabs = () => {
 
           {/* Main Feed */}
           <div className="col-span-1 lg:col-span-2">
+            {/* Stories Section - Always show */}
+            <StoriesSection />
+
+            {/* Create Post - Always show */}
+            <EnhancedCreatePostCard />
+
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
@@ -500,12 +506,6 @@ const EnhancedFeedWithTabs = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Stories Section - Only show on For You tab */}
-              {activeTab === "for-you" && <StoriesSection />}
-
-              {/* Create Post */}
-              <EnhancedCreatePostCard />
 
               {/* Tab Content */}
               {tabs.map((tab) => (
