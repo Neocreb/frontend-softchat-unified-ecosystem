@@ -43,6 +43,13 @@ import {
   filterContentByFeedType,
   getContentPriority
 } from "@/utils/feedUtils";
+import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import { AdvancedSharingHub } from "@/components/video/AdvancedSharingHub";
+import { ApplyModal } from "@/components/freelance/ApplyModal";
+import { EnhancedProductDetail } from "@/components/marketplace/EnhancedProductDetail";
+import { JobDetails } from "@/components/freelance/JobDetails";
+import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 
 // Unified content type interface
 interface UnifiedFeedItem {
