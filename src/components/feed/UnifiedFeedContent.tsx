@@ -536,7 +536,10 @@ const UnifiedFeedItemCard: React.FC<{
           variant="ghost"
           size="sm"
           onClick={() => handleInteraction("comment")}
-          className="flex items-center gap-1 px-2 py-1.5 h-auto"
+          className={cn(
+            "flex items-center gap-1 px-2 py-1.5 h-auto",
+            showComments && "text-blue-500"
+          )}
         >
           <MessageCircle className="w-4 h-4" />
           <span className="text-xs sm:text-sm">{formatNumber(item.interactions.comments)}</span>
