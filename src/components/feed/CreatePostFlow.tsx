@@ -81,6 +81,9 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   const [showBoostModal, setShowBoostModal] = useState(false);
   const [showCollaboratorModal, setShowCollaboratorModal] = useState(false);
   const [showABTestModal, setShowABTestModal] = useState(false);
+  const [showTagPeopleModal, setShowTagPeopleModal] = useState(false);
+  const [showFeelingModal, setShowFeelingModal] = useState(false);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
