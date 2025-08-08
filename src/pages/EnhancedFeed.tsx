@@ -49,7 +49,7 @@ import { FeelingLocationModal } from "@/components/feed/FeelingLocationModal";
 import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
 import { EnhancedStoryCreation } from "@/components/feed/EnhancedStoryCreation";
 import SocialCommerceWidget from "@/components/feed/SocialCommerceWidget";
-import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
+import EnhancedStoryViewerModal from "@/components/feed/EnhancedStoryViewerModal";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
 import EventsBannerCard from "@/components/feed/EventsBannerCard";
@@ -1840,10 +1840,40 @@ export default function EnhancedFeed() {
         </div>
       )}
 
-      <StoryViewerModal
+      <EnhancedStoryViewerModal
         isOpen={showStoryViewer}
         onClose={() => setShowStoryViewer(false)}
-        stories={stories}
+        storyGroups={[{
+          user: {
+            id: "current-user",
+            name: "You",
+            username: "user",
+            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
+          },
+          stories: stories.map(story => ({
+            id: story.id.toString(),
+            user: {
+              id: story.user.id,
+              name: story.user.name,
+              username: story.user.username || story.user.name.toLowerCase().replace(' ', '_'),
+              avatar: story.user.avatar,
+            },
+            type: story.media?.type === 'video' ? 'video' as const :
+                  story.media?.type === 'image' ? 'image' as const : 'text' as const,
+            media: story.media ? {
+              type: story.media.type as 'image' | 'video',
+              url: story.media.url,
+            } : undefined,
+            textContent: story.content,
+            backgroundColor: 'bg-gradient-to-br from-blue-400 to-purple-600',
+            textColor: 'text-white',
+            timestamp: story.timestamp.toISOString(),
+            duration: 5,
+            privacy: 'public',
+            views: story.views || 0,
+            isOwn: story.isOwn || false,
+          })),
+        }]}
         initialStoryIndex={selectedStoryIndex}
         initialUserIndex={selectedUserIndex}
       />
