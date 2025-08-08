@@ -476,32 +476,32 @@ const EnhancedFeedWithTabs = () => {
                 </TabsList>
 
                 {/* Tab Description and Controls */}
-                <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center justify-between mt-3 sm:mt-4 mx-2 sm:mx-0">
                   <div>
-                    <h2 className="text-lg font-semibold">
+                    <h2 className="text-base sm:text-lg font-semibold">
                       {tabs.find((tab) => tab.value === activeTab)?.label}
                     </h2>
-                    <p className="text-sm text-gray-500 hidden sm:block">
+                    <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">
                       {tabs.find((tab) => tab.value === activeTab)?.description}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={handleRefresh}
                       disabled={isRefreshing}
-                      className="h-8 w-8"
+                      className="h-7 w-7 sm:h-8 sm:w-8"
                     >
                       <Settings
                         className={cn(
-                          "w-4 h-4",
+                          "w-3 h-3 sm:w-4 sm:h-4",
                           isRefreshing && "animate-spin"
                         )}
                       />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Search className="w-4 h-4" />
+                    <Button variant="ghost" size="icon" className="h-7 w-7 sm:h-8 sm:w-8">
+                      <Search className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                   </div>
                 </div>
