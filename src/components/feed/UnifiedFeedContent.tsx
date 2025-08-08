@@ -512,7 +512,10 @@ const UnifiedFeedItemCard: React.FC<{
 
   const handleProductClick = () => {
     if (item.type === "product") {
-      setShowProductDetail(true);
+      toast({
+        title: "Product Details",
+        description: "Product details functionality coming soon!",
+      });
     }
   };
 
