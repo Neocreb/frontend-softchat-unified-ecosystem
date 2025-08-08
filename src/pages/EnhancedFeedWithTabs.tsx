@@ -688,7 +688,7 @@ const EnhancedFeedWithTabs = () => {
               isOwn: false,
             }],
           },
-        ]}
+        ].filter(group => group.stories && group.stories.length > 0)}
         initialStoryIndex={currentStoryIndex}
         initialUserIndex={currentUserIndex}
       />
