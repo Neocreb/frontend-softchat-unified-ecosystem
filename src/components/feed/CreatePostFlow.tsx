@@ -134,6 +134,24 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleTaggedUsers = (users: any[]) => {
+    setTaggedUsers(users);
+  };
+
+  const handleFeelingActivity = (selection: { type: 'feeling' | 'activity'; data: any }) => {
+    if (selection.type === 'feeling') {
+      setFeeling(selection.data.label);
+      setActivity('');
+    } else {
+      setActivity(selection.data.label);
+      setFeeling('');
+    }
+  };
+
+  const handleCheckIn = (location: any) => {
+    setLocation(location.name);
+  };
+
   const handlePost = () => {
     const newPost = {
       id: `post-${Date.now()}`,
