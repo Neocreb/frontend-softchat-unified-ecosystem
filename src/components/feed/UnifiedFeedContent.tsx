@@ -518,7 +518,10 @@ const UnifiedFeedItemCard: React.FC<{
 
   const handleJobClick = () => {
     if (item.type === "job") {
-      setShowJobDetail(true);
+      toast({
+        title: "Job Details",
+        description: "Job details functionality coming soon!",
+      });
     }
   };
 
