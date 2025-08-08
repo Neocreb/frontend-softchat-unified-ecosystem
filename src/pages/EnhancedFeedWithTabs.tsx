@@ -470,6 +470,11 @@ const EnhancedFeedWithTabs = () => {
     });
   };
 
+  const handleViewStory = (storyIndex: number) => {
+    setCurrentStoryIndex(storyIndex);
+    setShowStoryViewer(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto">
