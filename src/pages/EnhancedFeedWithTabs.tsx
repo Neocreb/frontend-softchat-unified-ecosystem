@@ -31,6 +31,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import UnifiedFeedContent from "@/components/feed/UnifiedFeedContent";
 import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
 import { useToast } from "@/components/ui/use-toast";
+import { CreateStoryModal } from "@/components/feed/CreateStory";
 
 // Stories component for the feed
 const StoriesSection = () => {
