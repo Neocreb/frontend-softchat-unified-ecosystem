@@ -85,9 +85,9 @@ interface UnifiedFeedItem {
   };
 }
 
-// Sample unified feed data
+// Sample unified feed data with intelligent mixing
 const generateUnifiedFeed = (): UnifiedFeedItem[] => {
-  const items: UnifiedFeedItem[] = [
+  const baseItems: UnifiedFeedItem[] = [
     // Regular post
     {
       id: "post-1",
