@@ -568,6 +568,15 @@ const EnhancedFeedWithTabs = () => {
         onClose={() => setShowCreateStoryModal(false)}
         onSubmit={handleCreateStory}
       />
+
+      {/* Story Viewer */}
+      <StoryViewer
+        isOpen={showStoryViewer}
+        onClose={() => setShowStoryViewer(false)}
+        stories={[...userStories, ...stories.filter(s => !s.user.isUser && s.hasStory)]}
+        currentStoryIndex={currentStoryIndex}
+        onStoryChange={setCurrentStoryIndex}
+      />
     </div>
   );
 };
