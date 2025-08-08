@@ -435,9 +435,51 @@ const UnifiedFeedItemCard: React.FC<{
 
   const handleInteraction = (type: string) => {
     onInteraction(item.id, type);
+
+    let title = "";
+    let description = "";
+
+    switch (type) {
+      case "like":
+        title = item.userInteracted.liked ? "Unliked!" : "Liked!";
+        description = item.userInteracted.liked ? `You unliked this ${item.type}.` : `You liked this ${item.type}.`;
+        break;
+      case "comment":
+        title = "Comment";
+        description = "Comment feature coming soon!";
+        break;
+      case "share":
+        title = "Shared!";
+        description = `You shared this ${item.type}.`;
+        break;
+      case "gift":
+        title = "Gift Sent!";
+        description = "Virtual gift sent to the creator.";
+        break;
+      case "buy":
+        title = "Added to Cart!";
+        description = "Product added to your cart.";
+        break;
+      case "apply":
+        title = "Application Sent!";
+        description = "Your application has been submitted.";
+        break;
+      case "hire":
+        title = "Contact Sent!";
+        description = "Contact request sent to freelancer.";
+        break;
+      case "save":
+        title = item.userInteracted.saved ? "Unsaved!" : "Saved!";
+        description = item.userInteracted.saved ? "Removed from saved items." : "Added to saved items.";
+        break;
+      default:
+        title = `${type.charAt(0).toUpperCase() + type.slice(1)}d!`;
+        description = `You ${type}d this ${item.type}.`;
+    }
+
     toast({
-      title: `${type.charAt(0).toUpperCase() + type.slice(1)}d!`,
-      description: `You ${type}d this ${item.type}.`,
+      title,
+      description,
     });
   };
 
