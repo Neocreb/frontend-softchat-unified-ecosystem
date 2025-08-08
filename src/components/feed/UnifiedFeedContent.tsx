@@ -809,7 +809,10 @@ const UnifiedFeedItemCard: React.FC<{
           </div>
 
           {/* Job Content */}
-          <div className="px-4 pb-3">
+          <div
+            className="px-4 pb-3 cursor-pointer hover:bg-gray-50 rounded-lg mx-2 -mx-2"
+            onClick={handleJobClick}
+          >
             <h3 className="font-semibold text-lg mb-2">{item.content.title}</h3>
             <p className="text-sm text-gray-600 mb-3">{item.content.description}</p>
             
