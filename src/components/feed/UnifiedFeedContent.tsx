@@ -701,16 +701,6 @@ const UnifiedFeedItemCard: React.FC<{
               }}
             />
           )}
-
-          {showGiftModal && item.author && (
-            <VirtualGiftsAndTips
-              isOpen={showGiftModal}
-              onClose={() => setShowGiftModal(false)}
-              recipientId={item.author.id}
-              recipientName={item.author.name}
-              trigger={<></>}
-            />
-          )}
         </CardContent>
       </Card>
     );
@@ -1317,7 +1307,7 @@ const UnifiedFeedItemCard: React.FC<{
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                   <span>{formatTime(item.timestamp)}</span>
-                  <span>���</span>
+                  <span>•</span>
                   <span>{item.content.location}</span>
                 </div>
               </div>
