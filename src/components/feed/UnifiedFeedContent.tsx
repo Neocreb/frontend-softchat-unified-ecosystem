@@ -1319,13 +1319,19 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
     setTimeout(() => {
       const allItems = generateUnifiedFeed();
 
+      // Merge user posts with generated content
+      const mergedItems = [...userPosts, ...allItems];
+
       // Filter items based on feed type using utility
-      const filteredItems = filterContentByFeedType(allItems, feedType);
+      const filteredItems = filterContentByFeedType(mergedItems, feedType);
+
+      // Sort by timestamp (newest first)
+      filteredItems.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
       setFeedItems(filteredItems);
       setLoading(false);
     }, 1000);
-  }, [feedType]);
+  }, [feedType, userPosts]);
 
   const handleInteraction = (itemId: string, type: string) => {
     setFeedItems(prev => prev.map(item => {
