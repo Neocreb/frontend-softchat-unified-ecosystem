@@ -508,7 +508,10 @@ const EnhancedFeedWithTabs = () => {
               {/* Stories and Create Post - Only show on "For You" tab */}
               {activeTab === "for-you" && (
                 <>
-                  <StoriesSection />
+                  <StoriesSection
+                    onCreateStory={() => setShowCreateStoryModal(true)}
+                    userStories={userStories}
+                  />
                   <EnhancedCreatePostCard onPostCreated={(newPost) => {
                     // Add new post to feed by triggering a refresh
                     handleRefresh();
