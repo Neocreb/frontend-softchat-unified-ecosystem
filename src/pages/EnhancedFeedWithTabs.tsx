@@ -456,13 +456,13 @@ const EnhancedFeedWithTabs = () => {
               className="w-full"
             >
               {/* Tab Navigation */}
-              <div className="sticky top-0 z-40 bg-gray-50 pb-4">
-                <TabsList className="grid w-full grid-cols-4 h-auto p-1 bg-white">
+              <div className="sticky top-0 z-40 bg-gray-50 pb-4 mx-2 sm:mx-0">
+                <TabsList className="grid w-full grid-cols-4 h-auto p-1 bg-white rounded-lg">
                   {tabs.map((tab) => (
                     <TabsTrigger
                       key={tab.value}
                       value={tab.value}
-                      className="flex flex-col items-center gap-1 py-3 px-2 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600"
+                      className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 rounded-md"
                     >
                       <tab.icon className="w-4 h-4" />
                       <span className="text-xs font-medium hidden sm:block">
