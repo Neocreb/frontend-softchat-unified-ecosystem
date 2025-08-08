@@ -734,7 +734,7 @@ const UnifiedFeedItemCard: React.FC<{
   // Job posting rendering
   if (item.type === "job") {
     return (
-      <Card className="mb-4">
+      <Card className="mb-4 sm:mb-6 mx-2 sm:mx-0">
         <CardContent className="p-0">
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
@@ -822,7 +822,7 @@ const UnifiedFeedItemCard: React.FC<{
   // Freelancer skill showcase rendering
   if (item.type === "freelancer_skill") {
     return (
-      <Card className="mb-4">
+      <Card className="mb-4 sm:mb-6 mx-2 sm:mx-0">
         <CardContent className="p-0">
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
@@ -913,7 +913,7 @@ const UnifiedFeedItemCard: React.FC<{
   // Live event rendering
   if (item.type === "live_event") {
     return (
-      <Card className="mb-4">
+      <Card className="mb-4 sm:mb-6 mx-2 sm:mx-0">
         <CardContent className="p-0">
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
@@ -982,7 +982,7 @@ const UnifiedFeedItemCard: React.FC<{
   // Community event rendering
   if (item.type === "community_event") {
     return (
-      <Card className="mb-4">
+      <Card className="mb-4 sm:mb-6 mx-2 sm:mx-0">
         <CardContent className="p-0">
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
