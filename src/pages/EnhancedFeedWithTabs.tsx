@@ -135,9 +135,8 @@ const StoriesSection = ({
                     if (story.user.isUser && !story.hasStory) {
                       onCreateStory();
                     } else {
-                      // Handle viewing story
-                      const allStories = [...userStories, ...stories.filter(s => !s.user.isUser && s.hasStory)];
-                      const storyIndex = allStories.findIndex(s => s.id === story.id);
+                      // Handle viewing story - find story index
+                      const storyIndex = stories.findIndex(s => s.id === story.id);
                       if (storyIndex !== -1) {
                         onViewStory(storyIndex);
                       }
