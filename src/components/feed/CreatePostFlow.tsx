@@ -343,16 +343,23 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                       onClick={() => {
                         setMediaPreview(null);
                         setSelectedMedia(null);
+                        setMediaType(null);
                       }}
                     >
                       <X className="h-4 w-4" />
                     </Button>
-                    {selectedMedia?.type.startsWith('video') ? (
+                    {mediaType === 'video' ? (
                       <video
                         src={mediaPreview}
                         className="w-full max-h-64 sm:max-h-96 rounded-lg object-cover"
                         controls
                       />
+                    ) : mediaType === 'audio' ? (
+                      <div className="w-full p-8 bg-gray-100 rounded-lg flex flex-col items-center justify-center">
+                        <Music className="h-16 w-16 text-gray-400 mb-4" />
+                        <audio src={mediaPreview} controls className="w-full max-w-sm" />
+                        <p className="text-sm text-gray-600 mt-2">{selectedMedia?.name}</p>
+                      </div>
                     ) : (
                       <img
                         src={mediaPreview}
@@ -360,6 +367,34 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                         className="w-full max-h-64 sm:max-h-96 rounded-lg object-cover"
                       />
                     )}
+                  </div>
+                )}
+
+                {/* Tagged users display */}
+                {taggedUsers.length > 0 && (
+                  <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
+                    <UserPlus className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm text-blue-700">
+                      With {taggedUsers.map(u => u.name).join(', ')}
+                    </span>
+                  </div>
+                )}
+
+                {/* Feeling/Activity display */}
+                {(feeling || activity) && (
+                  <div className="flex items-center gap-2 p-3 bg-yellow-50 rounded-lg">
+                    <Smile className="h-4 w-4 text-yellow-600" />
+                    <span className="text-sm text-yellow-700">
+                      {feeling ? `Feeling ${feeling}` : `${activity}`}
+                    </span>
+                  </div>
+                )}
+
+                {/* Location display */}
+                {location && (
+                  <div className="flex items-center gap-2 p-3 bg-red-50 rounded-lg">
+                    <MapPin className="h-4 w-4 text-red-600" />
+                    <span className="text-sm text-red-700">At {location}</span>
                   </div>
                 )}
 
