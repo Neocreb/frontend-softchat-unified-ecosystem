@@ -444,68 +444,36 @@ const EnhancedFeedWithTabs = () => {
 
           {/* Main Feed */}
           <div className="col-span-1 lg:col-span-2">
-            {/* Stories Section - Always show */}
-            <StoriesSection />
-
-            {/* Create Post - Always show */}
-            <EnhancedCreatePostCard />
-
             <Tabs
               value={activeTab}
               onValueChange={setActiveTab}
               className="w-full"
             >
-              {/* Tab Navigation */}
-              <div className="sticky top-0 z-40 bg-gray-50 pb-4 mx-2 sm:mx-0">
-                <TabsList className="grid w-full grid-cols-4 h-auto p-1 bg-white rounded-lg">
+              {/* Modern Tab Navigation - At the top */}
+              <div className="sticky top-0 z-40 bg-white border-b border-gray-200 mb-4">
+                <div className="flex">
                   {tabs.map((tab) => (
-                    <TabsTrigger
+                    <button
                       key={tab.value}
-                      value={tab.value}
-                      className="flex flex-col items-center gap-1 py-2 sm:py-3 px-1 sm:px-2 data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 rounded-md"
+                      onClick={() => setActiveTab(tab.value)}
+                      className={cn(
+                        "flex-1 px-4 py-3 text-sm font-medium text-center border-b-2 transition-colors",
+                        activeTab === tab.value
+                          ? "text-blue-600 border-blue-600"
+                          : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
+                      )}
                     >
-                      <tab.icon className="w-4 h-4" />
-                      <span className="text-xs font-medium hidden sm:block">
-                        {tab.label}
-                      </span>
-                      <span className="text-xs font-medium sm:hidden">
-                        {tab.label.split(" ")[0]}
-                      </span>
-                    </TabsTrigger>
+                      {tab.label}
+                    </button>
                   ))}
-                </TabsList>
-
-                {/* Tab Description and Controls */}
-                <div className="flex items-center justify-between mt-3 sm:mt-4 mx-2 sm:mx-0">
-                  <div>
-                    <h2 className="text-base sm:text-lg font-semibold">
-                      {tabs.find((tab) => tab.value === activeTab)?.label}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">
-                      {tabs.find((tab) => tab.value === activeTab)?.description}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1 sm:gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={handleRefresh}
-                      disabled={isRefreshing}
-                      className="h-7 w-7 sm:h-8 sm:w-8"
-                    >
-                      <Settings
-                        className={cn(
-                          "w-3 h-3 sm:w-4 sm:h-4",
-                          isRefreshing && "animate-spin"
-                        )}
-                      />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="h-7 w-7 sm:h-8 sm:w-8">
-                      <Search className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </Button>
-                  </div>
                 </div>
               </div>
+
+              {/* Stories Section - After tabs */}
+              <StoriesSection />
+
+              {/* Create Post - After stories */}
+              <EnhancedCreatePostCard />
 
               {/* Tab Content */}
               {tabs.map((tab) => (
