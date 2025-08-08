@@ -34,7 +34,7 @@ import CreatePostFlow from "@/components/feed/CreatePostFlow";
 import EnhancedStoriesSection from "@/components/feed/EnhancedStoriesSection";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
-import StoryViewer from "@/components/feed/StoryViewer";
+import EnhancedStoryViewerModal from "@/components/feed/EnhancedStoryViewerModal";
 
 // Stories component for the feed
 const StoriesSection = ({
@@ -574,39 +574,123 @@ const EnhancedFeedWithTabs = () => {
         onClose={() => setShowCreatePostFlow(false)}
       />
 
-      {/* Story Viewer */}
-      <StoryViewer
+      {/* Enhanced Story Viewer */}
+      <EnhancedStoryViewerModal
         isOpen={showStoryViewer}
         onClose={() => setShowStoryViewer(false)}
-        stories={[
-          ...userStories,
+        storyGroups={[
           {
-            id: "2",
-            user: { id: "user-sarah", name: "Sarah", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah", isUser: false },
-            timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-            content: { text: "Having a great day! 🌟" },
-            views: 45,
-            hasNew: true,
+            user: {
+              id: user?.id || "current-user",
+              name: user?.name || "You",
+              username: user?.username || "user",
+              avatar: user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
+            },
+            stories: userStories.map(story => ({
+              id: story.id,
+              user: {
+                id: story.user.id,
+                name: story.user.name,
+                username: story.user.name.toLowerCase().replace(' ', '_'),
+                avatar: story.user.avatar,
+              },
+              type: story.content?.media?.[0]?.type === 'video' ? 'video' as const :
+                    story.content?.media?.[0]?.type === 'image' ? 'image' as const : 'text' as const,
+              media: story.content?.media?.[0] ? {
+                type: story.content.media[0].type as 'image' | 'video',
+                url: story.content.media[0].url,
+              } : undefined,
+              textContent: story.content?.text,
+              backgroundColor: 'bg-gradient-to-br from-blue-400 to-purple-600',
+              textColor: 'text-white',
+              timestamp: story.timestamp.toISOString(),
+              duration: 5,
+              privacy: 'public',
+              views: story.views || 0,
+              isOwn: story.user.isUser || false,
+            })),
           },
           {
-            id: "3",
-            user: { id: "user-mike", name: "Mike", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike", isUser: false },
-            timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-            content: { text: "Just finished a great workout! 💪" },
-            views: 23,
-            hasNew: false,
+            user: {
+              id: "user-sarah",
+              name: "Sarah",
+              username: "sarah",
+              avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+            },
+            stories: [{
+              id: "story-sarah-1",
+              user: {
+                id: "user-sarah",
+                name: "Sarah",
+                username: "sarah",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+              },
+              type: 'text' as const,
+              textContent: "Having a great day! 🌟",
+              backgroundColor: 'bg-gradient-to-br from-pink-400 to-purple-600',
+              textColor: 'text-white',
+              timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+              duration: 4,
+              privacy: 'public',
+              views: 45,
+              isOwn: false,
+            }],
           },
           {
-            id: "4",
-            user: { id: "user-emma", name: "Emma", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma", isUser: false },
-            timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
-            content: { text: "Beautiful sunset today! 🌅" },
-            views: 67,
-            hasNew: true,
+            user: {
+              id: "user-mike",
+              name: "Mike",
+              username: "mike",
+              avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
+            },
+            stories: [{
+              id: "story-mike-1",
+              user: {
+                id: "user-mike",
+                name: "Mike",
+                username: "mike",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
+              },
+              type: 'text' as const,
+              textContent: "Just finished a great workout! 💪",
+              backgroundColor: 'bg-gradient-to-br from-green-400 to-blue-600',
+              textColor: 'text-white',
+              timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+              duration: 4,
+              privacy: 'public',
+              views: 23,
+              isOwn: false,
+            }],
+          },
+          {
+            user: {
+              id: "user-emma",
+              name: "Emma",
+              username: "emma",
+              avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma",
+            },
+            stories: [{
+              id: "story-emma-1",
+              user: {
+                id: "user-emma",
+                name: "Emma",
+                username: "emma",
+                avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma",
+              },
+              type: 'text' as const,
+              textContent: "Beautiful sunset today! 🌅",
+              backgroundColor: 'bg-gradient-to-br from-orange-400 to-pink-600',
+              textColor: 'text-white',
+              timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+              duration: 4,
+              privacy: 'public',
+              views: 67,
+              isOwn: false,
+            }],
           },
         ]}
-        currentStoryIndex={currentStoryIndex}
-        onStoryChange={setCurrentStoryIndex}
+        initialStoryIndex={currentStoryIndex}
+        initialUserIndex={currentUserIndex}
       />
     </div>
   );
