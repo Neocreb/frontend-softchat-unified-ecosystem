@@ -46,6 +46,7 @@ import {
 import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
+import { useFeed } from "@/contexts/FeedContext";
 
 // Unified content type interface
 interface UnifiedFeedItem {
