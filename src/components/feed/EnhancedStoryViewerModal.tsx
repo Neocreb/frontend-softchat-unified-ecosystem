@@ -27,7 +27,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+// import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface Story {
   id: string;
@@ -517,13 +517,40 @@ export function EnhancedStoryViewerModal({
 
       {/* Virtual Gifts Modal */}
       {showGiftModal && (
-        <VirtualGiftsAndTips
-          recipientId={currentStory.user.id}
-          recipientName={currentStory.user.name}
-          contentId={currentStory.id}
-          trigger={null}
-          recipientType="video"
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowGiftModal(false)}>
+          <div className="bg-white rounded-lg p-6 max-w-sm mx-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg font-semibold mb-4">Send Gift</h3>
+            <p className="text-gray-600 mb-4">Send a virtual gift to {currentStory.user.name}</p>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <button onClick={handleGiftSent} className="p-3 bg-red-100 rounded-lg text-center hover:bg-red-200">
+                <span className="text-2xl">❤️</span>
+                <p className="text-xs mt-1">Heart</p>
+              </button>
+              <button onClick={handleGiftSent} className="p-3 bg-yellow-100 rounded-lg text-center hover:bg-yellow-200">
+                <span className="text-2xl">⭐</span>
+                <p className="text-xs mt-1">Star</p>
+              </button>
+              <button onClick={handleGiftSent} className="p-3 bg-purple-100 rounded-lg text-center hover:bg-purple-200">
+                <span className="text-2xl">🎁</span>
+                <p className="text-xs mt-1">Gift</p>
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowGiftModal(false)}
+                className="flex-1 py-2 px-4 bg-gray-200 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleGiftSent}
+                className="flex-1 py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
