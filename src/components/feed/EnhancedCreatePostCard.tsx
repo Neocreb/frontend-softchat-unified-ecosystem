@@ -40,7 +40,7 @@ const feelings = [
 // Common emojis
 const commonEmojis = [
   "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
-  "🙂", "😉", "����", "😍", "🥰", "😘", "😗", "😙", "😚", "🤗",
+  "🙂", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚", "🤗",
   "🤩", "🤔", "🤨", "😐", "😑", "😶", "🙄", "😏", "😣", "😥",
   "😮", "🤐", "😯", "😪", "😫", "🥱", "😴", "😌", "😛", "😜",
   "🤤", "😒", "😓", "😔", "😕", "🙃", "🤑", "😲", "☹️", "🙁",
@@ -56,7 +56,7 @@ const commonEmojis = [
   "♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓",
   "🔮", "🧿", "💫", "⭐", "🌟", "✨", "⚡", "☄️", "💥", "🔥",
   "🌈", "☀️", "🌤️", "⛅", "🌦️", "🌧️", "⛈️", "🌩️", "🌨️", "❄️",
-  "☃️", "⛄", "🌬️", "💨", "💧", "💦", "☔", "☂️", "🌊", "🌍",
+  "��️", "⛄", "🌬️", "💨", "💧", "💦", "☔", "☂️", "🌊", "🌍",
   "🌎", "🌏", "🌐", "🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗",
   "🌘", "🌙", "🌚", "🌛", "🌜", "🌝", "🌞", "⭐", "🌟", "💫",
 ];
@@ -138,7 +138,10 @@ const EnhancedCreatePostCard: React.FC<EnhancedCreatePostCardProps> = ({ onPostC
     // Simulate post creation
     setTimeout(() => {
       setIsPosting(false);
-      
+
+      // Add post to feed context
+      addPost(newPost);
+
       // Reset form
       setContent("");
       setPreviewImage(null);
@@ -146,12 +149,12 @@ const EnhancedCreatePostCard: React.FC<EnhancedCreatePostCardProps> = ({ onPostC
       setLocation("");
       setLinkUrl("");
       setShowLinkInput(false);
-      
+
       // Notify parent component
       if (onPostCreated) {
         onPostCreated(newPost);
       }
-      
+
       toast({
         title: "Post created!",
         description: "Your post has been published to the feed.",
