@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -102,8 +101,8 @@ const EnhancedCreatePostCard = () => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="border-t pt-3 flex justify-between">
-        <div className="flex space-x-2">
+      <CardFooter className="border-t pt-3 flex flex-col sm:flex-row justify-between gap-3">
+        <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
           <input
             type="file"
             ref={fileInputRef}
@@ -114,7 +113,7 @@ const EnhancedCreatePostCard = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="text-muted-foreground"
+            className="text-muted-foreground flex-shrink-0"
             onClick={handleFileUpload}
             disabled={isUploading}
           >
@@ -123,21 +122,21 @@ const EnhancedCreatePostCard = () => {
             ) : (
               <>
                 <Image className="h-4 w-4 mr-2" />
-                Image
+                <span className="hidden xs:inline">Image</span>
               </>
             )}
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground">
+          <Button variant="ghost" size="sm" className="text-muted-foreground flex-shrink-0">
             <Camera className="h-4 w-4 mr-2" />
-            Photo
+            <span className="hidden xs:inline">Photo</span>
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground">
+          <Button variant="ghost" size="sm" className="text-muted-foreground flex-shrink-0">
             <Link className="h-4 w-4 mr-2" />
-            Link
+            <span className="hidden xs:inline">Link</span>
           </Button>
-          <Button variant="ghost" size="sm" className="text-muted-foreground">
+          <Button variant="ghost" size="sm" className="text-muted-foreground flex-shrink-0">
             <Smile className="h-4 w-4 mr-2" />
-            Emoji
+            <span className="hidden xs:inline">Emoji</span>
           </Button>
         </div>
         <Button
@@ -145,6 +144,7 @@ const EnhancedCreatePostCard = () => {
           size="sm"
           onClick={handlePost}
           disabled={isPosting || (!content.trim() && !previewImage)}
+          className="self-center sm:self-auto flex-shrink-0"
         >
           {isPosting ? "Posting..." : "Post"}
         </Button>
