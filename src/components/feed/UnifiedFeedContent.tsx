@@ -937,7 +937,110 @@ const UnifiedFeedItemCard: React.FC<{
 
           <div className="px-4 pb-4">
             <InteractionBar />
+
+            {/* Comments Section */}
+            {showComments && (
+              <div className="mt-4 border-t pt-4">
+                <EnhancedCommentsSection
+                  postId={item.id}
+                  isVisible={showComments}
+                  commentsCount={item.interactions.comments}
+                  onCommentsCountChange={(count) => {
+                    // Update comments count if needed
+                  }}
+                />
+              </div>
+            )}
           </div>
+
+          {/* Modals */}
+          {showJobDetail && (
+            <JobDetails
+              isOpen={showJobDetail}
+              onClose={() => setShowJobDetail(false)}
+              job={{
+                id: item.id,
+                title: item.content.title,
+                description: item.content.description,
+                budget: item.content.budget,
+                duration: item.content.duration,
+                skills: item.content.skills,
+                location: item.content.location,
+                urgency: item.content.urgency,
+                proposals: item.content.proposals,
+                clientRating: item.content.clientRating,
+                client: {
+                  id: item.author?.id || "",
+                  name: item.author?.name || "",
+                  username: item.author?.username || "",
+                  avatar: item.author?.avatar || "",
+                  verified: item.author?.verified || false,
+                  rating: item.content.clientRating,
+                },
+                createdAt: item.timestamp.toISOString(),
+                type: item.content.budget.type,
+              }}
+            />
+          )}
+
+          {showApplyModal && (
+            <ApplyModal
+              isOpen={showApplyModal}
+              onClose={() => setShowApplyModal(false)}
+              job={{
+                id: item.id,
+                title: item.content.title,
+                description: item.content.description,
+                budget: item.content.budget,
+                duration: item.content.duration,
+                skills: item.content.skills,
+                location: item.content.location,
+                urgency: item.content.urgency,
+                proposals: item.content.proposals,
+                clientRating: item.content.clientRating,
+                client: {
+                  id: item.author?.id || "",
+                  name: item.author?.name || "",
+                  username: item.author?.username || "",
+                  avatar: item.author?.avatar || "",
+                  verified: item.author?.verified || false,
+                  rating: item.content.clientRating,
+                },
+                createdAt: item.timestamp.toISOString(),
+                type: item.content.budget.type,
+              }}
+              onApply={(application) => {
+                toast({
+                  title: "Application Submitted!",
+                  description: "Your application has been sent to the client.",
+                });
+                setShowApplyModal(false);
+              }}
+            />
+          )}
+
+          {showShareModal && (
+            <AdvancedSharingHub
+              isOpen={showShareModal}
+              onClose={() => setShowShareModal(false)}
+              content={{
+                id: item.id,
+                title: item.content.title,
+                type: "job",
+                url: `${window.location.origin}/freelance/job/${item.id}`,
+              }}
+            />
+          )}
+
+          {showGiftModal && item.author && (
+            <VirtualGiftsAndTips
+              isOpen={showGiftModal}
+              onClose={() => setShowGiftModal(false)}
+              recipientId={item.author.id}
+              recipientName={item.author.name}
+              trigger={<></>}
+            />
+          )}
         </CardContent>
       </Card>
     );
