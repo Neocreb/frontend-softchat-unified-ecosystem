@@ -697,20 +697,7 @@ const UnifiedFeedItemCard: React.FC<{
             )}
           </div>
 
-          {/* Modals */}
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.text?.slice(0, 100) || "Check out this post!",
-                type: "post",
-                url: `${window.location.origin}/post/${item.id}`,
-                thumbnail: item.content.media?.[0]?.url,
-              }}
-            />
-          )}
+          {/* Share handled natively in handleInteraction */}
         </CardContent>
       </Card>
     );
