@@ -1312,6 +1312,7 @@ const UnifiedFeedItemCard: React.FC<{
 const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
   const [feedItems, setFeedItems] = useState<UnifiedFeedItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { userPosts } = useFeed();
 
   useEffect(() => {
     // Simulate loading
