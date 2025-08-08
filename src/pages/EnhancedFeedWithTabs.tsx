@@ -391,6 +391,8 @@ const SuggestedSidebar = () => {
 const EnhancedFeedWithTabs = () => {
   const [activeTab, setActiveTab] = useState("for-you");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showCreateStoryModal, setShowCreateStoryModal] = useState(false);
+  const [userStories, setUserStories] = useState<any[]>([]);
   const { toast } = useToast();
 
   const tabs = [
