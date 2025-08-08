@@ -459,7 +459,7 @@ const UnifiedFeedItemCard: React.FC<{
               item.userInteracted.liked && "fill-current"
             )}
           />
-          <span className="text-sm">{item.interactions.likes}</span>
+          <span className="text-sm">{formatNumber(item.interactions.likes)}</span>
         </Button>
         <Button
           variant="ghost"
