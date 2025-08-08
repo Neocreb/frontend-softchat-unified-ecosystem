@@ -664,7 +664,46 @@ const UnifiedFeedItemCard: React.FC<{
 
           <div className="px-4 pb-4">
             <InteractionBar />
+
+            {/* Comments Section */}
+            {showComments && (
+              <div className="mt-4 border-t pt-4">
+                <EnhancedCommentsSection
+                  postId={item.id}
+                  isVisible={showComments}
+                  commentsCount={item.interactions.comments}
+                  onCommentsCountChange={(count) => {
+                    // Update comments count if needed
+                  }}
+                />
+              </div>
+            )}
           </div>
+
+          {/* Modals */}
+          {showShareModal && (
+            <AdvancedSharingHub
+              isOpen={showShareModal}
+              onClose={() => setShowShareModal(false)}
+              content={{
+                id: item.id,
+                title: item.content.text?.slice(0, 100) || "Check out this post!",
+                type: "post",
+                url: `${window.location.origin}/post/${item.id}`,
+                thumbnail: item.content.media?.[0]?.url,
+              }}
+            />
+          )}
+
+          {showGiftModal && item.author && (
+            <VirtualGiftsAndTips
+              isOpen={showGiftModal}
+              onClose={() => setShowGiftModal(false)}
+              recipientId={item.author.id}
+              recipientName={item.author.name}
+              trigger={<></>}
+            />
+          )}
         </CardContent>
       </Card>
     );
