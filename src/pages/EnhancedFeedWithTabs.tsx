@@ -29,7 +29,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import UnifiedFeedContent from "@/components/feed/UnifiedFeedContent";
-import EnhancedCreatePostCard from "@/components/feed/EnhancedCreatePostCard";
+import CreatePostTrigger from "@/components/feed/CreatePostTrigger";
+import CreatePostFlow from "@/components/feed/CreatePostFlow";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
 import StoryViewer from "@/components/feed/StoryViewer";
