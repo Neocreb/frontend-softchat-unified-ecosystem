@@ -46,9 +46,9 @@ import {
 import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSection";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ApplyModal } from "@/components/freelance/ApplyModal";
-import { EnhancedProductDetail } from "@/components/marketplace/EnhancedProductDetail";
-import { JobDetails } from "@/components/freelance/JobDetails";
+import ApplyModal from "@/components/freelance/ApplyModal";
+import EnhancedProductDetail from "@/components/marketplace/EnhancedProductDetail";
+import JobDetails from "@/components/freelance/JobDetails";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 
 // Unified content type interface
