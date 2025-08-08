@@ -120,7 +120,17 @@ const StoriesSection = ({ onCreateStory, userStories }: { onCreateStory: () => v
           >
             {stories.map((story) => (
               <div key={story.id} className="flex-shrink-0">
-                <div className="relative cursor-pointer group">
+                <div
+                  className="relative cursor-pointer group"
+                  onClick={() => {
+                    if (story.user.isUser && !story.hasStory) {
+                      onCreateStory();
+                    } else {
+                      // Handle viewing story
+                      console.log("View story", story.id);
+                    }
+                  }}
+                >
                   <div
                     className={cn(
                       "w-14 h-14 sm:w-16 sm:h-16 rounded-full p-0.5",
