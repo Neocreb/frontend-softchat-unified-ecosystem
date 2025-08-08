@@ -169,12 +169,13 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
       content: {
         text: content,
         media: mediaPreview ? [{
-          type: selectedMedia?.type.startsWith('video') ? 'video' : 'image',
+          type: mediaType || 'image',
           url: mediaPreview,
           alt: "User uploaded media",
         }] : [],
         location: location || undefined,
         feeling: feeling || undefined,
+        activity: activity || undefined,
         taggedUsers: taggedUsers,
         audience: audience,
         monetized: enableMonetization,
