@@ -311,17 +311,19 @@ const AppRoutes = () => {
           path="/app"
           element={
             <ProtectedRoute>
-              <WalletProvider>
-                <LiveContentProvider>
-                  <MarketplaceProvider>
-                    <EnhancedMarketplaceProvider>
-                      <ChatProvider>
-                        <AppLayout />
-                      </ChatProvider>
-                    </EnhancedMarketplaceProvider>
-                  </MarketplaceProvider>
-                </LiveContentProvider>
-              </WalletProvider>
+              <FeedProvider>
+                <WalletProvider>
+                  <LiveContentProvider>
+                    <MarketplaceProvider>
+                      <EnhancedMarketplaceProvider>
+                        <ChatProvider>
+                          <AppLayout />
+                        </ChatProvider>
+                      </EnhancedMarketplaceProvider>
+                    </MarketplaceProvider>
+                  </LiveContentProvider>
+                </WalletProvider>
+              </FeedProvider>
             </ProtectedRoute>
           }
         >
