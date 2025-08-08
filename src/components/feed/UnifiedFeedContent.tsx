@@ -818,19 +818,6 @@ const UnifiedFeedItemCard: React.FC<{
             />
           )}
 
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.title,
-                type: "product",
-                url: `${window.location.origin}/marketplace/product/${item.id}`,
-                thumbnail: item.content.images[0],
-              }}
-            />
-          )}
         </CardContent>
       </Card>
     );
@@ -1003,18 +990,6 @@ const UnifiedFeedItemCard: React.FC<{
             />
           )}
 
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.title,
-                type: "job",
-                url: `${window.location.origin}/freelance/job/${item.id}`,
-              }}
-            />
-          )}
         </CardContent>
       </Card>
     );
@@ -1122,19 +1097,6 @@ const UnifiedFeedItemCard: React.FC<{
           </div>
 
           {/* Modals */}
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.title,
-                type: "service",
-                url: `${window.location.origin}/freelancer/${item.author?.username}`,
-                thumbnail: item.content.portfolio?.[0],
-              }}
-            />
-          )}
         </CardContent>
       </Card>
     );
