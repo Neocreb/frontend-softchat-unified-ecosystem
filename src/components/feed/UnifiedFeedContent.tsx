@@ -811,14 +811,7 @@ const UnifiedFeedItemCard: React.FC<{
             )}
           </div>
 
-          {/* Modals */}
-          {showProductDetail && (
-            <Dialog open={showProductDetail} onOpenChange={setShowProductDetail}>
-              <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-                <EnhancedProductDetail productId={item.id} />
-              </DialogContent>
-            </Dialog>
-          )}
+          {/* Product click handled in handleProductClick */}
 
         </CardContent>
       </Card>
