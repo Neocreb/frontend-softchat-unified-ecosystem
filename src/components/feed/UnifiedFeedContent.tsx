@@ -431,14 +431,7 @@ const UnifiedFeedItemCard: React.FC<{
 }> = ({ item, onInteraction }) => {
   const { toast } = useToast();
 
-  const formatTimeAgo = (date: Date) => {
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return "now";
-    if (diffInHours < 24) return `${diffInHours}h`;
-    return `${Math.floor(diffInHours / 24)}d`;
-  };
+  const formatTime = (date: Date) => formatTimeAgo(date);
 
   const handleInteraction = (type: string) => {
     onInteraction(item.id, type);
