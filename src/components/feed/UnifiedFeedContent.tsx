@@ -443,13 +443,13 @@ const UnifiedFeedItemCard: React.FC<{
 
   const InteractionBar = () => (
     <div className="flex items-center justify-between pt-3 border-t">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1 sm:gap-3">
         <Button
           variant="ghost"
           size="sm"
           onClick={() => handleInteraction("like")}
           className={cn(
-            "flex items-center gap-1.5 px-3 py-1.5 h-auto",
+            "flex items-center gap-1 px-2 py-1.5 h-auto",
             item.userInteracted.liked && "text-red-500"
           )}
         >
@@ -459,44 +459,55 @@ const UnifiedFeedItemCard: React.FC<{
               item.userInteracted.liked && "fill-current"
             )}
           />
-          <span className="text-sm">{formatNumber(item.interactions.likes)}</span>
+          <span className="text-xs sm:text-sm">{formatNumber(item.interactions.likes)}</span>
         </Button>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => handleInteraction("comment")}
-          className="flex items-center gap-1.5 px-3 py-1.5 h-auto"
+          className="flex items-center gap-1 px-2 py-1.5 h-auto"
         >
           <MessageCircle className="w-4 h-4" />
-          <span className="text-sm">{formatNumber(item.interactions.comments)}</span>
+          <span className="text-xs sm:text-sm">{formatNumber(item.interactions.comments)}</span>
         </Button>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => handleInteraction("share")}
-          className="flex items-center gap-1.5 px-3 py-1.5 h-auto"
+          className="flex items-center gap-1 px-2 py-1.5 h-auto"
         >
           <Share2 className="w-4 h-4" />
-          <span className="text-sm">{formatNumber(item.interactions.shares)}</span>
+          <span className="text-xs sm:text-sm">{formatNumber(item.interactions.shares)}</span>
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleInteraction("gift")}
+          className="flex items-center gap-1 px-2 py-1.5 h-auto text-yellow-600 hover:text-yellow-700"
+        >
+          <Gift className="w-4 h-4" />
+          <span className="text-xs sm:text-sm hidden sm:inline">Gift</span>
         </Button>
         {item.type === "product" && (
           <Button
             variant="ghost"
             size="sm"
-            className="flex items-center gap-1.5 px-3 py-1.5 h-auto text-green-600"
+            onClick={() => handleInteraction("buy")}
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-green-600"
           >
             <ShoppingCart className="w-4 h-4" />
-            <span className="text-sm">Buy</span>
+            <span className="text-xs sm:text-sm">Buy</span>
           </Button>
         )}
         {(item.type === "job" || item.type === "freelancer_skill") && (
           <Button
             variant="ghost"
             size="sm"
-            className="flex items-center gap-1.5 px-3 py-1.5 h-auto text-blue-600"
+            onClick={() => handleInteraction(item.type === "job" ? "apply" : "hire")}
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-blue-600"
           >
             <ExternalLink className="w-4 h-4" />
-            <span className="text-sm">{item.type === "job" ? "Apply" : "Hire"}</span>
+            <span className="text-xs sm:text-sm">{item.type === "job" ? "Apply" : "Hire"}</span>
           </Button>
         )}
       </div>
