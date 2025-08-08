@@ -546,7 +546,7 @@ const UnifiedFeedItemCard: React.FC<{
                   ))}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                   <Globe className="w-3 h-3" />
                   {item.content.location && (
                     <>
@@ -611,7 +611,7 @@ const UnifiedFeedItemCard: React.FC<{
                   </Badge>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                   <span>•</span>
                   <span>{item.content.category}</span>
                 </div>
@@ -709,7 +709,7 @@ const UnifiedFeedItemCard: React.FC<{
                   )}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                   <span>•</span>
                   <span>{item.content.location}</span>
                 </div>
@@ -793,7 +793,7 @@ const UnifiedFeedItemCard: React.FC<{
                   ))}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                   <span>•</span>
                   <span>{item.content.availability}</span>
                 </div>
@@ -885,7 +885,7 @@ const UnifiedFeedItemCard: React.FC<{
                   )}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                   <span>•</span>
                   <span>{item.content.category}</span>
                 </div>
@@ -951,7 +951,7 @@ const UnifiedFeedItemCard: React.FC<{
                   )}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                   <span>•</span>
                   <span>{item.content.location}</span>
                 </div>
@@ -1031,7 +1031,7 @@ const UnifiedFeedItemCard: React.FC<{
                   </Badge>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <span>{formatTimeAgo(item.timestamp)}</span>
+                  <span>{formatTime(item.timestamp)}</span>
                 </div>
               </div>
             </div>
