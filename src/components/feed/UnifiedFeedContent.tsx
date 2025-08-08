@@ -450,53 +450,66 @@ const UnifiedFeedItemCard: React.FC<{
   const formatTime = (date: Date) => formatTimeAgo(date);
 
   const handleInteraction = (type: string) => {
-    onInteraction(item.id, type);
-
-    let title = "";
-    let description = "";
-
     switch (type) {
       case "like":
-        title = item.userInteracted.liked ? "Unliked!" : "Liked!";
-        description = item.userInteracted.liked ? `You unliked this ${item.type}.` : `You liked this ${item.type}.`;
+        onInteraction(item.id, type);
         break;
       case "comment":
-        title = "Comment";
-        description = "Comment feature coming soon!";
+        setShowComments(!showComments);
         break;
       case "share":
-        title = "Shared!";
-        description = `You shared this ${item.type}.`;
+        setShowShareModal(true);
         break;
       case "gift":
-        title = "Gift Sent!";
-        description = "Virtual gift sent to the creator.";
+        setShowGiftModal(true);
         break;
       case "buy":
-        title = "Added to Cart!";
-        description = "Product added to your cart.";
+        if (item.type === "product") {
+          addToCart(item.id, 1);
+          toast({
+            title: "Added to Cart!",
+            description: "Product added to your cart.",
+          });
+        }
         break;
       case "apply":
-        title = "Application Sent!";
-        description = "Your application has been submitted.";
+        if (item.type === "job") {
+          setShowApplyModal(true);
+        }
         break;
       case "hire":
-        title = "Contact Sent!";
-        description = "Contact request sent to freelancer.";
+        if (item.type === "freelancer_skill") {
+          toast({
+            title: "Contact Freelancer",
+            description: "Opening contact form...",
+          });
+          // Could open hire modal here
+        }
         break;
       case "save":
-        title = item.userInteracted.saved ? "Unsaved!" : "Saved!";
-        description = item.userInteracted.saved ? "Removed from saved items." : "Added to saved items.";
+        onInteraction(item.id, type);
+        const saveTitle = item.userInteracted.saved ? "Unsaved!" : "Saved!";
+        const saveDescription = item.userInteracted.saved ? "Removed from saved items." : "Added to saved items.";
+        toast({
+          title: saveTitle,
+          description: saveDescription,
+        });
         break;
       default:
-        title = `${type.charAt(0).toUpperCase() + type.slice(1)}d!`;
-        description = `You ${type}d this ${item.type}.`;
+        onInteraction(item.id, type);
     }
+  };
 
-    toast({
-      title,
-      description,
-    });
+  const handleProductClick = () => {
+    if (item.type === "product") {
+      setShowProductDetail(true);
+    }
+  };
+
+  const handleJobClick = () => {
+    if (item.type === "job") {
+      setShowJobDetail(true);
+    }
   };
 
   const InteractionBar = () => (
