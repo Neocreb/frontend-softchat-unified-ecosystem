@@ -154,6 +154,7 @@ import PageDetailView from "./components/pages/PageDetailView";
 import GroupManagement from "./pages/GroupManagement";
 import PageManagement from "./pages/PageManagement";
 import SendGifts from "./pages/SendGifts";
+import StoryDemo from "./pages/StoryDemo";
 import {
   FriendsPage,
   AdsPage,
@@ -384,6 +385,7 @@ const AppRoutes = () => {
           <Route path="unified-profile" element={<UnifiedProfile />} />
           <Route path="unified-profile/:username" element={<UnifiedProfile />} />
           <Route path="demo/profiles" element={<ProfileDemo />} />
+          <Route path="demo/stories" element={<StoryDemo />} />
           <Route path="wallet" element={<Wallet />} />
           <Route path="notifications" element={<UnifiedNotifications />} />
 
