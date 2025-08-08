@@ -1344,16 +1344,6 @@ const UnifiedFeedItemCard: React.FC<{
               }}
             />
           )}
-
-          {showGiftModal && (
-            <VirtualGiftsAndTips
-              isOpen={showGiftModal}
-              onClose={() => setShowGiftModal(false)}
-              recipientId="community"
-              recipientName={item.content.organizer}
-              trigger={<></>}
-            />
-          )}
         </CardContent>
       </Card>
     );
