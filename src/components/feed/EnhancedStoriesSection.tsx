@@ -173,9 +173,9 @@ const EnhancedStoriesSection: React.FC<EnhancedStoriesSectionProps> = ({
         {/* Stories container */}
         <div
           ref={scrollRef}
-          className="flex gap-3 sm:gap-4 overflow-x-auto scrollbar-hide px-4 sm:px-12"
-          style={{ 
-            scrollbarWidth: "none", 
+          className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-4 sm:px-12"
+          style={{
+            scrollbarWidth: "none",
             msOverflowStyle: "none",
             WebkitScrollbar: { display: "none" }
           }}
