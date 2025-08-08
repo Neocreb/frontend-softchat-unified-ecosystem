@@ -1092,37 +1092,10 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
     // Simulate loading
     setTimeout(() => {
       const allItems = generateUnifiedFeed();
-      
-      // Filter items based on feed type
-      let filteredItems = allItems;
-      
-      switch (feedType) {
-        case "following":
-          // Show posts from verified users (simulating followed users)
-          filteredItems = allItems.filter(item => 
-            item.author?.verified || item.type === "community_event"
-          );
-          break;
-        case "groups":
-          // Show community events and group-related content
-          filteredItems = allItems.filter(item => 
-            item.type === "community_event" || 
-            (item.type === "post" && Math.random() > 0.5) // Simulate group posts
-          );
-          break;
-        case "pages":
-          // Show business/page content (products, jobs, sponsored)
-          filteredItems = allItems.filter(item => 
-            item.type === "product" || 
-            item.type === "job" || 
-            item.type === "freelancer_skill" ||
-            item.type === "sponsored_post"
-          );
-          break;
-        default: // "for-you"
-          filteredItems = allItems;
-      }
-      
+
+      // Filter items based on feed type using utility
+      const filteredItems = filterContentByFeedType(allItems, feedType);
+
       setFeedItems(filteredItems);
       setLoading(false);
     }, 1000);
