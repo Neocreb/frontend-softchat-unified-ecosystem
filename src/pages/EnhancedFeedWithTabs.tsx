@@ -136,7 +136,11 @@ const StoriesSection = ({
                       onCreateStory();
                     } else {
                       // Handle viewing story
-                      console.log("View story", story.id);
+                      const allStories = [...userStories, ...stories.filter(s => !s.user.isUser && s.hasStory)];
+                      const storyIndex = allStories.findIndex(s => s.id === story.id);
+                      if (storyIndex !== -1) {
+                        onViewStory(storyIndex);
+                      }
                     }
                   }}
                 >
