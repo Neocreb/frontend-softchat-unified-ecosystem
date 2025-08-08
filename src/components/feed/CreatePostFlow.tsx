@@ -452,19 +452,46 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
 
                 {/* Quick options */}
                 <div className="space-y-2 sm:space-y-3 pt-2 sm:pt-4">
-                  <Button variant="ghost" className="w-full justify-start gap-3 h-10 sm:h-12 text-sm">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-3 h-10 sm:h-12 text-sm"
+                    onClick={() => setShowTagPeopleModal(true)}
+                  >
                     <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
                     <span>Tag people</span>
+                    {taggedUsers.length > 0 && (
+                      <Badge variant="secondary" className="ml-auto">
+                        {taggedUsers.length}
+                      </Badge>
+                    )}
                   </Button>
-                  
-                  <Button variant="ghost" className="w-full justify-start gap-3 h-10 sm:h-12 text-sm">
+
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-3 h-10 sm:h-12 text-sm"
+                    onClick={() => setShowFeelingModal(true)}
+                  >
                     <Smile className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
                     <span>Feeling/activity</span>
+                    {(feeling || activity) && (
+                      <Badge variant="secondary" className="ml-auto">
+                        ✓
+                      </Badge>
+                    )}
                   </Button>
-                  
-                  <Button variant="ghost" className="w-full justify-start gap-3 h-10 sm:h-12 text-sm">
+
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-3 h-10 sm:h-12 text-sm"
+                    onClick={() => setShowCheckInModal(true)}
+                  >
                     <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
                     <span>Check in</span>
+                    {location && (
+                      <Badge variant="secondary" className="ml-auto">
+                        ✓
+                      </Badge>
+                    )}
                   </Button>
                 </div>
               </div>
