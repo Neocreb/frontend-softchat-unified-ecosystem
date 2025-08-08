@@ -1182,19 +1182,6 @@ const UnifiedFeedItemCard: React.FC<{
           </div>
 
           {/* Modals */}
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.title,
-                type: "live",
-                url: `${window.location.origin}/live/${item.id}`,
-                thumbnail: item.content.thumbnail,
-              }}
-            />
-          )}
         </CardContent>
       </Card>
     );
@@ -1291,19 +1278,6 @@ const UnifiedFeedItemCard: React.FC<{
           </div>
 
           {/* Modals */}
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.title,
-                type: "event",
-                url: `${window.location.origin}/events/${item.id}`,
-                thumbnail: item.content.image,
-              }}
-            />
-          )}
         </CardContent>
       </Card>
     );
@@ -1394,18 +1368,6 @@ const UnifiedFeedItemCard: React.FC<{
           </div>
 
           {/* Modals */}
-          {showShareModal && (
-            <AdvancedSharingHub
-              isOpen={showShareModal}
-              onClose={() => setShowShareModal(false)}
-              content={{
-                id: item.id,
-                title: item.content.title,
-                type: "sponsored",
-                url: `${window.location.origin}/premium`,
-              }}
-            />
-          )}
         </CardContent>
       </Card>
     );
