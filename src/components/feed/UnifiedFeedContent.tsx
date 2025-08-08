@@ -961,8 +961,6 @@ const UnifiedFeedItemCard: React.FC<{
 
           {showApplyModal && (
             <ApplyModal
-              isOpen={showApplyModal}
-              onClose={() => setShowApplyModal(false)}
               job={{
                 id: item.id,
                 title: item.content.title,
@@ -985,7 +983,8 @@ const UnifiedFeedItemCard: React.FC<{
                 createdAt: item.timestamp.toISOString(),
                 type: item.content.budget.type,
               }}
-              onApply={(application) => {
+              onClose={() => setShowApplyModal(false)}
+              onSubmit={() => {
                 toast({
                   title: "Application Submitted!",
                   description: "Your application has been sent to the client.",
