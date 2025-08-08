@@ -417,68 +417,7 @@ const EnhancedFeedWithTabs = () => {
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
-  const { user } = useAuth();
   const { toast } = useToast();
-
-  // All stories including mock data
-  const allStories = [
-    ...userStories,
-    {
-      id: "2",
-      user: {
-        id: "user-sarah",
-        name: "Sarah",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
-        isUser: false,
-      },
-      hasStory: true,
-      hasNew: true,
-      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-      content: {
-        text: "Having a great day at the beach! 🏖️",
-        media: {
-          type: "image" as const,
-          url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=600&fit=crop"
-        }
-      },
-      views: 45,
-    },
-    {
-      id: "3",
-      user: {
-        id: "user-mike",
-        name: "Mike",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=mike",
-        isUser: false,
-      },
-      hasStory: true,
-      hasNew: false,
-      timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-      content: {
-        text: "Just finished a great workout! 💪",
-      },
-      views: 23,
-    },
-    {
-      id: "4",
-      user: {
-        id: "user-emma",
-        name: "Emma",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma",
-        isUser: false,
-      },
-      hasStory: true,
-      hasNew: true,
-      timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
-      content: {
-        media: {
-          type: "video" as const,
-          url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        }
-      },
-      views: 67,
-    },
-  ];
 
   const tabs = [
     {
