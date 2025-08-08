@@ -270,7 +270,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[85vh] mx-2 sm:mx-auto p-0 overflow-hidden">
+        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[90vh] mx-2 sm:mx-auto p-0 flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white sticky top-0 z-10">
             <div className="flex items-center gap-2 sm:gap-3">
@@ -307,9 +307,9 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto overscroll-contain">
             {currentStep === "create" && (
-              <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
+              <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 pb-6">
                 {/* User info */}
                 <div className="flex items-center gap-3">
                   <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
@@ -498,7 +498,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
             )}
 
             {currentStep === "settings" && (
-              <div className="space-y-0">
+              <div className="space-y-0 pb-6">
                 {/* Post preview */}
                 <div className="p-3 sm:p-4 border-b">
                   <h3 className="font-semibold mb-3 text-sm sm:text-base">Post preview</h3>
