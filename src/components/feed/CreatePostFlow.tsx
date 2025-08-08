@@ -231,8 +231,10 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     setContent("");
     setSelectedMedia(null);
     setMediaPreview(null);
+    setMediaType(null);
     setLocation("");
     setFeeling("");
+    setActivity("");
     setTaggedUsers([]);
     setShareToStory(false);
     setEnableBoost(false);
