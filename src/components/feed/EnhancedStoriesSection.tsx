@@ -186,63 +186,77 @@ const EnhancedStoriesSection: React.FC<EnhancedStoriesSectionProps> = ({
               className="flex-shrink-0 cursor-pointer group"
               onClick={() => handleStoryClick(story, index)}
             >
-              <div className="flex flex-col items-center w-16 sm:w-20">
-                {/* Story circle */}
-                <div className="relative">
-                  {/* Gradient border for new stories */}
+              <div className="flex flex-col items-center w-24 sm:w-28">
+                {/* Large square story card */}
+                <div className="relative w-24 h-32 sm:w-28 sm:h-36">
+                  {/* Story background */}
                   <div
                     className={cn(
-                      "w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[2px] transition-all duration-200",
+                      "w-full h-full rounded-xl overflow-hidden transition-all duration-200 group-hover:scale-105",
                       story.user.isUser
-                        ? "bg-gray-300 group-hover:bg-gray-400"
-                        : story.hasNew
-                        ? "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600"
-                        : "bg-gray-300"
+                        ? "bg-gradient-to-b from-blue-400 to-blue-600"
+                        : "bg-gray-200"
                     )}
+                    style={{
+                      backgroundImage: !story.user.isUser && story.thumbnail
+                        ? `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url(${story.thumbnail})`
+                        : undefined,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
                   >
-                    {/* Inner white circle */}
-                    <div className="w-full h-full bg-white rounded-full p-[2px]">
-                      {/* Avatar or thumbnail */}
-                      {story.user.isUser ? (
-                        <div className="relative w-full h-full">
+                    {/* Gradient border for new stories */}
+                    {story.hasNew && !story.user.isUser && (
+                      <div className="absolute inset-0 bg-gradient-to-tr from-yellow-400/20 via-red-500/20 to-purple-600/20 rounded-xl" />
+                    )}
+
+                    {/* Profile picture */}
+                    <div className="absolute top-2 left-2">
+                      <div
+                        className={cn(
+                          "w-8 h-8 sm:w-10 sm:h-10 rounded-full p-[2px] transition-all duration-200",
+                          story.user.isUser
+                            ? "bg-white/20"
+                            : story.hasNew
+                            ? "bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600"
+                            : "bg-white/50"
+                        )}
+                      >
+                        <div className="w-full h-full bg-white rounded-full p-[1px]">
                           <Avatar className="w-full h-full">
                             <AvatarImage src={story.user.avatar} />
-                            <AvatarFallback className="text-xs sm:text-sm">
+                            <AvatarFallback className="text-[10px] sm:text-xs">
                               {story.user.name.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
-                          {/* Plus icon for create story */}
-                          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center border-2 border-white">
-                            <Plus className="w-3 h-3 text-white" />
-                          </div>
                         </div>
-                      ) : (
-                        <div
-                          className="w-full h-full rounded-full bg-cover bg-center bg-gray-200"
-                          style={{
-                            backgroundImage: story.thumbnail
-                              ? `url(${story.thumbnail})`
-                              : `url(${story.user.avatar})`,
-                          }}
-                        />
-                      )}
+                      </div>
+                    </div>
+
+                    {/* Create story plus icon */}
+                    {story.user.isUser && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-full flex items-center justify-center shadow-lg">
+                          <Plus className="w-6 h-6 sm:w-7 sm:h-7 text-blue-500" />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Live indicator for very recent stories */}
+                    {!story.user.isUser && story.timestamp &&
+                     Date.now() - story.timestamp.getTime() < 60 * 60 * 1000 && (
+                      <div className="absolute top-2 right-2 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center border border-white">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse" />
+                      </div>
+                    )}
+
+                    {/* Story name overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-2">
+                      <p className="text-xs sm:text-sm font-semibold text-white drop-shadow-md truncate">
+                        {story.user.isUser ? "Create story" : story.user.name}
+                      </p>
                     </div>
                   </div>
-
-                  {/* Live indicator for very recent stories */}
-                  {!story.user.isUser && story.timestamp && 
-                   Date.now() - story.timestamp.getTime() < 60 * 60 * 1000 && (
-                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center border-2 border-white">
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Story name */}
-                <div className="mt-1 sm:mt-2 text-center w-full">
-                  <p className="text-xs sm:text-sm font-medium text-gray-900 truncate px-1">
-                    {story.user.isUser ? "Create story" : story.user.name}
-                  </p>
                 </div>
               </div>
             </div>
