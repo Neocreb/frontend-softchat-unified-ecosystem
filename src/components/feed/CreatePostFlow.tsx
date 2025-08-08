@@ -926,6 +926,28 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Tag People Modal */}
+      <TagPeopleModal
+        isOpen={showTagPeopleModal}
+        onClose={() => setShowTagPeopleModal(false)}
+        onTagged={handleTaggedUsers}
+        currentlyTagged={taggedUsers}
+      />
+
+      {/* Feeling/Activity Modal */}
+      <FeelingActivityModal
+        isOpen={showFeelingModal}
+        onClose={() => setShowFeelingModal(false)}
+        onSelect={handleFeelingActivity}
+      />
+
+      {/* Check In Modal */}
+      <CheckInModal
+        isOpen={showCheckInModal}
+        onClose={() => setShowCheckInModal(false)}
+        onCheckIn={handleCheckIn}
+      />
     </>
   );
 };
