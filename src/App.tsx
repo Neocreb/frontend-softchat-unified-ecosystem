@@ -22,6 +22,7 @@ import SafeThemeProvider from "./contexts/SafeThemeProvider";
 import { I18nProvider } from "./contexts/I18nContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import { UnifiedNotificationProvider } from "./contexts/UnifiedNotificationContext";
+import { FeedProvider } from "./contexts/FeedContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
@@ -41,6 +42,7 @@ import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
+import EnhancedFeedWithTabs from "./pages/EnhancedFeedWithTabs";
 import EnhancedFreelance from "./pages/EnhancedFreelance";
 import FreelanceJobs from "./pages/freelance/FreelanceJobs";
 import RoleSwitcherDashboard from "./pages/freelance/RoleSwitcherDashboard";
@@ -309,22 +311,24 @@ const AppRoutes = () => {
           path="/app"
           element={
             <ProtectedRoute>
-              <WalletProvider>
-                <LiveContentProvider>
-                  <MarketplaceProvider>
-                    <EnhancedMarketplaceProvider>
-                      <ChatProvider>
-                        <AppLayout />
-                      </ChatProvider>
-                    </EnhancedMarketplaceProvider>
-                  </MarketplaceProvider>
-                </LiveContentProvider>
-              </WalletProvider>
+              <FeedProvider>
+                <WalletProvider>
+                  <LiveContentProvider>
+                    <MarketplaceProvider>
+                      <EnhancedMarketplaceProvider>
+                        <ChatProvider>
+                          <AppLayout />
+                        </ChatProvider>
+                      </EnhancedMarketplaceProvider>
+                    </MarketplaceProvider>
+                  </LiveContentProvider>
+                </WalletProvider>
+              </FeedProvider>
             </ProtectedRoute>
           }
         >
           <Route index element={<Navigate to="feed" replace />} />
-          <Route path="feed" element={<EnhancedFeed />} />
+          <Route path="feed" element={<EnhancedFeedWithTabs />} />
           <Route path="create" element={<EnhancedFreelance />} />
           <Route path="freelance" element={<FreelanceJobs />} />
           <Route
