@@ -484,7 +484,10 @@ const UnifiedFeedItemCard: React.FC<{
         break;
       case "apply":
         if (item.type === "job") {
-          setShowApplyModal(true);
+          toast({
+            title: "Apply to Job",
+            description: "Application functionality coming soon!",
+          });
         }
         break;
       case "hire":
