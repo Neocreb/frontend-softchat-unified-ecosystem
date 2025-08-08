@@ -534,10 +534,7 @@ const EnhancedFeedWithTabs = () => {
                     userStories={userStories}
                     onViewStory={handleViewStory}
                   />
-                  <EnhancedCreatePostCard onPostCreated={(newPost) => {
-                    // Add new post to feed by triggering a refresh
-                    handleRefresh();
-                  }} />
+                  <CreatePostTrigger onOpenCreatePost={() => setShowCreatePostFlow(true)} />
                 </>
               )}
 
@@ -596,7 +593,7 @@ const EnhancedFeedWithTabs = () => {
             id: "4",
             user: { id: "user-emma", name: "Emma", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=emma", isUser: false },
             timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
-            content: { text: "Beautiful sunset today! 🌅" },
+            content: { text: "Beautiful sunset today! ���" },
             views: 67,
             hasNew: true,
           },
