@@ -575,7 +575,7 @@ const UnifiedFeedItemCard: React.FC<{
   // Regular post rendering
   if (item.type === "post") {
     return (
-      <Card className="mb-4">
+      <Card className="mb-4 sm:mb-6 mx-2 sm:mx-0">
         <CardContent className="p-0">
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
