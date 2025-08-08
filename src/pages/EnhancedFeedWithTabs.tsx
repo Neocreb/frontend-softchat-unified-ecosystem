@@ -575,9 +575,10 @@ const EnhancedFeedWithTabs = () => {
       />
 
       {/* Enhanced Story Viewer */}
-      <EnhancedStoryViewerModal
-        isOpen={showStoryViewer}
-        onClose={() => setShowStoryViewer(false)}
+      {showStoryViewer && (
+        <EnhancedStoryViewerModal
+          isOpen={showStoryViewer}
+          onClose={() => setShowStoryViewer(false)}
         storyGroups={[
           ...(userStories.length > 0 ? [{
             user: {
@@ -689,9 +690,10 @@ const EnhancedFeedWithTabs = () => {
             }],
           },
         ].filter(group => group.stories && group.stories.length > 0)}
-        initialStoryIndex={currentStoryIndex}
-        initialUserIndex={currentUserIndex}
-      />
+          initialStoryIndex={currentStoryIndex}
+          initialUserIndex={currentUserIndex}
+        />
+      )}
     </div>
   );
 };
