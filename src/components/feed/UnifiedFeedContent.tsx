@@ -1192,7 +1192,7 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
   }
 
   return (
-    <div className="space-y-0">
+    <div className="pb-4">
       {feedItems.map((item) => (
         <UnifiedFeedItemCard
           key={item.id}
@@ -1200,9 +1200,9 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
           onInteraction={handleInteraction}
         />
       ))}
-      
+
       {feedItems.length === 0 && (
-        <div className="text-center py-12">
+        <div className="text-center py-12 mx-2 sm:mx-0">
           <p className="text-gray-500 mb-4">No content available for this feed.</p>
           <Button variant="outline">Refresh</Button>
         </div>
