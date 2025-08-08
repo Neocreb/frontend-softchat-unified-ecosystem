@@ -579,7 +579,7 @@ const EnhancedFeedWithTabs = () => {
         isOpen={showStoryViewer}
         onClose={() => setShowStoryViewer(false)}
         storyGroups={[
-          {
+          ...(userStories.length > 0 ? [{
             user: {
               id: user?.id || "current-user",
               name: user?.name || "You",
@@ -587,7 +587,7 @@ const EnhancedFeedWithTabs = () => {
               avatar: user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
             },
             stories: userStories.map(story => ({
-              id: story.id || `story-${Date.now()}`,
+              id: story.id || `story-${Date.now()}-${Math.random()}`,
               user: {
                 id: story.user?.id || "current-user",
                 name: story.user?.name || "You",
@@ -609,7 +609,7 @@ const EnhancedFeedWithTabs = () => {
               views: story.views || 0,
               isOwn: story.user?.isUser || story.isOwn || true,
             })),
-          },
+          }] : []),
           {
             user: {
               id: "user-sarah",
