@@ -469,11 +469,13 @@ const EnhancedFeedWithTabs = () => {
                 </div>
               </div>
 
-              {/* Stories Section - After tabs */}
-              <StoriesSection />
-
-              {/* Create Post - After stories */}
-              <EnhancedCreatePostCard />
+              {/* Stories and Create Post - Only show on "For You" tab */}
+              {activeTab === "for-you" && (
+                <>
+                  <StoriesSection />
+                  <EnhancedCreatePostCard />
+                </>
+              )}
 
               {/* Tab Content */}
               {tabs.map((tab) => (
