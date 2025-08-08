@@ -457,7 +457,19 @@ const UnifiedFeedItemCard: React.FC<{
         setShowComments(!showComments);
         break;
       case "share":
-        setShowShareModal(true);
+        if (navigator.share) {
+          navigator.share({
+            title: item.content.title || item.content.text || "Check this out!",
+            text: item.content.description || item.content.text,
+            url: window.location.href,
+          });
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          toast({
+            title: "Link copied!",
+            description: "Post link copied to clipboard.",
+          });
+        }
         break;
       case "gift":
         // Handled inline with VirtualGiftsAndTips component
