@@ -1,10 +1,15 @@
 import React, { useState, useRef } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { 
   X, 
   ArrowLeft, 
@@ -21,11 +26,19 @@ import {
   DollarSign,
   Megaphone,
   TestTube,
-  BookOpen
+  BookOpen,
+  ChevronRight,
+  Calendar as CalendarIcon,
+  MessageCircle,
+  Crown,
+  Zap,
+  Target
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useFeed } from "@/contexts/FeedContext";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 interface CreatePostFlowProps {
   isOpen: boolean;
@@ -33,6 +46,7 @@ interface CreatePostFlowProps {
 }
 
 type PostStep = "create" | "settings";
+type AudienceType = "public" | "friends" | "private" | "custom";
 
 const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState<PostStep>("create");
@@ -44,10 +58,24 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   const [taggedUsers, setTaggedUsers] = useState<string[]>([]);
   
   // Settings
-  const [audience, setAudience] = useState("public");
+  const [audience, setAudience] = useState<AudienceType>("public");
   const [shareToStory, setShareToStory] = useState(false);
   const [enableComments, setEnableComments] = useState(true);
   const [enableBoost, setEnableBoost] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState<Date | undefined>(undefined);
+  const [enableMonetization, setEnableMonetization] = useState(false);
+  const [enableCollaborator, setEnableCollaborator] = useState(false);
+  const [collaboratorEmail, setCollaboratorEmail] = useState("");
+  const [enableABTest, setEnableABTest] = useState(false);
+  const [abTestVariant, setABTestVariant] = useState("A");
+  
+  // Modal states
+  const [showAudienceModal, setShowAudienceModal] = useState(false);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showMonetizationModal, setShowMonetizationModal] = useState(false);
+  const [showBoostModal, setShowBoostModal] = useState(false);
+  const [showCollaboratorModal, setShowCollaboratorModal] = useState(false);
+  const [showABTestModal, setShowABTestModal] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { user } = useAuth();
@@ -82,7 +110,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     const newPost = {
       id: `post-${Date.now()}`,
       type: "post" as const,
-      timestamp: new Date(),
+      timestamp: scheduleDate || new Date(),
       priority: 8,
       author: {
         id: user?.id || "current-user",
@@ -102,10 +130,15 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
         location: location || undefined,
         feeling: feeling || undefined,
         taggedUsers: taggedUsers,
+        audience: audience,
+        monetized: enableMonetization,
+        boosted: enableBoost,
+        collaborative: enableCollaborator,
+        collaborator: collaboratorEmail || undefined,
       },
       interactions: {
         likes: 0,
-        comments: 0,
+        comments: enableComments ? 0 : -1, // -1 means comments disabled
         shares: 0,
         views: 0,
       },
@@ -119,10 +152,28 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
 
     addPost(newPost);
     
-    toast({
-      title: "Post published!",
-      description: "Your post has been shared with your audience.",
-    });
+    // Show different success messages based on settings
+    if (scheduleDate) {
+      toast({
+        title: "Post scheduled!",
+        description: `Your post will be published on ${format(scheduleDate, "PPP")}`,
+      });
+    } else if (shareToStory && enableBoost) {
+      toast({
+        title: "Post published & boosted!",
+        description: "Your post has been shared to your story and boost campaign started.",
+      });
+    } else if (shareToStory) {
+      toast({
+        title: "Post published!",
+        description: "Your post has been shared to your story as well.",
+      });
+    } else {
+      toast({
+        title: "Post published!",
+        description: "Your post has been shared with your audience.",
+      });
+    }
 
     // Reset and close
     handleClose();
@@ -138,291 +189,611 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     setTaggedUsers([]);
     setShareToStory(false);
     setEnableBoost(false);
+    setScheduleDate(undefined);
+    setEnableMonetization(false);
+    setEnableCollaborator(false);
+    setCollaboratorEmail("");
+    setEnableABTest(false);
     onClose();
   };
 
   const canProceed = content.trim() || mediaPreview;
 
-  return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-lg w-full h-[90vh] p-0 overflow-hidden">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
-          <div className="flex items-center gap-3">
-            {currentStep === "settings" && (
-              <Button variant="ghost" size="icon" onClick={handleBack}>
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            )}
-            <h2 className="text-lg font-semibold">
-              {currentStep === "create" ? "Create post" : "Post settings"}
-            </h2>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {currentStep === "create" && (
-              <Button 
-                onClick={handleNext} 
-                disabled={!canProceed}
-                size="sm"
-              >
-                Next
-              </Button>
-            )}
-            {currentStep === "settings" && (
-              <Button onClick={handlePost} size="sm">
-                Post
-              </Button>
-            )}
-            <Button variant="ghost" size="icon" onClick={handleClose}>
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-        </div>
+  const getAudienceIcon = () => {
+    switch (audience) {
+      case "public": return <Globe className="h-3 w-3" />;
+      case "friends": return <Users className="h-3 w-3" />;
+      case "private": return <Lock className="h-3 w-3" />;
+      default: return <Globe className="h-3 w-3" />;
+    }
+  };
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto">
-          {currentStep === "create" && (
-            <div className="p-4 space-y-4">
-              {/* User info */}
-              <div className="flex items-center gap-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={user?.avatar} />
-                  <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">{user?.name}</p>
-                  <div className="flex items-center gap-1 text-sm text-blue-600">
-                    <Globe className="h-3 w-3" />
-                    <span>Public</span>
+  const getAudienceLabel = () => {
+    switch (audience) {
+      case "public": return "Public";
+      case "friends": return "Friends";
+      case "private": return "Only me";
+      case "custom": return "Custom";
+      default: return "Public";
+    }
+  };
+
+  return (
+    <>
+      <Dialog open={isOpen} onOpenChange={handleClose}>
+        <DialogContent className="max-w-lg w-full h-[90vh] sm:h-[85vh] p-0 overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white sticky top-0 z-10">
+            <div className="flex items-center gap-2 sm:gap-3">
+              {currentStep === "settings" && (
+                <Button variant="ghost" size="icon" onClick={handleBack} className="h-8 w-8 sm:h-10 sm:w-10">
+                  <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                </Button>
+              )}
+              <h2 className="text-base sm:text-lg font-semibold">
+                {currentStep === "create" ? "Create post" : "Post settings"}
+              </h2>
+            </div>
+            
+            <div className="flex items-center gap-1 sm:gap-2">
+              {currentStep === "create" && (
+                <Button 
+                  onClick={handleNext} 
+                  disabled={!canProceed}
+                  size="sm"
+                  className="h-8 sm:h-9 px-3 sm:px-4 text-sm"
+                >
+                  Next
+                </Button>
+              )}
+              {currentStep === "settings" && (
+                <Button onClick={handlePost} size="sm" className="h-8 sm:h-9 px-3 sm:px-4 text-sm">
+                  Post
+                </Button>
+              )}
+              <Button variant="ghost" size="icon" onClick={handleClose} className="h-8 w-8 sm:h-10 sm:w-10">
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto">
+            {currentStep === "create" && (
+              <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
+                {/* User info */}
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
+                    <AvatarImage src={user?.avatar} />
+                    <AvatarFallback className="text-xs sm:text-sm">{user?.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium text-sm sm:text-base">{user?.name}</p>
+                    <div className="flex items-center gap-1 text-xs sm:text-sm text-blue-600">
+                      {getAudienceIcon()}
+                      <span>{getAudienceLabel()}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Text input */}
-              <Textarea
-                placeholder="Say something about this photo..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="min-h-[120px] border-0 resize-none text-lg placeholder:text-gray-400 focus-visible:ring-0"
-              />
-
-              {/* Media preview */}
-              {mediaPreview && (
-                <div className="relative">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full z-10"
-                    onClick={() => {
-                      setMediaPreview(null);
-                      setSelectedMedia(null);
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                  {selectedMedia?.type.startsWith('video') ? (
-                    <video
-                      src={mediaPreview}
-                      className="w-full max-h-96 rounded-lg object-cover"
-                      controls
-                    />
-                  ) : (
-                    <img
-                      src={mediaPreview}
-                      alt="Preview"
-                      className="w-full max-h-96 rounded-lg object-cover"
-                    />
-                  )}
-                </div>
-              )}
-
-              {/* Action buttons */}
-              <div className="grid grid-cols-3 gap-3 pt-4">
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  accept="image/*,video/*"
-                  onChange={handleMediaSelect}
+                {/* Text input */}
+                <Textarea
+                  placeholder="What's on your mind?"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className="min-h-[100px] sm:min-h-[120px] border-0 resize-none text-base sm:text-lg placeholder:text-gray-400 focus-visible:ring-0"
                 />
-                
-                <Button
-                  variant="outline"
-                  className="h-16 flex-col gap-1"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <ImageIcon className="h-6 w-6 text-green-500" />
-                  <span className="text-xs">Photo</span>
-                </Button>
-                
-                <Button variant="outline" className="h-16 flex-col gap-1">
-                  <Video className="h-6 w-6 text-red-500" />
-                  <span className="text-xs">Video</span>
-                </Button>
-                
-                <Button variant="outline" className="h-16 flex-col gap-1">
-                  <Music className="h-6 w-6 text-purple-500" />
-                  <span className="text-xs">Music</span>
-                </Button>
-              </div>
 
-              {/* Quick options */}
-              <div className="space-y-3 pt-4">
-                <Button variant="ghost" className="w-full justify-start gap-3 h-12">
-                  <UserPlus className="h-5 w-5 text-blue-500" />
-                  <span>Tag people</span>
-                </Button>
-                
-                <Button variant="ghost" className="w-full justify-start gap-3 h-12">
-                  <Smile className="h-5 w-5 text-yellow-500" />
-                  <span>Feeling/activity</span>
-                </Button>
-                
-                <Button variant="ghost" className="w-full justify-start gap-3 h-12">
-                  <MapPin className="h-5 w-5 text-red-500" />
-                  <span>Check in</span>
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {currentStep === "settings" && (
-            <div className="space-y-1">
-              {/* Post preview */}
-              <div className="p-4 border-b">
-                <h3 className="font-semibold mb-3">Post preview</h3>
+                {/* Media preview */}
                 {mediaPreview && (
-                  <div className="mb-3">
+                  <div className="relative">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full z-10 h-8 w-8"
+                      onClick={() => {
+                        setMediaPreview(null);
+                        setSelectedMedia(null);
+                      }}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
                     {selectedMedia?.type.startsWith('video') ? (
                       <video
                         src={mediaPreview}
-                        className="w-32 h-32 rounded-lg object-cover"
-                        muted
+                        className="w-full max-h-64 sm:max-h-96 rounded-lg object-cover"
+                        controls
                       />
                     ) : (
                       <img
                         src={mediaPreview}
                         alt="Preview"
-                        className="w-32 h-32 rounded-lg object-cover"
+                        className="w-full max-h-64 sm:max-h-96 rounded-lg object-cover"
                       />
                     )}
                   </div>
                 )}
-                {content && (
-                  <p className="text-sm text-gray-600 line-clamp-3">{content}</p>
+
+                {/* Action buttons */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 pt-2 sm:pt-4">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*,video/*"
+                    onChange={handleMediaSelect}
+                  />
+                  
+                  <Button
+                    variant="outline"
+                    className="h-12 sm:h-16 flex-col gap-1 text-xs"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <ImageIcon className="h-4 w-4 sm:h-6 sm:w-6 text-green-500" />
+                    <span>Photo</span>
+                  </Button>
+                  
+                  <Button variant="outline" className="h-12 sm:h-16 flex-col gap-1 text-xs">
+                    <Video className="h-4 w-4 sm:h-6 sm:w-6 text-red-500" />
+                    <span>Video</span>
+                  </Button>
+                  
+                  <Button variant="outline" className="h-12 sm:h-16 flex-col gap-1 text-xs">
+                    <Music className="h-4 w-4 sm:h-6 sm:w-6 text-purple-500" />
+                    <span>Music</span>
+                  </Button>
+                </div>
+
+                {/* Quick options */}
+                <div className="space-y-2 sm:space-y-3 pt-2 sm:pt-4">
+                  <Button variant="ghost" className="w-full justify-start gap-3 h-10 sm:h-12 text-sm">
+                    <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
+                    <span>Tag people</span>
+                  </Button>
+                  
+                  <Button variant="ghost" className="w-full justify-start gap-3 h-10 sm:h-12 text-sm">
+                    <Smile className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500" />
+                    <span>Feeling/activity</span>
+                  </Button>
+                  
+                  <Button variant="ghost" className="w-full justify-start gap-3 h-10 sm:h-12 text-sm">
+                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
+                    <span>Check in</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {currentStep === "settings" && (
+              <div className="space-y-0">
+                {/* Post preview */}
+                <div className="p-3 sm:p-4 border-b">
+                  <h3 className="font-semibold mb-3 text-sm sm:text-base">Post preview</h3>
+                  {mediaPreview && (
+                    <div className="mb-3">
+                      {selectedMedia?.type.startsWith('video') ? (
+                        <video
+                          src={mediaPreview}
+                          className="w-24 h-24 sm:w-32 sm:h-32 rounded-lg object-cover"
+                          muted
+                        />
+                      ) : (
+                        <img
+                          src={mediaPreview}
+                          alt="Preview"
+                          className="w-24 h-24 sm:w-32 sm:h-32 rounded-lg object-cover"
+                        />
+                      )}
+                    </div>
+                  )}
+                  {content && (
+                    <p className="text-xs sm:text-sm text-gray-600 line-clamp-3">{content}</p>
+                  )}
+                </div>
+
+                {/* Settings options */}
+                <div className="space-y-0">
+                  {/* Post audience */}
+                  <button
+                    onClick={() => setShowAudienceModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        {getAudienceIcon()}
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Post audience</p>
+                        <p className="text-xs sm:text-sm text-gray-500">{getAudienceLabel()}</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                  </button>
+
+                  {/* Scheduling */}
+                  <button
+                    onClick={() => setShowScheduleModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Scheduling options</p>
+                        <p className="text-xs sm:text-sm text-blue-600">
+                          {scheduleDate ? format(scheduleDate, "PPP") : "Publish now"}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                  </button>
+
+                  {/* Share to story */}
+                  <div className="flex items-center justify-between p-3 sm:p-4 hover:bg-gray-50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Share to your story</p>
+                      </div>
+                    </div>
+                    <Switch checked={shareToStory} onCheckedChange={setShareToStory} />
+                  </div>
+
+                  {/* Comments */}
+                  <div className="flex items-center justify-between p-3 sm:p-4 hover:bg-gray-50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Allow comments</p>
+                        <p className="text-xs sm:text-sm text-gray-500">Let people comment on your post</p>
+                      </div>
+                    </div>
+                    <Switch checked={enableComments} onCheckedChange={setEnableComments} />
+                  </div>
+
+                  {/* Monetization */}
+                  <button
+                    onClick={() => setShowMonetizationModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Monetization</p>
+                        <p className="text-xs sm:text-sm text-blue-600">
+                          {enableMonetization ? "Enabled - Earn from views" : "Earn money on your content"}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                  </button>
+
+                  {/* Boost post */}
+                  <button
+                    onClick={() => setShowBoostModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <Megaphone className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Boost post</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          {enableBoost ? "Boost enabled - Reach more people" : "Reach more people with ads"}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                  </button>
+
+                  {/* Collaborator */}
+                  <button
+                    onClick={() => setShowCollaboratorModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <UserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">Collaborator</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          {enableCollaborator ? `Collaborating with ${collaboratorEmail}` : "Share credit for your post"}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                  </button>
+
+                  {/* A/B tests */}
+                  <button
+                    onClick={() => setShowABTestModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                        <TestTube className="h-4 w-4 sm:h-5 sm:w-5" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm sm:text-base">A/B tests</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          {enableABTest ? `Testing variant ${abTestVariant}` : "Test different versions"}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Audience Selection Modal */}
+      <Dialog open={showAudienceModal} onOpenChange={setShowAudienceModal}>
+        <DialogContent className="max-w-md w-full p-0">
+          <DialogHeader className="p-4 border-b">
+            <DialogTitle className="text-lg">Who can see your post?</DialogTitle>
+          </DialogHeader>
+          <div className="p-4 space-y-3">
+            {[
+              { value: "public", icon: Globe, label: "Public", desc: "Anyone on or off SoftChat" },
+              { value: "friends", icon: Users, label: "Friends", desc: "Your friends on SoftChat" },
+              { value: "private", icon: Lock, label: "Only me", desc: "Only you can see this post" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                onClick={() => {
+                  setAudience(option.value as AudienceType);
+                  setShowAudienceModal(false);
+                }}
+                className={cn(
+                  "w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors",
+                  audience === option.value ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
                 )}
-              </div>
+              >
+                <div className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center",
+                  audience === option.value ? "bg-blue-100" : "bg-gray-100"
+                )}>
+                  <option.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-medium">{option.label}</p>
+                  <p className="text-sm text-gray-500">{option.desc}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
 
-              {/* Settings options */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <Globe className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Post audience</p>
-                      <p className="text-sm text-gray-500">Public</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <X className="h-4 w-4 rotate-45" />
+      {/* Schedule Modal */}
+      <Dialog open={showScheduleModal} onOpenChange={setShowScheduleModal}>
+        <DialogContent className="max-w-md w-full">
+          <DialogHeader>
+            <DialogTitle>Schedule your post</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Publication date</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start text-left font-normal">
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {scheduleDate ? format(scheduleDate, "PPP") : "Select date"}
                   </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <Clock className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Scheduling options</p>
-                      <p className="text-sm text-blue-600">Publish now</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <X className="h-4 w-4 rotate-45" />
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <BookOpen className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Share to your story</p>
-                    </div>
-                  </div>
-                  <Switch checked={shareToStory} onCheckedChange={setShareToStory} />
-                </div>
-
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <DollarSign className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Monetization</p>
-                      <p className="text-sm text-blue-600">Earn money on your content</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <X className="h-4 w-4 rotate-45" />
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <Megaphone className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Boost post</p>
-                      <p className="text-sm text-gray-500">
-                        You'll choose settings after you click Post. You can only boost public posts.
-                      </p>
-                    </div>
-                  </div>
-                  <Switch checked={enableBoost} onCheckedChange={setEnableBoost} />
-                </div>
-
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <UserPlus className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">Collaborator</p>
-                      <p className="text-sm text-gray-500">Share credit for your post with a collaborator.</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <X className="h-4 w-4 rotate-45" />
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 hover:bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                      <TestTube className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">A/B tests</p>
-                      <p className="text-sm text-gray-500">Off</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <X className="h-4 w-4 rotate-45" />
-                  </Button>
-                </div>
-              </div>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={scheduleDate}
+                    onSelect={setScheduleDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => {
+                  setScheduleDate(undefined);
+                  setShowScheduleModal(false);
+                }}
+              >
+                Publish now
+              </Button>
+              <Button 
+                className="flex-1"
+                onClick={() => setShowScheduleModal(false)}
+                disabled={!scheduleDate}
+              >
+                Schedule
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Monetization Modal */}
+      <Dialog open={showMonetizationModal} onOpenChange={setShowMonetizationModal}>
+        <DialogContent className="max-w-md w-full">
+          <DialogHeader>
+            <DialogTitle>Monetize your content</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <Crown className="h-6 w-6 text-yellow-500" />
+                <div>
+                  <p className="font-medium">Creator Economy</p>
+                  <p className="text-sm text-gray-500">Earn from views and engagement</p>
+                </div>
+              </div>
+              <Switch checked={enableMonetization} onCheckedChange={setEnableMonetization} />
+            </div>
+            {enableMonetization && (
+              <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-700">
+                  ✓ Your post will earn rewards based on views, likes, and comments
+                </p>
+              </div>
+            )}
+            <Button 
+              className="w-full"
+              onClick={() => setShowMonetizationModal(false)}
+            >
+              Done
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Boost Modal */}
+      <Dialog open={showBoostModal} onOpenChange={setShowBoostModal}>
+        <DialogContent className="max-w-md w-full">
+          <DialogHeader>
+            <DialogTitle>Boost your post</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <Target className="h-6 w-6 text-blue-500" />
+                <div>
+                  <p className="font-medium">Promote Post</p>
+                  <p className="text-sm text-gray-500">Reach more people</p>
+                </div>
+              </div>
+              <Switch checked={enableBoost} onCheckedChange={setEnableBoost} />
+            </div>
+            {enableBoost && (
+              <div className="space-y-3">
+                <div>
+                  <Label>Budget (daily)</Label>
+                  <Select defaultValue="10">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5">$5/day</SelectItem>
+                      <SelectItem value="10">$10/day</SelectItem>
+                      <SelectItem value="25">$25/day</SelectItem>
+                      <SelectItem value="50">$50/day</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-700">
+                    ✓ Your post will be shown to more people interested in your content
+                  </p>
+                </div>
+              </div>
+            )}
+            <Button 
+              className="w-full"
+              onClick={() => setShowBoostModal(false)}
+            >
+              Done
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Collaborator Modal */}
+      <Dialog open={showCollaboratorModal} onOpenChange={setShowCollaboratorModal}>
+        <DialogContent className="max-w-md w-full">
+          <DialogHeader>
+            <DialogTitle>Add collaborator</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Collaborator email</Label>
+              <Input
+                placeholder="Enter email address"
+                value={collaboratorEmail}
+                onChange={(e) => setCollaboratorEmail(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div>
+                <p className="font-medium">Enable collaboration</p>
+                <p className="text-sm text-gray-500">Share credit and analytics</p>
+              </div>
+              <Switch checked={enableCollaborator} onCheckedChange={setEnableCollaborator} />
+            </div>
+            {enableCollaborator && collaboratorEmail && (
+              <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                <p className="text-sm text-purple-700">
+                  ✓ {collaboratorEmail} will be credited as collaborator
+                </p>
+              </div>
+            )}
+            <Button 
+              className="w-full"
+              onClick={() => setShowCollaboratorModal(false)}
+            >
+              Done
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* A/B Test Modal */}
+      <Dialog open={showABTestModal} onOpenChange={setShowABTestModal}>
+        <DialogContent className="max-w-md w-full">
+          <DialogHeader>
+            <DialogTitle>A/B Test Settings</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <div>
+                <p className="font-medium">Enable A/B testing</p>
+                <p className="text-sm text-gray-500">Test different versions</p>
+              </div>
+              <Switch checked={enableABTest} onCheckedChange={setEnableABTest} />
+            </div>
+            {enableABTest && (
+              <div className="space-y-3">
+                <div>
+                  <Label>Test variant</Label>
+                  <Select value={abTestVariant} onValueChange={setABTestVariant}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="A">Variant A (Current)</SelectItem>
+                      <SelectItem value="B">Variant B (Alternative)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <p className="text-sm text-orange-700">
+                    ✓ Testing {abTestVariant === 'A' ? 'original' : 'alternative'} version with 50% of audience
+                  </p>
+                </div>
+              </div>
+            )}
+            <Button 
+              className="w-full"
+              onClick={() => setShowABTestModal(false)}
+            >
+              Done
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
