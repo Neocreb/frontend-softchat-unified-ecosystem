@@ -141,7 +141,7 @@ const EnhancedStoriesSection: React.FC<EnhancedStoriesSectionProps> = ({
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = 240;
+      const scrollAmount = 280; // Increased for larger cards
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
