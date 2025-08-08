@@ -34,7 +34,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
 
 // Stories component for the feed
-const StoriesSection = () => {
+const StoriesSection = ({ onCreateStory, userStories }: { onCreateStory: () => void, userStories: any[] }) => {
   const { user } = useAuth();
   const [stories, setStories] = useState([
     {
@@ -44,7 +44,7 @@ const StoriesSection = () => {
         avatar: user?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
         isUser: true,
       },
-      hasStory: false,
+      hasStory: userStories.length > 0,
     },
     {
       id: "2",
