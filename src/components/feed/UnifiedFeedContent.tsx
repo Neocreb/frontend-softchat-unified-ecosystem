@@ -913,7 +913,7 @@ const UnifiedFeedItemCard: React.FC<{
             </div>
             <div className="absolute top-4 right-4 bg-red-500 px-2 py-1 rounded text-white text-sm flex items-center gap-1">
               <Eye className="w-3 h-3" />
-              {item.content.viewers}
+              {formatNumber(item.content.viewers)}
             </div>
           </div>
 
