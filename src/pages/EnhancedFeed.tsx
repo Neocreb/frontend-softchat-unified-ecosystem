@@ -50,6 +50,9 @@ import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSecti
 import { EnhancedStoryCreation } from "@/components/feed/EnhancedStoryCreation";
 import SocialCommerceWidget from "@/components/feed/SocialCommerceWidget";
 import { StoryViewerModal } from "@/components/feed/StoryViewerModal";
+import EnhancedPostActions from "@/components/feed/EnhancedPostActions";
+import EnhancedCreatePostWithDestination from "@/components/feed/EnhancedCreatePostWithDestination";
+import { enhancedMockFeedData } from "@/data/enhancedMockFeedData";
 import { SmartContentRecommendations } from "@/components/ai/SmartContentRecommendations";
 import { LiveStreamPlayer } from "@/components/livestream/LiveStreamPlayer";
 import EventsBannerCard from "@/components/feed/EventsBannerCard";
