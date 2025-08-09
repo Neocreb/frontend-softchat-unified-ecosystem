@@ -23,6 +23,7 @@ import { I18nProvider } from "./contexts/I18nContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import { UnifiedNotificationProvider } from "./contexts/UnifiedNotificationContext";
 import { FeedProvider } from "./contexts/FeedContext";
+import { EnhancedFeedProvider } from "./contexts/EnhancedFeedContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
