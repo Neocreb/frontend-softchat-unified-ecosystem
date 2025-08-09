@@ -87,17 +87,28 @@ export default function EnhancedRewards() {
   const loadRewardData = async () => {
     try {
       setIsLoading(true);
+      console.log("Loading reward data...");
+
       const response = await fetchWithAuth("/api/creator/reward-summary");
+      console.log("Response status:", response.status, response.statusText);
+
       if (response.ok) {
         const text = await response.text();
+        console.log("Response text:", text.substring(0, 200) + "...");
+
         try {
           const data = JSON.parse(text);
+          console.log("Parsed data:", data);
           setRewardData(data.data || data);
+          return; // Success - exit early
         } catch (jsonError) {
           console.warn("JSON parse error, using fallback data:", jsonError);
           throw new Error("Invalid JSON response");
         }
       } else {
+        console.warn("API request failed:", response.status, response.statusText);
+        const errorText = await response.text();
+        console.warn("Error response:", errorText);
         // Fallback to demo data if API not available
         setRewardData({
           totalEarnings: 2847.50,
