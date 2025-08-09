@@ -532,7 +532,7 @@ const UnifiedFeedItemCard: React.FC<{
         navigate(`/app/freelance/job/${item.id}`);
         break;
       case 'freelancer_skill':
-        navigate(`/app/marketplace/seller/${item.author?.username}`);
+        navigate(`/app/freelance/find-freelancers?search=${item.author?.username}`);
         break;
       case 'live_event':
         navigate(`/app/events/${item.id}`);
@@ -664,11 +664,11 @@ const UnifiedFeedItemCard: React.FC<{
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate(`/app/marketplace/seller/${item.author?.username}`)}
+            onClick={() => navigate(`/app/freelance/find-freelancers?search=${item.author?.username}`)}
             className="flex items-center gap-1 px-2 py-1.5 h-auto text-purple-600 hover:text-purple-700"
           >
-            <ExternalLink className="w-4 h-4" />
-            <span className="text-xs sm:text-sm">Hire</span>
+            <ExternalLink className="w-3 h-3" />
+            <span className="text-xs">Hire</span>
           </Button>
         )}
         {(item.type === "live_event" || item.type === "community_event") && (
