@@ -87,28 +87,48 @@ export default function EnhancedRewards() {
   const loadRewardData = async () => {
     try {
       setIsLoading(true);
-      console.log("Loading reward data...");
+
+      // Check if user is authenticated
+      if (!user) {
+        console.log("User not authenticated, using demo data");
+        setRewardData(getDemoData());
+        return;
+      }
+
+      console.log("Loading reward data for user:", user.id);
 
       const response = await fetchWithAuth("/api/creator/reward-summary");
       console.log("Response status:", response.status, response.statusText);
 
       if (response.ok) {
         const text = await response.text();
-        console.log("Response text:", text.substring(0, 200) + "...");
+        console.log("Response text length:", text.length);
+
+        if (!text.trim()) {
+          console.warn("Empty response, using demo data");
+          setRewardData(getDemoData());
+          return;
+        }
 
         try {
           const data = JSON.parse(text);
-          console.log("Parsed data:", data);
+          console.log("Successfully parsed response data");
           setRewardData(data.data || data);
           return; // Success - exit early
         } catch (jsonError) {
-          console.warn("JSON parse error, using fallback data:", jsonError);
-          throw new Error("Invalid JSON response");
+          console.warn("JSON parse error, using demo data:", jsonError);
+          setRewardData(getDemoData());
+          return;
         }
       } else {
         console.warn("API request failed:", response.status, response.statusText);
-        const errorText = await response.text();
-        console.warn("Error response:", errorText);
+        if (response.status === 401) {
+          console.warn("Authentication failed, using demo data");
+        } else if (response.status === 404) {
+          console.warn("Endpoint not found, using demo data");
+        }
+        setRewardData(getDemoData());
+        return;
         // Fallback to demo data if API not available
         setRewardData({
           totalEarnings: 2847.50,
