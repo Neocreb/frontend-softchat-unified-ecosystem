@@ -708,27 +708,23 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 </div>
               )}
 
-              {/* Call-to-Action Buttons for Special Content */}
-              {(post.ctaText && post.ctaUrl) && (
+              {/* Unified Action Buttons for Special Content */}
+              {(post.type === 'product' || post.type === 'job' || post.type === 'freelancer_skill' || post.type === 'live_event' || post.type === 'community_event') && (
                 <div className="mb-3">
-                  <Button
-                    className={cn(
-                      "w-full font-semibold",
-                      post.type === 'sponsored' && "bg-purple-600 hover:bg-purple-700",
-                      post.type === 'product' && "bg-green-600 hover:bg-green-700",
-                      post.type === 'job' && "bg-blue-600 hover:bg-blue-700",
-                      post.type === 'event' && "bg-orange-600 hover:bg-orange-700",
-                      post.type === 'skill' && "bg-indigo-600 hover:bg-indigo-700"
-                    )}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Navigate to CTA URL
-                      window.open(post.ctaUrl, '_blank');
+                  <UnifiedActionButtons
+                    item={{
+                      id: post.id,
+                      type: post.type as any,
+                      content: {
+                        price: post.price,
+                        rate: post.price,
+                        location: post.location,
+                        rating: 4.8, // Mock rating
+                      },
                     }}
-                  >
-                    {post.ctaText}
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </Button>
+                    variant="full"
+                    className="w-full"
+                  />
                 </div>
               )}
 
