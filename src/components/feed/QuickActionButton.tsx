@@ -153,13 +153,13 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
   const getIcon = () => {
     switch (actionType) {
       case 'buy_direct':
-        return <ShoppingCart className="h-4 w-4 mr-2" />;
+        return <ShoppingCart className="h-3 w-3 mr-1.5" />;
       case 'apply_quick':
-        return <Send className="h-4 w-4 mr-2" />;
+        return <Send className="h-3 w-3 mr-1.5" />;
       case 'join_direct':
-        return <Calendar className="h-4 w-4 mr-2" />;
+        return <Calendar className="h-3 w-3 mr-1.5" />;
       case 'watch_live':
-        return <PlayCircle className="h-4 w-4 mr-2" />;
+        return <PlayCircle className="h-3 w-3 mr-1.5" />;
       default:
         return null;
     }
