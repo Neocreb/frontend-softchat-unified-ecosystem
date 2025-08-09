@@ -467,12 +467,25 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
 
   const handleBookmark = (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setPosts(prev => prev.map(post => 
+    setPosts(prev => prev.map(post =>
       post.id === postId ? {
         ...post,
         bookmarked: !post.bookmarked,
       } : post
     ));
+  };
+
+  const handleShare = (postId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Copy link for now, could be enhanced with share modal
+    navigator.clipboard.writeText(`${window.location.origin}/post/${postId}`);
+    // Could also trigger share modal here
+  };
+
+  const handleComment = (postId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Navigate to post detail for comments
+    navigate(`/app/post/${postId}`);
   };
 
   return (
@@ -746,6 +759,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={(e) => handleComment(post.id, e)}
                   className="flex items-center gap-1 text-muted-foreground hover:text-blue-500 transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
@@ -755,6 +769,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={(e) => handleShare(post.id, e)}
                   className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
                 >
                   <Share2 className="h-4 w-4" />
