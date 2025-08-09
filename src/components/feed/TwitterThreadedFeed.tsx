@@ -28,6 +28,7 @@ import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
 import EnhancedShareDialog from './EnhancedShareDialog';
 import UnifiedActionButtons from './UnifiedActionButtons';
+import QuickActionButton from './QuickActionButton';
 import { UnifiedActivityService } from '@/services/unifiedActivityService';
 import { useNotification } from '@/hooks/use-notification';
 import { useAuth } from '@/contexts/AuthContext';
@@ -624,7 +625,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
             <div className="flex items-center gap-3">
               <MessageSquare className="h-5 w-5 text-purple-600" />
               <div>
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100">🧵 Threaded View Active</h3>
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100">��� Threaded View Active</h3>
                 <p className="text-sm text-purple-700 dark:text-purple-200">
                   Click any post to view its full conversation thread
                 </p>
