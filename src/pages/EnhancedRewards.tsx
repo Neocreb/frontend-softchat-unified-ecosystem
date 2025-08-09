@@ -322,43 +322,41 @@ export default function EnhancedRewards() {
 
       {/* Modern Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hide" aria-label="Tabs">
-            <TabsTrigger
-              value="overview"
-              className="data-[state=active]:border-softchat-primary data-[state=active]:text-softchat-primary border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700 py-4 px-1 whitespace-nowrap font-medium text-sm transition-all duration-200"
-            >
-              <Activity className="h-4 w-4 mr-2" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="referrals"
-              className="data-[state=active]:border-softchat-primary data-[state=active]:text-softchat-primary border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700 py-4 px-1 whitespace-nowrap font-medium text-sm transition-all duration-200"
-            >
-              <UserPlus className="h-4 w-4 mr-2" />
-              Referrals
-              {rewardData?.referralStats.totalReferrals && (
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  {rewardData.referralStats.totalReferrals}
-                </Badge>
-              )}
-            </TabsTrigger>
-            <TabsTrigger
-              value="analytics"
-              className="data-[state=active]:border-softchat-primary data-[state=active]:text-softchat-primary border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700 py-4 px-1 whitespace-nowrap font-medium text-sm transition-all duration-200"
-            >
-              <BarChart3 className="h-4 w-4 mr-2" />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger
-              value="settings"
-              className="data-[state=active]:border-softchat-primary data-[state=active]:text-softchat-primary border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700 py-4 px-1 whitespace-nowrap font-medium text-sm transition-all duration-200"
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </TabsTrigger>
-          </nav>
-        </div>
+        <TabsList className="grid w-full grid-cols-4 bg-gray-100 p-1 rounded-lg">
+          <TabsTrigger
+            value="overview"
+            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
+          >
+            <Activity className="h-4 w-4" />
+            <span className="hidden sm:inline">Overview</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="referrals"
+            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
+          >
+            <UserPlus className="h-4 w-4" />
+            <span className="hidden sm:inline">Referrals</span>
+            {rewardData?.referralStats.totalReferrals && (
+              <Badge variant="secondary" className="ml-1 text-xs h-5 w-5 rounded-full p-0 flex items-center justify-center">
+                {rewardData.referralStats.totalReferrals}
+              </Badge>
+            )}
+          </TabsTrigger>
+          <TabsTrigger
+            value="analytics"
+            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
+          >
+            <BarChart3 className="h-4 w-4" />
+            <span className="hidden sm:inline">Analytics</span>
+          </TabsTrigger>
+          <TabsTrigger
+            value="settings"
+            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
+          >
+            <Settings className="h-4 w-4" />
+            <span className="hidden sm:inline">Settings</span>
+          </TabsTrigger>
+        </TabsList>
 
         <TabsContent value="overview" className="mt-6">
           <EnhancedUnifiedCreatorEconomy />
