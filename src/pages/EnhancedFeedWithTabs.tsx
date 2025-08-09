@@ -588,9 +588,18 @@ const EnhancedFeedWithTabs = () => {
                   className="mt-0 space-y-0"
                 >
                   {feedViewMode === 'threaded' ? (
-                    <HybridFeedProvider>
-                      <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
-                    </HybridFeedProvider>
+                    <EnhancedFeedProvider>
+                      <div className="space-y-4">
+                        {enhancedThreadedMockData.map((post) => (
+                          <ThreadedPostCard
+                            key={post.id}
+                            post={post}
+                            showThread={true}
+                            onNavigateToPost={(postId) => console.log('Navigate to:', postId)}
+                          />
+                        ))}
+                      </div>
+                    </EnhancedFeedProvider>
                   ) : (
                     <UnifiedFeedContent feedType={tab.value} />
                   )}
