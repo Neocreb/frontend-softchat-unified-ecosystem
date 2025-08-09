@@ -127,11 +127,11 @@ const Feed = () => {
               <TabsTrigger value="discover">Discover</TabsTrigger>
             </TabsList>
             <TabsContent value="following" className="space-y-4 mt-4">
-              <EnhancedCreatePostCard />
+              <EnhancedCreatePostWithDestination defaultDestination="classic" />
               {feedWithAds.map((item) => renderFeedItem(item, false))}
             </TabsContent>
             <TabsContent value="discover" className="space-y-4 mt-4">
-              <EnhancedCreatePostCard />
+              <EnhancedCreatePostWithDestination defaultDestination="classic" />
               {feedWithAds.map((item) => renderFeedItem(item, true))}
             </TabsContent>
           </Tabs>
