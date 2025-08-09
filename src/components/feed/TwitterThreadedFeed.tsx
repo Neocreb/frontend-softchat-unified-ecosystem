@@ -550,13 +550,13 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                         Job
                       </Badge>
                     )}
-                    {post.type === 'event' && (
+                    {(post.type === 'live_event' || post.type === 'community_event') && (
                       <Badge className="px-2 py-0 h-4 bg-orange-500 text-white">
                         <Calendar className="h-2.5 w-2.5 mr-1" />
                         {post.isLive ? 'Live Event' : 'Event'}
                       </Badge>
                     )}
-                    {post.type === 'skill' && (
+                    {post.type === 'freelancer_skill' && (
                       <Badge className="px-2 py-0 h-4 bg-indigo-500 text-white">
                         <GraduationCap className="h-2.5 w-2.5 mr-1" />
                         Course
@@ -652,7 +652,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 </div>
               )}
 
-              {post.type === 'event' && (
+              {(post.type === 'live_event' || post.type === 'community_event') && (
                 <div className="mb-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
                   <div className="flex items-center gap-4 text-sm">
                     {post.eventDate && (
@@ -671,7 +671,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 </div>
               )}
 
-              {post.type === 'skill' && (
+              {post.type === 'freelancer_skill' && (
                 <div className="mb-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
