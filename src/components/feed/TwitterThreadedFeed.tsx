@@ -467,10 +467,82 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
 
   const handleBookmark = (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setPosts(prev => prev.map(post => 
+    setPosts(prev => prev.map(post =>
       post.id === postId ? {
         ...post,
         bookmarked: !post.bookmarked,
+      } : post
+    ));
+  };
+
+  const handleComment = (postId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Navigate to post detail page to view/add comments
+    navigate(`/app/post/${postId}`);
+  };
+
+  const handleRepost = (originalPostId: string, content: string) => {
+    // Create a new repost
+    const newPost: TwitterPost = {
+      id: `repost_${Date.now()}`,
+      type: 'post',
+      content: content || `Reposted from @${posts.find(p => p.id === originalPostId)?.author.username}`,
+      author: {
+        name: 'Current User', // In real app, use actual user data
+        username: 'current_user',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: false,
+      },
+      createdAt: 'now',
+      likes: 0,
+      comments: 0,
+      shares: 0,
+      gifts: 0,
+      parentId: originalPostId,
+    };
+
+    setPosts(prev => [newPost, ...prev]);
+
+    // Increment shares on original post
+    setPosts(prev => prev.map(post =>
+      post.id === originalPostId ? {
+        ...post,
+        shares: post.shares + 1,
+      } : post
+    ));
+  };
+
+  const handleQuotePost = (originalPostId: string, content: string) => {
+    const originalPost = posts.find(p => p.id === originalPostId);
+    if (!originalPost) return;
+
+    // Create a new quote post
+    const newPost: TwitterPost = {
+      id: `quote_${Date.now()}`,
+      type: 'post',
+      content,
+      author: {
+        name: 'Current User', // In real app, use actual user data
+        username: 'current_user',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: false,
+      },
+      createdAt: 'now',
+      likes: 0,
+      comments: 0,
+      shares: 0,
+      gifts: 0,
+      // Store reference to quoted post
+      parentId: originalPostId,
+    };
+
+    setPosts(prev => [newPost, ...prev]);
+
+    // Increment shares on original post
+    setPosts(prev => prev.map(post =>
+      post.id === originalPostId ? {
+        ...post,
+        shares: post.shares + 1,
       } : post
     ));
   };
