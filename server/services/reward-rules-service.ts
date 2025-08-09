@@ -288,13 +288,65 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
   {
     actionType: "p2p_trade",
     displayName: "P2P Trade",
-    description: "User completes a P2P crypto trade",
+    description: "User completes a P2P crypto trade (confirmed transaction)",
+    baseSoftPoints: "8", // Increased base reward
+    baseWalletBonus: "0.001", // 0.1% of trade value
+    currency: "USDT",
+    minimumValue: "10000", // ₦10,000 minimum trade value
+    dailyLimit: null, // Removed daily limit for legitimate trades
+    minimumTrustScore: "75", // Higher trust requirement
+    decayEnabled: true, // Add decay for excessive trading
+    decayStart: 1, // Start decay after 1st trade in time window
+    decayRate: "0.15", // Moderate decay rate
+    minMultiplier: "0.3", // Higher minimum to allow legitimate trading
+    requiresModeration: true, // Require verification for large trades
+    qualityThreshold: "0.8", // High quality threshold
+    isActive: true,
+  },
+  {
+    actionType: "p2p_trade_create_offer",
+    displayName: "Create P2P Offer",
+    description: "User creates a P2P trading offer",
+    baseSoftPoints: "3",
+    baseWalletBonus: "0",
+    currency: "USDT",
+    dailyLimit: null, // No limit on offer creation
+    minimumTrustScore: "60",
+    decayEnabled: true,
+    decayStart: 2, // Allow 2 offers before decay
+    decayRate: "0.2",
+    minMultiplier: "0.2",
+    requiresModeration: false,
+    qualityThreshold: "0.6",
+    isActive: true,
+  },
+  {
+    actionType: "convert_crypto",
+    displayName: "Convert Crypto",
+    description: "User converts cryptocurrency",
+    baseSoftPoints: "3", // Increased base reward
+    baseWalletBonus: "0",
+    currency: "USDT",
+    dailyLimit: null, // No daily limit
+    minimumTrustScore: "50",
+    decayEnabled: true,
+    decayStart: 1, // Start decay after 1st conversion
+    decayRate: "0.15", // Moderate decay
+    minMultiplier: "0.4", // Allow multiple conversions
+    requiresModeration: false,
+    qualityThreshold: "0",
+    isActive: true,
+  },
+  {
+    actionType: "crypto_deposit",
+    displayName: "Crypto Deposit",
+    description: "User deposits cryptocurrency to platform",
     baseSoftPoints: "5",
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 2,
-    minimumTrustScore: "70",
-    decayEnabled: false,
+    minimumValue: "5000", // ₦5,000 minimum deposit
+    minimumTrustScore: "40",
+    decayEnabled: false, // No decay for deposits
     decayStart: 1,
     decayRate: "0",
     minMultiplier: "1",
@@ -303,19 +355,19 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     isActive: true,
   },
   {
-    actionType: "convert_crypto",
-    displayName: "Convert Crypto",
-    description: "User converts cryptocurrency",
-    baseSoftPoints: "2",
+    actionType: "crypto_withdrawal",
+    displayName: "Crypto Withdrawal",
+    description: "User withdraws cryptocurrency from platform",
+    baseSoftPoints: "3",
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 5,
-    minimumTrustScore: "50",
-    decayEnabled: true,
-    decayStart: 3,
-    decayRate: "0.1",
-    minMultiplier: "0.5",
-    requiresModeration: false,
+    minimumValue: "5000", // ₦5,000 minimum withdrawal
+    minimumTrustScore: "60", // Higher trust for withdrawals
+    decayEnabled: false, // No decay for withdrawals
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: true, // Require verification
     qualityThreshold: "0",
     isActive: true,
   },
