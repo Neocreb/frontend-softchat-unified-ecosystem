@@ -787,6 +787,87 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
         </DialogContent>
       </Dialog>
 
+      {/* Display Mode Selection Modal */}
+      <Dialog open={showDisplayModeModal} onOpenChange={setShowDisplayModeModal}>
+        <DialogContent className="max-w-md w-full p-0">
+          <DialogHeader className="p-4 border-b">
+            <DialogTitle className="text-lg">Where should your post appear?</DialogTitle>
+          </DialogHeader>
+          <div className="p-4 space-y-3">
+            {[
+              {
+                value: "both",
+                icon: Layers,
+                label: "Both feeds",
+                desc: "Appears in Thread and Classic modes",
+                color: "purple",
+                bonus: "+15 SoftPoints bonus"
+              },
+              {
+                value: "thread",
+                icon: List,
+                label: "Thread mode",
+                desc: "Twitter-style threaded feed only",
+                color: "blue",
+                bonus: "+5 SoftPoints"
+              },
+              {
+                value: "classic",
+                icon: LayoutGrid,
+                label: "Classic mode",
+                desc: "Facebook-style classic feed only",
+                color: "green",
+                bonus: "+5 SoftPoints"
+              },
+            ].map((option) => (
+              <button
+                key={option.value}
+                onClick={() => {
+                  setDisplayMode(option.value as DisplayModeType);
+                  setShowDisplayModeModal(false);
+                }}
+                className={cn(
+                  "w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors",
+                  displayMode === option.value ? `border-${option.color}-500 bg-${option.color}-50` : "border-gray-200 hover:bg-gray-50"
+                )}
+              >
+                <div className={cn(
+                  "w-10 h-10 rounded-full flex items-center justify-center",
+                  displayMode === option.value ? `bg-${option.color}-100` : "bg-gray-100"
+                )}>
+                  <option.icon className="h-5 w-5" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium">{option.label}</p>
+                    <span className={cn(
+                      "text-xs px-2 py-1 rounded-full",
+                      option.color === "purple" ? "bg-purple-100 text-purple-700" :
+                      option.color === "blue" ? "bg-blue-100 text-blue-700" :
+                      "bg-green-100 text-green-700"
+                    )}>
+                      {option.bonus}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500">{option.desc}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="p-4 pt-0">
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Zap className="h-4 w-4 text-purple-600" />
+                <span className="text-sm font-medium text-purple-700">Reward System</span>
+              </div>
+              <p className="text-xs text-purple-600">
+                Choose "Both feeds" to maximize your content reach and earn higher SoftPoints rewards!
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Schedule Modal */}
       <Dialog open={showScheduleModal} onOpenChange={setShowScheduleModal}>
         <DialogContent className="max-w-md w-full">
