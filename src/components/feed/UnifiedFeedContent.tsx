@@ -600,15 +600,27 @@ const UnifiedFeedItemCard: React.FC<{
           <MessageCircle className="w-4 h-4" />
           <span className="text-xs sm:text-sm">{formatNumber(item.interactions.comments)}</span>
         </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => handleInteraction("share")}
-          className="flex items-center gap-1 px-2 py-1.5 h-auto"
-        >
-          <Share2 className="w-4 h-4" />
-          <span className="text-xs sm:text-sm">{formatNumber(item.interactions.shares)}</span>
-        </Button>
+        <EnhancedShareDialog
+          postId={item.id}
+          postContent={item.content.text || item.content.title || item.content.description || ''}
+          postAuthor={{
+            name: item.author?.name || 'Unknown',
+            username: item.author?.username || 'unknown'
+          }}
+          onRepost={handleRepost}
+          onQuotePost={handleQuotePost}
+          trigger={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-1 px-2 py-1.5 h-auto hover:text-green-500 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Share2 className="w-4 h-4" />
+              <span className="text-xs sm:text-sm">{formatNumber(item.interactions.shares)}</span>
+            </Button>
+          }
+        />
 {item.author && (
           <VirtualGiftsAndTips
             recipientId={item.author.id}
