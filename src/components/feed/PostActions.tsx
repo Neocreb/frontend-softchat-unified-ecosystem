@@ -70,7 +70,7 @@ const PostActions = ({
     // Track reward for liking a post
     if (newLikedState && user?.id) {
       try {
-        const reward = await ActivityRewardService.logPostLiked(
+        const reward = await UnifiedActivityService.trackLike(
           user.id,
           postId,
           timeSpent / 1000, // Convert to seconds
