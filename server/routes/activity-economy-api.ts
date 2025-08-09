@@ -206,52 +206,30 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
     let adjustedSoftPoints = finalSoftPoints * qualityMultiplier;
     let adjustedWalletBonus = finalWalletBonus * qualityMultiplier;
 
-    // Apply display mode bonus for post creation
+    // Apply modest display mode quality adjustment for post creation
     if (actionType === "post_content" && metadata?.displayMode) {
-      let displayModeBonus = 1.0;
+      // Very small quality bonus that respects the existing reward structure
+      let displayModeQualityBonus = 1.0;
 
       switch (metadata.displayMode) {
         case "both":
-          displayModeBonus = 1.5; // +50% bonus for both feeds
+          displayModeQualityBonus = 1.1; // +10% for both feeds (better reach)
           break;
         case "thread":
         case "classic":
-          displayModeBonus = 1.2; // +20% bonus for single feed
+          displayModeQualityBonus = 1.05; // +5% for targeted content
           break;
         default:
-          displayModeBonus = 1.0;
+          displayModeQualityBonus = 1.0;
       }
 
-      adjustedSoftPoints *= displayModeBonus;
-      adjustedWalletBonus *= displayModeBonus;
+      // Apply only if within reasonable bounds and doesn't exceed quality threshold
+      const maxQualityMultiplier = 1.2; // Cap total quality bonus at +20%
+      const currentMultiplier = qualityMultiplier * displayModeQualityBonus;
 
-      // Add additional bonuses for engagement features
-      if (metadata.hasMedia) {
-        adjustedSoftPoints *= 1.2; // +20% for media content
-      }
-
-      if (metadata.isMonetized) {
-        adjustedSoftPoints *= 1.1; // +10% for monetized content
-      }
-
-      if (metadata.isBoosted) {
-        adjustedSoftPoints *= 1.15; // +15% for boosted content
-      }
-
-      if (metadata.isCollaborative) {
-        adjustedSoftPoints *= 1.1; // +10% for collaborative content
-      }
-
-      if (metadata.taggedCount && metadata.taggedCount > 0) {
-        adjustedSoftPoints *= 1 + (metadata.taggedCount * 0.05); // +5% per tagged user
-      }
-
-      if (metadata.hasLocation) {
-        adjustedSoftPoints *= 1.05; // +5% for location content
-      }
-
-      if (metadata.hasFeeling) {
-        adjustedSoftPoints *= 1.05; // +5% for feeling/activity content
+      if (currentMultiplier <= maxQualityMultiplier) {
+        adjustedSoftPoints = finalSoftPoints * currentMultiplier;
+        adjustedWalletBonus = finalWalletBonus * currentMultiplier;
       }
     }
 
