@@ -122,38 +122,27 @@ export default function EnhancedRewards() {
         return;
       }
 
-      console.log("Loading reward data for user:", user.id);
-
       const response = await fetchWithAuth("/api/creator/reward-summary");
-      console.log("Response status:", response.status, response.statusText);
 
       if (response.ok) {
         const text = await response.text();
-        console.log("Response text length:", text.length);
 
         if (!text.trim()) {
-          console.warn("Empty response, using demo data");
           setRewardData(getDemoData());
           return;
         }
 
         try {
           const data = JSON.parse(text);
-          console.log("Successfully parsed response data");
           setRewardData(data.data || data);
           return; // Success - exit early
         } catch (jsonError) {
-          console.warn("JSON parse error, using demo data:", jsonError);
+          console.warn("JSON parse error:", jsonError);
           setRewardData(getDemoData());
           return;
         }
       } else {
         console.warn("API request failed:", response.status, response.statusText);
-        if (response.status === 401) {
-          console.warn("Authentication failed, using demo data");
-        } else if (response.status === 404) {
-          console.warn("Endpoint not found, using demo data");
-        }
         setRewardData(getDemoData());
         return;
       }
