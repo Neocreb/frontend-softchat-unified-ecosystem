@@ -284,15 +284,24 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
             <span>{post.comments}</span>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-muted-foreground"
-            onClick={handleShare}
-          >
-            <Share2 className="h-4 w-4" />
-            <span>{post.shares}</span>
-          </Button>
+          <EnhancedShareDialog
+            postId={post.id}
+            postContent={post.content}
+            postAuthor={post.author}
+            onRepost={handleRepost}
+            onQuotePost={handleQuotePost}
+            trigger={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Share2 className="h-4 w-4" />
+                <span>{post.shares}</span>
+              </Button>
+            }
+          />
 
           {/* Enhanced Gift Button with VirtualGiftsAndTips */}
           <VirtualGiftsAndTips
