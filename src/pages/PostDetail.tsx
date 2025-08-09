@@ -396,6 +396,13 @@ const PostDetail: React.FC = () => {
           </CardHeader>
 
           <CardContent className="space-y-4">
+            {/* Replying To Indicator for replies */}
+            {post.parentId && allPosts[post.parentId] && (
+              <div className="text-sm text-muted-foreground mb-2">
+                Replying to <span className="text-blue-500">@{allPosts[post.parentId].author.username}</span>
+              </div>
+            )}
+
             {/* Post Content */}
             <div className="text-lg leading-relaxed">
               {post.content}
