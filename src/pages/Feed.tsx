@@ -29,58 +29,15 @@ export type Post = {
   liked?: boolean; // Optional field to track if post is liked by current user
 };
 
-// Sample posts data
-const posts: Post[] = [
-  {
-    id: "1",
-    content:
-      "Just launched our new AI-powered feature! Check it out at softchat.ai/new-features",
-    timestamp: "2h ago",
-    createdAt: "2h ago", // Added required field
-    likes: 24,
-    comments: 5,
-    shares: 2,
-    author: {
-      name: "Sarah Johnson",
-      username: "sarahj",
-      handle: "@sarahj",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      verified: true,
-    },
+// Enhanced posts data with different content types
+const posts: Post[] = enhancedMockFeedData.map(post => ({
+  ...post,
+  author: {
+    ...post.author,
+    handle: `@${post.author.username}`,
   },
-  {
-    id: "2",
-    content:
-      "Excited to announce that we've raised $5M in seed funding to build the future of social communication! 🚀",
-    timestamp: "5h ago",
-    createdAt: "5h ago", // Added required field
-    likes: 142,
-    comments: 36,
-    shares: 28,
-    author: {
-      name: "David Chen",
-      username: "davidc",
-      handle: "@davidc",
-      avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-    },
-  },
-  {
-    id: "3",
-    content:
-      "What are your favorite productivity tools for remote work? I'm looking for recommendations!",
-    timestamp: "8h ago",
-    createdAt: "8h ago", // Added required field
-    likes: 56,
-    comments: 43,
-    shares: 5,
-    author: {
-      name: "Alex Rivera",
-      username: "alexr",
-      handle: "@alexr",
-      avatar: "https://randomuser.me/api/portraits/men/33.jpg",
-    },
-  },
-];
+  timestamp: post.createdAt,
+}));
 
 const Feed = () => {
   const [feedWithAds, setFeedWithAds] = useState<(Post | { id: string; type: 'native_ad' | 'sponsored_post' })[]>([]);
