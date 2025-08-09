@@ -50,6 +50,7 @@ const PostActions = ({
   postAuthor = { name: "User", username: "user" },
   onRepost,
   onQuotePost,
+  onCommentClick,
 }: PostActionsProps) => {
   const [liked, setLiked] = useState(initialLiked);
   const [saved, setSaved] = useState(initialSaved);
