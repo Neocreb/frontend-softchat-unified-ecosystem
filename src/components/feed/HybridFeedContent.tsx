@@ -40,13 +40,35 @@ const HybridFeedContent: React.FC<HybridFeedContentProps> = ({ feedType, viewMod
   // Get posts for current mode using the context method
   const displayPosts = getCurrentModePosts();
 
-  if (viewMode === 'classic') {
-    // Classic mode: Just use the original unified content - no changes to classic behavior
-    return <UnifiedFeedContent feedType={feedType} />;
-  } else {
-    // Threaded mode: Use Twitter-style threaded feed
-    return <TwitterThreadedFeed feedType={feedType} />;
+  if (displayPosts.length === 0) {
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <MessageSquare className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+          <h3 className="text-lg font-medium mb-2">No posts yet</h3>
+          <p className="text-sm text-muted-foreground">
+            Be the first to create a post in {viewMode} mode!
+          </p>
+        </CardContent>
+      </Card>
+    );
   }
+
+  return (
+    <div className="space-y-4">
+      {displayPosts.map((post) => (
+        <HybridPostCard
+          key={post.id}
+          post={post}
+          viewMode={viewMode}
+          showThread={viewMode === 'threaded'}
+          onNavigateToPost={(postId) => {
+            console.log('Navigate to post:', postId);
+          }}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default HybridFeedContent;
