@@ -68,8 +68,8 @@ export default function EnhancedRewards() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <UnifiedCreatorEconomy />
+    <div className="max-w-7xl mx-auto">
+      <EnhancedUnifiedCreatorEconomy />
     </div>
   );
 }
