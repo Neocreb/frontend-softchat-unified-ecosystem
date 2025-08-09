@@ -123,32 +123,55 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
       throw new AppError("Trust score too low for this action", 403);
     }
 
-    // Check daily limits
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Smart rate limiting - get recent activity for time-based decay
+    const timeWindow = actionType === "post_content" ? 4 : 24; // 4 hours for posts, 24 for others
+    const recentCutoff = new Date(Date.now() - timeWindow * 60 * 60 * 1000);
 
-    const todayActivities = await db
-      .select({ count: count() })
+    const recentActivities = await db
+      .select({
+        count: count(),
+        createdAt: activityLogs.createdAt
+      })
       .from(activityLogs)
       .where(
         and(
           eq(activityLogs.userId, userId),
           eq(activityLogs.actionType, actionType),
-          gte(activityLogs.createdAt, today),
+          gte(activityLogs.createdAt, recentCutoff),
           eq(activityLogs.status, "confirmed"),
         ),
       );
 
-    const dailyCount = todayActivities[0]?.count || 0;
+    const recentCount = recentActivities[0]?.count || 0;
 
-    if (rewardRule.dailyLimit && dailyCount >= rewardRule.dailyLimit) {
-      return res.json({
-        success: false,
-        message: "Daily limit reached for this action",
-        softPoints: 0,
-        walletBonus: 0,
-        newTrustScore: parseFloat(trustScore.currentScore),
-      });
+    // Check for daily limits for non-post activities (keep limits for actions prone to abuse)
+    if (rewardRule.dailyLimit && actionType !== "post_content") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const todayActivities = await db
+        .select({ count: count() })
+        .from(activityLogs)
+        .where(
+          and(
+            eq(activityLogs.userId, userId),
+            eq(activityLogs.actionType, actionType),
+            gte(activityLogs.createdAt, today),
+            eq(activityLogs.status, "confirmed"),
+          ),
+        );
+
+      const dailyCount = todayActivities[0]?.count || 0;
+
+      if (dailyCount >= rewardRule.dailyLimit) {
+        return res.json({
+          success: false,
+          message: "Daily limit reached for this action",
+          softPoints: 0,
+          walletBonus: 0,
+          newTrustScore: parseFloat(trustScore.currentScore),
+        });
+      }
     }
 
     // Calculate decay factor
