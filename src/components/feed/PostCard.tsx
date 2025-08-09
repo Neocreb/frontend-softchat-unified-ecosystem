@@ -37,6 +37,7 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post }: PostCardProps) => {
+  const navigate = useNavigate();
   const [liked, setLiked] = useState(post.liked || false);
   const [likesCount, setLikesCount] = useState(post.likes);
   const [bookmarked, setBookmarked] = useState(post.bookmarked || false);
