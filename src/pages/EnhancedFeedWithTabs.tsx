@@ -418,7 +418,7 @@ const SuggestedSidebar = () => {
 };
 
 // Main enhanced feed component
-const EnhancedFeedWithTabs = () => {
+const EnhancedFeedWithTabsContent = () => {
   const [activeTab, setActiveTab] = useState("for-you");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showCreateStoryModal, setShowCreateStoryModal] = useState(false);
