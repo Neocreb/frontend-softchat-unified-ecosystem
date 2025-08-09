@@ -145,13 +145,15 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
 
     switch (type) {
       case 'product':
-        if (ctaUrl?.includes('/marketplace/')) {
+        if (ctaUrl?.includes('/marketplace/product/')) {
+          targetRoute = ctaUrl;
+        } else if (ctaUrl?.includes('/marketplace/')) {
           targetRoute = ctaUrl;
         } else {
-          // Navigate to main marketplace - in real app, would open specific product
-          targetRoute = `/app/marketplace`;
+          // Navigate to specific product page
+          targetRoute = `/app/marketplace/product/${postId}`;
         }
-        notification.info('Redirecting to marketplace...');
+        notification.info('Opening product details...');
         break;
 
       case 'job':
