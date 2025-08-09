@@ -55,6 +55,15 @@ const PostCard = ({ post }: PostCardProps) => {
     setBookmarked(!bookmarked);
   };
 
+  const handlePostClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a')) {
+      return;
+    }
+    navigate(`/app/post/${post.id}`);
+  };
+
   return (
     <Card className="overflow-hidden max-w-full">
       <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
