@@ -47,6 +47,12 @@ import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSecti
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { useFeed } from "@/contexts/FeedContext";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { UnifiedActivityService } from '@/services/unifiedActivityService';
+import { useNotification } from '@/hooks/use-notification';
+import EnhancedShareDialog from './EnhancedShareDialog';
+import QuickActionButton from './QuickActionButton';
 
 // Unified content type interface
 interface UnifiedFeedItem {
