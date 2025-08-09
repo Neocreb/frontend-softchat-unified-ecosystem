@@ -273,6 +273,33 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const getDisplayModeIcon = () => {
+    switch (displayMode) {
+      case "thread": return <List className="h-3 w-3" />;
+      case "classic": return <LayoutGrid className="h-3 w-3" />;
+      case "both": return <Layers className="h-3 w-3" />;
+      default: return <Layers className="h-3 w-3" />;
+    }
+  };
+
+  const getDisplayModeLabel = () => {
+    switch (displayMode) {
+      case "thread": return "Thread mode";
+      case "classic": return "Classic mode";
+      case "both": return "Both modes";
+      default: return "Both modes";
+    }
+  };
+
+  const getDisplayModeDescription = () => {
+    switch (displayMode) {
+      case "thread": return "Twitter-style threaded feed";
+      case "classic": return "Facebook-style classic feed";
+      case "both": return "Appears in both feed types";
+      default: return "Appears in both feed types";
+    }
+  };
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
