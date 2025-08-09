@@ -28,21 +28,8 @@ class ReferralErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div className="text-center py-12">
-          <UserPlus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Referral System</h3>
-          <p className="text-gray-600 mb-4">
-            The referral system encountered an error. Please try refreshing the page.
-          </p>
-          <button
-            onClick={() => this.setState({ hasError: false })}
-            className="px-4 py-2 bg-softchat-primary text-white rounded-md hover:bg-softchat-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      );
+      // If the main ReferralManager has errors, show the safe fallback component
+      return <SafeReferralComponent />;
     }
 
     return this.props.children;
