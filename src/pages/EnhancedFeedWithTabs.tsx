@@ -426,7 +426,7 @@ const EnhancedFeedWithTabsContent = () => {
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
-  const [feedViewMode, setFeedViewMode] = useState<'classic' | 'threaded'>('classic');
+  const { viewMode: feedViewMode, setViewMode: setFeedViewMode } = useHybridFeed();
   const { toast } = useToast();
 
   const baseTabs = [
