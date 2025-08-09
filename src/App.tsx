@@ -372,7 +372,7 @@ const AppRoutes = () => {
           <Route path="freelance/manage-projects" element={<ManageProjects />} />
           <Route path="freelance/freelancer-projects" element={<FreelancerManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
-          <Route path="freelance/job/:jobId" element={<JobDetailPage />} />
+          <Route path="freelance/job/:jobId" element={<DetailedJobPage />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
