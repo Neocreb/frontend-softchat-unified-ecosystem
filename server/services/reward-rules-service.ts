@@ -377,16 +377,16 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     actionType: "refer_user",
     displayName: "Refer User",
     description: "User successfully refers someone who completes 3 actions",
-    baseSoftPoints: "10",
-    baseWalletBonus: "0",
+    baseSoftPoints: "25", // Significantly increased for quality referrals
+    baseWalletBonus: "0.005", // 0.5% bonus for successful referrals
     currency: "USDT",
-    minimumTrustScore: "30",
-    decayEnabled: false,
+    minimumTrustScore: "40", // Higher trust requirement
+    decayEnabled: true, // Add decay to prevent referral farms
     decayStart: 1,
-    decayRate: "0",
-    minMultiplier: "1",
-    requiresModeration: false,
-    qualityThreshold: "0",
+    decayRate: "0.1", // Moderate decay
+    minMultiplier: "0.3",
+    requiresModeration: true, // Require verification of legitimate referrals
+    qualityThreshold: "0.8", // High quality threshold
     isActive: true,
   },
 
@@ -395,33 +395,83 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     actionType: "subscribe_creator",
     displayName: "Subscribe to Creator",
     description: "User subscribes to a creator",
-    baseSoftPoints: "10",
+    baseSoftPoints: "15", // Increased base reward
     baseWalletBonus: "0",
     currency: "USDT",
     minimumTrustScore: "20",
-    decayEnabled: false,
-    decayStart: 1,
-    decayRate: "0",
-    minMultiplier: "1",
+    decayEnabled: true, // Add decay for mass subscribing
+    decayStart: 2, // Allow 2 subscriptions before decay
+    decayRate: "0.1",
+    minMultiplier: "0.4",
     requiresModeration: false,
-    qualityThreshold: "0",
+    qualityThreshold: "0.5", // Moderate quality threshold
     isActive: true,
   },
   {
     actionType: "tip_creator",
     displayName: "Tip Creator",
     description: "User tips a creator",
-    baseSoftPoints: "1",
+    baseSoftPoints: "2", // Increased base reward
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 20,
+    minimumValue: "100", // ₦100 minimum tip
+    dailyLimit: null, // Remove daily limit
     minimumTrustScore: "10",
     decayEnabled: true,
-    decayStart: 10,
-    decayRate: "0.05",
+    decayStart: 1, // Start decay after 1st tip in time window
+    decayRate: "0.1", // Moderate decay
     minMultiplier: "0.3",
     requiresModeration: false,
     qualityThreshold: "0",
+    isActive: true,
+  },
+  {
+    actionType: "create_content_premium",
+    displayName: "Create Premium Content",
+    description: "User creates premium/paid content",
+    baseSoftPoints: "15",
+    baseWalletBonus: "0.01", // 1% of content value
+    currency: "USDT",
+    minimumValue: "1000", // ₦1,000 minimum content value
+    minimumTrustScore: "60",
+    decayEnabled: false, // No decay for premium content
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: true, // Require content approval
+    qualityThreshold: "0.9", // Very high quality threshold
+    isActive: true,
+  },
+  {
+    actionType: "live_stream_host",
+    displayName: "Host Live Stream",
+    description: "User hosts a live streaming session",
+    baseSoftPoints: "10",
+    baseWalletBonus: "0",
+    currency: "USDT",
+    minimumTrustScore: "50",
+    decayEnabled: true,
+    decayStart: 1,
+    decayRate: "0.15",
+    minMultiplier: "0.3",
+    requiresModeration: false,
+    qualityThreshold: "0.7",
+    isActive: true,
+  },
+  {
+    actionType: "community_moderation",
+    displayName: "Community Moderation",
+    description: "User performs community moderation actions",
+    baseSoftPoints: "5",
+    baseWalletBonus: "0",
+    currency: "USDT",
+    minimumTrustScore: "80", // Very high trust requirement
+    decayEnabled: false, // No decay for moderation
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: false,
+    qualityThreshold: "0.8",
     isActive: true,
   },
 ];
