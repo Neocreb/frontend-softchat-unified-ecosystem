@@ -5,6 +5,7 @@ import {
   Share,
   Bookmark,
   MoreHorizontal,
+  Gift,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/hooks/use-notification";
@@ -16,6 +17,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import EnhancedShareModal from "./EnhancedShareModal";
+import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 
 interface PostActionsProps {
   postId: string;
@@ -24,8 +27,22 @@ interface PostActionsProps {
   initialShares: number;
   initialLiked?: boolean;
   initialSaved?: boolean;
+  post?: {
+    id: string;
+    content: string;
+    author: {
+      id: string;
+      name: string;
+      username: string;
+      avatar: string;
+      verified?: boolean;
+    };
+    media?: { type: string; url: string; alt?: string }[];
+  };
   onLikeChange?: (liked: boolean) => void;
   onSaveChange?: (saved: boolean) => void;
+  onCommentClick?: () => void;
+  onShareSuccess?: (type: 'share' | 'repost' | 'quote', content?: string) => void;
 }
 
 const PostActions = ({
@@ -35,13 +52,18 @@ const PostActions = ({
   initialShares,
   initialLiked = false,
   initialSaved = false,
+  post,
   onLikeChange,
   onSaveChange,
+  onCommentClick,
+  onShareSuccess,
 }: PostActionsProps) => {
   const [liked, setLiked] = useState(initialLiked);
   const [saved, setSaved] = useState(initialSaved);
   const [likes, setLikes] = useState(initialLikes);
+  const [shares, setShares] = useState(initialShares);
   const [likeStartTime, setLikeStartTime] = useState<number | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
   const notification = useNotification();
   const { user } = useAuth();
 
@@ -87,7 +109,20 @@ const PostActions = ({
     );
   };
 
-  const handleShare = async () => {
+  const handleShare = () => {
+    if (post) {
+      setShowShareModal(true);
+    } else {
+      // Fallback for basic share
+      navigator.clipboard?.writeText(`${window.location.origin}/post/${postId}`);
+      notification.success("Link copied to clipboard!");
+    }
+  };
+
+  const handleShareSuccess = async (type: 'share' | 'repost' | 'quote', content?: string) => {
+    // Update shares count
+    setShares(prev => prev + 1);
+
     // Track reward for sharing
     if (user?.id) {
       try {
@@ -99,7 +134,7 @@ const PostActions = ({
 
         if (reward.success && reward.softPoints > 0) {
           notification.success(
-            `+${reward.softPoints} SoftPoints earned for sharing!`,
+            `+${reward.softPoints} SoftPoints earned for ${type}!`,
             { description: "Thanks for spreading the word" },
           );
         }
@@ -108,9 +143,11 @@ const PostActions = ({
       }
     }
 
-    notification.info("Share post", {
-      description: "Sharing options will be available soon!",
-    });
+    onShareSuccess?.(type, content);
+  };
+
+  const handleCommentClick = () => {
+    onCommentClick?.();
   };
 
   return (
@@ -132,7 +169,8 @@ const PostActions = ({
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1 px-2"
+          className="flex items-center gap-1 px-2 hover:text-blue-500 transition-colors"
+          onClick={handleCommentClick}
         >
           <MessageCircle className="h-4 w-4" />
           <span className="text-xs">{initialComments}</span>
@@ -141,12 +179,30 @@ const PostActions = ({
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1 px-2"
+          className="flex items-center gap-1 px-2 hover:text-green-500 transition-colors"
           onClick={handleShare}
         >
           <Share className="h-4 w-4" />
-          <span className="text-xs">{initialShares}</span>
+          <span className="text-xs">{shares}</span>
         </Button>
+
+        {post && (
+          <VirtualGiftsAndTips
+            recipientId={post.author.id}
+            recipientName={post.author.name}
+            contentId={post.id}
+            trigger={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 px-2 hover:text-purple-500 transition-colors"
+              >
+                <Gift className="h-4 w-4" />
+                <span className="text-xs hidden sm:inline">Gift</span>
+              </Button>
+            }
+          />
+        )}
       </div>
 
       <div className="flex items-center gap-1">
@@ -173,6 +229,16 @@ const PostActions = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {/* Enhanced Share Modal */}
+      {post && (
+        <EnhancedShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          post={post}
+          onShare={handleShareSuccess}
+        />
+      )}
     </div>
   );
 };
