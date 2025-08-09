@@ -43,6 +43,12 @@ interface HybridFeedContextType {
   addPost: (post: Omit<HybridPost, 'id' | 'createdAt'>) => void;
   updatePost: (postId: string, updates: Partial<HybridPost>) => void;
   removePost: (postId: string) => void;
+
+  // Mode-specific post filtering
+  getPostsForMode: (mode: FeedViewMode) => HybridPost[];
+
+  // Current mode posts
+  getCurrentModePosts: () => HybridPost[];
   
   // Threading functions
   createReplyPost: (parentId: string, content: string, author: HybridPost['author']) => void;
