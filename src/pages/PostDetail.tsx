@@ -441,7 +441,12 @@ const PostDetail: React.FC = () => {
                 <span>{post.comments}</span>
               </Button>
 
-              <Button variant="ghost" size="sm" className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={() => handleShare(post.id, true)}
+              >
                 <Share2 className="h-5 w-5" />
                 <span>{post.shares}</span>
               </Button>
