@@ -229,7 +229,7 @@ const ReferralManager: React.FC = () => {
   };
 
   const generateNewLink = () => {
-    const newCode = `SOFTCHAT_${user?.id?.slice(-6).toUpperCase()}_${Date.now().toString().slice(-6)}`;
+    const newCode = `SOFTCHAT_${(user?.id || "").toString().slice(-6).toUpperCase()}_${Date.now().toString().slice(-6)}`;
     const newUrl = `https://softchat.app/join?ref=${newCode}`;
 
     const newLink: ReferralLink = {
