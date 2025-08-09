@@ -10,6 +10,9 @@ import {
   ThumbsUp,
   Smile,
   Gift,
+  Image as ImageIcon,
+  X,
+  Send,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
