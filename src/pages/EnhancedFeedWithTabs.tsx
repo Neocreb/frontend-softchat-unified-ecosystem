@@ -25,6 +25,8 @@ import {
   Play,
   Settings,
   Search,
+  MessageSquare,
+  List,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -35,6 +37,10 @@ import EnhancedStoriesSection from "@/components/feed/EnhancedStoriesSection";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
 import StoryViewer from "@/components/feed/StoryViewer";
+import { HybridFeedProvider, useHybridFeed } from "@/contexts/HybridFeedContext";
+import HybridPostCard from "@/components/feed/HybridPostCard";
+import HybridFeedContent from "@/components/feed/HybridFeedContent";
+import CommentSection from "@/components/feed/CommentSection";
 
 // Stories component for the feed
 const StoriesSection = ({
@@ -420,9 +426,10 @@ const EnhancedFeedWithTabs = () => {
   const [showCreatePostFlow, setShowCreatePostFlow] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
+  const [feedViewMode, setFeedViewMode] = useState<'classic' | 'threaded'>('classic');
   const { toast } = useToast();
 
-  const tabs = [
+  const baseTabs = [
     {
       value: "for-you",
       label: "All",
@@ -448,6 +455,19 @@ const EnhancedFeedWithTabs = () => {
       description: "Content from pages and businesses you follow",
     },
   ];
+
+  // Dynamic tab for Thread/Classic toggle
+  const viewToggleTab = {
+    value: "view-toggle",
+    label: feedViewMode === 'classic' ? "Thread" : "Classic",
+    icon: feedViewMode === 'classic' ? MessageSquare : List,
+    description: feedViewMode === 'classic'
+      ? "Switch to threaded conversation view"
+      : "Switch back to classic feed view",
+    isToggle: true,
+  };
+
+  const tabs = [...baseTabs, viewToggleTab];
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -507,21 +527,36 @@ const EnhancedFeedWithTabs = () => {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              {/* Modern Tab Navigation - At the top */}
+              {/* Modern Tab Navigation - Horizontally scrollable */}
               <div className="sticky top-0 z-40 bg-white border-b border-gray-200 mb-4">
-                <div className="flex">
+                <div className="flex overflow-x-auto scrollbar-hide">
                   {tabs.map((tab) => (
                     <button
                       key={tab.value}
-                      onClick={() => setActiveTab(tab.value)}
+                      onClick={() => {
+                        if (tab.isToggle) {
+                          // Toggle view mode
+                          setFeedViewMode(prev => prev === 'classic' ? 'threaded' : 'classic');
+                        } else {
+                          setActiveTab(tab.value);
+                        }
+                      }}
                       className={cn(
-                        "flex-1 px-4 py-3 text-sm font-medium text-center border-b-2 transition-colors",
-                        activeTab === tab.value
+                        "flex-shrink-0 flex items-center gap-2 px-4 py-3 text-sm font-medium text-center border-b-2 transition-colors min-w-max",
+                        !tab.isToggle && activeTab === tab.value
                           ? "text-blue-600 border-blue-600"
+                          : tab.isToggle
+                          ? "text-purple-600 border-purple-600 bg-purple-50"
                           : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
                       )}
                     >
-                      {tab.label}
+                      <tab.icon className="h-4 w-4" />
+                      <span>{tab.label}</span>
+                      {tab.isToggle && (
+                        <span className="ml-1 text-xs bg-purple-100 px-2 py-0.5 rounded-full">
+                          Switch
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -540,13 +575,19 @@ const EnhancedFeedWithTabs = () => {
               )}
 
               {/* Tab Content */}
-              {tabs.map((tab) => (
+              {baseTabs.map((tab) => (
                 <TabsContent
                   key={tab.value}
                   value={tab.value}
                   className="mt-0 space-y-0"
                 >
-                  <UnifiedFeedContent feedType={tab.value} />
+                  {feedViewMode === 'threaded' ? (
+                    <HybridFeedProvider>
+                      <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
+                    </HybridFeedProvider>
+                  ) : (
+                    <UnifiedFeedContent feedType={tab.value} />
+                  )}
                 </TabsContent>
               ))}
             </Tabs>

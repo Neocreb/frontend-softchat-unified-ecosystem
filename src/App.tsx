@@ -154,6 +154,9 @@ import PageDetailView from "./components/pages/PageDetailView";
 import GroupManagement from "./pages/GroupManagement";
 import PageManagement from "./pages/PageManagement";
 import SendGifts from "./pages/SendGifts";
+import PostDetail from "./pages/PostDetail";
+// import FeedToggleDemo from "./pages/FeedToggleDemo";
+// import IntegratedFeedDemo from "./pages/IntegratedFeedDemo";
 import {
   FriendsPage,
   AdsPage,
@@ -475,6 +478,9 @@ const AppRoutes = () => {
           <Route path="creator-studio" element={<CreatorStudio />} />
           <Route path="unified-creator-studio" element={<UnifiedCreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
+          <Route path="post/:postId" element={<PostDetail />} />
+          {/* <Route path="feed-toggle-demo" element={<FeedToggleDemo />} /> */}
+          {/* <Route path="feed-demo" element={<IntegratedFeedDemo />} /> */}
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />

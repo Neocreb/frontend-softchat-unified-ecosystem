@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -37,6 +37,7 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post }: PostCardProps) => {
+  const navigate = useNavigate();
   const [liked, setLiked] = useState(post.liked || false);
   const [likesCount, setLikesCount] = useState(post.likes);
   const [bookmarked, setBookmarked] = useState(post.bookmarked || false);
@@ -54,8 +55,17 @@ const PostCard = ({ post }: PostCardProps) => {
     setBookmarked(!bookmarked);
   };
 
+  const handlePostClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a')) {
+      return;
+    }
+    navigate(`/app/post/${post.id}`);
+  };
+
   return (
-    <Card className="overflow-hidden max-w-full">
+    <Card className="overflow-hidden max-w-full cursor-pointer hover:bg-muted/30 transition-colors" onClick={handlePostClick}>
       <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
         <Avatar className="h-9 w-9 flex-shrink-0">
           <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
