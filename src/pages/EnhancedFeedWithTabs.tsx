@@ -37,6 +37,9 @@ import EnhancedStoriesSection from "@/components/feed/EnhancedStoriesSection";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
 import StoryViewer from "@/components/feed/StoryViewer";
+import { HybridFeedProvider, useHybridFeed } from "@/contexts/HybridFeedContext";
+import HybridPostCard from "@/components/feed/HybridPostCard";
+import CommentSection from "@/components/feed/CommentSection";
 
 // Stories component for the feed
 const StoriesSection = ({
