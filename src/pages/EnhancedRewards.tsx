@@ -327,7 +327,7 @@ export default function EnhancedRewards() {
       </Card>
 
       {/* Modern Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4 bg-gray-100 p-1 rounded-lg">
           <TabsTrigger
             value="overview"
