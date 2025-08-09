@@ -146,7 +146,8 @@ const PostActions = ({
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1 px-2"
+          className="flex items-center gap-1 px-2 hover:text-blue-500 transition-colors"
+          onClick={onCommentClick}
         >
           <MessageCircle className="h-4 w-4" />
           <span className="text-xs">{initialComments}</span>
