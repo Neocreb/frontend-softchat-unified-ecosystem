@@ -182,8 +182,11 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
         break;
 
       case 'event':
-        if (ctaUrl?.includes('/events/')) {
+        if (ctaUrl?.includes('/app/events')) {
           targetRoute = ctaUrl;
+        } else if (ctaUrl?.includes('/events/')) {
+          // Fix old format URLs or use fallback
+          targetRoute = `/app/events`;
         } else if (isLive) {
           // Navigate to live streaming for live events
           targetRoute = `/app/videos?tab=live`;
