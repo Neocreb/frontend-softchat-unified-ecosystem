@@ -450,13 +450,43 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     },
   ]);
 
-  const handlePostClick = (postId: string, e: React.MouseEvent) => {
+  const handlePostClick = (post: TwitterPost, e: React.MouseEvent) => {
     // Don't navigate if clicking on interactive elements
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a') || target.closest('[role="button"]')) {
       return;
     }
-    navigate(`/app/post/${postId}`);
+
+    // Navigate based on post type for unified experience
+    switch (post.type) {
+      case 'product':
+        navigate(`/app/marketplace/product/${post.id}`);
+        break;
+      case 'job':
+        navigate(`/app/freelance/job/${post.id}`);
+        break;
+      case 'event':
+        navigate(`/app/events/${post.id}`);
+        break;
+      case 'skill':
+        navigate(`/app/videos?tab=tutorials&course=${post.id}`);
+        break;
+      case 'sponsored':
+        if (post.ctaUrl) {
+          if (post.ctaUrl.startsWith('http')) {
+            window.open(post.ctaUrl, '_blank');
+          } else {
+            navigate(post.ctaUrl);
+          }
+        } else {
+          navigate(`/app/post/${post.id}`);
+        }
+        break;
+      default:
+        // Regular posts go to post detail
+        navigate(`/app/post/${post.id}`);
+        break;
+    }
   };
 
   const handleLike = async (postId: string, e: React.MouseEvent) => {
