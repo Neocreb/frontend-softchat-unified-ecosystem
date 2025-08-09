@@ -219,8 +219,29 @@ const initialMockStories = [
   },
 ];
 
-// Mock posts data with enhanced structure
-const initialMockPosts = [
+// Enhanced mock posts data
+const initialMockPosts = enhancedMockFeedData.map(post => ({
+  ...post,
+  user: {
+    id: post.author.username,
+    name: post.author.name,
+    username: post.author.username,
+    avatar: post.author.avatar,
+    isVerified: post.author.verified,
+  },
+  media: post.image ? [{
+    type: "image" as const,
+    url: post.image,
+    alt: "Post image",
+  }] : [],
+  timestamp: post.createdAt,
+  isLiked: false,
+  isSaved: false,
+  privacy: "public" as const,
+}));
+
+// Original mock posts for variety
+const additionalMockPosts = [
   {
     id: "1",
     user: {
