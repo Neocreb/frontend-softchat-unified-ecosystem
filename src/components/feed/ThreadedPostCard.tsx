@@ -105,6 +105,26 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
     navigator.clipboard?.writeText(`/post/${post.id}`);
   };
 
+  const handleRepost = (content: string) => {
+    // This would integrate with the feed context to create reposts
+    createReplyPost(post.id, content || `Reposted`, {
+      name: user?.name || 'User',
+      username: user?.username || 'user',
+      avatar: user?.avatar || '/placeholder.svg',
+      verified: user?.verified || false,
+    });
+  };
+
+  const handleQuotePost = (content: string) => {
+    // This would integrate with the feed context to create quote posts
+    createQuotePost(post.id, content, {
+      name: user?.name || 'User',
+      username: user?.username || 'user',
+      avatar: user?.avatar || '/placeholder.svg',
+      verified: user?.verified || false,
+    });
+  };
+
   const handleNavigateToPost = () => {
     onNavigateToPost?.(post.id);
   };
