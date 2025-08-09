@@ -167,7 +167,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       gifts: 8,
       price: '0.25 ETH',
       ctaText: 'View Collection',
-      ctaUrl: '/marketplace/nft-collection',
+      ctaUrl: '/app/marketplace',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500',
@@ -237,7 +237,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       eventDate: 'Now - 2h remaining',
       location: 'Virtual Event',
       ctaText: 'Join Live',
-      ctaUrl: '/events/crypto-masterclass',
+      ctaUrl: '/app/events',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500',
@@ -284,7 +284,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       price: '$199 (was $399)',
       skills: ['Solidity', 'Web3.js', 'Smart Contracts', 'DeFi'],
       ctaText: 'Enroll Now',
-      ctaUrl: '/learn/web3-development',
+      ctaUrl: '/app/videos?tab=tutorials',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500',
@@ -371,7 +371,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       eventDate: 'Saturday, 2:00 PM',
       location: 'Tech Hub Downtown',
       ctaText: 'RSVP Now',
-      ctaUrl: '/events/community-meetup',
+      ctaUrl: '/app/events',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500',
@@ -446,7 +446,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       eventDate: 'Live now - 3h stream',
       location: 'YouTube Live',
       ctaText: 'Join Stream',
-      ctaUrl: '/live/react-native-tutorial',
+      ctaUrl: '/app/videos?tab=live',
     },
   ]);
 
