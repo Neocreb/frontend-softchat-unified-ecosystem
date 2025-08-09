@@ -501,6 +501,100 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 {post.content}
               </div>
 
+              {/* Enhanced Content Info for Different Types */}
+              {post.type === 'job' && (
+                <div className="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {post.jobType && (
+                      <div className="flex items-center gap-1">
+                        <Briefcase className="h-3 w-3 text-blue-600" />
+                        <span className="font-medium">{post.jobType}</span>
+                      </div>
+                    )}
+                    {post.salary && (
+                      <div className="flex items-center gap-1">
+                        <DollarSign className="h-3 w-3 text-green-600" />
+                        <span className="font-medium">{post.salary}</span>
+                      </div>
+                    )}
+                    {post.location && (
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3 text-gray-600" />
+                        <span>{post.location}</span>
+                      </div>
+                    )}
+                    {post.company && (
+                      <div className="flex items-center gap-1">
+                        <span className="font-medium">{post.company}</span>
+                      </div>
+                    )}
+                  </div>
+                  {post.skills && post.skills.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {post.skills.map((skill, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {post.type === 'product' && post.price && (
+                <div className="mb-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <ShoppingCart className="h-4 w-4 text-green-600" />
+                      <span className="font-semibold text-lg text-green-700 dark:text-green-300">{post.price}</span>
+                    </div>
+                    <Badge className="bg-green-500 text-white">For Sale</Badge>
+                  </div>
+                </div>
+              )}
+
+              {post.type === 'event' && (
+                <div className="mb-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                  <div className="flex items-center gap-4 text-sm">
+                    {post.eventDate && (
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-orange-600" />
+                        <span className="font-medium">{post.eventDate}</span>
+                      </div>
+                    )}
+                    {post.location && (
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3 text-orange-600" />
+                        <span>{post.location}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {post.type === 'skill' && (
+                <div className="mb-3 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4 text-indigo-600" />
+                      <span className="font-semibold text-indigo-700 dark:text-indigo-300">Learning Path</span>
+                    </div>
+                    {post.price && (
+                      <span className="font-bold text-lg text-indigo-700 dark:text-indigo-300">{post.price}</span>
+                    )}
+                  </div>
+                  {post.skills && post.skills.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {post.skills.map((skill, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs bg-indigo-100 text-indigo-800">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Post Media */}
               {post.media && post.media.length > 0 && (
                 <div className="mb-3 rounded-lg overflow-hidden">
