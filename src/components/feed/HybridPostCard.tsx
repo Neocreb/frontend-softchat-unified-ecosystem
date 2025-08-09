@@ -25,6 +25,8 @@ import { cn } from "@/lib/utils";
 import { useHybridFeed, type HybridPost } from "@/contexts/HybridFeedContext";
 import { useAuth } from "@/contexts/AuthContext";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import UnifiedActionButtons from "./UnifiedActionButtons";
+import PostActions from "./PostActions";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,6 +73,7 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
   const [showQuoteForm, setShowQuoteForm] = useState(false);
   const [quoteContent, setQuoteContent] = useState("");
   const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [showComments, setShowComments] = useState(false);
 
   const replies = getPostReplies(post.id);
   const isRootPost = !post.parentId;
@@ -371,6 +374,17 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
           </Button>
         </CardFooter>
       </Card>
+
+      {/* Comments Section for Classic Mode */}
+      {viewMode === 'classic' && showComments && (
+        <div className="mt-4 px-4 border-t pt-4">
+          <div className="space-y-3">
+            <h4 className="font-medium">Comments</h4>
+            {/* Comments would be rendered here */}
+            <p className="text-sm text-muted-foreground">Comments functionality coming soon...</p>
+          </div>
+        </div>
+      )}
 
       {/* Reply Form Dialog for threaded mode */}
       {viewMode === 'threaded' && (
