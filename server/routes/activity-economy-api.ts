@@ -220,11 +220,12 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
     const finalWalletBonus =
       baseWalletBonus * decayFactor * trustMultiplier * valueMultiplier;
 
-    // Quality score calculation (placeholder for AI integration)
+    // Quality score calculation with enhanced metadata analysis
     const qualityScore = await calculateQualityScore(
       actionType,
       targetId,
       context,
+      metadata,
     );
 
     // Apply quality multiplier
