@@ -260,12 +260,13 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
       }
     }
 
-    // Fraud detection
+    // Fraud detection with time-based activity analysis
     const riskScore = await calculateRiskScore(
       userId,
       actionType,
       context,
-      dailyCount,
+      recentCount,
+      metadata,
     );
 
     let status = "confirmed";
