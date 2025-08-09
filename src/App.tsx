@@ -422,6 +422,7 @@ const AppRoutes = () => {
             element={<MarketplaceWishlist />}
           />
           <Route path="marketplace/cart" element={<MarketplaceCart />} />
+          <Route path="marketplace/product/:productId" element={<DetailedProductPage />} />
           <Route
             path="marketplace/checkout"
             element={<MarketplaceCheckout />}
