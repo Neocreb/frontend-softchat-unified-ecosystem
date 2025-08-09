@@ -651,4 +651,13 @@ const EnhancedFeedWithTabsContent = () => {
   );
 };
 
+// Main component wrapped with HybridFeedProvider
+const EnhancedFeedWithTabs = () => {
+  return (
+    <HybridFeedProvider>
+      <EnhancedFeedWithTabsContent />
+    </HybridFeedProvider>
+  );
+};
+
 export default EnhancedFeedWithTabs;
