@@ -36,37 +36,33 @@ const UnifiedActionButtons: React.FC<UnifiedActionButtonsProps> = ({
   const navigate = useNavigate();
 
   const handleBuy = () => {
-    // Navigate to product page or open buy modal
-    navigate(`/marketplace/products/${item.id}`);
-    notification.success("Redirecting to product page...");
+    // Navigate to marketplace with product filter or general marketplace
+    navigate(`/app/marketplace`);
+    notification.success("Opening marketplace to purchase product...");
   };
 
   const handleApply = () => {
-    // Navigate to job application or open apply modal
-    navigate(`/freelance/jobs/${item.id}/apply`);
-    notification.success("Opening job application...");
+    // Navigate to job detail page
+    navigate(`/app/freelance/job/${item.id}`);
+    notification.success("Opening job details to apply...");
   };
 
   const handleHire = () => {
-    // Navigate to freelancer profile or open hire modal
-    navigate(`/freelance/talent/${item.id}/hire`);
-    notification.success("Opening hire dialogue...");
+    // Navigate to find freelancers page for now
+    navigate(`/app/freelance/find-freelancers`);
+    notification.success("Opening freelancer directory to hire...");
   };
 
   const handleJoinEvent = () => {
-    // Navigate to event page or join directly
-    if (item.type === 'live_event') {
-      navigate(`/live/${item.id}`);
-    } else {
-      navigate(`/events/${item.id}`);
-    }
-    notification.success("Joining event...");
+    // Navigate to events page
+    navigate(`/app/events`);
+    notification.success("Opening events to join...");
   };
 
   const handleWatchLive = () => {
-    // Navigate to live stream
-    navigate(`/live/${item.id}`);
-    notification.success("Joining live stream...");
+    // Navigate to videos with live tab
+    navigate(`/app/videos?tab=live`);
+    notification.success("Opening live streams...");
   };
 
   const renderActionButton = () => {
