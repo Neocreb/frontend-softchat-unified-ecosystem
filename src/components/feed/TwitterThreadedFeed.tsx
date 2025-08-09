@@ -28,6 +28,9 @@ import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
 import EnhancedShareDialog from './EnhancedShareDialog';
 import UnifiedActionButtons from './UnifiedActionButtons';
+import { UnifiedActivityService } from '@/services/unifiedActivityService';
+import { useNotification } from '@/hooks/use-notification';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface TwitterPost {
   id: string;
