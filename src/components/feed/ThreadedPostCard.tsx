@@ -239,71 +239,16 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
           )}
         </CardContent>
 
-        <CardFooter className="px-4 pt-1 pb-3 border-t flex justify-between">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "flex items-center gap-1 text-muted-foreground",
-              post.liked && "text-red-500"
-            )}
-            onClick={() => toggleLike(post.id)}
-          >
-            <Heart className={cn("h-4 w-4", post.liked && "fill-current")} />
-            <span>{post.likes}</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-muted-foreground"
-            onClick={() => setShowReplyForm(true)}
-          >
-            <MessageCircle className="h-4 w-4" />
-            <span>{post.comments}</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-muted-foreground"
-            onClick={handleShare}
-          >
-            <Share2 className="h-4 w-4" />
-            <span>{post.shares}</span>
-          </Button>
-
-          {/* Enhanced Gift Button with VirtualGiftsAndTips */}
-          <VirtualGiftsAndTips
-            recipientId={post.author.username}
-            recipientName={post.author.name}
-            contentId={post.id}
-            trigger={
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "flex items-center gap-1 text-muted-foreground",
-                  post.gifted && "text-purple-500"
-                )}
-              >
-                <Gift className={cn("h-4 w-4", post.gifted && "fill-current")} />
-                <span>{post.gifts}</span>
-              </Button>
-            }
+        <CardFooter className="px-4 pt-1 pb-3 border-t">
+          <EnhancedPostActions
+            post={post}
+            feedMode="threaded"
+            onLikeChange={(liked) => toggleLike(post.id)}
+            onBookmarkChange={(bookmarked) => toggleBookmark(post.id)}
+            onGiftSent={(giftId) => toggleGift(post.id)}
+            onCommentAdded={() => setShowReplyForm(true)}
+            onShared={() => incrementShares(post.id)}
           />
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "text-muted-foreground",
-              post.bookmarked && "text-softchat-primary"
-            )}
-            onClick={() => toggleBookmark(post.id)}
-          >
-            <Bookmark className={cn("h-4 w-4", post.bookmarked && "fill-current")} />
-          </Button>
         </CardFooter>
       </Card>
 
