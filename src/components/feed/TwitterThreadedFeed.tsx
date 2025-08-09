@@ -643,7 +643,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
           <Card 
             key={post.id}
             className="cursor-pointer hover:bg-muted/30 transition-colors"
-            onClick={(e) => handlePostClick(post.id, e)}
+            onClick={(e) => handlePostClick(post, e)}
           >
             <CardHeader className="pb-3 pt-4 px-4">
               <div className="flex gap-3">
