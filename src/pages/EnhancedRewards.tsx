@@ -114,6 +114,11 @@ export default function EnhancedRewards() {
       if (!user) {
         console.log("User not authenticated, using demo data");
         setRewardData(getDemoData());
+        toast({
+          title: "Demo Mode",
+          description: "Please sign in to view your actual rewards data",
+          variant: "default"
+        });
         return;
       }
 
