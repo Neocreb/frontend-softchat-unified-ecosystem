@@ -571,6 +571,7 @@ const EnhancedFeedWithTabsContent = () => {
                     userStories={userStories}
                     onViewStory={handleViewStory}
                   />
+                  <ModeTestButton />
                   <CreatePostTrigger onOpenCreatePost={() => setShowCreatePostModal(true)} />
                 </>
               )}
