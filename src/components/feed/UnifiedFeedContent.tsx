@@ -638,26 +638,49 @@ const UnifiedFeedItemCard: React.FC<{
           />
         )}
         {item.type === "product" && (
-          <Button
-            variant="ghost"
+          <QuickActionButton
+            postId={item.id}
+            type="product"
+            actionType="buy_direct"
+            label="Buy"
+            price={item.content.price?.toString()}
             size="sm"
-            onClick={() => handleInteraction("buy")}
-            className="flex items-center gap-1 px-2 py-1.5 h-auto text-green-600"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            <span className="text-xs sm:text-sm">Buy</span>
-          </Button>
+            variant="ghost"
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-green-600 hover:text-green-700"
+          />
         )}
-        {(item.type === "job" || item.type === "freelancer_skill") && (
+        {item.type === "job" && (
+          <QuickActionButton
+            postId={item.id}
+            type="job"
+            actionType="apply_quick"
+            label="Apply"
+            size="sm"
+            variant="ghost"
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-blue-600 hover:text-blue-700"
+          />
+        )}
+        {item.type === "freelancer_skill" && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => handleInteraction(item.type === "job" ? "apply" : "hire")}
-            className="flex items-center gap-1 px-2 py-1.5 h-auto text-blue-600"
+            onClick={() => navigate(`/app/marketplace/seller/${item.author?.username}`)}
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-purple-600 hover:text-purple-700"
           >
             <ExternalLink className="w-4 h-4" />
-            <span className="text-xs sm:text-sm">{item.type === "job" ? "Apply" : "Hire"}</span>
+            <span className="text-xs sm:text-sm">Hire</span>
           </Button>
+        )}
+        {(item.type === "live_event" || item.type === "community_event") && (
+          <QuickActionButton
+            postId={item.id}
+            type="event"
+            actionType="join_direct"
+            label="Join"
+            size="sm"
+            variant="ghost"
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-orange-600 hover:text-orange-700"
+          />
         )}
       </div>
       <Button
