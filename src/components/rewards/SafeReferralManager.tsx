@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from "react";
 import { UserPlus } from "lucide-react";
+import ReferralManager from "@/components/activity-economy/ReferralManager";
 import SafeReferralComponent from "@/components/rewards/SafeReferralComponent";
 
 interface ErrorBoundaryState {
