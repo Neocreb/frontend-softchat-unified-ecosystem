@@ -298,6 +298,41 @@ export const HybridFeedProvider: React.FC<HybridFeedProviderProps> = ({ children
     });
   };
 
+  const getPostsForMode = (mode: FeedViewMode): HybridPost[] => {
+    return posts.filter(post => {
+      // Check if post should appear in this mode
+      const settings = (post as any).settings;
+
+      if (settings?.preferredMode) {
+        // If post has a preferred mode setting
+        if (settings.preferredMode === 'both' || (post as any).isUniversalPost) {
+          return true; // Show in all modes
+        }
+        if (settings.preferredMode === mode) {
+          return true; // Show only in specified mode
+        }
+        if (settings.preferredMode !== mode && settings.preferredMode !== 'both') {
+          return false; // Don't show in other modes
+        }
+      }
+
+      // Legacy behavior for posts without mode settings
+      if (mode === 'classic') {
+        // Classic mode: show root posts and posts marked for classic
+        return !post.parentId || (post as any).isClassicPost || (post as any).isUniversalPost;
+      } else if (mode === 'threaded') {
+        // Threaded mode: show all posts including replies, or posts marked for threaded
+        return true; // All posts can appear in threaded view
+      }
+
+      return true; // Default: show everywhere
+    });
+  };
+
+  const getCurrentModePosts = (): HybridPost[] => {
+    return getPostsForMode(viewMode);
+  };
+
   const value = {
     viewMode,
     setViewMode,
@@ -314,6 +349,8 @@ export const HybridFeedProvider: React.FC<HybridFeedProviderProps> = ({ children
     toggleBookmark,
     toggleGift,
     incrementShares,
+    getPostsForMode,
+    getCurrentModePosts,
   };
 
   return (
