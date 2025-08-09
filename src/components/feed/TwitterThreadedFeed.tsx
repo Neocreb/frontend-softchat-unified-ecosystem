@@ -26,6 +26,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
+import EnhancedShareDialog from './EnhancedShareDialog';
+import UnifiedActionButtons from './UnifiedActionButtons';
 
 interface TwitterPost {
   id: string;
