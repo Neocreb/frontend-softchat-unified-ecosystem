@@ -653,16 +653,23 @@ async function calculateQualityScore(
   actionType: ActivityType,
   targetId: string | undefined,
   context: any,
+  metadata?: any,
 ): Promise<number> {
-  // Placeholder for AI-based quality scoring
-  // This would integrate with content analysis, user behavior analysis, etc.
+  // Enhanced quality scoring with content analysis and engagement prediction
 
   let baseScore = 1.0;
 
   // Time-based quality (longer engagement = higher quality)
   if (context?.timeSpent) {
-    const timeScore = Math.min(context.timeSpent / 30, 2.0); // Max 2x for 30+ seconds
-    baseScore *= timeScore;
+    if (context.timeSpent > 60) {
+      baseScore *= 2.0; // Excellent engagement time
+    } else if (context.timeSpent > 30) {
+      baseScore *= 1.6; // Good engagement time
+    } else if (context.timeSpent > 10) {
+      baseScore *= 1.3; // Decent engagement time
+    } else if (context.timeSpent < 3) {
+      baseScore *= 0.6; // Rapid-fire, likely low quality
+    }
   }
 
   // Engagement depth
@@ -671,23 +678,79 @@ async function calculateQualityScore(
     baseScore *= Math.min(depthScore, 1.5);
   }
 
-  // Action-specific quality factors
+  // Action-specific quality factors with metadata enhancement
   switch (actionType) {
     case "post_content":
-      // Would analyze content quality, originality, etc.
-      baseScore *= 1.2;
+      if (metadata) {
+        // Content length quality analysis
+        if (metadata.contentLength) {
+          if (metadata.contentLength > 100 && metadata.contentLength < 2000) {
+            baseScore *= 1.4; // Sweet spot for quality content
+          } else if (metadata.contentLength > 50) {
+            baseScore *= 1.2; // Decent length
+          } else if (metadata.contentLength < 20) {
+            baseScore *= 0.7; // Too short, likely low quality
+          }
+        }
+
+        // Media content quality boost
+        if (metadata.hasMedia) {
+          baseScore *= 1.3; // Media content typically higher engagement
+        }
+
+        // Social features quality indicators
+        if (metadata.taggedCount && metadata.taggedCount > 0) {
+          baseScore *= 1 + (Math.min(metadata.taggedCount, 5) * 0.05); // Up to +25%
+        }
+
+        if (metadata.hasLocation) {
+          baseScore *= 1.15; // Location-based content often more engaging
+        }
+
+        if (metadata.hasFeeling) {
+          baseScore *= 1.1; // Emotional context adds engagement
+        }
+
+        // Professional content indicators
+        if (metadata.isMonetized) {
+          baseScore *= 1.2; // Professional content usually higher quality
+        }
+
+        if (metadata.isCollaborative) {
+          baseScore *= 1.25; // Collaborative content often higher quality
+        }
+
+        // Display mode reach potential
+        if (metadata.displayMode === "both") {
+          baseScore *= 1.1; // Maximum reach potential
+        }
+      }
+
+      baseScore *= 1.2; // Base content creation quality bonus
       break;
+
     case "comment_post":
-      // Would analyze comment length, sentiment, relevance
+      if (metadata?.commentLength) {
+        if (metadata.commentLength > 50 && metadata.commentLength < 500) {
+          baseScore *= 1.3; // Thoughtful comment length
+        } else if (metadata.commentLength < 10) {
+          baseScore *= 0.5; // Likely spam or low quality
+        }
+      }
       baseScore *= 1.1;
       break;
+
     case "like_post":
-      // Simple action, lower base quality
-      baseScore *= 0.8;
+      // Analyze liking patterns for quality
+      if (context?.timeSpent && context.timeSpent < 2) {
+        baseScore *= 0.5; // Rapid clicking, lower quality
+      } else {
+        baseScore *= 0.8; // Thoughtful liking
+      }
       break;
   }
 
-  return Math.max(0.1, Math.min(2.0, baseScore));
+  return Math.max(0.1, Math.min(2.5, baseScore)); // Increased max to 2.5 for exceptional quality
 }
 
 async function calculateRiskScore(
