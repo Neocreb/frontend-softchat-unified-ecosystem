@@ -4,14 +4,25 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Heart, 
-  MessageCircle, 
-  Share2, 
+import {
+  Heart,
+  MessageCircle,
+  Share2,
   Bookmark,
   Gift,
   MoreHorizontal,
-  MessageSquare
+  MessageSquare,
+  Crown,
+  ShoppingCart,
+  Briefcase,
+  Calendar,
+  MapPin,
+  Clock,
+  DollarSign,
+  GraduationCap,
+  Radio,
+  Zap,
+  ExternalLink
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
