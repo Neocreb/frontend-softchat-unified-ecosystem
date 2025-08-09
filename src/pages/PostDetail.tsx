@@ -599,7 +599,7 @@ const PostDetail: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                    <div className="flex items-center justify-between">
                       <Button
                         variant="ghost"
                         size="sm"
@@ -608,7 +608,7 @@ const PostDetail: React.FC = () => {
                           handleLike(comment.id);
                         }}
                         className={cn(
-                          "flex items-center gap-1 h-auto p-0",
+                          "flex items-center gap-1 text-muted-foreground hover:text-red-500 transition-colors",
                           comment.liked && "text-red-500"
                         )}
                       >
@@ -616,10 +616,63 @@ const PostDetail: React.FC = () => {
                         <span>{comment.likes}</span>
                       </Button>
 
-                      <span className="flex items-center gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="flex items-center gap-1 text-muted-foreground hover:text-blue-500 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <MessageCircle className="h-4 w-4" />
-                        {comment.replies}
-                      </span>
+                        <span>{comment.replies}</span>
+                      </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleShare(comment.id);
+                        }}
+                        className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
+                      >
+                        <Share2 className="h-4 w-4" />
+                        <span>{comment.shares}</span>
+                      </Button>
+
+                      <VirtualGiftsAndTips
+                        recipientId={comment.author.username}
+                        recipientName={comment.author.name}
+                        contentId={comment.id}
+                        trigger={
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className={cn(
+                              "flex items-center gap-1 text-muted-foreground hover:text-purple-500 transition-colors",
+                              comment.gifted && "text-purple-500"
+                            )}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Gift className={cn("h-4 w-4", comment.gifted && "fill-current")} />
+                            <span>{comment.gifts}</span>
+                          </Button>
+                        }
+                      />
+
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleBookmark(comment.id);
+                        }}
+                        className={cn(
+                          "text-muted-foreground hover:text-blue-500 transition-colors",
+                          comment.bookmarked && "text-blue-500"
+                        )}
+                      >
+                        <Bookmark className={cn("h-4 w-4", comment.bookmarked && "fill-current")} />
+                      </Button>
                     </div>
                   </div>
                 </div>
