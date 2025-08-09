@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
-import { ActivityRewardService } from "@/services/activityRewardService";
+import { UnifiedActivityService } from "@/services/unifiedActivityService";
 import {
   DropdownMenu,
   DropdownMenuContent,
