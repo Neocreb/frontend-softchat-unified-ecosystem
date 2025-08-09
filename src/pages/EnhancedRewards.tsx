@@ -328,18 +328,12 @@ export default function EnhancedRewards() {
 
       {/* Modern Tabs */}
       <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-100 p-1 rounded-lg">
-          <TabsTrigger
-            value="overview"
-            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
-          >
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview" className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
             <span className="hidden sm:inline">Overview</span>
           </TabsTrigger>
-          <TabsTrigger
-            value="referrals"
-            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
-          >
+          <TabsTrigger value="referrals" className="flex items-center gap-2">
             <UserPlus className="h-4 w-4" />
             <span className="hidden sm:inline">Referrals</span>
             {rewardData?.referralStats.totalReferrals && (
@@ -348,17 +342,11 @@ export default function EnhancedRewards() {
               </Badge>
             )}
           </TabsTrigger>
-          <TabsTrigger
-            value="analytics"
-            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
-          >
+          <TabsTrigger value="analytics" className="flex items-center gap-2">
             <BarChart3 className="h-4 w-4" />
             <span className="hidden sm:inline">Analytics</span>
           </TabsTrigger>
-          <TabsTrigger
-            value="settings"
-            className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:text-softchat-primary data-[state=active]:shadow-sm transition-all duration-200"
-          >
+          <TabsTrigger value="settings" className="flex items-center gap-2">
             <Settings className="h-4 w-4" />
             <span className="hidden sm:inline">Settings</span>
           </TabsTrigger>
