@@ -31,6 +31,16 @@ interface HybridPost {
   media?: any[];
   privacy?: string;
   feeling?: { emoji: string; text: string };
+
+  // Mode-specific properties
+  isThreadPost?: boolean;
+  isClassicPost?: boolean;
+  isUniversalPost?: boolean;
+  settings?: {
+    enableComments?: boolean;
+    preferredMode?: 'classic' | 'threaded' | 'both';
+    publishedFromMode?: 'classic' | 'threaded';
+  };
 }
 
 interface HybridFeedContextType {
