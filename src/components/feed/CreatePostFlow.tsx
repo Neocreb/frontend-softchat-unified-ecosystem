@@ -268,6 +268,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     setFeeling("");
     setActivity("");
     setTaggedUsers([]);
+    setDisplayMode("both");
     setShareToStory(false);
     setEnableBoost(false);
     setScheduleDate(undefined);
