@@ -607,8 +607,8 @@ const EnhancedFeedWithTabsContent = () => {
         onSubmit={handleCreateStory}
       />
 
-      {/* Create Post Modal with Mode Selection */}
-      <CreatePostWithModeSelection
+      {/* Create Post Modal */}
+      <SimpleCreatePost
         isOpen={showCreatePostModal}
         onClose={() => setShowCreatePostModal(false)}
       />
