@@ -155,7 +155,7 @@ import GroupManagement from "./pages/GroupManagement";
 import PageManagement from "./pages/PageManagement";
 import SendGifts from "./pages/SendGifts";
 // import FeedToggleDemo from "./pages/FeedToggleDemo";
-import IntegratedFeedDemo from "./pages/IntegratedFeedDemo";
+// import IntegratedFeedDemo from "./pages/IntegratedFeedDemo";
 import {
   FriendsPage,
   AdsPage,
