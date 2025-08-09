@@ -155,8 +155,11 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
         break;
 
       case 'job':
-        if (ctaUrl?.includes('/freelance/')) {
+        if (ctaUrl?.includes('/app/freelance/')) {
           targetRoute = ctaUrl;
+        } else if (ctaUrl?.includes('/freelance/')) {
+          // Fix old format URLs
+          targetRoute = ctaUrl.replace('/freelance/', '/app/freelance/');
         } else {
           // Check if it's a specific job ID or navigate to job detail
           if (postId.startsWith('job')) {
