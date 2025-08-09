@@ -330,7 +330,13 @@ export default function EnhancedRewards() {
         </TabsList>
 
         <TabsContent value="dashboard" className="mt-6">
-          {rewardData && (
+          {isLoading ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 animate-pulse">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="h-32 bg-gray-200 rounded-xl"></div>
+              ))}
+            </div>
+          ) : rewardData ? (
             <RewardsStats
               totalEarnings={rewardData.totalEarnings}
               currentSoftPoints={rewardData.currentSoftPoints}
@@ -338,6 +344,12 @@ export default function EnhancedRewards() {
               activityStats={rewardData.activityStats}
               earningsByType={rewardData.earningsByType}
             />
+          ) : (
+            <div className="text-center py-12">
+              <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Dashboard</h3>
+              <p className="text-gray-600">Your rewards dashboard will appear here once data loads.</p>
+            </div>
           )}
         </TabsContent>
 
