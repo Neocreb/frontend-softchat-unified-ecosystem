@@ -443,6 +443,7 @@ const AppRoutes = () => {
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />
           <Route path="events" element={<CommunityEvents />} />
+          <Route path="events/:eventId" element={<DetailedEventPage />} />
           <Route path="premium" element={<Premium />} />
           <Route
             path="kyc"
