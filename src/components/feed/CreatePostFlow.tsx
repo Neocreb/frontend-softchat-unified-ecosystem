@@ -10,14 +10,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { 
-  X, 
-  ArrowLeft, 
-  Image as ImageIcon, 
-  Video, 
-  Music, 
-  MapPin, 
-  UserPlus, 
+import {
+  X,
+  ArrowLeft,
+  Image as ImageIcon,
+  Video,
+  Music,
+  MapPin,
+  UserPlus,
   Smile,
   Globe,
   Users,
@@ -32,7 +32,10 @@ import {
   MessageCircle,
   Crown,
   Zap,
-  Target
+  Target,
+  LayoutGrid,
+  List,
+  Layers
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
