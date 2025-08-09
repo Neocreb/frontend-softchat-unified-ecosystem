@@ -28,7 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useNotification } from '@/hooks/use-notification';
 import { useAuth } from '@/contexts/AuthContext';
-import { ActivityRewardService } from '@/services/activityRewardService';
+import { UnifiedActivityService } from '@/services/unifiedActivityService';
 import { cn } from '@/lib/utils';
 
 interface ShareDialogProps {
