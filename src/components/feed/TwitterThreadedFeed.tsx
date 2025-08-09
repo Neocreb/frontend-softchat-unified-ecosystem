@@ -36,7 +36,21 @@ interface TwitterPost {
   media?: { type: 'image' | 'video'; url: string; alt?: string }[];
   parentId?: string;
   threadId?: string;
-  repliedTo?: string; // Username of who this is replying to
+  repliedTo?: string;
+  // Content type indicators
+  type?: 'post' | 'sponsored' | 'product' | 'job' | 'event' | 'live' | 'skill';
+  // Enhanced content properties
+  isSponsored?: boolean;
+  isLive?: boolean;
+  price?: string;
+  location?: string;
+  skills?: string[];
+  eventDate?: string;
+  jobType?: string;
+  company?: string;
+  salary?: string;
+  ctaText?: string;
+  ctaUrl?: string;
 }
 
 interface TwitterThreadedFeedProps {
