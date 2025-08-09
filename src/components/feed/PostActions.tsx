@@ -45,6 +45,10 @@ const PostActions = ({
   initialSaved = false,
   onLikeChange,
   onSaveChange,
+  postContent = "",
+  postAuthor = { name: "User", username: "user" },
+  onRepost,
+  onQuotePost,
 }: PostActionsProps) => {
   const [liked, setLiked] = useState(initialLiked);
   const [saved, setSaved] = useState(initialSaved);
