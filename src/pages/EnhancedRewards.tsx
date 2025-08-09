@@ -87,7 +87,7 @@ export default function EnhancedRewards() {
   const loadRewardData = async () => {
     try {
       setIsLoading(true);
-      const response = await fetchWithAuth("/api/activity-economy/summary");
+      const response = await fetchWithAuth("/api/creator/reward-summary");
       if (response.ok) {
         const data = await response.json();
         setRewardData(data.data);
