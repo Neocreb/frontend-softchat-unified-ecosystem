@@ -797,7 +797,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 author={post.author}
               />
 
-              {/* Post Actions */}
+              {/* Enhanced Post Actions */}
               <div className="flex items-center justify-between">
                 <Button
                   variant="ghost"
@@ -815,20 +815,31 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={(e) => handleComment(post.id, e)}
                   className="flex items-center gap-1 text-muted-foreground hover:text-blue-500 transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
                   <span>{post.comments}</span>
                 </Button>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
-                >
-                  <Share2 className="h-4 w-4" />
-                  <span>{post.shares}</span>
-                </Button>
+                <EnhancedShareDialog
+                  postId={post.id}
+                  postContent={post.content}
+                  postAuthor={post.author}
+                  onRepost={(content) => handleRepost(post.id, content)}
+                  onQuotePost={(content) => handleQuotePost(post.id, content)}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Share2 className="h-4 w-4" />
+                      <span>{post.shares}</span>
+                    </Button>
+                  }
+                />
 
                 <VirtualGiftsAndTips
                   recipientId={post.author.username}
