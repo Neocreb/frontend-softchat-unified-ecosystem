@@ -136,67 +136,80 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
 
     // Navigate to appropriate page based on type
     let targetRoute = '';
-    
+
     switch (type) {
       case 'product':
         if (ctaUrl?.includes('/marketplace/')) {
           targetRoute = ctaUrl;
         } else {
-          targetRoute = `/app/marketplace/product/${postId}`;
+          // Navigate to main marketplace - in real app, would open specific product
+          targetRoute = `/app/marketplace`;
         }
-        notification.info('Redirecting to product page...');
+        notification.info('Redirecting to marketplace...');
         break;
-        
+
       case 'job':
-        if (ctaUrl?.includes('/freelance/jobs/')) {
+        if (ctaUrl?.includes('/freelance/')) {
           targetRoute = ctaUrl;
         } else {
-          targetRoute = `/app/freelance/jobs/${postId}`;
+          // Check if it's a specific job ID or navigate to job detail
+          if (postId.startsWith('job')) {
+            targetRoute = `/app/freelance/job/${postId}`;
+          } else {
+            targetRoute = `/app/freelance/browse-jobs`;
+          }
         }
         notification.info('Redirecting to job details...');
         break;
-        
+
       case 'freelancer':
         if (author?.username) {
-          targetRoute = `/app/freelance/freelancer/${author.username}`;
+          // Navigate to freelancer profile via seller route
+          targetRoute = `/app/marketplace/seller/${author.username}`;
         } else {
           targetRoute = '/app/freelance/find-freelancers';
         }
         notification.info('Redirecting to freelancer profile...');
         break;
-        
+
       case 'event':
         if (ctaUrl?.includes('/events/')) {
           targetRoute = ctaUrl;
         } else if (isLive) {
-          targetRoute = `/app/live/event/${postId}`;
+          // Navigate to live streaming for live events
+          targetRoute = `/app/videos?tab=live`;
         } else {
-          targetRoute = `/app/events/${postId}`;
+          targetRoute = `/app/events`;
         }
-        notification.info(isLive ? 'Joining live event...' : 'Redirecting to event page...');
+        notification.info(isLive ? 'Joining live event...' : 'Redirecting to events...');
         break;
-        
+
       case 'live':
-        targetRoute = `/app/live/${postId}`;
+        // Navigate to live streaming section
+        targetRoute = `/app/videos?tab=live`;
         notification.info('Joining live stream...');
         break;
-        
+
       case 'skill':
-        if (ctaUrl?.includes('/learn/')) {
+        if (ctaUrl?.includes('/learn/') || ctaUrl?.includes('/videos/')) {
           targetRoute = ctaUrl;
         } else {
-          targetRoute = `/app/learn/course/${postId}`;
+          // Navigate to videos section for educational content
+          targetRoute = `/app/videos?tab=tutorials`;
         }
-        notification.info('Redirecting to course...');
+        notification.info('Redirecting to learning content...');
         break;
-        
+
       case 'sponsored':
         if (ctaUrl) {
           targetRoute = ctaUrl;
+        } else {
+          // Navigate to premium page
+          targetRoute = '/premium';
         }
         notification.info('Opening sponsored content...');
         break;
-        
+
       default:
         if (ctaUrl) {
           targetRoute = ctaUrl;
