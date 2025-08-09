@@ -49,22 +49,11 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
         case 'buy_direct':
           // Add to cart directly without going to product page
           const productPrice = price ? parseFloat(price.replace(/[^0-9.]/g, '')) : 0;
-          
-          const purchaseReward = await UnifiedActivityService.trackProductPurchase(
-            user.id,
-            postId,
-            productPrice
-          );
 
-          if (purchaseReward.success && purchaseReward.softPoints > 0) {
-            notification.success(`Added to cart! +${purchaseReward.softPoints} SoftPoints earned`, {
-              description: 'Item added to your cart'
-            });
-          } else {
-            notification.success('Added to cart!', {
-              description: 'You can checkout from your cart'
-            });
-          }
+          // No immediate reward - rewards are given only on payment completion
+          notification.success('Added to cart!', {
+            description: 'Complete payment to earn SoftPoints rewards'
+          });
 
           // Navigate to cart page
           navigate('/app/marketplace/cart', {
