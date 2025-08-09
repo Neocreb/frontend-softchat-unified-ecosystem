@@ -188,6 +188,16 @@ POST /api/profiles/:id/avatar # Upload avatar
 WS   /ws                   # WebSocket connection
 ```
 
+### **Reward System**
+
+```
+POST /api/creator/reward        # Log activity and earn rewards
+GET  /api/creator/summary       # Get earnings and statistics
+GET  /api/creator/history       # View reward history
+GET  /api/creator/leaderboard   # View platform leaderboards
+POST /api/creator/withdraw      # Withdraw earnings
+```
+
 ## 🗄️ Database Schema
 
 ### **Core Tables**
