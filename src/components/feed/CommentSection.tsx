@@ -367,33 +367,85 @@ const CommentSection = ({
         </div>
       )}
 
-      <div className="flex items-center gap-2 pt-1">
-        <Avatar className="h-8 w-8">
-          <AvatarImage
-            src={user?.avatar || "/placeholder.svg"}
-            alt={user?.name || "User"}
-          />
-          <AvatarFallback>
-            {user?.name?.substring(0, 2).toUpperCase() || "U"}
-          </AvatarFallback>
-        </Avatar>
-        <div className="relative flex-1">
-          <input
-            type="text"
-            placeholder="Add a comment..."
-            className="w-full rounded-full bg-muted px-4 py-2 text-sm"
-            value={commentInput}
-            onChange={(e) => setCommentInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          />
-          {commentInput.trim().length > 0 && (
-            <button
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-500"
-              onClick={handleSubmit}
-            >
-              Post
-            </button>
-          )}
+      <div className="pt-1 space-y-3">
+        {/* Image Preview */}
+        {commentImages.length > 0 && (
+          <div className="pl-10 grid grid-cols-2 gap-2">
+            {commentImages.map((file, index) => (
+              <div key={index} className="relative">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt={`Comment image ${index + 1}`}
+                  className="w-full h-24 object-cover rounded-lg"
+                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeImage(index)}
+                  className="absolute top-1 right-1 h-5 w-5 p-0 bg-black/50 hover:bg-black/70 text-white rounded-full"
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="flex items-center gap-2">
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+              src={user?.avatar || "/placeholder.svg"}
+              alt={user?.name || "User"}
+            />
+            <AvatarFallback>
+              {user?.name?.substring(0, 2).toUpperCase() || "U"}
+            </AvatarFallback>
+          </Avatar>
+
+          <div className="flex-1 flex items-center gap-2 rounded-full bg-muted px-4 py-2">
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              className="flex-1 bg-transparent text-sm border-none outline-none"
+              value={commentInput}
+              onChange={(e) => setCommentInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            />
+
+            {/* Image Upload */}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload}
+              className="hidden"
+              id={`comment-image-upload-${postId}`}
+            />
+            <label htmlFor={`comment-image-upload-${postId}`}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 w-6 p-0 text-muted-foreground hover:text-blue-500"
+                asChild
+              >
+                <span className="cursor-pointer">
+                  <ImageIcon className="h-4 w-4" />
+                </span>
+              </Button>
+            </label>
+
+            {/* Submit Button */}
+            {(commentInput.trim().length > 0 || commentImages.length > 0) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSubmit}
+                className="h-6 w-6 p-0 text-blue-500 hover:text-blue-600"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
