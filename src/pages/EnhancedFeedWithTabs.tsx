@@ -581,9 +581,13 @@ const EnhancedFeedWithTabs = () => {
                   value={tab.value}
                   className="mt-0 space-y-0"
                 >
-                  <HybridFeedProvider>
-                    <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
-                  </HybridFeedProvider>
+                  {feedViewMode === 'threaded' ? (
+                    <HybridFeedProvider>
+                      <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
+                    </HybridFeedProvider>
+                  ) : (
+                    <UnifiedFeedContent feedType={tab.value} />
+                  )}
                 </TabsContent>
               ))}
             </Tabs>
