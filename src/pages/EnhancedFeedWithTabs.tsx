@@ -428,7 +428,7 @@ const EnhancedFeedWithTabs = () => {
   const [feedViewMode, setFeedViewMode] = useState<'classic' | 'threaded'>('classic');
   const { toast } = useToast();
 
-  const tabs = [
+  const baseTabs = [
     {
       value: "for-you",
       label: "All",
@@ -454,6 +454,19 @@ const EnhancedFeedWithTabs = () => {
       description: "Content from pages and businesses you follow",
     },
   ];
+
+  // Dynamic tab for Thread/Classic toggle
+  const viewToggleTab = {
+    value: "view-toggle",
+    label: feedViewMode === 'classic' ? "Thread" : "Classic",
+    icon: feedViewMode === 'classic' ? MessageSquare : List,
+    description: feedViewMode === 'classic'
+      ? "Switch to threaded conversation view"
+      : "Switch back to classic feed view",
+    isToggle: true,
+  };
+
+  const tabs = [...baseTabs, viewToggleTab];
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
