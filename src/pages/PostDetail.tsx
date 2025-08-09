@@ -346,9 +346,14 @@ const PostDetail: React.FC = () => {
               Back
             </Button>
             <div>
-              <h1 className="font-bold text-lg">Post</h1>
+              <h1 className="font-bold text-lg">
+                {post.parentId ? 'Reply' : 'Post'}
+              </h1>
               <p className="text-sm text-muted-foreground">
-                {post.comments} replies
+                {post.parentId
+                  ? `Replying to ${allPosts[post.parentId]?.author.name || 'a post'}`
+                  : `${post.comments} replies`
+                }
               </p>
             </div>
           </div>
