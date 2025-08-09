@@ -27,6 +27,7 @@ import {
 import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
 import UnifiedActionButtons from './UnifiedActionButtons';
+import CreatePostWithModeSelection from './CreatePostWithModeSelection';
 
 interface TwitterPost {
   id: string;
