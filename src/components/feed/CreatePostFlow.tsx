@@ -861,7 +861,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                 <span className="text-xs sm:text-sm font-medium text-purple-700">Reward System</span>
               </div>
               <p className="text-xs text-purple-600 leading-tight">
-                Choose "Both feeds" to maximize your content reach and earn higher SoftPoints rewards!
+                Base reward: 3 SoftPoints per post (daily limit: 3 posts). Quality bonuses applied based on display mode selection.
               </p>
             </div>
           </div>
