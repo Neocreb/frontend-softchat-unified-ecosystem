@@ -34,6 +34,7 @@ interface PostActionsProps {
   };
   onRepost?: (content: string) => void;
   onQuotePost?: (content: string) => void;
+  onCommentClick?: () => void;
 }
 
 const PostActions = ({
