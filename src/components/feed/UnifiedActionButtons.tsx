@@ -19,7 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { useNotification } from '@/hooks/use-notification';
 import { useAuth } from '@/contexts/AuthContext';
-import { ActivityRewardService } from '@/services/activityRewardService';
+import { UnifiedActivityService } from '@/services/unifiedActivityService';
 import { cn } from '@/lib/utils';
 
 interface ActionButtonsProps {
