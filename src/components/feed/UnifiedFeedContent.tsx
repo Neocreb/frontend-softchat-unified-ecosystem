@@ -825,7 +825,7 @@ const UnifiedFeedItemCard: React.FC<{
           <div className="px-4 pb-3">
             <div
               className="flex gap-3 sm:gap-4 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -m-2"
-              onClick={handleProductClick}
+              onClick={handleContentClick}
             >
               <div className="flex-shrink-0">
                 <img
