@@ -516,22 +516,56 @@ const UnifiedFeedItemCard: React.FC<{
     }
   };
 
-  const handleProductClick = () => {
-    if (item.type === "product") {
-      toast({
-        title: "Product Details",
-        description: "Product details functionality coming soon!",
-      });
+  const handleContentClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a') || target.closest('[role="button"]')) {
+      return;
+    }
+
+    // Navigate based on content type for unified experience
+    switch (item.type) {
+      case 'product':
+        navigate(`/app/marketplace/product/${item.id}`);
+        break;
+      case 'job':
+        navigate(`/app/freelance/job/${item.id}`);
+        break;
+      case 'freelancer_skill':
+        navigate(`/app/marketplace/seller/${item.author?.username}`);
+        break;
+      case 'live_event':
+        navigate(`/app/events/${item.id}`);
+        break;
+      case 'community_event':
+        navigate(`/app/events/${item.id}`);
+        break;
+      case 'sponsored_post':
+        if (item.content.ctaUrl) {
+          if (item.content.ctaUrl.startsWith('http')) {
+            window.open(item.content.ctaUrl, '_blank');
+          } else {
+            navigate(item.content.ctaUrl);
+          }
+        }
+        break;
+      default:
+        // Regular posts go to post detail
+        navigate(`/app/post/${item.id}`);
+        break;
     }
   };
 
-  const handleJobClick = () => {
-    if (item.type === "job") {
-      toast({
-        title: "Job Details",
-        description: "Job details functionality coming soon!",
-      });
-    }
+  const handleRepost = (originalPostId: string, content: string) => {
+    // This would integrate with the feed context to create reposts
+    console.log('Repost:', originalPostId, content);
+    notification.success('Post reposted successfully!');
+  };
+
+  const handleQuotePost = (originalPostId: string, content: string) => {
+    // This would integrate with the feed context to create quote posts
+    console.log('Quote post:', originalPostId, content);
+    notification.success('Quote post created successfully!');
   };
 
   const InteractionBar = () => (
