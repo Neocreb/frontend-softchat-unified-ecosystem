@@ -344,6 +344,103 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       threadId: '1',
       repliedTo: 'tomw_tech',
     },
+
+    // Community Event
+    {
+      id: 'community1',
+      type: 'event',
+      content: '🎉 SoftChat Community Meetup this Saturday! Join us for networking, workshops, and exciting announcements about upcoming features. Free food and swag for all attendees!',
+      author: {
+        name: 'SoftChat Events',
+        username: 'softchat_events',
+        avatar: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=150',
+        verified: true,
+      },
+      createdAt: '8h',
+      likes: 423,
+      comments: 67,
+      shares: 156,
+      gifts: 12,
+      eventDate: 'Saturday, 2:00 PM',
+      location: 'Tech Hub Downtown',
+      ctaText: 'RSVP Now',
+      ctaUrl: '/events/community-meetup',
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500',
+        alt: 'Community meetup event'
+      }],
+    },
+
+    // Crypto Trading Post
+    {
+      id: 'crypto1',
+      type: 'post',
+      content: '📈 Bitcoin hitting new resistance at $45K! Technical analysis shows potential breakout above this level. MACD showing bullish divergence on 4H chart. What are your thoughts? #BTC #TechnicalAnalysis',
+      author: {
+        name: 'CryptoTrader Pro',
+        username: 'cryptotrader_pro',
+        avatar: 'https://images.unsplash.com/photo-1559445368-92d4e08c5e8f?w=150',
+        verified: true,
+      },
+      createdAt: '2h',
+      likes: 189,
+      comments: 45,
+      shares: 32,
+      gifts: 7,
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500',
+        alt: 'Bitcoin trading chart'
+      }],
+    },
+
+    // Freelancer Showcase
+    {
+      id: 'freelance1',
+      type: 'post',
+      content: '✨ Just completed a fantastic UI/UX project for a fintech startup! 3 weeks from concept to final design. The client was thrilled with the modern, user-friendly interface. Looking for my next challenge!',
+      author: {
+        name: 'Designer Sarah',
+        username: 'sarah_uxui',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
+        verified: false,
+      },
+      createdAt: '4h',
+      likes: 76,
+      comments: 23,
+      shares: 15,
+      gifts: 4,
+      skills: ['UI/UX Design', 'Figma', 'Prototyping'],
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=500',
+        alt: 'UI/UX design showcase'
+      }],
+    },
+
+    // Live Stream Announcement
+    {
+      id: 'live1',
+      type: 'event',
+      isLive: true,
+      content: '🔴 GOING LIVE: Building a React Native App from Scratch! Join me as I code a complete mobile app with authentication, real-time features, and more. Perfect for beginners! 🚀',
+      author: {
+        name: 'DevStreamer',
+        username: 'dev_streamer',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: true,
+      },
+      createdAt: 'Starting now',
+      likes: 234,
+      comments: 89,
+      shares: 45,
+      gifts: 18,
+      eventDate: 'Live now - 3h stream',
+      location: 'YouTube Live',
+      ctaText: 'Join Stream',
+      ctaUrl: '/live/react-native-tutorial',
+    },
   ]);
 
   const handlePostClick = (postId: string, e: React.MouseEvent) => {
