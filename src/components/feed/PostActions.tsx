@@ -16,6 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import EnhancedShareDialog from './EnhancedShareDialog';
 
 interface PostActionsProps {
   postId: string;
