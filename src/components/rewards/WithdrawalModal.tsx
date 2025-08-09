@@ -98,7 +98,7 @@ const WithdrawalModal: React.FC<WithdrawalModalProps> = ({
 
       toast({
         title: "Withdrawal Successful!",
-        description: `${formatCurrency(netAmount, currency)} has been transferred to your unified wallet.`,
+        description: `${formatCurrency(netAmount, currency)} has been transferred to your unified wallet. Check the Rewards section in your wallet.`,
       });
 
       onWithdrawalSuccess?.(netAmount, withdrawalMethod);
