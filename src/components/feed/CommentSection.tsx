@@ -46,10 +46,20 @@ const CommentSection = ({
   const { user } = useAuth();
 
   const handleSubmit = () => {
-    if (commentInput.trim()) {
+    if (commentInput.trim() || commentImages.length > 0) {
       onAddComment(postId, commentInput);
       setCommentInput("");
+      setCommentImages([]);
     }
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    setCommentImages(prev => [...prev, ...files].slice(0, 4)); // Max 4 images
+  };
+
+  const removeImage = (index: number) => {
+    setCommentImages(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleReplySubmit = (commentId: string) => {
