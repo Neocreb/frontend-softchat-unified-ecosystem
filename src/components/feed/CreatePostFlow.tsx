@@ -789,11 +789,11 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
 
       {/* Display Mode Selection Modal */}
       <Dialog open={showDisplayModeModal} onOpenChange={setShowDisplayModeModal}>
-        <DialogContent className="max-w-md w-full p-0">
-          <DialogHeader className="p-4 border-b">
-            <DialogTitle className="text-lg">Where should your post appear?</DialogTitle>
+        <DialogContent className="max-w-md w-full mx-2 sm:mx-auto p-0">
+          <DialogHeader className="p-3 sm:p-4 border-b">
+            <DialogTitle className="text-base sm:text-lg">Where should your post appear?</DialogTitle>
           </DialogHeader>
-          <div className="p-4 space-y-3">
+          <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
             {[
               {
                 value: "both",
@@ -827,21 +827,21 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                   setShowDisplayModeModal(false);
                 }}
                 className={cn(
-                  "w-full flex items-center gap-3 p-3 rounded-lg border text-left transition-colors",
+                  "w-full flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border text-left transition-colors",
                   displayMode === option.value ? `border-${option.color}-500 bg-${option.color}-50` : "border-gray-200 hover:bg-gray-50"
                 )}
               >
                 <div className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center",
+                  "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0",
                   displayMode === option.value ? `bg-${option.color}-100` : "bg-gray-100"
                 )}>
-                  <option.icon className="h-5 w-5" />
+                  <option.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium">{option.label}</p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-medium text-sm sm:text-base truncate">{option.label}</p>
                     <span className={cn(
-                      "text-xs px-2 py-1 rounded-full",
+                      "text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full flex-shrink-0",
                       option.color === "purple" ? "bg-purple-100 text-purple-700" :
                       option.color === "blue" ? "bg-blue-100 text-blue-700" :
                       "bg-green-100 text-green-700"
@@ -849,18 +849,18 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                       {option.bonus}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500">{option.desc}</p>
+                  <p className="text-xs sm:text-sm text-gray-500 leading-tight">{option.desc}</p>
                 </div>
               </button>
             ))}
           </div>
-          <div className="p-4 pt-0">
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-3">
+          <div className="p-3 sm:p-4 pt-0">
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-2.5 sm:p-3">
               <div className="flex items-center gap-2 mb-1">
-                <Zap className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-medium text-purple-700">Reward System</span>
+                <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium text-purple-700">Reward System</span>
               </div>
-              <p className="text-xs text-purple-600">
+              <p className="text-xs text-purple-600 leading-tight">
                 Choose "Both feeds" to maximize your content reach and earn higher SoftPoints rewards!
               </p>
             </div>
