@@ -18,6 +18,7 @@ import {
   Radio,
   X,
   MessageCircle,
+  MessageSquare,
   UserCheck,
   Building,
   Megaphone,
