@@ -56,7 +56,11 @@ interface TwitterComment {
   createdAt: string;
   likes: number;
   replies: number;
+  shares: number;
+  gifts: number;
   liked?: boolean;
+  bookmarked?: boolean;
+  gifted?: boolean;
   media?: { type: 'image' | 'video'; url: string; alt?: string }[];
   parentId?: string;
 }
