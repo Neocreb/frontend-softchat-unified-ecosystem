@@ -107,7 +107,12 @@ const EnhancedShareDialog: React.FC<ShareDialogProps> = ({
     
     // Track reward for external sharing
     if (user?.id) {
-      await ActivityRewardService.logShare(user.id, postId, platform);
+      const reward = await UnifiedActivityService.trackShare(user.id, postId, platform);
+      if (reward.success && reward.softPoints > 0) {
+        notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+          description: `Thanks for sharing to ${platform}!`
+        });
+      }
     }
     
     notification.success(`Shared to ${platform}!`);
