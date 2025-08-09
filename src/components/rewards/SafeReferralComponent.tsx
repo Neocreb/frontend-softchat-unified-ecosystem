@@ -189,6 +189,43 @@ const SafeReferralComponent: React.FC = () => {
         </CardContent>
       </Card>
 
+      {/* Recent Activity */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Recent Referral Activity
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {[
+              { name: "Alice Johnson", action: "signed up", reward: "$10", time: "2 hours ago", status: "completed" },
+              { name: "Mike Smith", action: "made first purchase", reward: "$5", time: "1 day ago", status: "completed" },
+              { name: "Sarah Wilson", action: "signed up", reward: "$10", time: "3 days ago", status: "pending" }
+            ].map((activity, index) => (
+              <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                    {activity.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{activity.name} {activity.action}</p>
+                    <p className="text-xs text-muted-foreground">{activity.time}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="font-semibold text-green-600">{activity.reward}</p>
+                  <Badge variant={activity.status === "completed" ? "default" : "secondary"} className="text-xs">
+                    {activity.status}
+                  </Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* How it Works */}
       <Card>
         <CardHeader>
@@ -222,6 +259,54 @@ const SafeReferralComponent: React.FC = () => {
               <p className="text-sm text-muted-foreground">
                 Both you and your friend earn rewards for activities and purchases
               </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Referral Tiers */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Star className="w-5 h-5" />
+            Referral Tiers & Benefits
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 border rounded-lg bg-orange-50 border-orange-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Star className="w-4 h-4 text-orange-500" />
+                  <span className="font-semibold text-orange-700">Bronze (0-9 referrals)</span>
+                </div>
+                <ul className="text-sm text-orange-600 space-y-1">
+                  <li>• $10 per referral</li>
+                  <li>• 5% revenue share</li>
+                </ul>
+              </div>
+              <div className="p-4 border rounded-lg bg-gray-50 border-gray-300">
+                <div className="flex items-center gap-2 mb-2">
+                  <Star className="w-4 h-4 text-gray-500" />
+                  <span className="font-semibold text-gray-700">Silver (10-24 referrals)</span>
+                  <Badge className="bg-gray-500 text-white text-xs">Current</Badge>
+                </div>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• $15 per referral</li>
+                  <li>• 7.5% revenue share</li>
+                </ul>
+              </div>
+              <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-300">
+                <div className="flex items-center gap-2 mb-2">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span className="font-semibold text-yellow-700">Gold (25+ referrals)</span>
+                </div>
+                <ul className="text-sm text-yellow-600 space-y-1">
+                  <li>• $25 per referral</li>
+                  <li>• 10% revenue share</li>
+                  <li>• Priority support</li>
+                </ul>
+              </div>
             </div>
           </div>
         </CardContent>
