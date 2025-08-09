@@ -70,7 +70,12 @@ const EnhancedShareDialog: React.FC<ShareDialogProps> = ({
       
       // Track reward for sharing
       if (user?.id) {
-        await ActivityRewardService.logShare(user.id, postId, 'copy_link');
+        const reward = await UnifiedActivityService.trackShare(user.id, postId, 'copy_link');
+        if (reward.success && reward.softPoints > 0) {
+          notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+            description: 'Thanks for sharing!'
+          });
+        }
       }
     } catch (error) {
       notification.error('Failed to copy link');
