@@ -21,6 +21,7 @@ import { cn } from "@/utils/utils";
 import { useEnhancedFeed, type ThreadedPost } from "@/contexts/EnhancedFeedContext";
 import { useAuth } from "@/contexts/AuthContext";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import EnhancedPostActions from "./EnhancedPostActions";
 import {
   DropdownMenu,
   DropdownMenuContent,
