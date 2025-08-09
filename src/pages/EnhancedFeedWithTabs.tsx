@@ -41,6 +41,7 @@ import { HybridFeedProvider, useHybridFeed } from "@/contexts/HybridFeedContext"
 import HybridPostCard from "@/components/feed/HybridPostCard";
 import HybridFeedContent from "@/components/feed/HybridFeedContent";
 import CommentSection from "@/components/feed/CommentSection";
+import ModeTestButton from "@/components/feed/ModeTestButton";
 
 // Stories component for the feed
 const StoriesSection = ({
