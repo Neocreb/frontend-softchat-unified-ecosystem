@@ -50,48 +50,8 @@ const HybridFeedContent: React.FC<HybridFeedContentProps> = ({ feedType, viewMod
   const displayPosts = getDisplayPosts();
 
   if (viewMode === 'classic') {
-    // Classic mode: Use existing UnifiedFeedContent for the feed structure,
-    // but overlay our hybrid posts where applicable
-    return (
-      <div className="space-y-4">
-        {/* Show mode indicator */}
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <TrendingUp className="h-5 w-5 text-blue-600" />
-              <div>
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100">Classic Feed Mode</h3>
-                <p className="text-sm text-blue-700 dark:text-blue-200">
-                  Traditional social media layout with nested comments
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Render hybrid posts in classic mode */}
-        {displayPosts.map((post) => (
-          <div key={post.id} className="space-y-4">
-            <HybridPostCard
-              post={post}
-              viewMode="classic"
-              showThread={false}
-            />
-            {/* Add comment section for classic mode */}
-            <CommentSection
-              postId={post.id}
-              comments={mockComments}
-              onAddComment={handleAddComment}
-            />
-          </div>
-        ))}
-
-        {/* If no hybrid posts, fall back to unified content */}
-        {displayPosts.length === 0 && (
-          <UnifiedFeedContent feedType={feedType} />
-        )}
-      </div>
-    );
+    // Classic mode: Just use the original unified content - no changes to classic behavior
+    return <UnifiedFeedContent feedType={feedType} />;
   } else {
     // Threaded mode: Show all posts with threading UI
     return (
