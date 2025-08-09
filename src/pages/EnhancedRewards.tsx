@@ -3,26 +3,19 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Zap,
-  Gift,
-  TrendingUp,
-  UserPlus,
-  Activity,
-  Crown,
-  Star,
-  Target,
   Trophy,
   RefreshCw,
-  History,
-  Settings,
-  Wallet,
+  Star,
+  UserPlus,
   BarChart3,
-  ArrowUpRight,
-  Flame
+  Settings,
+  Activity,
+  Gift,
+  Target,
+  Wallet
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { fetchWithAuth } from "@/lib/fetch-utils";
@@ -33,7 +26,10 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
   import("@/utils/testRewardsIntegration").catch(console.warn);
 }
 
-// Import components
+// Import new organized components
+import RewardsCard from "@/components/rewards/RewardsCard";
+import WithdrawalModal from "@/components/rewards/WithdrawalModal";
+import RewardsStats from "@/components/rewards/RewardsStats";
 import EnhancedUnifiedCreatorEconomy from "@/components/creator-economy/EnhancedUnifiedCreatorEconomy";
 import SafeReferralManager from "@/components/rewards/SafeReferralManager";
 
@@ -45,6 +41,22 @@ interface RewardData {
     current: number;
     level: string;
     multiplier: number;
+    nextLevelAt: number;
+  };
+  activityStats: {
+    totalActivities: number;
+    contentCreated: number;
+    qualityScore: number;
+    streakDays: number;
+  };
+  earningsByType: {
+    contentCreation: number;
+    engagement: number;
+    marketplace: number;
+    freelance: number;
+    p2pTrading: number;
+    referrals: number;
+    challenges: number;
   };
   recentActivity: Array<{
     id: string;
@@ -60,15 +72,6 @@ interface RewardData {
   };
 }
 
-interface QuickAction {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  color: string;
-  action: () => void;
-  value?: string;
-  trend?: "up" | "down" | "neutral";
-}
 
 // Demo data function to avoid duplication
 const getDemoData = (): RewardData => ({
@@ -78,7 +81,23 @@ const getDemoData = (): RewardData => ({
   trustScore: {
     current: 78,
     level: "Silver",
-    multiplier: 1.5
+    multiplier: 1.5,
+    nextLevelAt: 90
+  },
+  activityStats: {
+    totalActivities: 1456,
+    contentCreated: 89,
+    qualityScore: 1.8,
+    streakDays: 12
+  },
+  earningsByType: {
+    contentCreation: 1068.75, // 37.5%
+    engagement: 355.94,       // 12.5%
+    marketplace: 711.88,      // 25%
+    freelance: 533.91,        // 18.75%
+    p2pTrading: 106.78,       // 3.75%
+    referrals: 71.19,         // 2.5%
+    challenges: 0             // 0%
   },
   recentActivity: [
     { id: "1", type: "post_creation", description: "Quality post with media", amount: 15.5, timestamp: "2024-01-20T10:00:00Z" },
@@ -99,6 +118,7 @@ export default function EnhancedRewards() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [rewardData, setRewardData] = useState<RewardData | null>(null);
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -178,56 +198,14 @@ export default function EnhancedRewards() {
     }
   };
 
-  // Quick Actions similar to wallet design
-  const quickActions: QuickAction[] = [
-    {
-      id: "earn",
-      label: "Earn More",
-      icon: <Zap className="h-4 w-4" />,
-      color: "bg-yellow-500 hover:bg-yellow-600",
-      action: () => setActiveTab("overview"),
-      value: "+15%",
-      trend: "up"
-    },
-    {
-      id: "withdraw",
-      label: "Withdraw",
-      icon: <ArrowUpRight className="h-4 w-4" />,
-      color: "bg-green-500 hover:bg-green-600",
-      action: () => setActiveTab("overview"),
-      value: formatCurrency(rewardData?.availableToWithdraw || 0)
-    },
-    {
-      id: "referrals",
-      label: "Invite Friends",
-      icon: <UserPlus className="h-4 w-4" />,
-      color: "bg-purple-500 hover:bg-purple-600",
-      action: () => setActiveTab("referrals"),
-      value: `${rewardData?.referralStats.totalReferrals || 0} refs`
-    },
-    {
-      id: "analytics",
-      label: "Analytics",
-      icon: <BarChart3 className="h-4 w-4" />,
-      color: "bg-blue-500 hover:bg-blue-600",
-      action: () => setActiveTab("analytics")
-    },
-    {
-      id: "boost",
-      label: "Boost Tier",
-      icon: <Crown className="h-4 w-4" />,
-      color: "bg-orange-500 hover:bg-orange-600",
-      action: () => setActiveTab("overview"),
-      value: rewardData?.trustScore.level || "Bronze"
-    },
-    {
-      id: "history",
-      label: "History",
-      icon: <History className="h-4 w-4" />,
-      color: "bg-gray-500 hover:bg-gray-600",
-      action: () => setActiveTab("overview")
-    }
-  ];
+  const handleWithdrawalSuccess = (amount: number, method: string) => {
+    toast({
+      title: "Withdrawal Complete!",
+      description: `${formatCurrency(amount)} has been added to your ${method}`,
+    });
+    // Refresh data to show updated balance
+    refreshData();
+  };
 
   if (!user) {
     return (
@@ -279,7 +257,7 @@ export default function EnhancedRewards() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 space-y-6">
+    <div className="max-w-7xl mx-auto p-4 space-y-8">
       {/* Enhanced Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -308,50 +286,35 @@ export default function EnhancedRewards() {
         </div>
       </div>
 
-      {/* Quick Actions - Wallet Style */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Zap className="h-5 w-5" />
-            Quick Actions
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {quickActions.map((action) => (
-              <Button
-                key={action.id}
-                variant="outline"
-                className={`${action.color} text-white border-none hover:scale-105 transition-all duration-200 flex flex-col items-center gap-2 h-auto py-4 relative overflow-hidden`}
-                onClick={action.action}
-              >
-                {action.icon}
-                <span className="text-xs font-medium">{action.label}</span>
-                {action.value && (
-                  <Badge
-                    variant="secondary"
-                    className="text-xs bg-white/20 text-white border-white/30"
-                  >
-                    {action.value}
-                  </Badge>
-                )}
-                {action.trend === "up" && (
-                  <div className="absolute top-1 right-1">
-                    <TrendingUp className="h-3 w-3 text-white/80" />
-                  </div>
-                )}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Rewards Credit Card */}
+      {rewardData && (
+        <RewardsCard
+          currentSoftPoints={rewardData.currentSoftPoints}
+          availableToWithdraw={rewardData.availableToWithdraw}
+          totalEarnings={rewardData.totalEarnings}
+          trustScore={rewardData.trustScore}
+          onWithdraw={() => setShowWithdrawalModal(true)}
+          className="mb-8"
+        />
+      )}
 
-      {/* Modern Tabs */}
+      {/* Organized Stats Section */}
+      {rewardData && (
+        <RewardsStats
+          totalEarnings={rewardData.totalEarnings}
+          currentSoftPoints={rewardData.currentSoftPoints}
+          trustScore={rewardData.trustScore}
+          activityStats={rewardData.activityStats}
+          earningsByType={rewardData.earningsByType}
+        />
+      )}
+
+      {/* Tabbed Content */}
       <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
-            <span className="hidden sm:inline">Overview</span>
+            <span className="hidden sm:inline">Activity</span>
           </TabsTrigger>
           <TabsTrigger value="referrals" className="flex items-center gap-2">
             <UserPlus className="h-4 w-4" />
@@ -362,13 +325,13 @@ export default function EnhancedRewards() {
               </Badge>
             )}
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Analytics</span>
+          <TabsTrigger value="challenges" className="flex items-center gap-2">
+            <Target className="h-4 w-4" />
+            <span className="hidden sm:inline">Challenges</span>
           </TabsTrigger>
-          <TabsTrigger value="settings" className="flex items-center gap-2">
-            <Settings className="h-4 w-4" />
-            <span className="hidden sm:inline">Settings</span>
+          <TabsTrigger value="history" className="flex items-center gap-2">
+            <Gift className="h-4 w-4" />
+            <span className="hidden sm:inline">History</span>
           </TabsTrigger>
         </TabsList>
 
@@ -380,22 +343,34 @@ export default function EnhancedRewards() {
           <SafeReferralManager />
         </TabsContent>
 
-        <TabsContent value="analytics" className="mt-6">
+        <TabsContent value="challenges" className="mt-6">
           <div className="text-center py-12">
-            <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Analytics Dashboard</h3>
-            <p className="text-gray-600">Detailed analytics coming soon...</p>
+            <Target className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Daily Challenges</h3>
+            <p className="text-gray-600">Complete challenges to earn bonus rewards...</p>
           </div>
         </TabsContent>
 
-        <TabsContent value="settings" className="mt-6">
+        <TabsContent value="history" className="mt-6">
           <div className="text-center py-12">
-            <Settings className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Reward Settings</h3>
-            <p className="text-gray-600">Customize your reward preferences...</p>
+            <Gift className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Reward History</h3>
+            <p className="text-gray-600">View your complete earnings history...</p>
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Withdrawal Modal */}
+      {rewardData && (
+        <WithdrawalModal
+          isOpen={showWithdrawalModal}
+          onClose={() => setShowWithdrawalModal(false)}
+          currentSoftPoints={rewardData.currentSoftPoints}
+          availableToWithdraw={rewardData.availableToWithdraw}
+          trustScore={rewardData.trustScore}
+          onWithdrawalSuccess={handleWithdrawalSuccess}
+        />
+      )}
     </div>
   );
 }
