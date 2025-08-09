@@ -160,6 +160,11 @@ export default function EnhancedRewards() {
     } catch (error) {
       console.error("Failed to load reward data:", error);
       setRewardData(getDemoData());
+      toast({
+        title: "Connection Issue",
+        description: "Using demo data. Please check your connection and try refreshing.",
+        variant: "default"
+      });
     } finally {
       setIsLoading(false);
     }
