@@ -50,6 +50,7 @@ interface CreatePostFlowProps {
 
 type PostStep = "create" | "settings";
 type AudienceType = "public" | "friends" | "private" | "custom";
+type DisplayModeType = "thread" | "classic" | "both";
 
 const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState<PostStep>("create");
