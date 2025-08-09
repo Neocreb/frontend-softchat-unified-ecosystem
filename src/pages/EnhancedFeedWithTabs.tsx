@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import UnifiedFeedContent from "@/components/feed/UnifiedFeedContent";
 import CreatePostTrigger from "@/components/feed/CreatePostTrigger";
-import SimpleCreatePost from "@/components/feed/SimpleCreatePost";
+import CreatePostWithModeSelection from "@/components/feed/CreatePostWithModeSelection";
 import EnhancedStoriesSection from "@/components/feed/EnhancedStoriesSection";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
