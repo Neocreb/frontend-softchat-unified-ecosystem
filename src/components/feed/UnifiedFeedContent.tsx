@@ -1007,6 +1007,29 @@ const UnifiedFeedItemCard: React.FC<{
           <div className="px-4 pb-4">
             <InteractionBar />
 
+            {/* Quick Actions for Job */}
+            <div className="mt-3 flex gap-2">
+              <QuickActionButton
+                postId={item.id}
+                type="job"
+                actionType="apply_quick"
+                label="Quick Apply"
+                size="sm"
+                className="flex-1"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/app/freelance/job/${item.id}`);
+                }}
+                className="flex-1"
+              >
+                View Job
+              </Button>
+            </div>
+
             {/* Comments Section */}
             {showComments && (
               <div className="mt-4 border-t pt-4">
@@ -1022,7 +1045,7 @@ const UnifiedFeedItemCard: React.FC<{
             )}
           </div>
 
-          {/* Job click handled in handleJobClick, apply handled in handleInteraction */}
+          {/* Job click handled in handleContentClick */}
 
         </CardContent>
       </Card>
