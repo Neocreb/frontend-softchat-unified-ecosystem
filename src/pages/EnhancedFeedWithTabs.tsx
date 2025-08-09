@@ -39,6 +39,7 @@ import { CreateStoryModal } from "@/components/feed/CreateStory";
 import StoryViewer from "@/components/feed/StoryViewer";
 import { HybridFeedProvider, useHybridFeed } from "@/contexts/HybridFeedContext";
 import HybridPostCard from "@/components/feed/HybridPostCard";
+import HybridFeedContent from "@/components/feed/HybridFeedContent";
 import CommentSection from "@/components/feed/CommentSection";
 
 // Stories component for the feed
