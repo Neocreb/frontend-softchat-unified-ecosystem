@@ -459,15 +459,34 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     navigate(`/app/post/${postId}`);
   };
 
-  const handleLike = (postId: string, e: React.MouseEvent) => {
+  const handleLike = async (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setPosts(prev => prev.map(post => 
+
+    const post = posts.find(p => p.id === postId);
+    const newLikedState = !post?.liked;
+
+    // Update UI immediately
+    setPosts(prev => prev.map(post =>
       post.id === postId ? {
         ...post,
-        liked: !post.liked,
+        liked: newLikedState,
         likes: post.liked ? post.likes - 1 : post.likes + 1,
       } : post
     ));
+
+    // Track reward for liking
+    if (newLikedState && user?.id) {
+      try {
+        const reward = await UnifiedActivityService.trackLike(user.id, postId);
+        if (reward.success && reward.softPoints > 0) {
+          notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+            description: "Thanks for engaging with the community!"
+          });
+        }
+      } catch (error) {
+        console.error("Failed to track like activity:", error);
+      }
+    }
   };
 
   const handleBookmark = (postId: string, e: React.MouseEvent) => {
