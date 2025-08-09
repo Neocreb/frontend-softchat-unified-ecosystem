@@ -210,7 +210,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
   const menuItems = [
     {
       icon: <Rss className="w-6 h-6 text-blue-600" />,
-      label: "Feed (Hybrid)",
+      label: "Feed",
       href: "/app/feed",
     },
     {
