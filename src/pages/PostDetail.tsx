@@ -470,7 +470,11 @@ const PostDetail: React.FC = () => {
                 }
               />
 
-              <Button variant="ghost" size="sm">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleBookmark(post.id, true)}
+              >
                 <Bookmark className={cn("h-5 w-5", post.bookmarked && "fill-current")} />
               </Button>
             </div>
