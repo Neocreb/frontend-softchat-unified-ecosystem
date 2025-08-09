@@ -60,10 +60,12 @@ interface TwitterThreadedFeedProps {
 const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) => {
   const navigate = useNavigate();
   
-  // Mock data representing a Twitter-style feed with threaded conversations
+  // Mock data representing a comprehensive Twitter-style feed with diverse platform content
   const [posts, setPosts] = useState<TwitterPost[]>([
+    // Original Thread Conversation
     {
       id: '1',
+      type: 'post',
       content: 'Just launched my new project! Excited to share it with everyone 🚀',
       author: {
         name: 'Sarah Chen',
@@ -82,8 +84,36 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
         alt: 'Project screenshot'
       }],
     },
+
+    // Sponsored Advertisement
+    {
+      id: 'ad1',
+      type: 'sponsored',
+      isSponsored: true,
+      content: '✨ Unlock Premium Features with SoftChat Pro! Get advanced analytics, priority support, and exclusive tools for creators and businesses. Limited time offer - 50% off! 🎯',
+      author: {
+        name: 'SoftChat',
+        username: 'softchat_official',
+        avatar: 'https://images.unsplash.com/photo-1553484771-371a605b060b?w=150',
+        verified: true,
+      },
+      createdAt: 'Sponsored',
+      likes: 1200,
+      comments: 89,
+      shares: 245,
+      gifts: 15,
+      ctaText: 'Upgrade Now',
+      ctaUrl: '/premium',
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500',
+        alt: 'SoftChat Premium features'
+      }],
+    },
+
     {
       id: '2',
+      type: 'post',
       content: 'Congratulations! This looks amazing. Can\'t wait to try it out! 🎉',
       author: {
         name: 'Alex Rodriguez',
@@ -100,8 +130,61 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       threadId: '1',
       repliedTo: 'sarahc_dev',
     },
+
+    // Marketplace Product
+    {
+      id: 'product1',
+      type: 'product',
+      content: '🎨 New Digital Art Collection Available! Hand-crafted NFT series featuring cyberpunk aesthetics. Each piece is unique and comes with unlockable content. Perfect for collectors and digital art enthusiasts!',
+      author: {
+        name: 'ArtistCo Gallery',
+        username: 'artistco_nft',
+        avatar: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=150',
+        verified: true,
+      },
+      createdAt: '3h',
+      likes: 156,
+      comments: 23,
+      shares: 34,
+      gifts: 8,
+      price: '0.25 ETH',
+      ctaText: 'View Collection',
+      ctaUrl: '/marketplace/nft-collection',
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500',
+        alt: 'Digital art NFT'
+      }],
+    },
+
+    // Freelance Job Posting
+    {
+      id: 'job1',
+      type: 'job',
+      content: '💼 We\'re hiring! Looking for a talented Full-Stack Developer to join our growing startup. Work remotely, competitive salary, and equity options. Experience with React, Node.js, and cloud platforms required.',
+      author: {
+        name: 'TechStartup Inc',
+        username: 'techstartup_co',
+        avatar: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=150',
+        verified: true,
+      },
+      createdAt: '4h',
+      likes: 89,
+      comments: 45,
+      shares: 67,
+      gifts: 3,
+      jobType: 'Full-time Remote',
+      company: 'TechStartup Inc',
+      salary: '$80K - $120K + Equity',
+      location: 'Remote',
+      skills: ['React', 'Node.js', 'AWS', 'TypeScript'],
+      ctaText: 'Apply Now',
+      ctaUrl: '/freelance/jobs/fullstack-dev',
+    },
+
     {
       id: '3',
+      type: 'post',
       content: 'Working on some exciting new features. Can\'t wait to show you all what we\'re building! 💻✨',
       author: {
         name: 'Mike Johnson',
@@ -109,14 +192,44 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
         verified: false,
       },
-      createdAt: '3h',
+      createdAt: '5h',
       likes: 23,
       comments: 7,
       shares: 3,
       gifts: 0,
     },
+
+    // Live Event
+    {
+      id: 'event1',
+      type: 'event',
+      isLive: true,
+      content: '🔴 LIVE: Crypto Trading Masterclass with industry experts! Learn advanced trading strategies, technical analysis, and risk management. Q&A session included. Don\'t miss out!',
+      author: {
+        name: 'CryptoAcademy',
+        username: 'crypto_academy',
+        avatar: 'https://images.unsplash.com/photo-1559445368-92d4e08c5e8f?w=150',
+        verified: true,
+      },
+      createdAt: 'Live now',
+      likes: 342,
+      comments: 128,
+      shares: 89,
+      gifts: 25,
+      eventDate: 'Now - 2h remaining',
+      location: 'Virtual Event',
+      ctaText: 'Join Live',
+      ctaUrl: '/events/crypto-masterclass',
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500',
+        alt: 'Crypto trading event'
+      }],
+    },
+
     {
       id: '4',
+      type: 'post',
       content: 'The design choices here are incredible! Love the attention to detail.',
       author: {
         name: 'Maya Patel',
@@ -133,8 +246,37 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       threadId: '1',
       repliedTo: 'sarahc_dev',
     },
+
+    // Skills/Course Promotion
+    {
+      id: 'skill1',
+      type: 'skill',
+      content: '📚 Master Web3 Development in 30 Days! Comprehensive course covering Smart Contracts, DApps, and DeFi protocols. Join 5000+ students already earning in the crypto space. Early bird discount ends soon!',
+      author: {
+        name: 'Web3 Academy',
+        username: 'web3_academy',
+        avatar: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=150',
+        verified: true,
+      },
+      createdAt: '6h',
+      likes: 267,
+      comments: 156,
+      shares: 123,
+      gifts: 18,
+      price: '$199 (was $399)',
+      skills: ['Solidity', 'Web3.js', 'Smart Contracts', 'DeFi'],
+      ctaText: 'Enroll Now',
+      ctaUrl: '/learn/web3-development',
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500',
+        alt: 'Web3 development course'
+      }],
+    },
+
     {
       id: '5',
+      type: 'post',
       content: 'Thanks Alex! Really appreciate the support. More updates coming soon!',
       author: {
         name: 'Sarah Chen',
@@ -151,8 +293,10 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       threadId: '1',
       repliedTo: 'alex_codes',
     },
+
     {
       id: '6',
+      type: 'post',
       content: 'Looking forward to the updates! Will this have API integration?',
       author: {
         name: 'Tom Wilson',
@@ -169,8 +313,10 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       threadId: '1',
       repliedTo: 'sarahc_dev',
     },
+
     {
       id: '7',
+      type: 'post',
       content: 'Yes! Full REST API coming in v2.0 🚀',
       author: {
         name: 'Sarah Chen',
