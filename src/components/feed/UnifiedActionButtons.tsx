@@ -78,13 +78,9 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
         let reward;
         switch (actionType) {
           case 'buy_product':
-            // For actual purchases, we'd get the price from the product data
-            const productPrice = price ? parseFloat(price.replace(/[^0-9.]/g, '')) : 0;
-            reward = await UnifiedActivityService.trackProductPurchase(
-              user.id,
-              postId,
-              productPrice
-            );
+            // Note: Purchase rewards are now only given on payment completion
+            // This action navigates to purchase page without immediate rewards
+            notification.info('Complete payment to earn purchase rewards');
             break;
           case 'apply_job':
             reward = await UnifiedActivityService.trackJobApplication(
