@@ -112,7 +112,6 @@ export default function EnhancedRewards() {
 
       // Check if user is authenticated
       if (!user) {
-        console.log("User not authenticated, using demo data");
         setRewardData(getDemoData());
         toast({
           title: "Demo Mode",
