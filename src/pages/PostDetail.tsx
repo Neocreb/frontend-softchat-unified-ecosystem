@@ -398,8 +398,18 @@ const PostDetail: React.FC = () => {
           <CardContent className="space-y-4">
             {/* Replying To Indicator for replies */}
             {post.parentId && allPosts[post.parentId] && (
-              <div className="text-sm text-muted-foreground mb-2">
-                Replying to <span className="text-blue-500">@{allPosts[post.parentId].author.username}</span>
+              <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
+                <div>
+                  Replying to <span className="text-blue-500">@{allPosts[post.parentId].author.username}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate(`/app/post/${post.threadId || post.parentId}`)}
+                  className="text-blue-500 hover:text-blue-600 p-0 h-auto font-normal"
+                >
+                  Show this thread
+                </Button>
               </div>
             )}
 
