@@ -499,8 +499,22 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     ));
   };
 
-  const handleComment = (postId: string, e: React.MouseEvent) => {
+  const handleComment = async (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
+
+    // Track engagement for clicking comment
+    if (user?.id) {
+      try {
+        await UnifiedActivityService.trackVideoWatch(user.id, postId, {
+          type: 'engagement',
+          action: 'comment_click',
+          source: 'feed'
+        });
+      } catch (error) {
+        console.error("Failed to track comment click:", error);
+      }
+    }
+
     // Navigate to post detail page to view/add comments
     navigate(`/app/post/${postId}`);
   };
