@@ -27,6 +27,13 @@ interface PostActionsProps {
   initialSaved?: boolean;
   onLikeChange?: (liked: boolean) => void;
   onSaveChange?: (saved: boolean) => void;
+  postContent?: string;
+  postAuthor?: {
+    name: string;
+    username: string;
+  };
+  onRepost?: (content: string) => void;
+  onQuotePost?: (content: string) => void;
 }
 
 const PostActions = ({
