@@ -574,13 +574,15 @@ const EnhancedFeedWithTabs = () => {
               )}
 
               {/* Tab Content */}
-              {tabs.map((tab) => (
+              {baseTabs.map((tab) => (
                 <TabsContent
                   key={tab.value}
                   value={tab.value}
                   className="mt-0 space-y-0"
                 >
-                  <UnifiedFeedContent feedType={tab.value} />
+                  <HybridFeedProvider>
+                    <HybridFeedContent feedType={tab.value} viewMode={feedViewMode} />
+                  </HybridFeedProvider>
                 </TabsContent>
               ))}
             </Tabs>
