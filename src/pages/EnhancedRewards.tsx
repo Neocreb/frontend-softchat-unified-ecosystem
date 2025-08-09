@@ -116,7 +116,7 @@ export default function EnhancedRewards() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [rewardData, setRewardData] = useState<RewardData | null>(null);
   const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
 
@@ -302,55 +302,47 @@ export default function EnhancedRewards() {
         />
       ) : null}
 
-      {/* Organized Stats Section */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 animate-pulse">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="h-32 bg-gray-200 rounded-xl"></div>
-          ))}
-        </div>
-      ) : rewardData ? (
-        <RewardsStats
-          totalEarnings={rewardData.totalEarnings}
-          currentSoftPoints={rewardData.currentSoftPoints}
-          trustScore={rewardData.trustScore}
-          activityStats={rewardData.activityStats}
-          earningsByType={rewardData.earningsByType}
-        />
-      ) : null}
 
       {/* Tabbed Content */}
       <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
+          <TabsTrigger value="dashboard" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            <span className="hidden sm:inline">Dashboard</span>
+          </TabsTrigger>
+          <TabsTrigger value="activities" className="flex items-center gap-2">
             <Activity className="h-4 w-4" />
-            <span className="hidden sm:inline">Activity</span>
+            <span className="hidden sm:inline">Activities</span>
+          </TabsTrigger>
+          <TabsTrigger value="challenges" className="flex items-center gap-2">
+            <Target className="h-4 w-4" />
+            <span className="hidden sm:inline">Challenges</span>
           </TabsTrigger>
           <TabsTrigger value="referrals" className="flex items-center gap-2">
             <UserPlus className="h-4 w-4" />
-            <span className="hidden sm:inline">Referrals</span>
+            <span className="hidden sm:inline">Referral</span>
             {rewardData?.referralStats.totalReferrals && (
               <Badge variant="secondary" className="ml-1 text-xs h-5 w-5 rounded-full p-0 flex items-center justify-center">
                 {rewardData.referralStats.totalReferrals}
               </Badge>
             )}
           </TabsTrigger>
-          <TabsTrigger value="challenges" className="flex items-center gap-2">
-            <Target className="h-4 w-4" />
-            <span className="hidden sm:inline">Challenges</span>
-          </TabsTrigger>
-          <TabsTrigger value="history" className="flex items-center gap-2">
-            <Gift className="h-4 w-4" />
-            <span className="hidden sm:inline">History</span>
-          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="mt-6">
-          <EnhancedUnifiedCreatorEconomy />
+        <TabsContent value="dashboard" className="mt-6">
+          {rewardData && (
+            <RewardsStats
+              totalEarnings={rewardData.totalEarnings}
+              currentSoftPoints={rewardData.currentSoftPoints}
+              trustScore={rewardData.trustScore}
+              activityStats={rewardData.activityStats}
+              earningsByType={rewardData.earningsByType}
+            />
+          )}
         </TabsContent>
 
-        <TabsContent value="referrals" className="mt-6">
-          <SafeReferralManager />
+        <TabsContent value="activities" className="mt-6">
+          <EnhancedUnifiedCreatorEconomy />
         </TabsContent>
 
         <TabsContent value="challenges" className="mt-6">
@@ -361,12 +353,8 @@ export default function EnhancedRewards() {
           </div>
         </TabsContent>
 
-        <TabsContent value="history" className="mt-6">
-          <div className="text-center py-12">
-            <Gift className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Reward History</h3>
-            <p className="text-gray-600">View your complete earnings history...</p>
-          </div>
+        <TabsContent value="referrals" className="mt-6">
+          <SafeReferralManager />
         </TabsContent>
       </Tabs>
 

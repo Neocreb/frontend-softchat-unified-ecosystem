@@ -93,7 +93,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
       </div>
 
-      <CardContent className="relative z-10 p-6 space-y-6">
+      <CardContent className="relative z-10 p-6 space-y-4 min-h-[240px]">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
