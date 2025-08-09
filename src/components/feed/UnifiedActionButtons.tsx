@@ -89,7 +89,7 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
           case 'apply_job':
             reward = await ActivityRewardService.logActivity({
               userId: user.id,
-              actionType: 'apply_job',
+              actionType: 'bid_job',
               targetId: postId,
               targetType: 'job',
               metadata: { jobType, company, source: 'feed' }
@@ -107,7 +107,7 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
           case 'join_event':
             reward = await ActivityRewardService.logActivity({
               userId: user.id,
-              actionType: 'join_event',
+              actionType: 'join_community',
               targetId: postId,
               targetType: 'event',
               metadata: { eventDate, location, source: 'feed' }
@@ -116,9 +116,27 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
           case 'watch_live':
             reward = await ActivityRewardService.logActivity({
               userId: user.id,
-              actionType: 'watch_live_stream',
+              actionType: 'watch_video',
               targetId: postId,
               targetType: 'live_stream',
+              metadata: { source: 'feed' }
+            });
+            break;
+          case 'learn_skill':
+            reward = await ActivityRewardService.logActivity({
+              userId: user.id,
+              actionType: 'watch_video',
+              targetId: postId,
+              targetType: 'course',
+              metadata: { skills, source: 'feed' }
+            });
+            break;
+          case 'sponsored_click':
+            reward = await ActivityRewardService.logActivity({
+              userId: user.id,
+              actionType: 'share_content',
+              targetId: postId,
+              targetType: 'sponsored',
               metadata: { source: 'feed' }
             });
             break;
