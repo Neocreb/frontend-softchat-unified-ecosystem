@@ -96,20 +96,10 @@ const CreatePostWithModeSelection: React.FC<CreatePostWithModeSelectionProps> = 
         isReply: false,
         privacy,
         // Mode-specific properties based on selection
-        ...(selectedMode === 'threaded' && {
-          threadId: postId,
-          isThreadPost: true,
-          parentId: null, // Root post for threaded mode
-        }),
-        ...(selectedMode === 'classic' && {
-          isClassicPost: true,
-          parentId: undefined, // Classic mode post
-        }),
-        ...(selectedMode === 'both' && {
-          threadId: postId,
-          isUniversalPost: true, // Shows in both modes
-          parentId: null,
-        }),
+        isThreadPost: selectedMode === 'threaded',
+        isClassicPost: selectedMode === 'classic',
+        isUniversalPost: selectedMode === 'both',
+        threadId: selectedMode !== 'classic' ? postId : undefined,
         // Additional metadata
         settings: {
           enableComments,
