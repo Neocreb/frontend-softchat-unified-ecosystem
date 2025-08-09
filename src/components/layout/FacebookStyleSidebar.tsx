@@ -214,7 +214,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       href: "/app/feed",
     },
     {
-      icon: <MessageCircle className="w-6 h-6 text-purple-600" />,
+      icon: <MessageSquare className="w-6 h-6 text-purple-600" />,
       label: "Feed Toggle Demo",
       href: "/app/feed-toggle-demo",
     },
