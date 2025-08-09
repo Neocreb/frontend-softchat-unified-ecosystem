@@ -78,7 +78,7 @@ A comprehensive AI-powered social media and marketplace platform with crypto tra
     └── setup.ts                 # Setup automation
 ```
 
-## 🚀 Quick Start
+## ��� Quick Start
 
 ### 1. **Clone & Setup**
 
@@ -335,9 +335,119 @@ redis-cli ping # Should return PONG
 DEBUG_MODE=true npm run dev
 ```
 
+## 🎁 Reward System
+
+### **Overview**
+Our enhanced reward system encourages authentic engagement through quality-based rewards while preventing abuse through sophisticated time-based decay and risk analysis.
+
+### **Key Features**
+
+#### ✨ **No Daily Limits**
+- Content creators can post unlimited content
+- Natural rate limiting through progressive decay
+- Quality over quantity incentive structure
+
+#### 🏆 **Quality-Based Rewards**
+- **Content Quality**: Length, media, engagement features analysis
+- **Time Investment**: Up to 2x multiplier for thoughtful content creation
+- **Professional Features**: Bonuses for monetized, collaborative content
+- **Maximum Multiplier**: Up to 2.5x for exceptional quality
+
+#### ⏰ **Time-Based Decay System**
+- **Time Windows**: 4 hours for posts, 24 hours for other activities
+- **Progressive Decay**: Starting from 1st action in window
+- **Decay Rate**: 0.3 exponential reduction
+- **Minimum Rewards**: 0.1x minimum to discourage spam
+
+#### 💳 **Payment-Gated Rewards**
+- **Marketplace**: Rewards only on successful payment completion
+- **Freelance**: Milestone-based reward distribution
+- **P2P Trading**: Rewards on confirmed trade completion
+- **Escrow Integration**: Secure reward release mechanisms
+
+### **Activity Rewards**
+
+| Activity | Base Reward | Requirements | Special Features |
+|----------|-------------|--------------|------------------|
+| **Post Content** | 3 SP | Trust Score 20+ | Quality multipliers up to 2.5x |
+| **Marketplace Purchase** | 5 SP + 0.01% | Payment completion | Value-based scaling |
+| **Freelance Milestone** | 15 SP | Project completion | Performance bonuses |
+| **P2P Trade** | 5 SP | Trade confirmation | Trust-based multipliers |
+| **Comment** | 1 SP | Trust Score 10+ | Length and quality analysis |
+| **Like/Share** | 0.5-1 SP | Engagement time | Anti-rapid-clicking detection |
+
+### **Anti-Abuse Protection**
+
+#### 🛡️ **Trust Score System**
+- **Calculation**: Based on consistency, diversity, quality, behavior
+- **Multipliers**: 0.5x to 2.0x based on trust level
+- **Requirements**: Minimum trust scores for actions
+- **Dynamic**: Updates based on user behavior patterns
+
+#### 🚨 **Risk Analysis**
+- **Time-Based Frequency**: Rapid action detection
+- **Content Quality**: Pattern analysis for spam
+- **Behavioral Analysis**: Session and engagement patterns
+- **Fraud Detection**: Automated suspicious activity flagging
+
+#### 🔒 **Security Measures**
+- **IP/Device Tracking**: Multi-device abuse prevention
+- **Session Analysis**: Behavioral pattern monitoring
+- **Content Analysis**: Quality and originality checking
+- **Progressive Penalties**: Escalating consequences for abuse
+
+### **Integration Examples**
+
+#### **Marketplace Integration**
+```typescript
+// Reward only on payment completion
+await UnifiedActivityService.trackProductPurchase(
+  userId,
+  productId,
+  amount,
+  { paymentStatus: 'completed' }
+);
+```
+
+#### **Freelance Integration**
+```typescript
+// Milestone-based rewards
+await UnifiedActivityService.trackFreelanceMilestone(
+  userId,
+  projectId,
+  { milestone: completedMilestone, value: milestoneValue }
+);
+```
+
+#### **Content Creation**
+```typescript
+// Quality-based post rewards
+await UnifiedActivityService.trackPost(
+  userId,
+  postId,
+  {
+    contentLength: content.length,
+    hasMedia: !!media,
+    displayMode: 'both',
+    timeSpent: engagementTime
+  }
+);
+```
+
+### **Configuration**
+Reward rules are fully configurable through the admin dashboard:
+- Base reward amounts
+- Decay parameters
+- Quality thresholds
+- Trust score requirements
+- Daily/weekly limits (where applicable)
+
+For detailed technical documentation, see **[Enhanced Reward System](./ENHANCED_REWARD_SYSTEM.md)**
+
 ## 📚 Documentation
 
 - **[Backend Implementation Guide](./BACKEND_IMPLEMENTATION_GUIDE.md)** - Complete technical documentation
+- **[Enhanced Reward System](./ENHANCED_REWARD_SYSTEM.md)** - Comprehensive reward system documentation
 - **[API Documentation](./docs/api.md)** - Detailed API reference
 - **[Database Schema](./docs/database.md)** - Schema documentation
 - **[Deployment Guide](./docs/deployment.md)** - Production deployment
