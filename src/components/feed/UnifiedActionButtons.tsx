@@ -203,8 +203,11 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
         break;
 
       case 'skill':
-        if (ctaUrl?.includes('/learn/') || ctaUrl?.includes('/videos/')) {
+        if (ctaUrl?.includes('/app/videos') || ctaUrl?.includes('/app/learn')) {
           targetRoute = ctaUrl;
+        } else if (ctaUrl?.includes('/learn/') || ctaUrl?.includes('/videos/')) {
+          // Navigate to videos section for educational content (fallback for old URLs)
+          targetRoute = `/app/videos?tab=tutorials`;
         } else {
           // Navigate to videos section for educational content
           targetRoute = `/app/videos?tab=tutorials`;
