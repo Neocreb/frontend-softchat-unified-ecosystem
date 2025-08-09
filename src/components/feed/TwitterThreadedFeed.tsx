@@ -431,9 +431,49 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                         </svg>
                       </Badge>
                     )}
+
+                    {/* Content Type Badges */}
+                    {post.isSponsored && (
+                      <Badge className="px-2 py-0 h-4 bg-purple-500 text-white">
+                        <Crown className="h-2.5 w-2.5 mr-1" />
+                        Sponsored
+                      </Badge>
+                    )}
+                    {post.type === 'product' && (
+                      <Badge className="px-2 py-0 h-4 bg-green-500 text-white">
+                        <ShoppingCart className="h-2.5 w-2.5 mr-1" />
+                        Product
+                      </Badge>
+                    )}
+                    {post.type === 'job' && (
+                      <Badge className="px-2 py-0 h-4 bg-blue-600 text-white">
+                        <Briefcase className="h-2.5 w-2.5 mr-1" />
+                        Job
+                      </Badge>
+                    )}
+                    {post.type === 'event' && (
+                      <Badge className="px-2 py-0 h-4 bg-orange-500 text-white">
+                        <Calendar className="h-2.5 w-2.5 mr-1" />
+                        {post.isLive ? 'Live Event' : 'Event'}
+                      </Badge>
+                    )}
+                    {post.type === 'skill' && (
+                      <Badge className="px-2 py-0 h-4 bg-indigo-500 text-white">
+                        <GraduationCap className="h-2.5 w-2.5 mr-1" />
+                        Course
+                      </Badge>
+                    )}
+
                     <span className="text-muted-foreground text-sm">@{post.author.username}</span>
                     <span className="text-muted-foreground text-sm">·</span>
                     <span className="text-muted-foreground text-sm">{post.createdAt}</span>
+
+                    {post.isLive && (
+                      <div className="flex items-center gap-1 text-red-500">
+                        <Radio className="h-3 w-3" />
+                        <span className="text-xs font-medium">LIVE</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Replying To Indicator */}
