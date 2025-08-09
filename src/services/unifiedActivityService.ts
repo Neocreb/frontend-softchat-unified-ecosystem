@@ -222,7 +222,25 @@ export class UnifiedActivityService {
   }
 
   // Trading Activities
-  static async trackCryptoTrade(userId: string, tradeId: string, amount: number, metadata?: Record<string, any>): Promise<ActivityRewardResponse> {
+  static async trackCryptoTrade(
+    userId: string,
+    tradeId: string,
+    amount: number,
+    metadata?: Record<string, any>
+  ): Promise<ActivityRewardResponse> {
+    // Only award if trade is completed and confirmed
+    if (!metadata?.tradeCompleted || !metadata?.paymentConfirmed || !metadata?.cryptoReleased) {
+      return {
+        success: false,
+        status: "pending_completion",
+        softPoints: 0,
+        walletBonus: 0,
+        newTrustScore: 0,
+        riskScore: 0,
+        message: "Reward pending trade completion and confirmation"
+      };
+    }
+
     return ActivityRewardService.logActivity({
       userId,
       actionType: 'p2p_trade',
@@ -233,12 +251,127 @@ export class UnifiedActivityService {
     });
   }
 
-  static async trackCryptoConversion(userId: string, conversionId: string, amount: number, metadata?: Record<string, any>): Promise<ActivityRewardResponse> {
+  // Enhanced P2P trading methods
+  static async trackP2PTradeCompletion(
+    userId: string,
+    tradeId: string,
+    tradeAmount: number,
+    tradeDetails: {
+      cryptoType: string;
+      fiatAmount: number;
+      exchangeRate: number;
+      paymentMethod: string;
+      tradeType: 'buy' | 'sell';
+      counterpartyId: string;
+      completionTime: number;
+      disputeResolved?: boolean;
+    }
+  ): Promise<ActivityRewardResponse> {
+    return this.trackCryptoTrade(userId, tradeId, tradeAmount, {
+      tradeCompleted: true,
+      paymentConfirmed: true,
+      cryptoReleased: true,
+      ...tradeDetails
+    });
+  }
+
+  static async trackP2POfferCreation(
+    userId: string,
+    offerId: string,
+    metadata: {
+      cryptoType: string;
+      amount: number;
+      rate: number;
+      paymentMethods: string[];
+      offerType: 'buy' | 'sell';
+      minOrderLimit: number;
+      maxOrderLimit: number;
+    }
+  ): Promise<ActivityRewardResponse> {
+    return ActivityRewardService.logActivity({
+      userId,
+      actionType: 'p2p_trade_create_offer',
+      targetId: offerId,
+      targetType: 'offer',
+      metadata
+    });
+  }
+
+  static async trackCryptoConversion(
+    userId: string,
+    conversionId: string,
+    amount: number,
+    metadata?: Record<string, any>
+  ): Promise<ActivityRewardResponse> {
+    const enhancedMetadata = {
+      ...metadata,
+      fromCurrency: metadata?.fromCurrency || 'UNKNOWN',
+      toCurrency: metadata?.toCurrency || 'UNKNOWN',
+      exchangeRate: metadata?.exchangeRate || 0,
+      fees: metadata?.fees || 0
+    };
+
     return ActivityRewardService.logActivity({
       userId,
       actionType: 'convert_crypto',
       targetId: conversionId,
       targetType: 'conversion',
+      value: amount,
+      metadata: enhancedMetadata
+    });
+  }
+
+  static async trackCryptoDeposit(
+    userId: string,
+    depositId: string,
+    amount: number,
+    metadata: {
+      cryptoType: string;
+      network: string;
+      transactionHash: string;
+      confirmations: number;
+    }
+  ): Promise<ActivityRewardResponse> {
+    // Only award after sufficient confirmations
+    if (!metadata.confirmations || metadata.confirmations < 3) {
+      return {
+        success: false,
+        status: "pending_confirmations",
+        softPoints: 0,
+        walletBonus: 0,
+        newTrustScore: 0,
+        riskScore: 0,
+        message: "Reward pending blockchain confirmations"
+      };
+    }
+
+    return ActivityRewardService.logActivity({
+      userId,
+      actionType: 'crypto_deposit',
+      targetId: depositId,
+      targetType: 'deposit',
+      value: amount,
+      metadata
+    });
+  }
+
+  static async trackCryptoWithdrawal(
+    userId: string,
+    withdrawalId: string,
+    amount: number,
+    metadata: {
+      cryptoType: string;
+      network: string;
+      destinationAddress: string;
+      transactionHash?: string;
+      fees: number;
+    }
+  ): Promise<ActivityRewardResponse> {
+    return ActivityRewardService.logActivity({
+      userId,
+      actionType: 'crypto_withdrawal',
+      targetId: withdrawalId,
+      targetType: 'withdrawal',
       value: amount,
       metadata
     });
