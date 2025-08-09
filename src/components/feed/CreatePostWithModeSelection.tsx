@@ -126,7 +126,7 @@ const CreatePostWithModeSelection: React.FC<CreatePostWithModeSelectionProps> = 
             },
           );
 
-          if (reward.success && reward.softPoints > 0) {
+          if (reward?.success && reward?.softPoints > 0) {
             toast({
               title: "Post published!",
               description: `Published to ${selectedMode === 'both' ? 'all modes' : selectedMode + ' mode'} and earned ${reward.softPoints} SoftPoints!`,
@@ -144,6 +144,11 @@ const CreatePostWithModeSelection: React.FC<CreatePostWithModeSelectionProps> = 
             description: `Published to ${selectedMode === 'both' ? 'all modes' : selectedMode + ' mode'}`,
           });
         }
+      } else {
+        toast({
+          title: "Post published!",
+          description: `Published to ${selectedMode === 'both' ? 'all modes' : selectedMode + ' mode'}`,
+        });
       }
 
       // Reset form
