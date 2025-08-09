@@ -4,8 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, Heart, MessageCircle, Share2, Bookmark } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { cn } from "@/utils/utils";
+import EnhancedPostActions from "./EnhancedPostActions";
 
 export type Post = {
   id: string;
