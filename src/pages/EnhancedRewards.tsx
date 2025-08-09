@@ -70,6 +70,28 @@ interface QuickAction {
   trend?: "up" | "down" | "neutral";
 }
 
+// Demo data function to avoid duplication
+const getDemoData = (): RewardData => ({
+  totalEarnings: 2847.50,
+  availableToWithdraw: 1523.25,
+  currentSoftPoints: 18642,
+  trustScore: {
+    current: 78,
+    level: "Silver",
+    multiplier: 1.5
+  },
+  recentActivity: [
+    { id: "1", type: "post_creation", description: "Quality post with media", amount: 15.5, timestamp: "2024-01-20T10:00:00Z" },
+    { id: "2", type: "marketplace_sale", description: "Product sold", amount: 25.0, timestamp: "2024-01-20T09:30:00Z" },
+    { id: "3", type: "referral_bonus", description: "New referral signup", amount: 50.0, timestamp: "2024-01-19T18:15:00Z" }
+  ],
+  referralStats: {
+    totalReferrals: 23,
+    totalEarnings: 340.50,
+    activeReferrals: 18
+  }
+});
+
 export default function EnhancedRewards() {
   const { user } = useAuth();
   const { toast } = useToast();
