@@ -29,8 +29,8 @@ import { fetchWithAuth } from "@/lib/fetch-utils";
 import { cn } from "@/lib/utils";
 
 // Test integration (only in development)
-if (process.env.NODE_ENV === "development") {
-  import("@/utils/testRewardsIntegration");
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  import("@/utils/testRewardsIntegration").catch(console.warn);
 }
 
 // Import components
