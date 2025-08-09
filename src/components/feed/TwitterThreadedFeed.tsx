@@ -154,7 +154,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     {
       id: 'product1',
       type: 'product',
-      content: '🎨 New Digital Art Collection Available! Hand-crafted NFT series featuring cyberpunk aesthetics. Each piece is unique and comes with unlockable content. Perfect for collectors and digital art enthusiasts!',
+      content: '�� New Digital Art Collection Available! Hand-crafted NFT series featuring cyberpunk aesthetics. Each piece is unique and comes with unlockable content. Perfect for collectors and digital art enthusiasts!',
       author: {
         name: 'ArtistCo Gallery',
         username: 'artistco_nft',
@@ -625,7 +625,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
             <div className="flex items-center gap-3">
               <MessageSquare className="h-5 w-5 text-purple-600" />
               <div>
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100">��� Threaded View Active</h3>
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100">🧵 Threaded View Active</h3>
                 <p className="text-sm text-purple-700 dark:text-purple-200">
                   Click any post to view its full conversation thread
                 </p>
@@ -849,22 +849,98 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 </div>
               )}
 
-              {/* Enhanced Unified Action Buttons */}
-              <UnifiedActionButtons
-                postId={post.id}
-                type={post.type}
-                isLive={post.isLive}
-                price={post.price}
-                location={post.location}
-                eventDate={post.eventDate}
-                jobType={post.jobType}
-                company={post.company}
-                salary={post.salary}
-                skills={post.skills}
-                ctaText={post.ctaText}
-                ctaUrl={post.ctaUrl}
-                author={post.author}
-              />
+              {/* Enhanced Unified Action Buttons with Quick Actions */}
+              <div className="space-y-3">
+                <UnifiedActionButtons
+                  postId={post.id}
+                  type={post.type}
+                  isLive={post.isLive}
+                  price={post.price}
+                  location={post.location}
+                  eventDate={post.eventDate}
+                  jobType={post.jobType}
+                  company={post.company}
+                  salary={post.salary}
+                  skills={post.skills}
+                  ctaText={post.ctaText}
+                  ctaUrl={post.ctaUrl}
+                  author={post.author}
+                />
+
+                {/* Quick Action Buttons for Direct Actions */}
+                {post.type === 'product' && (
+                  <div className="flex gap-2">
+                    <QuickActionButton
+                      postId={post.id}
+                      type="product"
+                      actionType="buy_direct"
+                      label="Buy Now"
+                      price={post.price}
+                      size="sm"
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/app/marketplace/product/${post.id}`);
+                      }}
+                      className="flex-1"
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                )}
+
+                {post.type === 'job' && (
+                  <div className="flex gap-2">
+                    <QuickActionButton
+                      postId={post.id}
+                      type="job"
+                      actionType="apply_quick"
+                      label="Quick Apply"
+                      size="sm"
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/app/freelance/job/${post.id}`);
+                      }}
+                      className="flex-1"
+                    >
+                      View Job
+                    </Button>
+                  </div>
+                )}
+
+                {post.type === 'event' && (
+                  <div className="flex gap-2">
+                    <QuickActionButton
+                      postId={post.id}
+                      type="event"
+                      actionType={post.isLive ? 'watch_live' : 'join_direct'}
+                      label={post.isLive ? 'Join Live' : 'Register'}
+                      size="sm"
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/app/events/${post.id}`);
+                      }}
+                      className="flex-1"
+                    >
+                      Event Details
+                    </Button>
+                  </div>
+                )}
+              </div>
 
               {/* Enhanced Post Actions */}
               <div className="flex items-center justify-between">
