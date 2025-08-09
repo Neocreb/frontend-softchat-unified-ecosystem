@@ -287,7 +287,11 @@ export default function EnhancedRewards() {
       </div>
 
       {/* Rewards Credit Card */}
-      {rewardData && (
+      {isLoading ? (
+        <div className="animate-pulse">
+          <div className="h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl"></div>
+        </div>
+      ) : rewardData ? (
         <RewardsCard
           currentSoftPoints={rewardData.currentSoftPoints}
           availableToWithdraw={rewardData.availableToWithdraw}
@@ -296,10 +300,16 @@ export default function EnhancedRewards() {
           onWithdraw={() => setShowWithdrawalModal(true)}
           className="mb-8"
         />
-      )}
+      ) : null}
 
       {/* Organized Stats Section */}
-      {rewardData && (
+      {isLoading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 animate-pulse">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="h-32 bg-gray-200 rounded-xl"></div>
+          ))}
+        </div>
+      ) : rewardData ? (
         <RewardsStats
           totalEarnings={rewardData.totalEarnings}
           currentSoftPoints={rewardData.currentSoftPoints}
@@ -307,7 +317,7 @@ export default function EnhancedRewards() {
           activityStats={rewardData.activityStats}
           earningsByType={rewardData.earningsByType}
         />
-      )}
+      ) : null}
 
       {/* Tabbed Content */}
       <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
