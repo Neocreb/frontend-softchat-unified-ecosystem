@@ -114,46 +114,16 @@ const PostCard = ({ post }: PostCardProps) => {
           </div>
         )}
       </CardContent>
-      <CardFooter className="px-4 pt-1 pb-3 border-t flex justify-between">
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            "flex items-center gap-1 text-muted-foreground",
-            liked && "text-softchat-accent"
-          )}
-          onClick={handleLike}
-        >
-          <Heart className={cn("h-4 w-4", liked && "fill-current")} />
-          <span>{likesCount}</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-1 text-muted-foreground"
-        >
-          <MessageCircle className="h-4 w-4" />
-          <span>{post.comments}</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-1 text-muted-foreground"
-        >
-          <Share2 className="h-4 w-4" />
-          <span>{post.shares}</span>
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          className={cn(
-            "text-muted-foreground",
-            bookmarked && "text-softchat-primary"
-          )}
-          onClick={handleBookmark}
-        >
-          <Bookmark className={cn("h-4 w-4", bookmarked && "fill-current")} />
-        </Button>
+      <CardFooter className="px-4 pt-1 pb-3 border-t">
+        <EnhancedPostActions
+          post={post}
+          feedMode="classic"
+          onLikeChange={(liked) => {
+            setLiked(liked);
+            setLikesCount(prev => liked ? prev + 1 : prev - 1);
+          }}
+          onBookmarkChange={(bookmarked) => setBookmarked(bookmarked)}
+        />
       </CardFooter>
     </Card>
   );
