@@ -65,7 +65,7 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   return (
-    <Card className="overflow-hidden max-w-full">
+    <Card className="overflow-hidden max-w-full cursor-pointer hover:bg-muted/30 transition-colors" onClick={handlePostClick}>
       <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
         <Avatar className="h-9 w-9 flex-shrink-0">
           <AvatarImage src={post.author.avatar || "/placeholder.svg"} alt={post.author.name} />
