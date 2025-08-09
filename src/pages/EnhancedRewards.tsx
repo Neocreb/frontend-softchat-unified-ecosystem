@@ -172,12 +172,22 @@ export default function EnhancedRewards() {
 
   const refreshData = async () => {
     setIsRefreshing(true);
-    await loadRewardData();
-    setIsRefreshing(false);
-    toast({
-      title: "Data Updated",
-      description: "Your rewards data has been refreshed"
-    });
+    try {
+      await loadRewardData();
+      toast({
+        title: "Data Updated",
+        description: "Your rewards data has been refreshed"
+      });
+    } catch (error) {
+      console.error("Refresh failed:", error);
+      toast({
+        title: "Refresh Failed",
+        description: "Could not refresh data. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   // Quick Actions similar to wallet design
