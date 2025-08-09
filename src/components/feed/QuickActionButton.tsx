@@ -185,7 +185,7 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({
       variant={variant}
       size={size}
       onClick={handleQuickAction}
-      className={`${getVariantClass()} ${className}`}
+      className={`${getVariantClass()} ${className} text-xs px-3 py-1.5 h-auto`}
     >
       {getIcon()}
       {label}
