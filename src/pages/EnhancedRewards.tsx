@@ -28,6 +28,11 @@ import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { fetchWithAuth } from "@/lib/fetch-utils";
 import { cn } from "@/lib/utils";
 
+// Test integration (only in development)
+if (process.env.NODE_ENV === "development") {
+  import("@/utils/testRewardsIntegration");
+}
+
 // Import components
 import EnhancedUnifiedCreatorEconomy from "@/components/creator-economy/EnhancedUnifiedCreatorEconomy";
 import ReferralManager from "@/components/activity-economy/ReferralManager";
