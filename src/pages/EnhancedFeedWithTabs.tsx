@@ -526,21 +526,36 @@ const EnhancedFeedWithTabs = () => {
               onValueChange={setActiveTab}
               className="w-full"
             >
-              {/* Modern Tab Navigation - At the top */}
+              {/* Modern Tab Navigation - Horizontally scrollable */}
               <div className="sticky top-0 z-40 bg-white border-b border-gray-200 mb-4">
-                <div className="flex">
+                <div className="flex overflow-x-auto scrollbar-hide">
                   {tabs.map((tab) => (
                     <button
                       key={tab.value}
-                      onClick={() => setActiveTab(tab.value)}
+                      onClick={() => {
+                        if (tab.isToggle) {
+                          // Toggle view mode
+                          setFeedViewMode(prev => prev === 'classic' ? 'threaded' : 'classic');
+                        } else {
+                          setActiveTab(tab.value);
+                        }
+                      }}
                       className={cn(
-                        "flex-1 px-4 py-3 text-sm font-medium text-center border-b-2 transition-colors",
-                        activeTab === tab.value
+                        "flex-shrink-0 flex items-center gap-2 px-4 py-3 text-sm font-medium text-center border-b-2 transition-colors min-w-max",
+                        !tab.isToggle && activeTab === tab.value
                           ? "text-blue-600 border-blue-600"
+                          : tab.isToggle
+                          ? "text-purple-600 border-purple-600 bg-purple-50"
                           : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
                       )}
                     >
-                      {tab.label}
+                      <tab.icon className="h-4 w-4" />
+                      <span>{tab.label}</span>
+                      {tab.isToggle && (
+                        <span className="ml-1 text-xs bg-purple-100 px-2 py-0.5 rounded-full">
+                          Switch
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
