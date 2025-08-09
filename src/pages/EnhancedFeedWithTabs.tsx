@@ -574,7 +574,9 @@ const EnhancedFeedWithTabs = () => {
                     userStories={userStories}
                     onViewStory={handleViewStory}
                   />
-                  <CreatePostTrigger onOpenCreatePost={() => setShowCreatePostFlow(true)} />
+                  <EnhancedCreatePostWithDestination
+                    defaultDestination={feedViewMode === 'classic' ? 'classic' : 'threaded'}
+                  />
                 </>
               )}
 
