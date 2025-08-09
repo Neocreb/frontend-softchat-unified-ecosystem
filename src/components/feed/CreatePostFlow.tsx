@@ -65,6 +65,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   
   // Settings
   const [audience, setAudience] = useState<AudienceType>("public");
+  const [displayMode, setDisplayMode] = useState<DisplayModeType>("both");
   const [shareToStory, setShareToStory] = useState(false);
   const [enableComments, setEnableComments] = useState(true);
   const [enableBoost, setEnableBoost] = useState(false);
