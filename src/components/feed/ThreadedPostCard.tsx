@@ -21,6 +21,8 @@ import { cn } from "@/utils/utils";
 import { useEnhancedFeed, type ThreadedPost } from "@/contexts/EnhancedFeedContext";
 import { useAuth } from "@/contexts/AuthContext";
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
+import EnhancedShareDialog from './EnhancedShareDialog';
+import UnifiedActionButtons from './UnifiedActionButtons';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -101,6 +103,26 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
     incrementShares(post.id);
     // Copy link functionality could be added here
     navigator.clipboard?.writeText(`/post/${post.id}`);
+  };
+
+  const handleRepost = (content: string) => {
+    // This would integrate with the feed context to create reposts
+    createReplyPost(post.id, content || `Reposted`, {
+      name: user?.name || 'User',
+      username: user?.username || 'user',
+      avatar: user?.avatar || '/placeholder.svg',
+      verified: user?.verified || false,
+    });
+  };
+
+  const handleQuotePost = (content: string) => {
+    // This would integrate with the feed context to create quote posts
+    createQuotePost(post.id, content, {
+      name: user?.name || 'User',
+      username: user?.username || 'user',
+      avatar: user?.avatar || '/placeholder.svg',
+      verified: user?.verified || false,
+    });
   };
 
   const handleNavigateToPost = () => {
@@ -262,15 +284,24 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
             <span>{post.comments}</span>
           </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-muted-foreground"
-            onClick={handleShare}
-          >
-            <Share2 className="h-4 w-4" />
-            <span>{post.shares}</span>
-          </Button>
+          <EnhancedShareDialog
+            postId={post.id}
+            postContent={post.content}
+            postAuthor={post.author}
+            onRepost={handleRepost}
+            onQuotePost={handleQuotePost}
+            trigger={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Share2 className="h-4 w-4" />
+                <span>{post.shares}</span>
+              </Button>
+            }
+          />
 
           {/* Enhanced Gift Button with VirtualGiftsAndTips */}
           <VirtualGiftsAndTips

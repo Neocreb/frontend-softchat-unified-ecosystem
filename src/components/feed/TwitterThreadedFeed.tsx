@@ -26,6 +26,12 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
+import EnhancedShareDialog from './EnhancedShareDialog';
+import UnifiedActionButtons from './UnifiedActionButtons';
+import QuickActionButton from './QuickActionButton';
+import { UnifiedActivityService } from '@/services/unifiedActivityService';
+import { useNotification } from '@/hooks/use-notification';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface TwitterPost {
   id: string;
@@ -70,6 +76,8 @@ interface TwitterThreadedFeedProps {
 
 const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) => {
   const navigate = useNavigate();
+  const notification = useNotification();
+  const { user } = useAuth();
   
   // Mock data representing a comprehensive Twitter-style feed with diverse platform content
   const [posts, setPosts] = useState<TwitterPost[]>([
@@ -146,7 +154,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     {
       id: 'product1',
       type: 'product',
-      content: '🎨 New Digital Art Collection Available! Hand-crafted NFT series featuring cyberpunk aesthetics. Each piece is unique and comes with unlockable content. Perfect for collectors and digital art enthusiasts!',
+      content: '�� New Digital Art Collection Available! Hand-crafted NFT series featuring cyberpunk aesthetics. Each piece is unique and comes with unlockable content. Perfect for collectors and digital art enthusiasts!',
       author: {
         name: 'ArtistCo Gallery',
         username: 'artistco_nft',
@@ -160,7 +168,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       gifts: 8,
       price: '0.25 ETH',
       ctaText: 'View Collection',
-      ctaUrl: '/marketplace/nft-collection',
+      ctaUrl: '/app/marketplace',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500',
@@ -190,7 +198,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       location: 'Remote',
       skills: ['React', 'Node.js', 'AWS', 'TypeScript'],
       ctaText: 'Apply Now',
-      ctaUrl: '/freelance/jobs/fullstack-dev',
+      ctaUrl: '/app/freelance/job/job1',
     },
 
     {
@@ -230,7 +238,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       eventDate: 'Now - 2h remaining',
       location: 'Virtual Event',
       ctaText: 'Join Live',
-      ctaUrl: '/events/crypto-masterclass',
+      ctaUrl: '/app/events',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500',
@@ -277,7 +285,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       price: '$199 (was $399)',
       skills: ['Solidity', 'Web3.js', 'Smart Contracts', 'DeFi'],
       ctaText: 'Enroll Now',
-      ctaUrl: '/learn/web3-development',
+      ctaUrl: '/app/videos?tab=tutorials',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500',
@@ -364,7 +372,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       eventDate: 'Saturday, 2:00 PM',
       location: 'Tech Hub Downtown',
       ctaText: 'RSVP Now',
-      ctaUrl: '/events/community-meetup',
+      ctaUrl: '/app/events',
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=500',
@@ -439,36 +447,171 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       eventDate: 'Live now - 3h stream',
       location: 'YouTube Live',
       ctaText: 'Join Stream',
-      ctaUrl: '/live/react-native-tutorial',
+      ctaUrl: '/app/videos?tab=live',
     },
   ]);
 
-  const handlePostClick = (postId: string, e: React.MouseEvent) => {
+  const handlePostClick = (post: TwitterPost, e: React.MouseEvent) => {
     // Don't navigate if clicking on interactive elements
     const target = e.target as HTMLElement;
     if (target.closest('button') || target.closest('a') || target.closest('[role="button"]')) {
       return;
     }
-    navigate(`/app/post/${postId}`);
+
+    // Navigate based on post type for unified experience
+    switch (post.type) {
+      case 'product':
+        navigate(`/app/marketplace/product/${post.id}`);
+        break;
+      case 'job':
+        navigate(`/app/freelance/job/${post.id}`);
+        break;
+      case 'event':
+        navigate(`/app/events/${post.id}`);
+        break;
+      case 'skill':
+        navigate(`/app/videos?tab=tutorials&course=${post.id}`);
+        break;
+      case 'sponsored':
+        if (post.ctaUrl) {
+          if (post.ctaUrl.startsWith('http')) {
+            window.open(post.ctaUrl, '_blank');
+          } else {
+            navigate(post.ctaUrl);
+          }
+        } else {
+          navigate(`/app/post/${post.id}`);
+        }
+        break;
+      default:
+        // Regular posts go to post detail
+        navigate(`/app/post/${post.id}`);
+        break;
+    }
   };
 
-  const handleLike = (postId: string, e: React.MouseEvent) => {
+  const handleLike = async (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setPosts(prev => prev.map(post => 
+
+    const post = posts.find(p => p.id === postId);
+    const newLikedState = !post?.liked;
+
+    // Update UI immediately
+    setPosts(prev => prev.map(post =>
       post.id === postId ? {
         ...post,
-        liked: !post.liked,
+        liked: newLikedState,
         likes: post.liked ? post.likes - 1 : post.likes + 1,
       } : post
     ));
+
+    // Track reward for liking
+    if (newLikedState && user?.id) {
+      try {
+        const reward = await UnifiedActivityService.trackLike(user.id, postId);
+        if (reward.success && reward.softPoints > 0) {
+          notification.success(`+${reward.softPoints} SoftPoints earned!`, {
+            description: "Thanks for engaging with the community!"
+          });
+        }
+      } catch (error) {
+        console.error("Failed to track like activity:", error);
+      }
+    }
   };
 
   const handleBookmark = (postId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setPosts(prev => prev.map(post => 
+    setPosts(prev => prev.map(post =>
       post.id === postId ? {
         ...post,
         bookmarked: !post.bookmarked,
+      } : post
+    ));
+  };
+
+  const handleComment = async (postId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // Track engagement for clicking comment
+    if (user?.id) {
+      try {
+        await UnifiedActivityService.trackVideoWatch(user.id, postId, {
+          type: 'engagement',
+          action: 'comment_click',
+          source: 'feed'
+        });
+      } catch (error) {
+        console.error("Failed to track comment click:", error);
+      }
+    }
+
+    // Navigate to post detail page to view/add comments
+    navigate(`/app/post/${postId}`);
+  };
+
+  const handleRepost = (originalPostId: string, content: string) => {
+    // Create a new repost
+    const newPost: TwitterPost = {
+      id: `repost_${Date.now()}`,
+      type: 'post',
+      content: content || `Reposted from @${posts.find(p => p.id === originalPostId)?.author.username}`,
+      author: {
+        name: 'Current User', // In real app, use actual user data
+        username: 'current_user',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: false,
+      },
+      createdAt: 'now',
+      likes: 0,
+      comments: 0,
+      shares: 0,
+      gifts: 0,
+      parentId: originalPostId,
+    };
+
+    setPosts(prev => [newPost, ...prev]);
+
+    // Increment shares on original post
+    setPosts(prev => prev.map(post =>
+      post.id === originalPostId ? {
+        ...post,
+        shares: post.shares + 1,
+      } : post
+    ));
+  };
+
+  const handleQuotePost = (originalPostId: string, content: string) => {
+    const originalPost = posts.find(p => p.id === originalPostId);
+    if (!originalPost) return;
+
+    // Create a new quote post
+    const newPost: TwitterPost = {
+      id: `quote_${Date.now()}`,
+      type: 'post',
+      content,
+      author: {
+        name: 'Current User', // In real app, use actual user data
+        username: 'current_user',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: false,
+      },
+      createdAt: 'now',
+      likes: 0,
+      comments: 0,
+      shares: 0,
+      gifts: 0,
+      // Store reference to quoted post
+      parentId: originalPostId,
+    };
+
+    setPosts(prev => [newPost, ...prev]);
+
+    // Increment shares on original post
+    setPosts(prev => prev.map(post =>
+      post.id === originalPostId ? {
+        ...post,
+        shares: post.shares + 1,
       } : post
     ));
   };
@@ -501,7 +644,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
           <Card 
             key={post.id}
             className="cursor-pointer hover:bg-muted/30 transition-colors"
-            onClick={(e) => handlePostClick(post.id, e)}
+            onClick={(e) => handlePostClick(post, e)}
           >
             <CardHeader className="pb-3 pt-4 px-4">
               <div className="flex gap-3">
@@ -706,31 +849,100 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 </div>
               )}
 
-              {/* Call-to-Action Buttons for Special Content */}
-              {(post.ctaText && post.ctaUrl) && (
-                <div className="mb-3">
-                  <Button
-                    className={cn(
-                      "w-full font-semibold",
-                      post.type === 'sponsored' && "bg-purple-600 hover:bg-purple-700",
-                      post.type === 'product' && "bg-green-600 hover:bg-green-700",
-                      post.type === 'job' && "bg-blue-600 hover:bg-blue-700",
-                      post.type === 'event' && "bg-orange-600 hover:bg-orange-700",
-                      post.type === 'skill' && "bg-indigo-600 hover:bg-indigo-700"
-                    )}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Navigate to CTA URL
-                      window.open(post.ctaUrl, '_blank');
-                    }}
-                  >
-                    {post.ctaText}
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </Button>
-                </div>
-              )}
+              {/* Enhanced Unified Action Buttons with Quick Actions */}
+              <div className="space-y-3">
+                <UnifiedActionButtons
+                  postId={post.id}
+                  type={post.type}
+                  isLive={post.isLive}
+                  price={post.price}
+                  location={post.location}
+                  eventDate={post.eventDate}
+                  jobType={post.jobType}
+                  company={post.company}
+                  salary={post.salary}
+                  skills={post.skills}
+                  ctaText={post.ctaText}
+                  ctaUrl={post.ctaUrl}
+                  author={post.author}
+                />
 
-              {/* Post Actions */}
+                {/* Quick Action Buttons for Direct Actions */}
+                {post.type === 'product' && (
+                  <div className="flex gap-2">
+                    <QuickActionButton
+                      postId={post.id}
+                      type="product"
+                      actionType="buy_direct"
+                      label="Buy Now"
+                      price={post.price}
+                      size="sm"
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/app/marketplace/product/${post.id}`);
+                      }}
+                      className="flex-1"
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                )}
+
+                {post.type === 'job' && (
+                  <div className="flex gap-2">
+                    <QuickActionButton
+                      postId={post.id}
+                      type="job"
+                      actionType="apply_quick"
+                      label="Quick Apply"
+                      size="sm"
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/app/freelance/job/${post.id}`);
+                      }}
+                      className="flex-1"
+                    >
+                      View Job
+                    </Button>
+                  </div>
+                )}
+
+                {post.type === 'event' && (
+                  <div className="flex gap-2">
+                    <QuickActionButton
+                      postId={post.id}
+                      type="event"
+                      actionType={post.isLive ? 'watch_live' : 'join_direct'}
+                      label={post.isLive ? 'Join Live' : 'Register'}
+                      size="sm"
+                      className="flex-1"
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/app/events/${post.id}`);
+                      }}
+                      className="flex-1"
+                    >
+                      Event Details
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {/* Enhanced Post Actions */}
               <div className="flex items-center justify-between">
                 <Button
                   variant="ghost"
@@ -748,20 +960,31 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={(e) => handleComment(post.id, e)}
                   className="flex items-center gap-1 text-muted-foreground hover:text-blue-500 transition-colors"
                 >
                   <MessageCircle className="h-4 w-4" />
                   <span>{post.comments}</span>
                 </Button>
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
-                >
-                  <Share2 className="h-4 w-4" />
-                  <span>{post.shares}</span>
-                </Button>
+                <EnhancedShareDialog
+                  postId={post.id}
+                  postContent={post.content}
+                  postAuthor={post.author}
+                  onRepost={(content) => handleRepost(post.id, content)}
+                  onQuotePost={(content) => handleQuotePost(post.id, content)}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Share2 className="h-4 w-4" />
+                      <span>{post.shares}</span>
+                    </Button>
+                  }
+                />
 
                 <VirtualGiftsAndTips
                   recipientId={post.author.username}

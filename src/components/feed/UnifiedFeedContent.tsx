@@ -47,6 +47,12 @@ import { EnhancedCommentsSection } from "@/components/feed/EnhancedCommentsSecti
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import { useEnhancedMarketplace } from "@/contexts/EnhancedMarketplaceContext";
 import { useFeed } from "@/contexts/FeedContext";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { UnifiedActivityService } from '@/services/unifiedActivityService';
+import { useNotification } from '@/hooks/use-notification';
+import EnhancedShareDialog from './EnhancedShareDialog';
+import QuickActionButton from './QuickActionButton';
 
 // Unified content type interface
 interface UnifiedFeedItem {
@@ -435,6 +441,9 @@ const UnifiedFeedItemCard: React.FC<{
 }> = ({ item, onInteraction }) => {
   const { toast } = useToast();
   const { addToCart } = useEnhancedMarketplace();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const notification = useNotification();
 
   // Modal states
   const [showComments, setShowComments] = React.useState(false);
@@ -507,22 +516,56 @@ const UnifiedFeedItemCard: React.FC<{
     }
   };
 
-  const handleProductClick = () => {
-    if (item.type === "product") {
-      toast({
-        title: "Product Details",
-        description: "Product details functionality coming soon!",
-      });
+  const handleContentClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a') || target.closest('[role="button"]')) {
+      return;
+    }
+
+    // Navigate based on content type for unified experience
+    switch (item.type) {
+      case 'product':
+        navigate(`/app/marketplace/product/${item.id}`);
+        break;
+      case 'job':
+        navigate(`/app/freelance/job/${item.id}`);
+        break;
+      case 'freelancer_skill':
+        navigate(`/app/freelance/find-freelancers?search=${item.author?.username}`);
+        break;
+      case 'live_event':
+        navigate(`/app/events/${item.id}`);
+        break;
+      case 'community_event':
+        navigate(`/app/events/${item.id}`);
+        break;
+      case 'sponsored_post':
+        if (item.content.ctaUrl) {
+          if (item.content.ctaUrl.startsWith('http')) {
+            window.open(item.content.ctaUrl, '_blank');
+          } else {
+            navigate(item.content.ctaUrl);
+          }
+        }
+        break;
+      default:
+        // Regular posts go to post detail
+        navigate(`/app/post/${item.id}`);
+        break;
     }
   };
 
-  const handleJobClick = () => {
-    if (item.type === "job") {
-      toast({
-        title: "Job Details",
-        description: "Job details functionality coming soon!",
-      });
-    }
+  const handleRepost = (originalPostId: string, content: string) => {
+    // This would integrate with the feed context to create reposts
+    console.log('Repost:', originalPostId, content);
+    notification.success('Post reposted successfully!');
+  };
+
+  const handleQuotePost = (originalPostId: string, content: string) => {
+    // This would integrate with the feed context to create quote posts
+    console.log('Quote post:', originalPostId, content);
+    notification.success('Quote post created successfully!');
   };
 
   const InteractionBar = () => (
@@ -557,15 +600,27 @@ const UnifiedFeedItemCard: React.FC<{
           <MessageCircle className="w-4 h-4" />
           <span className="text-xs sm:text-sm">{formatNumber(item.interactions.comments)}</span>
         </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => handleInteraction("share")}
-          className="flex items-center gap-1 px-2 py-1.5 h-auto"
-        >
-          <Share2 className="w-4 h-4" />
-          <span className="text-xs sm:text-sm">{formatNumber(item.interactions.shares)}</span>
-        </Button>
+        <EnhancedShareDialog
+          postId={item.id}
+          postContent={item.content.text || item.content.title || item.content.description || ''}
+          postAuthor={{
+            name: item.author?.name || 'Unknown',
+            username: item.author?.username || 'unknown'
+          }}
+          onRepost={handleRepost}
+          onQuotePost={handleQuotePost}
+          trigger={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-1 px-2 py-1.5 h-auto hover:text-green-500 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Share2 className="w-4 h-4" />
+              <span className="text-xs sm:text-sm">{formatNumber(item.interactions.shares)}</span>
+            </Button>
+          }
+        />
 {item.author && (
           <VirtualGiftsAndTips
             recipientId={item.author.id}
@@ -583,26 +638,49 @@ const UnifiedFeedItemCard: React.FC<{
           />
         )}
         {item.type === "product" && (
+          <QuickActionButton
+            postId={item.id}
+            type="product"
+            actionType="buy_direct"
+            label="Buy"
+            price={item.content.price?.toString()}
+            size="sm"
+            variant="ghost"
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-green-600 hover:text-green-700"
+          />
+        )}
+        {item.type === "job" && (
+          <QuickActionButton
+            postId={item.id}
+            type="job"
+            actionType="apply_quick"
+            label="Apply"
+            size="sm"
+            variant="ghost"
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-blue-600 hover:text-blue-700"
+          />
+        )}
+        {item.type === "freelancer_skill" && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => handleInteraction("buy")}
-            className="flex items-center gap-1 px-2 py-1.5 h-auto text-green-600"
+            onClick={() => navigate(`/app/freelance/find-freelancers?search=${item.author?.username}`)}
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-purple-600 hover:text-purple-700"
           >
-            <ShoppingCart className="w-4 h-4" />
-            <span className="text-xs sm:text-sm">Buy</span>
+            <ExternalLink className="w-3 h-3" />
+            <span className="text-xs">Hire</span>
           </Button>
         )}
-        {(item.type === "job" || item.type === "freelancer_skill") && (
-          <Button
-            variant="ghost"
+        {(item.type === "live_event" || item.type === "community_event") && (
+          <QuickActionButton
+            postId={item.id}
+            type="event"
+            actionType="join_direct"
+            label="Join"
             size="sm"
-            onClick={() => handleInteraction(item.type === "job" ? "apply" : "hire")}
-            className="flex items-center gap-1 px-2 py-1.5 h-auto text-blue-600"
-          >
-            <ExternalLink className="w-4 h-4" />
-            <span className="text-xs sm:text-sm">{item.type === "job" ? "Apply" : "Hire"}</span>
-          </Button>
+            variant="ghost"
+            className="flex items-center gap-1 px-2 py-1.5 h-auto text-orange-600 hover:text-orange-700"
+          />
         )}
       </div>
       <Button
@@ -747,7 +825,7 @@ const UnifiedFeedItemCard: React.FC<{
           <div className="px-4 pb-3">
             <div
               className="flex gap-3 sm:gap-4 cursor-pointer hover:bg-gray-50 rounded-lg p-2 -m-2"
-              onClick={handleProductClick}
+              onClick={handleContentClick}
             >
               <div className="flex-shrink-0">
                 <img
@@ -797,6 +875,30 @@ const UnifiedFeedItemCard: React.FC<{
           <div className="px-4 pb-4">
             <InteractionBar />
 
+            {/* Quick Actions for Product */}
+            <div className="mt-3 flex gap-2">
+              <QuickActionButton
+                postId={item.id}
+                type="product"
+                actionType="buy_direct"
+                label="Buy Now"
+                price={item.content.price?.toString()}
+                size="sm"
+                className="flex-1"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/app/marketplace/product/${item.id}`);
+                }}
+                className="flex-1"
+              >
+                View Details
+              </Button>
+            </div>
+
             {/* Comments Section */}
             {showComments && (
               <div className="mt-4 border-t pt-4">
@@ -812,7 +914,7 @@ const UnifiedFeedItemCard: React.FC<{
             )}
           </div>
 
-          {/* Product click handled in handleProductClick */}
+          {/* Product click handled in handleContentClick */}
 
         </CardContent>
       </Card>
@@ -864,7 +966,7 @@ const UnifiedFeedItemCard: React.FC<{
           {/* Job Content */}
           <div
             className="px-4 pb-3 cursor-pointer hover:bg-gray-50 rounded-lg mx-2 -mx-2"
-            onClick={handleJobClick}
+            onClick={handleContentClick}
           >
             <h3 className="font-semibold text-lg mb-2">{item.content.title}</h3>
             <p className="text-sm text-gray-600 mb-3">{item.content.description}</p>
@@ -905,6 +1007,29 @@ const UnifiedFeedItemCard: React.FC<{
           <div className="px-4 pb-4">
             <InteractionBar />
 
+            {/* Quick Actions for Job */}
+            <div className="mt-3 flex gap-2">
+              <QuickActionButton
+                postId={item.id}
+                type="job"
+                actionType="apply_quick"
+                label="Quick Apply"
+                size="sm"
+                className="flex-1"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/app/freelance/job/${item.id}`);
+                }}
+                className="flex-1"
+              >
+                View Job
+              </Button>
+            </div>
+
             {/* Comments Section */}
             {showComments && (
               <div className="mt-4 border-t pt-4">
@@ -920,7 +1045,7 @@ const UnifiedFeedItemCard: React.FC<{
             )}
           </div>
 
-          {/* Job click handled in handleJobClick, apply handled in handleInteraction */}
+          {/* Job click handled in handleContentClick */}
 
         </CardContent>
       </Card>

@@ -123,39 +123,65 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
       throw new AppError("Trust score too low for this action", 403);
     }
 
-    // Check daily limits
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Smart rate limiting - get recent activity for time-based decay
+    const timeWindow = actionType === "post_content" ? 4 : 24; // 4 hours for posts, 24 for others
+    const recentCutoff = new Date(Date.now() - timeWindow * 60 * 60 * 1000);
 
-    const todayActivities = await db
-      .select({ count: count() })
+    const recentActivities = await db
+      .select({
+        count: count(),
+        createdAt: activityLogs.createdAt
+      })
       .from(activityLogs)
       .where(
         and(
           eq(activityLogs.userId, userId),
           eq(activityLogs.actionType, actionType),
-          gte(activityLogs.createdAt, today),
+          gte(activityLogs.createdAt, recentCutoff),
           eq(activityLogs.status, "confirmed"),
         ),
       );
 
-    const dailyCount = todayActivities[0]?.count || 0;
+    const recentCount = recentActivities[0]?.count || 0;
 
-    if (rewardRule.dailyLimit && dailyCount >= rewardRule.dailyLimit) {
-      return res.json({
-        success: false,
-        message: "Daily limit reached for this action",
-        softPoints: 0,
-        walletBonus: 0,
-        newTrustScore: parseFloat(trustScore.currentScore),
-      });
+    // Check for daily limits for non-post activities (keep limits for actions prone to abuse)
+    if (rewardRule.dailyLimit && actionType !== "post_content") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const todayActivities = await db
+        .select({ count: count() })
+        .from(activityLogs)
+        .where(
+          and(
+            eq(activityLogs.userId, userId),
+            eq(activityLogs.actionType, actionType),
+            gte(activityLogs.createdAt, today),
+            eq(activityLogs.status, "confirmed"),
+          ),
+        );
+
+      const dailyCount = todayActivities[0]?.count || 0;
+
+      if (dailyCount >= rewardRule.dailyLimit) {
+        return res.json({
+          success: false,
+          message: "Daily limit reached for this action",
+          softPoints: 0,
+          walletBonus: 0,
+          newTrustScore: parseFloat(trustScore.currentScore),
+        });
+      }
     }
 
-    // Calculate decay factor
+    // Calculate decay factor based on recent activity
     let decayFactor = 1.0;
-    if (rewardRule.decayEnabled && dailyCount >= rewardRule.decayStart) {
+    const activityCount = actionType === "post_content" ? recentCount :
+                         (recentActivities[0]?.count || 0); // Use recent count for posts, daily for others
+
+    if (rewardRule.decayEnabled && activityCount >= rewardRule.decayStart) {
       const decayExponent =
-        (dailyCount - rewardRule.decayStart + 1) *
+        (activityCount - rewardRule.decayStart + 1) *
         parseFloat(rewardRule.decayRate);
       decayFactor = Math.max(
         parseFloat(rewardRule.minMultiplier),
@@ -194,24 +220,53 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
     const finalWalletBonus =
       baseWalletBonus * decayFactor * trustMultiplier * valueMultiplier;
 
-    // Quality score calculation (placeholder for AI integration)
+    // Quality score calculation with enhanced metadata analysis
     const qualityScore = await calculateQualityScore(
       actionType,
       targetId,
       context,
+      metadata,
     );
 
     // Apply quality multiplier
     const qualityMultiplier = Math.max(0.1, qualityScore);
-    const adjustedSoftPoints = finalSoftPoints * qualityMultiplier;
-    const adjustedWalletBonus = finalWalletBonus * qualityMultiplier;
+    let adjustedSoftPoints = finalSoftPoints * qualityMultiplier;
+    let adjustedWalletBonus = finalWalletBonus * qualityMultiplier;
 
-    // Fraud detection
+    // Apply modest display mode quality adjustment for post creation
+    if (actionType === "post_content" && metadata?.displayMode) {
+      // Very small quality bonus that respects the existing reward structure
+      let displayModeQualityBonus = 1.0;
+
+      switch (metadata.displayMode) {
+        case "both":
+          displayModeQualityBonus = 1.1; // +10% for both feeds (better reach)
+          break;
+        case "thread":
+        case "classic":
+          displayModeQualityBonus = 1.05; // +5% for targeted content
+          break;
+        default:
+          displayModeQualityBonus = 1.0;
+      }
+
+      // Apply only if within reasonable bounds and doesn't exceed quality threshold
+      const maxQualityMultiplier = 1.2; // Cap total quality bonus at +20%
+      const currentMultiplier = qualityMultiplier * displayModeQualityBonus;
+
+      if (currentMultiplier <= maxQualityMultiplier) {
+        adjustedSoftPoints = finalSoftPoints * currentMultiplier;
+        adjustedWalletBonus = finalWalletBonus * currentMultiplier;
+      }
+    }
+
+    // Fraud detection with time-based activity analysis
     const riskScore = await calculateRiskScore(
       userId,
       actionType,
       context,
-      dailyCount,
+      recentCount,
+      metadata,
     );
 
     let status = "confirmed";
@@ -600,16 +655,23 @@ async function calculateQualityScore(
   actionType: ActivityType,
   targetId: string | undefined,
   context: any,
+  metadata?: any,
 ): Promise<number> {
-  // Placeholder for AI-based quality scoring
-  // This would integrate with content analysis, user behavior analysis, etc.
+  // Enhanced quality scoring with content analysis and engagement prediction
 
   let baseScore = 1.0;
 
   // Time-based quality (longer engagement = higher quality)
   if (context?.timeSpent) {
-    const timeScore = Math.min(context.timeSpent / 30, 2.0); // Max 2x for 30+ seconds
-    baseScore *= timeScore;
+    if (context.timeSpent > 60) {
+      baseScore *= 2.0; // Excellent engagement time
+    } else if (context.timeSpent > 30) {
+      baseScore *= 1.6; // Good engagement time
+    } else if (context.timeSpent > 10) {
+      baseScore *= 1.3; // Decent engagement time
+    } else if (context.timeSpent < 3) {
+      baseScore *= 0.6; // Rapid-fire, likely low quality
+    }
   }
 
   // Engagement depth
@@ -618,38 +680,226 @@ async function calculateQualityScore(
     baseScore *= Math.min(depthScore, 1.5);
   }
 
-  // Action-specific quality factors
+  // Action-specific quality factors with metadata enhancement
   switch (actionType) {
     case "post_content":
-      // Would analyze content quality, originality, etc.
-      baseScore *= 1.2;
+      if (metadata) {
+        // Content length quality analysis
+        if (metadata.contentLength) {
+          if (metadata.contentLength > 100 && metadata.contentLength < 2000) {
+            baseScore *= 1.4; // Sweet spot for quality content
+          } else if (metadata.contentLength > 50) {
+            baseScore *= 1.2; // Decent length
+          } else if (metadata.contentLength < 20) {
+            baseScore *= 0.7; // Too short, likely low quality
+          }
+        }
+
+        // Media content quality boost
+        if (metadata.hasMedia) {
+          baseScore *= 1.3; // Media content typically higher engagement
+        }
+
+        // Social features quality indicators
+        if (metadata.taggedCount && metadata.taggedCount > 0) {
+          baseScore *= 1 + (Math.min(metadata.taggedCount, 5) * 0.05); // Up to +25%
+        }
+
+        if (metadata.hasLocation) {
+          baseScore *= 1.15; // Location-based content often more engaging
+        }
+
+        if (metadata.hasFeeling) {
+          baseScore *= 1.1; // Emotional context adds engagement
+        }
+
+        // Professional content indicators
+        if (metadata.isMonetized) {
+          baseScore *= 1.2; // Professional content usually higher quality
+        }
+
+        if (metadata.isCollaborative) {
+          baseScore *= 1.25; // Collaborative content often higher quality
+        }
+
+        // Display mode reach potential
+        if (metadata.displayMode === "both") {
+          baseScore *= 1.1; // Maximum reach potential
+        }
+      }
+
+      baseScore *= 1.2; // Base content creation quality bonus
       break;
+
     case "comment_post":
-      // Would analyze comment length, sentiment, relevance
+      if (metadata?.commentLength) {
+        if (metadata.commentLength > 50 && metadata.commentLength < 500) {
+          baseScore *= 1.3; // Thoughtful comment length
+        } else if (metadata.commentLength < 10) {
+          baseScore *= 0.5; // Likely spam or low quality
+        }
+      }
       baseScore *= 1.1;
       break;
+
     case "like_post":
-      // Simple action, lower base quality
-      baseScore *= 0.8;
+      // Analyze liking patterns for quality
+      if (context?.timeSpent && context.timeSpent < 2) {
+        baseScore *= 0.5; // Rapid clicking, lower quality
+      } else {
+        baseScore *= 0.8; // Thoughtful liking
+      }
+      break;
+
+    case "bid_job":
+      // Freelance proposal quality analysis
+      if (metadata) {
+        if (metadata.proposalLength && metadata.proposalLength > 100) {
+          baseScore *= 1.4; // Detailed proposals
+        }
+        if (metadata.hasPortfolio) {
+          baseScore *= 1.3; // Portfolio inclusion
+        }
+        if (metadata.timeSpent && metadata.timeSpent > 300) { // 5+ minutes
+          baseScore *= 1.5; // Thoughtful application
+        }
+      }
+      baseScore *= 1.1;
+      break;
+
+    case "complete_freelance_milestone":
+      // Milestone completion quality
+      if (metadata) {
+        if (metadata.clientRating && metadata.clientRating >= 4) {
+          baseScore *= 1.4; // High client satisfaction
+        }
+        if (metadata.onTimeDelivery) {
+          baseScore *= 1.2; // On-time delivery
+        }
+        if (metadata.deliveryTime && metadata.originalEstimate) {
+          const efficiency = metadata.originalEstimate / metadata.deliveryTime;
+          if (efficiency > 1) {
+            baseScore *= Math.min(1.3, 1 + efficiency * 0.1); // Early delivery bonus
+          }
+        }
+      }
+      baseScore *= 1.3;
+      break;
+
+    case "p2p_trade":
+      // P2P trade quality analysis
+      if (metadata) {
+        if (metadata.tradeType && metadata.completionTime) {
+          if (metadata.completionTime < 3600) { // Completed within 1 hour
+            baseScore *= 1.2; // Fast completion
+          }
+        }
+        if (metadata.disputeResolved === false) {
+          baseScore *= 1.3; // No disputes
+        }
+      }
+      baseScore *= 1.1;
+      break;
+
+    case "refer_user":
+      // Referral quality analysis
+      if (metadata) {
+        if (metadata.referredUserActions && metadata.referredUserActions > 5) {
+          baseScore *= 1.5; // Active referred users
+        }
+        if (metadata.referralMethod === 'personal_invitation') {
+          baseScore *= 1.3; // Personal invitations vs mass sharing
+        }
+      }
+      baseScore *= 1.2;
+      break;
+
+    case "create_content_premium":
+      // Premium content quality
+      if (metadata) {
+        if (metadata.contentLength && metadata.contentLength > 500) {
+          baseScore *= 1.4; // Substantial premium content
+        }
+        if (metadata.engagementRate && metadata.engagementRate > 0.1) {
+          baseScore *= 1.5; // High engagement premium content
+        }
+      }
+      baseScore *= 1.4;
+      break;
+
+    case "live_stream_host":
+      // Live streaming quality
+      if (metadata) {
+        if (metadata.streamDuration && metadata.streamDuration > 1800) { // 30+ minutes
+          baseScore *= 1.3; // Substantial streaming time
+        }
+        if (metadata.viewerCount && metadata.viewerCount > 10) {
+          baseScore *= 1.2; // Good audience engagement
+        }
+      }
+      baseScore *= 1.2;
+      break;
+
+    case "tip_creator":
+      // Tipping quality (prevent spam tipping)
+      if (metadata?.tipAmount) {
+        if (metadata.tipAmount > 1000) { // Substantial tips
+          baseScore *= 1.3;
+        } else if (metadata.tipAmount < 50) { // Very small tips might be spam
+          baseScore *= 0.7;
+        }
+      }
+      baseScore *= 1.0;
       break;
   }
 
-  return Math.max(0.1, Math.min(2.0, baseScore));
+  return Math.max(0.1, Math.min(2.5, baseScore)); // Increased max to 2.5 for exceptional quality
 }
 
 async function calculateRiskScore(
   userId: string,
   actionType: ActivityType,
   context: any,
-  dailyCount: number,
+  recentCount: number,
+  metadata?: any,
 ): Promise<number> {
   let riskScore = 0;
 
-  // High frequency risk
-  if (dailyCount > 50) {
-    riskScore += 40;
-  } else if (dailyCount > 20) {
-    riskScore += 20;
+  // Time-based frequency risk (adapted for new system)
+  if (actionType === "post_content") {
+    // For posts, check recent activity in 4-hour window
+    if (recentCount > 15) {
+      riskScore += 50; // Very high posting frequency
+    } else if (recentCount > 8) {
+      riskScore += 30; // High posting frequency
+    } else if (recentCount > 4) {
+      riskScore += 15; // Moderate posting frequency
+    }
+  } else {
+    // For other actions, use higher thresholds
+    if (recentCount > 50) {
+      riskScore += 40;
+    } else if (recentCount > 20) {
+      riskScore += 20;
+    }
+  }
+
+  // Content quality risk indicators
+  if (metadata && actionType === "post_content") {
+    // Very short content repeatedly posted
+    if (metadata.contentLength && metadata.contentLength < 15) {
+      riskScore += 15;
+    }
+
+    // No media, location, or engagement features (potential spam)
+    if (!metadata.hasMedia && !metadata.hasLocation && !metadata.hasFeeling && !metadata.taggedCount) {
+      riskScore += 10;
+    }
+
+    // Identical display mode patterns might indicate automation
+    if (recentCount > 3 && metadata.displayMode) {
+      riskScore += 5; // Minor risk for pattern behavior
+    }
   }
 
   // IP/Device pattern analysis
@@ -662,9 +912,17 @@ async function calculateRiskScore(
     riskScore += 25;
   }
 
-  // Rapid actions (would need session tracking)
+  // Rapid actions indicate automation
   if (context?.timeSpent && context.timeSpent < 2) {
-    riskScore += 20;
+    riskScore += 25; // Increased penalty for rapid actions
+  } else if (context?.timeSpent && context.timeSpent < 5) {
+    riskScore += 10; // Moderate penalty for very quick actions
+  }
+
+  // Session pattern analysis
+  if (context?.sessionId) {
+    // Could add session-based risk analysis here
+    // For now, just a placeholder
   }
 
   return Math.min(100, riskScore);

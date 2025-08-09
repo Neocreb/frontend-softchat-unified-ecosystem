@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import UnifiedCreatorEconomy from "@/components/creator-economy/UnifiedCreatorEconomy";
+import EnhancedUnifiedCreatorEconomy from "@/components/creator-economy/EnhancedUnifiedCreatorEconomy";
 
 export default function EnhancedRewards() {
   const { user } = useAuth();
@@ -68,8 +68,8 @@ export default function EnhancedRewards() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <UnifiedCreatorEconomy />
+    <div className="max-w-7xl mx-auto">
+      <EnhancedUnifiedCreatorEconomy />
     </div>
   );
 }

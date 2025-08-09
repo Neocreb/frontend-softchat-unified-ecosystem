@@ -119,6 +119,11 @@ import EnhancedTikTokVideosV3 from "./pages/EnhancedTikTokVideosV3";
 import DuetDemo from "./pages/DuetDemo";
 import CameraPermissionTest from "./components/debug/CameraPermissionTest";
 import FreelanceDashboardRouteTest from "./components/debug/FreelanceDashboardRouteTest";
+import ThreadModeTest from "./components/debug/ThreadModeTest";
+import RouteTest from "./components/debug/RouteTest";
+import DetailedJobPage from "./pages/DetailedJobPage";
+import DetailedProductPage from "./pages/DetailedProductPage";
+import DetailedEventPage from "./pages/DetailedEventPage";
 import CreatorStudio from "./pages/CreatorStudio";
 import EnhancedDashboardDemo from "./components/freelance/EnhancedDashboardDemo";
 import UnifiedCreatorStudio from "./pages/UnifiedCreatorStudio";
@@ -367,7 +372,7 @@ const AppRoutes = () => {
           <Route path="freelance/manage-projects" element={<ManageProjects />} />
           <Route path="freelance/freelancer-projects" element={<FreelancerManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
-          <Route path="freelance/job/:jobId" element={<JobDetailPage />} />
+          <Route path="freelance/job/:jobId" element={<DetailedJobPage />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route
@@ -417,6 +422,7 @@ const AppRoutes = () => {
             element={<MarketplaceWishlist />}
           />
           <Route path="marketplace/cart" element={<MarketplaceCart />} />
+          <Route path="marketplace/product/:productId" element={<DetailedProductPage />} />
           <Route
             path="marketplace/checkout"
             element={<MarketplaceCheckout />}
@@ -437,6 +443,7 @@ const AppRoutes = () => {
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />
           <Route path="events" element={<CommunityEvents />} />
+          <Route path="events/:eventId" element={<DetailedEventPage />} />
           <Route path="premium" element={<Premium />} />
           <Route
             path="kyc"
@@ -485,6 +492,8 @@ const AppRoutes = () => {
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
           <Route path="freelance-route-test" element={<FreelanceDashboardRouteTest />} />
+          <Route path="thread-mode-test" element={<ThreadModeTest />} />
+          <Route path="route-test" element={<RouteTest />} />
           <Route path="enhanced-freelance-demo" element={<EnhancedDashboardDemo userType="freelancer" />} />
           <Route path="enhanced-client-demo" element={<EnhancedDashboardDemo userType="client" />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />

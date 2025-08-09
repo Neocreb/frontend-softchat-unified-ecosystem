@@ -69,12 +69,12 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     baseSoftPoints: "3",
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 3,
+    dailyLimit: null, // Removed daily limit
     minimumTrustScore: "20",
     decayEnabled: true,
-    decayStart: 3,
-    decayRate: "0.2",
-    minMultiplier: "0.2",
+    decayStart: 1, // Start decay after 1st post in time window
+    decayRate: "0.3", // Faster decay to encourage quality over quantity
+    minMultiplier: "0.1", // Lower minimum to discourage spam
     requiresModeration: true,
     qualityThreshold: "0.8",
     isActive: true,
@@ -220,15 +220,15 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     actionType: "bid_job",
     displayName: "Bid on Job",
     description: "User submits a job proposal",
-    baseSoftPoints: "1",
+    baseSoftPoints: "2", // Increased base reward
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 10,
+    dailyLimit: null, // Removed daily limit
     minimumTrustScore: "50",
     decayEnabled: true,
-    decayStart: 5,
-    decayRate: "0.1",
-    minMultiplier: "0.3",
+    decayStart: 1, // Start decay after 1st bid in time window
+    decayRate: "0.2", // Moderate decay to encourage quality
+    minMultiplier: "0.2",
     requiresModeration: false,
     qualityThreshold: "0.7",
     isActive: true,
@@ -236,24 +236,25 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
   {
     actionType: "complete_freelance_milestone",
     displayName: "Complete Freelance Milestone",
-    description: "User completes a freelance milestone",
-    baseSoftPoints: "15",
-    baseWalletBonus: "0",
+    description: "User completes a freelance milestone (payment required)",
+    baseSoftPoints: "20", // Increased for completion rewards
+    baseWalletBonus: "0.005", // 0.5% of milestone value as bonus
     currency: "USDT",
+    minimumValue: "5000", // ₦5,000 minimum milestone value
     minimumTrustScore: "60",
-    decayEnabled: false,
+    decayEnabled: false, // No decay for legitimate completions
     decayStart: 1,
     decayRate: "0",
     minMultiplier: "1",
-    requiresModeration: false,
-    qualityThreshold: "0",
+    requiresModeration: true, // Require verification
+    qualityThreshold: "0.8", // High quality threshold
     isActive: true,
   },
   {
     actionType: "hire_freelancer",
     displayName: "Hire Freelancer",
-    description: "User hires a freelancer",
-    baseSoftPoints: "5",
+    description: "User hires a freelancer (contract confirmed)",
+    baseSoftPoints: "8", // Increased for hiring action
     baseWalletBonus: "0",
     currency: "USDT",
     minimumTrustScore: "40",
@@ -265,18 +266,87 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     qualityThreshold: "0",
     isActive: true,
   },
+  {
+    actionType: "freelance_project_completion",
+    displayName: "Complete Freelance Project",
+    description: "User successfully completes entire freelance project",
+    baseSoftPoints: "50", // High reward for project completion
+    baseWalletBonus: "0.01", // 1% of project value
+    currency: "USDT",
+    minimumValue: "10000", // ₦10,000 minimum project value
+    minimumTrustScore: "70",
+    decayEnabled: false,
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: true,
+    qualityThreshold: "0.9", // Very high quality threshold
+    isActive: true,
+  },
 
   // Crypto & Trading Activities
   {
     actionType: "p2p_trade",
     displayName: "P2P Trade",
-    description: "User completes a P2P crypto trade",
+    description: "User completes a P2P crypto trade (confirmed transaction)",
+    baseSoftPoints: "8", // Increased base reward
+    baseWalletBonus: "0.001", // 0.1% of trade value
+    currency: "USDT",
+    minimumValue: "10000", // ₦10,000 minimum trade value
+    dailyLimit: null, // Removed daily limit for legitimate trades
+    minimumTrustScore: "75", // Higher trust requirement
+    decayEnabled: true, // Add decay for excessive trading
+    decayStart: 1, // Start decay after 1st trade in time window
+    decayRate: "0.15", // Moderate decay rate
+    minMultiplier: "0.3", // Higher minimum to allow legitimate trading
+    requiresModeration: true, // Require verification for large trades
+    qualityThreshold: "0.8", // High quality threshold
+    isActive: true,
+  },
+  {
+    actionType: "p2p_trade_create_offer",
+    displayName: "Create P2P Offer",
+    description: "User creates a P2P trading offer",
+    baseSoftPoints: "3",
+    baseWalletBonus: "0",
+    currency: "USDT",
+    dailyLimit: null, // No limit on offer creation
+    minimumTrustScore: "60",
+    decayEnabled: true,
+    decayStart: 2, // Allow 2 offers before decay
+    decayRate: "0.2",
+    minMultiplier: "0.2",
+    requiresModeration: false,
+    qualityThreshold: "0.6",
+    isActive: true,
+  },
+  {
+    actionType: "convert_crypto",
+    displayName: "Convert Crypto",
+    description: "User converts cryptocurrency",
+    baseSoftPoints: "3", // Increased base reward
+    baseWalletBonus: "0",
+    currency: "USDT",
+    dailyLimit: null, // No daily limit
+    minimumTrustScore: "50",
+    decayEnabled: true,
+    decayStart: 1, // Start decay after 1st conversion
+    decayRate: "0.15", // Moderate decay
+    minMultiplier: "0.4", // Allow multiple conversions
+    requiresModeration: false,
+    qualityThreshold: "0",
+    isActive: true,
+  },
+  {
+    actionType: "crypto_deposit",
+    displayName: "Crypto Deposit",
+    description: "User deposits cryptocurrency to platform",
     baseSoftPoints: "5",
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 2,
-    minimumTrustScore: "70",
-    decayEnabled: false,
+    minimumValue: "5000", // ₦5,000 minimum deposit
+    minimumTrustScore: "40",
+    decayEnabled: false, // No decay for deposits
     decayStart: 1,
     decayRate: "0",
     minMultiplier: "1",
@@ -285,19 +355,19 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     isActive: true,
   },
   {
-    actionType: "convert_crypto",
-    displayName: "Convert Crypto",
-    description: "User converts cryptocurrency",
-    baseSoftPoints: "2",
+    actionType: "crypto_withdrawal",
+    displayName: "Crypto Withdrawal",
+    description: "User withdraws cryptocurrency from platform",
+    baseSoftPoints: "3",
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 5,
-    minimumTrustScore: "50",
-    decayEnabled: true,
-    decayStart: 3,
-    decayRate: "0.1",
-    minMultiplier: "0.5",
-    requiresModeration: false,
+    minimumValue: "5000", // ₦5,000 minimum withdrawal
+    minimumTrustScore: "60", // Higher trust for withdrawals
+    decayEnabled: false, // No decay for withdrawals
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: true, // Require verification
     qualityThreshold: "0",
     isActive: true,
   },
@@ -307,16 +377,16 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     actionType: "refer_user",
     displayName: "Refer User",
     description: "User successfully refers someone who completes 3 actions",
-    baseSoftPoints: "10",
-    baseWalletBonus: "0",
+    baseSoftPoints: "25", // Significantly increased for quality referrals
+    baseWalletBonus: "0.005", // 0.5% bonus for successful referrals
     currency: "USDT",
-    minimumTrustScore: "30",
-    decayEnabled: false,
+    minimumTrustScore: "40", // Higher trust requirement
+    decayEnabled: true, // Add decay to prevent referral farms
     decayStart: 1,
-    decayRate: "0",
-    minMultiplier: "1",
-    requiresModeration: false,
-    qualityThreshold: "0",
+    decayRate: "0.1", // Moderate decay
+    minMultiplier: "0.3",
+    requiresModeration: true, // Require verification of legitimate referrals
+    qualityThreshold: "0.8", // High quality threshold
     isActive: true,
   },
 
@@ -325,33 +395,83 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     actionType: "subscribe_creator",
     displayName: "Subscribe to Creator",
     description: "User subscribes to a creator",
-    baseSoftPoints: "10",
+    baseSoftPoints: "15", // Increased base reward
     baseWalletBonus: "0",
     currency: "USDT",
     minimumTrustScore: "20",
-    decayEnabled: false,
-    decayStart: 1,
-    decayRate: "0",
-    minMultiplier: "1",
+    decayEnabled: true, // Add decay for mass subscribing
+    decayStart: 2, // Allow 2 subscriptions before decay
+    decayRate: "0.1",
+    minMultiplier: "0.4",
     requiresModeration: false,
-    qualityThreshold: "0",
+    qualityThreshold: "0.5", // Moderate quality threshold
     isActive: true,
   },
   {
     actionType: "tip_creator",
     displayName: "Tip Creator",
     description: "User tips a creator",
-    baseSoftPoints: "1",
+    baseSoftPoints: "2", // Increased base reward
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 20,
+    minimumValue: "100", // ₦100 minimum tip
+    dailyLimit: null, // Remove daily limit
     minimumTrustScore: "10",
     decayEnabled: true,
-    decayStart: 10,
-    decayRate: "0.05",
+    decayStart: 1, // Start decay after 1st tip in time window
+    decayRate: "0.1", // Moderate decay
     minMultiplier: "0.3",
     requiresModeration: false,
     qualityThreshold: "0",
+    isActive: true,
+  },
+  {
+    actionType: "create_content_premium",
+    displayName: "Create Premium Content",
+    description: "User creates premium/paid content",
+    baseSoftPoints: "15",
+    baseWalletBonus: "0.01", // 1% of content value
+    currency: "USDT",
+    minimumValue: "1000", // ₦1,000 minimum content value
+    minimumTrustScore: "60",
+    decayEnabled: false, // No decay for premium content
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: true, // Require content approval
+    qualityThreshold: "0.9", // Very high quality threshold
+    isActive: true,
+  },
+  {
+    actionType: "live_stream_host",
+    displayName: "Host Live Stream",
+    description: "User hosts a live streaming session",
+    baseSoftPoints: "10",
+    baseWalletBonus: "0",
+    currency: "USDT",
+    minimumTrustScore: "50",
+    decayEnabled: true,
+    decayStart: 1,
+    decayRate: "0.15",
+    minMultiplier: "0.3",
+    requiresModeration: false,
+    qualityThreshold: "0.7",
+    isActive: true,
+  },
+  {
+    actionType: "community_moderation",
+    displayName: "Community Moderation",
+    description: "User performs community moderation actions",
+    baseSoftPoints: "5",
+    baseWalletBonus: "0",
+    currency: "USDT",
+    minimumTrustScore: "80", // Very high trust requirement
+    decayEnabled: false, // No decay for moderation
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: false,
+    qualityThreshold: "0.8",
     isActive: true,
   },
 ];

@@ -9,13 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNotification } from "@/hooks/use-notification";
 import { useAuth } from "@/contexts/AuthContext";
-import { ActivityRewardService } from "@/services/activityRewardService";
+import { UnifiedActivityService } from "@/services/unifiedActivityService";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import EnhancedShareDialog from './EnhancedShareDialog';
 
 interface PostActionsProps {
   postId: string;
@@ -26,6 +27,14 @@ interface PostActionsProps {
   initialSaved?: boolean;
   onLikeChange?: (liked: boolean) => void;
   onSaveChange?: (saved: boolean) => void;
+  postContent?: string;
+  postAuthor?: {
+    name: string;
+    username: string;
+  };
+  onRepost?: (content: string) => void;
+  onQuotePost?: (content: string) => void;
+  onCommentClick?: () => void;
 }
 
 const PostActions = ({
@@ -37,6 +46,11 @@ const PostActions = ({
   initialSaved = false,
   onLikeChange,
   onSaveChange,
+  postContent = "",
+  postAuthor = { name: "User", username: "user" },
+  onRepost,
+  onQuotePost,
+  onCommentClick,
 }: PostActionsProps) => {
   const [liked, setLiked] = useState(initialLiked);
   const [saved, setSaved] = useState(initialSaved);
@@ -56,7 +70,7 @@ const PostActions = ({
     // Track reward for liking a post
     if (newLikedState && user?.id) {
       try {
-        const reward = await ActivityRewardService.logPostLiked(
+        const reward = await UnifiedActivityService.trackLike(
           user.id,
           postId,
           timeSpent / 1000, // Convert to seconds
@@ -88,28 +102,10 @@ const PostActions = ({
   };
 
   const handleShare = async () => {
-    // Track reward for sharing
-    if (user?.id) {
-      try {
-        const reward = await ActivityRewardService.logShare(
-          user.id,
-          postId,
-          "post",
-        );
-
-        if (reward.success && reward.softPoints > 0) {
-          notification.success(
-            `+${reward.softPoints} SoftPoints earned for sharing!`,
-            { description: "Thanks for spreading the word" },
-          );
-        }
-      } catch (error) {
-        console.error("Failed to log share activity:", error);
-      }
-    }
-
+    // This is now handled by the EnhancedShareDialog component
+    // Track reward for sharing is handled there
     notification.info("Share post", {
-      description: "Sharing options will be available soon!",
+      description: "Use the share button to access sharing options!",
     });
   };
 
@@ -132,21 +128,31 @@ const PostActions = ({
         <Button
           variant="ghost"
           size="sm"
-          className="flex items-center gap-1 px-2"
+          className="flex items-center gap-1 px-2 hover:text-blue-500 transition-colors"
+          onClick={onCommentClick}
         >
           <MessageCircle className="h-4 w-4" />
           <span className="text-xs">{initialComments}</span>
         </Button>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-1 px-2"
-          onClick={handleShare}
-        >
-          <Share className="h-4 w-4" />
-          <span className="text-xs">{initialShares}</span>
-        </Button>
+        <EnhancedShareDialog
+          postId={postId}
+          postContent={postContent}
+          postAuthor={postAuthor}
+          onRepost={onRepost}
+          onQuotePost={onQuotePost}
+          trigger={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-1 px-2 hover:text-green-500 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Share className="h-4 w-4" />
+              <span className="text-xs">{initialShares}</span>
+            </Button>
+          }
+        />
       </div>
 
       <div className="flex items-center gap-1">

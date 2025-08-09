@@ -10,14 +10,14 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { 
-  X, 
-  ArrowLeft, 
-  Image as ImageIcon, 
-  Video, 
-  Music, 
-  MapPin, 
-  UserPlus, 
+import {
+  X,
+  ArrowLeft,
+  Image as ImageIcon,
+  Video,
+  Music,
+  MapPin,
+  UserPlus,
   Smile,
   Globe,
   Users,
@@ -32,7 +32,10 @@ import {
   MessageCircle,
   Crown,
   Zap,
-  Target
+  Target,
+  LayoutGrid,
+  List,
+  Layers
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -50,6 +53,7 @@ interface CreatePostFlowProps {
 
 type PostStep = "create" | "settings";
 type AudienceType = "public" | "friends" | "private" | "custom";
+type DisplayModeType = "thread" | "classic" | "both";
 
 const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   const [currentStep, setCurrentStep] = useState<PostStep>("create");
@@ -64,6 +68,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   
   // Settings
   const [audience, setAudience] = useState<AudienceType>("public");
+  const [displayMode, setDisplayMode] = useState<DisplayModeType>("both");
   const [shareToStory, setShareToStory] = useState(false);
   const [enableComments, setEnableComments] = useState(true);
   const [enableBoost, setEnableBoost] = useState(false);
@@ -76,6 +81,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   
   // Modal states
   const [showAudienceModal, setShowAudienceModal] = useState(false);
+  const [showDisplayModeModal, setShowDisplayModeModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showMonetizationModal, setShowMonetizationModal] = useState(false);
   const [showBoostModal, setShowBoostModal] = useState(false);
@@ -152,9 +158,11 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     setLocation(location.name);
   };
 
-  const handlePost = () => {
+  const handlePost = async () => {
+    const postId = `post-${Date.now()}`;
+
     const newPost = {
-      id: `post-${Date.now()}`,
+      id: postId,
       type: "post" as const,
       timestamp: scheduleDate || new Date(),
       priority: 8,
@@ -178,6 +186,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
         activity: activity || undefined,
         taggedUsers: taggedUsers,
         audience: audience,
+        displayMode: displayMode,
         monetized: enableMonetization,
         boosted: enableBoost,
         collaborative: enableCollaborator,
@@ -198,6 +207,29 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     };
 
     addPost(newPost);
+
+    // Track post creation with display mode metadata for rewards
+    if (user?.id) {
+      try {
+        const { UnifiedActivityService } = await import('@/services/unifiedActivityService');
+        await UnifiedActivityService.trackPost(user.id, postId, {
+          displayMode,
+          hasMedia: !!mediaPreview,
+          mediaType: mediaType || undefined,
+          isMonetized: enableMonetization,
+          isBoosted: enableBoost,
+          isCollaborative: enableCollaborator,
+          audience,
+          contentLength: content.length,
+          taggedCount: taggedUsers.length,
+          hasLocation: !!location,
+          hasFeeling: !!(feeling || activity),
+          isScheduled: !!scheduleDate
+        });
+      } catch (error) {
+        console.error('Failed to track post creation reward:', error);
+      }
+    }
     
     // Show different success messages based on settings
     if (scheduleDate) {
@@ -236,6 +268,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     setFeeling("");
     setActivity("");
     setTaggedUsers([]);
+    setDisplayMode("both");
     setShareToStory(false);
     setEnableBoost(false);
     setScheduleDate(undefined);
@@ -267,47 +300,74 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const getDisplayModeIcon = () => {
+    switch (displayMode) {
+      case "thread": return <List className="h-3 w-3" />;
+      case "classic": return <LayoutGrid className="h-3 w-3" />;
+      case "both": return <Layers className="h-3 w-3" />;
+      default: return <Layers className="h-3 w-3" />;
+    }
+  };
+
+  const getDisplayModeLabel = () => {
+    switch (displayMode) {
+      case "thread": return "Thread mode";
+      case "classic": return "Classic mode";
+      case "both": return "Both modes";
+      default: return "Both modes";
+    }
+  };
+
+  const getDisplayModeDescription = () => {
+    switch (displayMode) {
+      case "thread": return "Twitter-style threaded feed";
+      case "classic": return "Facebook-style classic feed";
+      case "both": return "Appears in both feed types";
+      default: return "Appears in both feed types";
+    }
+  };
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[85vh] mx-2 sm:mx-auto p-0 overflow-hidden">
+        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[85vh] mx-1 sm:mx-2 md:mx-auto p-0 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white sticky top-0 z-10">
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
               {currentStep === "settings" && (
-                <Button variant="ghost" size="icon" onClick={handleBack} className="h-8 w-8 sm:h-10 sm:w-10">
+                <Button variant="ghost" size="icon" onClick={handleBack} className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
                   <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               )}
-              <h2 className="text-base sm:text-lg font-semibold">
+              <h2 className="text-sm sm:text-base md:text-lg font-semibold truncate">
                 {currentStep === "create" ? "Create post" : "Post settings"}
               </h2>
             </div>
-            
-            <div className="flex items-center gap-1 sm:gap-2">
+
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               {currentStep === "create" && (
-                <Button 
-                  onClick={handleNext} 
+                <Button
+                  onClick={handleNext}
                   disabled={!canProceed}
                   size="sm"
-                  className="h-8 sm:h-9 px-3 sm:px-4 text-sm"
+                  className="h-7 sm:h-8 md:h-9 px-2 sm:px-3 md:px-4 text-xs sm:text-sm"
                 >
                   Next
                 </Button>
               )}
               {currentStep === "settings" && (
-                <Button onClick={handlePost} size="sm" className="h-8 sm:h-9 px-3 sm:px-4 text-sm">
+                <Button onClick={handlePost} size="sm" className="h-7 sm:h-8 md:h-9 px-2 sm:px-3 md:px-4 text-xs sm:text-sm">
                   Post
                 </Button>
               )}
-              <Button variant="ghost" size="icon" onClick={handleClose} className="h-8 w-8 sm:h-10 sm:w-10">
-                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Button variant="ghost" size="icon" onClick={handleClose} className="h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 flex-shrink-0">
+                <X className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
               </Button>
             </div>
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto pb-safe">
             {currentStep === "create" && (
               <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
                 {/* User info */}
@@ -543,6 +603,23 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                     <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
                   </button>
 
+                  {/* Display mode */}
+                  <button
+                    onClick={() => setShowDisplayModeModal(true)}
+                    className="flex items-center justify-between w-full p-3 sm:p-4 hover:bg-gray-50 text-left"
+                  >
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        {getDisplayModeIcon()}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-sm sm:text-base">Display mode</p>
+                        <p className="text-xs sm:text-sm text-gray-500 leading-tight">{getDisplayModeDescription()}</p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0" />
+                  </button>
+
                   {/* Scheduling */}
                   <button
                     onClick={() => setShowScheduleModal(true)}
@@ -706,6 +783,87 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                 </div>
               </button>
             ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Display Mode Selection Modal */}
+      <Dialog open={showDisplayModeModal} onOpenChange={setShowDisplayModeModal}>
+        <DialogContent className="max-w-md w-full mx-2 sm:mx-auto p-0">
+          <DialogHeader className="p-3 sm:p-4 border-b">
+            <DialogTitle className="text-base sm:text-lg">Where should your post appear?</DialogTitle>
+          </DialogHeader>
+          <div className="p-3 sm:p-4 space-y-2 sm:space-y-3">
+            {[
+              {
+                value: "both",
+                icon: Layers,
+                label: "Both feeds",
+                desc: "Appears in Thread and Classic modes",
+                color: "purple",
+                bonus: "+10% quality bonus"
+              },
+              {
+                value: "thread",
+                icon: List,
+                label: "Thread mode",
+                desc: "Twitter-style threaded feed only",
+                color: "blue",
+                bonus: "+5% quality bonus"
+              },
+              {
+                value: "classic",
+                icon: LayoutGrid,
+                label: "Classic mode",
+                desc: "Facebook-style classic feed only",
+                color: "green",
+                bonus: "+5% quality bonus"
+              },
+            ].map((option) => (
+              <button
+                key={option.value}
+                onClick={() => {
+                  setDisplayMode(option.value as DisplayModeType);
+                  setShowDisplayModeModal(false);
+                }}
+                className={cn(
+                  "w-full flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg border text-left transition-colors",
+                  displayMode === option.value ? `border-${option.color}-500 bg-${option.color}-50` : "border-gray-200 hover:bg-gray-50"
+                )}
+              >
+                <div className={cn(
+                  "w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0",
+                  displayMode === option.value ? `bg-${option.color}-100` : "bg-gray-100"
+                )}>
+                  <option.icon className="h-4 w-4 sm:h-5 sm:w-5" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-medium text-sm sm:text-base truncate">{option.label}</p>
+                    <span className={cn(
+                      "text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full flex-shrink-0",
+                      option.color === "purple" ? "bg-purple-100 text-purple-700" :
+                      option.color === "blue" ? "bg-blue-100 text-blue-700" :
+                      "bg-green-100 text-green-700"
+                    )}>
+                      {option.bonus}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-500 leading-tight">{option.desc}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+          <div className="p-3 sm:p-4 pt-0">
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-2.5 sm:p-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium text-purple-700">Reward System</span>
+              </div>
+              <p className="text-xs text-purple-600 leading-tight">
+                Base reward: 3 SoftPoints per post (no daily limits!). Quality bonuses up to +150% based on content quality and engagement features.
+              </p>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

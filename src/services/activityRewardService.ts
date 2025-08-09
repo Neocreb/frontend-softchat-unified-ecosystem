@@ -167,13 +167,14 @@ export class ActivityRewardService {
     });
   }
 
-  static async logPurchase(userId: string, productId: string, amount: number) {
+  static async logPurchase(userId: string, productId: string, amount: number, metadata?: Record<string, any>) {
     return this.logActivity({
       userId,
       actionType: "purchase_product",
       targetId: productId,
       targetType: "product",
       value: amount,
+      metadata,
     });
   }
 
