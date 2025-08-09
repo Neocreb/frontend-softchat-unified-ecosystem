@@ -158,9 +158,11 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     setLocation(location.name);
   };
 
-  const handlePost = () => {
+  const handlePost = async () => {
+    const postId = `post-${Date.now()}`;
+
     const newPost = {
-      id: `post-${Date.now()}`,
+      id: postId,
       type: "post" as const,
       timestamp: scheduleDate || new Date(),
       priority: 8,
@@ -184,6 +186,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
         activity: activity || undefined,
         taggedUsers: taggedUsers,
         audience: audience,
+        displayMode: displayMode,
         monetized: enableMonetization,
         boosted: enableBoost,
         collaborative: enableCollaborator,
@@ -204,6 +207,29 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
     };
 
     addPost(newPost);
+
+    // Track post creation with display mode metadata for rewards
+    if (user?.id) {
+      try {
+        const { UnifiedActivityService } = await import('@/services/unifiedActivityService');
+        await UnifiedActivityService.trackPost(user.id, postId, {
+          displayMode,
+          hasMedia: !!mediaPreview,
+          mediaType: mediaType || undefined,
+          isMonetized: enableMonetization,
+          isBoosted: enableBoost,
+          isCollaborative: enableCollaborator,
+          audience,
+          contentLength: content.length,
+          taggedCount: taggedUsers.length,
+          hasLocation: !!location,
+          hasFeeling: !!(feeling || activity),
+          isScheduled: !!scheduleDate
+        });
+      } catch (error) {
+        console.error('Failed to track post creation reward:', error);
+      }
+    }
     
     // Show different success messages based on settings
     if (scheduleDate) {
