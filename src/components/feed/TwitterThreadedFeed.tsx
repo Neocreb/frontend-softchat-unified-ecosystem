@@ -197,7 +197,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
       location: 'Remote',
       skills: ['React', 'Node.js', 'AWS', 'TypeScript'],
       ctaText: 'Apply Now',
-      ctaUrl: '/freelance/jobs/fullstack-dev',
+      ctaUrl: '/app/freelance/job/job1',
     },
 
     {
