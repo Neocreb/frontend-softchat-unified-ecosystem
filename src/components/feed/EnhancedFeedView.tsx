@@ -216,7 +216,7 @@ const EnhancedFeedView: React.FC<EnhancedFeedViewProps> = ({
 
       {/* Create post - only show in main feed */}
       {!currentThreadId && (
-        <CreatePostCard onCreatePost={handleCreatePost} />
+        <CreatePostCard onSubmit={handleCreatePost} />
       )}
 
       {/* Posts Feed */}
