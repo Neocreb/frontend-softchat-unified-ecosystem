@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import UnifiedFeedContent from "@/components/feed/UnifiedFeedContent";
 import CreatePostTrigger from "@/components/feed/CreatePostTrigger";
-import CreatePostFlow from "@/components/feed/CreatePostFlow";
+import CreatePostWithModeSelection from "@/components/feed/CreatePostWithModeSelection";
 import EnhancedStoriesSection from "@/components/feed/EnhancedStoriesSection";
 import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
@@ -423,7 +423,7 @@ const EnhancedFeedWithTabs = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showCreateStoryModal, setShowCreateStoryModal] = useState(false);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
-  const [showCreatePostFlow, setShowCreatePostFlow] = useState(false);
+  const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
   const [feedViewMode, setFeedViewMode] = useState<'classic' | 'threaded'>('classic');
@@ -570,7 +570,7 @@ const EnhancedFeedWithTabs = () => {
                     userStories={userStories}
                     onViewStory={handleViewStory}
                   />
-                  <CreatePostTrigger onOpenCreatePost={() => setShowCreatePostFlow(true)} />
+                  <CreatePostTrigger onOpenCreatePost={() => setShowCreatePostModal(true)} />
                 </>
               )}
 
@@ -609,10 +609,10 @@ const EnhancedFeedWithTabs = () => {
         onSubmit={handleCreateStory}
       />
 
-      {/* Create Post Flow */}
-      <CreatePostFlow
-        isOpen={showCreatePostFlow}
-        onClose={() => setShowCreatePostFlow(false)}
+      {/* Create Post Modal with Mode Selection */}
+      <CreatePostWithModeSelection
+        isOpen={showCreatePostModal}
+        onClose={() => setShowCreatePostModal(false)}
       />
 
       {/* Story Viewer */}
