@@ -35,6 +35,7 @@ const CommentSection = ({
   onAddComment,
 }: CommentSectionProps) => {
   const [commentInput, setCommentInput] = useState("");
+  const [commentImages, setCommentImages] = useState<File[]>([]);
   const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
   const [expandedComments, setExpandedComments] = useState<
     Record<string, boolean>
