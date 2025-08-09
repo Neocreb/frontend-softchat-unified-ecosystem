@@ -78,6 +78,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   
   // Modal states
   const [showAudienceModal, setShowAudienceModal] = useState(false);
+  const [showDisplayModeModal, setShowDisplayModeModal] = useState(false);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showMonetizationModal, setShowMonetizationModal] = useState(false);
   const [showBoostModal, setShowBoostModal] = useState(false);
