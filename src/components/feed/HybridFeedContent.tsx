@@ -37,18 +37,8 @@ const HybridFeedContent: React.FC<HybridFeedContentProps> = ({ feedType, viewMod
     // In a real implementation, this would add the comment
   };
 
-  // Filter posts based on view mode
-  const getDisplayPosts = () => {
-    if (viewMode === 'classic') {
-      // In classic mode, show only root posts
-      return posts.filter(post => !post.parentId);
-    } else {
-      // In threaded mode, show all posts with threading
-      return posts;
-    }
-  };
-
-  const displayPosts = getDisplayPosts();
+  // Get posts for current mode using the context method
+  const displayPosts = getCurrentModePosts();
 
   if (viewMode === 'classic') {
     // Classic mode: Just use the original unified content - no changes to classic behavior
