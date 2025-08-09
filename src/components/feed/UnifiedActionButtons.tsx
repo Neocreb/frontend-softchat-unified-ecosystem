@@ -78,67 +78,55 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
         let reward;
         switch (actionType) {
           case 'buy_product':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'purchase_product',
-              targetId: postId,
-              targetType: 'product',
-              metadata: { price, source: 'feed' }
-            });
+            // For actual purchases, we'd get the price from the product data
+            const productPrice = price ? parseFloat(price.replace(/[^0-9.]/g, '')) : 0;
+            reward = await UnifiedActivityService.trackProductPurchase(
+              user.id,
+              postId,
+              productPrice
+            );
             break;
           case 'apply_job':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'bid_job',
-              targetId: postId,
-              targetType: 'job',
-              metadata: { jobType, company, source: 'feed' }
-            });
+            reward = await UnifiedActivityService.trackJobApplication(
+              user.id,
+              postId,
+              { jobType, company, source: 'feed' }
+            );
             break;
           case 'hire_freelancer':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'hire_freelancer',
-              targetId: postId,
-              targetType: 'freelancer',
-              metadata: { skills, source: 'feed' }
-            });
+            reward = await UnifiedActivityService.trackFreelancerHire(
+              user.id,
+              postId,
+              { skills, source: 'feed' }
+            );
             break;
           case 'join_event':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'join_community',
-              targetId: postId,
-              targetType: 'event',
-              metadata: { eventDate, location, source: 'feed' }
-            });
+            reward = await UnifiedActivityService.trackEventJoin(
+              user.id,
+              postId,
+              { eventDate, location, source: 'feed' }
+            );
             break;
           case 'watch_live':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'watch_video',
-              targetId: postId,
-              targetType: 'live_stream',
-              metadata: { source: 'feed' }
-            });
+            reward = await UnifiedActivityService.trackVideoWatch(
+              user.id,
+              postId,
+              { type: 'live_stream', source: 'feed' }
+            );
             break;
           case 'learn_skill':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'watch_video',
-              targetId: postId,
-              targetType: 'course',
-              metadata: { skills, source: 'feed' }
-            });
+            reward = await UnifiedActivityService.trackVideoWatch(
+              user.id,
+              postId,
+              { type: 'course', skills, source: 'feed' }
+            );
             break;
           case 'sponsored_click':
-            reward = await ActivityRewardService.logActivity({
-              userId: user.id,
-              actionType: 'share_content',
-              targetId: postId,
-              targetType: 'sponsored',
-              metadata: { source: 'feed' }
-            });
+            reward = await UnifiedActivityService.trackShare(
+              user.id,
+              postId,
+              'sponsored_click'
+            );
             break;
         }
 
