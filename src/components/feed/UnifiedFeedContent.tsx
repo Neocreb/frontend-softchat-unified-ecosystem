@@ -441,6 +441,9 @@ const UnifiedFeedItemCard: React.FC<{
 }> = ({ item, onInteraction }) => {
   const { toast } = useToast();
   const { addToCart } = useEnhancedMarketplace();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const notification = useNotification();
 
   // Modal states
   const [showComments, setShowComments] = React.useState(false);
