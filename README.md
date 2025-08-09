@@ -217,6 +217,14 @@ POST /api/creator/withdraw      # Withdraw earnings
 - `chat_messages` - Real-time messaging
 - `project_milestones` - Project tracking
 
+### **Reward System Tables**
+
+- `activity_logs` - All user activities and rewards
+- `reward_rules` - Configurable reward parameters
+- `trust_scores` - User trust and reputation scores
+- `daily_activity_summaries` - Aggregated activity data
+- `fraud_detection_logs` - Anti-abuse monitoring
+
 ## 🔧 Development
 
 ### **Available Scripts**
