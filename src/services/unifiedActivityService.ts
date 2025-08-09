@@ -73,12 +73,22 @@ export class UnifiedActivityService {
 
   // Freelance Activities
   static async trackJobApplication(userId: string, jobId: string, metadata?: Record<string, any>): Promise<ActivityRewardResponse> {
+    // Enhanced with quality analysis for proposals
+    const enhancedMetadata = {
+      ...metadata,
+      proposalLength: metadata?.coverLetter?.length || 0,
+      hasPortfolio: !!metadata?.portfolioItems,
+      expectedSalary: metadata?.expectedSalary,
+      deliveryTime: metadata?.deliveryTime,
+      timeSpent: metadata?.timeSpent || 0
+    };
+
     return ActivityRewardService.logActivity({
       userId,
       actionType: 'bid_job',
       targetId: jobId,
       targetType: 'job',
-      metadata
+      metadata: enhancedMetadata
     });
   }
 
@@ -92,13 +102,80 @@ export class UnifiedActivityService {
     });
   }
 
-  static async trackMilestoneComplete(userId: string, projectId: string, metadata?: Record<string, any>): Promise<ActivityRewardResponse> {
+  static async trackMilestoneComplete(
+    userId: string,
+    projectId: string,
+    milestoneValue: number,
+    metadata?: Record<string, any>
+  ): Promise<ActivityRewardResponse> {
+    // Only award if milestone is paid/approved
+    if (!metadata?.milestoneCompleted || !metadata?.paymentReleased) {
+      return {
+        success: false,
+        status: "pending_approval",
+        softPoints: 0,
+        walletBonus: 0,
+        newTrustScore: 0,
+        riskScore: 0,
+        message: "Reward pending milestone approval and payment"
+      };
+    }
+
     return ActivityRewardService.logActivity({
       userId,
       actionType: 'complete_freelance_milestone',
       targetId: projectId,
       targetType: 'project',
+      value: milestoneValue,
       metadata
+    });
+  }
+
+  // New enhanced freelance tracking methods
+  static async trackMilestoneCompletion(
+    userId: string,
+    projectId: string,
+    milestoneValue: number,
+    milestoneDetails: {
+      milestoneNumber: number;
+      clientApproval: boolean;
+      paymentReleased: boolean;
+      qualityRating?: number;
+      deliveryTime: number;
+      originalEstimate: number;
+    }
+  ): Promise<ActivityRewardResponse> {
+    return this.trackMilestoneComplete(userId, projectId, milestoneValue, {
+      milestoneCompleted: true,
+      paymentReleased: milestoneDetails.paymentReleased,
+      clientApproval: milestoneDetails.clientApproval,
+      ...milestoneDetails
+    });
+  }
+
+  static async trackProjectCompletion(
+    userId: string,
+    projectId: string,
+    projectValue: number,
+    completionDetails: {
+      clientRating: number;
+      onTimeDelivery: boolean;
+      budgetAdherence: boolean;
+      clientTestimonial?: string;
+      bonusPayment?: number;
+    }
+  ): Promise<ActivityRewardResponse> {
+    return ActivityRewardService.logActivity({
+      userId,
+      actionType: 'freelance_project_completion',
+      targetId: projectId,
+      targetType: 'project',
+      value: projectValue,
+      metadata: {
+        projectCompleted: true,
+        finalPaymentReceived: true,
+        ...completionDetails
+      }
     });
   }
 
