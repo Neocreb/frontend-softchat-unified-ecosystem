@@ -145,13 +145,13 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
           {/* Quick Stats Row */}
           <div className="grid grid-cols-2 gap-4 pt-2">
             <div className="text-center">
-              <div className="text-lg font-bold text-white">
+              <div className="text-base md:text-lg font-bold text-white">
                 {formatCurrency(totalEarnings, currency)}
               </div>
               <div className="text-xs text-white/70">Total Earned</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-white flex items-center justify-center gap-1">
+              <div className="text-base md:text-lg font-bold text-white flex items-center justify-center gap-1">
                 {trustScore.current}
                 <span className="text-sm text-green-300">
                   ({trustScore.multiplier}x)
