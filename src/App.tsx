@@ -154,6 +154,7 @@ import PageDetailView from "./components/pages/PageDetailView";
 import GroupManagement from "./pages/GroupManagement";
 import PageManagement from "./pages/PageManagement";
 import SendGifts from "./pages/SendGifts";
+import PostDetail from "./pages/PostDetail";
 // import FeedToggleDemo from "./pages/FeedToggleDemo";
 // import IntegratedFeedDemo from "./pages/IntegratedFeedDemo";
 import {
