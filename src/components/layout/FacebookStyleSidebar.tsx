@@ -213,11 +213,11 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
       label: "Feed",
       href: "/app/feed",
     },
-    // {
-    //   icon: <MessageSquare className="w-6 h-6 text-purple-600" />,
-    //   label: "Feed Toggle Demo",
-    //   href: "/app/feed-toggle-demo",
-    // },
+    {
+      icon: <MessageSquare className="w-6 h-6 text-purple-600" />,
+      label: "Feed Toggle Demo",
+      href: "/app/feed-demo",
+    },
     {
       icon: <MessageCircle className="w-6 h-6 text-blue-600" />,
       label: "Messages",
