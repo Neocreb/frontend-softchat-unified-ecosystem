@@ -174,11 +174,14 @@ router.post("/creator/reward", authenticateToken, async (req, res, next) => {
       }
     }
 
-    // Calculate decay factor
+    // Calculate decay factor based on recent activity
     let decayFactor = 1.0;
-    if (rewardRule.decayEnabled && dailyCount >= rewardRule.decayStart) {
+    const activityCount = actionType === "post_content" ? recentCount :
+                         (recentActivities[0]?.count || 0); // Use recent count for posts, daily for others
+
+    if (rewardRule.decayEnabled && activityCount >= rewardRule.decayStart) {
       const decayExponent =
-        (dailyCount - rewardRule.decayStart + 1) *
+        (activityCount - rewardRule.decayStart + 1) *
         parseFloat(rewardRule.decayRate);
       decayFactor = Math.max(
         parseFloat(rewardRule.minMultiplier),
