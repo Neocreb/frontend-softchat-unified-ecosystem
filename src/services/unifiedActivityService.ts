@@ -27,8 +27,38 @@ export class UnifiedActivityService {
   }
 
   // Marketplace Activities
-  static async trackProductPurchase(userId: string, productId: string, amount: number): Promise<ActivityRewardResponse> {
-    return ActivityRewardService.logPurchase(userId, productId, amount);
+  static async trackProductPurchase(userId: string, productId: string, amount: number, metadata?: Record<string, any>): Promise<ActivityRewardResponse> {
+    // Only award if payment is completed or this is a payment completion call
+    if (!metadata?.paymentCompleted && !metadata?.paymentStatus) {
+      return {
+        success: false,
+        status: "pending_payment",
+        softPoints: 0,
+        walletBonus: 0,
+        newTrustScore: 0,
+        riskScore: 0,
+        message: "Reward pending payment completion"
+      };
+    }
+
+    return ActivityRewardService.logPurchase(userId, productId, amount, metadata);
+  }
+
+  // New method for payment completion tracking
+  static async trackPaymentCompletion(
+    userId: string,
+    productId: string,
+    amount: number,
+    paymentMethod: string,
+    transactionId: string
+  ): Promise<ActivityRewardResponse> {
+    return this.trackProductPurchase(userId, productId, amount, {
+      paymentCompleted: true,
+      paymentStatus: 'completed',
+      paymentMethod,
+      transactionId,
+      timestamp: new Date().toISOString()
+    });
   }
 
   static async trackProductListing(userId: string, productId: string, metadata?: Record<string, any>): Promise<ActivityRewardResponse> {
