@@ -780,29 +780,22 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
                 </div>
               )}
 
-              {/* Call-to-Action Buttons for Special Content */}
-              {(post.ctaText && post.ctaUrl) && (
-                <div className="mb-3">
-                  <Button
-                    className={cn(
-                      "w-full font-semibold",
-                      post.type === 'sponsored' && "bg-purple-600 hover:bg-purple-700",
-                      post.type === 'product' && "bg-green-600 hover:bg-green-700",
-                      post.type === 'job' && "bg-blue-600 hover:bg-blue-700",
-                      post.type === 'event' && "bg-orange-600 hover:bg-orange-700",
-                      post.type === 'skill' && "bg-indigo-600 hover:bg-indigo-700"
-                    )}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Navigate to CTA URL
-                      window.open(post.ctaUrl, '_blank');
-                    }}
-                  >
-                    {post.ctaText}
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </Button>
-                </div>
-              )}
+              {/* Enhanced Unified Action Buttons */}
+              <UnifiedActionButtons
+                postId={post.id}
+                type={post.type}
+                isLive={post.isLive}
+                price={post.price}
+                location={post.location}
+                eventDate={post.eventDate}
+                jobType={post.jobType}
+                company={post.company}
+                salary={post.salary}
+                skills={post.skills}
+                ctaText={post.ctaText}
+                ctaUrl={post.ctaUrl}
+                author={post.author}
+              />
 
               {/* Post Actions */}
               <div className="flex items-center justify-between">
