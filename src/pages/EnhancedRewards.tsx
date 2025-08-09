@@ -89,8 +89,14 @@ export default function EnhancedRewards() {
       setIsLoading(true);
       const response = await fetchWithAuth("/api/creator/reward-summary");
       if (response.ok) {
-        const data = await response.json();
-        setRewardData(data.data);
+        const text = await response.text();
+        try {
+          const data = JSON.parse(text);
+          setRewardData(data.data || data);
+        } catch (jsonError) {
+          console.warn("JSON parse error, using fallback data:", jsonError);
+          throw new Error("Invalid JSON response");
+        }
       } else {
         // Fallback to demo data if API not available
         setRewardData({
