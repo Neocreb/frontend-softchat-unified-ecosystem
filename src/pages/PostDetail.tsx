@@ -193,11 +193,16 @@ const PostDetail: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!postId) return;
+
     // Simulate loading
     setIsLoading(true);
     setTimeout(() => {
-      setPost(mockPost);
-      setComments(mockComments);
+      const foundPost = allPosts[postId];
+      if (foundPost) {
+        setPost(foundPost);
+        setComments(getCommentsForPost(postId));
+      }
       setIsLoading(false);
     }, 500);
   }, [postId]);
