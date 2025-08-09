@@ -369,7 +369,7 @@ export default function EnhancedRewards() {
         </TabsContent>
 
         <TabsContent value="referrals" className="mt-6">
-          <ReferralManager />
+          <SafeReferralManager />
         </TabsContent>
 
         <TabsContent value="analytics" className="mt-6">
