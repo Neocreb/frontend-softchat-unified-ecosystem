@@ -330,44 +330,44 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
   return (
     <>
       <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[85vh] mx-2 sm:mx-auto p-0 overflow-hidden">
+        <DialogContent className="max-w-lg w-full h-[95vh] sm:h-[85vh] mx-1 sm:mx-2 md:mx-auto p-0 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white sticky top-0 z-10">
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
               {currentStep === "settings" && (
-                <Button variant="ghost" size="icon" onClick={handleBack} className="h-8 w-8 sm:h-10 sm:w-10">
+                <Button variant="ghost" size="icon" onClick={handleBack} className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
                   <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               )}
-              <h2 className="text-base sm:text-lg font-semibold">
+              <h2 className="text-sm sm:text-base md:text-lg font-semibold truncate">
                 {currentStep === "create" ? "Create post" : "Post settings"}
               </h2>
             </div>
-            
-            <div className="flex items-center gap-1 sm:gap-2">
+
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               {currentStep === "create" && (
-                <Button 
-                  onClick={handleNext} 
+                <Button
+                  onClick={handleNext}
                   disabled={!canProceed}
                   size="sm"
-                  className="h-8 sm:h-9 px-3 sm:px-4 text-sm"
+                  className="h-7 sm:h-8 md:h-9 px-2 sm:px-3 md:px-4 text-xs sm:text-sm"
                 >
                   Next
                 </Button>
               )}
               {currentStep === "settings" && (
-                <Button onClick={handlePost} size="sm" className="h-8 sm:h-9 px-3 sm:px-4 text-sm">
+                <Button onClick={handlePost} size="sm" className="h-7 sm:h-8 md:h-9 px-2 sm:px-3 md:px-4 text-xs sm:text-sm">
                   Post
                 </Button>
               )}
-              <Button variant="ghost" size="icon" onClick={handleClose} className="h-8 w-8 sm:h-10 sm:w-10">
-                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Button variant="ghost" size="icon" onClick={handleClose} className="h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 flex-shrink-0">
+                <X className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
               </Button>
             </div>
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto pb-safe">
             {currentStep === "create" && (
               <div className="p-3 sm:p-4 space-y-3 sm:space-y-4">
                 {/* User info */}
