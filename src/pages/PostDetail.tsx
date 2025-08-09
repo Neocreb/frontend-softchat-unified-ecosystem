@@ -73,31 +73,30 @@ const PostDetail: React.FC = () => {
   const [commentImages, setCommentImages] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Mock data - in real app this would come from API
-  const mockPost: TwitterPost = {
-    id: postId || '1',
-    content: 'Just launched my new project! Excited to share it with everyone 🚀',
-    author: {
-      name: 'Sarah Chen',
-      username: 'sarahc_dev',
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
-      verified: true,
-    },
-    createdAt: '2h',
-    likes: 45,
-    comments: 12,
-    shares: 8,
-    gifts: 3,
-    media: [{
-      type: 'image',
-      url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500',
-      alt: 'Project screenshot'
-    }],
-  };
-
-  const mockComments: TwitterComment[] = [
-    {
+  // Mock data repository - in real app this would come from API
+  const allPosts: Record<string, TwitterPost> = {
+    '1': {
       id: '1',
+      content: 'Just launched my new project! Excited to share it with everyone 🚀',
+      author: {
+        name: 'Sarah Chen',
+        username: 'sarahc_dev',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
+        verified: true,
+      },
+      createdAt: '2h',
+      likes: 45,
+      comments: 12,
+      shares: 8,
+      gifts: 3,
+      media: [{
+        type: 'image',
+        url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500',
+        alt: 'Project screenshot'
+      }],
+    },
+    '2': {
+      id: '2',
       content: 'Congratulations! This looks amazing. Can\'t wait to try it out! 🎉',
       author: {
         name: 'Alex Rodriguez',
@@ -107,11 +106,14 @@ const PostDetail: React.FC = () => {
       },
       createdAt: '1h',
       likes: 12,
-      replies: 3,
-      parentId: postId,
+      comments: 3,
+      shares: 1,
+      gifts: 1,
+      parentId: '1',
+      threadId: '1',
     },
-    {
-      id: '2',
+    '3': {
+      id: '3',
       content: 'The design choices here are incredible! Love the attention to detail.',
       author: {
         name: 'Maya Patel',
@@ -121,15 +123,70 @@ const PostDetail: React.FC = () => {
       },
       createdAt: '45m',
       likes: 8,
-      replies: 1,
+      comments: 1,
+      shares: 2,
+      gifts: 0,
       media: [{
         type: 'image',
         url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
         alt: 'Screenshot comment'
       }],
-      parentId: postId,
+      parentId: '1',
+      threadId: '1',
     },
-  ];
+    '4': {
+      id: '4',
+      content: 'Thanks Alex! Really appreciate the support. More updates coming soon!',
+      author: {
+        name: 'Sarah Chen',
+        username: 'sarahc_dev',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150',
+        verified: true,
+      },
+      createdAt: '30m',
+      likes: 5,
+      comments: 0,
+      shares: 0,
+      gifts: 0,
+      parentId: '2',
+      threadId: '1',
+    },
+    '5': {
+      id: '5',
+      content: 'Working on some exciting new features. Can\'t wait to show you all what we\'re building! 💻✨',
+      author: {
+        name: 'Mike Johnson',
+        username: 'mikej_dev',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
+        verified: false,
+      },
+      createdAt: '3h',
+      likes: 23,
+      comments: 7,
+      shares: 3,
+      gifts: 0,
+    },
+  };
+
+  const getCommentsForPost = (targetPostId: string): TwitterComment[] => {
+    return Object.values(allPosts)
+      .filter(p => p.parentId === targetPostId)
+      .map(p => ({
+        id: p.id,
+        content: p.content,
+        author: p.author,
+        createdAt: p.createdAt,
+        likes: p.likes,
+        replies: p.comments,
+        shares: p.shares,
+        gifts: p.gifts,
+        liked: p.liked,
+        bookmarked: p.bookmarked,
+        gifted: p.gifted,
+        media: p.media,
+        parentId: p.parentId,
+      }));
+  };
 
   useEffect(() => {
     // Simulate loading
