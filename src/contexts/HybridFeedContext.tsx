@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export type FeedViewMode = 'classic' | 'threaded';
 
-interface HybridPost {
+export interface HybridPost {
   id: string;
   content: string;
   author: {
