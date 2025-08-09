@@ -801,7 +801,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                 label: "Both feeds",
                 desc: "Appears in Thread and Classic modes",
                 color: "purple",
-                bonus: "+15 SoftPoints bonus"
+                bonus: "+10% quality bonus"
               },
               {
                 value: "thread",
@@ -809,7 +809,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                 label: "Thread mode",
                 desc: "Twitter-style threaded feed only",
                 color: "blue",
-                bonus: "+5 SoftPoints"
+                bonus: "+5% quality bonus"
               },
               {
                 value: "classic",
@@ -817,7 +817,7 @@ const CreatePostFlow: React.FC<CreatePostFlowProps> = ({ isOpen, onClose }) => {
                 label: "Classic mode",
                 desc: "Facebook-style classic feed only",
                 color: "green",
-                bonus: "+5 SoftPoints"
+                bonus: "+5% quality bonus"
               },
             ].map((option) => (
               <button
