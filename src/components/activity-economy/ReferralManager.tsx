@@ -374,7 +374,7 @@ const ReferralManager: React.FC = () => {
                   Conversion Rate
                 </p>
                 <p className="text-2xl font-bold text-purple-900">
-                  {referralStats?.conversionRate.toFixed(1) || 0}%
+                  {referralStats?.conversionRate?.toFixed(1) || 0}%
                 </p>
                 <p className="text-xs text-purple-600">Above average!</p>
               </div>
