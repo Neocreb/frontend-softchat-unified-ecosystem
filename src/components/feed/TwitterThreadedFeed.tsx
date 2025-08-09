@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import VirtualGiftsAndTips from '@/components/premium/VirtualGiftsAndTips';
+import UnifiedActionButtons from './UnifiedActionButtons';
 
 interface TwitterPost {
   id: string;
@@ -49,7 +50,7 @@ interface TwitterPost {
   threadId?: string;
   repliedTo?: string;
   // Content type indicators
-  type?: 'post' | 'sponsored' | 'product' | 'job' | 'event' | 'live' | 'skill';
+  type?: 'post' | 'sponsored' | 'product' | 'job' | 'event' | 'live' | 'skill' | 'live_event' | 'community_event' | 'freelancer_skill';
   // Enhanced content properties
   isSponsored?: boolean;
   isLive?: boolean;
@@ -213,7 +214,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     // Live Event
     {
       id: 'event1',
-      type: 'event',
+      type: 'live_event',
       isLive: true,
       content: '🔴 LIVE: Crypto Trading Masterclass with industry experts! Learn advanced trading strategies, technical analysis, and risk management. Q&A session included. Don\'t miss out!',
       author: {
@@ -261,7 +262,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     // Skills/Course Promotion
     {
       id: 'skill1',
-      type: 'skill',
+      type: 'freelancer_skill',
       content: '📚 Master Web3 Development in 30 Days! Comprehensive course covering Smart Contracts, DApps, and DeFi protocols. Join 5000+ students already earning in the crypto space. Early bird discount ends soon!',
       author: {
         name: 'Web3 Academy',
@@ -348,6 +349,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     // Community Event
     {
       id: 'community1',
+      type: 'community_event',
       type: 'event',
       content: '🎉 SoftChat Community Meetup this Saturday! Join us for networking, workshops, and exciting announcements about upcoming features. Free food and swag for all attendees!',
       author: {
@@ -422,7 +424,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
     // Live Stream Announcement
     {
       id: 'live1',
-      type: 'event',
+      type: 'live_event',
       isLive: true,
       content: '🔴 GOING LIVE: Building a React Native App from Scratch! Join me as I code a complete mobile app with authentication, real-time features, and more. Perfect for beginners! 🚀',
       author: {
