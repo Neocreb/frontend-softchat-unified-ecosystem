@@ -2,6 +2,7 @@ import React from 'react';
 import { useHybridFeed } from '@/contexts/HybridFeedContext';
 import HybridPostCard from './HybridPostCard';
 import UnifiedFeedContent from './UnifiedFeedContent';
+import TwitterThreadedFeed from './TwitterThreadedFeed';
 import CommentSection from './CommentSection';
 import { Card, CardContent } from '@/components/ui/card';
 import { MessageSquare, Users, TrendingUp } from 'lucide-react';
