@@ -759,15 +759,46 @@ async function calculateRiskScore(
   userId: string,
   actionType: ActivityType,
   context: any,
-  dailyCount: number,
+  recentCount: number,
+  metadata?: any,
 ): Promise<number> {
   let riskScore = 0;
 
-  // High frequency risk
-  if (dailyCount > 50) {
-    riskScore += 40;
-  } else if (dailyCount > 20) {
-    riskScore += 20;
+  // Time-based frequency risk (adapted for new system)
+  if (actionType === "post_content") {
+    // For posts, check recent activity in 4-hour window
+    if (recentCount > 15) {
+      riskScore += 50; // Very high posting frequency
+    } else if (recentCount > 8) {
+      riskScore += 30; // High posting frequency
+    } else if (recentCount > 4) {
+      riskScore += 15; // Moderate posting frequency
+    }
+  } else {
+    // For other actions, use higher thresholds
+    if (recentCount > 50) {
+      riskScore += 40;
+    } else if (recentCount > 20) {
+      riskScore += 20;
+    }
+  }
+
+  // Content quality risk indicators
+  if (metadata && actionType === "post_content") {
+    // Very short content repeatedly posted
+    if (metadata.contentLength && metadata.contentLength < 15) {
+      riskScore += 15;
+    }
+
+    // No media, location, or engagement features (potential spam)
+    if (!metadata.hasMedia && !metadata.hasLocation && !metadata.hasFeeling && !metadata.taggedCount) {
+      riskScore += 10;
+    }
+
+    // Identical display mode patterns might indicate automation
+    if (recentCount > 3 && metadata.displayMode) {
+      riskScore += 5; // Minor risk for pattern behavior
+    }
   }
 
   // IP/Device pattern analysis
@@ -780,9 +811,17 @@ async function calculateRiskScore(
     riskScore += 25;
   }
 
-  // Rapid actions (would need session tracking)
+  // Rapid actions indicate automation
   if (context?.timeSpent && context.timeSpent < 2) {
-    riskScore += 20;
+    riskScore += 25; // Increased penalty for rapid actions
+  } else if (context?.timeSpent && context.timeSpent < 5) {
+    riskScore += 10; // Moderate penalty for very quick actions
+  }
+
+  // Session pattern analysis
+  if (context?.sessionId) {
+    // Could add session-based risk analysis here
+    // For now, just a placeholder
   }
 
   return Math.min(100, riskScore);
