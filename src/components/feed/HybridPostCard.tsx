@@ -307,71 +307,59 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
           )}
         </CardContent>
 
-        <CardFooter className="px-4 pt-1 pb-3 border-t flex justify-between">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "flex items-center gap-1 text-muted-foreground hover:text-red-500 transition-colors",
-              post.liked && "text-red-500"
-            )}
-            onClick={() => toggleLike(post.id)}
-          >
-            <Heart className={cn("h-4 w-4", post.liked && "fill-current")} />
-            <span>{post.likes}</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-muted-foreground hover:text-blue-500 transition-colors"
-            onClick={() => viewMode === 'threaded' ? setShowReplyForm(true) : undefined}
-          >
-            <MessageCircle className="h-4 w-4" />
-            <span>{post.comments}</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="flex items-center gap-1 text-muted-foreground hover:text-green-500 transition-colors"
-            onClick={handleShare}
-          >
-            <Share2 className="h-4 w-4" />
-            <span>{post.shares}</span>
-          </Button>
-
-          {/* Enhanced Gift Button with VirtualGiftsAndTips */}
-          <VirtualGiftsAndTips
-            recipientId={post.author.username}
-            recipientName={post.author.name}
-            contentId={post.id}
-            trigger={
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "flex items-center gap-1 text-muted-foreground hover:text-purple-500 transition-colors",
-                  post.gifted && "text-purple-500"
-                )}
-              >
-                <Gift className={cn("h-4 w-4", post.gifted && "fill-current")} />
-                <span>{post.gifts}</span>
-              </Button>
-            }
+        <CardFooter className="px-4 pt-1 pb-3 border-t space-y-3">
+          {/* Post Actions */}
+          <PostActions
+            postId={post.id}
+            initialLikes={post.likes}
+            initialComments={post.comments}
+            initialShares={post.shares}
+            initialLiked={post.liked}
+            initialSaved={post.bookmarked}
+            post={{
+              id: post.id,
+              content: post.content,
+              author: {
+                id: post.author.username,
+                name: post.author.name,
+                username: post.author.username,
+                avatar: post.author.avatar,
+                verified: post.author.verified,
+              },
+              media: post.media,
+            }}
+            onLikeChange={(liked) => toggleLike(post.id)}
+            onSaveChange={(saved) => toggleBookmark(post.id)}
+            onCommentClick={() => {
+              if (viewMode === 'threaded') {
+                setShowReplyForm(true);
+              } else {
+                setShowComments(!showComments);
+              }
+            }}
+            onShareSuccess={(type, content) => {
+              if (type === 'repost') {
+                // Create a repost
+                console.log('Creating repost of', post.id);
+              } else if (type === 'quote' && content) {
+                handleQuote();
+              }
+              incrementShares(post.id);
+            }}
           />
 
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "text-muted-foreground hover:text-blue-500 transition-colors",
-              post.bookmarked && "text-blue-500"
-            )}
-            onClick={() => toggleBookmark(post.id)}
-          >
-            <Bookmark className={cn("h-4 w-4", post.bookmarked && "fill-current")} />
-          </Button>
+          {/* Unified Action Buttons */}
+          {(post.type === 'product' || post.type === 'job' || post.type === 'freelancer_skill' || post.type === 'live_event' || post.type === 'community_event') && (
+            <UnifiedActionButtons
+              item={{
+                id: post.id,
+                type: post.type as any,
+                content: post.content,
+              }}
+              variant="compact"
+              className="pt-2 border-t"
+            />
+          )}
         </CardFooter>
       </Card>
 
