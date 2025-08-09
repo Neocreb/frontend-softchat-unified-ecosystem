@@ -220,15 +220,15 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     actionType: "bid_job",
     displayName: "Bid on Job",
     description: "User submits a job proposal",
-    baseSoftPoints: "1",
+    baseSoftPoints: "2", // Increased base reward
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 10,
+    dailyLimit: null, // Removed daily limit
     minimumTrustScore: "50",
     decayEnabled: true,
-    decayStart: 5,
-    decayRate: "0.1",
-    minMultiplier: "0.3",
+    decayStart: 1, // Start decay after 1st bid in time window
+    decayRate: "0.2", // Moderate decay to encourage quality
+    minMultiplier: "0.2",
     requiresModeration: false,
     qualityThreshold: "0.7",
     isActive: true,
@@ -236,24 +236,25 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
   {
     actionType: "complete_freelance_milestone",
     displayName: "Complete Freelance Milestone",
-    description: "User completes a freelance milestone",
-    baseSoftPoints: "15",
-    baseWalletBonus: "0",
+    description: "User completes a freelance milestone (payment required)",
+    baseSoftPoints: "20", // Increased for completion rewards
+    baseWalletBonus: "0.005", // 0.5% of milestone value as bonus
     currency: "USDT",
+    minimumValue: "5000", // ₦5,000 minimum milestone value
     minimumTrustScore: "60",
-    decayEnabled: false,
+    decayEnabled: false, // No decay for legitimate completions
     decayStart: 1,
     decayRate: "0",
     minMultiplier: "1",
-    requiresModeration: false,
-    qualityThreshold: "0",
+    requiresModeration: true, // Require verification
+    qualityThreshold: "0.8", // High quality threshold
     isActive: true,
   },
   {
     actionType: "hire_freelancer",
     displayName: "Hire Freelancer",
-    description: "User hires a freelancer",
-    baseSoftPoints: "5",
+    description: "User hires a freelancer (contract confirmed)",
+    baseSoftPoints: "8", // Increased for hiring action
     baseWalletBonus: "0",
     currency: "USDT",
     minimumTrustScore: "40",
@@ -263,6 +264,23 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     minMultiplier: "1",
     requiresModeration: false,
     qualityThreshold: "0",
+    isActive: true,
+  },
+  {
+    actionType: "freelance_project_completion",
+    displayName: "Complete Freelance Project",
+    description: "User successfully completes entire freelance project",
+    baseSoftPoints: "50", // High reward for project completion
+    baseWalletBonus: "0.01", // 1% of project value
+    currency: "USDT",
+    minimumValue: "10000", // ₦10,000 minimum project value
+    minimumTrustScore: "70",
+    decayEnabled: false,
+    decayStart: 1,
+    decayRate: "0",
+    minMultiplier: "1",
+    requiresModeration: true,
+    qualityThreshold: "0.9", // Very high quality threshold
     isActive: true,
   },
 
