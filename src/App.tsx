@@ -478,7 +478,7 @@ const AppRoutes = () => {
           <Route path="unified-creator-studio" element={<UnifiedCreatorStudio />} />
           <Route path="send-gifts" element={<SendGifts />} />
           {/* <Route path="feed-toggle-demo" element={<FeedToggleDemo />} /> */}
-          <Route path="feed-demo" element={<IntegratedFeedDemo />} />
+          {/* <Route path="feed-demo" element={<IntegratedFeedDemo />} /> */}
           <Route path="data" element={<DataManagement />} />
           <Route path="achievements" element={<GamificationSystem />} />
           <Route path="camera-test" element={<CameraPermissionTest />} />
