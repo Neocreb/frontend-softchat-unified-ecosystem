@@ -262,11 +262,47 @@ const PostDetail: React.FC = () => {
         likes: prev.liked ? prev.likes - 1 : prev.likes + 1,
       } : null);
     } else {
-      setComments(prev => prev.map(comment => 
+      setComments(prev => prev.map(comment =>
         comment.id === targetId ? {
           ...comment,
           liked: !comment.liked,
           likes: comment.liked ? comment.likes - 1 : comment.likes + 1,
+        } : comment
+      ));
+    }
+  };
+
+  const handleShare = (targetId: string, isPost = false) => {
+    if (isPost) {
+      setPost(prev => prev ? {
+        ...prev,
+        shares: prev.shares + 1,
+      } : null);
+    } else {
+      setComments(prev => prev.map(comment =>
+        comment.id === targetId ? {
+          ...comment,
+          shares: comment.shares + 1,
+        } : comment
+      ));
+    }
+    toast({
+      title: "Shared!",
+      description: "Post has been shared.",
+    });
+  };
+
+  const handleBookmark = (targetId: string, isPost = false) => {
+    if (isPost) {
+      setPost(prev => prev ? {
+        ...prev,
+        bookmarked: !prev.bookmarked,
+      } : null);
+    } else {
+      setComments(prev => prev.map(comment =>
+        comment.id === targetId ? {
+          ...comment,
+          bookmarked: !comment.bookmarked,
         } : comment
       ));
     }
