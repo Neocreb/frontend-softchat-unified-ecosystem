@@ -69,12 +69,12 @@ export const DEFAULT_REWARD_RULES: InsertRewardRule[] = [
     baseSoftPoints: "3",
     baseWalletBonus: "0",
     currency: "USDT",
-    dailyLimit: 3,
+    dailyLimit: null, // Removed daily limit
     minimumTrustScore: "20",
     decayEnabled: true,
-    decayStart: 3,
-    decayRate: "0.2",
-    minMultiplier: "0.2",
+    decayStart: 1, // Start decay after 1st post in time window
+    decayRate: "0.3", // Faster decay to encourage quality over quantity
+    minMultiplier: "0.1", // Lower minimum to discourage spam
     requiresModeration: true,
     qualityThreshold: "0.8",
     isActive: true,
