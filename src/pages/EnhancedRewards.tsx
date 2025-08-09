@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "development") {
 
 // Import components
 import EnhancedUnifiedCreatorEconomy from "@/components/creator-economy/EnhancedUnifiedCreatorEconomy";
-import ReferralManager from "@/components/activity-economy/ReferralManager";
+import SafeReferralManager from "@/components/rewards/SafeReferralManager";
 
 interface RewardData {
   totalEarnings: number;
