@@ -51,7 +51,7 @@ class ReferralErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryS
 const SafeReferralManager: React.FC = () => {
   return (
     <ReferralErrorBoundary>
-      <ReferralManager />
+      <SafeReferralComponent />
     </ReferralErrorBoundary>
   );
 };
