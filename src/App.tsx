@@ -316,17 +316,19 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute>
               <FeedProvider>
-                <WalletProvider>
-                  <LiveContentProvider>
-                    <MarketplaceProvider>
-                      <EnhancedMarketplaceProvider>
-                        <ChatProvider>
-                          <AppLayout />
-                        </ChatProvider>
-                      </EnhancedMarketplaceProvider>
-                    </MarketplaceProvider>
-                  </LiveContentProvider>
-                </WalletProvider>
+                <EnhancedFeedProvider>
+                  <WalletProvider>
+                    <LiveContentProvider>
+                      <MarketplaceProvider>
+                        <EnhancedMarketplaceProvider>
+                          <ChatProvider>
+                            <AppLayout />
+                          </ChatProvider>
+                        </EnhancedMarketplaceProvider>
+                      </MarketplaceProvider>
+                    </LiveContentProvider>
+                  </WalletProvider>
+                </EnhancedFeedProvider>
               </FeedProvider>
             </ProtectedRoute>
           }
