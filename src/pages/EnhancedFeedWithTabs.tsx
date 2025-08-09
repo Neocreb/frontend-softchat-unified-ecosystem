@@ -38,9 +38,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { CreateStoryModal } from "@/components/feed/CreateStory";
 import StoryViewer from "@/components/feed/StoryViewer";
 import { HybridFeedProvider, useHybridFeed } from "@/contexts/HybridFeedContext";
+import { EnhancedFeedProvider } from "@/contexts/EnhancedFeedContext";
 import HybridPostCard from "@/components/feed/HybridPostCard";
 import HybridFeedContent from "@/components/feed/HybridFeedContent";
 import CommentSection from "@/components/feed/CommentSection";
+import EnhancedCreatePostWithDestination from "@/components/feed/EnhancedCreatePostWithDestination";
+import ThreadedPostCard from "@/components/feed/ThreadedPostCard";
+import { enhancedMockFeedData, enhancedThreadedMockData } from "@/data/enhancedMockFeedData";
 
 // Stories component for the feed
 const StoriesSection = ({
