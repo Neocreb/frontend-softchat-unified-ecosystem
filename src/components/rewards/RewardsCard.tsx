@@ -68,9 +68,9 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.02]",
+        "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01]",
         "bg-gradient-to-br from-softchat-primary via-purple-600 to-blue-700",
-        "border-0 text-white",
+        "border-0 text-white aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -93,22 +93,22 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
       </div>
 
-      <CardContent className="relative z-10 p-6 space-y-4 min-h-[240px]">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+      <CardContent className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-between">
+        {/* Top Section */}
+        <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <CreditCard className="h-8 w-8 text-white" />
-              <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-yellow-300" />
+              <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+              <Sparkles className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-yellow-300" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">SoftChat Rewards</h2>
-              <p className="text-white/80 text-sm">Quality-based earnings</p>
+              <h2 className="text-base sm:text-lg font-bold text-white">SoftChat Rewards</h2>
+              <p className="text-white/80 text-xs sm:text-sm">Quality-based earnings</p>
             </div>
           </div>
           <Badge
             className={cn(
-              "bg-gradient-to-r text-white border-white/20",
+              "bg-gradient-to-r text-white border-white/20 text-xs",
               getTierColor(trustScore.level)
             )}
           >
@@ -117,71 +117,52 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
           </Badge>
         </div>
 
-        {/* Main Balance Display */}
-        <div className="space-y-4">
-          {/* SoftPoints */}
-          <div className="text-center space-y-2">
-            <div className="flex items-center justify-center gap-2">
-              <Star className="h-6 w-6 text-yellow-300" />
-              <span className="text-3xl md:text-4xl font-bold text-white">
+        {/* Main Content */}
+        <div className="flex-1 flex items-center justify-between">
+          {/* Left: Main Balance */}
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-yellow-300" />
+              <span className="text-2xl sm:text-3xl font-bold text-white">
                 {formatNumber(currentSoftPoints)}
               </span>
-              <span className="text-lg text-white/80 font-medium">SP</span>
+              <span className="text-sm text-white/80 font-medium">SP</span>
             </div>
-            <p className="text-white/70 text-sm">Current SoftPoints Balance</p>
-          </div>
-
-          {/* Conversion Value */}
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
+            <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-green-300" />
-              <span className="text-xl font-semibold text-white">
+              <span className="text-lg sm:text-xl font-semibold text-white">
                 {formatCurrency(availableToWithdraw, currency)}
               </span>
-              <span className="text-white/80 text-sm">available</span>
+              <span className="text-white/80 text-xs">available</span>
             </div>
           </div>
 
-          {/* Quick Stats Row */}
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <div className="text-center">
-              <div className="text-base md:text-lg font-bold text-white">
+          {/* Right: Stats and Action */}
+          <div className="text-right space-y-2">
+            <div className="space-y-1">
+              <div className="text-sm font-bold text-white">
                 {formatCurrency(totalEarnings, currency)}
               </div>
               <div className="text-xs text-white/70">Total Earned</div>
             </div>
-            <div className="text-center">
-              <div className="text-base md:text-lg font-bold text-white flex items-center justify-center gap-1">
-                {trustScore.current}
-                <span className="text-sm text-green-300">
-                  ({trustScore.multiplier}x)
-                </span>
-              </div>
-              <div className="text-xs text-white/70">Trust Score</div>
-            </div>
+            <Button
+              onClick={onWithdraw}
+              className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
+              size="sm"
+            >
+              <Wallet className="h-3 w-3 mr-1" />
+              Withdraw
+            </Button>
           </div>
         </div>
 
-        {/* Action Button */}
-        <div className="pt-2">
-          <Button
-            onClick={onWithdraw}
-            className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105 font-semibold"
-            size="lg"
-          >
-            <Wallet className="h-5 w-5 mr-2" />
-            Withdraw to Wallet
-            <ArrowUpRight className="h-4 w-4 ml-2" />
-          </Button>
-        </div>
-
-        {/* Card Number Aesthetic */}
-        <div className="flex justify-between items-center pt-2 border-t border-white/20">
+        {/* Bottom Section */}
+        <div className="flex justify-between items-center border-t border-white/20 pt-2">
           <div className="text-white/60 text-xs font-mono">
             **** **** **** {String(currentSoftPoints).slice(-4)}
           </div>
           <div className="text-white/60 text-xs">
-            Valid until 12/99
+            Trust: {trustScore.current} ({trustScore.multiplier}x)
           </div>
         </div>
       </CardContent>
