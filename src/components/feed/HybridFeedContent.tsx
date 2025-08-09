@@ -13,7 +13,7 @@ interface HybridFeedContentProps {
 }
 
 const HybridFeedContent: React.FC<HybridFeedContentProps> = ({ feedType, viewMode }) => {
-  const { posts } = useHybridFeed();
+  const { posts, getCurrentModePosts } = useHybridFeed();
 
   // Mock comments for classic mode
   const mockComments = [
