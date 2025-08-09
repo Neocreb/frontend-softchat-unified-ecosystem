@@ -45,6 +45,15 @@ A comprehensive AI-powered social media and marketplace platform with crypto tra
 - User engagement metrics
 - Error tracking and reporting
 
+### 🎁 **Enhanced Reward System**
+
+- **No Daily Limits**: Content creators can post unlimited content
+- **Quality-Based Rewards**: Up to 2.5x multipliers for high-quality content
+- **Time-Based Decay**: Natural spam prevention through progressive reward reduction
+- **Payment-Gated Rewards**: Marketplace and freelance rewards only on completion
+- **Cross-Platform Integration**: Unified SoftPoints system across all activities
+- **Anti-Abuse Protection**: AI-powered fraud detection and risk scoring
+
 ## 🏗️ Architecture
 
 ```
