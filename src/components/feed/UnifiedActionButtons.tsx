@@ -175,8 +175,8 @@ const UnifiedActionButtons: React.FC<ActionButtonsProps> = ({
 
       case 'freelancer':
         if (author?.username) {
-          // Navigate to freelancer profile via seller route
-          targetRoute = `/app/marketplace/seller/${author.username}`;
+          // Navigate to freelancer profile via freelance route
+          targetRoute = `/app/freelance/find-freelancers?search=${author.username}`;
         } else {
           targetRoute = '/app/freelance/find-freelancers';
         }
