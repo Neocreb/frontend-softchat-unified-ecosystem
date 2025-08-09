@@ -750,6 +750,107 @@ async function calculateQualityScore(
         baseScore *= 0.8; // Thoughtful liking
       }
       break;
+
+    case "bid_job":
+      // Freelance proposal quality analysis
+      if (metadata) {
+        if (metadata.proposalLength && metadata.proposalLength > 100) {
+          baseScore *= 1.4; // Detailed proposals
+        }
+        if (metadata.hasPortfolio) {
+          baseScore *= 1.3; // Portfolio inclusion
+        }
+        if (metadata.timeSpent && metadata.timeSpent > 300) { // 5+ minutes
+          baseScore *= 1.5; // Thoughtful application
+        }
+      }
+      baseScore *= 1.1;
+      break;
+
+    case "complete_freelance_milestone":
+      // Milestone completion quality
+      if (metadata) {
+        if (metadata.clientRating && metadata.clientRating >= 4) {
+          baseScore *= 1.4; // High client satisfaction
+        }
+        if (metadata.onTimeDelivery) {
+          baseScore *= 1.2; // On-time delivery
+        }
+        if (metadata.deliveryTime && metadata.originalEstimate) {
+          const efficiency = metadata.originalEstimate / metadata.deliveryTime;
+          if (efficiency > 1) {
+            baseScore *= Math.min(1.3, 1 + efficiency * 0.1); // Early delivery bonus
+          }
+        }
+      }
+      baseScore *= 1.3;
+      break;
+
+    case "p2p_trade":
+      // P2P trade quality analysis
+      if (metadata) {
+        if (metadata.tradeType && metadata.completionTime) {
+          if (metadata.completionTime < 3600) { // Completed within 1 hour
+            baseScore *= 1.2; // Fast completion
+          }
+        }
+        if (metadata.disputeResolved === false) {
+          baseScore *= 1.3; // No disputes
+        }
+      }
+      baseScore *= 1.1;
+      break;
+
+    case "refer_user":
+      // Referral quality analysis
+      if (metadata) {
+        if (metadata.referredUserActions && metadata.referredUserActions > 5) {
+          baseScore *= 1.5; // Active referred users
+        }
+        if (metadata.referralMethod === 'personal_invitation') {
+          baseScore *= 1.3; // Personal invitations vs mass sharing
+        }
+      }
+      baseScore *= 1.2;
+      break;
+
+    case "create_content_premium":
+      // Premium content quality
+      if (metadata) {
+        if (metadata.contentLength && metadata.contentLength > 500) {
+          baseScore *= 1.4; // Substantial premium content
+        }
+        if (metadata.engagementRate && metadata.engagementRate > 0.1) {
+          baseScore *= 1.5; // High engagement premium content
+        }
+      }
+      baseScore *= 1.4;
+      break;
+
+    case "live_stream_host":
+      // Live streaming quality
+      if (metadata) {
+        if (metadata.streamDuration && metadata.streamDuration > 1800) { // 30+ minutes
+          baseScore *= 1.3; // Substantial streaming time
+        }
+        if (metadata.viewerCount && metadata.viewerCount > 10) {
+          baseScore *= 1.2; // Good audience engagement
+        }
+      }
+      baseScore *= 1.2;
+      break;
+
+    case "tip_creator":
+      // Tipping quality (prevent spam tipping)
+      if (metadata?.tipAmount) {
+        if (metadata.tipAmount > 1000) { // Substantial tips
+          baseScore *= 1.3;
+        } else if (metadata.tipAmount < 50) { // Very small tips might be spam
+          baseScore *= 0.7;
+        }
+      }
+      baseScore *= 1.0;
+      break;
   }
 
   return Math.max(0.1, Math.min(2.5, baseScore)); // Increased max to 2.5 for exceptional quality
