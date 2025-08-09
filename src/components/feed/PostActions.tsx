@@ -150,15 +150,24 @@ const PostActions = ({
           <span className="text-xs">{initialComments}</span>
         </Button>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex items-center gap-1 px-2"
-          onClick={handleShare}
-        >
-          <Share className="h-4 w-4" />
-          <span className="text-xs">{initialShares}</span>
-        </Button>
+        <EnhancedShareDialog
+          postId={postId}
+          postContent={postContent}
+          postAuthor={postAuthor}
+          onRepost={onRepost}
+          onQuotePost={onQuotePost}
+          trigger={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-1 px-2 hover:text-green-500 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Share className="h-4 w-4" />
+              <span className="text-xs">{initialShares}</span>
+            </Button>
+          }
+        />
       </div>
 
       <div className="flex items-center gap-1">
