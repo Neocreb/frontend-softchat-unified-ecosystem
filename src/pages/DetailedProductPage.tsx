@@ -249,17 +249,10 @@ const DetailedProductPage: React.FC = () => {
     try {
       const totalAmount = product.price * quantity;
       
-      const reward = await UnifiedActivityService.trackProductPurchase(
-        user.id,
-        product.id,
-        totalAmount
-      );
-
-      if (reward.success && reward.softPoints > 0) {
-        notification.success(`Purchase initiated! +${reward.softPoints} SoftPoints earned`, {
-          description: 'Redirecting to checkout...'
-        });
-      }
+      // Note: Purchase rewards will be awarded upon payment completion
+      notification.success('Proceeding to checkout...', {
+        description: 'Complete payment to earn SoftPoints rewards'
+      });
 
       // Navigate to checkout with product data
       navigate('/app/marketplace/checkout', {
