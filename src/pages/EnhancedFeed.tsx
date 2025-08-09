@@ -1262,77 +1262,32 @@ const PostCard = ({
           </div>
         )}
 
-        {/* Post Actions */}
+        {/* Enhanced Post Actions */}
         <div className="p-3 sm:p-4">
-          <div className="flex items-center justify-between mb-2 sm:mb-3">
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleLike}
-                className={cn(
-                  "flex items-center gap-1 p-1 h-auto touch-target",
-                  isLiked && "text-red-500",
-                )}
-              >
-                <Heart
-                  className={cn(
-                    "w-4 h-4 sm:w-5 sm:h-5",
-                    isLiked && "fill-current",
-                  )}
-                />
-                <span className="text-xs sm:text-sm">{likesCount}</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowComments(!showComments)}
-                className="flex items-center gap-1 p-1 h-auto touch-target"
-              >
-                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-xs sm:text-sm">{commentsCount}</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center gap-1 p-1 h-auto touch-target"
-                onClick={handleShare}
-              >
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-xs sm:text-sm">{sharesCount}</span>
-              </Button>
-              <VirtualGiftsAndTips
-                recipientId={post.user.id}
-                recipientName={post.user.name}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="flex items-center gap-1 p-1 h-auto touch-target text-yellow-600 hover:text-yellow-700"
-                  >
-                    <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="text-xs sm:text-sm">Gift</span>
-                  </Button>
-                }
-              />
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleSave}
-              className={cn(
-                "p-1 h-auto w-auto touch-target",
-                isSaved && "text-blue-500",
-              )}
-            >
-              <Bookmark
-                className={cn(
-                  "w-4 h-4 sm:w-5 sm:h-5",
-                  isSaved && "fill-current",
-                )}
-              />
-            </Button>
-          </div>
+          <EnhancedPostActions
+            post={{
+              ...post,
+              author: {
+                name: post.user.name,
+                username: post.user.username,
+                avatar: post.user.avatar,
+                verified: post.user.isVerified,
+              },
+              image: post.media[0]?.url,
+              createdAt: post.timestamp,
+              liked: isLiked,
+              bookmarked: isSaved,
+              contentType: "post",
+            }}
+            feedMode="classic"
+            onLikeChange={(liked) => {
+              setIsLiked(liked);
+              setLikesCount(prev => liked ? prev + 1 : prev - 1);
+            }}
+            onBookmarkChange={(bookmarked) => setIsSaved(bookmarked)}
+            onCommentAdded={() => setCommentsCount(prev => prev + 1)}
+            onShared={() => setSharesCount(prev => prev + 1)}
+          />
 
           {/* Enhanced Comments Section */}
           <EnhancedCommentsSection
