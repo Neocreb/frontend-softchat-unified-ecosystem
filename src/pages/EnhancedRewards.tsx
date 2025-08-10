@@ -40,6 +40,9 @@ import NotificationSystem from "@/components/rewards/NotificationSystem";
 import AchievementSystem from "@/components/rewards/AchievementSystem";
 import GoalTracking from "@/components/rewards/GoalTracking";
 import AdvancedAnalytics from "@/components/rewards/AdvancedAnalytics";
+import RewardsErrorBoundary from "@/components/rewards/RewardsErrorBoundary";
+import SeasonalEvents from "@/components/rewards/SeasonalEvents";
+import EnhancedLoadingStates from "@/components/rewards/EnhancedLoadingStates";
 
 interface RewardData {
   totalEarnings: number;
@@ -275,7 +278,8 @@ export default function EnhancedRewards() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 space-y-8">
+    <RewardsErrorBoundary>
+      <div className="max-w-7xl mx-auto p-4 space-y-8">
       {/* Enhanced Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -462,6 +466,7 @@ export default function EnhancedRewards() {
           onWithdrawalSuccess={handleWithdrawalSuccess}
         />
       )}
-    </div>
+      </div>
+    </RewardsErrorBoundary>
   );
 }
