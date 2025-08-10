@@ -15,7 +15,8 @@ import {
   Activity,
   Gift,
   Target,
-  Wallet
+  Wallet,
+  Swords
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { fetchWithAuth } from "@/lib/fetch-utils";
@@ -32,6 +33,7 @@ import WithdrawalModal from "@/components/rewards/WithdrawalModal";
 import RewardsStats from "@/components/rewards/RewardsStats";
 import RewardsActivitiesTab from "@/components/rewards/RewardsActivitiesTab";
 import RewardsChallengesTab from "@/components/rewards/RewardsChallengesTab";
+import RewardsBattleTab from "@/components/rewards/RewardsBattleTab";
 import SafeReferralManager from "@/components/rewards/SafeReferralManager";
 
 interface RewardData {
@@ -295,6 +297,7 @@ export default function EnhancedRewards() {
                 { id: "dashboard", label: "Dashboard", icon: BarChart3, description: "Overview and stats" },
                 { id: "activities", label: "Activities", icon: Activity, description: "Earnings analysis" },
                 { id: "challenges", label: "Challenges", icon: Target, description: "Complete challenges" },
+                { id: "battles", label: "Battles", icon: Swords, description: "Vote and earn" },
                 { id: "referrals", label: "Referral", icon: UserPlus, description: "Invite friends" },
               ].map((tab) => (
                 <button
@@ -371,6 +374,10 @@ export default function EnhancedRewards() {
 
         <TabsContent value="challenges" className="mt-6">
           <RewardsChallengesTab />
+        </TabsContent>
+
+        <TabsContent value="battles" className="mt-6">
+          <RewardsBattleTab />
         </TabsContent>
 
         <TabsContent value="referrals" className="mt-6">
