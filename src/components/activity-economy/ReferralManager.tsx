@@ -229,7 +229,7 @@ const ReferralManager: React.FC = () => {
   };
 
   const generateNewLink = () => {
-    const newCode = `SOFTCHAT_${user?.id?.slice(-6).toUpperCase()}_${Date.now().toString().slice(-6)}`;
+    const newCode = `SOFTCHAT_${(user?.id || "").toString().slice(-6).toUpperCase()}_${Date.now().toString().slice(-6)}`;
     const newUrl = `https://softchat.app/join?ref=${newCode}`;
 
     const newLink: ReferralLink = {
@@ -285,6 +285,16 @@ const ReferralManager: React.FC = () => {
         return <Star className="w-4 h-4 text-gray-500" />;
     }
   };
+
+  if (!user) {
+    return (
+      <div className="text-center py-12">
+        <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Referral Program</h3>
+        <p className="text-gray-600">Please sign in to access the referral program.</p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -374,7 +384,7 @@ const ReferralManager: React.FC = () => {
                   Conversion Rate
                 </p>
                 <p className="text-2xl font-bold text-purple-900">
-                  {referralStats?.conversionRate.toFixed(1) || 0}%
+                  {referralStats?.conversionRate?.toFixed(1) || 0}%
                 </p>
                 <p className="text-xs text-purple-600">Above average!</p>
               </div>

@@ -286,10 +286,10 @@ const UnifiedNotifications: React.FC = () => {
       <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
         <div className="max-w-7xl mx-auto p-4 space-y-6">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold flex items-center gap-3">
-                <Bell className="w-8 h-8 text-primary" />
+              <h1 className="text-2xl lg:text-3xl font-bold flex items-center gap-3">
+                <Bell className="w-6 h-6 lg:w-8 lg:h-8 text-primary" />
                 Notifications
                 {unreadCount > 0 && (
                   <Badge variant="destructive" className="ml-2">
@@ -302,7 +302,7 @@ const UnifiedNotifications: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               {/* Search */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -310,7 +310,7 @@ const UnifiedNotifications: React.FC = () => {
                   placeholder="Search notifications..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-64"
+                  className="pl-10 w-48 sm:w-52"
                 />
               </div>
 
@@ -318,9 +318,9 @@ const UnifiedNotifications: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm">
-                    <SortDesc className="w-4 h-4 mr-2" />
-                    Sort
-                    <ChevronDown className="w-4 h-4 ml-2" />
+                    <SortDesc className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Sort</span>
+                    <ChevronDown className="w-4 h-4 sm:ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -343,9 +343,9 @@ const UnifiedNotifications: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm">
-                    <Filter className="w-4 h-4 mr-2" />
-                    View
-                    <ChevronDown className="w-4 h-4 ml-2" />
+                    <Filter className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">View</span>
+                    <ChevronDown className="w-4 h-4 sm:ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -409,8 +409,8 @@ const UnifiedNotifications: React.FC = () => {
                 onClick={handleMarkAllAsRead}
                 disabled={unreadCount === 0}
               >
-                <CheckCircle2 className="w-4 h-4 mr-2" />
-                Mark All Read
+                <CheckCircle2 className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Mark All Read</span>
               </Button>
 
               {/* Settings */}
