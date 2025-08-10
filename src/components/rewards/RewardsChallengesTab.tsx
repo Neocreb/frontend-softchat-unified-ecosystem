@@ -18,6 +18,7 @@ import {
   Play
 } from "lucide-react";
 import { formatCurrency } from "@/utils/formatters";
+import { rewardsNotificationService } from "@/services/rewardsNotificationService";
 
 interface Challenge {
   id: string;
@@ -322,12 +323,21 @@ const RewardsChallengesTab = () => {
                       <Clock className="h-4 w-4 mr-1" />
                       {challenge.timeLeft}
                     </div>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant={challenge.status === 'completed' ? "secondary" : "default"}
                       disabled={challenge.status === 'completed' || challenge.status === 'locked'}
+                      onClick={() => {
+                        if (challenge.status === 'active') {
+                          // Simulate challenge completion for demo
+                          rewardsNotificationService.notifyChallengeCompleted(
+                            challenge.title,
+                            challenge.reward
+                          );
+                        }
+                      }}
                     >
-                      {challenge.status === 'completed' ? 'Completed' : 
+                      {challenge.status === 'completed' ? 'Completed' :
                        challenge.status === 'locked' ? 'Locked' : 'View Details'}
                       {challenge.status === 'active' && <ArrowRight className="h-4 w-4 ml-1" />}
                     </Button>
