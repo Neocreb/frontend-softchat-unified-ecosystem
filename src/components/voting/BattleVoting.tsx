@@ -356,7 +356,7 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
             <span className="font-medium">Vote Already Placed</span>
           </div>
           <div className="text-xs text-gray-300 mt-1">
-            You can only vote once per battle. Check "My Votes" tab to see your bet.
+            You can only vote once per battle. Check "My Votes" tab to see your vote.
           </div>
         </div>
       )}
@@ -495,7 +495,7 @@ const BattleVoting: React.FC<BattleVotingProps> = ({
                       <CheckCircle className="w-12 h-12 mx-auto text-green-400 mb-4" />
                       <h3 className="font-medium text-green-300 mb-2">Vote Already Placed</h3>
                       <p className="text-sm text-gray-400">
-                        You can only vote once per battle. Check "My Votes" tab to see your bet.
+                        You can only vote once per battle. Check "My Votes" tab to see your vote.
                       </p>
                     </>
                   ) : (
