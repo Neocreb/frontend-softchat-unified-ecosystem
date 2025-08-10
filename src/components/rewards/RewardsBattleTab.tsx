@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { formatCurrency } from "@/utils/formatters";
 import BattleVoting from "@/components/voting/BattleVoting";
+import { rewardsNotificationService } from "@/services/rewardsNotificationService";
 
 interface Creator {
   id: string;
@@ -243,6 +244,21 @@ const RewardsBattleTab = () => {
 
     setUserVotes(prev => [...prev, newVote]);
     setShowVotingModal(false);
+
+    // Trigger notification for vote placed
+    const battle = selectedBattle;
+    if (battle) {
+      const creatorName = vote.creatorId === battle.creator1.id ? battle.creator1.displayName : battle.creator2.displayName;
+      rewardsNotificationService.addRewardsNotification({
+        type: 'battle',
+        title: 'Battle Vote Placed! 🎯',
+        message: `Voted ${formatCurrency(vote.amount)} on ${creatorName} - Potential win: ${formatCurrency(vote.potentialWinning)}`,
+        amount: vote.amount,
+        priority: 'medium',
+        actionUrl: '/app/rewards?tab=battles',
+        actionLabel: 'View Battle'
+      });
+    }
   };
 
   const totalEarnings = userVotes
