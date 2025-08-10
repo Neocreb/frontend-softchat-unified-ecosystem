@@ -64,7 +64,7 @@ const AppLayout = () => {
         {/* Main content */}
         <main
           className={`flex-1 overflow-y-auto ${
-            isMobile ? "pt-0 pb-20 px-2" : "pt-0 pb-4 px-4"
+            isMobile ? "pt-0 pb-20 px-2" : "pt-4 pb-4 px-4"
           }`}
         >
           <div className="w-full max-w-full mx-auto">
