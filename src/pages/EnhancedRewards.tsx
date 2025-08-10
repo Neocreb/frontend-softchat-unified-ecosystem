@@ -290,7 +290,7 @@ export default function EnhancedRewards() {
 
       {/* Tabbed Content */}
       <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <div className="w-full">
+        <div className="w-full relative">
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hide" aria-label="Tabs">
               {[
@@ -322,6 +322,12 @@ export default function EnhancedRewards() {
                 </button>
               ))}
             </nav>
+            {/* Horizontal scroll indicator */}
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <div className="flex items-center text-gray-400">
+                <ArrowRight className="h-4 w-4 animate-pulse" />
+              </div>
+            </div>
           </div>
         </div>
 
