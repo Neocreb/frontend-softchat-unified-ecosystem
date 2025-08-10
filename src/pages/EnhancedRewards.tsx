@@ -36,6 +36,10 @@ import RewardsActivitiesTab from "@/components/rewards/RewardsActivitiesTab";
 import RewardsChallengesTab from "@/components/rewards/RewardsChallengesTab";
 import RewardsBattleTab from "@/components/rewards/RewardsBattleTab";
 import SafeReferralManager from "@/components/rewards/SafeReferralManager";
+import NotificationSystem from "@/components/rewards/NotificationSystem";
+import AchievementSystem from "@/components/rewards/AchievementSystem";
+import GoalTracking from "@/components/rewards/GoalTracking";
+import AdvancedAnalytics from "@/components/rewards/AdvancedAnalytics";
 
 interface RewardData {
   totalEarnings: number;
@@ -280,6 +284,9 @@ export default function EnhancedRewards() {
             Monetization
           </h1>
         </div>
+        <div className="flex items-center gap-2">
+          <NotificationSystem />
+        </div>
       </div>
 
       {/* Rewards Credit Card */}
@@ -350,13 +357,20 @@ export default function EnhancedRewards() {
               ))}
             </div>
           ) : rewardData ? (
-            <RewardsStats
-              totalEarnings={rewardData.totalEarnings}
-              currentSoftPoints={rewardData.currentSoftPoints}
-              trustScore={rewardData.trustScore}
-              activityStats={rewardData.activityStats}
-              earningsByType={rewardData.earningsByType}
-            />
+            <div className="space-y-8">
+              <RewardsStats
+                totalEarnings={rewardData.totalEarnings}
+                currentSoftPoints={rewardData.currentSoftPoints}
+                trustScore={rewardData.trustScore}
+                activityStats={rewardData.activityStats}
+                earningsByType={rewardData.earningsByType}
+              />
+
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <AchievementSystem />
+                <GoalTracking />
+              </div>
+            </div>
           ) : (
             <div className="text-center py-12">
               <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -376,10 +390,13 @@ export default function EnhancedRewards() {
               </div>
             </div>
           ) : rewardData ? (
-            <RewardsActivitiesTab
-              earningsByType={rewardData.earningsByType}
-              recentActivity={rewardData.recentActivity}
-            />
+            <div className="space-y-8">
+              <AdvancedAnalytics earningsByType={rewardData.earningsByType} />
+              <RewardsActivitiesTab
+                earningsByType={rewardData.earningsByType}
+                recentActivity={rewardData.recentActivity}
+              />
+            </div>
           ) : (
             <div className="text-center py-12">
               <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
