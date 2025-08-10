@@ -44,6 +44,9 @@ interface RewardsStatsProps {
     p2pTrading: number;
     referrals: number;
     challenges: number;
+    battleVoting: number;
+    battleRewards: number;
+    giftsAndTips: number;
   };
   currency?: string;
 }
@@ -93,6 +96,12 @@ const RewardsStats: React.FC<RewardsStatsProps> = ({
         return <Users className="h-4 w-4" />;
       case "challenges":
         return <Target className="h-4 w-4" />;
+      case "battleVoting":
+        return <Target className="h-4 w-4" />;
+      case "battleRewards":
+        return <Award className="h-4 w-4" />;
+      case "giftsAndTips":
+        return <Star className="h-4 w-4" />;
       default:
         return <Zap className="h-4 w-4" />;
     }
@@ -114,6 +123,12 @@ const RewardsStats: React.FC<RewardsStatsProps> = ({
         return "Referrals";
       case "challenges":
         return "Challenges";
+      case "battleVoting":
+        return "Battle Voting";
+      case "battleRewards":
+        return "Battle Rewards";
+      case "giftsAndTips":
+        return "Gifts & Tips";
       default:
         return type;
     }
