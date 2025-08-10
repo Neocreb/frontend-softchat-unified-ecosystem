@@ -30,7 +30,8 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
 import RewardsCard from "@/components/rewards/RewardsCard";
 import WithdrawalModal from "@/components/rewards/WithdrawalModal";
 import RewardsStats from "@/components/rewards/RewardsStats";
-import EnhancedUnifiedCreatorEconomy from "@/components/creator-economy/EnhancedUnifiedCreatorEconomy";
+import RewardsActivitiesTab from "@/components/rewards/RewardsActivitiesTab";
+import RewardsChallengesTab from "@/components/rewards/RewardsChallengesTab";
 import SafeReferralManager from "@/components/rewards/SafeReferralManager";
 
 interface RewardData {
@@ -263,26 +264,8 @@ export default function EnhancedRewards() {
         <div className="min-w-0 flex-1">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
             <Trophy className="h-8 w-8 text-yellow-500" />
-            Rewards Center
+            Monetization
           </h1>
-          <p className="text-base text-gray-600 mt-1">
-            Quality-based rewards • No daily limits • Payment-gated earnings
-          </p>
-        </div>
-        <div className="flex gap-2 flex-shrink-0">
-          <Button
-            onClick={refreshData}
-            variant="outline"
-            disabled={isRefreshing}
-            className="flex items-center gap-2"
-          >
-            <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
-            Refresh
-          </Button>
-          <Badge variant="secondary" className="px-3 py-1">
-            <Star className="h-3 w-3 mr-1" />
-            {rewardData?.trustScore.level || "Bronze"} Tier
-          </Badge>
         </div>
       </div>
 
@@ -305,29 +288,39 @@ export default function EnhancedRewards() {
 
       {/* Tabbed Content */}
       <Tabs key="rewards-tabs" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="dashboard" className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            <span className="hidden sm:inline">Dashboard</span>
-          </TabsTrigger>
-          <TabsTrigger value="activities" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            <span className="hidden sm:inline">Activities</span>
-          </TabsTrigger>
-          <TabsTrigger value="challenges" className="flex items-center gap-2">
-            <Target className="h-4 w-4" />
-            <span className="hidden sm:inline">Challenges</span>
-          </TabsTrigger>
-          <TabsTrigger value="referrals" className="flex items-center gap-2">
-            <UserPlus className="h-4 w-4" />
-            <span className="hidden sm:inline">Referral</span>
-            {rewardData?.referralStats.totalReferrals && (
-              <Badge variant="secondary" className="ml-1 text-xs h-5 w-5 rounded-full p-0 flex items-center justify-center">
-                {rewardData.referralStats.totalReferrals}
-              </Badge>
-            )}
-          </TabsTrigger>
-        </TabsList>
+        <div className="w-full">
+          <div className="border-b border-gray-200">
+            <nav className="-mb-px flex space-x-8 overflow-x-auto scrollbar-hide" aria-label="Tabs">
+              {[
+                { id: "dashboard", label: "Dashboard", icon: BarChart3, description: "Overview and stats" },
+                { id: "activities", label: "Activities", icon: Activity, description: "Earnings analysis" },
+                { id: "challenges", label: "Challenges", icon: Target, description: "Complete challenges" },
+                { id: "referrals", label: "Referral", icon: UserPlus, description: "Invite friends" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`
+                    whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex flex-col items-center gap-1 min-w-20
+                    ${activeTab === tab.id
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }
+                  `}
+                  aria-current={activeTab === tab.id ? 'page' : undefined}
+                >
+                  <tab.icon className="h-5 w-5" />
+                  <span className="text-xs font-medium">{tab.label}</span>
+                  {tab.id === "referrals" && rewardData?.referralStats.totalReferrals && (
+                    <Badge variant="secondary" className="ml-1 text-xs h-4 w-4 rounded-full p-0 flex items-center justify-center">
+                      {rewardData.referralStats.totalReferrals}
+                    </Badge>
+                  )}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
 
         <TabsContent value="dashboard" className="mt-6">
           {isLoading ? (
@@ -362,17 +355,22 @@ export default function EnhancedRewards() {
                 <div className="h-96 bg-gray-200 rounded-xl"></div>
               </div>
             </div>
+          ) : rewardData ? (
+            <RewardsActivitiesTab
+              earningsByType={rewardData.earningsByType}
+              recentActivity={rewardData.recentActivity}
+            />
           ) : (
-            <EnhancedUnifiedCreatorEconomy />
+            <div className="text-center py-12">
+              <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Activities</h3>
+              <p className="text-gray-600">Your earnings activities will appear here once data loads.</p>
+            </div>
           )}
         </TabsContent>
 
         <TabsContent value="challenges" className="mt-6">
-          <div className="text-center py-12">
-            <Target className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Daily Challenges</h3>
-            <p className="text-gray-600">Complete challenges to earn bonus rewards...</p>
-          </div>
+          <RewardsChallengesTab />
         </TabsContent>
 
         <TabsContent value="referrals" className="mt-6">
