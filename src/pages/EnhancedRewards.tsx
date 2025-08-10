@@ -358,17 +358,27 @@ export default function EnhancedRewards() {
             </div>
           ) : rewardData ? (
             <div className="space-y-8">
-              <RewardsStats
-                totalEarnings={rewardData.totalEarnings}
-                currentSoftPoints={rewardData.currentSoftPoints}
-                trustScore={rewardData.trustScore}
-                activityStats={rewardData.activityStats}
-                earningsByType={rewardData.earningsByType}
-              />
+              <RewardsErrorBoundary>
+                <SeasonalEvents />
+              </RewardsErrorBoundary>
+
+              <RewardsErrorBoundary>
+                <RewardsStats
+                  totalEarnings={rewardData.totalEarnings}
+                  currentSoftPoints={rewardData.currentSoftPoints}
+                  trustScore={rewardData.trustScore}
+                  activityStats={rewardData.activityStats}
+                  earningsByType={rewardData.earningsByType}
+                />
+              </RewardsErrorBoundary>
 
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                <AchievementSystem />
-                <GoalTracking />
+                <RewardsErrorBoundary>
+                  <AchievementSystem />
+                </RewardsErrorBoundary>
+                <RewardsErrorBoundary>
+                  <GoalTracking />
+                </RewardsErrorBoundary>
               </div>
             </div>
           ) : (
@@ -391,11 +401,15 @@ export default function EnhancedRewards() {
             </div>
           ) : rewardData ? (
             <div className="space-y-8">
-              <AdvancedAnalytics earningsByType={rewardData.earningsByType} />
-              <RewardsActivitiesTab
-                earningsByType={rewardData.earningsByType}
-                recentActivity={rewardData.recentActivity}
-              />
+              <RewardsErrorBoundary>
+                <AdvancedAnalytics earningsByType={rewardData.earningsByType} />
+              </RewardsErrorBoundary>
+              <RewardsErrorBoundary>
+                <RewardsActivitiesTab
+                  earningsByType={rewardData.earningsByType}
+                  recentActivity={rewardData.recentActivity}
+                />
+              </RewardsErrorBoundary>
             </div>
           ) : (
             <div className="text-center py-12">
@@ -407,11 +421,15 @@ export default function EnhancedRewards() {
         </TabsContent>
 
         <TabsContent value="challenges" className="mt-6">
-          <RewardsChallengesTab />
+          <RewardsErrorBoundary>
+            <RewardsChallengesTab />
+          </RewardsErrorBoundary>
         </TabsContent>
 
         <TabsContent value="battles" className="mt-6">
-          <RewardsBattleTab />
+          <RewardsErrorBoundary>
+            <RewardsBattleTab />
+          </RewardsErrorBoundary>
         </TabsContent>
 
         <TabsContent value="referrals" className="mt-6">
@@ -426,7 +444,9 @@ export default function EnhancedRewards() {
               <div className="h-64 bg-gray-200 rounded-xl"></div>
             </div>
           ) : (
-            <SafeReferralManager />
+            <RewardsErrorBoundary>
+              <SafeReferralManager />
+            </RewardsErrorBoundary>
           )}
         </TabsContent>
       </Tabs>
