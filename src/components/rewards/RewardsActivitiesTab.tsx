@@ -180,7 +180,10 @@ const RewardsActivitiesTab = ({ earningsByType, recentActivity }: RewardsActivit
                 freelance: "Freelance",
                 p2pTrading: "P2P Trading",
                 referrals: "Referrals",
-                challenges: "Challenges"
+                challenges: "Challenges",
+                battleVoting: "Battle Voting",
+                battleRewards: "Battle Rewards",
+                giftsAndTips: "Gifts & Tips"
               };
 
               return (
@@ -276,8 +279,10 @@ const RewardsActivitiesTab = ({ earningsByType, recentActivity }: RewardsActivit
                     >
                       {activity.status}
                     </Badge>
-                    <span className="font-semibold text-green-600">
-                      +{formatCurrency(activity.amount)}
+                    <span className={`font-semibold ${
+                      activity.amount >= 0 ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {activity.amount >= 0 ? '+' : ''}{formatCurrency(Math.abs(activity.amount))}
                     </span>
                   </div>
                 </div>
