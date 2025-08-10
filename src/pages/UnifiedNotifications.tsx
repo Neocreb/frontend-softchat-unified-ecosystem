@@ -318,9 +318,9 @@ const UnifiedNotifications: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm">
-                    <SortDesc className="w-4 h-4 mr-2" />
-                    Sort
-                    <ChevronDown className="w-4 h-4 ml-2" />
+                    <SortDesc className="w-4 h-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Sort</span>
+                    <ChevronDown className="w-4 h-4 sm:ml-2" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
