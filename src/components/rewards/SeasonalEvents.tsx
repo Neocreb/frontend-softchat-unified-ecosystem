@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
+import { rewardsNotificationService } from "@/services/rewardsNotificationService";
 
 interface SeasonalEvent {
   id: string;
@@ -198,19 +199,35 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
   };
 
   const activateBonus = (bonusId: string) => {
-    setActiveBonuses(prev => prev.map(bonus => 
-      bonus.id === bonusId 
-        ? { ...bonus, isActive: true, activatedAt: new Date() }
-        : bonus
-    ));
+    setActiveBonuses(prev => prev.map(bonus => {
+      if (bonus.id === bonusId) {
+        // Trigger notification for bonus activation
+        rewardsNotificationService.addRewardsNotification({
+          type: 'bonus',
+          title: 'Bonus Activated! ⚡',
+          message: `${bonus.name} is now active - ${bonus.multiplier}x multiplier for ${bonus.duration} minutes`,
+          priority: 'medium',
+          actionUrl: '/app/rewards?tab=dashboard',
+          actionLabel: 'View Dashboard'
+        });
+        return { ...bonus, isActive: true, activatedAt: new Date() };
+      }
+      return bonus;
+    }));
   };
 
   const joinEvent = (eventId: string) => {
-    setCurrentEvents(prev => prev.map(event =>
-      event.id === eventId
-        ? { ...event, isParticipating: true }
-        : event
-    ));
+    setCurrentEvents(prev => prev.map(event => {
+      if (event.id === eventId) {
+        // Trigger notification for event participation
+        rewardsNotificationService.notifySeasonalEvent(
+          event.title,
+          event.rewards.description
+        );
+        return { ...event, isParticipating: true };
+      }
+      return event;
+    }));
   };
 
   const activeEvents = currentEvents.filter(e => e.status === 'active' || e.status === 'ending_soon');
