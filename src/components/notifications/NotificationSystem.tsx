@@ -279,16 +279,81 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
     ];
     const randomType = types[Math.floor(Math.random() * types.length)];
 
-    const newNotification: Notification = {
-      id: Date.now().toString(),
-      type: randomType,
-      title: "New notification",
-      message: "You have a new update",
-      timestamp: new Date(),
-      read: false,
-      priority: "medium",
-      icon: <Bell className="w-4 h-4" />,
-    };
+    let newNotification: Notification;
+
+    if (randomType === "rewards") {
+      // Enhanced rewards notifications
+      const rewardsNotifications = [
+        {
+          title: "Battle Vote Won! 🎯",
+          message: "Your vote on Alex Dance vs Music Mike was successful! Earned $87.50",
+          priority: "high" as const,
+          actionUrl: "/app/rewards?tab=battles",
+          actionLabel: "View Details"
+        },
+        {
+          title: "Achievement Unlocked! 🏆",
+          message: "Battle Master - Win 5 battle votes in a row",
+          priority: "medium" as const,
+          actionUrl: "/app/rewards?tab=dashboard",
+          actionLabel: "View Achievement"
+        },
+        {
+          title: "Gift Received! 🎁",
+          message: "Received Crown gift during live stream - $25.00",
+          priority: "medium" as const,
+          actionUrl: "/app/rewards?tab=activities",
+          actionLabel: "View Activity"
+        },
+        {
+          title: "Challenge Completed! ⭐",
+          message: "Daily streak challenge - 7 days completed - $12.50",
+          priority: "low" as const,
+          actionUrl: "/app/rewards?tab=challenges",
+          actionLabel: "View Challenges"
+        },
+        {
+          title: "Goal Progress! 📈",
+          message: "You've reached 75% of your weekly earning goal",
+          priority: "low" as const,
+          actionUrl: "/app/rewards?tab=dashboard",
+          actionLabel: "View Goals"
+        },
+        {
+          title: "Seasonal Event! ❄️",
+          message: "Winter Rewards Festival is now active - 2x rewards!",
+          priority: "high" as const,
+          actionUrl: "/app/rewards?tab=dashboard",
+          actionLabel: "Join Event"
+        }
+      ];
+
+      const randomReward = rewardsNotifications[Math.floor(Math.random() * rewardsNotifications.length)];
+
+      newNotification = {
+        id: Date.now().toString(),
+        type: "rewards",
+        title: randomReward.title,
+        message: randomReward.message,
+        timestamp: new Date(),
+        read: false,
+        priority: randomReward.priority,
+        icon: <Gift className="w-4 h-4" />,
+        actionUrl: randomReward.actionUrl,
+        actionLabel: randomReward.actionLabel
+      };
+    } else {
+      newNotification = {
+        id: Date.now().toString(),
+        type: randomType,
+        title: "New notification",
+        message: "You have a new update",
+        timestamp: new Date(),
+        read: false,
+        priority: "medium",
+        icon: <Bell className="w-4 h-4" />,
+      };
+    }
 
     addNotification(newNotification);
   };
@@ -513,15 +578,15 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
             </div>
 
             {/* Filter Tabs */}
-            <div className="flex gap-1 mt-3">
-              {["all", "unread", "social", "trading", "marketplace"].map(
+            <div className="flex gap-1 mt-3 overflow-x-auto">
+              {["all", "unread", "rewards", "social", "trading", "marketplace", "freelance"].map(
                 (filterType) => (
                   <Button
                     key={filterType}
                     variant={filter === filterType ? "default" : "ghost"}
                     size="sm"
                     onClick={() => setFilter(filterType)}
-                    className="text-xs capitalize"
+                    className="text-xs capitalize whitespace-nowrap"
                   >
                     {filterType}
                   </Button>
