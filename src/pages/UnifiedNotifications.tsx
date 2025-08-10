@@ -409,8 +409,8 @@ const UnifiedNotifications: React.FC = () => {
                 onClick={handleMarkAllAsRead}
                 disabled={unreadCount === 0}
               >
-                <CheckCircle2 className="w-4 h-4 mr-2" />
-                Mark All Read
+                <CheckCircle2 className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Mark All Read</span>
               </Button>
 
               {/* Settings */}
