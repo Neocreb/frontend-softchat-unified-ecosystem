@@ -249,7 +249,7 @@ const RewardsBattleTab = () => {
     .filter(vote => vote.status === 'won')
     .reduce((sum, vote) => sum + vote.potentialWinning, 0);
 
-  const activeBets = userVotes.filter(vote => vote.status === 'active').length;
+  const activeVotes = userVotes.filter(vote => vote.status === 'active').length;
 
   return (
     <div className="space-y-6">
@@ -271,8 +271,8 @@ const RewardsBattleTab = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Active Bets</p>
-                <p className="text-2xl font-bold">{activeBets}</p>
+                <p className="text-sm font-medium text-muted-foreground">Active Votes</p>
+                <p className="text-2xl font-bold">{activeVotes}</p>
               </div>
               <Target className="h-8 w-8 text-blue-500" />
             </div>
@@ -505,7 +505,7 @@ const RewardsBattleTab = () => {
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <DollarSign className="h-6 w-6 text-green-600" />
               </div>
-              <h3 className="font-semibold mb-2">Place Your Bet</h3>
+              <h3 className="font-semibold mb-2">Place Your Vote</h3>
               <p className="text-sm text-muted-foreground">
                 Vote with your SoftPoints. Higher odds mean higher potential rewards.
               </p>
