@@ -16,7 +16,8 @@ import {
   Gift,
   Target,
   Wallet,
-  Swords
+  Swords,
+  ArrowRight
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { fetchWithAuth } from "@/lib/fetch-utils";
