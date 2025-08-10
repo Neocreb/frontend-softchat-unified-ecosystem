@@ -60,6 +60,9 @@ interface RewardData {
     p2pTrading: number;
     referrals: number;
     challenges: number;
+    battleVoting: number;
+    battleRewards: number;
+    giftsAndTips: number;
   };
   recentActivity: Array<{
     id: string;
@@ -78,7 +81,7 @@ interface RewardData {
 
 // Demo data function to avoid duplication
 const getDemoData = (): RewardData => ({
-  totalEarnings: 2847.50,
+  totalEarnings: 3525.05,
   availableToWithdraw: 1523.25,
   currentSoftPoints: 18642,
   trustScore: {
@@ -94,18 +97,25 @@ const getDemoData = (): RewardData => ({
     streakDays: 12
   },
   earningsByType: {
-    contentCreation: 1068.75, // 37.5%
-    engagement: 355.94,       // 12.5%
-    marketplace: 711.88,      // 25%
-    freelance: 533.91,        // 18.75%
-    p2pTrading: 106.78,       // 3.75%
-    referrals: 71.19,         // 2.5%
-    challenges: 0             // 0%
+    contentCreation: 1068.75, // 32.1%
+    engagement: 355.94,       // 10.7%
+    marketplace: 711.88,      // 21.4%
+    freelance: 533.91,        // 16.1%
+    p2pTrading: 106.78,       // 3.2%
+    referrals: 71.19,         // 2.1%
+    challenges: 0,            // 0%
+    battleVoting: 285.50,     // 8.6% - earnings from voting on battles
+    battleRewards: 178.25,    // 5.4% - rewards from battle participation
+    giftsAndTips: 213.80      // 6.4% - earnings from gifts and tips
   },
   recentActivity: [
     { id: "1", type: "post_creation", description: "Quality post with media", amount: 15.5, timestamp: "2024-01-20T10:00:00Z" },
     { id: "2", type: "marketplace_sale", description: "Product sold", amount: 25.0, timestamp: "2024-01-20T09:30:00Z" },
-    { id: "3", type: "referral_bonus", description: "New referral signup", amount: 50.0, timestamp: "2024-01-19T18:15:00Z" }
+    { id: "3", type: "referral_bonus", description: "New referral signup", amount: 50.0, timestamp: "2024-01-19T18:15:00Z" },
+    { id: "4", type: "battle_voting_win", description: "Won battle vote on Alex Dance vs Music Mike", amount: 87.50, timestamp: "2024-01-20T08:45:00Z" },
+    { id: "5", type: "battle_participation", description: "Battle performance bonus", amount: 32.25, timestamp: "2024-01-20T08:30:00Z" },
+    { id: "6", type: "gift_received", description: "Received Crown gift from user123", amount: 25.0, timestamp: "2024-01-19T20:10:00Z" },
+    { id: "7", type: "tip_received", description: "Video tip from premium viewer", amount: 12.75, timestamp: "2024-01-19T17:20:00Z" }
   ],
   referralStats: {
     totalReferrals: 23,
