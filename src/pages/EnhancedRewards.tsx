@@ -36,7 +36,6 @@ import RewardsActivitiesTab from "@/components/rewards/RewardsActivitiesTab";
 import RewardsChallengesTab from "@/components/rewards/RewardsChallengesTab";
 import RewardsBattleTab from "@/components/rewards/RewardsBattleTab";
 import SafeReferralManager from "@/components/rewards/SafeReferralManager";
-import NotificationSystem from "@/components/rewards/NotificationSystem";
 import AchievementSystem from "@/components/rewards/AchievementSystem";
 import GoalTracking from "@/components/rewards/GoalTracking";
 import AdvancedAnalytics from "@/components/rewards/AdvancedAnalytics";
@@ -289,7 +288,7 @@ export default function EnhancedRewards() {
           </h1>
         </div>
         <div className="flex items-center gap-2">
-          <NotificationSystem />
+          {/* Notifications are handled by the main platform notification system */}
         </div>
       </div>
 
