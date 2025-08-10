@@ -437,205 +437,196 @@ const UnifiedNotifications: React.FC = () => {
             </div>
           </div>
 
-          {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Categories Sidebar */}
-            <div className="lg:col-span-1">
-              <Card>
-                <CardHeader className="pb-3">
-                  <h3 className="font-semibold">Categories</h3>
-                </CardHeader>
-                <CardContent className="space-y-1">
-                  {notificationCategories.map((category) => (
-                    <Button
-                      key={category.id}
-                      variant={activeCategory === category.id ? "default" : "ghost"}
-                      className="w-full justify-start"
-                      onClick={() => setActiveCategory(category.id as NotificationCategory)}
+          {/* Categories Filter */}
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2">
+              {notificationCategories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={activeCategory === category.id ? "default" : "outline"}
+                  size="sm"
+                  className="relative"
+                  onClick={() => setActiveCategory(category.id as NotificationCategory)}
+                >
+                  <category.icon className="w-4 h-4 mr-2" />
+                  {category.name}
+                  {category.count > 0 && (
+                    <Badge
+                      variant={activeCategory === category.id ? "secondary" : "default"}
+                      className="ml-2 h-4 text-xs"
                     >
-                      <category.icon className="w-4 h-4 mr-3" />
-                      <span className="flex-1 text-left">{category.name}</span>
-                      {category.count > 0 && (
-                        <Badge variant="secondary" className="ml-2">
-                          {category.count}
-                        </Badge>
-                      )}
-                    </Button>
-                  ))}
-                </CardContent>
-              </Card>
+                      {category.count}
+                    </Badge>
+                  )}
+                </Button>
+              ))}
             </div>
+          </div>
 
-            {/* Notifications List */}
-            <div className="lg:col-span-3">
-              <Card>
-                <CardContent className="p-0">
-                  {filteredNotifications.length === 0 ? (
-                    <div className="p-12 text-center">
-                      <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">No notifications found</h3>
-                      <p className="text-muted-foreground">
-                        {searchQuery 
-                          ? "Try adjusting your search terms" 
-                          : "You're all caught up! Check back later for updates."}
-                      </p>
-                    </div>
-                  ) : (
-                    <ScrollArea className="h-[70vh]">
-                      <div className="divide-y">
-                        {filteredNotifications.map((notification) => (
-                          <div
-                            key={notification.id}
-                            className={cn(
-                              "p-4 hover:bg-muted/50 transition-colors border-l-4",
-                              !notification.read ? getPriorityColor(notification.priority) : "border-l-transparent",
-                              selectedNotifications.has(notification.id) && "bg-muted/70"
-                            )}
-                          >
-                            <div className="flex items-start gap-4">
-                              {/* Selection Checkbox */}
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-8 w-8 p-0 rounded-sm border border-muted-foreground/20"
-                                onClick={() => {
-                                  const newSelected = new Set(selectedNotifications);
-                                  if (newSelected.has(notification.id)) {
-                                    newSelected.delete(notification.id);
-                                  } else {
-                                    newSelected.add(notification.id);
-                                  }
-                                  setSelectedNotifications(newSelected);
-                                }}
-                              >
-                                {selectedNotifications.has(notification.id) && (
-                                  <Check className="w-3 h-3" />
-                                )}
-                              </Button>
+          {/* Notifications Free Flow Layout */}
+          <div className="space-y-3">
+            {filteredNotifications.length === 0 ? (
+              <div className="p-12 text-center bg-background rounded-lg border border-dashed">
+                <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No notifications found</h3>
+                <p className="text-muted-foreground">
+                  {searchQuery
+                    ? "Try adjusting your search terms"
+                    : "You're all caught up! Check back later for updates."}
+                </p>
+              </div>
+            ) : (
+              <>
+                {filteredNotifications.map((notification) => (
+                  <div
+                    key={notification.id}
+                    className={cn(
+                      "p-4 bg-background rounded-lg border transition-all duration-200 hover:shadow-sm hover:border-border/60",
+                      !notification.read ? "border-l-4 " + getPriorityColor(notification.priority).split(' ')[0] : "border-border",
+                      !notification.read && "bg-background/80 backdrop-blur-sm",
+                      selectedNotifications.has(notification.id) && "bg-muted/50 border-primary"
+                    )}
+                  >
+                    <div className="flex items-start gap-4">
+                      {/* Selection Checkbox */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 rounded-sm border border-muted-foreground/20 hover:border-primary"
+                        onClick={() => {
+                          const newSelected = new Set(selectedNotifications);
+                          if (newSelected.has(notification.id)) {
+                            newSelected.delete(notification.id);
+                          } else {
+                            newSelected.add(notification.id);
+                          }
+                          setSelectedNotifications(newSelected);
+                        }}
+                      >
+                        {selectedNotifications.has(notification.id) && (
+                          <Check className="w-3 h-3" />
+                        )}
+                      </Button>
 
-                              {/* Avatar or Icon */}
-                              <div className="flex-shrink-0">
-                                {notification.avatar ? (
-                                  <Avatar className="w-10 h-10">
-                                    <AvatarImage src={notification.avatar} />
-                                    <AvatarFallback>
-                                      {getNotificationIcon(notification)}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                ) : (
-                                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                                    {getNotificationIcon(notification)}
-                                  </div>
-                                )}
-                              </div>
+                      {/* Avatar or Icon */}
+                      <div className="flex-shrink-0">
+                        {notification.avatar ? (
+                          <Avatar className="w-10 h-10">
+                            <AvatarImage src={notification.avatar} />
+                            <AvatarFallback>
+                              {getNotificationIcon(notification)}
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                            {getNotificationIcon(notification)}
+                          </div>
+                        )}
+                      </div>
 
-                              {/* Content */}
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between">
-                                  <div className="flex-1 pr-2">
-                                    <h4 className={cn(
-                                      "text-sm font-medium line-clamp-1",
-                                      !notification.read && "font-semibold"
-                                    )}>
-                                      {notification.title}
-                                    </h4>
-                                    <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
-                                      {notification.message}
-                                    </p>
-                                    <div className="flex items-center gap-2 mt-2">
-                                      <span className="text-xs text-muted-foreground">
-                                        {formatTimestamp(notification.timestamp)}
-                                      </span>
-                                      <Badge variant="outline" className="text-xs">
-                                        {notification.category}
-                                      </Badge>
-                                      {notification.priority === "urgent" && (
-                                        <Badge variant="destructive" className="text-xs">
-                                          Urgent
-                                        </Badge>
-                                      )}
-                                      {notification.starred && (
-                                        <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  {/* Actions */}
-                                  <div className="flex items-center gap-1">
-                                    {!notification.read && (
-                                      <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                                    )}
-                                    
-                                    <DropdownMenu>
-                                      <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                          <MoreVertical className="w-4 h-4" />
-                                        </Button>
-                                      </DropdownMenuTrigger>
-                                      <DropdownMenuContent align="end">
-                                        <DropdownMenuItem 
-                                          onClick={() => notification.read ? markAsUnread(notification.id) : markAsRead(notification.id)}
-                                        >
-                                          {notification.read ? (
-                                            <>
-                                              <EyeOff className="w-4 h-4 mr-2" />
-                                              Mark as Unread
-                                            </>
-                                          ) : (
-                                            <>
-                                              <Eye className="w-4 h-4 mr-2" />
-                                              Mark as Read
-                                            </>
-                                          )}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => toggleStar(notification.id)}>
-                                          <Star className={cn(
-                                            "w-4 h-4 mr-2",
-                                            notification.starred && "text-yellow-500 fill-current"
-                                          )} />
-                                          {notification.starred ? "Unstar" : "Star"}
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={() => handleArchive(notification.id)}>
-                                          <Archive className="w-4 h-4 mr-2" />
-                                          Archive
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                          onClick={() => handleDelete(notification.id)}
-                                          className="text-destructive"
-                                        >
-                                          <Trash2 className="w-4 h-4 mr-2" />
-                                          Delete
-                                        </DropdownMenuItem>
-                                      </DropdownMenuContent>
-                                    </DropdownMenu>
-                                  </div>
-                                </div>
-
-                                {/* Action Button */}
-                                {notification.actionUrl && notification.actionLabel && (
-                                  <Button 
-                                    variant="outline" 
-                                    size="sm" 
-                                    className="mt-3"
-                                    onClick={() => {
-                                      window.location.href = notification.actionUrl!;
-                                      markAsRead(notification.id);
-                                    }}
-                                  >
-                                    {notification.actionLabel}
-                                  </Button>
-                                )}
-                              </div>
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 pr-2">
+                            <h4 className={cn(
+                              "text-sm font-medium line-clamp-1",
+                              !notification.read && "font-semibold"
+                            )}>
+                              {notification.title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
+                              {notification.message}
+                            </p>
+                            <div className="flex items-center gap-2 mt-3">
+                              <span className="text-xs text-muted-foreground">
+                                {formatTimestamp(notification.timestamp)}
+                              </span>
+                              <Badge variant="outline" className="text-xs">
+                                {notification.category}
+                              </Badge>
+                              {notification.priority === "urgent" && (
+                                <Badge variant="destructive" className="text-xs">
+                                  Urgent
+                                </Badge>
+                              )}
+                              {notification.starred && (
+                                <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                              )}
                             </div>
                           </div>
-                        ))}
+
+                          {/* Actions */}
+                          <div className="flex items-center gap-1">
+                            {!notification.read && (
+                              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                            )}
+
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-muted">
+                                  <MoreVertical className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => notification.read ? markAsUnread(notification.id) : markAsRead(notification.id)}
+                                >
+                                  {notification.read ? (
+                                    <>
+                                      <EyeOff className="w-4 h-4 mr-2" />
+                                      Mark as Unread
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Eye className="w-4 h-4 mr-2" />
+                                      Mark as Read
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => toggleStar(notification.id)}>
+                                  <Star className={cn(
+                                    "w-4 h-4 mr-2",
+                                    notification.starred && "text-yellow-500 fill-current"
+                                  )} />
+                                  {notification.starred ? "Unstar" : "Star"}
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => handleArchive(notification.id)}>
+                                  <Archive className="w-4 h-4 mr-2" />
+                                  Archive
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDelete(notification.id)}
+                                  className="text-destructive"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
+
+                        {/* Action Button */}
+                        {notification.actionUrl && notification.actionLabel && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="mt-3"
+                            onClick={() => {
+                              window.location.href = notification.actionUrl!;
+                              markAsRead(notification.id);
+                            }}
+                          >
+                            {notification.actionLabel}
+                          </Button>
+                        )}
                       </div>
-                    </ScrollArea>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
