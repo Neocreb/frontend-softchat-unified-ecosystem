@@ -299,7 +299,20 @@ const GoalTracking = ({ className }: GoalTrackingProps) => {
           </div>
 
           <div className="flex gap-2">
-            <Button onClick={handleCreate} className="flex-1">
+            <Button onClick={() => {
+              handleCreate();
+              // Notify about new goal created
+              if (formData.title && formData.target) {
+                rewardsNotificationService.addRewardsNotification({
+                  type: 'goal',
+                  title: 'New Goal Created! 🎯',
+                  message: `${formData.title} - Target: ${formData.target}`,
+                  priority: 'low',
+                  actionUrl: '/app/rewards?tab=dashboard',
+                  actionLabel: 'View Goals'
+                });
+              }
+            }} className="flex-1">
               Create Goal
             </Button>
             <Button variant="outline" onClick={() => setShowCreateGoal(false)}>
