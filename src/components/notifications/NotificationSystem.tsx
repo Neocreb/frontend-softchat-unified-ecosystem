@@ -224,10 +224,43 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
     // Initialize WebSocket for real-time notifications
     initializeWebSocket();
 
+    // Listen for rewards notifications
+    const handleRewardsNotification = (event: CustomEvent) => {
+      const notification = event.detail;
+      setNotifications((prev) => [{
+        ...notification,
+        timestamp: new Date(notification.timestamp),
+        icon: <Gift className="w-4 h-4" />
+      }, ...prev.slice(0, 99)]);
+
+      // Play sound and show desktop notification if enabled
+      if (settings.sound && settings.enabled) {
+        playNotificationSound();
+      }
+      if (settings.desktop && settings.enabled && permission === "granted") {
+        showDesktopNotification({
+          ...notification,
+          timestamp: new Date(notification.timestamp)
+        });
+      }
+    };
+
+    // Listen for toast notifications from rewards system
+    const handleToastNotification = (event: CustomEvent) => {
+      if (settings.enabled) {
+        toast(event.detail);
+      }
+    };
+
+    window.addEventListener('rewardsNotificationAdded', handleRewardsNotification as EventListener);
+    window.addEventListener('showToast', handleToastNotification as EventListener);
+
     return () => {
       if (wsRef.current) {
         wsRef.current.close();
       }
+      window.removeEventListener('rewardsNotificationAdded', handleRewardsNotification as EventListener);
+      window.removeEventListener('showToast', handleToastNotification as EventListener);
     };
   }, []);
 
