@@ -9,39 +9,20 @@ import {
   AppError,
 } from "../config/security";
 import {
-  aiConversations,
-  aiMessages,
-  contentModerationLogs,
+  aiContentAnalysis,
   aiRecommendations,
-  aiAnalytics,
-  pricesPredictions,
-  contentAnalysis,
-  userPreferences,
-  behaviorAnalytics,
-  smartNotifications,
-  aiModels,
-  aiTrainingData,
-  chatBotSessions,
-  feedCuration,
-  trendingAnalysis,
-  personalizationProfiles,
-  contentFlags,
-  aiInsights,
-  predictiveModels,
-  semanticSearch,
-  voiceAnalysis,
-  imageAnalysis,
-  videoAnalysis,
-  nlpProcessing,
-  sentimentAnalysis,
-  spamDetection,
-  fraudDetection,
-  aiGeneratedContent,
-  userEngagementPatterns,
-  contentPerformancePredictions,
-  marketAnalysis,
-} from "../../shared/enhanced-schema";
-import { users, profiles, posts, videos } from "../../shared/schema";
+  aiChatConversations,
+  aiChatMessages,
+  aiPersonalizationProfiles,
+  aiContentModeration,
+  aiTrendAnalysis,
+  aiSmartNotifications,
+  aiCryptoAnalysis,
+  aiModelPerformance,
+  aiUserInsights
+} from "../../shared/ai-schema";
+import { users, profiles, posts } from "../../shared/schema";
+import { videos } from "../../shared/video-schema";
 
 const router = express.Router();
 

@@ -2270,3 +2270,591 @@
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.547Z","url":"/creator/reward-summary","userAgent":"node"}
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.551Z","url":"/creator/reward-history","userAgent":"node"}
 {"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":401,"timestamp":"2025-07-18T08:16:52.554Z","url":"/creator/trust-score","userAgent":"node"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.528Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.532Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.532Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.532Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.533Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.533Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.533Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:28:54.533Z"}
+{"duration":"7ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:29:28.355Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:29:29.961Z","url":"/?reload=0","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:29:30.332Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:29:32.333Z","url":"/","userAgent":"node"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.805Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.809Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.810Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.810Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.810Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.811Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.811Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:43:58.811Z"}
+{"duration":"6ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:32.721Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:33.400Z","url":"/?reload=0","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:34.604Z","url":"/?_screenshot_tool_allow=true&builder.lazyLoadImages=false","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:34.701Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:36.703Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:38.704Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:40.706Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:42.707Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:44.710Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:46.709Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:48.710Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:50.711Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:52.711Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:54.713Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:56.714Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:44:58.716Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:00.718Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:02.719Z","url":"/","userAgent":"node"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:04.723Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:06.721Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:08.721Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:10.723Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:12.724Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:14.725Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:16.726Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:18.728Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:20.729Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:22.730Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:24.731Z","url":"/","userAgent":"node"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:26.745Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:28.735Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:30.743Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:32.746Z","url":"/","userAgent":"node"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:34.747Z","url":"/","userAgent":"node"}
+{"duration":"6ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:36.756Z","url":"/","userAgent":"node"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:38.752Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:40.749Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:42.749Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:44.749Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:46.751Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:48.753Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:50.757Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:52.756Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:54.758Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:56.759Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:45:58.759Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:00.761Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:02.762Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:04.763Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:06.764Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:08.765Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:10.766Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:12.767Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:14.768Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:16.769Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:18.770Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:20.770Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:22.771Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:24.773Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:26.774Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:28.775Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:30.777Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:31.842Z","url":"/?reload=1754930791554","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:32.779Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:34.779Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:36.781Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:38.783Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:39.216Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.922Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.925Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.926Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.926Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.926Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.926Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.927Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:46:41.927Z"}
+{"duration":"5ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:43.366Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:43.972Z","url":"/?reload=1754930791554","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:45.359Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:47.360Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:49.361Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:51.362Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:53.363Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:55.364Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:57.367Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:46:59.366Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:01.367Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:02.659Z","url":"/?reload=1754930822439","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:03.368Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:05.369Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:05.918Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.500Z"}
+{"level":"info","message":"Checking static path: /app/code/dist","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.502Z"}
+{"level":"info","message":"Static path exists, setting up static file serving","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.502Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.504Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.504Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.505Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.505Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.505Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.505Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:47:08.506Z"}
+{"duration":"6ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:10.064Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:10.761Z","url":"/?reload=1754930822439","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:12.055Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:14.056Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:16.057Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:18.059Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:20.059Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:22.060Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:24.063Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:26.063Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:28.063Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:30.065Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:32.068Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:34.067Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:36.067Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:38.069Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:40.069Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:42.070Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:44.071Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:46.072Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:48.073Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:50.074Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:52.075Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:54.077Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:56.078Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:47:58.079Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:00.080Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:02.081Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:04.082Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:06.082Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:08.083Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:10.085Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:12.085Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:14.087Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:16.088Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:16.395Z","url":"/?reload=1754930896064","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:18.089Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:20.090Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:22.091Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:24.092Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:26.093Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:28.094Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:30.095Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:30.756Z","url":"/?reload=1754930910455","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:32.097Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:34.098Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:36.099Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:38.101Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:40.102Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:41.714Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.395Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.399Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.399Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.400Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.400Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.401Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.401Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:48:44.401Z"}
+{"duration":"7ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:45.867Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:46.921Z","url":"/?reload=1754930910455","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:47.858Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:49.858Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:51.859Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:53.860Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:55.862Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:57.863Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:48:59.866Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:01.865Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:03.866Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:05.867Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:07.869Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:09.870Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:11.872Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:13.872Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:14.340Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.898Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.901Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.901Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.902Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.902Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.902Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.902Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:16.902Z"}
+{"duration":"6ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:18.491Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:20.482Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:21.069Z","url":"/?reload=1754930910455","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:22.484Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:24.486Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:26.487Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:28.489Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:30.490Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:32.493Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:34.493Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:36.493Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:38.495Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:40.496Z","url":"/","userAgent":"node"}
+{"code":"XX000","length":76,"level":"error","message":"Database health check failed: password authentication failed for user 'softchat_user'","name":"error","service":"softchat-comprehensive","severity":"ERROR","stack":"error: password authentication failed for user 'softchat_user'\n    at file:///app/code/node_modules/@neondatabase/serverless/index.mjs:1345:74\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async <anonymous> (/app/code/server/comprehensive-server.ts:177:5)","timestamp":"2025-08-11T16:49:41.829Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.366Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.370Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.370Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.370Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.371Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.371Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.371Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:49:51.372Z"}
+{"duration":"5ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:53.043Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:53.902Z","url":"/?reload=1754930910455","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:55.034Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:57.035Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:49:59.037Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:01.038Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:03.039Z","url":"/","userAgent":"node"}
+{"code":"XX000","length":76,"level":"error","message":"Database health check failed: password authentication failed for user 'softchat_user'","name":"error","service":"softchat-comprehensive","severity":"ERROR","stack":"error: password authentication failed for user 'softchat_user'\n    at file:///app/code/node_modules/@neondatabase/serverless/index.mjs:1345:74\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async <anonymous> (/app/code/server/comprehensive-server.ts:177:5)","timestamp":"2025-08-11T16:50:04.840Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.243Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.246Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.246Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.246Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.247Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.247Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.247Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:12.247Z"}
+{"duration":"5ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:13.814Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:14.533Z","url":"/?reload=1754930910455","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:15.804Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:17.805Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:19.805Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:21.805Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:23.806Z","url":"/","userAgent":"node"}
+{"code":"XX000","length":76,"level":"error","message":"Database health check failed: password authentication failed for user 'softchat_user'","name":"error","service":"softchat-comprehensive","severity":"ERROR","stack":"error: password authentication failed for user 'softchat_user'\n    at file:///app/code/node_modules/@neondatabase/serverless/index.mjs:1345:74\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async <anonymous> (/app/code/server/comprehensive-server.ts:177:5)","timestamp":"2025-08-11T16:50:24.149Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.659Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.663Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.663Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.663Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.663Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.664Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.664Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:50:35.664Z"}
+{"duration":"7ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:37.339Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:38.220Z","url":"/?reload=1754930910455","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:39.328Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:41.329Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:43.332Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:45.332Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:47.333Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:49.333Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:51.336Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:53.336Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:55.336Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:57.338Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:50:59.338Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:01.339Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:03.340Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:05.341Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:07.341Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:08.200Z","url":"/?reload=1754931067966","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:09.342Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:11.344Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:13.345Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:15.345Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:17.351Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:17.382Z"}
+{"level":"info","message":"Static path: /app/code/dist","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.989Z"}
+{"level":"info","message":"Static path exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.992Z"}
+{"level":"info","message":"Setting up static file middleware","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.992Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.995Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.997Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.998Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.998Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.998Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.999Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:19.999Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:51:20.000Z"}
+{"duration":"6ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:21.526Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:22.305Z","url":"/?reload=1754931077473","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:23.515Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:25.516Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:27.518Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:29.522Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:31.520Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:33.521Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:35.524Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:37.524Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:39.525Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:41.526Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:43.527Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:45.528Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:47.529Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:49.530Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:51.532Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:53.533Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:55.534Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:57.535Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:51:59.537Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:01.537Z","url":"/","userAgent":"node"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:03.538Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:04.048Z"}
+{"level":"info","message":"Static path: /app/code/dist","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.684Z"}
+{"level":"info","message":"Static path exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.686Z"}
+{"level":"info","message":"Setting up static file middleware","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.687Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.690Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.691Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.692Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.692Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.692Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.693Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.693Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:06.693Z"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:08.194Z"}
+{"duration":"11ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:08.206Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /?reload=1754931077473","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:09.150Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:09.153Z","url":"/?reload=1754931077473","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:10.188Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:10.189Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:12.190Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:12.191Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:14.191Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:14.192Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:16.192Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:16.194Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:18.193Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:18.195Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:20.194Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:20.196Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:22.195Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:22.197Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:24.196Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:24.197Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:26.196Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:26.198Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:28.197Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:28.199Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:30.198Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:30.200Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:32.199Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:32.200Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:34.201Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:34.202Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:36.200Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:36.202Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:38.202Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:38.203Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:40.202Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:40.204Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:42.204Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:42.205Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:44.205Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:44.206Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:46.206Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:46.207Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:48.207Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:48.208Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:50.207Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:50.209Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:52.208Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:52.209Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:54.209Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:54.210Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:56.210Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:56.211Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:52:58.212Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:52:58.213Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:00.212Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:00.213Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:02.214Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:02.215Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:04.214Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:04.216Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:06.215Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:06.217Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:08.217Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:08.218Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:10.218Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:10.219Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:12.219Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:12.221Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:14.221Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:14.222Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:16.222Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:16.224Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:18.224Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:18.225Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:20.224Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:20.225Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:22.226Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:22.227Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:24.226Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:24.227Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:26.227Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:26.228Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:28.228Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:28.229Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:30.228Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:30.229Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:32.229Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:32.230Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:34.231Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:34.232Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:36.231Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:36.232Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:38.232Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:38.233Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:40.234Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:40.235Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:42.235Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:42.237Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:44.236Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:44.237Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:46.237Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:46.238Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:48.239Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:48.240Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:50.239Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:50.240Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:52.241Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:52.242Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:54.241Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:54.243Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:56.243Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:56.244Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:53:58.243Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:53:58.244Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:00.245Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:00.246Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:02.246Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:02.247Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:04.248Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:04.249Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:06.248Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:06.249Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:08.250Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:08.251Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:10.252Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:10.253Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /?reload=1754931251569","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:11.840Z"}
+{"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:11.841Z","url":"/?reload=1754931251569","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:12.253Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:12.255Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:14.255Z"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:14.257Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:16.220Z"}
+{"level":"info","message":"Static path: /app/code/dist","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.668Z"}
+{"level":"info","message":"Static path exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.670Z"}
+{"level":"info","message":"Setting up static file middleware","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.671Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.673Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.676Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.676Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.676Z"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.369Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"duration":"12ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:20.381Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /?reload=1754931261002","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.240Z"}
+{"level":"info","message":"Catch-all route hit for: /?reload=1754931261002","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:21.243Z","url":"/?reload=1754931261002","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:22.364Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:22.365Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:22.365Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:22.365Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:22.365Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:22.368Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:24.367Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:24.368Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:24.369Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:24.369Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:24.369Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:24.371Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:26.368Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:26.369Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:26.369Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:26.370Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:26.370Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:26.372Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:28.369Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:28.369Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:28.370Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:28.370Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:28.370Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:28.372Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:30.370Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:30.371Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:30.371Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:30.371Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:30.371Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:30.373Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:32.371Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:32.372Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:32.372Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:32.372Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:32.372Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:32.374Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:34.374Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:34.375Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:34.375Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:34.375Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:34.375Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:34.378Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:36.372Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:36.373Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:36.373Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:36.373Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:36.374Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:36.376Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:38.375Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:38.376Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:38.376Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:38.376Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:38.376Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:38.378Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:40.375Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:40.376Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:40.376Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:40.376Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:40.376Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:40.378Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:42.376Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:42.377Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:42.377Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:42.377Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:42.377Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:42.380Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.376Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.377Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.377Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.377Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.378Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:44.380Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.377Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.378Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.378Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.378Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.379Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:46.380Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.380Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:48.382Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /?reload=1754931288451","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.710Z"}
+{"level":"info","message":"Catch-all route hit for: /?reload=1754931288451","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:48.714Z","url":"/?reload=1754931288451","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:49.649Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.211Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.214Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.215Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.215Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.215Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.215Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.216Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:52.216Z"}
+{"duration":"9ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:53.808Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:54.682Z","url":"/?reload=1754931294436","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:55.797Z","url":"/","userAgent":"node"}
+{"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:57.799Z","url":"/","userAgent":"node"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:59.800Z","url":"/","userAgent":"node"}

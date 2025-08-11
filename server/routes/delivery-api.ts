@@ -9,16 +9,9 @@ import {
   deliveryReviews,
   deliveryZones,
   deliveryDisputes,
-  marketplaceOrders,
-  users,
-  profiles,
-  insertDeliveryProviderSchema,
-  insertDeliveryAssignmentSchema,
-  insertDeliveryTrackingEventSchema,
-  insertDeliveryReviewSchema,
-  insertDeliveryZoneSchema,
-  insertDeliveryDisputeSchema,
+  marketplaceOrders
 } from "../../shared/enhanced-schema";
+import { users, profiles } from "../../shared/schema";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 

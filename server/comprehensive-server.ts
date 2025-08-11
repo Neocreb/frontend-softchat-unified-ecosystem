@@ -12,6 +12,7 @@ import ConnectPgSimple from "connect-pg-simple";
 import winston from "winston";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 // Import routes
 import { registerEnhancedRoutes } from "./routes/enhanced";
@@ -232,6 +233,21 @@ app.get("/status", async (req, res) => {
 });
 
 // =============================================================================
+// STATIC FILE SERVING
+// =============================================================================
+
+// Serve static files in both development and production
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const staticPath = path.join(__dirname, "../dist");
+
+// Check if dist directory exists before serving
+if (fs.existsSync(staticPath)) {
+  app.use(express.static(staticPath, {
+    index: false // Don't serve index.html for directories automatically
+  }));
+}
+
+// =============================================================================
 // API ROUTES REGISTRATION
 // =============================================================================
 
@@ -388,17 +404,19 @@ setInterval(
 // STATIC FILE SERVING (PRODUCTION)
 // =============================================================================
 
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const staticPath = path.join(__dirname, "../dist/client");
+// =============================================================================
+// SPA CATCH-ALL ROUTE (for frontend routing)
+// =============================================================================
 
-  app.use(express.static(staticPath));
-
-  // Serve index.html for all unmatched routes (SPA support)
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
-  });
-}
+// Serve index.html for all unmatched routes (SPA support)
+app.get("*", (req, res) => {
+  const indexPath = path.join(staticPath, "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
+  }
+});
 
 // =============================================================================
 // ERROR HANDLING

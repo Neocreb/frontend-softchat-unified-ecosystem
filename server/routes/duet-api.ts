@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { db } from '../db.js';
 import { posts, users, profiles } from '../../shared/schema.js';
 import { eq, and } from 'drizzle-orm';
-import { authMiddleware } from '../middleware/auth.js';
-import { fileService } from '../services/fileService.js';
+import { authenticateToken } from '../middleware/auth.js';
+import { FileService } from '../services/fileService.js';
 
 const router = express.Router();
 
@@ -41,7 +41,7 @@ const getDuetDataSchema = z.object({
  * GET /api/duets/original/:postId
  * Get original video data for duet creation
  */
-router.get('/original/:postId', authMiddleware, async (req, res) => {
+router.get('/original/:postId', authenticateToken, async (req, res) => {
   try {
     const { postId } = getDuetDataSchema.parse({ postId: req.params.postId });
 
@@ -119,7 +119,7 @@ router.get('/original/:postId', authMiddleware, async (req, res) => {
  * POST /api/duets/create
  * Create a new duet video
  */
-router.post('/create', authMiddleware, upload.fields([
+router.post('/create', authenticateToken, upload.fields([
   { name: 'duetVideo', maxCount: 1 },
   { name: 'thumbnail', maxCount: 1 }
 ]), async (req, res) => {
@@ -178,22 +178,14 @@ router.post('/create', authMiddleware, upload.fields([
     const originalCreator = originalCreatorProfile[0];
 
     // Upload duet video to storage
-    const duetVideoUrl = await fileService.uploadFile({
-      buffer: duetVideoFile.buffer,
-      mimetype: duetVideoFile.mimetype,
-      originalname: duetVideoFile.originalname,
-      folder: 'duets',
-    });
+    const duetResult = await FileService.uploadFile(duetVideoFile, 'duets');
+    const duetVideoUrl = duetResult.url;
 
     // Upload thumbnail if provided
     let thumbnailUrl = null;
     if (thumbnailFile) {
-      thumbnailUrl = await fileService.uploadFile({
-        buffer: thumbnailFile.buffer,
-        mimetype: thumbnailFile.mimetype,
-        originalname: thumbnailFile.originalname,
-        folder: 'thumbnails',
-      });
+      const thumbnailResult = await FileService.uploadFile(thumbnailFile, 'thumbnails');
+      thumbnailUrl = thumbnailResult.url;
     }
 
     // Determine the root original creator for duet chains
@@ -407,7 +399,7 @@ router.get('/user/:userId', async (req, res) => {
  * DELETE /api/duets/:postId
  * Delete a duet post
  */
-router.delete('/:postId', authMiddleware, async (req, res) => {
+router.delete('/:postId', authenticateToken, async (req, res) => {
   try {
     const userId = req.user!.id;
     const { postId } = req.params;
@@ -431,12 +423,18 @@ router.delete('/:postId', authMiddleware, async (req, res) => {
 
     const duetPost = post[0];
 
-    // Delete files from storage
+    // Delete files from storage (extract filename from URL)
     if (duetPost.videoUrl) {
-      await fileService.deleteFile(duetPost.videoUrl);
+      const videoFileName = duetPost.videoUrl.split('/').pop();
+      if (videoFileName) {
+        await FileService.deleteFile(videoFileName, 'duets');
+      }
     }
     if (duetPost.imageUrl) {
-      await fileService.deleteFile(duetPost.imageUrl);
+      const imageFileName = duetPost.imageUrl.split('/').pop();
+      if (imageFileName) {
+        await FileService.deleteFile(imageFileName, 'thumbnails');
+      }
     }
 
     // Delete post from database

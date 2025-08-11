@@ -9,39 +9,20 @@ import {
   createRateLimitMiddleware,
   AppError,
 } from "../config/security";
-import { fileService } from "../services/fileService";
-import { 
-  posts,
+import { FileService } from "../services/fileService";
+import { creatorEarnings } from "../../shared/enhanced-schema";
+import { posts, notifications } from "../../shared/schema";
+import {
   postLikes,
   postComments,
-  postShares,
-  postViews,
-  postReports,
   stories,
   storyViews,
-  storyReactions,
   userFollows,
   userBlocks,
-  friendRequests,
-  notifications,
-  polls,
-  pollVotes,
   hashtags,
-  hashtagFollows,
-  mentions,
-  postBookmarks,
-  postCollections,
-  collectionItems,
-  userInterests,
-  suggestedUsers,
-  socialAnalytics,
-  postAnalytics,
-  engagementMetrics,
-  contentFlags,
-  moderationQueue,
-  creatorEarnings,
-  activityLogs,
-} from "../../shared/enhanced-schema";
+  mentions
+} from "../../shared/social-schema";
+import { activityLogs } from "../../shared/activity-economy-schema";
 import { users, profiles } from "../../shared/schema";
 
 const router = express.Router();
