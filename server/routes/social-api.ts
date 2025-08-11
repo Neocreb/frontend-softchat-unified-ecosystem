@@ -11,36 +11,17 @@ import {
 } from "../config/security";
 import { FileService } from "../services/fileService";
 import { creatorEarnings } from "../../shared/enhanced-schema";
+import { posts, notifications } from "../../shared/schema";
 import {
-  posts,
   postLikes,
   postComments,
-  postShares,
-  postViews,
-  postReports,
   stories,
   storyViews,
-  storyReactions,
   userFollows,
   userBlocks,
-  friendRequests,
-  notifications,
-  polls,
-  pollVotes,
   hashtags,
-  hashtagFollows,
-  mentions,
-  postBookmarks,
-  postCollections,
-  collectionItems,
-  userInterests,
-  suggestedUsers,
-  socialAnalytics,
-  postAnalytics,
-  engagementMetrics,
-  contentFlags,
-  moderationQueue
-} from "../../shared/schema";
+  mentions
+} from "../../shared/social-schema";
 import { activityLogs } from "../../shared/activity-economy-schema";
 import { users, profiles } from "../../shared/schema";
 
