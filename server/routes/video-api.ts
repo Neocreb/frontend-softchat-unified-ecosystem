@@ -10,7 +10,7 @@ import {
   AppError,
 } from "../config/security";
 import { FileService } from "../services/fileService";
-import { 
+import {
   videos,
   videoViews,
   videoLikes,
@@ -31,9 +31,9 @@ import {
   videoProcessingJobs,
   videoVersions,
   videoCollaborations,
-  videoModerationQueue,
-  creatorEarnings
-} from "../../shared/enhanced-schema";
+  videoModerationQueue
+} from "../../shared/video-schema";
+import { creatorEarnings } from "../../shared/enhanced-schema";
 import { users, profiles } from "../../shared/schema";
 
 const router = express.Router();
