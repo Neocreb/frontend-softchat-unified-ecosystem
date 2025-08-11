@@ -245,6 +245,13 @@ logger.info(`Static path: ${staticPath}`);
 logger.info(`Static path exists: ${fs.existsSync(staticPath)}`);
 if (fs.existsSync(staticPath)) {
   logger.info("Setting up static file middleware");
+
+  // Add debugging middleware before static
+  app.use((req, res, next) => {
+    logger.info(`Request intercepted: ${req.method} ${req.url}`);
+    next();
+  });
+
   app.use(express.static(staticPath, {
     index: false // Don't serve index.html for directories automatically
   }));
