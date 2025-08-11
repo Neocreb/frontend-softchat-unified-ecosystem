@@ -474,11 +474,7 @@ const Pages = () => {
                 Back
               </Button>
               <div>
-                <h1 className="text-3xl font-bold">Pages</h1>
-                <p className="text-muted-foreground">
-                  Discover and follow pages from businesses, brands, and public
-                  figures
-                </p>
+                <h1 className="text-2xl font-bold">Pages</h1>
               </div>
             </div>
 
