@@ -506,9 +506,9 @@ export default function EnhancedCrypto() {
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
                   </div>
 
-                  <CardContent className="relative z-10 p-4 sm:p-6 lg:p-8 h-full flex flex-col justify-between">
+                  <CardContent className="relative z-10 p-6 sm:p-8">
                     {/* Header Row */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
@@ -526,13 +526,13 @@ export default function EnhancedCrypto() {
                     </div>
 
                     {/* Main Content Row - Horizontal Layout */}
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 flex-1">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
                       {/* Left: Balance Display */}
                       <div className="text-center lg:text-left">
                         <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
                           $47,852.36
                         </div>
-                        <p className="text-white/70 text-sm mt-1">Total Value</p>
+                        <p className="text-white/70 text-sm mt-2">Total Value</p>
                       </div>
 
                       {/* Right: Action Buttons */}
@@ -555,7 +555,7 @@ export default function EnhancedCrypto() {
                     </div>
 
                     {/* Bottom info */}
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-t border-white/20 pt-3 mt-6">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-t border-white/20 pt-4">
                       <div className="text-white/60 text-xs font-mono">
                         **** **** **** 8536
                       </div>
