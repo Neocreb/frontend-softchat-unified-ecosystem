@@ -406,117 +406,111 @@ export default function EnhancedCrypto() {
                   </div>
                 </div>
 
-                {/* Enhanced Global Market Stats */}
-                {marketData && (
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-4 sm:p-5">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-1">
-                            <p className="text-xs sm:text-sm text-blue-600/80 font-medium">
-                              Market Cap
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-800 dark:text-blue-200">
-                              {formatCurrency(
-                                marketData.globalStats?.totalMarketCap || 0,
-                              )}
-                            </p>
-                            <p
-                              className={cn(
-                                "text-xs sm:text-sm font-semibold",
-                                getChangeColor(
-                                  marketData.globalStats?.marketCapChange24h ||
-                                    0,
-                                ),
-                              )}
-                            >
-                              {formatPercentage(
-                                marketData.globalStats?.marketCapChange24h || 0,
-                              )}
-                            </p>
-                          </div>
-                          <div className="p-2 bg-blue-500/20 rounded-lg">
-                            <Globe className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-4 sm:p-5">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-1">
-                            <p className="text-xs sm:text-sm text-green-600/80 font-medium">
-                              24h Volume
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-800 dark:text-green-200">
-                              {formatCurrency(
-                                marketData.globalStats?.totalVolume24h || 0,
-                              )}
-                            </p>
-                            <p className="text-xs sm:text-sm font-semibold text-green-600">
-                              +2.4%
-                            </p>
-                          </div>
-                          <div className="p-2 bg-green-500/20 rounded-lg">
-                            <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-4 sm:p-5">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-1">
-                            <p className="text-xs sm:text-sm text-orange-600/80 font-medium">
-                              BTC Dominance
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-800 dark:text-orange-200">
-                              {safeToFixed(
-                                marketData.globalStats?.btcDominance,
-                                1,
-                              )}
-                              %
-                            </p>
-                            <p className="text-xs sm:text-sm text-orange-600/70">
-                              ETH{" "}
-                              {safeToFixed(
-                                marketData.globalStats?.ethDominance,
-                                1,
-                              )}
-                              %
-                            </p>
-                          </div>
-                          <div className="p-2 bg-orange-500/20 rounded-lg">
-                            <PieChart className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-4 sm:p-5">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-1">
-                            <p className="text-xs sm:text-sm text-purple-600/80 font-medium">
-                              Fear & Greed
-                            </p>
-                            <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-800 dark:text-purple-200">
-                              {marketData.fearGreedIndex || 65}
-                            </p>
-                            <p className="text-xs sm:text-sm font-semibold text-yellow-600">
-                              Greed
-                            </p>
-                          </div>
-                          <div className="p-2 bg-purple-500/20 rounded-lg">
-                            <Brain className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                {/* Total Assets Balance Card - Credit Card Design */}
+                <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white w-full max-w-5xl mx-auto">
+                  {/* Animated background elements */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                    <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full" />
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
                   </div>
-                )}
+
+                  <CardContent className="relative z-10 p-4 sm:p-6 lg:p-8">
+                    {/* Header Row */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                          <TrendingUp className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-green-300" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg sm:text-xl font-bold text-white">Crypto Portfolio</h2>
+                          <p className="text-white/80 text-sm">Total Assets Value</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-white/20 text-white border-white/30 self-start sm:self-center">
+                        <Shield className="h-4 w-4 mr-1" />
+                        Secure
+                      </Badge>
+                    </div>
+
+                    {/* Main Content Row */}
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                      {/* Left: Balance Display */}
+                      <div className="text-center lg:text-left">
+                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
+                          $47,852.36
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-3 justify-center lg:justify-start mt-4 lg:mt-6">
+                          <Button
+                            onClick={() => setActiveTab("portfolio")}
+                            className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                          >
+                            <ArrowUpDown className="h-4 w-4 mr-2" />
+                            Deposit
+                          </Button>
+                          <Button
+                            onClick={() => setActiveTab("portfolio")}
+                            className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                          >
+                            <Wallet className="h-4 w-4 mr-2" />
+                            Withdraw
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Right: Asset Breakdown */}
+                      <div className="flex-1 max-w-lg">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
+                            <div className="text-base sm:text-lg font-semibold text-white">
+                              $28,445.12
+                            </div>
+                            <div className="text-xs text-white/70">
+                              Bitcoin (BTC)
+                            </div>
+                          </div>
+                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
+                            <div className="text-base sm:text-lg font-semibold text-white">
+                              $12,890.34
+                            </div>
+                            <div className="text-xs text-white/70">
+                              Ethereum (ETH)
+                            </div>
+                          </div>
+                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
+                            <div className="text-base sm:text-lg font-semibold text-white">
+                              $4,567.89
+                            </div>
+                            <div className="text-xs text-white/70">
+                              Altcoins
+                            </div>
+                          </div>
+                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
+                            <div className="text-base sm:text-lg font-semibold text-white">
+                              $1,949.01
+                            </div>
+                            <div className="text-xs text-white/70">
+                              Stablecoins
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom info */}
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-t border-white/20 pt-3 mt-6">
+                      <div className="text-white/60 text-xs font-mono">
+                        **** **** **** 8536
+                      </div>
+                      <div className="text-white/60 text-xs">
+                        Last Updated: {lastUpdated.toLocaleTimeString()}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
 
                 {/* Enhanced Top Cryptocurrencies */}
                 <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
