@@ -1244,6 +1244,34 @@ export default function EnhancedCrypto() {
               setSelectedCrypto(null);
             }}
           />
+
+          {/* Crypto Deposit Modal */}
+          <CryptoDepositModal
+            isOpen={showCryptoDepositModal}
+            onClose={() => setShowCryptoDepositModal(false)}
+            selectedCrypto="BTC"
+            onSuccess={() => {
+              toast({
+                title: "Deposit Successful",
+                description: "Your crypto deposit has been processed.",
+              });
+              setShowCryptoDepositModal(false);
+            }}
+          />
+
+          {/* Crypto Withdraw Modal */}
+          <CryptoWithdrawModal
+            isOpen={showCryptoWithdrawModal}
+            onClose={() => setShowCryptoWithdrawModal(false)}
+            selectedCrypto="BTC"
+            onSuccess={() => {
+              toast({
+                title: "Withdrawal Successful",
+                description: "Your crypto withdrawal has been processed.",
+              });
+              setShowCryptoWithdrawModal(false);
+            }}
+          />
         </div>
       </div>
     </div>
