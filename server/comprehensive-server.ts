@@ -12,6 +12,7 @@ import ConnectPgSimple from "connect-pg-simple";
 import winston from "winston";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 // Import routes
 import { registerEnhancedRoutes } from "./routes/enhanced";
@@ -240,7 +241,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const staticPath = path.join(__dirname, "../dist");
 
 // Check if dist directory exists before serving
-import fs from 'fs';
 if (fs.existsSync(staticPath)) {
   app.use(express.static(staticPath, {
     index: false // Don't serve index.html for directories automatically
