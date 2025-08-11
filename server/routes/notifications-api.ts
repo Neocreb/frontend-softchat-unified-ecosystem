@@ -11,42 +11,14 @@ import {
 import { emailService } from "../services/emailService";
 import {
   notifications,
+  pushNotifications,
+  emailNotifications,
+  smsNotifications,
   notificationSettings,
-  pushSubscriptions,
-  emailNotificationQueue,
-  smsNotificationQueue,
   notificationTemplates,
   notificationBatches,
-  realTimeNotifications,
-  notificationAnalytics,
-  userNotificationPreferences,
-  notificationChannels,
-  automatedNotifications,
-  notificationSchedules,
-  notificationGroups,
-  inAppNotifications,
-  systemAlerts,
-  marketingNotifications,
-  transactionalNotifications,
-  emergencyAlerts,
-  notificationDeliveryLog,
-  webhookNotifications,
-  notificationFilters,
-  quietHours,
-  notificationFrequencyLimits,
-  smartNotifications,
-  behaviorTriggeredNotifications,
-  contextualNotifications,
-  personalizedNotifications,
-  notificationCampaigns,
-  abTestNotifications,
-  notificationSegmentation,
-  geoTargetedNotifications,
-  timeZoneNotifications,
-  deviceSpecificNotifications,
-  notificationRetry,
-  deliveryFailures,
-} from "../../shared/enhanced-schema";
+  notificationAnalytics
+} from "../../shared/notifications-schema";
 import { users, profiles } from "../../shared/schema";
 
 const router = express.Router();
