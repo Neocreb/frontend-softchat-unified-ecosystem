@@ -498,7 +498,7 @@ export default function EnhancedCrypto() {
                 </div>
 
                 {/* Total Assets Balance Card - Credit Card Design */}
-                <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white w-full max-w-5xl mx-auto aspect-[5/2] sm:aspect-[7/2]">
+                <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white w-full max-w-5xl mx-auto">
                   {/* Animated background elements */}
                   <div className="absolute inset-0 overflow-hidden">
                     <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
