@@ -178,22 +178,14 @@ router.post('/create', authenticateToken, upload.fields([
     const originalCreator = originalCreatorProfile[0];
 
     // Upload duet video to storage
-    const duetVideoUrl = await fileService.uploadFile({
-      buffer: duetVideoFile.buffer,
-      mimetype: duetVideoFile.mimetype,
-      originalname: duetVideoFile.originalname,
-      folder: 'duets',
-    });
+    const duetResult = await FileService.uploadFile(duetVideoFile, 'duets');
+    const duetVideoUrl = duetResult.url;
 
     // Upload thumbnail if provided
     let thumbnailUrl = null;
     if (thumbnailFile) {
-      thumbnailUrl = await fileService.uploadFile({
-        buffer: thumbnailFile.buffer,
-        mimetype: thumbnailFile.mimetype,
-        originalname: thumbnailFile.originalname,
-        folder: 'thumbnails',
-      });
+      const thumbnailResult = await FileService.uploadFile(thumbnailFile, 'thumbnails');
+      thumbnailUrl = thumbnailResult.url;
     }
 
     // Determine the root original creator for duet chains
@@ -431,12 +423,18 @@ router.delete('/:postId', authenticateToken, async (req, res) => {
 
     const duetPost = post[0];
 
-    // Delete files from storage
+    // Delete files from storage (extract filename from URL)
     if (duetPost.videoUrl) {
-      await fileService.deleteFile(duetPost.videoUrl);
+      const videoFileName = duetPost.videoUrl.split('/').pop();
+      if (videoFileName) {
+        await FileService.deleteFile(videoFileName, 'duets');
+      }
     }
     if (duetPost.imageUrl) {
-      await fileService.deleteFile(duetPost.imageUrl);
+      const imageFileName = duetPost.imageUrl.split('/').pop();
+      if (imageFileName) {
+        await FileService.deleteFile(imageFileName, 'thumbnails');
+      }
     }
 
     // Delete post from database
