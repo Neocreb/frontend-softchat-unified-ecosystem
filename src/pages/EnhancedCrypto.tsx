@@ -81,6 +81,8 @@ export default function EnhancedCrypto() {
     null,
   );
   const [isCryptoDetailOpen, setIsCryptoDetailOpen] = useState(false);
+  const [showCryptoDepositModal, setShowCryptoDepositModal] = useState(false);
+  const [showCryptoWithdrawModal, setShowCryptoWithdrawModal] = useState(false);
 
   const { toast } = useToast();
 
