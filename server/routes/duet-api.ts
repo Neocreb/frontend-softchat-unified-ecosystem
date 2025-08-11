@@ -5,7 +5,7 @@ import { db } from '../db.js';
 import { posts, users, profiles } from '../../shared/schema.js';
 import { eq, and } from 'drizzle-orm';
 import { authenticateToken } from '../middleware/auth.js';
-import { fileService } from '../services/fileService.js';
+import { FileService } from '../services/fileService.js';
 
 const router = express.Router();
 
