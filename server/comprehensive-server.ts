@@ -241,10 +241,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const staticPath = path.join(__dirname, "../dist");
 
 // Check if dist directory exists before serving
+logger.info(`Static path: ${staticPath}`);
+logger.info(`Static path exists: ${fs.existsSync(staticPath)}`);
 if (fs.existsSync(staticPath)) {
+  logger.info("Setting up static file middleware");
   app.use(express.static(staticPath, {
     index: false // Don't serve index.html for directories automatically
   }));
+} else {
+  logger.error("Static path does not exist!");
 }
 
 // =============================================================================
