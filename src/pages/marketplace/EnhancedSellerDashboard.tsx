@@ -227,10 +227,7 @@ const EnhancedSellerDashboard = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Seller Dashboard</h1>
-          <p className="text-muted-foreground">
-            Manage your products, track performance, and grow your business
-          </p>
+          <h1 className="text-2xl font-bold">Seller Dashboard</h1>
         </div>
 
         <Button
