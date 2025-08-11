@@ -14,10 +14,13 @@ import {
   pushNotifications,
   emailNotifications,
   smsNotifications,
-  notificationSettings,
+  notificationPreferences,
+  deviceTokens,
   notificationTemplates,
-  notificationBatches,
-  notificationAnalytics
+  notificationCampaigns,
+  campaignRecipients,
+  notificationAnalytics,
+  unsubscribeRecords
 } from "../../shared/notifications-schema";
 import { users, profiles } from "../../shared/schema";
 
