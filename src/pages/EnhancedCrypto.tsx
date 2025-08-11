@@ -506,9 +506,9 @@ export default function EnhancedCrypto() {
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
                   </div>
 
-                  <CardContent className="relative z-10 p-4 sm:p-6 lg:p-8">
+                  <CardContent className="relative z-10 p-4 sm:p-6 lg:p-8 h-full flex flex-col justify-between">
                     {/* Header Row */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
@@ -519,21 +519,24 @@ export default function EnhancedCrypto() {
                           <p className="text-white/80 text-sm">Total Assets Value</p>
                         </div>
                       </div>
-                      <Badge className="bg-white/20 text-white border-white/30 self-start sm:self-center">
+                      <Badge className="bg-white/20 text-white border-white/30">
                         <Shield className="h-4 w-4 mr-1" />
                         Secure
                       </Badge>
                     </div>
 
-                    {/* Main Content - Centered Layout */}
-                    <div className="text-center space-y-6">
-                      {/* Balance Display */}
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
-                        $47,852.36
+                    {/* Main Content Row - Horizontal Layout */}
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 flex-1">
+                      {/* Left: Balance Display */}
+                      <div className="text-center lg:text-left">
+                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                          $47,852.36
+                        </div>
+                        <p className="text-white/70 text-sm mt-1">Total Value</p>
                       </div>
 
-                      {/* Action Buttons */}
-                      <div className="flex gap-3 justify-center">
+                      {/* Right: Action Buttons */}
+                      <div className="flex gap-3 justify-center lg:justify-end">
                         <Button
                           onClick={() => setShowCryptoDepositModal(true)}
                           className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
