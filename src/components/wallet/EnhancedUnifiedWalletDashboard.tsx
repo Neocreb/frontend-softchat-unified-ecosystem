@@ -69,24 +69,91 @@ const EnhancedWalletDashboardContent = () => {
             Complete financial management with advanced security
           </p>
         </div>
-        <div className="flex gap-2 flex-shrink-0">
-          <Button
-            onClick={() => setShowDepositModal(true)}
-            className="bg-green-600 hover:bg-green-700"
-            data-action="deposit"
-          >
-            Deposit
-          </Button>
-          <Button
-            onClick={() => setShowWithdrawModal(true)}
-            variant="outline"
-            className="border-red-200 text-red-600 hover:bg-red-50"
-            data-action="withdraw"
-          >
-            Withdraw
-          </Button>
-        </div>
       </div>
+
+      {/* Total Balance Card - Now at the top */}
+      <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+          <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full" />
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
+        </div>
+
+        <CardContent className="relative z-10 p-6 md:p-8">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Wallet className="h-8 w-8 text-white" />
+                <TrendingUp className="absolute -top-1 -right-1 h-4 w-4 text-green-300" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">SoftChat Wallet</h2>
+                <p className="text-white/80 text-sm">Total Balance</p>
+              </div>
+            </div>
+            <Badge className="bg-white/20 text-white border-white/30">
+              <Shield className="h-4 w-4 mr-1" />
+              Secure
+            </Badge>
+          </div>
+
+          <div className="text-center space-y-4">
+            <div className="text-4xl md:text-5xl font-bold text-white">
+              ${walletBalance?.total.toFixed(2) || "0.00"}
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              {[
+                { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
+                { name: "Crypto", value: walletBalance?.crypto || 0 },
+                { name: "Rewards", value: walletBalance?.rewards || 0 },
+                { name: "Freelance", value: walletBalance?.freelance || 0 },
+              ].map((source) => (
+                <div key={source.name} className="text-center">
+                  <div className="text-lg md:text-xl font-semibold text-white">
+                    ${source.value.toFixed(2)}
+                  </div>
+                  <div className="text-xs text-white/70">
+                    {source.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 justify-center mt-6">
+              <Button
+                onClick={() => setShowDepositModal(true)}
+                className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                data-action="deposit"
+              >
+                <ArrowUpDown className="h-4 w-4 mr-2" />
+                Deposit
+              </Button>
+              <Button
+                onClick={() => setShowWithdrawModal(true)}
+                className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                data-action="withdraw"
+              >
+                <Wallet className="h-4 w-4 mr-2" />
+                Withdraw
+              </Button>
+            </div>
+          </div>
+
+          {/* Bottom info */}
+          <div className="flex justify-between items-center border-t border-white/20 pt-4 mt-6">
+            <div className="text-white/60 text-xs font-mono">
+              **** **** **** {String(Math.round(walletBalance?.total || 0)).slice(-4)}
+            </div>
+            <div className="text-white/60 text-xs">
+              Last Updated: {new Date().toLocaleTimeString()}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Main Tabbed Interface */}
       <Tabs
@@ -126,43 +193,8 @@ const EnhancedWalletDashboardContent = () => {
           </div>
         </div>
 
-        {/* Overview Tab - Enhanced with unified layout */}
+        {/* Overview Tab - Now simplified since balance is already shown at top */}
         <TabsContent value="overview" className="space-y-6">
-          {/* Main Balance Card */}
-          <Card className="overflow-hidden">
-            <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-              <div className="text-center space-y-4">
-                <div>
-                  <h2 className="text-lg font-medium text-blue-100">
-                    Total Balance
-                  </h2>
-                  <div className="text-4xl md:text-5xl font-bold">
-                    ${walletBalance?.total.toFixed(2) || "0.00"}
-                  </div>
-                </div>
-
-                {/* Quick Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-                  {[
-                    { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
-                    { name: "Crypto", value: walletBalance?.crypto || 0 },
-                    { name: "Rewards", value: walletBalance?.rewards || 0 },
-                    { name: "Freelance", value: walletBalance?.freelance || 0 },
-                  ].map((source) => (
-                    <div key={source.name} className="text-center">
-                      <div className="text-lg md:text-xl font-semibold">
-                        ${source.value.toFixed(2)}
-                      </div>
-                      <div className="text-xs text-blue-200">
-                        {source.name}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Quick Actions Section */}
           <QuickActionsWidget />
         </TabsContent>
