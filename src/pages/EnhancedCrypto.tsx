@@ -710,113 +710,105 @@ export default function EnhancedCrypto() {
                   </CardContent>
                 </Card>
 
-                {/* Market Movers */}
+                {/* Market Movers - Tabbed Interface */}
                 {marketData && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="flex items-center gap-2 text-green-600 text-base sm:text-lg">
-                          <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
-                          Top Gainers (24h)
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2 sm:space-y-3">
-                          {marketData.topMovers?.gainers?.length > 0 ? (
-                            marketData.topMovers.gainers
-                              .slice(0, 4)
-                              .map((crypto) => (
-                                <div
-                                  key={crypto.id}
-                                  className="flex items-center justify-between"
-                                >
-                                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                                    <img
-                                      src={crypto.image}
-                                      alt={crypto.name}
-                                      className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex-shrink-0"
-                                    />
-                                    <span className="font-medium text-sm sm:text-base truncate">
-                                      {crypto.symbol?.toUpperCase() || "N/A"}
-                                    </span>
-                                  </div>
-                                  <div className="text-right flex-shrink-0">
-                                    <div className="font-semibold text-sm sm:text-base">
-                                      {formatCurrency(
-                                        crypto.current_price || 0,
-                                      )}
-                                    </div>
-                                    <div className="text-green-600 text-xs sm:text-sm font-medium">
-                                      {formatPercentage(
-                                        crypto.price_change_percentage_24h || 0,
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))
-                          ) : (
-                            <div className="text-center text-muted-foreground py-4">
-                              <p className="text-sm">
-                                No gainers data available
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                  <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+                    <Tabs defaultValue="gainers" className="w-full">
+                      <div className="flex items-center justify-between p-4 border-b">
+                        <h3 className="text-lg font-semibold">Market Movers (24h)</h3>
+                        <TabsList className="grid w-48 grid-cols-2">
+                          <TabsTrigger value="gainers" className="flex items-center gap-1">
+                            <TrendingUp className="h-4 w-4 text-green-600" />
+                            Gainers
+                          </TabsTrigger>
+                          <TabsTrigger value="losers" className="flex items-center gap-1">
+                            <TrendingDown className="h-4 w-4 text-red-600" />
+                            Losers
+                          </TabsTrigger>
+                        </TabsList>
+                      </div>
 
-                    <Card>
-                      <CardHeader className="pb-3">
-                        <CardTitle className="flex items-center gap-2 text-red-600 text-base sm:text-lg">
-                          <TrendingDown className="h-4 w-4 sm:h-5 sm:w-5" />
-                          Top Losers (24h)
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2 sm:space-y-3">
-                          {marketData.topMovers?.losers?.length > 0 ? (
-                            marketData.topMovers.losers
-                              .slice(0, 4)
-                              .map((crypto) => (
-                                <div
-                                  key={crypto.id}
-                                  className="flex items-center justify-between"
-                                >
-                                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                                    <img
-                                      src={crypto.image}
-                                      alt={crypto.name}
-                                      className="w-5 h-5 sm:w-6 sm:h-6 rounded-full flex-shrink-0"
-                                    />
-                                    <span className="font-medium text-sm sm:text-base truncate">
-                                      {crypto.symbol?.toUpperCase() || "N/A"}
-                                    </span>
-                                  </div>
-                                  <div className="text-right flex-shrink-0">
-                                    <div className="font-semibold text-sm sm:text-base">
-                                      {formatCurrency(
-                                        crypto.current_price || 0,
-                                      )}
+                      <TabsContent value="gainers" className="m-0">
+                        <CardContent className="p-4">
+                          <div className="space-y-3">
+                            {marketData.topMovers?.gainers?.length > 0 ? (
+                              marketData.topMovers.gainers
+                                .slice(0, 6)
+                                .map((crypto) => (
+                                  <div
+                                    key={crypto.id}
+                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
+                                  >
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                      <img
+                                        src={crypto.image}
+                                        alt={crypto.name}
+                                        className="w-8 h-8 rounded-full flex-shrink-0"
+                                      />
+                                      <span className="font-medium text-base truncate">
+                                        {crypto.symbol?.toUpperCase() || "N/A"}
+                                      </span>
                                     </div>
-                                    <div className="text-red-600 text-xs sm:text-sm font-medium">
-                                      {formatPercentage(
-                                        crypto.price_change_percentage_24h || 0,
-                                      )}
+                                    <div className="text-right flex-shrink-0">
+                                      <div className="font-semibold text-base">
+                                        {formatCurrency(crypto.current_price || 0)}
+                                      </div>
+                                      <div className="text-green-600 text-sm font-medium">
+                                        {formatPercentage(crypto.price_change_percentage_24h || 0)}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              ))
-                          ) : (
-                            <div className="text-center text-muted-foreground py-4">
-                              <p className="text-sm">
-                                No losers data available
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                                ))
+                            ) : (
+                              <div className="text-center text-muted-foreground py-8">
+                                <p>No gainers data available</p>
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </TabsContent>
+
+                      <TabsContent value="losers" className="m-0">
+                        <CardContent className="p-4">
+                          <div className="space-y-3">
+                            {marketData.topMovers?.losers?.length > 0 ? (
+                              marketData.topMovers.losers
+                                .slice(0, 6)
+                                .map((crypto) => (
+                                  <div
+                                    key={crypto.id}
+                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                  >
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                      <img
+                                        src={crypto.image}
+                                        alt={crypto.name}
+                                        className="w-8 h-8 rounded-full flex-shrink-0"
+                                      />
+                                      <span className="font-medium text-base truncate">
+                                        {crypto.symbol?.toUpperCase() || "N/A"}
+                                      </span>
+                                    </div>
+                                    <div className="text-right flex-shrink-0">
+                                      <div className="font-semibold text-base">
+                                        {formatCurrency(crypto.current_price || 0)}
+                                      </div>
+                                      <div className="text-red-600 text-sm font-medium">
+                                        {formatPercentage(crypto.price_change_percentage_24h || 0)}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))
+                            ) : (
+                              <div className="text-center text-muted-foreground py-8">
+                                <p>No losers data available</p>
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </TabsContent>
+                    </Tabs>
+                  </Card>
                 )}
               </TabsContent>
 
