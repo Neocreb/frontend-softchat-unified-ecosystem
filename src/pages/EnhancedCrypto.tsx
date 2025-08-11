@@ -53,6 +53,8 @@ import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 import EnhancedCryptoPortfolio from "@/components/crypto/EnhancedCryptoPortfolio";
 import ApiStatusIndicator from "@/components/crypto/ApiStatusIndicator";
 import CryptoDetailModal from "@/components/crypto/CryptoDetailModal";
+import CryptoDepositModal from "@/components/crypto/CryptoDepositModal";
+import CryptoWithdrawModal from "@/components/crypto/CryptoWithdrawModal";
 import BlogRSSFeed from "@/components/crypto/BlogRSSFeed";
 import { cn } from "@/lib/utils";
 
