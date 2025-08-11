@@ -11,20 +11,18 @@ import {
 import {
   aiContentAnalysis,
   aiRecommendations,
-  semanticSearch,
-  voiceAnalysis,
-  imageAnalysis,
-  videoAnalysis,
-  nlpProcessing,
-  sentimentAnalysis,
-  spamDetection,
-  fraudDetection,
-  aiGeneratedContent,
-  userEngagementPatterns,
-  contentPerformancePredictions,
-  marketAnalysis,
-} from "../../shared/enhanced-schema";
-import { users, profiles, posts, videos } from "../../shared/schema";
+  aiChatConversations,
+  aiChatMessages,
+  aiPersonalizationProfiles,
+  aiContentModeration,
+  aiTrendAnalysis,
+  aiSmartNotifications,
+  aiCryptoAnalysis,
+  aiModelPerformance,
+  aiUserInsights
+} from "../../shared/ai-schema";
+import { users, profiles, posts } from "../../shared/schema";
+import { videos } from "../../shared/video-schema";
 
 const router = express.Router();
 
