@@ -41,7 +41,7 @@ const getDuetDataSchema = z.object({
  * GET /api/duets/original/:postId
  * Get original video data for duet creation
  */
-router.get('/original/:postId', authMiddleware, async (req, res) => {
+router.get('/original/:postId', authenticateToken, async (req, res) => {
   try {
     const { postId } = getDuetDataSchema.parse({ postId: req.params.postId });
 
@@ -119,7 +119,7 @@ router.get('/original/:postId', authMiddleware, async (req, res) => {
  * POST /api/duets/create
  * Create a new duet video
  */
-router.post('/create', authMiddleware, upload.fields([
+router.post('/create', authenticateToken, upload.fields([
   { name: 'duetVideo', maxCount: 1 },
   { name: 'thumbnail', maxCount: 1 }
 ]), async (req, res) => {
@@ -407,7 +407,7 @@ router.get('/user/:userId', async (req, res) => {
  * DELETE /api/duets/:postId
  * Delete a duet post
  */
-router.delete('/:postId', authMiddleware, async (req, res) => {
+router.delete('/:postId', authenticateToken, async (req, res) => {
   try {
     const userId = req.user!.id;
     const { postId } = req.params;
