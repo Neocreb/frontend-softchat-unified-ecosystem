@@ -241,22 +241,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const staticPath = path.join(__dirname, "../dist");
 
 // Check if dist directory exists before serving
-logger.info(`Static path: ${staticPath}`);
-logger.info(`Static path exists: ${fs.existsSync(staticPath)}`);
 if (fs.existsSync(staticPath)) {
-  logger.info("Setting up static file middleware");
-
-  // Add debugging middleware before static
-  app.use((req, res, next) => {
-    logger.info(`Request intercepted: ${req.method} ${req.url}`);
-    next();
-  });
-
   app.use(express.static(staticPath, {
     index: false // Don't serve index.html for directories automatically
   }));
-} else {
-  logger.error("Static path does not exist!");
 }
 
 // =============================================================================
@@ -422,15 +410,10 @@ setInterval(
 
 // Serve index.html for all unmatched routes (SPA support)
 app.get("*", (req, res) => {
-  logger.info(`Catch-all route hit for: ${req.url}`);
   const indexPath = path.join(staticPath, "index.html");
-  logger.info(`Looking for index.html at: ${indexPath}`);
-  logger.info(`Index.html exists: ${fs.existsSync(indexPath)}`);
   if (fs.existsSync(indexPath)) {
-    logger.info("Serving index.html");
     res.sendFile(indexPath);
   } else {
-    logger.error("index.html not found!");
     res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
   }
 });
