@@ -415,10 +415,15 @@ setInterval(
 
 // Serve index.html for all unmatched routes (SPA support)
 app.get("*", (req, res) => {
+  logger.info(`Catch-all route hit for: ${req.url}`);
   const indexPath = path.join(staticPath, "index.html");
+  logger.info(`Looking for index.html at: ${indexPath}`);
+  logger.info(`Index.html exists: ${fs.existsSync(indexPath)}`);
   if (fs.existsSync(indexPath)) {
+    logger.info("Serving index.html");
     res.sendFile(indexPath);
   } else {
+    logger.error("index.html not found!");
     res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
   }
 });
