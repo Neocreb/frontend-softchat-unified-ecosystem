@@ -358,10 +358,7 @@ const Groups = () => {
                 Back
               </Button>
               <div>
-                <h1 className="text-3xl font-bold">Groups</h1>
-                <p className="text-muted-foreground">
-                  Connect with communities that share your interests
-                </p>
+                <h1 className="text-2xl font-bold">Groups</h1>
               </div>
             </div>
 
