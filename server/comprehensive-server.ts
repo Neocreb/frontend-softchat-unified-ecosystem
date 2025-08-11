@@ -232,6 +232,22 @@ app.get("/status", async (req, res) => {
 });
 
 // =============================================================================
+// STATIC FILE SERVING
+// =============================================================================
+
+// Serve static files in both development and production
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const staticPath = path.join(__dirname, "../dist");
+
+// Check if dist directory exists before serving
+import fs from 'fs';
+if (fs.existsSync(staticPath)) {
+  app.use(express.static(staticPath, {
+    index: false // Don't serve index.html for directories automatically
+  }));
+}
+
+// =============================================================================
 // API ROUTES REGISTRATION
 // =============================================================================
 
