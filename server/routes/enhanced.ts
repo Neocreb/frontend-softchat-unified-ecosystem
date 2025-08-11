@@ -792,10 +792,10 @@ export async function registerEnhancedRoutes(app: Express): Promise<Server> {
   // Global error handler
   app.use(globalErrorHandler);
 
-  // 404 handler
-  app.use((req, res) => {
-    res.status(404).json({ error: "Route not found" });
-  });
+  // 404 handler - commented out to allow static file serving in comprehensive server
+  // app.use((req, res) => {
+  //   res.status(404).json({ error: "Route not found" });
+  // });
 
   // =============================================================================
   // COMPREHENSIVE PLATFORM ROUTES
