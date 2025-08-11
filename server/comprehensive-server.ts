@@ -388,15 +388,28 @@ setInterval(
 // STATIC FILE SERVING (PRODUCTION)
 // =============================================================================
 
-if (process.env.NODE_ENV === "production") {
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  const staticPath = path.join(__dirname, "../dist/client");
+// Serve static files in both development and production
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const staticPath = path.join(__dirname, "../dist");
 
+// Check if dist directory exists before serving
+import fs from 'fs';
+if (fs.existsSync(staticPath)) {
   app.use(express.static(staticPath));
 
   // Serve index.html for all unmatched routes (SPA support)
   app.get("*", (req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+    const indexPath = path.join(staticPath, "index.html");
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
+    }
+  });
+} else {
+  // Fallback route when frontend is not built
+  app.get("*", (req, res) => {
+    res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
   });
 }
 
