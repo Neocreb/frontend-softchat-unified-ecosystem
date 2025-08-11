@@ -438,69 +438,29 @@ export default function EnhancedCrypto() {
                       </Badge>
                     </div>
 
-                    {/* Main Content Row */}
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                      {/* Left: Balance Display */}
-                      <div className="text-center lg:text-left">
-                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
-                          $47,852.36
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex gap-3 justify-center lg:justify-start mt-4 lg:mt-6">
-                          <Button
-                            onClick={() => setActiveTab("portfolio")}
-                            className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
-                          >
-                            <ArrowUpDown className="h-4 w-4 mr-2" />
-                            Deposit
-                          </Button>
-                          <Button
-                            onClick={() => setActiveTab("portfolio")}
-                            className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
-                          >
-                            <Wallet className="h-4 w-4 mr-2" />
-                            Withdraw
-                          </Button>
-                        </div>
+                    {/* Main Content - Centered Layout */}
+                    <div className="text-center space-y-6">
+                      {/* Balance Display */}
+                      <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
+                        $47,852.36
                       </div>
 
-                      {/* Right: Asset Breakdown */}
-                      <div className="flex-1 max-w-lg">
-                        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
-                            <div className="text-base sm:text-lg font-semibold text-white">
-                              $28,445.12
-                            </div>
-                            <div className="text-xs text-white/70">
-                              Bitcoin (BTC)
-                            </div>
-                          </div>
-                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
-                            <div className="text-base sm:text-lg font-semibold text-white">
-                              $12,890.34
-                            </div>
-                            <div className="text-xs text-white/70">
-                              Ethereum (ETH)
-                            </div>
-                          </div>
-                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
-                            <div className="text-base sm:text-lg font-semibold text-white">
-                              $4,567.89
-                            </div>
-                            <div className="text-xs text-white/70">
-                              Altcoins
-                            </div>
-                          </div>
-                          <div className="text-center lg:text-left bg-white/10 rounded-lg p-3">
-                            <div className="text-base sm:text-lg font-semibold text-white">
-                              $1,949.01
-                            </div>
-                            <div className="text-xs text-white/70">
-                              Stablecoins
-                            </div>
-                          </div>
-                        </div>
+                      {/* Action Buttons */}
+                      <div className="flex gap-3 justify-center">
+                        <Button
+                          onClick={() => setShowCryptoDepositModal(true)}
+                          className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                        >
+                          <ArrowUpDown className="h-4 w-4 mr-2" />
+                          Deposit
+                        </Button>
+                        <Button
+                          onClick={() => setShowCryptoWithdrawModal(true)}
+                          className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                        >
+                          <Wallet className="h-4 w-4 mr-2" />
+                          Withdraw
+                        </Button>
                       </div>
                     </div>
 
