@@ -2730,3 +2730,27 @@
 {"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:12.255Z","url":"/","userAgent":"node"}
 {"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:14.255Z"}
 {"duration":"2ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":404,"timestamp":"2025-08-11T16:54:14.257Z","url":"/","userAgent":"node"}
+{"level":"info","message":"SIGTERM received, shutting down gracefully","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:16.220Z"}
+{"level":"info","message":"Static path: /app/code/dist","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.668Z"}
+{"level":"info","message":"Static path exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.670Z"}
+{"level":"info","message":"Setting up static file middleware","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.671Z"}
+{"level":"info","message":"WebSocket service initialized","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.673Z"}
+{"level":"info","message":"🚀 SoftChat Comprehensive Server running on port 3000","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"📊 Environment: development","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"💾 Database: Connected","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"📧 Email: Configured","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.675Z"}
+{"level":"info","message":"🔗 WebSocket: Enabled on /ws","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.676Z"}
+{"level":"info","message":"🌐 Health check: http://localhost:3000/health","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.676Z"}
+{"level":"info","message":"📋 API docs: http://localhost:3000/api/docs","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:18.676Z"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.369Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:20.373Z"}
+{"duration":"12ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:20.381Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /?reload=1754931261002","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.240Z"}
+{"level":"info","message":"Catch-all route hit for: /?reload=1754931261002","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:21.241Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:21.243Z","url":"/?reload=1754931261002","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
