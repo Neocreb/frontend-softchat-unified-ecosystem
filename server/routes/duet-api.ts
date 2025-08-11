@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { db } from '../db.js';
 import { posts, users, profiles } from '../../shared/schema.js';
 import { eq, and } from 'drizzle-orm';
-import { authMiddleware } from '../middleware/auth.js';
+import { authenticateToken } from '../middleware/auth.js';
 import { fileService } from '../services/fileService.js';
 
 const router = express.Router();
