@@ -2826,3 +2826,21 @@
 {"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.377Z"}
 {"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:44.378Z"}
 {"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:44.380Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.377Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.378Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.378Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.378Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:46.379Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:46.380Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Catch-all route hit for: /","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.379Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.380Z"}
+{"duration":"3ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:48.382Z","url":"/","userAgent":"node"}
+{"level":"info","message":"Request intercepted: GET /?reload=1754931288451","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.710Z"}
+{"level":"info","message":"Catch-all route hit for: /?reload=1754931288451","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"level":"info","message":"Looking for index.html at: /app/code/dist/index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"level":"info","message":"Index.html exists: true","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"level":"info","message":"Serving index.html","service":"softchat-comprehensive","timestamp":"2025-08-11T16:54:48.712Z"}
+{"duration":"4ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":200,"timestamp":"2025-08-11T16:54:48.714Z","url":"/?reload=1754931288451","userAgent":"Mozilla/5.0 (iPhone; CPU iPhone OS 16_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/125.0.6422.80 Mobile/15E148 Safari/604.1"}
