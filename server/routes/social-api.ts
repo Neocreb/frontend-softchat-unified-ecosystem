@@ -9,7 +9,7 @@ import {
   createRateLimitMiddleware,
   AppError,
 } from "../config/security";
-import { fileService } from "../services/fileService";
+import { FileService } from "../services/fileService";
 import { 
   posts,
   postLikes,
