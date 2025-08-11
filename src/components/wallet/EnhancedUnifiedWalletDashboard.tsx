@@ -80,71 +80,78 @@ const EnhancedWalletDashboardContent = () => {
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
         </div>
 
-        <CardContent className="relative z-10 p-6 md:p-8">
-          <div className="flex items-center justify-between mb-6">
+        <CardContent className="relative z-10 p-4 sm:p-6 lg:p-8">
+          {/* Header Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <Wallet className="h-8 w-8 text-white" />
-                <TrendingUp className="absolute -top-1 -right-1 h-4 w-4 text-green-300" />
+                <Wallet className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                <TrendingUp className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-green-300" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-white">SoftChat Wallet</h2>
+                <h2 className="text-lg sm:text-xl font-bold text-white">SoftChat Wallet</h2>
                 <p className="text-white/80 text-sm">Total Balance</p>
               </div>
             </div>
-            <Badge className="bg-white/20 text-white border-white/30">
+            <Badge className="bg-white/20 text-white border-white/30 self-start sm:self-center">
               <Shield className="h-4 w-4 mr-1" />
               Secure
             </Badge>
           </div>
 
-          <div className="text-center space-y-4">
-            <div className="text-4xl md:text-5xl font-bold text-white">
-              ${walletBalance?.total.toFixed(2) || "0.00"}
+          {/* Main Content Row */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            {/* Left: Balance Display */}
+            <div className="text-center lg:text-left">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
+                ${walletBalance?.total.toFixed(2) || "0.00"}
+              </div>
+
+              {/* Action Buttons - Mobile/Tablet */}
+              <div className="flex gap-3 justify-center lg:justify-start mt-4 lg:mt-6">
+                <Button
+                  onClick={() => setShowDepositModal(true)}
+                  className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                  data-action="deposit"
+                >
+                  <ArrowUpDown className="h-4 w-4 mr-2" />
+                  Deposit
+                </Button>
+                <Button
+                  onClick={() => setShowWithdrawModal(true)}
+                  className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                  data-action="withdraw"
+                >
+                  <Wallet className="h-4 w-4 mr-2" />
+                  Withdraw
+                </Button>
+              </div>
             </div>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-              {[
-                { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
-                { name: "Crypto", value: walletBalance?.crypto || 0 },
-                { name: "Rewards", value: walletBalance?.rewards || 0 },
-                { name: "Freelance", value: walletBalance?.freelance || 0 },
-              ].map((source) => (
-                <div key={source.name} className="text-center">
-                  <div className="text-lg md:text-xl font-semibold text-white">
-                    ${source.value.toFixed(2)}
+            {/* Right: Quick Stats Grid */}
+            <div className="flex-1 max-w-lg">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {[
+                  { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
+                  { name: "Crypto", value: walletBalance?.crypto || 0 },
+                  { name: "Rewards", value: walletBalance?.rewards || 0 },
+                  { name: "Freelance", value: walletBalance?.freelance || 0 },
+                ].map((source) => (
+                  <div key={source.name} className="text-center lg:text-left bg-white/10 rounded-lg p-3">
+                    <div className="text-base sm:text-lg font-semibold text-white">
+                      ${source.value.toFixed(2)}
+                    </div>
+                    <div className="text-xs text-white/70">
+                      {source.name}
+                    </div>
                   </div>
-                  <div className="text-xs text-white/70">
-                    {source.name}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex gap-3 justify-center mt-6">
-              <Button
-                onClick={() => setShowDepositModal(true)}
-                className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
-                data-action="deposit"
-              >
-                <ArrowUpDown className="h-4 w-4 mr-2" />
-                Deposit
-              </Button>
-              <Button
-                onClick={() => setShowWithdrawModal(true)}
-                className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
-                data-action="withdraw"
-              >
-                <Wallet className="h-4 w-4 mr-2" />
-                Withdraw
-              </Button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Bottom info */}
-          <div className="flex justify-between items-center border-t border-white/20 pt-4 mt-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-t border-white/20 pt-3 mt-6">
             <div className="text-white/60 text-xs font-mono">
               **** **** **** {String(Math.round(walletBalance?.total || 0)).slice(-4)}
             </div>
