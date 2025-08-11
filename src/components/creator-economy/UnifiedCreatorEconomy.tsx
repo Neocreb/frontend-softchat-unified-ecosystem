@@ -457,10 +457,7 @@ const UnifiedCreatorEconomy: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Creator & Activity Economy</h1>
-          <p className="text-muted-foreground">
-            Complete monetization ecosystem for creators and active users
-          </p>
+          <h1 className="text-2xl font-bold">Creator Economy</h1>
         </div>
         <div className="flex items-center gap-2">
           <Badge className="bg-purple-100 text-purple-800">
