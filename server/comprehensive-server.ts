@@ -404,35 +404,19 @@ setInterval(
 // STATIC FILE SERVING (PRODUCTION)
 // =============================================================================
 
-// Serve static files in both development and production
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const staticPath = path.join(__dirname, "../dist");
+// =============================================================================
+// SPA CATCH-ALL ROUTE (for frontend routing)
+// =============================================================================
 
-// Check if dist directory exists before serving
-import fs from 'fs';
-logger.info(`Checking static path: ${staticPath}`);
-if (fs.existsSync(staticPath)) {
-  logger.info("Static path exists, setting up static file serving");
-  app.use(express.static(staticPath));
-
-  // Serve index.html for all unmatched routes (SPA support)
-  app.get("*", (req, res) => {
-    const indexPath = path.join(staticPath, "index.html");
-    logger.info(`Attempting to serve index.html from: ${indexPath}`);
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
-    } else {
-      logger.error(`index.html not found at: ${indexPath}`);
-      res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
-    }
-  });
-} else {
-  logger.error(`Static path does not exist: ${staticPath}`);
-  // Fallback route when frontend is not built
-  app.get("*", (req, res) => {
+// Serve index.html for all unmatched routes (SPA support)
+app.get("*", (req, res) => {
+  const indexPath = path.join(staticPath, "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
     res.status(404).json({ error: "Frontend not built. Run 'npm run build:frontend' first." });
-  });
-}
+  }
+});
 
 // =============================================================================
 // ERROR HANDLING
