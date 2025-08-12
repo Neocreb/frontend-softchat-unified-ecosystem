@@ -44,8 +44,6 @@ import {
   ThumbsUp,
   Flag,
   Lock,
-  Activity,
-  TrendingUp as TrendingUpIcon,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
@@ -55,7 +53,6 @@ import P2PDisputeResolution from "./P2PDisputeResolution";
 import { cn } from "@/lib/utils";
 
 export default function EnhancedP2PMarketplace() {
-  const [activeTab, setActiveTab] = useState("marketplace");
   const [marketplaceTab, setMarketplaceTab] = useState("buy");
   const [offers, setOffers] = useState<P2POffer[]>([]);
   const [myTrades, setMyTrades] = useState<P2PTrade[]>([]);
@@ -73,7 +70,6 @@ export default function EnhancedP2PMarketplace() {
   const [showDisputeResolution, setShowDisputeResolution] = useState(false);
   const [selectedTrade, setSelectedTrade] = useState<any>(null);
   const [selectedDispute, setSelectedDispute] = useState<any>(null);
-  const [orderMatchingActive, setOrderMatchingActive] = useState(true);
 
   // Create offer form state
   const [newOffer, setNewOffer] = useState({
@@ -113,19 +109,17 @@ export default function EnhancedP2PMarketplace() {
 
   useEffect(() => {
     loadP2PData();
-  }, [activeTab, selectedAsset, selectedFiat]);
+  }, [selectedAsset, selectedFiat]);
 
   const loadP2PData = async () => {
     setIsLoading(true);
     try {
-      if (activeTab === "marketplace") {
-        const offersData = await cryptoService.getP2POffers({
-          asset: selectedAsset,
-          fiatCurrency: selectedFiat,
-          type: marketplaceTab.toUpperCase(),
-        });
-        setOffers(offersData || []);
-      }
+      const offersData = await cryptoService.getP2POffers({
+        asset: selectedAsset,
+        fiatCurrency: selectedFiat,
+        type: marketplaceTab.toUpperCase(),
+      });
+      setOffers(offersData || []);
       // In a real app, load user's trades
       setMyTrades([]);
     } catch (error) {
@@ -245,7 +239,6 @@ export default function EnhancedP2PMarketplace() {
 
   return (
     <div className="space-y-6">
-
       {/* Trust Indicators */}
       <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
         <CardContent className="p-3 md:p-4">
@@ -270,617 +263,360 @@ export default function EnhancedP2PMarketplace() {
         </CardContent>
       </Card>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
-          <TabsTrigger value="my-trades">My Trades</TabsTrigger>
-          <TabsTrigger value="my-offers">My Offers</TabsTrigger>
-          <TabsTrigger value="order-matching">Order Matching</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
-        </TabsList>
+      {/* Create Offer Button */}
+      <div className="flex justify-end">
+        <Button onClick={() => setShowCreateOffer(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          Create Offer
+        </Button>
+      </div>
 
-        {/* Marketplace Tab */}
-        <TabsContent value="marketplace" className="space-y-6">
-          {/* Filters */}
-          <Card>
-            <CardContent className="p-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-                <div>
-                  <Tabs
-                    value={marketplaceTab}
-                    onValueChange={setMarketplaceTab}
-                  >
-                    <TabsList className="grid w-full grid-cols-2">
-                      <TabsTrigger value="buy" className="text-green-600">
-                        Buy
-                      </TabsTrigger>
-                      <TabsTrigger value="sell" className="text-red-600">
-                        Sell
-                      </TabsTrigger>
-                    </TabsList>
-                  </Tabs>
-                </div>
+      {/* Filters */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <Select value={selectedAsset} onValueChange={setSelectedAsset}>
+              <SelectTrigger>
+                <SelectValue placeholder="Asset" />
+              </SelectTrigger>
+              <SelectContent>
+                {assets.map((asset) => (
+                  <SelectItem key={asset} value={asset}>
+                    {asset}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-                <Select value={selectedAsset} onValueChange={setSelectedAsset}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Asset" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {assets.map((asset) => (
-                      <SelectItem key={asset} value={asset}>
-                        {asset}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <Select value={selectedFiat} onValueChange={setSelectedFiat}>
+              <SelectTrigger>
+                <SelectValue placeholder="Currency" />
+              </SelectTrigger>
+              <SelectContent>
+                {fiatCurrencies.map((currency) => (
+                  <SelectItem key={currency} value={currency}>
+                    {currency}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-                <Select value={selectedFiat} onValueChange={setSelectedFiat}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Currency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {fiatCurrencies.map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <Select
+              value={selectedPayment}
+              onValueChange={setSelectedPayment}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Payment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Methods</SelectItem>
+                {paymentMethods.map((method) => (
+                  <SelectItem key={method.id} value={method.id}>
+                    {method.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-                <Select
-                  value={selectedPayment}
-                  onValueChange={setSelectedPayment}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Payment" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Methods</SelectItem>
-                    {paymentMethods.map((method) => (
-                      <SelectItem key={method.id} value={method.id}>
-                        {method.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <Input
+              placeholder="Min amount"
+              value={minAmount}
+              onChange={(e) => setMinAmount(e.target.value)}
+              type="number"
+            />
 
-                <Input
-                  placeholder="Min amount"
-                  value={minAmount}
-                  onChange={(e) => setMinAmount(e.target.value)}
-                  type="number"
-                />
-
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                  <Input
-                    placeholder="Search traders..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Offers List */}
-          <div className="space-y-4">
-            {isLoading ? (
-              <div className="text-center py-12">
-                <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p>Loading offers...</p>
-              </div>
-            ) : filteredOffers.length > 0 ? (
-              filteredOffers.map((offer) => {
-                const ratingInfo = getTraderRating(offer.user.rating);
-                return (
-                  <Card
-                    key={offer.id}
-                    className="hover:shadow-md transition-shadow cursor-pointer"
-                    onClick={() => {
-                      setSelectedOffer(offer);
-                      setShowOfferDetails(true);
-                    }}
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                        {/* Trader Info */}
-                        <div className="flex items-center gap-4">
-                          <Avatar className="h-12 w-12">
-                            <AvatarImage src={offer.user.avatar} />
-                            <AvatarFallback>
-                              {offer.user.username.slice(0, 2).toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-
-                          <div>
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-semibold">
-                                {offer.user.username}
-                              </span>
-                              {offer.user.isVerified && (
-                                <CheckCircle className="h-4 w-4 text-blue-500" />
-                              )}
-                              <Badge variant="outline" className="text-xs">
-                                KYC {offer.user.kycLevel}
-                              </Badge>
-                            </div>
-
-                            <div className="flex items-center gap-4 text-sm text-gray-600">
-                              <div className="flex items-center gap-1">
-                                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                <span className={ratingInfo.color}>
-                                  {offer.user.rating.toFixed(1)} (
-                                  {ratingInfo.label})
-                                </span>
-                              </div>
-
-                              <div className="flex items-center gap-1">
-                                <Users className="h-4 w-4" />
-                                <span>{offer.user.totalTrades} trades</span>
-                              </div>
-
-                              <div className="flex items-center gap-1">
-                                <CheckCircle className="h-4 w-4 text-green-500" />
-                                <span>
-                                  {offer.user.completionRate.toFixed(1)}%
-                                </span>
-                              </div>
-
-                              <div className="flex items-center gap-1">
-                                <Clock
-                                  className={cn(
-                                    "h-4 w-4",
-                                    getReleaseTimeColor(
-                                      offer.user.avgReleaseTime,
-                                    ),
-                                  )}
-                                />
-                                <span
-                                  className={getReleaseTimeColor(
-                                    offer.user.avgReleaseTime,
-                                  )}
-                                >
-                                  ~{offer.user.avgReleaseTime}min
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Offer Details */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center lg:text-left">
-                          <div>
-                            <div className="text-sm text-gray-600">Price</div>
-                            <div className="font-bold text-lg">
-                              {formatCurrency(offer.price, offer.fiatCurrency)}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-600">
-                              Available
-                            </div>
-                            <div className="font-semibold">
-                              {formatCrypto(
-                                offer.availableAmount / offer.price,
-                                offer.asset,
-                              )}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-600">Limits</div>
-                            <div className="font-semibold text-sm">
-                              {formatCurrency(
-                                offer.minAmount,
-                                offer.fiatCurrency,
-                              )}{" "}
-                              -
-                              {formatCurrency(
-                                offer.maxAmount,
-                                offer.fiatCurrency,
-                              )}
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="text-sm text-gray-600 mb-2">
-                              Payment
-                            </div>
-                            <div className="flex flex-wrap gap-1">
-                              {offer.paymentMethods
-                                .slice(0, 2)
-                                .map((method) => (
-                                  <Badge
-                                    key={method.id}
-                                    variant="outline"
-                                    className="text-xs"
-                                  >
-                                    {method.name}
-                                  </Badge>
-                                ))}
-                              {offer.paymentMethods.length > 2 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{offer.paymentMethods.length - 2} more
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Action Button */}
-                        <div className="flex flex-col gap-2">
-                          <Button
-                            className={cn(
-                              "w-full",
-                              offer.type === "SELL"
-                                ? "bg-green-600 hover:bg-green-700"
-                                : "bg-red-600 hover:bg-red-700",
-                            )}
-                            onClick={() => {
-                              // Simulate starting escrow trade
-                              const mockTrade = {
-                                id: `trade-${Date.now()}`,
-                                buyerId:
-                                  offer.type === "SELL"
-                                    ? "currentUser"
-                                    : offer.userId,
-                                sellerId:
-                                  offer.type === "SELL"
-                                    ? offer.userId
-                                    : "currentUser",
-                                asset: offer.asset,
-                                amount: 0.1,
-                                fiatAmount: offer.price * 0.1,
-                                fiatCurrency: offer.fiatCurrency,
-                                price: offer.price,
-                                paymentMethod:
-                                  offer.paymentMethods[0]?.name ||
-                                  "Bank Transfer",
-                                status: "INITIATED",
-                                escrowStatus: "PENDING",
-                                timeRemaining: 30,
-                                autoReleaseTime: new Date(
-                                  Date.now() + 30 * 60000,
-                                ).toISOString(),
-                                buyer:
-                                  offer.type === "SELL"
-                                    ? {
-                                        id: "currentUser",
-                                        username: "You",
-                                        avatar: "",
-                                        rating: 4.8,
-                                        completedTrades: 15,
-                                      }
-                                    : offer.user,
-                                seller:
-                                  offer.type === "SELL"
-                                    ? offer.user
-                                    : {
-                                        id: "currentUser",
-                                        username: "You",
-                                        avatar: "",
-                                        rating: 4.8,
-                                        completedTrades: 15,
-                                      },
-                                steps: [
-                                  {
-                                    id: "1",
-                                    title: "Escrow Initialized",
-                                    description:
-                                      "Trade created and escrow started",
-                                    status: "COMPLETED",
-                                    completedAt: new Date().toISOString(),
-                                  },
-                                  {
-                                    id: "2",
-                                    title: "Payment Required",
-                                    description: "Buyer needs to make payment",
-                                    status: "IN_PROGRESS",
-                                    estimatedTime: 15,
-                                  },
-                                  {
-                                    id: "3",
-                                    title: "Payment Confirmation",
-                                    description:
-                                      "Seller confirms payment received",
-                                    status: "PENDING",
-                                    estimatedTime: 5,
-                                  },
-                                  {
-                                    id: "4",
-                                    title: "Asset Release",
-                                    description:
-                                      "Cryptocurrency released to buyer",
-                                    status: "PENDING",
-                                    estimatedTime: 2,
-                                  },
-                                ],
-                                createdAt: new Date().toISOString(),
-                                updatedAt: new Date().toISOString(),
-                              };
-                              setSelectedTrade(mockTrade);
-                              setShowEscrowSystem(true);
-                            }}
-                          >
-                            <Lock className="h-4 w-4 mr-2" />
-                            {offer.type === "SELL"
-                              ? "Buy with Escrow"
-                              : "Sell with Escrow"}
-                          </Button>
-
-                          <Button variant="outline" size="sm">
-                            <MessageCircle className="h-4 w-4 mr-2" />
-                            Chat
-                          </Button>
-                        </div>
-                      </div>
-
-                      {offer.terms && (
-                        <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                          <div className="text-sm text-gray-600">
-                            Terms: {offer.terms}
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                );
-              })
-            ) : (
-              <Card>
-                <CardContent className="p-12 text-center">
-                  <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">
-                    No Offers Found
-                  </h3>
-                  <p className="text-gray-600">
-                    Try adjusting your filters or create your own offer
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search traders..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
           </div>
-        </TabsContent>
+        </CardContent>
+      </Card>
 
-        {/* My Trades Tab */}
-        <TabsContent value="my-trades" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Active Trades</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <MessageCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No Active Trades</h3>
-                <p className="text-gray-600">
-                  Your active P2P trades will appear here
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+      {/* Offers List */}
+      <div className="space-y-4">
+        {isLoading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p>Loading offers...</p>
+          </div>
+        ) : filteredOffers.length > 0 ? (
+          filteredOffers.map((offer) => {
+            const ratingInfo = getTraderRating(offer.user.rating);
+            return (
+              <Card
+                key={offer.id}
+                className="hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => {
+                  setSelectedOffer(offer);
+                  setShowOfferDetails(true);
+                }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    {/* Trader Info */}
+                    <div className="flex items-center gap-4">
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src={offer.user.avatar} />
+                        <AvatarFallback>
+                          {offer.user.username.slice(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
 
-        {/* My Offers Tab */}
-        <TabsContent value="my-offers" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>My Offers</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <Plus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">
-                  No Offers Created
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Create your first P2P offer to start trading
-                </p>
-                <Button onClick={() => setShowCreateOffer(true)}>
-                  Create Offer
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold">
+                            {offer.user.username}
+                          </span>
+                          {offer.user.isVerified && (
+                            <CheckCircle className="h-4 w-4 text-blue-500" />
+                          )}
+                          <Badge variant="outline" className="text-xs">
+                            KYC {offer.user.kycLevel}
+                          </Badge>
+                        </div>
 
-        {/* Order Matching Tab */}
-        <TabsContent value="order-matching" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  Smart Order Matching
-                </CardTitle>
-                <div className="flex items-center gap-2">
-                  <Badge
-                    variant={orderMatchingActive ? "default" : "secondary"}
-                  >
-                    {orderMatchingActive ? "Active" : "Inactive"}
-                  </Badge>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setOrderMatchingActive(!orderMatchingActive)}
-                  >
-                    {orderMatchingActive ? "Disable" : "Enable"}
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Matching Statistics */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <TrendingUpIcon className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium text-blue-800">
-                      Matches Found
-                    </span>
-                  </div>
-                  <div className="text-2xl font-bold text-blue-900">47</div>
-                  <div className="text-xs text-blue-600">Last 24 hours</div>
-                </div>
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <span className="text-sm font-medium text-green-800">
-                      Success Rate
-                    </span>
-                  </div>
-                  <div className="text-2xl font-bold text-green-900">92.3%</div>
-                  <div className="text-xs text-green-600">Match completion</div>
-                </div>
-                <div className="p-4 bg-purple-50 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Clock className="h-4 w-4 text-purple-600" />
-                    <span className="text-sm font-medium text-purple-800">
-                      Avg Match Time
-                    </span>
-                  </div>
-                  <div className="text-2xl font-bold text-purple-900">3.2m</div>
-                  <div className="text-xs text-purple-600">Average time</div>
-                </div>
-              </div>
+                        <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            <span className={ratingInfo.color}>
+                              {offer.user.rating.toFixed(1)} (
+                              {ratingInfo.label})
+                            </span>
+                          </div>
 
-              {/* Matching Algorithm Settings */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">
-                    Matching Preferences
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Price Tolerance
-                      </label>
-                      <Select defaultValue="1">
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="0.5">��0.5%</SelectItem>
-                          <SelectItem value="1">±1%</SelectItem>
-                          <SelectItem value="2">±2%</SelectItem>
-                          <SelectItem value="5">±5%</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Min Trader Rating
-                      </label>
-                      <Select defaultValue="4">
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="3">3.0+</SelectItem>
-                          <SelectItem value="4">4.0+</SelectItem>
-                          <SelectItem value="4.5">4.5+</SelectItem>
-                          <SelectItem value="4.8">4.8+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Auto-Accept
-                      </label>
-                      <Select defaultValue="manual">
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="manual">Manual Review</SelectItem>
-                          <SelectItem value="auto">Auto Accept</SelectItem>
-                          <SelectItem value="conditions">
-                            With Conditions
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">
-                        Priority Asset
-                      </label>
-                      <Select defaultValue="btc">
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="btc">Bitcoin (BTC)</SelectItem>
-                          <SelectItem value="eth">Ethereum (ETH)</SelectItem>
-                          <SelectItem value="usdt">Tether (USDT)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4" />
+                            <span>{offer.user.totalTrades} trades</span>
+                          </div>
 
-              {/* Recent Matches */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Recent Matches</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="flex items-center justify-between p-3 border rounded-lg"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <div>
-                            <div className="font-medium">
-                              BTC/USD Match #{i}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              0.1 BTC at $43,250 • {5 - i} min ago
-                            </div>
+                          <div className="flex items-center gap-1">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>
+                              {offer.user.completionRate.toFixed(1)}%
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <Clock
+                              className={cn(
+                                "h-4 w-4",
+                                getReleaseTimeColor(
+                                  offer.user.avgReleaseTime,
+                                ),
+                              )}
+                            />
+                            <span
+                              className={getReleaseTimeColor(
+                                offer.user.avgReleaseTime,
+                              )}
+                            >
+                              ~{offer.user.avgReleaseTime}min
+                            </span>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-green-600">
-                            Matched
-                          </Badge>
-                          <Button variant="outline" size="sm">
-                            View Trade
-                          </Button>
+                      </div>
+                    </div>
+
+                    {/* Offer Details */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center lg:text-left">
+                      <div>
+                        <div className="text-sm text-gray-600">Price</div>
+                        <div className="font-bold text-lg">
+                          {formatCurrency(offer.price, offer.fiatCurrency)}
                         </div>
                       </div>
-                    ))}
+
+                      <div>
+                        <div className="text-sm text-gray-600">
+                          Available
+                        </div>
+                        <div className="font-semibold">
+                          {formatCrypto(
+                            offer.availableAmount / offer.price,
+                            offer.asset,
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-sm text-gray-600">Limits</div>
+                        <div className="font-semibold text-sm">
+                          {formatCurrency(
+                            offer.minAmount,
+                            offer.fiatCurrency,
+                          )}{" "}
+                          -
+                          {formatCurrency(
+                            offer.maxAmount,
+                            offer.fiatCurrency,
+                          )}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-sm text-gray-600 mb-2">
+                          Payment
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {offer.paymentMethods
+                            .slice(0, 2)
+                            .map((method) => (
+                              <Badge
+                                key={method.id}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {method.name}
+                              </Badge>
+                            ))}
+                          {offer.paymentMethods.length > 2 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{offer.paymentMethods.length - 2} more
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        className={cn(
+                          "w-full",
+                          offer.type === "SELL"
+                            ? "bg-green-600 hover:bg-green-700"
+                            : "bg-red-600 hover:bg-red-700",
+                        )}
+                        onClick={() => {
+                          // Simulate starting escrow trade
+                          const mockTrade = {
+                            id: `trade-${Date.now()}`,
+                            buyerId:
+                              offer.type === "SELL"
+                                ? "currentUser"
+                                : offer.userId,
+                            sellerId:
+                              offer.type === "SELL"
+                                ? offer.userId
+                                : "currentUser",
+                            asset: offer.asset,
+                            amount: 0.1,
+                            fiatAmount: offer.price * 0.1,
+                            fiatCurrency: offer.fiatCurrency,
+                            price: offer.price,
+                            paymentMethod:
+                              offer.paymentMethods[0]?.name ||
+                              "Bank Transfer",
+                            status: "INITIATED",
+                            escrowStatus: "PENDING",
+                            timeRemaining: 30,
+                            autoReleaseTime: new Date(
+                              Date.now() + 30 * 60000,
+                            ).toISOString(),
+                            buyer:
+                              offer.type === "SELL"
+                                ? {
+                                    id: "currentUser",
+                                    username: "You",
+                                    avatar: "",
+                                    rating: 4.8,
+                                    completedTrades: 15,
+                                  }
+                                : offer.user,
+                            seller:
+                              offer.type === "SELL"
+                                ? offer.user
+                                : {
+                                    id: "currentUser",
+                                    username: "You",
+                                    avatar: "",
+                                    rating: 4.8,
+                                    completedTrades: 15,
+                                  },
+                            steps: [
+                              {
+                                id: "1",
+                                title: "Escrow Initialized",
+                                description:
+                                  "Trade created and escrow started",
+                                status: "COMPLETED",
+                                completedAt: new Date().toISOString(),
+                              },
+                              {
+                                id: "2",
+                                title: "Payment Required",
+                                description: "Buyer needs to make payment",
+                                status: "IN_PROGRESS",
+                                estimatedTime: 15,
+                              },
+                              {
+                                id: "3",
+                                title: "Payment Confirmation",
+                                description:
+                                  "Seller confirms payment received",
+                                status: "PENDING",
+                                estimatedTime: 5,
+                              },
+                              {
+                                id: "4",
+                                title: "Asset Release",
+                                description:
+                                  "Cryptocurrency released to buyer",
+                                status: "PENDING",
+                                estimatedTime: 2,
+                              },
+                            ],
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString(),
+                          };
+                          setSelectedTrade(mockTrade);
+                          setShowEscrowSystem(true);
+                        }}
+                      >
+                        <Lock className="h-4 w-4 mr-2" />
+                        {offer.type === "SELL"
+                          ? "Buy with Escrow"
+                          : "Sell with Escrow"}
+                      </Button>
+
+                      <Button variant="outline" size="sm">
+                        <MessageCircle className="h-4 w-4 mr-2" />
+                        Chat
+                      </Button>
+                    </div>
                   </div>
+
+                  {offer.terms && (
+                    <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-600">
+                        Terms: {offer.terms}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* History Tab */}
-        <TabsContent value="history" className="space-y-6">
+            );
+          })
+        ) : (
           <Card>
-            <CardHeader>
-              <CardTitle>Trade History</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No Trade History</h3>
-                <p className="text-gray-600">
-                  Your completed trades will appear here
-                </p>
-              </div>
+            <CardContent className="p-12 text-center">
+              <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">
+                No Offers Found
+              </h3>
+              <p className="text-gray-600">
+                Try adjusting your filters or create your own offer
+              </p>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
 
       {/* Create Offer Dialog */}
       <Dialog open={showCreateOffer} onOpenChange={setShowCreateOffer}>
