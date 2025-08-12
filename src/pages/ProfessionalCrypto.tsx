@@ -236,15 +236,26 @@ const ProfessionalCrypto = () => {
   };
 
   const handleNavigateToTrade = (cryptoId: string) => {
-    setActiveTab("trading");
-    toast({
-      title: "Navigation",
-      description: `Switched to trading section for ${cryptoId.toUpperCase()}`,
-    });
+    navigate(`/app/crypto-trading?pair=${cryptoId.toUpperCase()}USDT`);
   };
 
   const handleQuickNavigation = (section: string) => {
-    setActiveTab(section);
+    switch (section) {
+      case "trading":
+        navigate("/app/crypto-trading");
+        break;
+      case "p2p":
+        navigate("/app/crypto-p2p");
+        break;
+      case "portfolio":
+        navigate("/app/crypto-portfolio");
+        break;
+      case "learn":
+        navigate("/app/crypto-learn");
+        break;
+      default:
+        break;
+    }
   };
 
   const handleDeposit = () => {
