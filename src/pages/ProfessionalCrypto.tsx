@@ -238,25 +238,61 @@ const ProfessionalCrypto = () => {
   };
 
   const handleNavigateToTrade = (cryptoId: string) => {
-    // In a real app, this would navigate to the specific trading page
+    setActiveTab("trading");
     toast({
       title: "Navigation",
-      description: `Opening ${cryptoId.toUpperCase()} trading page...`,
+      description: `Switched to trading section for ${cryptoId.toUpperCase()}`,
     });
+  };
+
+  const handleQuickNavigation = (section: string) => {
+    switch (section) {
+      case "trade":
+        setActiveTab("trading");
+        break;
+      case "p2p":
+        setActiveTab("p2p");
+        break;
+      case "portfolio":
+        setActiveTab("portfolio");
+        break;
+      case "learn":
+        setActiveTab("learn");
+        break;
+      default:
+        setActiveTab("overview");
+    }
   };
 
   const handleDeposit = () => {
-    toast({
-      title: "Deposit",
-      description: "Opening deposit modal...",
-    });
+    setDepositModalOpen(true);
   };
 
   const handleWithdraw = () => {
-    toast({
-      title: "Withdraw",
-      description: "Opening withdrawal modal...",
-    });
+    setWithdrawModalOpen(true);
+  };
+
+  const handleKYCSubmit = async (data: any) => {
+    try {
+      // Simulate API call
+      console.log("KYC data submitted:", data);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      toast({
+        title: "KYC Submitted",
+        description: "Your verification documents have been submitted for review.",
+      });
+
+      return { success: true };
+    } catch (error) {
+      console.error("Error submitting KYC:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit verification documents. Please try again.",
+        variant: "destructive",
+      });
+      return { success: false, error };
+    }
   };
 
   const topGainers = cryptos.filter(c => c.price_change_percentage_24h > 0).sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h).slice(0, 5);
