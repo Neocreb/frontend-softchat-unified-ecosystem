@@ -321,15 +321,20 @@ const ProfessionalCrypto = () => {
           {/* Quick Navigation Links */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: "Trade", icon: ArrowUpDown, color: "from-green-500 to-emerald-600", description: "Spot & Futures Trading" },
-              { label: "P2P", icon: Users, color: "from-blue-500 to-cyan-600", description: "Peer-to-Peer Trading" },
-              { label: "Portfolio", icon: PieChart, color: "from-purple-500 to-violet-600", description: "Asset Management" },
-              { label: "Learn", icon: BookOpen, color: "from-orange-500 to-red-600", description: "Education Center" },
+              { label: "Trade", icon: ArrowUpDown, color: "from-green-500 to-emerald-600", description: "Spot & Futures Trading", section: "trading" },
+              { label: "P2P", icon: Users, color: "from-blue-500 to-cyan-600", description: "Peer-to-Peer Trading", section: "p2p" },
+              { label: "Portfolio", icon: PieChart, color: "from-purple-500 to-violet-600", description: "Asset Management", section: "portfolio" },
+              { label: "Learn", icon: BookOpen, color: "from-orange-500 to-red-600", description: "Education Center", section: "learn" },
             ].map((item, index) => (
               <Card
                 key={index}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm"
-                onClick={() => handleNavigateToTrade(item.label.toLowerCase())}
+                className={cn(
+                  "cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 backdrop-blur-sm",
+                  activeTab === item.section
+                    ? "bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 ring-2 ring-blue-300 dark:ring-blue-600"
+                    : "bg-white/80 dark:bg-slate-800/80"
+                )}
+                onClick={() => handleQuickNavigation(item.section)}
               >
                 <CardContent className="p-6 text-center">
                   <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
@@ -337,7 +342,10 @@ const ProfessionalCrypto = () => {
                   </div>
                   <h3 className="font-semibold text-lg mb-1">{item.label}</h3>
                   <p className="text-sm text-muted-foreground">{item.description}</p>
-                  <ChevronRight className="h-4 w-4 mx-auto mt-2 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <ChevronRight className={cn(
+                    "h-4 w-4 mx-auto mt-2 transition-colors",
+                    activeTab === item.section ? "text-blue-600" : "text-muted-foreground group-hover:text-primary"
+                  )} />
                 </CardContent>
               </Card>
             ))}
