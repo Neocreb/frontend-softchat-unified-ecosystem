@@ -245,22 +245,6 @@ export default function EnhancedP2PMarketplace() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">P2P Marketplace</h1>
-          <p className="text-gray-600">
-            Trade crypto directly with other users
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button onClick={() => setShowCreateOffer(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            Create Offer
-          </Button>
-        </div>
-      </div>
 
       {/* Trust Indicators */}
       <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
