@@ -385,6 +385,93 @@ export default function EnhancedCrypto() {
               </CardContent>
             </Card>
 
+            {/* Quick Actions Links */}
+            <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-4 sm:p-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+
+                {/* Mobile Quick Links - Horizontal Scroll */}
+                <div className="block sm:hidden">
+                  <div className="flex overflow-x-auto scrollbar-hide gap-3 pb-2">
+                    <Button
+                      onClick={() => window.open('/trading', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <ArrowUpDown className="h-4 w-4 flex-shrink-0" />
+                      <span>Trading</span>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/p2p-trading', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <Users className="h-4 w-4 flex-shrink-0" />
+                      <span>P2P</span>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/crypto-portfolio', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <PieChart className="h-4 w-4 flex-shrink-0" />
+                      <span>Portfolio</span>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/crypto-learn', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <BookOpen className="h-4 w-4 flex-shrink-0" />
+                      <span>Learn</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Desktop Quick Links - Grid Layout */}
+                <div className="hidden sm:block">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Button
+                      onClick={() => window.open('/trading', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-green-500 hover:bg-green-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <ArrowUpDown className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">Trading</div>
+                        <div className="text-xs text-green-100">Buy & Sell</div>
+                      </div>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/p2p-trading', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-purple-500 hover:bg-purple-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <Users className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">P2P Trading</div>
+                        <div className="text-xs text-purple-100">Peer to Peer</div>
+                      </div>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/crypto-portfolio', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <PieChart className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">Portfolio</div>
+                        <div className="text-xs text-orange-100">Manage Assets</div>
+                      </div>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/crypto-learn', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <BookOpen className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">Learn</div>
+                        <div className="text-xs text-indigo-100">Education</div>
+                      </div>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Enhanced Top Cryptocurrencies */}
             <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
               <CardHeader className="pb-3 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700">
