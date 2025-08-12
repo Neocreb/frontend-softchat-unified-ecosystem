@@ -206,7 +206,6 @@ export default function CryptoDepositModal({
         description: `Your ${selectedCrypto?.name} deposit address is ready. Funds will appear after ${selectedCrypto?.confirmations} confirmations.`,
       });
       setIsLoading(false);
-      onSuccess();
       onClose();
     }, 1000);
   };
