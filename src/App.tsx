@@ -92,6 +92,11 @@ import DriverApplicationPublic from "./pages/DriverApplicationPublic";
 
 import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
+import ProfessionalCrypto from "./pages/ProfessionalCrypto";
+import CryptoTrading from "./pages/CryptoTrading";
+import CryptoP2P from "./pages/CryptoP2P";
+import CryptoPortfolio from "./pages/CryptoPortfolio";
+import CryptoLearn from "./pages/CryptoLearn";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
@@ -435,7 +440,11 @@ const AppRoutes = () => {
           <Route path="delivery/track" element={<DeliveryTracking />} />
           <Route path="delivery/track/:trackingNumber" element={<DeliveryTracking />} />
 
-          <Route path="crypto" element={<EnhancedCrypto />} />
+          <Route path="crypto" element={<ProfessionalCrypto />} />
+          <Route path="crypto-trading" element={<CryptoTrading />} />
+          <Route path="crypto-p2p" element={<CryptoP2P />} />
+          <Route path="crypto-portfolio" element={<CryptoPortfolio />} />
+          <Route path="crypto-learn" element={<CryptoLearn />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<EnhancedTikTokVideosV3 />} />

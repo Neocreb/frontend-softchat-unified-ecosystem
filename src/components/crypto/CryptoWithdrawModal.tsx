@@ -35,7 +35,7 @@ import { cn } from "@/lib/utils";
 interface CryptoWithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onKYCSubmit?: (data: any) => Promise<{success: boolean, error?: any}>;
 }
 
 interface CryptoBalance {
@@ -115,7 +115,7 @@ const mockBalances: CryptoBalance[] = [
 export default function CryptoWithdrawModal({
   isOpen,
   onClose,
-  onSuccess,
+  onKYCSubmit,
 }: CryptoWithdrawModalProps) {
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoBalance | null>(
     mockBalances[0]
@@ -203,7 +203,6 @@ export default function CryptoWithdrawModal({
         description: `Your ${selectedCrypto.name} withdrawal has been submitted for processing.`,
       });
 
-      onSuccess();
       onClose();
       resetForm();
     } catch (error) {
