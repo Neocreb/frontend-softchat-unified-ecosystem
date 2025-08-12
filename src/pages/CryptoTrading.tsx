@@ -44,9 +44,9 @@ const CryptoTrading = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
+          {/* Simplified Header */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -54,21 +54,16 @@ const CryptoTrading = () => {
                 className="flex items-center gap-2"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Back to Crypto
+                Back
               </Button>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                  Professional Trading
-                </h1>
-                <p className="text-muted-foreground">
-                  Advanced trading interface with real-time charts and order management
-                </p>
-              </div>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                Trading
+              </h1>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Live Market
+                Live
               </span>
             </div>
           </div>
