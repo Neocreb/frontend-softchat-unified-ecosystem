@@ -413,7 +413,7 @@ export default function EnhancedCrypto() {
                 <div className="hidden sm:block">
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <Button
-                      onClick={() => window.open('/app/crypto#trading', '_blank')}
+                      onClick={() => window.open('/app/crypto/trading', '_blank')}
                       className="flex flex-col items-center gap-3 p-6 h-auto bg-green-500 hover:bg-green-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
                     >
                       <ArrowUpDown className="h-8 w-8" />
@@ -423,7 +423,7 @@ export default function EnhancedCrypto() {
                       </div>
                     </Button>
                     <Button
-                      onClick={() => window.open('/app/crypto#p2p', '_blank')}
+                      onClick={() => window.open('/app/crypto/p2p', '_blank')}
                       className="flex flex-col items-center gap-3 p-6 h-auto bg-purple-500 hover:bg-purple-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
                     >
                       <Users className="h-8 w-8" />
@@ -433,7 +433,7 @@ export default function EnhancedCrypto() {
                       </div>
                     </Button>
                     <Button
-                      onClick={() => window.open('/app/crypto#portfolio', '_blank')}
+                      onClick={() => window.open('/app/crypto/portfolio', '_blank')}
                       className="flex flex-col items-center gap-3 p-6 h-auto bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
                     >
                       <PieChart className="h-8 w-8" />
@@ -443,7 +443,7 @@ export default function EnhancedCrypto() {
                       </div>
                     </Button>
                     <Button
-                      onClick={() => window.open('/app/blog', '_blank')}
+                      onClick={() => window.open('/app/crypto/learn', '_blank')}
                       className="flex flex-col items-center gap-3 p-6 h-auto bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
                     >
                       <BookOpen className="h-8 w-8" />
