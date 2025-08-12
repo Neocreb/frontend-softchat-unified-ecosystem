@@ -263,80 +263,56 @@ export default function EnhancedP2PMarketplace() {
         </CardContent>
       </Card>
 
-      {/* Create Offer Button */}
-      <div className="flex justify-end">
-        <Button onClick={() => setShowCreateOffer(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          Create Offer
-        </Button>
+      {/* Compact Filters */}
+      <div className="flex flex-wrap items-center gap-3 py-3 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+          <Select value={selectedAsset} onValueChange={setSelectedAsset}>
+            <SelectTrigger className="w-20 h-8 text-sm">
+              <SelectValue placeholder="Asset" />
+            </SelectTrigger>
+            <SelectContent>
+              {assets.map((asset) => (
+                <SelectItem key={asset} value={asset}>
+                  {asset}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <Select
+          value={selectedPayment}
+          onValueChange={setSelectedPayment}
+        >
+          <SelectTrigger className="w-40 h-8 text-sm">
+            <SelectValue placeholder="All Payment Methods" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Payment Methods</SelectItem>
+            {paymentMethods.map((method) => (
+              <SelectItem key={method.id} value={method.id}>
+                {method.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Input
+          placeholder="Amount"
+          value={minAmount}
+          onChange={(e) => setMinAmount(e.target.value)}
+          type="number"
+          className="w-24 h-8 text-sm"
+        />
+
+        <div className="ml-auto flex items-center gap-2">
+          <Button variant="outline" size="sm" className="h-8">
+            <Filter className="h-4 w-4 mr-1" />
+            <span className="bg-orange-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center ml-1">1</span>
+          </Button>
+        </div>
       </div>
-
-      {/* Filters */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <Select value={selectedAsset} onValueChange={setSelectedAsset}>
-              <SelectTrigger>
-                <SelectValue placeholder="Asset" />
-              </SelectTrigger>
-              <SelectContent>
-                {assets.map((asset) => (
-                  <SelectItem key={asset} value={asset}>
-                    {asset}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={selectedFiat} onValueChange={setSelectedFiat}>
-              <SelectTrigger>
-                <SelectValue placeholder="Currency" />
-              </SelectTrigger>
-              <SelectContent>
-                {fiatCurrencies.map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {currency}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select
-              value={selectedPayment}
-              onValueChange={setSelectedPayment}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Payment" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Methods</SelectItem>
-                {paymentMethods.map((method) => (
-                  <SelectItem key={method.id} value={method.id}>
-                    {method.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Input
-              placeholder="Min amount"
-              value={minAmount}
-              onChange={(e) => setMinAmount(e.target.value)}
-              type="number"
-            />
-
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search traders..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Offers List */}
       <div className="space-y-4">
