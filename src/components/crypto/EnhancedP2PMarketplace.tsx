@@ -52,7 +52,15 @@ import P2PEscrowSystem from "./P2PEscrowSystem";
 import P2PDisputeResolution from "./P2PDisputeResolution";
 import { cn } from "@/lib/utils";
 
-export default function EnhancedP2PMarketplace() {
+interface EnhancedP2PMarketplaceProps {
+  triggerCreateOffer?: boolean;
+  onCreateOfferTriggered?: () => void;
+}
+
+export default function EnhancedP2PMarketplace({
+  triggerCreateOffer = false,
+  onCreateOfferTriggered
+}: EnhancedP2PMarketplaceProps) {
   const [marketplaceTab, setMarketplaceTab] = useState("buy");
   const [offers, setOffers] = useState<P2POffer[]>([]);
   const [myTrades, setMyTrades] = useState<P2PTrade[]>([]);
@@ -110,6 +118,14 @@ export default function EnhancedP2PMarketplace() {
   useEffect(() => {
     loadP2PData();
   }, [selectedAsset, selectedFiat]);
+
+  // Handle external create offer trigger
+  useEffect(() => {
+    if (triggerCreateOffer) {
+      setShowCreateOffer(true);
+      onCreateOfferTriggered?.();
+    }
+  }, [triggerCreateOffer, onCreateOfferTriggered]);
 
   const loadP2PData = async () => {
     setIsLoading(true);
