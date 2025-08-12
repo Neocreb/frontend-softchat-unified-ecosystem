@@ -85,7 +85,7 @@ const CryptoTrading = () => {
           </div>
 
           {/* Trading Interface */}
-          <AdvancedTradingInterface />
+          <AdvancedTradingInterface selectedPair={selectedPair.replace("USDT", "/USDT")} />
         </div>
       </div>
     </>
