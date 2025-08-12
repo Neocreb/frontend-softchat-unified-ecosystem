@@ -24,6 +24,7 @@ const CryptoP2P = () => {
   const [activeTab, setActiveTab] = useState("market");
   const [selectedCurrency, setSelectedCurrency] = useState("NGN");
   const [tradingMode, setTradingMode] = useState("buy");
+  const [triggerCreateOffer, setTriggerCreateOffer] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -147,7 +148,7 @@ const CryptoP2P = () => {
             {/* Center - Create Offer Button */}
             <div className="flex-1 flex justify-center">
               <Button
-                onClick={() => {}}
+                onClick={() => setTriggerCreateOffer(true)}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 h-9"
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -179,7 +180,10 @@ const CryptoP2P = () => {
           {/* Tab Content */}
           <div className="pb-8">
             {activeTab === "market" && (
-              <EnhancedP2PMarketplace />
+              <EnhancedP2PMarketplace
+                triggerCreateOffer={triggerCreateOffer}
+                onCreateOfferTriggered={() => setTriggerCreateOffer(false)}
+              />
             )}
 
             {activeTab === "orders" && (
