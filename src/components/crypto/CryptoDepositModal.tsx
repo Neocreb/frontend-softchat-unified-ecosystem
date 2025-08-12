@@ -35,7 +35,7 @@ import { cn } from "@/lib/utils";
 interface CryptoDepositModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onKYCSubmit?: (data: any) => Promise<{success: boolean, error?: any}>;
 }
 
 interface CryptoCurrency {
