@@ -115,7 +115,7 @@ const mockBalances: CryptoBalance[] = [
 export default function CryptoWithdrawModal({
   isOpen,
   onClose,
-  onSuccess,
+  onKYCSubmit,
 }: CryptoWithdrawModalProps) {
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoBalance | null>(
     mockBalances[0]
