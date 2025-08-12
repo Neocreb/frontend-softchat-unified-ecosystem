@@ -4,9 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, TrendingUp } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import AdvancedTradingInterface from "@/components/crypto/AdvancedTradingInterface";
+import TradingPairSelector from "@/components/crypto/TradingPairSelector";
 
 const CryptoTrading = () => {
   const { user } = useAuth();
