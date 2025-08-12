@@ -31,6 +31,15 @@ const CryptoTrading = () => {
     navigate("/app/crypto");
   };
 
+  const handlePairSelect = (pair: string) => {
+    setSelectedPair(pair);
+    setSearchParams({ pair });
+    toast({
+      title: "Trading Pair Changed",
+      description: `Switched to ${pair} trading`,
+    });
+  };
+
   if (!user) {
     return null; // Will redirect to auth
   }
@@ -44,9 +53,9 @@ const CryptoTrading = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Simplified Header */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
+          {/* Exchange-Style Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
               <Button
                 variant="outline"
                 size="sm"
@@ -56,14 +65,21 @@ const CryptoTrading = () => {
                 <ArrowLeft className="h-4 w-4" />
                 Back
               </Button>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                Trading
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Trading
+                </h1>
+                <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+                <TradingPairSelector
+                  currentPair={selectedPair}
+                  onPairSelect={handlePairSelect}
+                />
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Live
+                Live Market
               </span>
             </div>
           </div>
