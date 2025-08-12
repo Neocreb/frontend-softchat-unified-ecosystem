@@ -394,28 +394,28 @@ export default function EnhancedCrypto() {
                 <div className="block sm:hidden">
                   <div className="flex overflow-x-auto scrollbar-hide gap-3 pb-2">
                     <Button
-                      onClick={() => window.open('/trading', '_blank')}
+                      onClick={() => window.open('/app/crypto#trading', '_blank')}
                       className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all whitespace-nowrap"
                     >
                       <ArrowUpDown className="h-4 w-4 flex-shrink-0" />
                       <span>Trading</span>
                     </Button>
                     <Button
-                      onClick={() => window.open('/p2p-trading', '_blank')}
+                      onClick={() => window.open('/app/crypto#p2p', '_blank')}
                       className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-all whitespace-nowrap"
                     >
                       <Users className="h-4 w-4 flex-shrink-0" />
                       <span>P2P</span>
                     </Button>
                     <Button
-                      onClick={() => window.open('/crypto-portfolio', '_blank')}
+                      onClick={() => window.open('/app/crypto#portfolio', '_blank')}
                       className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all whitespace-nowrap"
                     >
                       <PieChart className="h-4 w-4 flex-shrink-0" />
                       <span>Portfolio</span>
                     </Button>
                     <Button
-                      onClick={() => window.open('/crypto-learn', '_blank')}
+                      onClick={() => window.open('/app/blog', '_blank')}
                       className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-all whitespace-nowrap"
                     >
                       <BookOpen className="h-4 w-4 flex-shrink-0" />
