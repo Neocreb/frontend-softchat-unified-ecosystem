@@ -140,9 +140,60 @@ export default function EnhancedP2PMarketplace({
       setMyTrades([]);
     } catch (error) {
       console.error("Failed to load P2P data:", error);
-      // Set empty offers instead of showing error toast
-      setOffers([]);
-      // Only show a subtle warning instead of a destructive error
+      // Use mock data for testing filters
+      const mockOffers = [
+        {
+          id: "offer-1",
+          type: "SELL",
+          asset: selectedAsset,
+          fiatCurrency: selectedFiat,
+          price: 45000,
+          minAmount: 100,
+          maxAmount: 5000,
+          availableAmount: 10000,
+          paymentMethods: [
+            { id: "bank", name: "Bank Transfer" },
+            { id: "mobile", name: "Mobile Money" }
+          ],
+          terms: "Payment within 15 minutes",
+          user: {
+            username: "CryptoTrader01",
+            avatar: "",
+            rating: 4.8,
+            totalTrades: 125,
+            completionRate: 98.5,
+            avgReleaseTime: 12,
+            isVerified: true,
+            kycLevel: "2"
+          }
+        },
+        {
+          id: "offer-2",
+          type: "BUY",
+          asset: selectedAsset,
+          fiatCurrency: selectedFiat,
+          price: 44800,
+          minAmount: 50,
+          maxAmount: 3000,
+          availableAmount: 8000,
+          paymentMethods: [
+            { id: "paypal", name: "PayPal" },
+            { id: "wise", name: "Wise" }
+          ],
+          terms: "Quick release guaranteed",
+          user: {
+            username: "FastTrader",
+            avatar: "",
+            rating: 4.9,
+            totalTrades: 89,
+            completionRate: 99.1,
+            avgReleaseTime: 8,
+            isVerified: true,
+            kycLevel: "3"
+          }
+        }
+      ];
+      setOffers(mockOffers);
       console.warn("P2P marketplace: Using fallback mock data");
     } finally {
       setIsLoading(false);
