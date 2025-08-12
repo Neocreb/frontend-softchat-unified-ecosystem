@@ -101,19 +101,6 @@ const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
   const chartRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Trading pairs data
-  const tradingPairs = [
-    { symbol: "BTC/USDT", price: 43250.5, change: 2.34, changePercent: 0.054 },
-    {
-      symbol: "ETH/USDT",
-      price: 2650.75,
-      change: -45.25,
-      changePercent: -1.68,
-    },
-    { symbol: "BNB/USDT", price: 315.8, change: 8.9, changePercent: 2.9 },
-    { symbol: "ADA/USDT", price: 0.4852, change: 0.0123, changePercent: 2.6 },
-    { symbol: "SOL/USDT", price: 98.45, change: -2.15, changePercent: -2.14 },
-  ];
 
   const [orderBookData, setOrderBookData] = useState([
     { price: 43200, amount: 0.5, type: "buy" },
