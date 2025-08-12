@@ -312,43 +312,33 @@ const ProfessionalCrypto = () => {
             className="mb-8"
           />
 
-          {/* Main Content with Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            {/* Quick Navigation Links */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              {[
-                { label: "Trade", icon: ArrowUpDown, color: "from-green-500 to-emerald-600", description: "Spot & Futures Trading", section: "trading" },
-                { label: "P2P", icon: Users, color: "from-blue-500 to-cyan-600", description: "Peer-to-Peer Trading", section: "p2p" },
-                { label: "Portfolio", icon: PieChart, color: "from-purple-500 to-violet-600", description: "Asset Management", section: "portfolio" },
-                { label: "Learn", icon: BookOpen, color: "from-orange-500 to-red-600", description: "Education Center", section: "learn" },
-              ].map((item, index) => (
-                <Card
-                  key={index}
-                  className={cn(
-                    "cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 backdrop-blur-sm",
-                    activeTab === item.section 
-                      ? "bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 ring-2 ring-blue-300 dark:ring-blue-600" 
-                      : "bg-white/80 dark:bg-slate-800/80"
-                  )}
-                  onClick={() => handleQuickNavigation(item.section)}
-                >
-                  <CardContent className="p-6 text-center">
-                    <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                      <item.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-1">{item.label}</h3>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
-                    <ChevronRight className={cn(
-                      "h-4 w-4 mx-auto mt-2 transition-colors",
-                      activeTab === item.section ? "text-blue-600" : "text-muted-foreground group-hover:text-primary"
-                    )} />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          {/* Quick Navigation Links */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {[
+              { label: "Trade", icon: ArrowUpDown, color: "from-green-500 to-emerald-600", description: "Spot & Futures Trading", section: "trading" },
+              { label: "P2P", icon: Users, color: "from-blue-500 to-cyan-600", description: "Peer-to-Peer Trading", section: "p2p" },
+              { label: "Portfolio", icon: PieChart, color: "from-purple-500 to-violet-600", description: "Asset Management", section: "portfolio" },
+              { label: "Learn", icon: BookOpen, color: "from-orange-500 to-red-600", description: "Education Center", section: "learn" },
+            ].map((item, index) => (
+              <Card
+                key={index}
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-blue-500/25"
+                onClick={() => handleQuickNavigation(item.section)}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                    <item.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-lg mb-1">{item.label}</h3>
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
+                  <ChevronRight className="h-4 w-4 mx-auto mt-2 text-muted-foreground group-hover:text-primary transition-colors" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-            {/* Overview Tab Content (Default) */}
-            <TabsContent value="overview" className="space-y-8">
+          {/* Market Overview Content */}
+          <div className="space-y-8">
               {/* Market Stats */}
               {marketStats && (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -536,68 +526,7 @@ const ProfessionalCrypto = () => {
                   </Tabs>
                 </CardHeader>
               </Card>
-            </TabsContent>
-
-            {/* Trading Tab */}
-            <TabsContent value="trading" className="space-y-6">
-              <div className="text-center py-4">
-                <h2 className="text-2xl font-bold mb-2">Professional Trading</h2>
-                <p className="text-muted-foreground">Advanced trading interface with real-time charts and order management</p>
-              </div>
-              <AdvancedTradingInterface />
-            </TabsContent>
-
-            {/* P2P Tab */}
-            <TabsContent value="p2p" className="space-y-6">
-              <div className="text-center py-4">
-                <h2 className="text-2xl font-bold mb-2">Peer-to-Peer Trading</h2>
-                <p className="text-muted-foreground">Trade directly with other users in a secure environment</p>
-              </div>
-              <EnhancedP2PMarketplace />
-            </TabsContent>
-
-            {/* Portfolio Tab */}
-            <TabsContent value="portfolio" className="space-y-6">
-              <div className="text-center py-4">
-                <h2 className="text-2xl font-bold mb-2">Portfolio Management</h2>
-                <p className="text-muted-foreground">Track your investments and analyze your performance</p>
-              </div>
-              <EnhancedCryptoPortfolio />
-            </TabsContent>
-
-            {/* Learn Tab */}
-            <TabsContent value="learn" className="space-y-6">
-              <div className="text-center py-4">
-                <h2 className="text-2xl font-bold mb-2">Crypto Education Center</h2>
-                <p className="text-muted-foreground">Learn about cryptocurrencies, trading strategies, and market analysis</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  { title: "Beginner's Guide to Crypto", description: "Learn the basics of cryptocurrency and blockchain technology", level: "Beginner" },
-                  { title: "Technical Analysis", description: "Master chart patterns and trading indicators", level: "Intermediate" },
-                  { title: "DeFi Fundamentals", description: "Understand decentralized finance protocols", level: "Advanced" },
-                  { title: "Risk Management", description: "Learn how to protect your investments", level: "Intermediate" },
-                  { title: "Crypto Security", description: "Best practices for securing your digital assets", level: "Beginner" },
-                  { title: "Advanced Trading Strategies", description: "Professional trading techniques and strategies", level: "Advanced" },
-                ].map((course, index) => (
-                  <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <Badge variant="outline" className="text-xs">
-                          {course.level}
-                        </Badge>
-                        <h3 className="font-semibold text-lg">{course.title}</h3>
-                        <p className="text-sm text-muted-foreground">{course.description}</p>
-                        <Button variant="outline" className="w-full">
-                          Start Learning
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
+          </div>
 
           {/* Deposit and Withdraw Modals */}
           <CryptoDepositModal
