@@ -130,34 +130,57 @@ const CryptoP2P = () => {
           </div>
 
           {/* Trading Controls */}
-          <div className="flex items-center justify-between py-4 gap-4">
-            {/* Left side - Buy/Sell Buttons */}
-            <div className="flex items-center">
-              <Tabs value={tradingMode} onValueChange={setTradingMode}>
-                <TabsList className="grid grid-cols-2 h-9 w-32">
-                  <TabsTrigger value="buy" className="text-green-600 data-[state=active]:text-green-700 data-[state=active]:bg-green-50 text-sm">
-                    Buy
-                  </TabsTrigger>
-                  <TabsTrigger value="sell" className="text-red-600 data-[state=active]:text-red-700 data-[state=active]:bg-red-50 text-sm">
-                    Sell
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+          <div className="flex flex-col sm:flex-row items-center justify-between py-4 gap-4">
+            {/* Mobile: Stack vertically, Desktop: Side by side */}
+            <div className="flex items-center justify-between w-full sm:w-auto">
+              {/* Left side - Buy/Sell Buttons */}
+              <div className="flex items-center">
+                <Tabs value={tradingMode} onValueChange={setTradingMode}>
+                  <TabsList className="grid grid-cols-2 h-9 w-28">
+                    <TabsTrigger value="buy" className="text-green-600 data-[state=active]:text-green-700 data-[state=active]:bg-green-50 text-sm">
+                      Buy
+                    </TabsTrigger>
+                    <TabsTrigger value="sell" className="text-red-600 data-[state=active]:text-red-700 data-[state=active]:bg-red-50 text-sm">
+                      Sell
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {/* Right side - Currency Selector (Mobile: same row) */}
+              <div className="flex items-center gap-2 sm:hidden">
+                <span className="text-sm text-gray-600">Currency:</span>
+                <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+                  <SelectTrigger className="w-20 h-9">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="NGN">NGN</SelectItem>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="GBP">GBP</SelectItem>
+                    <SelectItem value="KES">KES</SelectItem>
+                    <SelectItem value="GHS">GHS</SelectItem>
+                    <SelectItem value="ZAR">ZAR</SelectItem>
+                    <SelectItem value="EGP">EGP</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Center - Create Offer Button */}
-            <div className="flex-1 flex justify-center">
+            <div className="flex justify-center w-full sm:flex-1">
               <Button
                 onClick={() => setTriggerCreateOffer(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 h-9"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 h-9 w-full sm:w-auto"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Offer
               </Button>
             </div>
 
-            {/* Right side - Currency Selector */}
-            <div className="flex items-center gap-2">
+            {/* Right side - Currency Selector (Desktop only) */}
+            <div className="hidden sm:flex items-center gap-2">
               <span className="text-sm text-gray-600 whitespace-nowrap">Currency:</span>
               <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
                 <SelectTrigger className="w-24 h-9">
