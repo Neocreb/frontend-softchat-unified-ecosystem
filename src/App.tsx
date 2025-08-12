@@ -92,6 +92,10 @@ import DriverApplicationPublic from "./pages/DriverApplicationPublic";
 
 import CryptoMarket from "./pages/CryptoMarket";
 import EnhancedCrypto from "./pages/EnhancedCrypto";
+import CryptoTrading from "./pages/crypto/CryptoTrading";
+import CryptoP2P from "./pages/crypto/CryptoP2P";
+import CryptoPortfolio from "./pages/crypto/CryptoPortfolio";
+import CryptoLearn from "./pages/crypto/CryptoLearn";
 import NotFound from "./pages/NotFound";
 import Rewards from "./pages/Rewards";
 import EnhancedSettings from "./pages/EnhancedSettings";
