@@ -52,7 +52,7 @@ import P2PEscrowSystem from "./P2PEscrowSystem";
 import P2PDisputeResolution from "./P2PDisputeResolution";
 import { cn } from "@/lib/utils";
 
-interface EnhancedP2PMarketplaceProps {
+export interface EnhancedP2PMarketplaceProps {
   triggerCreateOffer?: boolean;
   onCreateOfferTriggered?: () => void;
 }
