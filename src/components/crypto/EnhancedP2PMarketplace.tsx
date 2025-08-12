@@ -280,12 +280,12 @@ export default function EnhancedP2PMarketplace({
       </Card>
 
       {/* Compact Filters */}
-      <div className="flex flex-wrap items-center gap-3 py-3 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3 py-3 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
           <Select value={selectedAsset} onValueChange={setSelectedAsset}>
-            <SelectTrigger className="w-20 h-8 text-sm">
-              <SelectValue placeholder="Asset" />
+            <SelectTrigger className="w-24 h-9 text-sm border-gray-300">
+              <SelectValue placeholder="BTC" />
             </SelectTrigger>
             <SelectContent>
               {assets.map((asset) => (
@@ -301,7 +301,7 @@ export default function EnhancedP2PMarketplace({
           value={selectedPayment}
           onValueChange={setSelectedPayment}
         >
-          <SelectTrigger className="w-40 h-8 text-sm">
+          <SelectTrigger className="w-48 h-9 text-sm border-gray-300 flex-shrink-0">
             <SelectValue placeholder="All Payment Methods" />
           </SelectTrigger>
           <SelectContent>
@@ -315,15 +315,25 @@ export default function EnhancedP2PMarketplace({
         </Select>
 
         <Input
-          placeholder="Amount"
+          placeholder="100000"
           value={minAmount}
           onChange={(e) => setMinAmount(e.target.value)}
           type="number"
-          className="w-24 h-8 text-sm"
+          className="w-32 h-9 text-sm border-gray-300 flex-shrink-0"
         />
 
-        <div className="ml-auto flex items-center gap-2">
-          <Button variant="outline" size="sm" className="h-8">
+        <div className="flex items-center gap-2 ml-auto flex-shrink-0">
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 px-3 border-gray-300 hover:bg-gray-50"
+            onClick={() => {
+              // Reset filters or show filter modal
+              setSelectedPayment("all");
+              setMinAmount("");
+              setSearchQuery("");
+            }}
+          >
             <Filter className="h-4 w-4 mr-1" />
             <span className="bg-orange-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center ml-1">1</span>
           </Button>
