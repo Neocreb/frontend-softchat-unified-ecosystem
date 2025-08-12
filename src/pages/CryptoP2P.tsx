@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Users, Shield, Clock, Filter, History } from "lucide-react";
+import { ArrowLeft, Users, Shield, Clock, Filter, History, Plus } from "lucide-react";
 import { BannerAd } from "@/components/ads/BannerAd";
 import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
 
