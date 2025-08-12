@@ -12,8 +12,8 @@ const CryptoTrading = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const selectedPair = searchParams.get("pair") || "BTCUSDT";
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedPair, setSelectedPair] = useState(searchParams.get("pair") || "ETHUSDT");
 
   useEffect(() => {
     if (!user) {
