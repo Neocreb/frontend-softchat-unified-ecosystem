@@ -55,6 +55,9 @@ const ProfessionalCrypto = () => {
   const [marketStats, setMarketStats] = useState<MarketStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [topGainersLosersTab, setTopGainersLosersTab] = useState<"gainers" | "losers">("gainers");
+  const [activeTab, setActiveTab] = useState("overview");
+  const [depositModalOpen, setDepositModalOpen] = useState(false);
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
 
   // Mock portfolio data (in real app, this would come from API)
   const portfolioData = {
