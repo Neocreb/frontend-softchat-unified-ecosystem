@@ -56,9 +56,9 @@ const CryptoP2P = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Navigation */}
-          <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+          <div className="flex items-center py-3 border-b border-gray-200 dark:border-gray-700">
             {/* Left side - Back button and Navigation Tabs */}
-            <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
               <Button
                 variant="ghost"
                 size="sm"
@@ -68,43 +68,43 @@ const CryptoP2P = () => {
                 <ArrowLeft className="h-4 w-4" />
               </Button>
 
-              <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
+              <div className="flex items-center gap-6 overflow-x-auto scrollbar-hide">
                 <button
                   onClick={() => setActiveTab("market")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
-                    activeTab === "market" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap py-2 ${
+                    activeTab === "market" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600"
                   }`}
                 >
                   Market
                 </button>
                 <button
                   onClick={() => setActiveTab("orders")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
-                    activeTab === "orders" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap py-2 ${
+                    activeTab === "orders" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600"
                   }`}
                 >
                   Orders
                 </button>
                 <button
                   onClick={() => setActiveTab("my-offers")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
-                    activeTab === "my-offers" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap py-2 ${
+                    activeTab === "my-offers" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600"
                   }`}
                 >
                   My Offers
                 </button>
                 <button
                   onClick={() => setActiveTab("neoai")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
-                    activeTab === "neoai" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap py-2 ${
+                    activeTab === "neoai" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600"
                   }`}
                 >
                   NeoAi
                 </button>
                 <button
                   onClick={() => setActiveTab("history")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 flex items-center gap-1 whitespace-nowrap ${
-                    activeTab === "history" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 flex items-center gap-1 whitespace-nowrap py-2 ${
+                    activeTab === "history" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600"
                   }`}
                 >
                   <History className="h-3 w-3" />
@@ -112,7 +112,6 @@ const CryptoP2P = () => {
                 </button>
               </div>
             </div>
-
           </div>
 
           {/* Banner Ad */}
