@@ -68,8 +68,13 @@ interface CandlestickData {
   volume: number;
 }
 
-const AdvancedTradingInterface: React.FC = () => {
-  const [selectedPair, setSelectedPair] = useState("BTC/USDT");
+interface AdvancedTradingInterfaceProps {
+  selectedPair?: string;
+}
+
+const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
+  selectedPair = "ETH/USDT"
+}) => {
   const [orderType, setOrderType] = useState<"market" | "limit" | "stop-loss">(
     "limit",
   );
