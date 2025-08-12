@@ -438,7 +438,7 @@ const AdvancedTradingInterface: React.FC = () => {
         </div>
 
         {/* Order Book & Trading Panel */}
-        <div className="lg:col-span-3 space-y-2 md:space-y-4">
+        <div className="lg:col-span-4 space-y-2 md:space-y-4">
           {/* Order Book */}
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="pb-3">
