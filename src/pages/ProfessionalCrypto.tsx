@@ -20,12 +20,10 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import CryptoWalletBalanceCard from "@/components/crypto/CryptoWalletBalanceCard";
 import { cryptoService } from "@/services/cryptoService";
-import EnhancedP2PMarketplace from "@/components/crypto/EnhancedP2PMarketplace";
-import EnhancedCryptoPortfolio from "@/components/crypto/EnhancedCryptoPortfolio";
-import AdvancedTradingInterface from "@/components/crypto/AdvancedTradingInterface";
 import CryptoDepositModal from "@/components/crypto/CryptoDepositModal";
 import CryptoWithdrawModal from "@/components/crypto/CryptoWithdrawModal";
 
