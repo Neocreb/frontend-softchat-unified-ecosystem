@@ -298,1023 +298,365 @@ export default function EnhancedCrypto() {
             </div>
           </div>
 
-          {/* Quick Links Navigation */}
-          <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-4 sm:p-6">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+          {/* Overview Content - Direct Layout */}
+          <div className="space-y-4 sm:space-y-6">
 
-              {/* Mobile Quick Links - Horizontal Scroll */}
-              <div className="block sm:hidden">
-                <div className="flex overflow-x-auto scrollbar-hide gap-3 pb-2">
-                  <Button
-                    onClick={() => window.open('/enhanced-crypto', '_blank')}
-                    className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all whitespace-nowrap"
-                  >
-                    <ArrowUpDown className="h-4 w-4 flex-shrink-0" />
-                    <span>Trading</span>
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab("p2p")}
-                    className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-all whitespace-nowrap"
-                  >
-                    <Users className="h-4 w-4 flex-shrink-0" />
-                    <span>P2P</span>
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab("portfolio")}
-                    className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all whitespace-nowrap"
-                  >
-                    <PieChart className="h-4 w-4 flex-shrink-0" />
-                    <span>Portfolio</span>
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab("learn")}
-                    className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-all whitespace-nowrap"
-                  >
-                    <BookOpen className="h-4 w-4 flex-shrink-0" />
-                    <span>Learn</span>
-                  </Button>
-                </div>
+            {/* Total Assets Balance Card - Credit Card Design */}
+            <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white w-full max-w-5xl mx-auto">
+              {/* Animated background elements */}
+              <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
+                <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full" />
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
               </div>
 
-              {/* Desktop Quick Links - Grid Layout */}
-              <div className="hidden sm:block">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Button
-                    onClick={() => window.open('/enhanced-crypto', '_blank')}
-                    className="flex flex-col items-center gap-3 p-6 h-auto bg-green-500 hover:bg-green-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
-                  >
-                    <ArrowUpDown className="h-8 w-8" />
-                    <div className="text-center">
-                      <div className="font-semibold">Trading</div>
-                      <div className="text-xs text-green-100">Buy & Sell</div>
+              <CardContent className="relative z-10 p-6 sm:p-8">
+                {/* Header Row */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                      <TrendingUp className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-green-300" />
                     </div>
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab("p2p")}
-                    className="flex flex-col items-center gap-3 p-6 h-auto bg-purple-500 hover:bg-purple-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
-                  >
-                    <Users className="h-8 w-8" />
-                    <div className="text-center">
-                      <div className="font-semibold">P2P Trading</div>
-                      <div className="text-xs text-purple-100">Peer to Peer</div>
+                    <div>
+                      <h2 className="text-lg sm:text-xl font-bold text-white">Crypto Portfolio</h2>
+                      <p className="text-white/80 text-sm">Total Assets Value</p>
                     </div>
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab("portfolio")}
-                    className="flex flex-col items-center gap-3 p-6 h-auto bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
-                  >
-                    <PieChart className="h-8 w-8" />
-                    <div className="text-center">
-                      <div className="font-semibold">Portfolio</div>
-                      <div className="text-xs text-orange-100">Manage Assets</div>
+                  </div>
+                  <Badge className="bg-white/20 text-white border-white/30">
+                    <Shield className="h-4 w-4 mr-1" />
+                    Secure
+                  </Badge>
+                </div>
+
+                {/* Main Content Row - Horizontal Layout */}
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
+                  {/* Left: Balance Display */}
+                  <div className="text-center lg:text-left">
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                      $47,852.36
                     </div>
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab("learn")}
-                    className="flex flex-col items-center gap-3 p-6 h-auto bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
-                  >
-                    <BookOpen className="h-8 w-8" />
-                    <div className="text-center">
-                      <div className="font-semibold">Learn</div>
-                      <div className="text-xs text-indigo-100">Education</div>
-                    </div>
-                  </Button>
+                    <p className="text-white/70 text-sm mt-2">Total Value</p>
+                  </div>
+
+                  {/* Right: Action Buttons */}
+                  <div className="flex gap-3 justify-center lg:justify-end">
+                    <Button
+                      onClick={() => setShowCryptoDepositModal(true)}
+                      className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                    >
+                      <ArrowUpDown className="h-4 w-4 mr-2" />
+                      Deposit
+                    </Button>
+                    <Button
+                      onClick={() => setShowCryptoWithdrawModal(true)}
+                      className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
+                    >
+                      <Wallet className="h-4 w-4 mr-2" />
+                      Withdraw
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Bottom info */}
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-t border-white/20 pt-4">
+                  <div className="text-white/60 text-xs font-mono">
+                    **** **** **** 8536
+                  </div>
+                  <div className="text-white/60 text-xs">
+                    Last Updated: {lastUpdated.toLocaleTimeString()}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Actions Links */}
+            <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg p-4 sm:p-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+
+                {/* Mobile Quick Links - Horizontal Scroll */}
+                <div className="block sm:hidden">
+                  <div className="flex overflow-x-auto scrollbar-hide gap-3 pb-2">
+                    <Button
+                      onClick={() => window.open('/app/crypto#trading', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <ArrowUpDown className="h-4 w-4 flex-shrink-0" />
+                      <span>Trading</span>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/app/crypto#p2p', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <Users className="h-4 w-4 flex-shrink-0" />
+                      <span>P2P</span>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/app/crypto#portfolio', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <PieChart className="h-4 w-4 flex-shrink-0" />
+                      <span>Portfolio</span>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/app/blog', '_blank')}
+                      className="flex items-center gap-2 text-sm py-3 px-4 min-w-max bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-all whitespace-nowrap"
+                    >
+                      <BookOpen className="h-4 w-4 flex-shrink-0" />
+                      <span>Learn</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Desktop Quick Links - Grid Layout */}
+                <div className="hidden sm:block">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Button
+                      onClick={() => window.open('/app/crypto#trading', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-green-500 hover:bg-green-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <ArrowUpDown className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">Trading</div>
+                        <div className="text-xs text-green-100">Buy & Sell</div>
+                      </div>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/app/crypto#p2p', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-purple-500 hover:bg-purple-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <Users className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">P2P Trading</div>
+                        <div className="text-xs text-purple-100">Peer to Peer</div>
+                      </div>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/app/crypto#portfolio', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <PieChart className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">Portfolio</div>
+                        <div className="text-xs text-orange-100">Manage Assets</div>
+                      </div>
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/app/blog', '_blank')}
+                      className="flex flex-col items-center gap-3 p-6 h-auto bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl transition-all hover:scale-105 shadow-lg"
+                    >
+                      <BookOpen className="h-8 w-8" />
+                      <div className="text-center">
+                        <div className="font-semibold">Learn</div>
+                        <div className="text-xs text-indigo-100">Education</div>
+                      </div>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Overview Content - Now as main content */}
-          <div className="space-y-4 sm:space-y-6">
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="w-full"
-            >
-              {/* Mobile Tabs - Horizontal Scroll */}
-              <div className="block sm:hidden">
-                <div className="flex overflow-x-auto scrollbar-hide px-2">
-                  <TabsList className="flex min-w-max bg-transparent p-1 gap-1">
-                    <TabsTrigger
-                      value="overview"
-                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all whitespace-nowrap"
-                    >
-                      <BarChart3 className="h-3 w-3 flex-shrink-0" />
-                      <span>Overview</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="trading"
-                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-green-500 data-[state=active]:text-white transition-all whitespace-nowrap"
-                    >
-                      <ArrowUpDown className="h-3 w-3 flex-shrink-0" />
-                      <span>Trading</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="p2p"
-                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-purple-500 data-[state=active]:text-white transition-all whitespace-nowrap"
-                    >
-                      <Users className="h-3 w-3 flex-shrink-0" />
-                      <span>P2P</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="portfolio"
-                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all whitespace-nowrap"
-                    >
-                      <PieChart className="h-3 w-3 flex-shrink-0" />
-                      <span>Portfolio</span>
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="learn"
-                      className="flex items-center gap-1 text-xs py-2 px-3 min-w-max rounded-md data-[state=active]:bg-indigo-500 data-[state=active]:text-white transition-all whitespace-nowrap"
-                    >
-                      <BookOpen className="h-3 w-3 flex-shrink-0" />
-                      <span>Learn</span>
-                    </TabsTrigger>
-                  </TabsList>
+            {/* Enhanced Top Cryptocurrencies */}
+            <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+              <CardHeader className="pb-3 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-blue-500" />
+                    Top Cryptocurrencies
+                  </CardTitle>
+                  <Badge variant="outline" className="text-xs">
+                    Live Prices
+                  </Badge>
                 </div>
-              </div>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                  {cryptos.slice(0, 10).map((crypto, index) => (
+                    <div
+                      key={crypto.id}
+                      onClick={() => {
+                        setSelectedCrypto(crypto);
+                        setIsCryptoDetailOpen(true);
+                      }}
+                      className="flex items-center justify-between p-3 sm:p-4 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200 cursor-pointer group relative"
+                    >
+                      {/* Rank Badge */}
+                      <div className="absolute left-1 top-1 sm:relative sm:left-auto sm:top-auto">
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "text-xs px-1.5 py-0.5 font-bold",
+                            index < 3 &&
+                              "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0",
+                            index >= 3 &&
+                              index < 10 &&
+                              "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+                          )}
+                        >
+                          #{crypto.market_cap_rank}
+                        </Badge>
+                      </div>
 
-              {/* Desktop Tabs - Grid Layout */}
-              <div className="hidden sm:block">
-                <TabsList className="grid w-full grid-cols-5 bg-gray-100 dark:bg-slate-700 p-1 rounded-lg mx-2 my-2">
-                  <TabsTrigger
-                    value="overview"
-                    className="flex items-center justify-center gap-2 text-sm py-3 px-2 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-                  >
-                    <BarChart3 className="h-4 w-4 flex-shrink-0" />
-                    <span className="hidden md:inline">Overview</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="trading"
-                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-                  >
-                    <ArrowUpDown className="h-4 w-4" />
-                    <span className="hidden lg:inline">Trading</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="p2p"
-                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-                  >
-                    <Users className="h-4 w-4" />
-                    <span className="hidden lg:inline">P2P</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="portfolio"
-                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-                  >
-                    <PieChart className="h-4 w-4" />
-                    <span className="hidden lg:inline">Portfolio</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="learn"
-                    className="flex items-center gap-2 text-sm py-3 px-4 rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all"
-                  >
-                    <BookOpen className="h-4 w-4" />
-                    <span className="hidden lg:inline">Learn</span>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-
-              {/* Overview Tab */}
-              <TabsContent
-                value="overview"
-                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg sm:text-xl font-bold">
-                      Market Overview
-                    </h2>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm text-muted-foreground">
-                        Real-time market data and analytics
-                      </p>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Last updated: {lastUpdated.toLocaleTimeString()}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Total Assets Balance Card - Credit Card Design */}
-                <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white w-full max-w-5xl mx-auto">
-                  {/* Animated background elements */}
-                  <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full" />
-                    <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full" />
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
-                  </div>
-
-                  <CardContent className="relative z-10 p-6 sm:p-8">
-                    {/* Header Row */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 pl-12 sm:pl-0">
                         <div className="relative">
-                          <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
-                          <TrendingUp className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-green-300" />
+                          <img
+                            src={crypto.image}
+                            alt={crypto.name}
+                            className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full flex-shrink-0 ring-2 ring-white dark:ring-gray-700 shadow-sm group-hover:ring-blue-200 transition-all"
+                          />
+                          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 hidden sm:block"></div>
                         </div>
-                        <div>
-                          <h2 className="text-lg sm:text-xl font-bold text-white">Crypto Portfolio</h2>
-                          <p className="text-white/80 text-sm">Total Assets Value</p>
-                        </div>
-                      </div>
-                      <Badge className="bg-white/20 text-white border-white/30">
-                        <Shield className="h-4 w-4 mr-1" />
-                        Secure
-                      </Badge>
-                    </div>
-
-                    {/* Main Content Row - Horizontal Layout */}
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-6">
-                      {/* Left: Balance Display */}
-                      <div className="text-center lg:text-left">
-                        <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
-                          $47,852.36
-                        </div>
-                        <p className="text-white/70 text-sm mt-2">Total Value</p>
-                      </div>
-
-                      {/* Right: Action Buttons */}
-                      <div className="flex gap-3 justify-center lg:justify-end">
-                        <Button
-                          onClick={() => setShowCryptoDepositModal(true)}
-                          className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
-                        >
-                          <ArrowUpDown className="h-4 w-4 mr-2" />
-                          Deposit
-                        </Button>
-                        <Button
-                          onClick={() => setShowCryptoWithdrawModal(true)}
-                          className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all duration-200 hover:scale-105"
-                        >
-                          <Wallet className="h-4 w-4 mr-2" />
-                          Withdraw
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Bottom info */}
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-t border-white/20 pt-4">
-                      <div className="text-white/60 text-xs font-mono">
-                        **** **** **** 8536
-                      </div>
-                      <div className="text-white/60 text-xs">
-                        Last Updated: {lastUpdated.toLocaleTimeString()}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Enhanced Top Cryptocurrencies */}
-                <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
-                  <CardHeader className="pb-3 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-2">
-                        <TrendingUp className="h-5 w-5 text-blue-500" />
-                        Top Cryptocurrencies
-                      </CardTitle>
-                      <Badge variant="outline" className="text-xs">
-                        Live Prices
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <div className="divide-y divide-gray-100 dark:divide-gray-700">
-                      {cryptos.slice(0, 10).map((crypto, index) => (
-                        <div
-                          key={crypto.id}
-                          onClick={() => {
-                            setSelectedCrypto(crypto);
-                            setIsCryptoDetailOpen(true);
-                          }}
-                          className="flex items-center justify-between p-3 sm:p-4 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200 cursor-pointer group relative"
-                        >
-                          {/* Rank Badge */}
-                          <div className="absolute left-1 top-1 sm:relative sm:left-auto sm:top-auto">
-                            <Badge
-                              variant="outline"
-                              className={cn(
-                                "text-xs px-1.5 py-0.5 font-bold",
-                                index < 3 &&
-                                  "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0",
-                                index >= 3 &&
-                                  index < 10 &&
-                                  "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-                              )}
-                            >
-                              #{crypto.market_cap_rank}
-                            </Badge>
-                          </div>
-
-                          <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0 pl-12 sm:pl-0">
-                            <div className="relative">
-                              <img
-                                src={crypto.image}
-                                alt={crypto.name}
-                                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full flex-shrink-0 ring-2 ring-white dark:ring-gray-700 shadow-sm group-hover:ring-blue-200 transition-all"
-                              />
-                              <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 hidden sm:block"></div>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2">
-                                <p className="font-semibold text-sm sm:text-base lg:text-lg truncate group-hover:text-blue-600 transition-colors">
-                                  {crypto.name}
-                                </p>
-                                <span className="text-xs sm:text-sm text-muted-foreground bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full font-medium flex-shrink-0">
-                                  {crypto.symbol.toUpperCase()}
-                                </span>
-                              </div>
-                              <p className="text-xs sm:text-sm text-muted-foreground mt-1 hidden sm:block">
-                                Market Cap:{" "}
-                                {formatCurrency(crypto.market_cap || 0)}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right flex-shrink-0 space-y-1">
-                            <p className="font-bold text-sm sm:text-base lg:text-lg">
-                              {formatCurrency(crypto.current_price)}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold text-sm sm:text-base lg:text-lg truncate group-hover:text-blue-600 transition-colors">
+                              {crypto.name}
                             </p>
-                            <div
-                              className={cn(
-                                "flex items-center gap-1 justify-end px-2 py-1 rounded-full text-xs sm:text-sm font-semibold",
-                                crypto.price_change_percentage_24h >= 0
-                                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                                  : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
-                              )}
-                            >
-                              {crypto.price_change_percentage_24h >= 0 ? (
-                                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                              ) : (
-                                <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
-                              )}
-                              <span>
-                                {formatPercentage(
-                                  crypto.price_change_percentage_24h,
-                                )}
-                              </span>
-                            </div>
+                            <span className="text-xs sm:text-sm text-muted-foreground bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full font-medium flex-shrink-0">
+                              {crypto.symbol.toUpperCase()}
+                            </span>
                           </div>
-
-                          {/* Hover Effect Arrow */}
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2">
-                            <ArrowUpDown className="h-4 w-4 text-blue-500" />
-                          </div>
+                          <p className="text-xs sm:text-sm text-muted-foreground mt-1 hidden sm:block">
+                            Market Cap:{" "}
+                            {formatCurrency(crypto.market_cap || 0)}
+                          </p>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Market Movers - Tabbed Interface */}
-                {marketData && (
-                  <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
-                    <Tabs defaultValue="gainers" className="w-full">
-                      <div className="flex items-center justify-between p-4 border-b">
-                        <h3 className="text-lg font-semibold">Market Movers (24h)</h3>
-                        <TabsList className="grid w-48 grid-cols-2">
-                          <TabsTrigger value="gainers" className="flex items-center gap-1">
-                            <TrendingUp className="h-4 w-4 text-green-600" />
-                            Gainers
-                          </TabsTrigger>
-                          <TabsTrigger value="losers" className="flex items-center gap-1">
-                            <TrendingDown className="h-4 w-4 text-red-600" />
-                            Losers
-                          </TabsTrigger>
-                        </TabsList>
                       </div>
-
-                      <TabsContent value="gainers" className="m-0">
-                        <CardContent className="p-4">
-                          <div className="space-y-3">
-                            {marketData.topMovers?.gainers?.length > 0 ? (
-                              marketData.topMovers.gainers
-                                .slice(0, 6)
-                                .map((crypto) => (
-                                  <div
-                                    key={crypto.id}
-                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
-                                  >
-                                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                                      <img
-                                        src={crypto.image}
-                                        alt={crypto.name}
-                                        className="w-8 h-8 rounded-full flex-shrink-0"
-                                      />
-                                      <span className="font-medium text-base truncate">
-                                        {crypto.symbol?.toUpperCase() || "N/A"}
-                                      </span>
-                                    </div>
-                                    <div className="text-right flex-shrink-0">
-                                      <div className="font-semibold text-base">
-                                        {formatCurrency(crypto.current_price || 0)}
-                                      </div>
-                                      <div className="text-green-600 text-sm font-medium">
-                                        {formatPercentage(crypto.price_change_percentage_24h || 0)}
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))
-                            ) : (
-                              <div className="text-center text-muted-foreground py-8">
-                                <p>No gainers data available</p>
-                              </div>
-                            )}
-                          </div>
-                        </CardContent>
-                      </TabsContent>
-
-                      <TabsContent value="losers" className="m-0">
-                        <CardContent className="p-4">
-                          <div className="space-y-3">
-                            {marketData.topMovers?.losers?.length > 0 ? (
-                              marketData.topMovers.losers
-                                .slice(0, 6)
-                                .map((crypto) => (
-                                  <div
-                                    key={crypto.id}
-                                    className="flex items-center justify-between p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                                  >
-                                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                                      <img
-                                        src={crypto.image}
-                                        alt={crypto.name}
-                                        className="w-8 h-8 rounded-full flex-shrink-0"
-                                      />
-                                      <span className="font-medium text-base truncate">
-                                        {crypto.symbol?.toUpperCase() || "N/A"}
-                                      </span>
-                                    </div>
-                                    <div className="text-right flex-shrink-0">
-                                      <div className="font-semibold text-base">
-                                        {formatCurrency(crypto.current_price || 0)}
-                                      </div>
-                                      <div className="text-red-600 text-sm font-medium">
-                                        {formatPercentage(crypto.price_change_percentage_24h || 0)}
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))
-                            ) : (
-                              <div className="text-center text-muted-foreground py-8">
-                                <p>No losers data available</p>
-                              </div>
-                            )}
-                          </div>
-                        </CardContent>
-                      </TabsContent>
-                    </Tabs>
-                  </Card>
-                )}
-              </TabsContent>
-
-              {/* Trading Tab */}
-              <TabsContent
-                value="trading"
-                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg sm:text-xl font-bold">
-                      Trading Dashboard
-                    </h2>
-                    <p className="text-sm text-muted-foreground">
-                      Professional trading interface with simulated data
-                    </p>
-                  </div>
-                  {currentPair && (
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                      <Badge
-                        variant="outline"
-                        className="text-sm sm:text-lg px-2 sm:px-3 py-1"
-                      >
-                        {currentPair.symbol.toUpperCase()}/USDT
-                      </Badge>
-                      <div className="text-right">
-                        <div className="font-bold text-sm sm:text-base">
-                          {formatCurrency(currentPair.current_price)}
-                        </div>
+                      <div className="text-right flex-shrink-0 space-y-1">
+                        <p className="font-bold text-sm sm:text-base lg:text-lg">
+                          {formatCurrency(crypto.current_price)}
+                        </p>
                         <div
                           className={cn(
-                            "text-xs",
-                            getChangeColor(
-                              currentPair.price_change_percentage_24h,
-                            ),
+                            "flex items-center gap-1 justify-end px-2 py-1 rounded-full text-xs sm:text-sm font-semibold",
+                            crypto.price_change_percentage_24h >= 0
+                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300",
                           )}
                         >
-                          {formatPercentage(
-                            currentPair.price_change_percentage_24h,
+                          {crypto.price_change_percentage_24h >= 0 ? (
+                            <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                          ) : (
+                            <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                           )}
+                          <span>
+                            {formatPercentage(
+                              crypto.price_change_percentage_24h,
+                            )}
+                          </span>
                         </div>
                       </div>
+
+                      {/* Hover Effect Arrow */}
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity ml-2">
+                        <ArrowUpDown className="h-4 w-4 text-blue-500" />
+                      </div>
                     </div>
-                  )}
+                  ))}
                 </div>
+              </CardContent>
+            </Card>
 
-                {/* Enhanced Trading Interface */}
-                <Card className="overflow-hidden border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardHeader className="bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-800 dark:to-slate-700 border-b">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg sm:text-xl font-bold flex items-center gap-2">
-                        <div className="p-2 bg-gradient-to-r from-green-500 to-red-500 rounded-lg">
-                          <ArrowUpDown className="h-5 w-5 text-white" />
-                        </div>
-                        Place Order
-                      </CardTitle>
-                      <Badge variant="outline" className="text-xs">
-                        Simulated Trading
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                      {/* Enhanced Buy Panel */}
-                      <div className="space-y-4 p-4 sm:p-5 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border border-green-200/50 dark:border-green-700/30">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-green-500 rounded-lg">
-                            <Plus className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-green-700 dark:text-green-300 text-base sm:text-lg">
-                              Buy {selectedPair.replace("USDT", "")}
-                            </h3>
-                            <p className="text-xs text-green-600/70 dark:text-green-400/70">
-                              Long position
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300">
-                              Order Type
-                            </label>
-                            <Select
-                              value={orderType}
-                              onValueChange={setOrderType}
-                            >
-                              <SelectTrigger className="h-11 bg-white dark:bg-slate-800 border-green-200 dark:border-green-700">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="market">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    Market Order
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="limit">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                                    Limit Order
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="stop">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                                    Stop Order
-                                  </div>
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300 flex items-center gap-2">
-                              <DollarSign className="w-4 h-4" />
-                              Price (USDT)
-                            </label>
-                            <Input
-                              type="number"
-                              value={price}
-                              onChange={(e) => setPrice(e.target.value)}
-                              placeholder={safeToFixed(
-                                currentPair?.current_price,
-                              )}
-                              className="h-11 bg-white dark:bg-slate-800 border-green-200 dark:border-green-700 focus:ring-green-500 focus:border-green-500"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="text-sm font-semibold mb-2 block text-green-700 dark:text-green-300 flex items-center gap-2">
-                              <Banknote className="w-4 h-4" />
-                              Amount ({selectedPair.replace("USDT", "")})
-                            </label>
-                            <Input
-                              type="number"
-                              value={amount}
-                              onChange={(e) => setAmount(e.target.value)}
-                              placeholder="0.00"
-                              className="h-11 bg-white dark:bg-slate-800 border-green-200 dark:border-green-700 focus:ring-green-500 focus:border-green-500"
-                            />
-                          </div>
-
-                          <Button
-                            className="w-full h-12 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
-                            onClick={handlePlaceOrder}
-                          >
-                            <Plus className="w-4 h-4" />
-                            Buy {selectedPair.replace("USDT", "")}
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Enhanced Sell Panel */}
-                      <div className="space-y-4 p-4 sm:p-5 bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/20 rounded-xl border border-red-200/50 dark:border-red-700/30">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-red-500 rounded-lg">
-                            <Minus className="w-4 h-4 text-white" />
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-red-700 dark:text-red-300 text-base sm:text-lg">
-                              Sell {selectedPair.replace("USDT", "")}
-                            </h3>
-                            <p className="text-xs text-red-600/70 dark:text-red-400/70">
-                              Short position
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div>
-                            <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300">
-                              Order Type
-                            </label>
-                            <Select
-                              value={orderType}
-                              onValueChange={setOrderType}
-                            >
-                              <SelectTrigger className="h-11 bg-white dark:bg-slate-800 border-red-200 dark:border-red-700">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="market">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                    Market Order
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="limit">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                                    Limit Order
-                                  </div>
-                                </SelectItem>
-                                <SelectItem value="stop">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                                    Stop Order
-                                  </div>
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-
-                          <div>
-                            <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300 flex items-center gap-2">
-                              <DollarSign className="w-4 h-4" />
-                              Price (USDT)
-                            </label>
-                            <Input
-                              type="number"
-                              value={price}
-                              onChange={(e) => setPrice(e.target.value)}
-                              placeholder={safeToFixed(
-                                currentPair?.current_price,
-                              )}
-                              className="h-11 bg-white dark:bg-slate-800 border-red-200 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="text-sm font-semibold mb-2 block text-red-700 dark:text-red-300 flex items-center gap-2">
-                              <Banknote className="w-4 h-4" />
-                              Amount ({selectedPair.replace("USDT", "")})
-                            </label>
-                            <Input
-                              type="number"
-                              value={amount}
-                              onChange={(e) => setAmount(e.target.value)}
-                              placeholder="0.00"
-                              className="h-11 bg-white dark:bg-slate-800 border-red-200 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
-                            />
-                          </div>
-
-                          <Button
-                            className="w-full h-12 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2"
-                            onClick={handlePlaceOrder}
-                          >
-                            <Minus className="w-4 h-4" />
-                            Sell {selectedPair.replace("USDT", "")}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              {/* P2P Tab */}
-              <TabsContent
-                value="p2p"
-                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
-              >
-                <EnhancedP2PMarketplace />
-              </TabsContent>
-
-              {/* Portfolio Tab */}
-              <TabsContent
-                value="portfolio"
-                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
-              >
-                <EnhancedCryptoPortfolio />
-              </TabsContent>
-
-              {/* Learn Tab */}
-              <TabsContent
-                value="learn"
-                className="mt-4 sm:mt-6 space-y-4 sm:space-y-6"
-              >
-                <div>
-                  <h2 className="text-lg sm:text-xl font-bold">Learn & News</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Educational content, blog articles, and latest
-                    cryptocurrency news
-                  </p>
-                </div>
-
-                {/* Enhanced Blog RSS Feed Section */}
-                <div className="space-y-6 mb-8">
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-4 sm:p-6 border border-blue-200/50 dark:border-blue-700/50">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="space-y-2">
-                        <h3 className="text-lg sm:text-xl font-bold flex items-center gap-3 text-blue-800 dark:text-blue-200">
-                          <div className="p-2 bg-blue-500 rounded-lg">
-                            <BookOpen className="h-5 w-5 text-white" />
-                          </div>
-                          Latest from SoftChat Blog
-                        </h3>
-                        <p className="text-sm text-blue-600/80 dark:text-blue-300/80">
-                          Stay updated with crypto insights, trading strategies,
-                          and market analysis
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="bg-white/50 hover:bg-white"
-                          asChild
-                        >
-                          <a
-                            href="/api/blog/rss"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-xs sm:text-sm"
-                          >
-                            <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                            RSS Feed
-                          </a>
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="bg-blue-600 hover:bg-blue-700"
-                          asChild
-                        >
-                          <a
-                            href="/blog"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2"
-                          >
-                            View All Articles
-                            <ArrowUpDown className="h-3 w-3 rotate-45" />
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
+            {/* Market Movers - Tabbed Interface */}
+            {marketData && (
+              <Card className="overflow-hidden border-0 shadow-xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+                <Tabs defaultValue="gainers" className="w-full">
+                  <div className="flex items-center justify-between p-4 border-b">
+                    <h3 className="text-lg font-semibold">Market Movers (24h)</h3>
+                    <TabsList className="grid w-48 grid-cols-2">
+                      <TabsTrigger value="gainers" className="flex items-center gap-1">
+                        <TrendingUp className="h-4 w-4 text-green-600" />
+                        Gainers
+                      </TabsTrigger>
+                      <TabsTrigger value="losers" className="flex items-center gap-1">
+                        <TrendingDown className="h-4 w-4 text-red-600" />
+                        Losers
+                      </TabsTrigger>
+                    </TabsList>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {blogPosts && blogPosts.length > 0 ? (
-                      blogPosts.slice(0, 6).map((post, index) => (
-                        <Card
-                          key={post.id}
-                          className="cursor-pointer hover:shadow-xl transition-all duration-300 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden hover:scale-[1.02]"
-                          onClick={() =>
-                            window.open(`/blog/${post.slug}`, "_blank")
-                          }
-                        >
-                          {post.featuredImage && (
-                            <div className="relative h-40 sm:h-48 overflow-hidden">
-                              <img
-                                src={post.featuredImage}
-                                alt={post.title}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/40 transition-all duration-300"></div>
-
-                              {/* Article Number Badge */}
-                              <div className="absolute top-3 left-3">
-                                <Badge className="bg-white/90 text-black font-bold text-xs px-2 py-1">
-                                  #{index + 1}
-                                </Badge>
-                              </div>
-
-                              <div className="absolute top-3 right-3">
-                                <Badge
-                                  className={cn(
-                                    "text-white text-xs font-semibold shadow-lg",
-                                    post.category.color,
-                                  )}
-                                >
-                                  {post.category.name}
-                                </Badge>
-                              </div>
-
-                              {post.difficulty && (
-                                <div className="absolute bottom-3 left-3">
-                                  <Badge
-                                    className={cn(
-                                      "text-xs font-semibold shadow-lg border-0",
-                                      post.difficulty === "BEGINNER" &&
-                                        "bg-green-500 text-white",
-                                      post.difficulty === "INTERMEDIATE" &&
-                                        "bg-yellow-500 text-white",
-                                      post.difficulty === "ADVANCED" &&
-                                        "bg-red-500 text-white",
-                                    )}
-                                  >
-                                    {post.difficulty}
-                                  </Badge>
-                                </div>
-                              )}
-
-                              {/* Reading Time Badge */}
-                              <div className="absolute bottom-3 right-3">
-                                <Badge
-                                  variant="secondary"
-                                  className="bg-white/90 text-black text-xs"
-                                >
-                                  <Clock className="w-3 h-3 mr-1" />
-                                  {post.readingTime}m
-                                </Badge>
-                              </div>
-                            </div>
-                          )}
-                          <CardContent className="p-5">
-                            <div className="space-y-4">
-                              <div className="space-y-3">
-                                <h3 className="font-bold text-base sm:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors leading-tight">
-                                  {post.title}
-                                </h3>
-                                <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                                  {post.excerpt}
-                                </p>
-                              </div>
-
-                              {/* Enhanced Tags */}
-                              <div className="flex flex-wrap gap-1.5">
-                                {post.tags.slice(0, 2).map((tag) => (
-                                  <Badge
-                                    key={tag}
-                                    variant="outline"
-                                    className="text-xs bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
-                                  >
-                                    {tag}
-                                  </Badge>
-                                ))}
-                                {post.tags.length > 2 && (
-                                  <Badge
-                                    variant="outline"
-                                    className="text-xs bg-gray-100 dark:bg-gray-700"
-                                  >
-                                    +{post.tags.length - 2} more
-                                  </Badge>
-                                )}
-                              </div>
-
-                              {/* Enhanced Author and Meta */}
-                              <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
-                                <div className="flex items-center gap-2">
-                                  <div className="relative">
-                                    <img
-                                      src={post.author.avatar}
-                                      alt={post.author.name}
-                                      className="w-6 h-6 rounded-full ring-2 ring-gray-100 dark:ring-gray-700"
-                                    />
-                                    <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full border border-white dark:border-gray-800"></div>
-                                  </div>
-                                  <span className="text-sm font-medium truncate text-gray-700 dark:text-gray-300">
-                                    {post.author.name}
+                  <TabsContent value="gainers" className="m-0">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        {marketData.topMovers?.gainers?.length > 0 ? (
+                          marketData.topMovers.gainers
+                            .slice(0, 6)
+                            .map((crypto) => (
+                              <div
+                                key={crypto.id}
+                                className="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors"
+                              >
+                                <div className="flex items-center gap-3 min-w-0 flex-1">
+                                  <img
+                                    src={crypto.image}
+                                    alt={crypto.name}
+                                    className="w-8 h-8 rounded-full flex-shrink-0"
+                                  />
+                                  <span className="font-medium text-base truncate">
+                                    {crypto.symbol?.toUpperCase() || "N/A"}
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                  <div className="flex items-center gap-1">
-                                    <Eye className="h-3 w-3" />
-                                    <span>{post.views}</span>
+                                <div className="text-right flex-shrink-0">
+                                  <div className="font-semibold text-base">
+                                    {formatCurrency(crypto.current_price || 0)}
                                   </div>
-                                  <div className="flex items-center gap-1">
-                                    <Heart className="h-3 w-3" />
-                                    <span>{post.likes}</span>
+                                  <div className="text-green-600 text-sm font-medium">
+                                    {formatPercentage(crypto.price_change_percentage_24h || 0)}
                                   </div>
-                                  <span className="hidden sm:inline">
-                                    {new Date(
-                                      post.publishedAt,
-                                    ).toLocaleDateString("en-US", {
-                                      month: "short",
-                                      day: "numeric",
-                                    })}
+                                </div>
+                              </div>
+                            ))
+                        ) : (
+                          <div className="text-center text-muted-foreground py-8">
+                            <p>No gainers data available</p>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </TabsContent>
+
+                  <TabsContent value="losers" className="m-0">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        {marketData.topMovers?.losers?.length > 0 ? (
+                          marketData.topMovers.losers
+                            .slice(0, 6)
+                            .map((crypto) => (
+                              <div
+                                key={crypto.id}
+                                className="flex items-center justify-between p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                              >
+                                <div className="flex items-center gap-3 min-w-0 flex-1">
+                                  <img
+                                    src={crypto.image}
+                                    alt={crypto.name}
+                                    className="w-8 h-8 rounded-full flex-shrink-0"
+                                  />
+                                  <span className="font-medium text-base truncate">
+                                    {crypto.symbol?.toUpperCase() || "N/A"}
                                   </span>
                                 </div>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))
-                    ) : (
-                      <div className="col-span-full text-center text-muted-foreground py-8">
-                        <BookOpen className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                        <p>Loading blog articles...</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* News & Education Section */}
-                <div className="space-y-4">
-                  <h3 className="text-base sm:text-lg font-semibold">
-                    News & Market Updates
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {/* News Articles */}
-                    {news && news.length > 0 ? (
-                      news.slice(0, 6).map((article) => (
-                        <Card
-                          key={article.id}
-                          className="cursor-pointer hover:shadow-lg transition-shadow"
-                        >
-                          <CardContent className="p-4">
-                            <div className="space-y-3">
-                              <Badge variant="outline" className="text-xs">
-                                News
-                              </Badge>
-                              <h3 className="font-semibold text-sm line-clamp-2">
-                                {article.title}
-                              </h3>
-                              <p className="text-xs text-muted-foreground line-clamp-3">
-                                {article.summary}
-                              </p>
-                              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                <span>{article.source}</span>
-                                <span>
-                                  {new Date(
-                                    article.publishedAt,
-                                  ).toLocaleDateString()}
-                                </span>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))
-                    ) : (
-                      <div className="col-span-full text-center text-muted-foreground py-8">
-                        <p>Loading news articles...</p>
-                      </div>
-                    )}
-
-                    {/* Education Content */}
-                    {educationContent && educationContent.length > 0
-                      ? educationContent.slice(0, 3).map((content) => (
-                          <Card
-                            key={content.id}
-                            className="cursor-pointer hover:shadow-lg transition-shadow"
-                          >
-                            <CardContent className="p-4">
-                              <div className="space-y-3">
-                                <Badge variant="outline" className="text-xs">
-                                  Education
-                                </Badge>
-                                <h3 className="font-semibold text-sm line-clamp-2">
-                                  {content.title}
-                                </h3>
-                                <p className="text-xs text-muted-foreground line-clamp-3">
-                                  {content.description}
-                                </p>
-                                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                  <span>{content.author}</span>
-                                  <span>{content.duration} min read</span>
+                                <div className="text-right flex-shrink-0">
+                                  <div className="font-semibold text-base">
+                                    {formatCurrency(crypto.current_price || 0)}
+                                  </div>
+                                  <div className="text-red-600 text-sm font-medium">
+                                    {formatPercentage(crypto.price_change_percentage_24h || 0)}
+                                  </div>
                                 </div>
                               </div>
-                            </CardContent>
-                          </Card>
-                        ))
-                      : null}
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
+                            ))
+                        ) : (
+                          <div className="text-center text-muted-foreground py-8">
+                            <p>No losers data available</p>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </TabsContent>
+                </Tabs>
+              </Card>
+            )}
           </div>
 
           {/* Crypto Detail Modal */}
