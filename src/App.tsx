@@ -436,7 +436,7 @@ const AppRoutes = () => {
           <Route path="delivery/track" element={<DeliveryTracking />} />
           <Route path="delivery/track/:trackingNumber" element={<DeliveryTracking />} />
 
-          <Route path="crypto" element={<EnhancedCrypto />} />
+          <Route path="crypto" element={<ProfessionalCrypto />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<EnhancedTikTokVideosV3 />} />
