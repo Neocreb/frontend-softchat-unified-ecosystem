@@ -113,15 +113,6 @@ const CryptoP2P = () => {
               </div>
             </div>
 
-            {/* Right side - Security indicator */}
-            <div className="flex items-center gap-2 flex-shrink-0 ml-3">
-              <div className="p-1 bg-green-100 dark:bg-green-900/30 rounded">
-                <Shield className="h-3 w-3 text-green-600" />
-              </div>
-              <span className="text-xs font-medium text-green-700 dark:text-green-300">
-                Secure
-              </span>
-            </div>
           </div>
 
           {/* Banner Ad */}
