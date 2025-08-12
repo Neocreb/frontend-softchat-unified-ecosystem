@@ -117,7 +117,7 @@ export default function EnhancedP2PMarketplace({
 
   useEffect(() => {
     loadP2PData();
-  }, [selectedAsset, selectedFiat, selectedPayment, minAmount, searchQuery]);
+  }, [selectedAsset, selectedFiat, selectedPayment, minAmount, searchQuery, marketplaceTab]);
 
   // Handle external create offer trigger
   useEffect(() => {
