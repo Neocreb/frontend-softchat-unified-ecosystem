@@ -69,30 +69,7 @@ const CryptoTrading = () => {
           </div>
 
           {/* Trading Interface */}
-          <div className="space-y-6">
-            {selectedPair && (
-              <Card className="bg-blue-50/50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-500 rounded-lg">
-                      <TrendingUp className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-blue-900 dark:text-blue-100">
-                        Trading Pair: {selectedPair}
-                      </h3>
-                      <p className="text-sm text-blue-700 dark:text-blue-300">
-                        Real-time data and advanced charting tools
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Advanced Trading Interface */}
-            <AdvancedTradingInterface />
-          </div>
+          <AdvancedTradingInterface />
         </div>
       </div>
     </>
