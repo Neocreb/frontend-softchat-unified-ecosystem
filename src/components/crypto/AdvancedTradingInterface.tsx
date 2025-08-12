@@ -286,7 +286,7 @@ const AdvancedTradingInterface: React.FC = () => {
     <div className="min-h-screen bg-white text-gray-900 p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
         {/* Main Trading Area */}
-        <div className="lg:col-span-7 space-y-2 md:space-y-4">
+        <div className="lg:col-span-8 space-y-2 md:space-y-4">
           {/* Price Header */}
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardContent className="p-2 md:p-4">
