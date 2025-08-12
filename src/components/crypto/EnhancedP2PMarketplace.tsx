@@ -117,7 +117,7 @@ export default function EnhancedP2PMarketplace({
 
   useEffect(() => {
     loadP2PData();
-  }, [selectedAsset, selectedFiat]);
+  }, [selectedAsset, selectedFiat, selectedPayment, minAmount, searchQuery]);
 
   // Handle external create offer trigger
   useEffect(() => {
@@ -280,12 +280,12 @@ export default function EnhancedP2PMarketplace({
       </Card>
 
       {/* Compact Filters */}
-      <div className="flex items-center gap-3 py-3 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+      <div className="flex items-center gap-2 py-2 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <div className="w-1.5 h-1.5 bg-teal-500 rounded-full"></div>
           <Select value={selectedAsset} onValueChange={setSelectedAsset}>
-            <SelectTrigger className="w-24 h-9 text-sm border-gray-300">
-              <SelectValue placeholder="BTC" />
+            <SelectTrigger className="w-16 h-8 text-xs border-gray-300">
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {assets.map((asset) => (
@@ -299,13 +299,16 @@ export default function EnhancedP2PMarketplace({
 
         <Select
           value={selectedPayment}
-          onValueChange={setSelectedPayment}
+          onValueChange={(value) => {
+            setSelectedPayment(value);
+            console.log('Payment method changed to:', value);
+          }}
         >
-          <SelectTrigger className="w-48 h-9 text-sm border-gray-300 flex-shrink-0">
-            <SelectValue placeholder="All Payment Methods" />
+          <SelectTrigger className="w-32 h-8 text-xs border-gray-300 flex-shrink-0">
+            <SelectValue placeholder="All Payment..." />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Payment Methods</SelectItem>
+            <SelectItem value="all">All Methods</SelectItem>
             {paymentMethods.map((method) => (
               <SelectItem key={method.id} value={method.id}>
                 {method.name}
@@ -315,29 +318,31 @@ export default function EnhancedP2PMarketplace({
         </Select>
 
         <Input
-          placeholder="100000"
+          placeholder="Amount"
           value={minAmount}
-          onChange={(e) => setMinAmount(e.target.value)}
+          onChange={(e) => {
+            setMinAmount(e.target.value);
+            console.log('Amount changed to:', e.target.value);
+          }}
           type="number"
-          className="w-32 h-9 text-sm border-gray-300 flex-shrink-0"
+          className="w-20 h-8 text-xs border-gray-300 flex-shrink-0"
         />
 
-        <div className="flex items-center gap-2 ml-auto flex-shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 px-3 border-gray-300 hover:bg-gray-50"
-            onClick={() => {
-              // Reset filters or show filter modal
-              setSelectedPayment("all");
-              setMinAmount("");
-              setSearchQuery("");
-            }}
-          >
-            <Filter className="h-4 w-4 mr-1" />
-            <span className="bg-orange-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center ml-1">1</span>
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 px-2 border-gray-300 hover:bg-gray-50 flex-shrink-0"
+          onClick={() => {
+            console.log('Filter button clicked');
+            setSelectedPayment("all");
+            setMinAmount("");
+            setSearchQuery("");
+            setSelectedAsset("BTC");
+          }}
+        >
+          <Filter className="h-3 w-3" />
+          <span className="bg-orange-500 text-white text-xs w-3 h-3 rounded-full flex items-center justify-center ml-1 text-[10px]">1</span>
+        </Button>
       </div>
 
       {/* Offers List */}
