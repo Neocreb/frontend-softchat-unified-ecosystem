@@ -246,22 +246,7 @@ const ProfessionalCrypto = () => {
   };
 
   const handleQuickNavigation = (section: string) => {
-    switch (section) {
-      case "trade":
-        setActiveTab("trading");
-        break;
-      case "p2p":
-        setActiveTab("p2p");
-        break;
-      case "portfolio":
-        setActiveTab("portfolio");
-        break;
-      case "learn":
-        setActiveTab("learn");
-        break;
-      default:
-        setActiveTab("overview");
-    }
+    setActiveTab(section);
   };
 
   const handleDeposit = () => {
@@ -318,226 +303,305 @@ const ProfessionalCrypto = () => {
             className="mb-8"
           />
 
-          {/* Quick Navigation Links */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            {[
-              { label: "Trade", icon: ArrowUpDown, color: "from-green-500 to-emerald-600", description: "Spot & Futures Trading", section: "trading" },
-              { label: "P2P", icon: Users, color: "from-blue-500 to-cyan-600", description: "Peer-to-Peer Trading", section: "p2p" },
-              { label: "Portfolio", icon: PieChart, color: "from-purple-500 to-violet-600", description: "Asset Management", section: "portfolio" },
-              { label: "Learn", icon: BookOpen, color: "from-orange-500 to-red-600", description: "Education Center", section: "learn" },
-            ].map((item, index) => (
-              <Card
-                key={index}
-                className={cn(
-                  "cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 backdrop-blur-sm",
-                  activeTab === item.section
-                    ? "bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 ring-2 ring-blue-300 dark:ring-blue-600"
-                    : "bg-white/80 dark:bg-slate-800/80"
-                )}
-                onClick={() => handleQuickNavigation(item.section)}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                    <item.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="font-semibold text-lg mb-1">{item.label}</h3>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                  <ChevronRight className={cn(
-                    "h-4 w-4 mx-auto mt-2 transition-colors",
-                    activeTab === item.section ? "text-blue-600" : "text-muted-foreground group-hover:text-primary"
-                  )} />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Market Stats */}
-          {marketStats && (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <Globe className="h-5 w-5 text-blue-600 mr-2" />
-                    <span className="text-sm font-medium text-muted-foreground">Market Cap</span>
-                  </div>
-                  <p className="text-2xl font-bold text-blue-600">{formatCurrency(marketStats.totalMarketCap)}</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <BarChart3 className="h-5 w-5 text-green-600 mr-2" />
-                    <span className="text-sm font-medium text-muted-foreground">24h Volume</span>
-                  </div>
-                  <p className="text-2xl font-bold text-green-600">{formatCurrency(marketStats.totalVolume24h)}</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <Target className="h-5 w-5 text-orange-600 mr-2" />
-                    <span className="text-sm font-medium text-muted-foreground">BTC Dominance</span>
-                  </div>
-                  <p className="text-2xl font-bold text-orange-600">{marketStats.bitcoinDominance.toFixed(1)}%</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <Activity className="h-5 w-5 text-purple-600 mr-2" />
-                    <span className="text-sm font-medium text-muted-foreground">Active Coins</span>
-                  </div>
-                  <p className="text-2xl font-bold text-purple-600">{marketStats.activeCoins.toLocaleString()}</p>
-                </CardContent>
-              </Card>
+          {/* Main Content with Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            {/* Quick Navigation Links */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              {[
+                { label: "Trade", icon: ArrowUpDown, color: "from-green-500 to-emerald-600", description: "Spot & Futures Trading", section: "trading" },
+                { label: "P2P", icon: Users, color: "from-blue-500 to-cyan-600", description: "Peer-to-Peer Trading", section: "p2p" },
+                { label: "Portfolio", icon: PieChart, color: "from-purple-500 to-violet-600", description: "Asset Management", section: "portfolio" },
+                { label: "Learn", icon: BookOpen, color: "from-orange-500 to-red-600", description: "Education Center", section: "learn" },
+              ].map((item, index) => (
+                <Card
+                  key={index}
+                  className={cn(
+                    "cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 backdrop-blur-sm",
+                    activeTab === item.section 
+                      ? "bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/40 dark:to-purple-900/40 ring-2 ring-blue-300 dark:ring-blue-600" 
+                      : "bg-white/80 dark:bg-slate-800/80"
+                  )}
+                  onClick={() => handleQuickNavigation(item.section)}
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                      <item.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-lg mb-1">{item.label}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    <ChevronRight className={cn(
+                      "h-4 w-4 mx-auto mt-2 transition-colors",
+                      activeTab === item.section ? "text-blue-600" : "text-muted-foreground group-hover:text-primary"
+                    )} />
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          )}
 
-          {/* Top Cryptocurrencies */}
-          <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold flex items-center gap-2">
-                <Star className="h-5 w-5 text-yellow-500" />
-                Top Cryptocurrencies
-                <Badge variant="outline" className="ml-auto">Live Prices</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <div className="divide-y divide-gray-100 dark:divide-gray-700">
-                {cryptos.slice(0, 10).map((crypto, index) => (
-                  <div
-                    key={crypto.id}
-                    onClick={() => handleNavigateToTrade(crypto.id)}
-                    className="flex items-center justify-between p-4 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200 cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <div className="relative">
-                        <Badge
-                          variant="outline"
-                          className={cn(
-                            "text-xs px-1.5 py-0.5 font-bold absolute -top-2 -left-2 z-10",
-                            index < 3 && "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0"
-                          )}
-                        >
-                          #{crypto.market_cap_rank}
-                        </Badge>
-                        <img
-                          src={crypto.image}
-                          alt={crypto.name}
-                          className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-700 shadow-sm group-hover:ring-blue-200 transition-all"
-                        />
+            {/* Overview Tab Content (Default) */}
+            <TabsContent value="overview" className="space-y-8">
+              {/* Market Stats */}
+              {marketStats && (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <div className="flex items-center justify-center mb-2">
+                        <Globe className="h-5 w-5 text-blue-600 mr-2" />
+                        <span className="text-sm font-medium text-muted-foreground">Market Cap</span>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-base truncate group-hover:text-blue-600 transition-colors">
-                            {crypto.name}
-                          </p>
-                          <span className="text-sm text-muted-foreground bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full font-medium">
-                            {crypto.symbol.toUpperCase()}
-                          </span>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          Market Cap: {formatCurrency(crypto.market_cap)}
-                        </p>
+                      <p className="text-2xl font-bold text-blue-600">{formatCurrency(marketStats.totalMarketCap)}</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <div className="flex items-center justify-center mb-2">
+                        <BarChart3 className="h-5 w-5 text-green-600 mr-2" />
+                        <span className="text-sm font-medium text-muted-foreground">24h Volume</span>
                       </div>
-                    </div>
-                    
-                    <div className="text-right flex-shrink-0 space-y-1">
-                      <p className="font-bold text-lg">
-                        {formatCurrency(crypto.current_price)}
-                      </p>
+                      <p className="text-2xl font-bold text-green-600">{formatCurrency(marketStats.totalVolume24h)}</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <div className="flex items-center justify-center mb-2">
+                        <Target className="h-5 w-5 text-orange-600 mr-2" />
+                        <span className="text-sm font-medium text-muted-foreground">BTC Dominance</span>
+                      </div>
+                      <p className="text-2xl font-bold text-orange-600">{marketStats.bitcoinDominance.toFixed(1)}%</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                    <CardContent className="p-6 text-center">
+                      <div className="flex items-center justify-center mb-2">
+                        <Activity className="h-5 w-5 text-purple-600 mr-2" />
+                        <span className="text-sm font-medium text-muted-foreground">Active Coins</span>
+                      </div>
+                      <p className="text-2xl font-bold text-purple-600">{marketStats.activeCoins.toLocaleString()}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Top Cryptocurrencies */}
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-xl font-bold flex items-center gap-2">
+                    <Star className="h-5 w-5 text-yellow-500" />
+                    Top Cryptocurrencies
+                    <Badge variant="outline" className="ml-auto">Live Prices</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="divide-y divide-gray-100 dark:divide-gray-700">
+                    {cryptos.slice(0, 10).map((crypto, index) => (
                       <div
-                        className={cn(
-                          "flex items-center gap-1 justify-end px-2 py-1 rounded-full text-sm font-semibold",
-                          crypto.price_change_percentage_24h >= 0
-                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
-                        )}
+                        key={crypto.id}
+                        onClick={() => handleNavigateToTrade(crypto.id)}
+                        className="flex items-center justify-between p-4 hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-900/20 dark:hover:to-purple-900/20 transition-all duration-200 cursor-pointer group"
                       >
-                        {crypto.price_change_percentage_24h >= 0 ? (
-                          <TrendingUp className="h-4 w-4" />
-                        ) : (
-                          <TrendingDown className="h-4 w-4" />
-                        )}
-                        <span>{formatPercentage(crypto.price_change_percentage_24h)}</span>
+                        <div className="flex items-center gap-4 flex-1 min-w-0">
+                          <div className="relative">
+                            <Badge
+                              variant="outline"
+                              className={cn(
+                                "text-xs px-1.5 py-0.5 font-bold absolute -top-2 -left-2 z-10",
+                                index < 3 && "bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0"
+                              )}
+                            >
+                              #{crypto.market_cap_rank}
+                            </Badge>
+                            <img
+                              src={crypto.image}
+                              alt={crypto.name}
+                              className="w-10 h-10 rounded-full ring-2 ring-white dark:ring-gray-700 shadow-sm group-hover:ring-blue-200 transition-all"
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold text-base truncate group-hover:text-blue-600 transition-colors">
+                                {crypto.name}
+                              </p>
+                              <span className="text-sm text-muted-foreground bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full font-medium">
+                                {crypto.symbol.toUpperCase()}
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Market Cap: {formatCurrency(crypto.market_cap)}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        <div className="text-right flex-shrink-0 space-y-1">
+                          <p className="font-bold text-lg">
+                            {formatCurrency(crypto.current_price)}
+                          </p>
+                          <div
+                            className={cn(
+                              "flex items-center gap-1 justify-end px-2 py-1 rounded-full text-sm font-semibold",
+                              crypto.price_change_percentage_24h >= 0
+                                ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                            )}
+                          >
+                            {crypto.price_change_percentage_24h >= 0 ? (
+                              <TrendingUp className="h-4 w-4" />
+                            ) : (
+                              <TrendingDown className="h-4 w-4" />
+                            )}
+                            <span>{formatPercentage(crypto.price_change_percentage_24h)}</span>
+                          </div>
+                        </div>
+                        
+                        <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-blue-500 transition-colors ml-2" />
                       </div>
-                    </div>
-                    
-                    <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-blue-500 transition-colors ml-2" />
+                    ))}
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Top Gainers and Top Losers */}
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader className="pb-4">
+                  <Tabs value={topGainersLosersTab} onValueChange={(value) => setTopGainersLosersTab(value as "gainers" | "losers")}>
+                    <TabsList className="grid w-full max-w-md grid-cols-2">
+                      <TabsTrigger value="gainers" className="flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-green-600" />
+                        Top Gainers
+                      </TabsTrigger>
+                      <TabsTrigger value="losers" className="flex items-center gap-2">
+                        <TrendingDown className="h-4 w-4 text-red-600" />
+                        Top Losers
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="gainers" className="mt-6">
+                      <div className="space-y-3">
+                        {topGainers.map((crypto) => (
+                          <div
+                            key={crypto.id}
+                            onClick={() => handleNavigateToTrade(crypto.id)}
+                            className="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-3">
+                              <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
+                              <div>
+                                <p className="font-medium group-hover:text-green-600 transition-colors">{crypto.name}</p>
+                                <p className="text-sm text-muted-foreground">{crypto.symbol.toUpperCase()}</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold">{formatCurrency(crypto.current_price)}</p>
+                              <p className="text-green-600 font-medium text-sm">{formatPercentage(crypto.price_change_percentage_24h)}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </TabsContent>
+                    
+                    <TabsContent value="losers" className="mt-6">
+                      <div className="space-y-3">
+                        {topLosers.map((crypto) => (
+                          <div
+                            key={crypto.id}
+                            onClick={() => handleNavigateToTrade(crypto.id)}
+                            className="flex items-center justify-between p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer group"
+                          >
+                            <div className="flex items-center gap-3">
+                              <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
+                              <div>
+                                <p className="font-medium group-hover:text-red-600 transition-colors">{crypto.name}</p>
+                                <p className="text-sm text-muted-foreground">{crypto.symbol.toUpperCase()}</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="font-semibold">{formatCurrency(crypto.current_price)}</p>
+                              <p className="text-red-600 font-medium text-sm">{formatPercentage(crypto.price_change_percentage_24h)}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardHeader>
+              </Card>
+            </TabsContent>
+
+            {/* Trading Tab */}
+            <TabsContent value="trading" className="space-y-6">
+              <div className="text-center py-4">
+                <h2 className="text-2xl font-bold mb-2">Professional Trading</h2>
+                <p className="text-muted-foreground">Advanced trading interface with real-time charts and order management</p>
+              </div>
+              <AdvancedTradingInterface />
+            </TabsContent>
+
+            {/* P2P Tab */}
+            <TabsContent value="p2p" className="space-y-6">
+              <div className="text-center py-4">
+                <h2 className="text-2xl font-bold mb-2">Peer-to-Peer Trading</h2>
+                <p className="text-muted-foreground">Trade directly with other users in a secure environment</p>
+              </div>
+              <EnhancedP2PMarketplace />
+            </TabsContent>
+
+            {/* Portfolio Tab */}
+            <TabsContent value="portfolio" className="space-y-6">
+              <div className="text-center py-4">
+                <h2 className="text-2xl font-bold mb-2">Portfolio Management</h2>
+                <p className="text-muted-foreground">Track your investments and analyze your performance</p>
+              </div>
+              <EnhancedCryptoPortfolio />
+            </TabsContent>
+
+            {/* Learn Tab */}
+            <TabsContent value="learn" className="space-y-6">
+              <div className="text-center py-4">
+                <h2 className="text-2xl font-bold mb-2">Crypto Education Center</h2>
+                <p className="text-muted-foreground">Learn about cryptocurrencies, trading strategies, and market analysis</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  { title: "Beginner's Guide to Crypto", description: "Learn the basics of cryptocurrency and blockchain technology", level: "Beginner" },
+                  { title: "Technical Analysis", description: "Master chart patterns and trading indicators", level: "Intermediate" },
+                  { title: "DeFi Fundamentals", description: "Understand decentralized finance protocols", level: "Advanced" },
+                  { title: "Risk Management", description: "Learn how to protect your investments", level: "Intermediate" },
+                  { title: "Crypto Security", description: "Best practices for securing your digital assets", level: "Beginner" },
+                  { title: "Advanced Trading Strategies", description: "Professional trading techniques and strategies", level: "Advanced" },
+                ].map((course, index) => (
+                  <Card key={index} className="cursor-pointer hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="space-y-4">
+                        <Badge variant="outline" className="text-xs">
+                          {course.level}
+                        </Badge>
+                        <h3 className="font-semibold text-lg">{course.title}</h3>
+                        <p className="text-sm text-muted-foreground">{course.description}</p>
+                        <Button variant="outline" className="w-full">
+                          Start Learning
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </TabsContent>
+          </Tabs>
 
-          {/* Top Gainers and Top Losers */}
-          <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
-            <CardHeader className="pb-4">
-              <Tabs value={topGainersLosersTab} onValueChange={(value) => setTopGainersLosersTab(value as "gainers" | "losers")}>
-                <TabsList className="grid w-full max-w-md grid-cols-2">
-                  <TabsTrigger value="gainers" className="flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-green-600" />
-                    Top Gainers
-                  </TabsTrigger>
-                  <TabsTrigger value="losers" className="flex items-center gap-2">
-                    <TrendingDown className="h-4 w-4 text-red-600" />
-                    Top Losers
-                  </TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="gainers" className="mt-6">
-                  <div className="space-y-3">
-                    {topGainers.map((crypto) => (
-                      <div
-                        key={crypto.id}
-                        onClick={() => handleNavigateToTrade(crypto.id)}
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors cursor-pointer group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
-                          <div>
-                            <p className="font-medium group-hover:text-green-600 transition-colors">{crypto.name}</p>
-                            <p className="text-sm text-muted-foreground">{crypto.symbol.toUpperCase()}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{formatCurrency(crypto.current_price)}</p>
-                          <p className="text-green-600 font-medium text-sm">{formatPercentage(crypto.price_change_percentage_24h)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="losers" className="mt-6">
-                  <div className="space-y-3">
-                    {topLosers.map((crypto) => (
-                      <div
-                        key={crypto.id}
-                        onClick={() => handleNavigateToTrade(crypto.id)}
-                        className="flex items-center justify-between p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors cursor-pointer group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
-                          <div>
-                            <p className="font-medium group-hover:text-red-600 transition-colors">{crypto.name}</p>
-                            <p className="text-sm text-muted-foreground">{crypto.symbol.toUpperCase()}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{formatCurrency(crypto.current_price)}</p>
-                          <p className="text-red-600 font-medium text-sm">{formatPercentage(crypto.price_change_percentage_24h)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardHeader>
-          </Card>
+          {/* Deposit and Withdraw Modals */}
+          <CryptoDepositModal
+            isOpen={depositModalOpen}
+            onClose={() => setDepositModalOpen(false)}
+            onKYCSubmit={handleKYCSubmit}
+          />
+          
+          <CryptoWithdrawModal
+            isOpen={withdrawModalOpen}
+            onClose={() => setWithdrawModalOpen(false)}
+            onKYCSubmit={handleKYCSubmit}
+          />
         </div>
       </div>
     </>
