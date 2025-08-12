@@ -55,22 +55,22 @@ const CryptoP2P = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Navigation */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-between py-3 border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
             {/* Left side - Back button and Navigation Tabs */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleBackToCrypto}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 flex-shrink-0"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
 
-              <div className="flex items-center space-x-8">
+              <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide">
                 <button
                   onClick={() => setActiveTab("market")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
                     activeTab === "market" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
                   }`}
                 >
@@ -78,7 +78,7 @@ const CryptoP2P = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab("orders")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
                     activeTab === "orders" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
                   }`}
                 >
@@ -86,7 +86,7 @@ const CryptoP2P = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab("my-offers")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
                     activeTab === "my-offers" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
                   }`}
                 >
@@ -94,7 +94,7 @@ const CryptoP2P = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab("neoai")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 whitespace-nowrap ${
                     activeTab === "neoai" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
                   }`}
                 >
@@ -102,19 +102,19 @@ const CryptoP2P = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab("history")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 flex items-center gap-1 ${
+                  className={`text-sm font-medium transition-colors hover:text-blue-600 flex items-center gap-1 whitespace-nowrap ${
                     activeTab === "history" ? "text-blue-600 border-b-2 border-blue-600 pb-1" : "text-gray-600"
                   }`}
                 >
-                  <History className="h-4 w-4" />
+                  <History className="h-3 w-3" />
                   History
                 </button>
               </div>
             </div>
 
             {/* Right side - Security indicator */}
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded">
+            <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+              <div className="p-1 bg-green-100 dark:bg-green-900/30 rounded">
                 <Shield className="h-3 w-3 text-green-600" />
               </div>
               <span className="text-xs font-medium text-green-700 dark:text-green-300">
@@ -129,24 +129,35 @@ const CryptoP2P = () => {
           </div>
 
           {/* Trading Controls */}
-          <div className="flex items-center justify-between py-4">
+          <div className="flex items-center justify-between py-4 gap-4">
             {/* Left side - Buy/Sell Buttons */}
-            <div className="flex items-center gap-4">
-              <Tabs value={tradingMode} onValueChange={setTradingMode} className="">
-                <TabsList className="grid w-full grid-cols-2 h-9">
-                  <TabsTrigger value="buy" className="text-green-600 data-[state=active]:text-green-700 data-[state=active]:bg-green-50">
+            <div className="flex items-center">
+              <Tabs value={tradingMode} onValueChange={setTradingMode}>
+                <TabsList className="grid grid-cols-2 h-9 w-32">
+                  <TabsTrigger value="buy" className="text-green-600 data-[state=active]:text-green-700 data-[state=active]:bg-green-50 text-sm">
                     Buy
                   </TabsTrigger>
-                  <TabsTrigger value="sell" className="text-red-600 data-[state=active]:text-red-700 data-[state=active]:bg-red-50">
+                  <TabsTrigger value="sell" className="text-red-600 data-[state=active]:text-red-700 data-[state=active]:bg-red-50 text-sm">
                     Sell
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
 
+            {/* Center - Create Offer Button */}
+            <div className="flex-1 flex justify-center">
+              <Button
+                onClick={() => {}}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 h-9"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Create Offer
+              </Button>
+            </div>
+
             {/* Right side - Currency Selector */}
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-600">Currency:</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 whitespace-nowrap">Currency:</span>
               <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
                 <SelectTrigger className="w-24 h-9">
                   <SelectValue />
