@@ -203,7 +203,6 @@ export default function CryptoWithdrawModal({
         description: `Your ${selectedCrypto.name} withdrawal has been submitted for processing.`,
       });
 
-      onSuccess();
       onClose();
       resetForm();
     } catch (error) {
