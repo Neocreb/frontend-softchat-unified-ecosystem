@@ -300,21 +300,6 @@ export default function EnhancedCrypto() {
 
           {/* Overview Content - Direct Layout */}
           <div className="space-y-4 sm:space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h2 className="text-lg sm:text-xl font-bold">
-                  Market Overview
-                </h2>
-                <div className="flex items-center gap-2">
-                  <p className="text-sm text-muted-foreground">
-                    Real-time market data and analytics
-                  </p>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Last updated: {lastUpdated.toLocaleTimeString()}
-                </p>
-              </div>
-            </div>
 
             {/* Total Assets Balance Card - Credit Card Design */}
             <Card className="relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01] bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 border-0 text-white w-full max-w-5xl mx-auto">
