@@ -221,6 +221,7 @@ function EnhancedCryptoPortfolioContent() {
   const { walletBalance, refreshWallet } = useWalletContext();
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const totalValue = portfolioAssets.reduce(
     (sum, asset) => sum + asset.value,
@@ -402,7 +403,7 @@ function EnhancedCryptoPortfolioContent() {
                       )}
                       {showValues
                         ? formatPercent(last24hChangePercent)
-                        : "••••"}
+                        : "��•••"}
                     </div>
                   </div>
                   <TrendingUp className="h-8 w-8 text-green-500" />
