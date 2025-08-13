@@ -1,10 +1,9 @@
-
 import { supabase } from "@/lib/supabase/client";
 
 export interface NotificationData {
   id: string;
   user_id: string;
-  type: 'like' | 'comment' | 'follow' | 'message' | 'system';
+  type: 'like' | 'comment' | 'follow' | 'message' | 'system' | 'crypto' | 'trading';
   title: string;
   content: string;
   related_user_id?: string;
