@@ -127,6 +127,7 @@ export default function CryptoWithdrawModal({
   const [memo, setMemo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const calculateReceiveAmount = () => {
     if (!selectedCrypto || !amount) return 0;
