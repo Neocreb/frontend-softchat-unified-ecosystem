@@ -209,7 +209,6 @@ const CryptoP2P = () => {
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="all">All Orders</SelectItem>
-                              <SelectItem value="pending">Pending</SelectItem>
                               <SelectItem value="ongoing">Ongoing</SelectItem>
                               <SelectItem value="completed">Completed</SelectItem>
                               <SelectItem value="cancelled">Cancelled</SelectItem>
