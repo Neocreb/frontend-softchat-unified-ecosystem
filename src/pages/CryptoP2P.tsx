@@ -193,15 +193,96 @@ const CryptoP2P = () => {
             )}
 
             {activeTab === "orders" && (
-              <Card>
-                <CardContent className="p-12 text-center">
-                  <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Active Orders</h3>
-                  <p className="text-gray-600">
-                    Your active P2P orders will appear here
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader className="pb-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <CardTitle className="text-xl font-semibold flex items-center gap-2">
+                        <Clock className="h-5 w-5" />
+                        Order Management
+                      </CardTitle>
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <Select defaultValue="all">
+                            <SelectTrigger className="w-36">
+                              <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Orders</SelectItem>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="ongoing">Ongoing</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                              <SelectItem value="cancelled">Cancelled</SelectItem>
+                              <SelectItem value="disputed">Disputed</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Select defaultValue="30d">
+                            <SelectTrigger className="w-32">
+                              <SelectValue placeholder="Period" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="7d">Last 7 days</SelectItem>
+                              <SelectItem value="30d">Last 30 days</SelectItem>
+                              <SelectItem value="90d">Last 90 days</SelectItem>
+                              <SelectItem value="all">All time</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <Button variant="outline" size="sm" className="flex items-center gap-2">
+                          <Filter className="h-4 w-4" />
+                          More Filters
+                        </Button>
+                      </div>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="px-6 pb-6">
+                    {/* Statistics Cards */}
+                    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">0</div>
+                        <div className="text-sm text-blue-600 dark:text-blue-400">Pending</div>
+                      </div>
+                      <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800">
+                        <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">0</div>
+                        <div className="text-sm text-orange-600 dark:text-orange-400">Ongoing</div>
+                      </div>
+                      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+                        <div className="text-2xl font-bold text-green-600 dark:text-green-400">0</div>
+                        <div className="text-sm text-green-600 dark:text-green-400">Completed</div>
+                      </div>
+                      <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200 dark:border-red-800">
+                        <div className="text-2xl font-bold text-red-600 dark:text-red-400">0</div>
+                        <div className="text-sm text-red-600 dark:text-red-400">Cancelled</div>
+                      </div>
+                      <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+                        <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">$0</div>
+                        <div className="text-sm text-purple-600 dark:text-purple-400">Total Volume</div>
+                      </div>
+                    </div>
+
+                    {/* Empty State */}
+                    <div className="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                        <Clock className="h-8 w-8 text-gray-400" />
+                      </div>
+                      <h4 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                        No Orders Yet
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-md mx-auto">
+                        Start trading on the market to see your active and completed orders here.
+                        All order activity and history will be tracked in this dashboard.
+                      </p>
+                      <Button
+                        onClick={() => setActiveTab("market")}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        Go to Market
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )}
 
             {activeTab === "my-offers" && (
