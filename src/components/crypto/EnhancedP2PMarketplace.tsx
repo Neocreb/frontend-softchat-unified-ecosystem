@@ -47,6 +47,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import { P2POffer, P2PTrade, UserProfile } from "@/types/crypto";
 import P2PEscrowSystem from "./P2PEscrowSystem";
 import P2PDisputeResolution from "./P2PDisputeResolution";
@@ -94,6 +96,7 @@ export default function EnhancedP2PMarketplace({
   });
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const assets = ["BTC", "ETH", "USDT", "BNB", "ADA", "SOL", "DOT", "AVAX"];
   const fiatCurrencies = [
@@ -244,6 +247,16 @@ export default function EnhancedP2PMarketplace({
         title: "Offer Created",
         description: "Your P2P offer has been created successfully",
       });
+
+      // Send unified notification
+      if (user?.id) {
+        await cryptoNotificationService.notifyP2PTrade(
+          user.id,
+          "offer created",
+          newOffer.asset,
+          parseFloat(newOffer.totalAmount)
+        );
+      }
     } catch (error) {
       toast({
         title: "Error",

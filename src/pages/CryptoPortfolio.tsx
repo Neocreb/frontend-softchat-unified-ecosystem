@@ -56,58 +56,13 @@ const CryptoPortfolio = () => {
               </Button>
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent">
-                  Portfolio Management
+                  Portfolio
                 </h1>
                 <p className="text-muted-foreground">
-                  Track your investments and analyze your performance
+                  Manage your crypto investments
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                Real-time Updates
-              </span>
-            </div>
-          </div>
-
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <Card className="bg-gradient-to-r from-purple-50 to-violet-50 dark:from-purple-900/20 dark:to-violet-900/20 border-purple-200 dark:border-purple-700">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-purple-500 flex items-center justify-center">
-                  <PieChart className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">Asset Allocation</h3>
-                <p className="text-sm text-purple-700 dark:text-purple-300">
-                  Visualize your portfolio distribution and balance
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-700">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-green-500 flex items-center justify-center">
-                  <TrendingUp className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">Performance Tracking</h3>
-                <p className="text-sm text-green-700 dark:text-green-300">
-                  Monitor gains, losses, and overall portfolio performance
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border-blue-200 dark:border-blue-700">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-blue-500 flex items-center justify-center">
-                  <BarChart3 className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">Advanced Analytics</h3>
-                <p className="text-sm text-blue-700 dark:text-blue-300">
-                  Detailed analysis with charts and historical data
-                </p>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Portfolio Management Component */}

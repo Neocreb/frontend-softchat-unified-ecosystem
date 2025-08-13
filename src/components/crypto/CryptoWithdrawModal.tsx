@@ -21,6 +21,8 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Loader2,
   AlertTriangle,
@@ -125,6 +127,7 @@ export default function CryptoWithdrawModal({
   const [memo, setMemo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const calculateReceiveAmount = () => {
     if (!selectedCrypto || !amount) return 0;
@@ -202,6 +205,16 @@ export default function CryptoWithdrawModal({
         title: "Withdrawal Initiated",
         description: `Your ${selectedCrypto.name} withdrawal has been submitted for processing.`,
       });
+
+      // Send unified notification
+      if (user?.id) {
+        await cryptoNotificationService.notifyWithdrawal(
+          user.id,
+          selectedCrypto.symbol,
+          withdrawAmount,
+          "initiated"
+        );
+      }
 
       onClose();
       resetForm();

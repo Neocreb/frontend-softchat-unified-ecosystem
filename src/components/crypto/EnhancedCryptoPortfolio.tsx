@@ -50,6 +50,8 @@ import {
   Minus,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import { useWalletContext, WalletProvider } from "@/contexts/WalletContext";
 import CryptoDepositModal from "@/components/crypto/CryptoDepositModal";
 import CryptoWithdrawModal from "@/components/crypto/CryptoWithdrawModal";
@@ -219,6 +221,7 @@ function EnhancedCryptoPortfolioContent() {
   const { walletBalance, refreshWallet } = useWalletContext();
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const totalValue = portfolioAssets.reduce(
     (sum, asset) => sum + asset.value,
@@ -241,6 +244,15 @@ function EnhancedCryptoPortfolioContent() {
         title: "Portfolio Updated",
         description: "Your portfolio data has been refreshed.",
       });
+
+      // Send unified notification for significant portfolio changes
+      if (user?.id && Math.abs(totalPnlPercent) > 5) {
+        await cryptoNotificationService.notifyPortfolioUpdate(
+          user.id,
+          totalPnlPercent,
+          totalValue
+        );
+      }
     } catch (error) {
       toast({
         title: "Refresh Failed",
@@ -400,7 +412,7 @@ function EnhancedCryptoPortfolioContent() {
                       )}
                       {showValues
                         ? formatPercent(last24hChangePercent)
-                        : "••••"}
+                        : "��•••"}
                     </div>
                   </div>
                   <TrendingUp className="h-8 w-8 text-green-500" />
