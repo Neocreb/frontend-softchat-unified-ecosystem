@@ -101,15 +101,6 @@ const CryptoP2P = () => {
                 >
                   NeoAi
                 </button>
-                <button
-                  onClick={() => setActiveTab("history")}
-                  className={`text-sm font-medium transition-colors hover:text-blue-600 flex items-center gap-1 whitespace-nowrap py-2 ${
-                    activeTab === "history" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600"
-                  }`}
-                >
-                  <History className="h-3 w-3" />
-                  History
-                </button>
               </div>
             </div>
           </div>
