@@ -164,10 +164,10 @@ const CryptoLearn = () => {
               </Button>
               <div>
                 <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                  Crypto Education Center
+                  Learn
                 </h1>
                 <p className="text-muted-foreground">
-                  Learn about cryptocurrencies, trading strategies, and market analysis
+                  Crypto education and tutorials
                 </p>
               </div>
             </div>
