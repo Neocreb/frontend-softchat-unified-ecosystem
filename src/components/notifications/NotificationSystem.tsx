@@ -265,6 +265,26 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
     };
   }, []);
 
+  // Listen for crypto notifications
+  useEffect(() => {
+    const handleCryptoNotification = (event: CustomEvent) => {
+      const newNotification = event.detail;
+      setNotifications(prev => [newNotification, ...prev]);
+      setUnreadCount(prev => prev + 1);
+
+      // Play notification sound if enabled
+      if (settings.sound && audioRef.current) {
+        audioRef.current.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('crypto-notification', handleCryptoNotification as EventListener);
+
+    return () => {
+      window.removeEventListener('crypto-notification', handleCryptoNotification as EventListener);
+    };
+  }, [settings.sound]);
+
   useEffect(() => {
     // Update unread count
     const unread = notifications.filter((n) => !n.read).length;
