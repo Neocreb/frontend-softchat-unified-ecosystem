@@ -31,7 +31,7 @@ class CryptoNotificationService {
       // Store in database via notification service
       await notificationService.createNotification(
         userId,
-        "system", // Map crypto notifications to system type
+        "crypto", // Use crypto type for better categorization
         data.title,
         data.message
       );
