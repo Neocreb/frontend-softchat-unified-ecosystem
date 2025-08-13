@@ -15,7 +15,8 @@ interface Contact {
 }
 
 const WalletCard = () => {
-  const [balance, setBalance] = useState(17034.81);
+  const { walletBalance } = useWalletContext();
+  const balance = walletBalance?.total || 0;
   const [activeTab, setActiveTab] = useState("coins");
   const { toast } = useToast();
 
