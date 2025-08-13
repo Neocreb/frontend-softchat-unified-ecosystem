@@ -237,11 +237,7 @@ const CryptoP2P = () => {
 
                   <CardContent className="px-6 pb-6">
                     {/* Statistics Cards */}
-                    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-                      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">0</div>
-                        <div className="text-sm text-blue-600 dark:text-blue-400">Pending</div>
-                      </div>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                       <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800">
                         <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">0</div>
                         <div className="text-sm text-orange-600 dark:text-orange-400">Ongoing</div>
