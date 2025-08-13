@@ -55,12 +55,13 @@ interface CryptoBalance {
   processingTime: string;
 }
 
+// Updated to match centralized crypto balance data from cryptoService.ts
 const mockBalances: CryptoBalance[] = [
   {
     symbol: "BTC",
     name: "Bitcoin",
-    balance: 0.5432,
-    usdValue: 23456.78,
+    balance: 2.5, // Match cryptoService.ts mockPortfolio
+    usdValue: 108126.68, // Match cryptoService.ts mockPortfolio
     icon: "₿",
     color: "text-orange-500",
     network: "Bitcoin",
@@ -72,9 +73,9 @@ const mockBalances: CryptoBalance[] = [
   },
   {
     symbol: "ETH",
-    name: "Ethereum", 
-    balance: 4.2876,
-    usdValue: 10987.45,
+    name: "Ethereum",
+    balance: 6.8, // Match cryptoService.ts mockPortfolio
+    usdValue: 17593.51, // Match cryptoService.ts mockPortfolio
     icon: "Ξ",
     color: "text-blue-500",
     network: "Ethereum",
