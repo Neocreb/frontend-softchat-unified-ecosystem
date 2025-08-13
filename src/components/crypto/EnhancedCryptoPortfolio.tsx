@@ -244,6 +244,15 @@ function EnhancedCryptoPortfolioContent() {
         title: "Portfolio Updated",
         description: "Your portfolio data has been refreshed.",
       });
+
+      // Send unified notification for significant portfolio changes
+      if (user?.id && Math.abs(totalPnlPercent) > 5) {
+        await cryptoNotificationService.notifyPortfolioUpdate(
+          user.id,
+          totalPnlPercent,
+          totalValue
+        );
+      }
     } catch (error) {
       toast({
         title: "Refresh Failed",
