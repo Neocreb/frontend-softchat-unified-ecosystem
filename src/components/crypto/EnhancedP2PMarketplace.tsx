@@ -247,6 +247,16 @@ export default function EnhancedP2PMarketplace({
         title: "Offer Created",
         description: "Your P2P offer has been created successfully",
       });
+
+      // Send unified notification
+      if (user?.id) {
+        await cryptoNotificationService.notifyP2PTrade(
+          user.id,
+          "offer created",
+          newOffer.asset,
+          parseFloat(newOffer.totalAmount)
+        );
+      }
     } catch (error) {
       toast({
         title: "Error",
