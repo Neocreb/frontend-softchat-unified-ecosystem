@@ -50,6 +50,8 @@ import {
   Minus,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import { useWalletContext, WalletProvider } from "@/contexts/WalletContext";
 import CryptoDepositModal from "@/components/crypto/CryptoDepositModal";
 import CryptoWithdrawModal from "@/components/crypto/CryptoWithdrawModal";
