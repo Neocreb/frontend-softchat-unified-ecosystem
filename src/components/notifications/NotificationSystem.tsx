@@ -181,6 +181,7 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
     types: {
       social: true,
       trading: true,
+      crypto: true,
       marketplace: true,
       system: true,
       rewards: true,
