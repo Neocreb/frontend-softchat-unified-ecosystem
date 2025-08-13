@@ -96,6 +96,7 @@ export default function EnhancedP2PMarketplace({
   });
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const assets = ["BTC", "ETH", "USDT", "BNB", "ADA", "SOL", "DOT", "AVAX"];
   const fiatCurrencies = [
