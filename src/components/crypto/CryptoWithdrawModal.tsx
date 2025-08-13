@@ -206,6 +206,16 @@ export default function CryptoWithdrawModal({
         description: `Your ${selectedCrypto.name} withdrawal has been submitted for processing.`,
       });
 
+      // Send unified notification
+      if (user?.id) {
+        await cryptoNotificationService.notifyWithdrawal(
+          user.id,
+          selectedCrypto.symbol,
+          withdrawAmount,
+          "initiated"
+        );
+      }
+
       onClose();
       resetForm();
     } catch (error) {
