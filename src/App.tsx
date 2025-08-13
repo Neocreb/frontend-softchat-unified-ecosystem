@@ -601,6 +601,7 @@ const AppRoutes = () => {
       <Route path="/messages" element={<Navigate to="/app/chat" replace />} />
       <Route path="/profile" element={<Navigate to="/app/profile" replace />} />
       <Route path="/wallet" element={<Navigate to="/app/wallet" replace />} />
+      <Route path="/notifications" element={<Navigate to="/app/notifications" replace />} />
       <Route path="/events" element={<Navigate to="/app/events" replace />} />
       <Route path="/freelance" element={<Navigate to="/app/freelance" replace />} />
       <Route path="/freelance/dashboard" element={<Navigate to="/app/freelance/dashboard" replace />} />
