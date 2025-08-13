@@ -47,6 +47,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cryptoService } from "@/services/cryptoService";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import { P2POffer, P2PTrade, UserProfile } from "@/types/crypto";
 import P2PEscrowSystem from "./P2PEscrowSystem";
 import P2PDisputeResolution from "./P2PDisputeResolution";
