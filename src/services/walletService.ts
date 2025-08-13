@@ -11,6 +11,14 @@ export interface Wallet {
   createdAt: string;
 }
 
+export interface WalletBalance {
+  total: number;
+  ecommerce: number;
+  crypto: number;
+  rewards: number;
+  freelance: number;
+}
+
 export interface Transaction {
   id: string;
   type: string;
@@ -19,6 +27,8 @@ export interface Transaction {
   description: string;
   status: string;
   createdAt: string;
+  source?: string;
+  timestamp?: string;
 }
 
 export interface SendMoneyRequest {
