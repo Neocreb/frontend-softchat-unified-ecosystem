@@ -1815,6 +1815,28 @@
     color: white !important;
   }
 
+  /* Ensure crypto and gradient cards override content-card styling */
+  .card-crypto *,
+  .card-crypto h1,
+  .card-crypto h2,
+  .card-crypto h3,
+  .card-crypto h4,
+  .card-crypto h5,
+  .card-crypto h6,
+  .card-crypto p,
+  .card-crypto span,
+  .card-crypto div {
+    color: white !important;
+  }
+
+  /* Fix silver badge styling to be more readable */
+  .badge-silver,
+  [class*="silver"] .badge,
+  .silver-tier {
+    background: linear-gradient(135deg, hsl(210 10% 40%) 0%, hsl(210 15% 50%) 100%) !important;
+    color: white !important;
+  }
+
   /* Enhanced platform backgrounds */
   .bg-platform {
     background: linear-gradient(135deg,
