@@ -69,7 +69,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
     <Card
       className={cn(
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01]",
-        "bg-gradient-to-br from-softchat-primary via-purple-600 to-blue-700",
+        "card-rewards",
         "border-0 text-white aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
         className
       )}
@@ -90,7 +90,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
             isHovered ? "scale-125 -rotate-12" : "scale-100"
           )}
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-50" />
       </div>
 
       <CardContent className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-between">
