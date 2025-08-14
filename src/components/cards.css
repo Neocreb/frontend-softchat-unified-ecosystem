@@ -62,6 +62,24 @@
   background-color: transparent !important;
 }
 
+/* Override dark mode forced background styles */
+.dark .crypto-wallet-card.bg-white,
+.dark .rewards-card.bg-white,
+.crypto-wallet-card.bg-card,
+.rewards-card.bg-card,
+.dark .crypto-wallet-card.bg-card,
+.dark .rewards-card.bg-card {
+  background: unset !important;
+}
+
+.crypto-wallet-card {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
+}
+
+.rewards-card {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
+}
+
 /* Ensure text remains white on both cards regardless of theme */
 .crypto-wallet-card *,
 .rewards-card * {
