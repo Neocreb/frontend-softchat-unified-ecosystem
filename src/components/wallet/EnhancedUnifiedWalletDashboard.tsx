@@ -105,7 +105,7 @@ const EnhancedWalletDashboardContent = () => {
       <div className="flex gap-3 justify-center sm:justify-start">
         <Button
           onClick={() => setShowDepositModal(true)}
-          className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none sm:min-w-[120px]"
+          className="btn-gradient flex-1 sm:flex-none sm:min-w-[120px]"
           size="lg"
         >
           Deposit
@@ -113,7 +113,7 @@ const EnhancedWalletDashboardContent = () => {
         <Button
           onClick={() => setShowWithdrawModal(true)}
           variant="outline"
-          className="border-red-200 text-red-600 hover:bg-red-50 flex-1 sm:flex-none sm:min-w-[120px]"
+          className="bg-gradient-card border-primary/20 text-primary hover:bg-gradient-primary hover:text-white flex-1 sm:flex-none sm:min-w-[120px]"
           size="lg"
         >
           Withdraw
