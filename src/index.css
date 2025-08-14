@@ -1505,16 +1505,75 @@
     user-select: none;
   }
 
+  /* ===== DARK MODE UTILITIES ===== */
+
+  /* Professional dark mode page container */
+  .page-container {
+    background: hsl(var(--background));
+    min-height: 100vh;
+  }
+
+  /* Light mode page container */
+  :root:not(.dark) .page-container {
+    background: linear-gradient(135deg,
+      hsl(240 20% 97%) 0%,
+      hsl(250 25% 96%) 25%,
+      hsl(260 15% 96%) 50%,
+      hsl(250 25% 96%) 75%,
+      hsl(240 20% 97%) 100%
+    );
+  }
+
+  /* Dark mode page container */
+  .dark .page-container {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
+    );
+  }
+
+  /* Professional content cards for all themes */
+  .content-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--card-foreground));
+  }
+
+  /* Dark mode content cards */
+  .dark .content-card {
+    background: linear-gradient(145deg,
+      hsl(265 10% 8%) 0%,
+      hsl(265 12% 10%) 50%,
+      hsl(265 8% 12%) 100%
+    );
+    border: 1px solid hsl(265 15% 18%);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+  }
+
+  /* Light mode content cards */
+  :root:not(.dark) .content-card {
+    background: linear-gradient(145deg,
+      hsl(0 0% 100%) 0%,
+      hsl(240 30% 98%) 50%,
+      hsl(260 25% 97%) 100%
+    );
+    border: 1px solid hsl(240 15% 92%);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
   /* ===== TEXT CONTRAST UTILITIES ===== */
 
   /* Force high contrast text for better readability */
   .text-contrast-high {
-    color: rgb(15 23 42) !important; /* slate-900 */
+    color: hsl(var(--foreground)) !important;
     font-weight: 600 !important;
   }
 
   .text-contrast-medium {
-    color: rgb(30 41 59) !important; /* slate-800 */
+    color: hsl(var(--muted-foreground)) !important;
     font-weight: 500 !important;
   }
 
@@ -1528,7 +1587,7 @@
   .content-card .text-white/90,
   .content-card .text-blue-100,
   .content-card .text-gray-100 {
-    color: rgb(30 41 59) !important; /* slate-800 */
+    color: hsl(var(--card-foreground)) !important;
     font-weight: 500 !important;
   }
 
