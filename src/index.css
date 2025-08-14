@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fallback CSS custom properties for theme failures */
+:root {
+  --background: 210 20% 98%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --primary: 265 100% 58%;
+  --primary-foreground: 210 40% 98%;
+  --softchat-primary: 265 100% 58%;
+  --softchat-accent: 297 83% 72%;
+  --softchat-600: 265 89% 48%;
+  --softchat-700: 265 100% 40%;
+  --border: 220 15% 90%;
+  --input: 220 15% 94%;
+  --ring: 265 100% 58%;
+  --muted: 220 15% 96%;
+  --muted-foreground: 220 8% 46%;
+  --secondary: 265 30% 95%;
+  --secondary-foreground: 265 15% 25%;
+  --accent: 280 60% 95%;
+  --accent-foreground: 280 15% 25%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+}
+
 /* Scrollbar hiding utilities */
 .scrollbar-hide {
   -ms-overflow-style: none;
