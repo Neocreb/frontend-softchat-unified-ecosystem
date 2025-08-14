@@ -58,34 +58,66 @@ const EnhancedWalletDashboardContent = () => {
   }
 
   return (
-    <div className="mobile-container mobile-space-y">
-      {/* Enhanced Header */}
-      <div className="mobile-flex sm:items-center sm:justify-between">
-        <div className="min-w-0 flex-1">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Enhanced Wallet Dashboard
-          </h1>
-          <p className="text-base text-gray-600">
-            Complete financial management with advanced security
-          </p>
-        </div>
-        <div className="flex gap-2 flex-shrink-0">
-          <Button
-            onClick={() => setShowDepositModal(true)}
-            className="bg-green-600 hover:bg-green-700"
-            data-action="deposit"
-          >
-            Deposit
-          </Button>
-          <Button
-            onClick={() => setShowWithdrawModal(true)}
-            variant="outline"
-            className="border-red-200 text-red-600 hover:bg-red-50"
-            data-action="withdraw"
-          >
-            Withdraw
-          </Button>
-        </div>
+    <div className="mobile-container mobile-space-y bg-gradient-app min-h-screen">
+      {/* Header */}
+      <div className="text-center sm:text-left">
+        <h1 className="text-2xl font-bold text-gray-900">
+          Wallet
+        </h1>
+      </div>
+
+      {/* Main Balance Card - Now prominently displayed first */}
+      <Card className="overflow-hidden card-enhanced">
+        <CardContent className="p-6 md:p-8 bg-gradient-wallet text-white">
+          <div className="text-center space-y-4">
+            <div>
+              <h2 className="text-lg font-medium text-blue-100">
+                Total Balance
+              </h2>
+              <div className="text-4xl md:text-5xl font-bold">
+                ${walletBalance?.total.toFixed(2) || "0.00"}
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              {[
+                { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
+                { name: "Crypto", value: walletBalance?.crypto || 0 },
+                { name: "Rewards", value: walletBalance?.rewards || 0 },
+                { name: "Freelance", value: walletBalance?.freelance || 0 },
+              ].map((source) => (
+                <div key={source.name} className="text-center">
+                  <div className="text-lg md:text-xl font-semibold">
+                    ${source.value.toFixed(2)}
+                  </div>
+                  <div className="text-xs text-blue-200">
+                    {source.name}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Primary Action Buttons - Right after balance */}
+      <div className="flex gap-3 justify-center sm:justify-start">
+        <Button
+          onClick={() => setShowDepositModal(true)}
+          className="btn-gradient flex-1 sm:flex-none sm:min-w-[120px]"
+          size="lg"
+        >
+          Deposit
+        </Button>
+        <Button
+          onClick={() => setShowWithdrawModal(true)}
+          variant="outline"
+          className="bg-gradient-card border-primary/20 text-primary hover:bg-gradient-primary hover:text-white flex-1 sm:flex-none sm:min-w-[120px]"
+          size="lg"
+        >
+          Withdraw
+        </Button>
       </div>
 
       {/* Main Tabbed Interface */}
@@ -128,41 +160,6 @@ const EnhancedWalletDashboardContent = () => {
 
         {/* Overview Tab - Enhanced with unified layout */}
         <TabsContent value="overview" className="space-y-6">
-          {/* Main Balance Card */}
-          <Card className="overflow-hidden">
-            <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-              <div className="text-center space-y-4">
-                <div>
-                  <h2 className="text-lg font-medium text-blue-100">
-                    Total Balance
-                  </h2>
-                  <div className="text-4xl md:text-5xl font-bold">
-                    ${walletBalance?.total.toFixed(2) || "0.00"}
-                  </div>
-                </div>
-
-                {/* Quick Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-                  {[
-                    { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
-                    { name: "Crypto", value: walletBalance?.crypto || 0 },
-                    { name: "Rewards", value: walletBalance?.rewards || 0 },
-                    { name: "Freelance", value: walletBalance?.freelance || 0 },
-                  ].map((source) => (
-                    <div key={source.name} className="text-center">
-                      <div className="text-lg md:text-xl font-semibold">
-                        ${source.value.toFixed(2)}
-                      </div>
-                      <div className="text-xs text-blue-200">
-                        {source.name}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Quick Actions Section */}
           <QuickActionsWidget />
         </TabsContent>

@@ -59,15 +59,15 @@ const ProfessionalCrypto = () => {
 
   // Mock portfolio data (in real app, this would come from API)
   const portfolioData = {
-    totalBalance: 24567.89,
-    totalBalance24hChange: 1234.56,
-    totalBalance24hPercent: 5.27,
+    totalBalance: 125670.45, // Match centralized crypto balance
+    totalBalance24hChange: 3240.78, // Match centralized data
+    totalBalance24hPercent: 2.64, // Match centralized data
     primaryAsset: {
       symbol: "BTC",
       name: "Bitcoin",
-      balance: 0.4523,
-      value: 22150.45,
-      change24h: 2.34,
+      balance: 2.5, // Match centralized data
+      value: 108126.68, // Match centralized data
+      change24h: 2.54, // Match centralized data
     },
   };
 

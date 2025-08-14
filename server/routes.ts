@@ -1689,13 +1689,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Wallet API endpoints
   app.get("/api/wallet", async (req, res) => {
     try {
-      // Mock wallet balance for now
+      // Centralized wallet balance data - matches walletService.ts
+      const CENTRALIZED_BALANCE_DATA = {
+        crypto: 125670.45,
+        ecommerce: 8947.32,
+        rewards: 3245.18,
+        freelance: 12890.67,
+      };
+
       const walletBalance = {
-        total: 23847.65,
-        ecommerce: 8450.32,
-        crypto: 12245.18,
-        rewards: 1876.5,
-        freelance: 1275.65,
+        total: CENTRALIZED_BALANCE_DATA.crypto +
+               CENTRALIZED_BALANCE_DATA.ecommerce +
+               CENTRALIZED_BALANCE_DATA.rewards +
+               CENTRALIZED_BALANCE_DATA.freelance,
+        ecommerce: CENTRALIZED_BALANCE_DATA.ecommerce,
+        crypto: CENTRALIZED_BALANCE_DATA.crypto,
+        rewards: CENTRALIZED_BALANCE_DATA.rewards,
+        freelance: CENTRALIZED_BALANCE_DATA.freelance,
       };
       res.json(walletBalance);
     } catch (error) {

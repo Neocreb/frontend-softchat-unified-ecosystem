@@ -1191,7 +1191,7 @@ router.get("/seller/analytics", authenticateToken, async (req, res) => {
 
     // In a real implementation, this would query actual analytics data
     const analytics = {
-      totalRevenue: 12450.67,
+      totalRevenue: 8947.32, // Match centralized e-commerce balance
       totalOrders: 89,
       totalProducts: 15,
       conversionRate: 3.2,

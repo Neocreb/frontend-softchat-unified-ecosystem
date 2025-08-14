@@ -57,9 +57,9 @@ interface MarketplaceWalletCardProps {
 }
 
 const mockEarnings: MarketplaceEarnings = {
-  totalEarnings: 12543.67,
+  totalEarnings: 8947.32, // Match centralized e-commerce balance
   pendingEarnings: 1245.5,
-  availableBalance: 11298.17,
+  availableBalance: 7701.82, // Adjusted: 8947.32 - 1245.5
   totalSales: 15679.58,
   salesCount: 87,
   averageOrderValue: 180.22,

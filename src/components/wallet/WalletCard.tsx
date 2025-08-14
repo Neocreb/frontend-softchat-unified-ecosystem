@@ -1,10 +1,10 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowDown, ArrowUp, Search } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useWalletContext } from "@/contexts/WalletContext";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Contact {
@@ -15,7 +15,8 @@ interface Contact {
 }
 
 const WalletCard = () => {
-  const [balance, setBalance] = useState(17034.81);
+  const { walletBalance } = useWalletContext();
+  const balance = walletBalance?.total || 0;
   const [activeTab, setActiveTab] = useState("coins");
   const { toast } = useToast();
 

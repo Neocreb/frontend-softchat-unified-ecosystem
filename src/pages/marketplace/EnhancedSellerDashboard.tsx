@@ -95,7 +95,7 @@ const EnhancedSellerDashboard = () => {
 
   // Mock analytics data - in real app this would come from API
   const sellerAnalytics = {
-    totalRevenue: 12450.67,
+    totalRevenue: 8947.32, // Match centralized e-commerce balance
     totalOrders: 89,
     totalProducts: myListings.length,
     conversionRate: 3.2,
