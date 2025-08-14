@@ -56,6 +56,12 @@
   box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5);
 }
 
+/* Override any default Card component styles */
+.crypto-wallet-card,
+.rewards-card {
+  background-color: transparent !important;
+}
+
 /* Ensure text remains white on both cards regardless of theme */
 .crypto-wallet-card *,
 .rewards-card * {
