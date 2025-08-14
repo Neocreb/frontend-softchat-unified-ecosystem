@@ -1110,7 +1110,7 @@
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 
-  /* Custom colors for softchat */
+  /* Enhanced SoftChat color utilities */
   .text-softchat-700 {
     color: hsl(var(--softchat-700));
   }
@@ -1127,6 +1127,59 @@
     --tw-gradient-from: hsl(265 100% 50% / 0.4);
     --tw-gradient-to: hsl(265 100% 50% / 0);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  /* Modern gradient backgrounds */
+  .bg-gradient-softchat {
+    background: linear-gradient(135deg,
+      hsl(var(--gradient-start)),
+      hsl(var(--gradient-middle)),
+      hsl(var(--gradient-end))
+    );
+  }
+
+  .bg-gradient-softchat-subtle {
+    background: linear-gradient(135deg,
+      hsl(var(--gradient-start) / 0.1),
+      hsl(var(--gradient-middle) / 0.05),
+      hsl(var(--gradient-end) / 0.1)
+    );
+  }
+
+  /* Enhanced card styling */
+  .card-enhanced {
+    @apply bg-card/80 backdrop-blur-sm border-border/60 shadow-lg;
+    background: linear-gradient(145deg,
+      hsl(var(--card)),
+      hsl(var(--card)) 50%,
+      hsl(var(--gradient-start) / 0.02)
+    );
+  }
+
+  /* Interactive elements */
+  .interactive-element {
+    @apply transition-all duration-200 hover:scale-[1.02] hover:shadow-lg;
+    transition-property: transform, box-shadow, background-color, border-color;
+  }
+
+  .interactive-element:hover {
+    background: linear-gradient(145deg,
+      hsl(var(--hover-overlay)),
+      hsl(var(--primary) / 0.05)
+    );
+  }
+
+  /* Modern button styles */
+  .btn-modern-primary {
+    @apply bg-gradient-softchat text-primary-foreground font-semibold;
+    @apply hover:shadow-lg hover:scale-[1.02] transition-all duration-200;
+    @apply focus:ring-4 focus:ring-focus-ring;
+  }
+
+  .btn-modern-secondary {
+    @apply bg-gradient-softchat-subtle border border-primary/20 text-primary;
+    @apply hover:bg-gradient-softchat hover:text-primary-foreground;
+    @apply transition-all duration-200 hover:scale-[1.02];
   }
 
   /* Section spacing */
