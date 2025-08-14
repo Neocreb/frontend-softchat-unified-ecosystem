@@ -72,11 +72,13 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
         "rewards-card",
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01]",
         "rounded-2xl border-0",
-        "bg-gradient-to-br from-[#8B5CF6] via-[#A855F7] to-[#C084FC]",
         "w-full max-w-md mx-auto text-white",
         "dark:shadow-xl dark:shadow-purple-500/10",
         className
       )}
+      style={{
+        background: "linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)",
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
