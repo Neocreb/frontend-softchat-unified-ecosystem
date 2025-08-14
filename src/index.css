@@ -1645,6 +1645,26 @@
     color: hsl(220 8% 45%) !important;
   }
 
+  /* Global contrast improvements */
+  .content-card h1,
+  .content-card h2,
+  .content-card h3,
+  .content-card h4,
+  .content-card h5,
+  .content-card h6 {
+    color: hsl(220 15% 10%) !important;
+  }
+
+  .content-card p,
+  .content-card span:not(.text-white) {
+    color: hsl(220 10% 20%) !important;
+  }
+
+  /* Fix muted text contrast */
+  .text-muted-foreground {
+    color: hsl(220 8% 40%) !important;
+  }
+
   /* Professional button enhancements */
   .btn-professional {
     background: linear-gradient(135deg,
