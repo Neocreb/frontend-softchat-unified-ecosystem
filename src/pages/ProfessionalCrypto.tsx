@@ -322,7 +322,7 @@ const ProfessionalCrypto = () => {
             ].map((item, index) => (
               <Card
                 key={index}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-blue-500/25"
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group content-card hover:shadow-blue-500/25"
                 onClick={() => handleQuickNavigation(item.section)}
               >
                 <CardContent className="p-6 text-center">
