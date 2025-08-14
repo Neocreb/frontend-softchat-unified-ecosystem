@@ -115,7 +115,7 @@ const WalletAnalyticsDashboard = () => {
       : null;
 
     return {
-      currentEarnings: currentPeriodEarnings,
+      currentEarnings: currentEarnings, // Use total wallet balance
       previousEarnings: previousPeriodEarnings,
       growth,
       bestSource: bestSource ? bestSource[0] : null,
