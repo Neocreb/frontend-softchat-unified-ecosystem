@@ -1558,7 +1558,22 @@
       hsl(265 10% 10%) 50%,
       hsl(265 12% 8%) 75%,
       hsl(265 15% 6%) 100%
-    );
+    ) !important;
+  }
+
+  /* Force dark mode for any container in dark theme */
+  .dark div:not([class*="bg-gradient"]):not([class*="card-"]) {
+    --tw-bg-opacity: 1;
+  }
+
+  /* Override Tailwind's default backgrounds in dark mode */
+  .dark .bg-slate-50,
+  .dark .bg-slate-100,
+  .dark .bg-gray-50,
+  .dark .bg-gray-100,
+  .dark .bg-neutral-50,
+  .dark .bg-neutral-100 {
+    background: hsl(var(--muted)) !important;
   }
 
   /* Professional content cards for all themes */
