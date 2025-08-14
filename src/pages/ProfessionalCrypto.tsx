@@ -385,7 +385,7 @@ const ProfessionalCrypto = () => {
               )}
 
               {/* Top Cryptocurrencies */}
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="content-card shadow-xl">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-xl font-bold flex items-center gap-2">
                     <Star className="h-5 w-5 text-yellow-500" />
@@ -462,7 +462,7 @@ const ProfessionalCrypto = () => {
               </Card>
 
               {/* Top Gainers and Top Losers */}
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="content-card shadow-xl">
                 <CardHeader className="pb-4">
                   <Tabs value={topGainersLosersTab} onValueChange={(value) => setTopGainersLosersTab(value as "gainers" | "losers")}>
                     <TabsList className="grid w-full max-w-md grid-cols-2">
