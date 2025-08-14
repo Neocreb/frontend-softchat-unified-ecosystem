@@ -247,7 +247,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {activeBonuses.filter(b => b.isActive).map(bonus => (
-                <div key={bonus.id} className="bg-white p-3 rounded-lg border border-yellow-200">
+                <div key={bonus.id} className="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 rounded-lg border border-yellow-200">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-yellow-800">{bonus.name}</h4>
                     <Badge className="bg-yellow-500 text-white">
@@ -271,7 +271,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
 
       {/* Available Bonuses */}
       {activeBonuses.some(b => !b.isActive) && (
-        <Card>
+        <Card className="content-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Flame className="h-5 w-5" />
@@ -320,14 +320,14 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     <div className="text-3xl">{event.icon}</div>
                     <div>
                       <h3 className="text-xl font-bold">{event.title}</h3>
-                      <p className="text-white/90 text-sm">{event.description}</p>
+                      <p className="text-white font-medium text-sm">{event.description}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <Badge className={cn("mb-2", getStatusColor(event.status))}>
                       {event.status.replace('_', ' ').toUpperCase()}
                     </Badge>
-                    <div className="text-white/90 text-sm">
+                    <div className="text-white font-medium text-sm">
                       <Clock className="h-4 w-4 inline mr-1" />
                       {timeLeft[event.id] ? formatTimeRemaining(timeLeft[event.id]) : 'Ended'}
                     </div>
@@ -339,7 +339,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     <Trophy className="h-4 w-4" />
                     <span className="font-semibold">Rewards:</span>
                   </div>
-                  <p className="text-white/90">{event.rewards.description}</p>
+                  <p className="text-white font-medium">{event.rewards.description}</p>
                 </div>
 
                 {event.progress && (
@@ -404,12 +404,12 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     </div>
                   </div>
                   
-                  <div className="bg-gray-50 rounded p-3 mb-3">
-                    <div className="text-sm">
+                  <div className="bg-gray-100 rounded p-3 mb-3">
+                    <div className="text-sm text-gray-800">
                       <strong>Starts:</strong> {event.startDate.toLocaleDateString()}
                     </div>
-                    <div className="text-sm">
-                      <strong>Rewards:</strong> {event.rewards.description}
+                    <div className="text-sm text-gray-800">
+                      <strong className="text-gray-900">Rewards:</strong> {event.rewards.description}
                     </div>
                   </div>
 

@@ -81,7 +81,7 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
     <Card
       className={cn(
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-[1.01]",
-        "bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900",
+        "card-crypto",
         "border-0 text-white aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
         className
       )}
@@ -102,7 +102,7 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
             isHovered ? "scale-125 -rotate-12" : "scale-100"
           )}
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent animate-pulse" />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-50" />
         
         {/* Floating crypto symbols */}
         <div className="absolute top-4 right-8 opacity-10">

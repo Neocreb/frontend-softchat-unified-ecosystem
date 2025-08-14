@@ -148,7 +148,7 @@ const CryptoLearn = () => {
         <meta name="description" content="Comprehensive cryptocurrency education with courses, tutorials, and expert insights on trading, blockchain, and DeFi." />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
+      <div className="min-h-screen bg-platform">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
@@ -191,12 +191,12 @@ const CryptoLearn = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold">Welcome to Crypto Academy</h3>
-                    <p className="text-blue-100">Start your journey to becoming a crypto expert</p>
+                    <p className="text-white font-medium">Start your journey to becoming a crypto expert</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold">0/6</div>
-                  <div className="text-sm text-blue-100">Courses Completed</div>
+                  <div className="text-sm text-white font-medium">Courses Completed</div>
                 </div>
               </div>
             </CardContent>
@@ -223,7 +223,7 @@ const CryptoLearn = () => {
             <TabsContent value="courses" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {courses.map((course, index) => (
-                  <Card key={index} className="cursor-pointer hover:shadow-xl transition-all duration-300 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden hover:scale-[1.02]">
+                  <Card key={index} className="cursor-pointer hover:shadow-xl transition-all duration-300 group content-card overflow-hidden hover:scale-[1.02]">
                     <div className={`h-2 bg-gradient-to-r ${course.color}`}></div>
                     <CardContent className="p-6">
                       <div className="space-y-4">

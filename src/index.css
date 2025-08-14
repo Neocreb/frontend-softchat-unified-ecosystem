@@ -790,19 +790,19 @@
 
   body {
     @apply text-foreground;
-    /* Modern gradient background instead of plain white */
-    background: linear-gradient(135deg,
-      hsl(220 15% 97%) 0%,
-      hsl(240 20% 98%) 25%,
-      hsl(260 15% 97%) 50%,
-      hsl(240 20% 98%) 75%,
-      hsl(220 15% 97%) 100%
-    );
+    background: hsl(var(--background));
     min-height: 100vh;
   }
 
-  /* Modern app container with gradient */
+  /* Modern app container with proper theme support */
   #root {
+    background: hsl(var(--background));
+    min-height: 100vh;
+  }
+
+  /* Light mode specific backgrounds */
+  :root:not(.dark) body,
+  :root:not(.dark) #root {
     background: linear-gradient(135deg,
       hsl(220 15% 97%) 0%,
       hsl(240 20% 98%) 25%,
@@ -810,11 +810,53 @@
       hsl(240 20% 98%) 75%,
       hsl(220 15% 97%) 100%
     );
-    min-height: 100vh;
   }
 
-  /* Enhanced card backgrounds */
+  /* Dark mode specific backgrounds */
+  .dark body,
+  .dark #root {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
+    ) !important;
+  }
+
+  /* Force dark mode for all white backgrounds */
+  .dark .bg-white {
+    background: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+  }
+
+  .dark .bg-gray-50 {
+    background: hsl(var(--muted)) !important;
+  }
+
+  .dark .bg-gray-100 {
+    background: hsl(var(--muted)) !important;
+  }
+
+  .dark .text-gray-900 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .text-gray-800 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .text-gray-700 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Enhanced card backgrounds - responsive to theme */
   .bg-card {
+    background: hsl(var(--card)) !important;
+  }
+
+  /* Light mode card gradients */
+  :root:not(.dark) .bg-card {
     background: linear-gradient(145deg,
       hsl(0 0% 100%) 0%,
       hsl(240 30% 98%) 50%,
@@ -822,20 +864,42 @@
     ) !important;
   }
 
-  /* Enhanced muted backgrounds */
+  /* Dark mode card gradients */
+  .dark .bg-card {
+    background: linear-gradient(145deg,
+      hsl(265 10% 8%) 0%,
+      hsl(265 12% 10%) 50%,
+      hsl(265 8% 12%) 100%
+    ) !important;
+  }
+
+  /* Enhanced muted backgrounds - responsive to theme */
   .bg-muted {
+    background: hsl(var(--muted)) !important;
+  }
+
+  /* Light mode muted gradients */
+  :root:not(.dark) .bg-muted {
     background: linear-gradient(135deg,
       hsl(240 20% 96%) 0%,
       hsl(260 15% 95%) 100%
     ) !important;
   }
 
-  /* Modern button gradients */
+  /* Dark mode muted gradients */
+  .dark .bg-muted {
+    background: linear-gradient(135deg,
+      hsl(265 10% 12%) 0%,
+      hsl(265 15% 15%) 100%
+    ) !important;
+  }
+
+  /* Modern button gradients - maintain for both themes */
   .bg-primary {
     background: linear-gradient(135deg,
-      hsl(265 100% 58%) 0%,
+      hsl(var(--primary)) 0%,
       hsl(280 85% 60%) 50%,
-      hsl(265 100% 58%) 100%
+      hsl(var(--primary)) 100%
     ) !important;
   }
 
@@ -1171,7 +1235,7 @@
     border-color: hsl(265 60% 85%);
   }
 
-  .from-softchat-500\/40 {
+  .from-softchat-500-40 {
     --tw-gradient-from: hsl(265 100% 50% / 0.4);
     --tw-gradient-to: hsl(265 100% 50% / 0);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
@@ -1467,6 +1531,146 @@
     user-select: none;
   }
 
+  /* ===== DARK MODE UTILITIES ===== */
+
+  /* Professional dark mode page container */
+  .page-container {
+    background: hsl(var(--background));
+    min-height: 100vh;
+  }
+
+  /* Light mode page container */
+  :root:not(.dark) .page-container {
+    background: linear-gradient(135deg,
+      hsl(240 20% 97%) 0%,
+      hsl(250 25% 96%) 25%,
+      hsl(260 15% 96%) 50%,
+      hsl(250 25% 96%) 75%,
+      hsl(240 20% 97%) 100%
+    );
+  }
+
+  /* Dark mode page container */
+  .dark .page-container {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
+    ) !important;
+  }
+
+  /* Force dark mode for any container in dark theme */
+  .dark div:not([class*="bg-gradient"]):not([class*="card-"]) {
+    --tw-bg-opacity: 1;
+  }
+
+  /* Override Tailwind's default backgrounds in dark mode */
+  .dark .bg-slate-50,
+  .dark .bg-slate-100,
+  .dark .bg-gray-50,
+  .dark .bg-gray-100,
+  .dark .bg-neutral-50,
+  .dark .bg-neutral-100 {
+    background: hsl(var(--muted)) !important;
+  }
+
+  /* Ensure bg-platform works in dark mode */
+  .bg-platform {
+    background: hsl(var(--background));
+    min-height: 100vh;
+  }
+
+  .dark .bg-platform {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
+    ) !important;
+  }
+
+  /* Comprehensive dark mode enforcement */
+  .dark,
+  .dark * {
+    color-scheme: dark;
+  }
+
+  .dark .min-h-screen:not([class*="bg-gradient"]):not([class*="card-"]) {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
+    ) !important;
+  }
+
+  /* Professional content cards for all themes */
+  .content-card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--card-foreground));
+  }
+
+  /* Dark mode content cards */
+  .dark .content-card {
+    background: linear-gradient(145deg,
+      hsl(265 10% 8%) 0%,
+      hsl(265 12% 10%) 50%,
+      hsl(265 8% 12%) 100%
+    );
+    border: 1px solid hsl(265 15% 18%);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+  }
+
+  /* Light mode content cards */
+  :root:not(.dark) .content-card {
+    background: linear-gradient(145deg,
+      hsl(0 0% 100%) 0%,
+      hsl(240 30% 98%) 50%,
+      hsl(260 25% 97%) 100%
+    );
+    border: 1px solid hsl(240 15% 92%);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  /* ===== TEXT CONTRAST UTILITIES ===== */
+
+  /* Force high contrast text for better readability */
+  .text-contrast-high {
+    color: hsl(var(--foreground)) !important;
+    font-weight: 600 !important;
+  }
+
+  .text-contrast-medium {
+    color: hsl(var(--muted-foreground)) !important;
+    font-weight: 500 !important;
+  }
+
+  .text-contrast-white {
+    color: rgb(255 255 255) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Ensure readable text on any background */
+  .content-card .text-readable {
+    color: hsl(var(--card-foreground)) !important;
+    font-weight: 500 !important;
+  }
+
+  /* Override for gradient backgrounds that need white text */
+  .bg-gradient-to-r .text-white,
+  .bg-gradient-to-br .text-white,
+  .bg-gradient-to-l .text-white {
+    color: rgb(255 255 255) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
   /* ===== MODERN GRADIENT UTILITIES ===== */
 
   /* App Background Gradients */
@@ -1592,25 +1796,272 @@
     ) !important;
   }
 
-  /* Override any plain backgrounds */
-  .bg-white {
+  /* Professional Card Gradients */
+  .card-rewards {
+    background: linear-gradient(135deg,
+      hsl(265 100% 58%) 0%,
+      hsl(280 85% 65%) 50%,
+      hsl(295 80% 70%) 100%
+    ) !important;
+    color: white !important;
+  }
+
+  .card-crypto {
+    background: linear-gradient(135deg,
+      hsl(220 70% 25%) 0%,
+      hsl(240 65% 35%) 50%,
+      hsl(260 70% 45%) 100%
+    ) !important;
+    color: white !important;
+  }
+
+  /* Enhanced platform backgrounds */
+  .bg-platform {
+    background: linear-gradient(135deg,
+      hsl(240 30% 94%) 0%,
+      hsl(260 25% 92%) 25%,
+      hsl(280 20% 95%) 50%,
+      hsl(260 25% 92%) 75%,
+      hsl(240 30% 94%) 100%
+    ) !important;
+  }
+
+  /* Add subtle texture overlay */
+  .bg-platform::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(138, 43, 226, 0.03) 1px, transparent 0);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  /* Professional content cards */
+  .content-card {
     background: linear-gradient(145deg,
       hsl(0 0% 100%) 0%,
-      hsl(240 30% 98%) 100%
+      hsl(240 30% 99%) 50%,
+      hsl(260 20% 98%) 100%
+    ) !important;
+    border: 1px solid hsl(240 30% 85%) !important;
+    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    color: hsl(220 15% 10%) !important;
+    backdrop-filter: blur(8px) !important;
+  }
+
+  /* Enhanced text contrast utilities */
+  .text-high-contrast {
+    color: hsl(220 15% 10%) !important;
+    font-weight: 500;
+  }
+
+  .text-medium-contrast {
+    color: hsl(220 10% 25%) !important;
+  }
+
+  .text-low-contrast {
+    color: hsl(220 8% 45%) !important;
+  }
+
+  /* Global contrast improvements */
+  .content-card h1,
+  .content-card h2,
+  .content-card h3,
+  .content-card h4,
+  .content-card h5,
+  .content-card h6 {
+    color: hsl(220 15% 10%) !important;
+  }
+
+  .content-card p,
+  .content-card span:not(.text-white) {
+    color: hsl(220 10% 20%) !important;
+  }
+
+  /* Fix muted text contrast */
+  .text-muted-foreground {
+    color: hsl(220 8% 40%) !important;
+  }
+
+  /* Enhanced body and layout backgrounds */
+  body {
+    background: linear-gradient(135deg,
+      hsl(240 30% 94%) 0%,
+      hsl(260 25% 92%) 25%,
+      hsl(280 20% 95%) 50%,
+      hsl(260 25% 92%) 75%,
+      hsl(240 30% 94%) 100%
+    ) !important;
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* Ensure proper text visibility on all backgrounds */
+  .content-card * {
+    color: inherit;
+  }
+
+  .content-card h1, .content-card h2, .content-card h3 {
+    color: hsl(220 20% 8%) !important;
+  }
+
+  .content-card p, .content-card span:not(.text-white):not([class*="text-"]) {
+    color: hsl(220 12% 20%) !important;
+  }
+
+  /* Page containers */
+  .page-container {
+    background: linear-gradient(135deg,
+      hsl(240 30% 94%) 0%,
+      hsl(260 25% 92%) 25%,
+      hsl(280 20% 95%) 50%,
+      hsl(260 25% 92%) 75%,
+      hsl(240 30% 94%) 100%
+    ) !important;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Enhanced card hover effects */
+  .content-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 35px -8px rgba(138, 43, 226, 0.25), 0 8px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Professional text hierarchy */
+  .text-primary-heading {
+    color: hsl(220 20% 8%) !important;
+    font-weight: 700;
+  }
+
+  .text-secondary-heading {
+    color: hsl(220 15% 15%) !important;
+    font-weight: 600;
+  }
+
+  .text-body {
+    color: hsl(220 10% 25%) !important;
+    font-weight: 400;
+  }
+
+  /* Better shadows for depth */
+  .shadow-professional {
+    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .shadow-professional-lg {
+    box-shadow: 0 12px 35px -8px rgba(138, 43, 226, 0.25), 0 8px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Professional button enhancements */
+  .btn-professional {
+    background: linear-gradient(135deg,
+      hsl(265 100% 58%) 0%,
+      hsl(280 85% 65%) 100%
+    ) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 14px 0 rgba(138, 43, 226, 0.25) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-professional:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px 0 rgba(138, 43, 226, 0.35) !important;
+  }
+
+  /* ===== PROFESSIONAL DARK MODE ENHANCEMENTS ===== */
+
+  /* Dark mode navigation improvements */
+  .dark .mobile-tabs-indicator::after {
+    background: linear-gradient(to right, transparent, hsl(265 15% 6%));
+  }
+
+  /* Dark mode custom scrollbars */
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(265 10% 8%);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(265 15% 25%);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(265 15% 35%);
+  }
+
+  /* Professional dark mode button enhancements */
+  .dark .btn-professional {
+    background: linear-gradient(135deg,
+      hsl(265 100% 68%) 0%,
+      hsl(280 85% 70%) 100%
+    ) !important;
+    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.35) !important;
+  }
+
+  .dark .btn-professional:hover {
+    box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.45) !important;
+  }
+
+  /* Dark mode interactive elements */
+  .dark .interactive-element:hover {
+    background: linear-gradient(145deg,
+      hsl(265 15% 12%) 0%,
+      hsl(265 20% 15%) 100%
+    );
+    box-shadow: 0 8px 25px -5px rgb(139 92 246 / 0.2);
+  }
+
+  /* Dark mode form elements */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    background: hsl(265 15% 12%) !important;
+    border-color: hsl(265 15% 25%) !important;
+    color: hsl(265 20% 90%) !important;
+  }
+
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    border-color: hsl(265 100% 68%) !important;
+    box-shadow: 0 0 0 2px hsl(265 100% 68% / 0.2) !important;
+  }
+
+  /* Dark mode dropdown and select styling */
+  .dark .bg-popover {
+    background: hsl(265 10% 8%) !important;
+    border: 1px solid hsl(265 15% 25%) !important;
+  }
+
+  /* Comprehensive page background enforcement */
+  .dark main,
+  .dark .min-h-screen,
+  .dark [class*="min-h-screen"],
+  .dark .page-container {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
     ) !important;
   }
 
-  .bg-gray-50 {
-    background: linear-gradient(135deg,
-      hsl(240 20% 97%) 0%,
-      hsl(260 15% 96%) 100%
-    ) !important;
+  /* Override any remaining light backgrounds in dark mode */
+  .dark .bg-background {
+    background: hsl(var(--background)) !important;
   }
 
-  .bg-muted {
-    background: linear-gradient(135deg,
-      hsl(240 20% 96%) 0%,
-      hsl(260 15% 95%) 100%
-    ) !important;
+  /* Ensure proper contrast for all text in dark mode */
+  .dark * {
+    border-color: hsl(var(--border));
+  }
+
+  .dark .text-black {
+    color: hsl(var(--foreground)) !important;
   }
 }

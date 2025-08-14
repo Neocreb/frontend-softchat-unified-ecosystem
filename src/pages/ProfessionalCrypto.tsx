@@ -298,7 +298,7 @@ const ProfessionalCrypto = () => {
         <title>Crypto - Professional Trading Platform | Softchat</title>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 dark:from-slate-900 dark:to-blue-950/30">
+      <div className="min-h-screen bg-platform">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
           
           {/* Portfolio Balance Card */}
@@ -322,7 +322,7 @@ const ProfessionalCrypto = () => {
             ].map((item, index) => (
               <Card
                 key={index}
-                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-blue-500/25"
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 group content-card hover:shadow-blue-500/25"
                 onClick={() => handleQuickNavigation(item.section)}
               >
                 <CardContent className="p-6 text-center">
@@ -342,7 +342,7 @@ const ProfessionalCrypto = () => {
               {/* Market Stats */}
               {marketStats && (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                  <Card className="content-card">
                     <CardContent className="p-6 text-center">
                       <div className="flex items-center justify-center mb-2">
                         <Globe className="h-5 w-5 text-blue-600 mr-2" />
@@ -352,7 +352,7 @@ const ProfessionalCrypto = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                  <Card className="content-card">
                     <CardContent className="p-6 text-center">
                       <div className="flex items-center justify-center mb-2">
                         <BarChart3 className="h-5 w-5 text-green-600 mr-2" />
@@ -362,7 +362,7 @@ const ProfessionalCrypto = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                  <Card className="content-card">
                     <CardContent className="p-6 text-center">
                       <div className="flex items-center justify-center mb-2">
                         <Target className="h-5 w-5 text-orange-600 mr-2" />
@@ -372,7 +372,7 @@ const ProfessionalCrypto = () => {
                     </CardContent>
                   </Card>
                   
-                  <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg">
+                  <Card className="content-card">
                     <CardContent className="p-6 text-center">
                       <div className="flex items-center justify-center mb-2">
                         <Activity className="h-5 w-5 text-purple-600 mr-2" />
@@ -385,7 +385,7 @@ const ProfessionalCrypto = () => {
               )}
 
               {/* Top Cryptocurrencies */}
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="content-card shadow-xl">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-xl font-bold flex items-center gap-2">
                     <Star className="h-5 w-5 text-yellow-500" />
@@ -462,7 +462,7 @@ const ProfessionalCrypto = () => {
               </Card>
 
               {/* Top Gainers and Top Losers */}
-              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+              <Card className="content-card shadow-xl">
                 <CardHeader className="pb-4">
                   <Tabs value={topGainersLosersTab} onValueChange={(value) => setTopGainersLosersTab(value as "gainers" | "losers")}>
                     <TabsList className="grid w-full max-w-md grid-cols-2">

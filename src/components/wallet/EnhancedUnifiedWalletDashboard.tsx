@@ -58,7 +58,7 @@ const EnhancedWalletDashboardContent = () => {
   }
 
   return (
-    <div className="mobile-container mobile-space-y bg-gradient-app min-h-screen">
+    <div className="mobile-container mobile-space-y bg-platform min-h-screen">
       {/* Header */}
       <div className="text-center sm:text-left">
         <h1 className="text-2xl font-bold text-gray-900">

@@ -278,7 +278,8 @@ export default function EnhancedRewards() {
 
   return (
     <RewardsErrorBoundary>
-      <div className="max-w-7xl mx-auto p-4 space-y-8">
+      <div className="min-h-screen bg-platform">
+        <div className="max-w-7xl mx-auto p-4 space-y-8">
       {/* Enhanced Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -465,6 +466,7 @@ export default function EnhancedRewards() {
           onWithdrawalSuccess={handleWithdrawalSuccess}
         />
       )}
+        </div>
       </div>
     </RewardsErrorBoundary>
   );
