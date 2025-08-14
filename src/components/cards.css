@@ -1,42 +1,58 @@
 /* Crypto Wallet Card and Rewards Card Styles */
 
-/* Crypto Wallet Card */
-.crypto-wallet-card {
-  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%);
+/* Crypto Wallet Card - High specificity to override defaults */
+.crypto-wallet-card,
+.crypto-wallet-card.crypto-wallet-card {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
   box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+  border: none !important;
 }
 
-.crypto-wallet-card:hover {
+.crypto-wallet-card:hover,
+.crypto-wallet-card.crypto-wallet-card:hover {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
   box-shadow: 0 15px 35px rgba(139, 92, 246, 0.3);
   transform: translateY(-2px);
 }
 
 /* Dark mode adjustments for crypto wallet */
-.dark .crypto-wallet-card {
+.dark .crypto-wallet-card,
+.dark .crypto-wallet-card.crypto-wallet-card {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
   box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
 }
 
-.dark .crypto-wallet-card:hover {
+.dark .crypto-wallet-card:hover,
+.dark .crypto-wallet-card.crypto-wallet-card:hover {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
   box-shadow: 0 15px 35px rgba(139, 92, 246, 0.5);
 }
 
-/* SoftChat Rewards Card */
-.rewards-card {
-  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%);
+/* SoftChat Rewards Card - High specificity to override defaults */
+.rewards-card,
+.rewards-card.rewards-card {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
   box-shadow: 0 10px 25px rgba(168, 85, 247, 0.2);
+  border: none !important;
 }
 
-.rewards-card:hover {
+.rewards-card:hover,
+.rewards-card.rewards-card:hover {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
   box-shadow: 0 15px 35px rgba(168, 85, 247, 0.3);
   transform: translateY(-2px);
 }
 
 /* Dark mode adjustments for rewards card */
-.dark .rewards-card {
+.dark .rewards-card,
+.dark .rewards-card.rewards-card {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
   box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
 }
 
-.dark .rewards-card:hover {
+.dark .rewards-card:hover,
+.dark .rewards-card.rewards-card:hover {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
   box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5);
 }
 
