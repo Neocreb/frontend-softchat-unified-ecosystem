@@ -1743,7 +1743,6 @@
     );
     transition: all 0.3s ease;
     border: none !important;
-    color: white !important;
   }
 
   .btn-gradient:hover {
