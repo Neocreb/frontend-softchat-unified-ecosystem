@@ -1938,7 +1938,7 @@
   }
 
   .content-card p, .content-card span:not(.text-white):not([class*="text-"]) {
-    color: hsl(220 12% 20%) !important;
+    color: hsl(220 12% 20%);
   }
 
   /* Page containers */
