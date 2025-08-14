@@ -247,7 +247,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {activeBonuses.filter(b => b.isActive).map(bonus => (
-                <div key={bonus.id} className="bg-white p-3 rounded-lg border border-yellow-200">
+                <div key={bonus.id} className="bg-gradient-to-r from-yellow-50 to-orange-50 p-3 rounded-lg border border-yellow-200">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-semibold text-yellow-800">{bonus.name}</h4>
                     <Badge className="bg-yellow-500 text-white">
@@ -404,8 +404,8 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     </div>
                   </div>
                   
-                  <div className="bg-gray-50 rounded p-3 mb-3">
-                    <div className="text-sm">
+                  <div className="bg-gray-100 rounded p-3 mb-3">
+                    <div className="text-sm text-gray-800">
                       <strong>Starts:</strong> {event.startDate.toLocaleDateString()}
                     </div>
                     <div className="text-sm">
