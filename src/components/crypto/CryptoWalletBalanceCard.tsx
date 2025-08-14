@@ -19,10 +19,12 @@ export default function CryptoWalletBalanceCard() {
       className={cn(
         "crypto-wallet-card",
         "rounded-2xl shadow-lg overflow-hidden border-0",
-        "bg-gradient-to-br from-[#2B4FB5] via-[#4F6BD3] to-[#8B5CF6]",
         "w-full max-w-md mx-auto text-white",
         "dark:shadow-xl dark:shadow-blue-500/10"
       )}
+      style={{
+        background: "linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%)",
+      }}
     >
       <CardContent className="p-4 sm:p-6 md:p-8 flex flex-col gap-5 h-full w-full">
         {/* Header */}
