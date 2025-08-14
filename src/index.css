@@ -1837,6 +1837,27 @@
     color: white !important;
   }
 
+  /* Final comprehensive fix - ensure all gradient backgrounds with white text work correctly */
+  .text-white,
+  .text-white *,
+  [class*="text-white"] {
+    color: white !important;
+  }
+
+  /* Prevent content-card from overriding intended dark gradient backgrounds */
+  .content-card.bg-gradient-to-r,
+  .content-card[class*="from-"],
+  .content-card.card-crypto {
+    background: revert !important;
+    color: revert !important;
+  }
+
+  .content-card.bg-gradient-to-r *,
+  .content-card[class*="from-"] *,
+  .content-card.card-crypto * {
+    color: inherit !important;
+  }
+
   /* Enhanced platform backgrounds */
   .bg-platform {
     background: linear-gradient(135deg,
