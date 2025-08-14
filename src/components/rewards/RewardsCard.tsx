@@ -69,8 +69,9 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
   return (
     <Card
       className={cn(
+        "rewards-card",
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01]",
-        "card-rewards rounded-2xl border-0",
+        "rounded-2xl border-0",
         "bg-gradient-to-br from-[#8B5CF6] via-[#A855F7] to-[#C084FC]",
         "w-full max-w-md mx-auto text-white",
         "dark:shadow-xl dark:shadow-purple-500/10",
