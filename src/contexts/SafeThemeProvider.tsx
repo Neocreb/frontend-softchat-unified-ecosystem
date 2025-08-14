@@ -1,7 +1,23 @@
-import React, { Component, ReactNode, type ErrorInfo } from "react";
+import React, { Component, ReactNode, type ErrorInfo, createContext, useContext } from "react";
 import { ThemeProvider } from "./ThemeContext";
 
-// Fallback theme context that applies light theme without hooks
+// Minimal theme context for fallback
+interface FallbackThemeContextType {
+  theme: "light";
+  setTheme: () => void;
+  isDark: false;
+}
+
+const FallbackThemeContext = createContext<FallbackThemeContextType>({
+  theme: "light",
+  setTheme: () => console.warn("Theme switching disabled in fallback mode"),
+  isDark: false,
+});
+
+// Hook for fallback theme context
+export const useFallbackTheme = () => useContext(FallbackThemeContext);
+
+// Fallback theme context that provides minimal theme functionality
 const FallbackThemeProvider = ({ children }: { children: ReactNode }) => {
   // Apply fallback theme to DOM immediately on render
   React.useLayoutEffect(() => {
@@ -10,13 +26,34 @@ const FallbackThemeProvider = ({ children }: { children: ReactNode }) => {
         const root = document.documentElement;
         root.classList.add("light");
         root.classList.remove("dark");
+        // Ensure CSS custom properties are applied
+        root.style.setProperty('--background', '210 20% 98%');
+        root.style.setProperty('--foreground', '222.2 84% 4.9%');
+        root.style.setProperty('--card', '0 0% 100%');
+        root.style.setProperty('--card-foreground', '222.2 84% 4.9%');
+        root.style.setProperty('--primary', '265 100% 58%');
+        root.style.setProperty('--primary-foreground', '210 40% 98%');
+        root.style.setProperty('--softchat-primary', '265 100% 58%');
+        root.style.setProperty('--softchat-accent', '297 83% 72%');
+        root.style.setProperty('--softchat-600', '265 89% 48%');
+        root.style.setProperty('--softchat-700', '265 100% 40%');
       } catch (error) {
         console.warn("Failed to apply fallback theme:", error);
       }
     }
   }, []);
 
-  return <>{children}</>;
+  const fallbackContextValue: FallbackThemeContextType = {
+    theme: "light",
+    setTheme: () => console.warn("Theme switching disabled in fallback mode"),
+    isDark: false,
+  };
+
+  return (
+    <FallbackThemeContext.Provider value={fallbackContextValue}>
+      {children}
+    </FallbackThemeContext.Provider>
+  );
 };
 
 interface SafeThemeProviderState {
