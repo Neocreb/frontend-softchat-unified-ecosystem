@@ -69,7 +69,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
       className={cn(
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01]",
         "card-rewards",
-        // Blue-purple gradient background for the card
+        // Restore the blue/purple gradient:
         "border-0 bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-900 text-white aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
         className
       )}
@@ -147,8 +147,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
             </div>
             <Button
               onClick={onWithdraw}
-              // Vibrant gradient and shadow for strong CTA
-              className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 shadow-lg font-semibold transition-all duration-200 hover:scale-105 text-xs px-4 py-2"
+              className="bg-gradient-to-r from-blue-400 via-indigo-600 to-purple-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg font-semibold transition-all duration-200 hover:scale-105 text-xs px-4 py-2"
               size="sm"
             >
               <Wallet className="h-3 w-3 mr-1" />
