@@ -58,7 +58,7 @@ const EnhancedWalletDashboardContent = () => {
   }
 
   return (
-    <div className="mobile-container mobile-space-y">
+    <div className="mobile-container mobile-space-y bg-gradient-app min-h-screen">
       {/* Header */}
       <div className="text-center sm:text-left">
         <h1 className="text-2xl font-bold text-gray-900">
@@ -67,8 +67,8 @@ const EnhancedWalletDashboardContent = () => {
       </div>
 
       {/* Main Balance Card - Now prominently displayed first */}
-      <Card className="overflow-hidden">
-        <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+      <Card className="overflow-hidden card-enhanced">
+        <CardContent className="p-6 md:p-8 bg-gradient-wallet text-white">
           <div className="text-center space-y-4">
             <div>
               <h2 className="text-lg font-medium text-blue-100">
