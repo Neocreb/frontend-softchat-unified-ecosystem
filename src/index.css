@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom card styles */
+@import './components/cards.css';
+
 /* Scrollbar hiding utilities */
 .scrollbar-hide {
   -ms-overflow-style: none;
