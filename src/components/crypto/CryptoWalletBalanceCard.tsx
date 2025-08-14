@@ -1,227 +1,113 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  Wallet,
-  Sparkles,
-  Shield,
-  Eye,
-  EyeOff,
-  ArrowDownLeft,
-  ArrowUpRight,
-  TrendingUp,
-  TrendingDown,
-  Bitcoin,
-} from "lucide-react";
+import { Sparkles, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface CryptoWalletBalanceCardProps {
-  totalBalance: number;
-  totalBalance24hChange: number;
-  totalBalance24hPercent: number;
-  primaryAsset: {
-    symbol: string;
-    name: string;
-    balance: number;
-    value: number;
-    change24h: number;
-  };
-  onDeposit: () => void;
-  onWithdraw: () => void;
-  className?: string;
-}
-
-const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
-  totalBalance,
-  totalBalance24hChange,
-  totalBalance24hPercent,
-  primaryAsset,
-  onDeposit,
-  onWithdraw,
-  className,
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
+export default function CryptoWalletBalanceCard() {
+  // Example data, replace with your props or state as needed
+  const totalBalance = 125670.45;
+  const totalBalance24hChange = 3240.78;
+  const totalBalance24hPercent = 2.64;
+  const primaryAsset = { symbol: "BTC", balance: 2.5, value: 108126.68 };
   const [showBalance, setShowBalance] = useState(true);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(amount);
-  };
-
-  const formatCrypto = (amount: number, decimals = 6) => {
-    return new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: decimals,
-    }).format(amount);
-  };
-
-  const formatPercentage = (value: number) => {
-    return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
-  };
-
-  const getChangeColor = (value: number) => {
-    return value >= 0 ? "text-green-600" : "text-red-600";
-  };
-
-  const getChangeIcon = (value: number) => {
-    return value >= 0 ? (
-      <TrendingUp className="h-4 w-4" />
-    ) : (
-      <TrendingDown className="h-4 w-4" />
-    );
-  };
 
   return (
     <Card
       className={cn(
-        // Gradient background, dark blue to purple
-        "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-[1.01]",
-        "card-crypto",
-        "border-0 aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
+        "rounded-2xl shadow-lg overflow-hidden border-0",
         "bg-[linear-gradient(110deg,#2951d6_0%,#8145e6_100%)]",
-        "text-white",
-        className
+        "w-full max-w-3xl mx-auto"
       )}
       style={{
-        // fallback for environments that don't support arbitrary Tailwind gradients
         background: "linear-gradient(110deg,#2951d6 0%,#8145e6 100%)",
       }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Overlay to soften the gradient for readable content */}
-      <div className="absolute inset-0 bg-white/90 pointer-events-none rounded-2xl" />
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div
-          className={cn(
-            "absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full transition-transform duration-700",
-            isHovered ? "scale-150 rotate-45" : "scale-100"
-          )}
-        />
-        <div
-          className={cn(
-            "absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full transition-transform duration-500",
-            isHovered ? "scale-125 -rotate-12" : "scale-100"
-          )}
-        />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-40" />
-        {/* Floating crypto symbols */}
-        <div className="absolute top-4 right-8 opacity-10">
-          <Bitcoin className="h-8 w-8 animate-spin-slow text-white" />
-        </div>
-        <div className="absolute bottom-8 left-12 opacity-5">
-          <div className="text-4xl font-bold text-white">₿</div>
-        </div>
-      </div>
-
-      <CardContent className="relative z-10 p-4 sm:p-8 h-full flex flex-col justify-between">
-        {/* Top Section */}
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-                <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-              </div>
-              <Sparkles className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
-            </div>
+      <CardContent className="p-4 sm:p-6 md:p-8 flex flex-col gap-5 h-full w-full">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row w-full items-start justify-between gap-2">
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <Sparkles className="text-yellow-400 flex-shrink-0" />
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-white">Crypto Wallet</h2>
-              <p className="text-white/80 text-xs sm:text-sm">Digital asset portfolio</p>
+              <h2 className="text-lg font-bold text-gray-900 leading-tight">Crypto Wallet</h2>
+              <p className="text-sm text-gray-700 leading-tight">Digital asset portfolio</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 mt-3 sm:mt-0">
             <Button
               variant="ghost"
-              size="sm"
-              onClick={() => setShowBalance(!showBalance)}
-              className="text-white/80 hover:text-white hover:bg-white/20 p-1 h-8 w-8"
+              size="icon"
+              className="rounded-full text-gray-700 hover:bg-gray-100"
+              onClick={() => setShowBalance((s) => !s)}
+              aria-label="Toggle Balance"
             >
-              {showBalance ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+              <span className="sr-only">Toggle Balance</span>
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+                {showBalance ? (
+                  <path stroke="currentColor" strokeWidth="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Zm11 3a3 3 0 100-6 3 3 0 000 6Z"/>
+                ) : (
+                  <path stroke="currentColor" strokeWidth="2" d="M17.94 17.94A10.06 10.06 0 0112 19c-7 0-11-7-11-7a20.03 20.03 0 014.22-5.94M22.54 16.88A19.97 19.97 0 0023 12s-4-7-11-7c-1.47 0-2.85.19-4.13.54M1 1l22 22"/>
+                )}
+              </svg>
             </Button>
-            <Badge className="bg-gradient-to-r from-fuchsia-500 to-purple-500 text-white border-0 text-xs font-semibold">
-              <Shield className="h-3 w-3 mr-1" />
+            <span className="flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white">
+              <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               Secured
-            </Badge>
+            </span>
           </div>
         </div>
-
-        {/* Main Content */}
-        <div className="flex-1 flex items-center justify-between mt-8">
-          {/* Left: Main Balance */}
-          <div className="space-y-3">
-            <div className="space-y-1">
-              <div className="text-white/70 text-xs font-medium">Total Portfolio Value</div>
-              <div className="flex items-center gap-2">
-                <span className="text-3xl sm:text-5xl font-extrabold text-white drop-shadow-lg">
-                  {showBalance ? formatCurrency(totalBalance) : "****.**"}
-                </span>
-              </div>
+        {/* Main */}
+        <div className="flex flex-col md:flex-row w-full gap-5 md:gap-6">
+          {/* Balance + change */}
+          <div className="flex-1 flex flex-col justify-center min-w-[0]">
+            <div className="text-xs text-gray-600">Total Portfolio Value</div>
+            <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 break-words">
+              {showBalance ? `$${totalBalance.toLocaleString()}` : "****.**"}
             </div>
-            <div className="flex items-center gap-2">
-              {getChangeIcon(totalBalance24hPercent)}
-              <span className={cn("text-lg sm:text-xl font-semibold", getChangeColor(totalBalance24hPercent))}>
-                {showBalance ? formatCurrency(totalBalance24hChange) : "**.**"}
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
+              <TrendingUp className="h-4 w-4 text-green-600" />
+              <span className="text-green-600 text-lg font-semibold">
+                {showBalance ? `$${totalBalance24hChange.toLocaleString()}` : "**.**"}
               </span>
-              <span className={cn("text-base", getChangeColor(totalBalance24hPercent))}>
-                ({showBalance ? formatPercentage(totalBalance24hPercent) : "**%"}) 24h
+              <span className="text-green-600 text-base">
+                ({showBalance ? `+${totalBalance24hPercent}%` : "**%"}) 24h
               </span>
             </div>
           </div>
-
-          {/* Right: Primary Asset & Actions */}
-          <div className="text-right space-y-3">
-            <div className="space-y-1">
-              <div className="text-white/70 text-xs">Primary Asset</div>
-              <div className="text-base font-bold text-white">
-                {showBalance ? formatCrypto(primaryAsset.balance, 4) : "**.**"} {primaryAsset.symbol}
+          {/* Primary Asset and Actions */}
+          <div className="flex flex-col items-end min-w-[150px] max-w-full">
+            <div className="mb-2 text-right">
+              <div className="text-xs text-gray-700">Primary Asset</div>
+              <div className="text-xl font-bold text-gray-900 break-words">
+                {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "**.**"}
               </div>
-              <div className="text-xs text-white/60">
-                ≈ {showBalance ? formatCurrency(primaryAsset.value) : "****"}
+              <div className="text-sm text-gray-700 break-words">
+                ≈ {showBalance ? `$${primaryAsset.value.toLocaleString()}` : "****"}
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={onDeposit}
-                className="bg-green-600 hover:bg-green-700 text-white border-0 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
-                size="sm"
-              >
-                <ArrowDownLeft className="h-3 w-3 mr-1" />
+            <div className="flex gap-2 w-full flex-wrap justify-end">
+              <Button className="bg-green-600 hover:bg-green-700 text-white flex-1 min-w-[100px]">
                 Deposit
               </Button>
-              <Button
-                onClick={onWithdraw}
-                className="bg-orange-500 hover:bg-orange-600 text-white border-0 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
-                size="sm"
-              >
-                <ArrowUpRight className="h-3 w-3 mr-1" />
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white flex-1 min-w-[100px]">
                 Withdraw
               </Button>
             </div>
           </div>
         </div>
-
-        {/* Bottom Section */}
-        <div className="flex justify-between items-center border-t border-white/20 pt-3 mt-10">
-          <div className="text-white/70 text-xs font-mono">
-            **** **** **** {showBalance ? String(Math.floor(totalBalance)).slice(-4) : "****"}
-          </div>
-          <div className="flex items-center gap-4 text-white/70 text-xs">
-            <span>Last updated: {new Date().toLocaleTimeString()}</span>
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Live</span>
-            </div>
+        {/* Bottom row */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mt-2">
+          <span className="font-mono text-gray-700 text-xs sm:text-base tracking-widest">
+            **** **** **** 5670
+          </span>
+          <div className="flex items-center gap-2 text-gray-700 text-xs sm:text-base">
+            <span>Last updated: 10:50:45 PM</span>
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /> Live
+            </span>
           </div>
         </div>
       </CardContent>
     </Card>
   );
-};
-
-export default CryptoWalletBalanceCard;
+}
