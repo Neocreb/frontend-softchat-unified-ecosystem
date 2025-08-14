@@ -811,8 +811,8 @@ export async function registerEnhancedRoutes(app: Express): Promise<Server> {
         id: `wallet-${userId}`,
         userId,
         usdtBalance: "1500.00",
-        ethBalance: "0.5",
-        btcBalance: "0.02",
+        ethBalance: "6.8", // Match centralized portfolio data
+        btcBalance: "2.5", // Match centralized portfolio data
         softPointsBalance: "5000.00",
         isFrozen: false,
         createdAt: new Date().toISOString(),

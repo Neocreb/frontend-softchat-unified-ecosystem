@@ -1,7 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/utils/utils";
+import { CENTRALIZED_CRYPTO_BALANCE } from "@/services/cryptoService";
 
 type PortfolioCrypto = {
   id: string;
@@ -14,36 +14,27 @@ type PortfolioCrypto = {
   image: string;
 };
 
+// Updated portfolio to match centralized balance data (125,670.45 total)
 const mockPortfolio: PortfolioCrypto[] = [
   {
     id: "bitcoin",
     name: "Bitcoin",
     symbol: "btc",
-    amount: 0.25,
-    price: 52835.42,
-    value: 13208.86,
-    change: 2.34,
+    amount: 2.5, // Match cryptoService.ts
+    price: 43250.67, // Match cryptoService.ts
+    value: 108126.68, // Match cryptoService.ts
+    change: 2.54, // Match cryptoService.ts
     image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png"
   },
   {
     id: "ethereum",
     name: "Ethereum",
     symbol: "eth",
-    amount: 2.5,
-    price: 3145.79,
-    value: 7864.48,
-    change: -1.23,
+    amount: 6.8, // Match cryptoService.ts
+    price: 2587.34, // Match cryptoService.ts
+    value: 17593.51, // Match cryptoService.ts
+    change: 2.1, // Match cryptoService.ts
     image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png"
-  },
-  {
-    id: "solana",
-    name: "Solana",
-    symbol: "sol",
-    amount: 15,
-    price: 157.83,
-    value: 2367.45,
-    change: 5.67,
-    image: "https://assets.coingecko.com/coins/images/4128/large/solana.png"
   }
 ];
 

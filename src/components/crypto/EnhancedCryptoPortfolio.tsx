@@ -50,6 +50,8 @@ import {
   Minus,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import { useWalletContext, WalletProvider } from "@/contexts/WalletContext";
 import CryptoDepositModal from "@/components/crypto/CryptoDepositModal";
 import CryptoWithdrawModal from "@/components/crypto/CryptoWithdrawModal";
@@ -101,18 +103,21 @@ const COLORS = [
   "#82CA9D",
 ];
 
+// Import centralized crypto balance to ensure consistency
+import { CENTRALIZED_CRYPTO_BALANCE } from "@/services/cryptoService";
+
 const mockPortfolioAssets: PortfolioAsset[] = [
   {
     id: "bitcoin",
     symbol: "BTC",
     name: "Bitcoin",
-    amount: 0.5,
-    value: 21625.34,
+    amount: 2.5, // Match cryptoService.ts mockPortfolio
+    value: 108126.68, // Match cryptoService.ts mockPortfolio
     avgBuyPrice: 41500,
     currentPrice: 43250.67,
-    pnl: 875.34,
-    pnlPercent: 4.22,
-    allocation: 65.2,
+    pnl: 2675.55, // Match cryptoService.ts mockPortfolio
+    pnlPercent: 2.54, // Match cryptoService.ts mockPortfolio
+    allocation: 86.1, // Match cryptoService.ts mockPortfolio
     color: "#F7931A",
     lastUpdated: new Date().toISOString(),
   },
@@ -120,28 +125,14 @@ const mockPortfolioAssets: PortfolioAsset[] = [
     id: "ethereum",
     symbol: "ETH",
     name: "Ethereum",
-    amount: 4.2,
-    value: 10866.83,
+    amount: 6.8, // Match cryptoService.ts mockPortfolio
+    value: 17593.51, // Match cryptoService.ts mockPortfolio
     avgBuyPrice: 2400,
     currentPrice: 2587.34,
-    pnl: 786.83,
-    pnlPercent: 7.8,
-    allocation: 32.8,
+    pnl: 361.9, // Match cryptoService.ts mockPortfolio
+    pnlPercent: 2.1, // Match cryptoService.ts mockPortfolio
+    allocation: 14.0, // Match cryptoService.ts mockPortfolio
     color: "#627EEA",
-    lastUpdated: new Date().toISOString(),
-  },
-  {
-    id: "solana",
-    symbol: "SOL",
-    name: "Solana",
-    amount: 6.8,
-    value: 669.46,
-    avgBuyPrice: 95,
-    currentPrice: 98.45,
-    pnl: 23.46,
-    pnlPercent: 3.6,
-    allocation: 2.0,
-    color: "#9945FF",
     lastUpdated: new Date().toISOString(),
   },
 ];
@@ -219,6 +210,7 @@ function EnhancedCryptoPortfolioContent() {
   const { walletBalance, refreshWallet } = useWalletContext();
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const totalValue = portfolioAssets.reduce(
     (sum, asset) => sum + asset.value,
@@ -241,6 +233,15 @@ function EnhancedCryptoPortfolioContent() {
         title: "Portfolio Updated",
         description: "Your portfolio data has been refreshed.",
       });
+
+      // Send unified notification for significant portfolio changes
+      if (user?.id && Math.abs(totalPnlPercent) > 5) {
+        await cryptoNotificationService.notifyPortfolioUpdate(
+          user.id,
+          totalPnlPercent,
+          totalValue
+        );
+      }
     } catch (error) {
       toast({
         title: "Refresh Failed",
@@ -400,7 +401,7 @@ function EnhancedCryptoPortfolioContent() {
                       )}
                       {showValues
                         ? formatPercent(last24hChangePercent)
-                        : "••••"}
+                        : "��•••"}
                     </div>
                   </div>
                   <TrendingUp className="h-8 w-8 text-green-500" />

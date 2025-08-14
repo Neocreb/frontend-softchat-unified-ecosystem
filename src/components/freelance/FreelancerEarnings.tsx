@@ -122,7 +122,7 @@ const mockEarnings: EarningRecord[] = [
 ];
 
 const mockStats: EarningsStats = {
-  totalEarnings: 24750,
+  totalEarnings: 12890.67, // Match centralized freelance balance
   thisMonth: 4360,
   lastMonth: 3890,
   pending: 1200,

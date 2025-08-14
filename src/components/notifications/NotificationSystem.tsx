@@ -181,6 +181,7 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
     types: {
       social: true,
       trading: true,
+      crypto: true,
       marketplace: true,
       system: true,
       rewards: true,
@@ -263,6 +264,26 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
       window.removeEventListener('showToast', handleToastNotification as EventListener);
     };
   }, []);
+
+  // Listen for crypto notifications
+  useEffect(() => {
+    const handleCryptoNotification = (event: CustomEvent) => {
+      const newNotification = event.detail;
+      setNotifications(prev => [newNotification, ...prev]);
+      setUnreadCount(prev => prev + 1);
+
+      // Play notification sound if enabled
+      if (settings.sound && audioRef.current) {
+        audioRef.current.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('crypto-notification', handleCryptoNotification as EventListener);
+
+    return () => {
+      window.removeEventListener('crypto-notification', handleCryptoNotification as EventListener);
+    };
+  }, [settings.sound]);
 
   useEffect(() => {
     // Update unread count

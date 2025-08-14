@@ -89,7 +89,7 @@ interface RewardData {
 // Demo data function to avoid duplication
 const getDemoData = (): RewardData => ({
   totalEarnings: 3525.05,
-  availableToWithdraw: 1523.25,
+  availableToWithdraw: 3245.18, // Match centralized rewards balance
   currentSoftPoints: 18642,
   trustScore: {
     current: 78,

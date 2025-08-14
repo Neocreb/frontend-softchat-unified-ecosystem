@@ -222,7 +222,7 @@ const ActivityEconomyAdmin: React.FC = () => {
         totalUsers: 45672,
         activeUsers24h: 8934,
         totalSoftPointsIssued: 2456789,
-        totalWalletBonusPaid: 12543.67,
+        totalWalletBonusPaid: 8947.32, // Match centralized e-commerce balance
         totalActivities: 156789,
         flaggedUsers: 23,
         pendingReviews: 7,

@@ -243,8 +243,11 @@ export const mockTradingPairs: TradingPair[] = [
   },
 ];
 
+// Centralized crypto balance - must match walletService.ts
+export const CENTRALIZED_CRYPTO_BALANCE = 125670.45;
+
 export const mockPortfolio: Portfolio = {
-  totalValue: 125670.45,
+  totalValue: CENTRALIZED_CRYPTO_BALANCE,
   totalChange24h: 3240.78,
   totalChangePercent24h: 2.64,
   assets: [

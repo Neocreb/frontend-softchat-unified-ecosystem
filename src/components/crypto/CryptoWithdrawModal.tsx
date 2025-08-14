@@ -21,6 +21,8 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { cryptoNotificationService } from "@/services/cryptoNotificationService";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Loader2,
   AlertTriangle,
@@ -35,7 +37,7 @@ import { cn } from "@/lib/utils";
 interface CryptoWithdrawModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onKYCSubmit?: (data: any) => Promise<{success: boolean, error?: any}>;
 }
 
 interface CryptoBalance {
@@ -53,12 +55,13 @@ interface CryptoBalance {
   processingTime: string;
 }
 
+// Updated to match centralized crypto balance data from cryptoService.ts
 const mockBalances: CryptoBalance[] = [
   {
     symbol: "BTC",
     name: "Bitcoin",
-    balance: 0.5432,
-    usdValue: 23456.78,
+    balance: 2.5, // Match cryptoService.ts mockPortfolio
+    usdValue: 108126.68, // Match cryptoService.ts mockPortfolio
     icon: "₿",
     color: "text-orange-500",
     network: "Bitcoin",
@@ -70,9 +73,9 @@ const mockBalances: CryptoBalance[] = [
   },
   {
     symbol: "ETH",
-    name: "Ethereum", 
-    balance: 4.2876,
-    usdValue: 10987.45,
+    name: "Ethereum",
+    balance: 6.8, // Match cryptoService.ts mockPortfolio
+    usdValue: 17593.51, // Match cryptoService.ts mockPortfolio
     icon: "Ξ",
     color: "text-blue-500",
     network: "Ethereum",
@@ -115,7 +118,7 @@ const mockBalances: CryptoBalance[] = [
 export default function CryptoWithdrawModal({
   isOpen,
   onClose,
-  onSuccess,
+  onKYCSubmit,
 }: CryptoWithdrawModalProps) {
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoBalance | null>(
     mockBalances[0]
@@ -125,6 +128,7 @@ export default function CryptoWithdrawModal({
   const [memo, setMemo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const calculateReceiveAmount = () => {
     if (!selectedCrypto || !amount) return 0;
@@ -203,7 +207,16 @@ export default function CryptoWithdrawModal({
         description: `Your ${selectedCrypto.name} withdrawal has been submitted for processing.`,
       });
 
-      onSuccess();
+      // Send unified notification
+      if (user?.id) {
+        await cryptoNotificationService.notifyWithdrawal(
+          user.id,
+          selectedCrypto.symbol,
+          withdrawAmount,
+          "initiated"
+        );
+      }
+
       onClose();
       resetForm();
     } catch (error) {

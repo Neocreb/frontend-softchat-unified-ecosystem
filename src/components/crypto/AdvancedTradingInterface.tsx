@@ -68,8 +68,13 @@ interface CandlestickData {
   volume: number;
 }
 
-const AdvancedTradingInterface: React.FC = () => {
-  const [selectedPair, setSelectedPair] = useState("BTC/USDT");
+interface AdvancedTradingInterfaceProps {
+  selectedPair?: string;
+}
+
+const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
+  selectedPair = "ETH/USDT"
+}) => {
   const [orderType, setOrderType] = useState<"market" | "limit" | "stop-loss">(
     "limit",
   );
@@ -96,19 +101,6 @@ const AdvancedTradingInterface: React.FC = () => {
   const chartRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Trading pairs data
-  const tradingPairs = [
-    { symbol: "BTC/USDT", price: 43250.5, change: 2.34, changePercent: 0.054 },
-    {
-      symbol: "ETH/USDT",
-      price: 2650.75,
-      change: -45.25,
-      changePercent: -1.68,
-    },
-    { symbol: "BNB/USDT", price: 315.8, change: 8.9, changePercent: 2.9 },
-    { symbol: "ADA/USDT", price: 0.4852, change: 0.0123, changePercent: 2.6 },
-    { symbol: "SOL/USDT", price: 98.45, change: -2.15, changePercent: -2.14 },
-  ];
 
   const [orderBookData, setOrderBookData] = useState([
     { price: 43200, amount: 0.5, type: "buy" },
@@ -285,50 +277,8 @@ const AdvancedTradingInterface: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 p-2 md:p-4">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-4 min-h-screen">
-        {/* Trading Pairs Sidebar */}
-        <div className="lg:col-span-2 space-y-2 md:space-y-4">
-          <Card className="bg-white border-gray-200 shadow-sm">
-            <CardHeader className="pb-2 md:pb-3">
-              <CardTitle className="text-sm md:text-lg flex items-center gap-2 text-gray-900">
-                <Activity className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
-                Markets
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1 md:space-y-2 max-h-40 md:max-h-none overflow-y-auto">
-              {tradingPairs.map((pair) => (
-                <div
-                  key={pair.symbol}
-                  className={`p-1 md:p-2 rounded cursor-pointer transition-colors ${
-                    selectedPair === pair.symbol
-                      ? "bg-blue-100 text-blue-900 border border-blue-200"
-                      : "hover:bg-gray-50 text-gray-700"
-                  }`}
-                  onClick={() => setSelectedPair(pair.symbol)}
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-xs md:text-sm">
-                      {pair.symbol}
-                    </span>
-                    <div className="text-right">
-                      <div className="text-xs md:text-sm text-gray-900 font-medium">
-                        ${formatNumber(pair.price)}
-                      </div>
-                      <div
-                        className={`text-xs font-medium ${pair.change >= 0 ? "text-green-600" : "text-red-600"}`}
-                      >
-                        {pair.change >= 0 ? "+" : ""}
-                        {pair.changePercent.toFixed(2)}%
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Main Trading Area */}
-        <div className="lg:col-span-7 space-y-2 md:space-y-4">
+        <div className="lg:col-span-8 space-y-2 md:space-y-4">
           {/* Price Header */}
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardContent className="p-2 md:p-4">
@@ -480,7 +430,7 @@ const AdvancedTradingInterface: React.FC = () => {
         </div>
 
         {/* Order Book & Trading Panel */}
-        <div className="lg:col-span-3 space-y-2 md:space-y-4">
+        <div className="lg:col-span-4 space-y-2 md:space-y-4">
           {/* Order Book */}
           <Card className="bg-white border-gray-200 shadow-sm">
             <CardHeader className="pb-3">

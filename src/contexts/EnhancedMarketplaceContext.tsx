@@ -346,7 +346,7 @@ const mockCampaigns: Campaign[] = [
     viewCount: 5678,
     clickCount: 1234,
     conversionCount: 89,
-    totalRevenue: 12450.67,
+    totalRevenue: 8947.32, // Match centralized e-commerce balance
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   },
