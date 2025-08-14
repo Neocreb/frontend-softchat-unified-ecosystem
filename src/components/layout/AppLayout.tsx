@@ -20,7 +20,7 @@ const AppLayout = () => {
 
   if (isVideoPage) {
     return (
-      <div className="min-h-screen bg-gradient-app">
+      <div className="min-h-screen page-container">
         <Outlet />
         {/* Video pages handle their own navigation */}
       </div>
@@ -28,7 +28,7 @@ const AppLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-app flex flex-col">
+    <div className="min-h-screen page-container flex flex-col">
       <UnifiedHeader
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
