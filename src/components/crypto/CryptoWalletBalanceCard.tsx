@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Wallet, Eye, EyeOff, TrendingUp, ArrowUpRight, ArrowDownLeft, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
+import "../cards.css";
 
 export default function CryptoWalletBalanceCard() {
   // Example data, replace with your props or state as needed
