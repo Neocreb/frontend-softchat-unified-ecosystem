@@ -191,12 +191,12 @@ const CryptoLearn = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold">Welcome to Crypto Academy</h3>
-                    <p className="text-white/90 font-medium">Start your journey to becoming a crypto expert</p>
+                    <p className="text-white font-medium">Start your journey to becoming a crypto expert</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold">0/6</div>
-                  <div className="text-sm text-blue-100">Courses Completed</div>
+                  <div className="text-sm text-white font-medium">Courses Completed</div>
                 </div>
               </div>
             </CardContent>

@@ -320,14 +320,14 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     <div className="text-3xl">{event.icon}</div>
                     <div>
                       <h3 className="text-xl font-bold">{event.title}</h3>
-                      <p className="text-white/90 text-sm">{event.description}</p>
+                      <p className="text-white font-medium text-sm">{event.description}</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <Badge className={cn("mb-2", getStatusColor(event.status))}>
                       {event.status.replace('_', ' ').toUpperCase()}
                     </Badge>
-                    <div className="text-white/90 text-sm">
+                    <div className="text-white font-medium text-sm">
                       <Clock className="h-4 w-4 inline mr-1" />
                       {timeLeft[event.id] ? formatTimeRemaining(timeLeft[event.id]) : 'Ended'}
                     </div>
@@ -339,7 +339,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     <Trophy className="h-4 w-4" />
                     <span className="font-semibold">Rewards:</span>
                   </div>
-                  <p className="text-white/90">{event.rewards.description}</p>
+                  <p className="text-white font-medium">{event.rewards.description}</p>
                 </div>
 
                 {event.progress && (
