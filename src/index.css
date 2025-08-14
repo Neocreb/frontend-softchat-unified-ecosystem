@@ -1884,12 +1884,30 @@
   .content-card h4,
   .content-card h5,
   .content-card h6 {
-    color: hsl(220 15% 10%) !important;
+    color: hsl(220 15% 10%);
   }
 
   .content-card p,
   .content-card span:not(.text-white) {
-    color: hsl(220 10% 20%) !important;
+    color: hsl(220 10% 20%);
+  }
+
+  /* Preserve white text on dark gradient cards */
+  .card-crypto *,
+  .bg-gradient-to-r *,
+  .bg-gradient-softchat *,
+  [class*="from-blue-"] *,
+  [class*="from-purple-"] *,
+  [class*="from-gray-4"] * {
+    color: inherit !important;
+  }
+
+  .card-crypto .text-white,
+  .bg-gradient-to-r .text-white,
+  [class*="from-blue-"] .text-white,
+  [class*="from-purple-"] .text-white,
+  [class*="from-gray-4"] .text-white {
+    color: white !important;
   }
 
   /* Fix muted text contrast */
