@@ -1934,7 +1934,7 @@
   }
 
   .content-card h1, .content-card h2, .content-card h3 {
-    color: hsl(220 20% 8%) !important;
+    color: hsl(220 20% 8%);
   }
 
   .content-card p, .content-card span:not(.text-white):not([class*="text-"]) {
