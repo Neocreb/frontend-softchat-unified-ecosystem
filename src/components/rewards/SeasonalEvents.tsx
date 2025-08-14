@@ -408,8 +408,8 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     <div className="text-sm text-gray-800">
                       <strong>Starts:</strong> {event.startDate.toLocaleDateString()}
                     </div>
-                    <div className="text-sm">
-                      <strong>Rewards:</strong> {event.rewards.description}
+                    <div className="text-sm text-gray-800">
+                      <strong className="text-gray-900">Rewards:</strong> {event.rewards.description}
                     </div>
                   </div>
 
