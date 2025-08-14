@@ -1584,7 +1584,7 @@
   }
 
   /* Ensure readable text on any background */
-  .content-card .text-white/90,
+  .content-card .text-white\/90,
   .content-card .text-blue-100,
   .content-card .text-gray-100 {
     color: hsl(var(--card-foreground)) !important;
