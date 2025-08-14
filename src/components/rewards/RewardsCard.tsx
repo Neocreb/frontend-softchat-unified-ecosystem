@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { formatCurrency, formatNumber } from "@/utils/formatters";
 import { cn } from "@/lib/utils";
+import "../cards.css";
 
 interface RewardsCardProps {
   currentSoftPoints: number;
