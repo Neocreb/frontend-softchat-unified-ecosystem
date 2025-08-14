@@ -271,7 +271,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
 
       {/* Available Bonuses */}
       {activeBonuses.some(b => !b.isActive) && (
-        <Card>
+        <Card className="content-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Flame className="h-5 w-5" />
