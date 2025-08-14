@@ -404,12 +404,12 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     </div>
                   </div>
                   
-                  <div className="bg-gray-100 rounded p-3 mb-3">
-                    <div className="text-sm text-gray-800">
+                  <div className="bg-gray-800 rounded p-3 mb-3">
+                    <div className="text-sm text-white">
                       <strong>Starts:</strong> {event.startDate.toLocaleDateString()}
                     </div>
-                    <div className="text-sm text-gray-800">
-                      <strong className="text-gray-900">Rewards:</strong> {event.rewards.description}
+                    <div className="text-sm text-white">
+                      <strong className="text-white">Rewards:</strong> {event.rewards.description}
                     </div>
                   </div>
 
