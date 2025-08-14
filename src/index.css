@@ -790,19 +790,19 @@
 
   body {
     @apply text-foreground;
-    /* Modern gradient background instead of plain white */
-    background: linear-gradient(135deg,
-      hsl(220 15% 97%) 0%,
-      hsl(240 20% 98%) 25%,
-      hsl(260 15% 97%) 50%,
-      hsl(240 20% 98%) 75%,
-      hsl(220 15% 97%) 100%
-    );
+    background: hsl(var(--background));
     min-height: 100vh;
   }
 
-  /* Modern app container with gradient */
+  /* Modern app container with proper theme support */
   #root {
+    background: hsl(var(--background));
+    min-height: 100vh;
+  }
+
+  /* Light mode specific backgrounds */
+  :root:not(.dark) body,
+  :root:not(.dark) #root {
     background: linear-gradient(135deg,
       hsl(220 15% 97%) 0%,
       hsl(240 20% 98%) 25%,
@@ -810,7 +810,18 @@
       hsl(240 20% 98%) 75%,
       hsl(220 15% 97%) 100%
     );
-    min-height: 100vh;
+  }
+
+  /* Dark mode specific backgrounds */
+  .dark body,
+  .dark #root {
+    background: linear-gradient(135deg,
+      hsl(265 15% 6%) 0%,
+      hsl(265 12% 8%) 25%,
+      hsl(265 10% 10%) 50%,
+      hsl(265 12% 8%) 75%,
+      hsl(265 15% 6%) 100%
+    );
   }
 
   /* Enhanced card backgrounds */
