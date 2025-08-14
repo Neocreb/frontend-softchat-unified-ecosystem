@@ -66,7 +66,7 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
   };
 
   const getChangeColor = (value: number) => {
-    return value >= 0 ? "text-green-400" : "text-red-400";
+    return value >= 0 ? "text-green-600" : "text-red-600";
   };
 
   const getChangeIcon = (value: number) => {
@@ -82,7 +82,8 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
       className={cn(
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-[1.01]",
         "card-crypto",
-        "border-0 text-white aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
+        // Changed from text-white to text-gray-900 for the default
+        "border-0 text-gray-900 aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -92,18 +93,17 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
       <div className="absolute inset-0 overflow-hidden">
         <div
           className={cn(
-            "absolute -top-4 -right-4 w-24 h-24 bg-white/10 rounded-full transition-transform duration-700",
+            "absolute -top-4 -right-4 w-24 h-24 bg-gray-300/10 rounded-full transition-transform duration-700",
             isHovered ? "scale-150 rotate-45" : "scale-100"
           )}
         />
         <div
           className={cn(
-            "absolute -bottom-8 -left-8 w-32 h-32 bg-white/5 rounded-full transition-transform duration-500",
+            "absolute -bottom-8 -left-8 w-32 h-32 bg-gray-300/5 rounded-full transition-transform duration-500",
             isHovered ? "scale-125 -rotate-12" : "scale-100"
           )}
         />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/8 to-transparent opacity-50" />
-        
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gray-200/20 to-transparent opacity-50" />
         {/* Floating crypto symbols */}
         <div className="absolute top-4 right-8 opacity-10">
           <Bitcoin className="h-8 w-8 animate-spin-slow" />
@@ -118,14 +118,14 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
-                <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+              <div className="p-2 bg-gray-200/20 rounded-lg backdrop-blur-sm">
+                <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700" />
               </div>
-              <Sparkles className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-yellow-300" />
+              <Sparkles className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-white">Crypto Wallet</h2>
-              <p className="text-white/80 text-xs sm:text-sm">Digital asset portfolio</p>
+              <h2 className="text-base sm:text-lg font-bold text-gray-900">Crypto Wallet</h2>
+              <p className="text-gray-600 text-xs sm:text-sm">Digital asset portfolio</p>
             </div>
           </div>
           
@@ -134,11 +134,11 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
               variant="ghost"
               size="sm"
               onClick={() => setShowBalance(!showBalance)}
-              className="text-white/60 hover:text-white hover:bg-white/10 p-1 h-8 w-8"
+              className="text-gray-500 hover:text-gray-900 hover:bg-gray-200/40 p-1 h-8 w-8"
             >
               {showBalance ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
             </Button>
-            <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white border-white/20 text-xs">
+            <Badge className="bg-gradient-to-r from-green-100 to-emerald-200 text-green-800 border-gray-200 text-xs font-semibold">
               <Shield className="h-3 w-3 mr-1" />
               Secured
             </Badge>
@@ -150,9 +150,9 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
           {/* Left: Main Balance */}
           <div className="space-y-2">
             <div className="space-y-1">
-              <div className="text-white/70 text-xs font-medium">Total Portfolio Value</div>
+              <div className="text-gray-500 text-xs font-medium">Total Portfolio Value</div>
               <div className="flex items-center gap-2">
-                <span className="text-2xl sm:text-4xl font-bold text-white">
+                <span className="text-2xl sm:text-4xl font-bold text-gray-900">
                   {showBalance ? formatCurrency(totalBalance) : "****.**"}
                 </span>
               </div>
@@ -172,11 +172,11 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
           {/* Right: Primary Asset & Actions */}
           <div className="text-right space-y-3">
             <div className="space-y-1">
-              <div className="text-white/70 text-xs">Primary Asset</div>
-              <div className="text-sm font-bold text-white">
+              <div className="text-gray-500 text-xs">Primary Asset</div>
+              <div className="text-sm font-bold text-gray-700">
                 {showBalance ? formatCrypto(primaryAsset.balance, 4) : "**.**"} {primaryAsset.symbol}
               </div>
-              <div className="text-xs text-white/70">
+              <div className="text-xs text-gray-500">
                 ≈ {showBalance ? formatCurrency(primaryAsset.value) : "****"}
               </div>
             </div>
@@ -184,7 +184,7 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
             <div className="flex gap-2">
               <Button
                 onClick={onDeposit}
-                className="bg-green-600/80 hover:bg-green-600 text-white border-0 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
+                className="bg-green-600 hover:bg-green-700 text-white border-0 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
                 size="sm"
               >
                 <ArrowDownLeft className="h-3 w-3 mr-1" />
@@ -192,7 +192,7 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
               </Button>
               <Button
                 onClick={onWithdraw}
-                className="bg-orange-600/80 hover:bg-orange-600 text-white border-0 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
+                className="bg-orange-500 hover:bg-orange-600 text-white border-0 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
                 size="sm"
               >
                 <ArrowUpRight className="h-3 w-3 mr-1" />
@@ -203,14 +203,14 @@ const CryptoWalletBalanceCard: React.FC<CryptoWalletBalanceCardProps> = ({
         </div>
 
         {/* Bottom Section */}
-        <div className="flex justify-between items-center border-t border-white/20 pt-3">
-          <div className="text-white/60 text-xs font-mono">
+        <div className="flex justify-between items-center border-t border-gray-200 pt-3">
+          <div className="text-gray-400 text-xs font-mono">
             **** **** **** {showBalance ? String(Math.floor(totalBalance)).slice(-4) : "****"}
           </div>
-          <div className="flex items-center gap-4 text-white/60 text-xs">
+          <div className="flex items-center gap-4 text-gray-400 text-xs">
             <span>Last updated: {new Date().toLocaleTimeString()}</span>
             <div className="flex items-center gap-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span>Live</span>
             </div>
           </div>
