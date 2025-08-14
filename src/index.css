@@ -1691,7 +1691,21 @@
       hsl(260 25% 92%) 75%,
       hsl(240 30% 94%) 100%
     ) !important;
+    background-attachment: fixed;
     min-height: 100vh;
+  }
+
+  /* Ensure proper text visibility on all backgrounds */
+  .content-card * {
+    color: inherit;
+  }
+
+  .content-card h1, .content-card h2, .content-card h3 {
+    color: hsl(220 20% 8%) !important;
+  }
+
+  .content-card p, .content-card span:not(.text-white):not([class*="text-"]) {
+    color: hsl(220 12% 20%) !important;
   }
 
   /* Page containers */
