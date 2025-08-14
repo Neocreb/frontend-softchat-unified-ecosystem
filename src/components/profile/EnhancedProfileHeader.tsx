@@ -68,7 +68,7 @@ export const EnhancedProfileHeader: React.FC<EnhancedProfileHeaderProps> = ({
   const getLevelColor = (level: string) => {
     const colors = {
       bronze: "text-amber-600 border-amber-200 bg-amber-50",
-      silver: "text-gray-600 border-gray-200 bg-gray-50",
+      silver: "text-white border-gray-400 bg-gray-600",
       gold: "text-yellow-600 border-yellow-200 bg-yellow-50",
       platinum: "text-blue-600 border-blue-200 bg-blue-50",
       diamond: "text-purple-600 border-purple-200 bg-purple-50",
