@@ -1,0 +1,65 @@
+/* High Priority Card Override Styles - Must be loaded last */
+
+/* Crypto Wallet Card - Force gradient background */
+[class*="crypto-wallet-card"] {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
+  background-color: transparent !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* SoftChat Rewards Card - Force gradient background */
+[class*="rewards-card"] {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
+  background-color: transparent !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Force all child elements to be white */
+[class*="crypto-wallet-card"] *,
+[class*="rewards-card"] * {
+  color: white !important;
+}
+
+/* Exception for specific colored elements */
+[class*="crypto-wallet-card"] .text-green-400,
+[class*="crypto-wallet-card"] .text-green-300,
+[class*="rewards-card"] .text-green-300,
+[class*="rewards-card"] .text-yellow-300,
+[class*="crypto-wallet-card"] .text-yellow-300,
+[class*="crypto-wallet-card"] .text-yellow-400 {
+  color: inherit !important;
+}
+
+/* Dark mode specific overrides */
+.dark [class*="crypto-wallet-card"],
+.dark [class*="rewards-card"] {
+  background-color: transparent !important;
+}
+
+.dark [class*="crypto-wallet-card"] {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
+}
+
+.dark [class*="rewards-card"] {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
+}
+
+/* Override any Tailwind utilities that might conflict */
+[class*="crypto-wallet-card"].bg-card,
+[class*="rewards-card"].bg-card,
+[class*="crypto-wallet-card"].bg-white,
+[class*="rewards-card"].bg-white,
+[class*="crypto-wallet-card"].bg-background,
+[class*="rewards-card"].bg-background {
+  background-color: transparent !important;
+}
+
+[class*="crypto-wallet-card"].bg-card {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%) !important;
+}
+
+[class*="rewards-card"].bg-card {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%) !important;
+}
