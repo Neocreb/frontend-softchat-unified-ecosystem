@@ -1845,11 +1845,22 @@
       hsl(0 0% 100%) 0%,
       hsl(240 30% 99%) 50%,
       hsl(260 20% 98%) 100%
-    ) !important;
-    border: 1px solid hsl(240 30% 85%) !important;
-    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-    color: hsl(220 15% 10%) !important;
-    backdrop-filter: blur(8px) !important;
+    );
+    border: 1px solid hsl(240 30% 85%);
+    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    color: hsl(220 15% 10%);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Allow dark gradient cards to override content-card styling */
+  .card-crypto,
+  .bg-gradient-to-r,
+  .bg-gradient-softchat,
+  [class*="from-blue-"],
+  [class*="from-purple-"],
+  [class*="from-gray-4"] {
+    background: inherit !important;
+    color: inherit !important;
   }
 
   /* Enhanced text contrast utilities */
