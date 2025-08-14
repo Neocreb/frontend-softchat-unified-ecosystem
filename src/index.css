@@ -1467,6 +1467,42 @@
     user-select: none;
   }
 
+  /* ===== TEXT CONTRAST UTILITIES ===== */
+
+  /* Force high contrast text for better readability */
+  .text-contrast-high {
+    color: rgb(15 23 42) !important; /* slate-900 */
+    font-weight: 600 !important;
+  }
+
+  .text-contrast-medium {
+    color: rgb(30 41 59) !important; /* slate-800 */
+    font-weight: 500 !important;
+  }
+
+  .text-contrast-white {
+    color: rgb(255 255 255) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Ensure readable text on any background */
+  .content-card .text-white/90,
+  .content-card .text-blue-100,
+  .content-card .text-gray-100 {
+    color: rgb(30 41 59) !important; /* slate-800 */
+    font-weight: 500 !important;
+  }
+
+  /* Override for gradient backgrounds that need white text */
+  .bg-gradient-to-r .text-white,
+  .bg-gradient-to-br .text-white,
+  .bg-gradient-to-l .text-white {
+    color: rgb(255 255 255) !important;
+    font-weight: 600 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
   /* ===== MODERN GRADIENT UTILITIES ===== */
 
   /* App Background Gradients */
