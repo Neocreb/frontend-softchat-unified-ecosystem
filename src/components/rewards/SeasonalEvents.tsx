@@ -313,7 +313,10 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
             Active Events
           </h2>
           {activeEvents.map(event => (
-            <Card key={event.id} className={`bg-gradient-to-r ${event.bgGradient} text-white overflow-hidden`}>
+            <Card
+  key={event.id}
+  className={`!bg-gradient-to-r !from-blue-400 !to-cyan-600 text-gray-900 overflow-hidden`}
+>
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
