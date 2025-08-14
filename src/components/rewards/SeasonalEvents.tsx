@@ -345,8 +345,8 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                 {event.progress && (
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm">{event.progress.description}</span>
-                      <span className="text-sm font-medium">
+                      <span className="text-sm text-white">{event.progress.description}</span>
+                      <span className="text-sm font-medium text-white">
                         {formatNumber(event.progress.current)}/{formatNumber(event.progress.target)}
                       </span>
                     </div>
