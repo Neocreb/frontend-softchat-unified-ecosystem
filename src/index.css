@@ -1901,4 +1901,68 @@
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 20px 0 rgba(138, 43, 226, 0.35) !important;
   }
+
+  /* ===== PROFESSIONAL DARK MODE ENHANCEMENTS ===== */
+
+  /* Dark mode navigation improvements */
+  .dark .mobile-tabs-indicator::after {
+    background: linear-gradient(to right, transparent, hsl(265 15% 6%));
+  }
+
+  /* Dark mode custom scrollbars */
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsl(265 10% 8%);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(265 15% 25%);
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(265 15% 35%);
+  }
+
+  /* Professional dark mode button enhancements */
+  .dark .btn-professional {
+    background: linear-gradient(135deg,
+      hsl(265 100% 68%) 0%,
+      hsl(280 85% 70%) 100%
+    ) !important;
+    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.35) !important;
+  }
+
+  .dark .btn-professional:hover {
+    box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.45) !important;
+  }
+
+  /* Dark mode interactive elements */
+  .dark .interactive-element:hover {
+    background: linear-gradient(145deg,
+      hsl(265 15% 12%) 0%,
+      hsl(265 20% 15%) 100%
+    );
+    box-shadow: 0 8px 25px -5px rgb(139 92 246 / 0.2);
+  }
+
+  /* Dark mode form elements */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    background: hsl(265 15% 12%) !important;
+    border-color: hsl(265 15% 25%) !important;
+    color: hsl(265 20% 90%) !important;
+  }
+
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    border-color: hsl(265 100% 68%) !important;
+    box-shadow: 0 0 0 2px hsl(265 100% 68% / 0.2) !important;
+  }
+
+  /* Dark mode dropdown and select styling */
+  .dark .bg-popover {
+    background: hsl(265 10% 8%) !important;
+    border: 1px solid hsl(265 15% 25%) !important;
+  }
 }
