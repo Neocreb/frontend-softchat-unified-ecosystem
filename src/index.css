@@ -5,6 +5,9 @@
 /* Custom card styles */
 @import './components/cards.css';
 
+/* High priority card overrides - must be last */
+@import './components/card-overrides.css';
+
 /* Scrollbar hiding utilities */
 .scrollbar-hide {
   -ms-overflow-style: none;
