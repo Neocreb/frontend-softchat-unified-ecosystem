@@ -338,7 +338,7 @@ const EnhancedUnifiedCreatorEconomy: React.FC = () => {
       case "gold":
         return "bg-gradient-to-r from-yellow-400 to-yellow-600 text-white";
       case "silver":
-        return "bg-gradient-to-r from-gray-200 to-gray-400 text-gray-800";
+        return "bg-gradient-to-r from-gray-400 to-gray-600 text-white";
       default:
         return "bg-gradient-to-r from-orange-400 to-red-500 text-white";
     }
