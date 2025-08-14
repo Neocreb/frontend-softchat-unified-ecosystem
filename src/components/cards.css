@@ -1,0 +1,111 @@
+/* Crypto Wallet Card and Rewards Card Styles */
+
+/* Crypto Wallet Card */
+.crypto-wallet-card {
+  background: linear-gradient(135deg, #2B4FB5 0%, #4F6BD3 50%, #8B5CF6 100%);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+}
+
+.crypto-wallet-card:hover {
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Dark mode adjustments for crypto wallet */
+.dark .crypto-wallet-card {
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+}
+
+.dark .crypto-wallet-card:hover {
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.5);
+}
+
+/* SoftChat Rewards Card */
+.rewards-card {
+  background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%);
+  box-shadow: 0 10px 25px rgba(168, 85, 247, 0.2);
+}
+
+.rewards-card:hover {
+  box-shadow: 0 15px 35px rgba(168, 85, 247, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Dark mode adjustments for rewards card */
+.dark .rewards-card {
+  box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+}
+
+.dark .rewards-card:hover {
+  box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5);
+}
+
+/* Ensure text remains white on both cards regardless of theme */
+.crypto-wallet-card *,
+.rewards-card * {
+  color: white !important;
+}
+
+/* Exception for specific elements that should maintain their color */
+.crypto-wallet-card .text-green-400,
+.crypto-wallet-card .text-green-300,
+.rewards-card .text-green-300,
+.rewards-card .text-yellow-300 {
+  color: inherit !important;
+}
+
+/* Button hover effects */
+.crypto-wallet-card button:hover,
+.rewards-card button:hover {
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Card number styling */
+.crypto-wallet-card .font-mono,
+.rewards-card .font-mono {
+  letter-spacing: 0.1em;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+/* Live indicator animation enhancement */
+.crypto-wallet-card .animate-pulse,
+.rewards-card .animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .crypto-wallet-card,
+  .rewards-card {
+    margin: 0 16px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .crypto-wallet-card,
+  .rewards-card {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .crypto-wallet-card,
+  .rewards-card,
+  .crypto-wallet-card *,
+  .rewards-card * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
