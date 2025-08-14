@@ -1682,6 +1682,62 @@
     color: hsl(220 8% 40%) !important;
   }
 
+  /* Enhanced body and layout backgrounds */
+  body {
+    background: linear-gradient(135deg,
+      hsl(240 30% 94%) 0%,
+      hsl(260 25% 92%) 25%,
+      hsl(280 20% 95%) 50%,
+      hsl(260 25% 92%) 75%,
+      hsl(240 30% 94%) 100%
+    ) !important;
+    min-height: 100vh;
+  }
+
+  /* Page containers */
+  .page-container {
+    background: linear-gradient(135deg,
+      hsl(240 30% 94%) 0%,
+      hsl(260 25% 92%) 25%,
+      hsl(280 20% 95%) 50%,
+      hsl(260 25% 92%) 75%,
+      hsl(240 30% 94%) 100%
+    ) !important;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Enhanced card hover effects */
+  .content-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 35px -8px rgba(138, 43, 226, 0.25), 0 8px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Professional text hierarchy */
+  .text-primary-heading {
+    color: hsl(220 20% 8%) !important;
+    font-weight: 700;
+  }
+
+  .text-secondary-heading {
+    color: hsl(220 15% 15%) !important;
+    font-weight: 600;
+  }
+
+  .text-body {
+    color: hsl(220 10% 25%) !important;
+    font-weight: 400;
+  }
+
+  /* Better shadows for depth */
+  .shadow-professional {
+    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .shadow-professional-lg {
+    box-shadow: 0 12px 35px -8px rgba(138, 43, 226, 0.25), 0 8px 15px -3px rgba(0, 0, 0, 0.1) !important;
+  }
+
   /* Professional button enhancements */
   .btn-professional {
     background: linear-gradient(135deg,
