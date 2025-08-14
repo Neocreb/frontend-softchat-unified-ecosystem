@@ -163,41 +163,6 @@ const EnhancedWalletDashboardContent = () => {
 
         {/* Overview Tab - Enhanced with unified layout */}
         <TabsContent value="overview" className="space-y-6">
-          {/* Main Balance Card */}
-          <Card className="overflow-hidden">
-            <CardContent className="p-6 md:p-8 bg-gradient-to-r from-blue-600 to-blue-700 text-white">
-              <div className="text-center space-y-4">
-                <div>
-                  <h2 className="text-lg font-medium text-blue-100">
-                    Total Balance
-                  </h2>
-                  <div className="text-4xl md:text-5xl font-bold">
-                    ${walletBalance?.total.toFixed(2) || "0.00"}
-                  </div>
-                </div>
-
-                {/* Quick Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
-                  {[
-                    { name: "E-commerce", value: walletBalance?.ecommerce || 0 },
-                    { name: "Crypto", value: walletBalance?.crypto || 0 },
-                    { name: "Rewards", value: walletBalance?.rewards || 0 },
-                    { name: "Freelance", value: walletBalance?.freelance || 0 },
-                  ].map((source) => (
-                    <div key={source.name} className="text-center">
-                      <div className="text-lg md:text-xl font-semibold">
-                        ${source.value.toFixed(2)}
-                      </div>
-                      <div className="text-xs text-blue-200">
-                        {source.name}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Quick Actions Section */}
           <QuickActionsWidget />
         </TabsContent>
