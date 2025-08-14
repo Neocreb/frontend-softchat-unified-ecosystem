@@ -21,8 +21,13 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    console.error("useTheme called without ThemeProvider context");
-    throw new Error("useTheme must be used within a ThemeProvider");
+    console.warn("useTheme called without ThemeProvider context, using fallback");
+    // Return fallback theme object instead of throwing
+    return {
+      theme: "light" as const,
+      setTheme: () => console.warn("Theme switching disabled - no theme context"),
+      isDark: false,
+    };
   }
   return context;
 };
