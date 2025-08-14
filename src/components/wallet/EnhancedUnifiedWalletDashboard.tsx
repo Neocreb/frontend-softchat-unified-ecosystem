@@ -59,14 +59,11 @@ const EnhancedWalletDashboardContent = () => {
 
   return (
     <div className="mobile-container mobile-space-y">
-      {/* Enhanced Header */}
+      {/* Header */}
       <div className="text-center sm:text-left">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Enhanced Wallet Dashboard
+        <h1 className="text-2xl font-bold text-gray-900">
+          Wallet
         </h1>
-        <p className="text-base text-gray-600">
-          Complete financial management with advanced security
-        </p>
       </div>
 
       {/* Main Balance Card - Now prominently displayed first */}
