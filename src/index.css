@@ -708,42 +708,78 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Enhanced dark backgrounds */
+    --background: 265 15% 6%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+
+    /* Dark cards with subtle purple undertones */
+    --card: 265 10% 8%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 265 10% 8%;
     --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+
+    /* Vibrant primary that pops in dark mode */
+    --primary: 265 100% 68%;
+    --primary-foreground: 265 15% 6%;
+
+    /* Enhanced secondary */
+    --secondary: 265 15% 15%;
+    --secondary-foreground: 265 20% 85%;
+
+    /* Dark muted with character */
+    --muted: 265 10% 12%;
+    --muted-foreground: 265 10% 65%;
+
+    /* Dark accent */
+    --accent: 265 15% 15%;
+    --accent-foreground: 265 20% 85%;
+
+    /* Enhanced destructive for dark */
+    --destructive: 0 75% 55%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 94.1%;
-    --sidebar-primary-foreground: 240 5.9% 10%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --softchat-primary: 265 100% 50%;
-    --softchat-accent: 297 83% 72%;
-    --softchat-600: 265 89% 42%;
-    --softchat-700: 265 100% 34%;
+
+    /* Dark borders and inputs */
+    --border: 265 15% 18%;
+    --input: 265 15% 12%;
+    --ring: 265 100% 68%;
+
+    /* Enhanced dark chart colors */
+    --chart-1: 265 85% 70%;
+    --chart-2: 195 70% 60%;
+    --chart-3: 290 75% 65%;
+    --chart-4: 25 85% 65%;
+    --chart-5: 340 75% 60%;
+
+    /* Enhanced dark sidebar */
+    --sidebar-background: 265 15% 5%;
+    --sidebar-foreground: 265 15% 90%;
+    --sidebar-primary: 265 100% 68%;
+    --sidebar-primary-foreground: 265 15% 6%;
+    --sidebar-accent: 265 15% 12%;
+    --sidebar-accent-foreground: 265 15% 90%;
+    --sidebar-border: 265 15% 15%;
+    --sidebar-ring: 265 100% 68%;
+
+    /* Enhanced SoftChat brand colors for dark */
+    --softchat-primary: 265 100% 68%;
+    --softchat-accent: 297 83% 75%;
+    --softchat-600: 265 89% 55%;
+    --softchat-700: 265 100% 45%;
+
+    /* Dark gradient variables */
+    --gradient-start: 265 100% 68%;
+    --gradient-middle: 280 85% 70%;
+    --gradient-end: 295 80% 75%;
+
+    /* Dark success and warning */
+    --success: 142 76% 55%;
+    --success-foreground: 142 76% 10%;
+    --warning: 38 92% 60%;
+    --warning-foreground: 38 92% 10%;
+
+    /* Dark interactive states */
+    --hover-overlay: 265 100% 68% / 0.15;
+    --focus-ring: 265 100% 68% / 0.4;
   }
 }
 
