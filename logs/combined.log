@@ -4111,3 +4111,5 @@
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-08-14T10:55:17.569Z","url":"/","userAgent":"node"}
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-08-14T10:55:19.571Z","url":"/","userAgent":"node"}
 {"duration":"1ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-08-14T10:55:21.571Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-08-14T10:55:23.572Z","url":"/","userAgent":"node"}
+{"duration":"0ms","ip":"::ffff:127.0.0.1","level":"info","message":"HTTP Request","method":"GET","service":"softchat-comprehensive","status":429,"timestamp":"2025-08-14T10:55:25.572Z","url":"/","userAgent":"node"}
