@@ -1880,9 +1880,23 @@
   .bg-gradient-softchat,
   [class*="from-blue-"],
   [class*="from-purple-"],
-  [class*="from-gray-4"] {
+  [class*="from-gray-4"],
+  [class*="from-cyan-"],
+  [class*="from-pink-"] {
     background: inherit !important;
     color: inherit !important;
+  }
+
+  /* Ensure gradient cards maintain white text */
+  .bg-gradient-to-r.text-white,
+  .bg-gradient-to-r.text-white *,
+  .bg-gradient-to-r.text-white h1,
+  .bg-gradient-to-r.text-white h2,
+  .bg-gradient-to-r.text-white h3,
+  .bg-gradient-to-r.text-white p,
+  .bg-gradient-to-r.text-white span,
+  .bg-gradient-to-r.text-white div {
+    color: white !important;
   }
 
   /* Enhanced text contrast utilities */
