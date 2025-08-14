@@ -1209,7 +1209,7 @@
     border-color: hsl(265 60% 85%);
   }
 
-  .from-softchat-500\/40 {
+  .from-softchat-500-40 {
     --tw-gradient-from: hsl(265 100% 50% / 0.4);
     --tw-gradient-to: hsl(265 100% 50% / 0);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
