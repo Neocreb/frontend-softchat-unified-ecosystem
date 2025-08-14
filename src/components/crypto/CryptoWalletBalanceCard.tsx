@@ -17,6 +17,7 @@ export default function CryptoWalletBalanceCard() {
   return (
     <Card
       className={cn(
+        "crypto-wallet-card",
         "rounded-2xl shadow-lg overflow-hidden border-0",
         "bg-gradient-to-br from-[#2B4FB5] via-[#4F6BD3] to-[#8B5CF6]",
         "w-full max-w-md mx-auto text-white",
