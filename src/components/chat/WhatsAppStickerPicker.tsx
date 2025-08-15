@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 interface StickerPickerProps {
   onStickerSelect: (sticker: StickerData) => void;
   className?: string;
+  isMobile?: boolean;
 }
 
 interface StickerData {
@@ -194,6 +195,7 @@ const stickerPacks: StickerPack[] = [
 export const WhatsAppStickerPicker: React.FC<StickerPickerProps> = ({
   onStickerSelect,
   className,
+  isMobile = false,
 }) => {
   const [selectedPack, setSelectedPack] = useState("emotions");
 
@@ -202,28 +204,41 @@ export const WhatsAppStickerPicker: React.FC<StickerPickerProps> = ({
   };
 
   return (
-    <div className={cn("w-80 h-96 flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg", className)}>
+    <div className={cn(
+      "flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg",
+      isMobile ? "w-full h-80 mx-2" : "w-80 h-96",
+      className
+    )}>
       {/* Pack tabs */}
       <div className="flex items-center border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
         <ScrollArea orientation="horizontal" className="w-full">
-          <div className="flex items-center p-2 space-x-1">
+          <div className={cn(
+            "flex items-center space-x-1",
+            isMobile ? "p-1.5" : "p-2"
+          )}>
             {stickerPacks.map((pack) => (
               <Button
                 key={pack.id}
                 variant={selectedPack === pack.id ? "default" : "ghost"}
                 size="sm"
                 className={cn(
-                  "flex-shrink-0 h-10 px-3 rounded-lg relative",
-                  selectedPack === pack.id 
-                    ? "bg-blue-500 text-white" 
+                  "flex-shrink-0 rounded-lg relative",
+                  isMobile ? "h-8 px-2" : "h-10 px-3",
+                  selectedPack === pack.id
+                    ? "bg-blue-500 text-white"
                     : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                 )}
                 onClick={() => setSelectedPack(pack.id)}
               >
-                <div className="flex items-center gap-2">
-                  {pack.icon}
-                  <span className="text-xs font-medium">{pack.name}</span>
-                  {pack.premium && (
+                <div className={cn(
+                  "flex items-center",
+                  isMobile ? "gap-1" : "gap-2"
+                )}>
+                  <span className={cn(isMobile ? "text-xs" : "")}>{pack.icon}</span>
+                  {!isMobile && (
+                    <span className="text-xs font-medium">{pack.name}</span>
+                  )}
+                  {pack.premium && !isMobile && (
                     <Badge variant="secondary" className="text-xs px-1 py-0 h-4">
                       Pro
                     </Badge>
@@ -236,8 +251,11 @@ export const WhatsAppStickerPicker: React.FC<StickerPickerProps> = ({
       </div>
 
       {/* Sticker grid */}
-      <ScrollArea className="flex-1 p-3">
-        <div className="grid grid-cols-5 gap-2">
+      <ScrollArea className="flex-1">
+        <div className={cn(
+          "grid gap-2",
+          isMobile ? "grid-cols-6 gap-1.5 p-2" : "grid-cols-5 gap-2 p-3"
+        )}>
           {stickerPacks
             .find(pack => pack.id === selectedPack)
             ?.stickers.map((sticker) => (
@@ -245,8 +263,11 @@ export const WhatsAppStickerPicker: React.FC<StickerPickerProps> = ({
                 key={sticker.id}
                 variant="ghost"
                 className={cn(
-                  "h-14 w-14 p-0 text-2xl hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 relative group",
-                  sticker.animated && "hover:scale-110"
+                  "p-0 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 relative group",
+                  isMobile
+                    ? "h-10 w-10 text-base touch-manipulation active:scale-95"
+                    : "h-14 w-14 text-2xl",
+                  sticker.animated && !isMobile && "hover:scale-110"
                 )}
                 onClick={() => handleStickerClick(sticker)}
               >
@@ -259,21 +280,32 @@ export const WhatsAppStickerPicker: React.FC<StickerPickerProps> = ({
                 
                 {/* Animated indicator */}
                 {sticker.animated && (
-                  <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div className={cn(
+                    "absolute top-0 right-0 bg-blue-500 rounded-full",
+                    isMobile ? "w-1.5 h-1.5" : "w-2 h-2"
+                  )}></div>
                 )}
                 
-                {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                  {sticker.name}
-                </div>
+                {/* Tooltip - only on desktop */}
+                {!isMobile && (
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+                    {sticker.name}
+                  </div>
+                )}
               </Button>
             ))}
         </div>
       </ScrollArea>
 
       {/* Pack info */}
-      <div className="border-t border-gray-200 dark:border-gray-700 p-2 bg-gray-50 dark:bg-gray-900">
-        <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+      <div className={cn(
+        "border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900",
+        isMobile ? "p-1.5" : "p-2"
+      )}>
+        <div className={cn(
+          "flex items-center justify-between text-gray-600 dark:text-gray-400",
+          isMobile ? "text-[10px]" : "text-xs"
+        )}>
           <span>
             {stickerPacks.find(pack => pack.id === selectedPack)?.name} Pack
           </span>
