@@ -29,7 +29,7 @@ export const ChatMobileTest: React.FC = () => {
     },
     {
       id: "2",
-      content: "It was great! Check out this sticker",
+      content: "It was great! Check out these new memes and GIFs 😄",
       type: "text",
       sender: "user",
       timestamp: new Date(Date.now() - 30000),
