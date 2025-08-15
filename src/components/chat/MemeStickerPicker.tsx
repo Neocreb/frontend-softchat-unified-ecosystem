@@ -70,17 +70,11 @@ interface MemeStickerPickerProps {
   isMobile?: boolean;
 }
 
-// Sticker picker tabs configuration
+// Sticker picker tabs configuration - focused on Memes, GIFs, Create
 const STICKER_TABS: StickerPickerTab[] = [
-  { id: "recent", name: "Recent", icon: <Clock className="w-4 h-4" /> },
-  { id: "favorites", name: "Favorites", icon: <Heart className="w-4 h-4" /> },
-  { id: "emotions", name: "Emotions", icon: <Smile className="w-4 h-4" /> },
-  { id: "gestures", name: "Gestures", icon: <ThumbsUp className="w-4 h-4" /> },
   { id: "memes", name: "Memes", icon: <Zap className="w-4 h-4" /> },
-  { id: "business", name: "Business", icon: <Briefcase className="w-4 h-4" /> },
-  { id: "food", name: "Food", icon: <Coffee className="w-4 h-4" /> },
-  { id: "my_packs", name: "My Packs", icon: <Users className="w-4 h-4" /> },
-  { id: "add_new", name: "Create", icon: <Plus className="w-4 h-4" /> },
+  { id: "gifs", name: "GIFs", icon: <Camera className="w-4 h-4" /> },
+  { id: "create", name: "Create", icon: <Plus className="w-4 h-4" /> },
 ];
 
 export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
@@ -90,7 +84,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   isMobile = false,
 }) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<string>("recent");
+  const [activeTab, setActiveTab] = useState<string>("memes");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -109,19 +103,17 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
   // Filter stickers based on search query
   const filteredStickers = useMemo(() => {
-    if (activeTab === "recent") return userLibrary.recentStickers;
-    if (activeTab === "favorites") return userLibrary.favoriteStickers;
-    if (activeTab === "my_packs") return userLibrary.customPacks.flatMap(pack => pack.stickers);
-    
+    if (activeTab === "create") return [];
+
     const pack = availablePacks.find(p => p.id === activeTab);
     if (!pack) return [];
-    
-    return pack.stickers.filter(sticker => 
-      searchQuery === "" || 
+
+    return pack.stickers.filter(sticker =>
+      searchQuery === "" ||
       sticker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sticker.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     );
-  }, [activeTab, searchQuery, userLibrary, availablePacks]);
+  }, [activeTab, searchQuery, availablePacks]);
 
   const handleStickerClick = (sticker: StickerData) => {
     onStickerSelect(sticker);
@@ -209,7 +201,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       <div className={cn(
         "grid",
         viewMode === "grid"
-          ? (isMobile ? "grid-cols-6 gap-1.5" : "grid-cols-6 gap-2")
+          ? (isMobile ? "grid-cols-3 gap-3" : "grid-cols-4 gap-3")
           : "grid-cols-1 gap-2"
       )}>
         {stickers.map((sticker) => (
@@ -352,44 +344,18 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
             <div className={cn(
               isMobile ? "p-2 pb-4" : "p-3 md:p-4"
             )}>
-              {/* Recent Stickers */}
-              <TabsContent value="recent" className="mt-0">
+              {/* Memes */}
+              <TabsContent value="memes" className="mt-0">
                 {renderStickerGrid(filteredStickers)}
               </TabsContent>
 
-              {/* Favorite Stickers */}
-              <TabsContent value="favorites" className="mt-0">
+              {/* GIFs */}
+              <TabsContent value="gifs" className="mt-0">
                 {renderStickerGrid(filteredStickers)}
-              </TabsContent>
-
-              {/* Category Stickers */}
-              {["emotions", "gestures", "memes", "business", "food"].map(category => (
-                <TabsContent key={category} value={category} className="mt-0">
-                  {renderStickerGrid(filteredStickers)}
-                </TabsContent>
-              ))}
-
-              {/* My Packs */}
-              <TabsContent value="my_packs" className="mt-0">
-                {userLibrary.customPacks.length > 0 ? (
-                  renderPackGrid(userLibrary.customPacks)
-                ) : (
-                  <div className="text-center py-8">
-                    <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                    <p className="text-lg font-medium mb-2">No custom packs yet</p>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Create your own sticker packs to express yourself
-                    </p>
-                    <Button onClick={() => setShowCreateDialog(true)}>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create Pack
-                    </Button>
-                  </div>
-                )}
               </TabsContent>
 
               {/* Create New */}
-              <TabsContent value="add_new" className="mt-0">
+              <TabsContent value="create" className="mt-0">
                 <StickerCreationPanel
                   isMobile={isMobile}
                   onCreatePack={() => setShowCreateDialog(true)}
