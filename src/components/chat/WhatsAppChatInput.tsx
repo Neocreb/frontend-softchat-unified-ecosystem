@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { MemeStickerPicker } from "./MemeStickerPicker";
 import { WhatsAppStickerPicker } from "./WhatsAppStickerPicker";
+import { MobileStickerBottomSheet } from "./MobileStickerBottomSheet";
 import { StickerData } from "@/types/sticker";
 
 interface WhatsAppChatInputProps {
