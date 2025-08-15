@@ -356,23 +356,23 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
                 className={cn(
                   "p-0 border-0 shadow-none bg-transparent",
                   isMobile
-                    ? "w-screen max-w-full mx-auto"
+                    ? "w-screen max-w-full left-0 right-0"
                     : "w-auto"
                 )}
-                align={isMobile ? "center" : "end"}
-                alignOffset={isMobile ? 0 : -20}
-                sideOffset={isMobile ? 10 : 5}
+                align={isMobile ? "start" : "end"}
+                alignOffset={isMobile ? -16 : -20}
+                sideOffset={isMobile ? 8 : 5}
                 avoidCollisions={true}
-                collisionPadding={isMobile ? 16 : 8}
+                collisionPadding={isMobile ? 8 : 8}
               >
                 <div className={cn(
                   "flex flex-col",
-                  isMobile ? "gap-2 px-4" : "gap-2"
+                  isMobile ? "gap-1" : "gap-2"
                 )}>
                   {/* Mode toggle */}
                   <div className={cn(
                     "flex gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1",
-                    isMobile && "mx-auto"
+                    isMobile ? "mx-2 mb-1" : "mx-auto"
                   )}>
                     <Button
                       size="sm"
