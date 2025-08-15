@@ -332,7 +332,8 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
             }}
             className={cn(
               "pr-12 rounded-full border-2 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-gray-50 dark:bg-gray-900 shadow-inner",
-              isMobile ? "h-11" : "h-10",
+              isMobile ? "h-11 text-base" : "h-10 text-sm",
+              isMobile && "touch-manipulation"
             )}
             disabled={disabled || isRecording}
           />
