@@ -94,6 +94,26 @@ const reactionEmojis = [
   { emoji: "😡", name: "angry" },
 ];
 
+// Helper function to detect if a URL is an image or GIF
+const isImageUrl = (url: string): boolean => {
+  const imageExtensions = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i;
+  return imageExtensions.test(url) || url.includes('giphy.com') || url.includes('tenor.com') || url.includes('imgur.com');
+};
+
+// Helper function to extract URLs from text
+const extractUrls = (text: string): string[] => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.match(urlRegex) || [];
+};
+
+// Helper function to detect if content is primarily a media URL
+const isPrimaryMediaUrl = (content: string): boolean => {
+  const trimmed = content.trim();
+  const urls = extractUrls(trimmed);
+  // If the content is just a URL or URL with minimal text, treat as media
+  return urls.length === 1 && (trimmed === urls[0] || trimmed.length - urls[0].length < 50);
+};
+
 export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   message,
   isCurrentUser,
@@ -491,6 +511,101 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
 
       case "text":
       default:
+        // Check if the text content contains image/GIF URLs
+        const urls = extractUrls(message.content);
+        const imageUrls = urls.filter(isImageUrl);
+
+        // If content is primarily a media URL, render as media
+        if (isPrimaryMediaUrl(message.content) && imageUrls.length > 0) {
+          const mediaUrl = imageUrls[0];
+          const isGif = mediaUrl.toLowerCase().includes('.gif') || mediaUrl.includes('giphy.com') || mediaUrl.includes('tenor.com');
+
+          return (
+            <div className="max-w-sm">
+              <div className="relative group">
+                <img
+                  src={mediaUrl}
+                  alt="Shared image"
+                  className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300 max-h-96 object-contain"
+                  loading="lazy"
+                  onError={(e) => {
+                    // Fallback to text rendering if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const textDiv = target.nextElementSibling as HTMLElement;
+                    if (textDiv) textDiv.style.display = 'block';
+                  }}
+                />
+                {isGif && (
+                  <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
+                    GIF
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
+              </div>
+              {/* Fallback text rendering (hidden by default) */}
+              <div style={{display: 'none'}} className="px-4 py-3 rounded-2xl max-w-sm break-words relative shadow-md bg-gradient-to-br from-gray-100 to-gray-200 text-gray-900 dark:from-gray-700 dark:to-gray-800 dark:text-gray-100">
+                <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+              </div>
+            </div>
+          );
+        }
+
+        // If content has both text and images, render mixed content
+        if (imageUrls.length > 0) {
+          const parts = message.content.split(/(https?:\/\/[^\s]+)/);
+
+          return (
+            <div className="max-w-sm space-y-2">
+              {parts.map((part, index) => {
+                if (isImageUrl(part)) {
+                  const isGif = part.toLowerCase().includes('.gif') || part.includes('giphy.com') || part.includes('tenor.com');
+                  return (
+                    <div key={index} className="relative group">
+                      <img
+                        src={part}
+                        alt="Shared image"
+                        className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300 max-h-64 object-contain"
+                        loading="lazy"
+                        onError={(e) => {
+                          // Replace with text if image fails
+                          const target = e.target as HTMLImageElement;
+                          const container = target.parentElement;
+                          if (container) {
+                            container.innerHTML = `<span class="text-blue-500 underline break-all">${part}</span>`;
+                          }
+                        }}
+                      />
+                      {isGif && (
+                        <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
+                          GIF
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
+                    </div>
+                  );
+                } else if (part.trim()) {
+                  return (
+                    <div
+                      key={index}
+                      className={cn(
+                        "px-4 py-3 rounded-2xl break-words relative shadow-md",
+                        isCurrentUser
+                          ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white ml-auto before:absolute before:bottom-0 before:-right-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-blue-500 before:to-blue-600 before:rotate-45 before:transform before:origin-bottom-left dark:from-blue-600 dark:to-blue-700 dark:before:from-blue-600 dark:before:to-blue-700"
+                          : "bg-gradient-to-br from-gray-100 to-gray-200 text-gray-900 dark:from-gray-700 dark:to-gray-800 dark:text-gray-100 before:absolute before:bottom-0 before:-left-1 before:w-3 before:h-3 before:bg-gradient-to-br before:from-gray-100 before:to-gray-200 before:rotate-45 before:transform before:origin-bottom-right dark:before:from-gray-700 dark:before:to-gray-800",
+                      )}
+                    >
+                      <p className="whitespace-pre-wrap leading-relaxed">{part}</p>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          );
+        }
+
+        // Default text rendering
         return (
           <div
             className={cn(
