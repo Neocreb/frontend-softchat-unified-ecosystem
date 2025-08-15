@@ -62,6 +62,7 @@ import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
 import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
+import ChatMobileTest from "./pages/ChatMobileTest";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import UnifiedProfile from "./pages/UnifiedProfile";
 import ProfileStats from "./pages/profile/ProfileStats";
