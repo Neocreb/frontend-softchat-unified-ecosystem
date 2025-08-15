@@ -194,11 +194,11 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       return (
         <div className={cn(
           "flex flex-col items-center justify-center text-muted-foreground text-center",
-          isMobile ? "h-32 px-4" : "h-48"
+          isMobile ? "h-24 px-2" : "h-48"
         )}>
-          <Sparkles className={cn("mb-4 opacity-50", isMobile ? "w-8 h-8" : "w-12 h-12")} />
-          <p className={cn("font-medium", isMobile ? "text-sm" : "text-lg")}>No stickers found</p>
-          <p className={cn(isMobile ? "text-xs mt-1" : "text-sm")}>
+          <Sparkles className={cn("mb-2 opacity-50", isMobile ? "w-6 h-6" : "w-12 h-12")} />
+          <p className={cn("font-medium", isMobile ? "text-xs" : "text-lg")}>No stickers found</p>
+          <p className={cn(isMobile ? "text-[10px] mt-0.5" : "text-sm")}>
             {searchQuery ? "Try a different search" : "No stickers available"}
           </p>
         </div>
@@ -253,13 +253,19 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
     <div className={cn(
       "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg",
       isMobile
-        ? "w-full max-w-full h-[70vh] max-h-[500px] flex flex-col"
+        ? "w-full h-[65vh] max-h-[420px] flex flex-col mx-2"
         : "w-96 h-[500px] flex flex-col",
       className
     )}>
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-700 p-3 md:p-4 flex-shrink-0">
-        <div className="flex items-center justify-between mb-3">
+      <div className={cn(
+        "border-b border-gray-200 dark:border-gray-700 flex-shrink-0",
+        isMobile ? "p-2" : "p-3 md:p-4"
+      )}>
+        <div className={cn(
+          "flex items-center justify-between",
+          isMobile ? "mb-2" : "mb-3"
+        )}>
           <h3 className={cn("font-semibold", isMobile ? "text-base" : "text-lg")}>Stickers</h3>
           <div className="flex items-center gap-2">
             {!isMobile && (
@@ -287,12 +293,15 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className={cn(
+            "absolute left-3 text-muted-foreground",
+            isMobile ? "top-2 h-4 w-4" : "top-2.5 h-4 w-4"
+          )} />
           <Input
             placeholder={isMobile ? "Search..." : "Search stickers..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={cn("pl-10", isMobile ? "h-10" : "h-9")}
+            className={cn("pl-10", isMobile ? "h-8 text-sm" : "h-9")}
           />
         </div>
       </div>
@@ -302,26 +311,26 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
         <div className="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <ScrollArea orientation="horizontal" className="w-full">
             <TabsList className={cn(
-              "inline-flex h-auto p-1 bg-transparent w-full",
-              isMobile ? "justify-start" : "justify-start"
+              "inline-flex h-auto bg-transparent w-full",
+              isMobile ? "p-0.5 justify-start" : "p-1 justify-start"
             )}>
               {STICKER_TABS.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
                   className={cn(
-                    "flex items-center gap-1 px-2 py-2 text-xs rounded-lg transition-all whitespace-nowrap",
+                    "flex items-center gap-1 text-xs rounded-lg transition-all whitespace-nowrap",
                     "data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900",
                     "data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300",
-                    isMobile ? "min-w-[44px] flex-col gap-0.5" : "flex-row gap-2"
+                    isMobile ? "min-w-[38px] px-1 py-1.5 flex-col gap-0.5" : "px-2 py-2 flex-row gap-2"
                   )}
                 >
-                  <span className={isMobile ? "text-sm" : ""}>{tab.icon}</span>
+                  <span className={isMobile ? "text-xs" : ""}>{tab.icon}</span>
                   <span className={cn(
-                    isMobile ? "text-[10px] leading-tight" : "text-xs",
-                    isMobile && tab.name.length > 6 ? "hidden" : ""
+                    isMobile ? "text-[9px] leading-none" : "text-xs",
+                    isMobile && tab.name.length > 5 ? "hidden" : ""
                   )}>
-                    {isMobile ? tab.name.slice(0, 4) : tab.name}
+                    {isMobile ? tab.name.slice(0, 3) : tab.name}
                   </span>
                   {tab.count && tab.count > 0 && (
                     <Badge variant="secondary" className="text-xs px-1 py-0 h-3 min-w-[12px]">
@@ -340,7 +349,9 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
         {/* Content */}
         <div className="flex-1 overflow-hidden min-h-0">
           <ScrollArea className="h-full">
-            <div className={cn("p-3 md:p-4", isMobile && "pb-6")}>
+            <div className={cn(
+              isMobile ? "p-2 pb-4" : "p-3 md:p-4"
+            )}>
               {/* Recent Stickers */}
               <TabsContent value="recent" className="mt-0">
                 {renderStickerGrid(filteredStickers)}
