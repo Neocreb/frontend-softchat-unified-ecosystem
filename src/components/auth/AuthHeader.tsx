@@ -1,6 +1,6 @@
 
 import { CardTitle, CardDescription } from "@/components/ui/card";
-import SoftchatLogo from "../shared/SoftchatLogo";
+import SoftchatLogo from "@/components/ui/logo";
 
 interface AuthHeaderProps {
   isLogin: boolean;

@@ -10,7 +10,7 @@ import {
   SearchFilters,
   FreelanceStats,
 } from "@/types/freelance";
-import { FreelanceEscrow } from "@shared/schema";
+import { FreelanceEscrow } from "@/types/freelance";
 import { useToast } from "@/hooks/use-toast";
 
 export const useFreelance = () => {

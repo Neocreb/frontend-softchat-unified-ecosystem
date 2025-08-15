@@ -1,4 +1,4 @@
-import { FreelanceMessage, Profile } from "@shared/schema";
+import { FreelanceMessage, Profile } from "@/types/freelance";
 
 export interface FreelanceMessageWithSender extends FreelanceMessage {
   sender: {

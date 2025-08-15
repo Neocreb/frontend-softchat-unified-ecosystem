@@ -20,7 +20,7 @@ import {
   Mail,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import SoftchatLogo from "../shared/SoftchatLogo";
+import SoftchatLogo from "@/components/ui/logo";
 
 const DesktopFooter = () => {
   return (

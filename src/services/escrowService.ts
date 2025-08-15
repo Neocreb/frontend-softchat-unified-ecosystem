@@ -1,4 +1,4 @@
-import { FreelanceEscrow, FreelanceDispute } from "@shared/schema";
+import { FreelanceEscrow, FreelanceDispute } from "@/types/freelance";
 
 export interface EscrowCreateRequest {
   projectId: string;

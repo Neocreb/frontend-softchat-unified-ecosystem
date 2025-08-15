@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { Mail, Lock, User, EyeOff, Eye, Github } from "lucide-react";
-import SoftchatLogo from "../shared/SoftchatLogo";
+import SoftchatLogo from "@/components/ui/logo";
 
 type AuthMode = "signin" | "signup";
 

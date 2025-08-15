@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -897,9 +897,6 @@ export type Database = {
         Row: {
           avatar: string | null
           avatar_url: string | null
-          bank_account_name: string | null
-          bank_account_number: string | null
-          bank_name: string | null
           bio: string | null
           created_at: string | null
           full_name: string | null
@@ -917,9 +914,6 @@ export type Database = {
         Insert: {
           avatar?: string | null
           avatar_url?: string | null
-          bank_account_name?: string | null
-          bank_account_number?: string | null
-          bank_name?: string | null
           bio?: string | null
           created_at?: string | null
           full_name?: string | null
@@ -937,9 +931,6 @@ export type Database = {
         Update: {
           avatar?: string | null
           avatar_url?: string | null
-          bank_account_name?: string | null
-          bank_account_number?: string | null
-          bank_name?: string | null
           bio?: string | null
           created_at?: string | null
           full_name?: string | null
@@ -1123,6 +1114,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_banking_info: {
+        Row: {
+          bank_account_name: string | null
+          bank_account_number: string | null
+          bank_name: string | null
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bank_account_name?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       user_challenge_progress: {
         Row: {
@@ -1309,17 +1330,17 @@ export type Database = {
     }
     Functions: {
       check_column_exists: {
-        Args: { table_name: string; column_name: string }
+        Args: { column_name: string; table_name: string }
         Returns: boolean
       }
       create_notification: {
         Args: {
-          p_user_id: string
-          p_type: string
-          p_title: string
           p_content: string
-          p_related_user_id?: string
           p_related_post_id?: string
+          p_related_user_id?: string
+          p_title: string
+          p_type: string
+          p_user_id: string
         }
         Returns: string
       }

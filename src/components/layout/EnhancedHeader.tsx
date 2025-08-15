@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
-import SoftchatLogo from "../shared/SoftchatLogo";
+import SoftchatLogo from "@/components/ui/logo";
 import NotificationsDropdown from "./NotificationsDropdown";
 
 const EnhancedHeader = () => {

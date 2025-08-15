@@ -1,4 +1,12 @@
-import { ACTIVITY_TYPES } from "../../shared/activity-economy-schema";
+// Activity types constants
+const ACTIVITY_TYPES = [
+  "post_content",
+  "like_post", 
+  "comment_post",
+  "share_content",
+  "daily_login",
+  "purchase_product"
+] as const;
 
 export interface ActivityRewardResponse {
   success: boolean;
