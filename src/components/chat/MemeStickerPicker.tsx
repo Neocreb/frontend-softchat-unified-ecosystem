@@ -89,6 +89,8 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [selectedPack, setSelectedPack] = useState<StickerPackData | null>(null);
+  const [showCameraModal, setShowCameraModal] = useState(false);
+  const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
   
   // Mock data with Memes and GIFs - would be fetched from API
   const mockPacks: StickerPackData[] = [
@@ -504,6 +506,29 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
             </div>
           </DialogContent>
         </Dialog>
+      )}
+
+      {/* Camera Modal */}
+      {showCameraModal && (
+        <CameraModal
+          isOpen={showCameraModal}
+          onClose={() => setShowCameraModal(false)}
+          onPhotoTaken={(photoDataUrl) => {
+            setCapturedPhotos(prev => [...prev, photoDataUrl]);
+            // Convert data URL to File object
+            fetch(photoDataUrl)
+              .then(res => res.blob())
+              .then(blob => {
+                const file = new File([blob], `photo_${Date.now()}.png`, { type: 'image/png' });
+                setSelectedImages(prev => [...prev, file]);
+              });
+            toast({
+              title: "Photo captured!",
+              description: "Photo added to your sticker creation",
+            });
+          }}
+          isMobile={isMobile}
+        />
       )}
 
       {/* Create Pack Dialog */}
@@ -937,27 +962,36 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
             </div>
           </Button>
           <Button
-            variant="outline"
-            disabled
-            className="justify-start h-auto p-3 opacity-50"
-          >
-            <Camera className="w-4 h-4 mr-2" />
-            <div className="text-left">
-              <p className="font-medium text-sm">Take Photos</p>
-              <p className="text-xs text-muted-foreground">Coming soon</p>
-            </div>
-          </Button>
+          variant={creationMethod === "camera" ? "default" : "outline"}
+          onClick={() => {
+            setCreationMethod("camera");
+            setShowCameraModal(true);
+          }}
+          className="justify-start h-auto p-3"
+        >
+          <Camera className="w-4 h-4 mr-2" />
+          <div className="text-left">
+            <p className="font-medium text-sm">Take Photos</p>
+            <p className="text-xs text-muted-foreground">Capture and create stickers</p>
+          </div>
+        </Button>
           <Button
-            variant="outline"
-            disabled
-            className="justify-start h-auto p-3 opacity-50"
-          >
-            <Sparkles className="w-4 h-4 mr-2" />
-            <div className="text-left">
-              <p className="font-medium text-sm">AI Generator</p>
-              <p className="text-xs text-muted-foreground">Coming soon</p>
-            </div>
-          </Button>
+          variant={creationMethod === "ai" ? "default" : "outline"}
+          onClick={() => {
+            setCreationMethod("ai");
+            toast({
+              title: "AI Generator",
+              description: "AI sticker generation coming soon! For now, try uploading images or taking photos.",
+            });
+          }}
+          className="justify-start h-auto p-3"
+        >
+          <Sparkles className="w-4 h-4 mr-2" />
+          <div className="text-left">
+            <p className="font-medium text-sm">AI Generator</p>
+            <p className="text-xs text-muted-foreground">Generate with AI (Preview)</p>
+          </div>
+        </Button>
         </div>
       </div>
 
@@ -1090,6 +1124,7 @@ const StickerCreationPanel: React.FC<StickerCreationPanelProps> = ({
 
         <Button
           variant="outline"
+          onClick={() => setShowCameraModal(true)}
           className={cn("justify-start h-auto", isMobile ? "p-3" : "p-4")}
         >
           <div className="flex items-center gap-3">
@@ -1105,6 +1140,12 @@ const StickerCreationPanel: React.FC<StickerCreationPanelProps> = ({
 
         <Button
           variant="outline"
+          onClick={() => {
+            toast({
+              title: "AI Sticker Generator",
+              description: "AI-powered sticker generation is coming soon! Try uploading images or taking photos for now.",
+            });
+          }}
           className={cn("justify-start h-auto", isMobile ? "p-3" : "p-4")}
         >
           <div className="flex items-center gap-3">
@@ -1112,7 +1153,7 @@ const StickerCreationPanel: React.FC<StickerCreationPanelProps> = ({
             <div className="text-left">
               <p className={cn("font-medium", isMobile ? "text-sm" : "")}>AI Generator</p>
               <p className={cn("text-muted-foreground", isMobile ? "text-xs" : "text-xs")}>
-                Generate with AI (Coming Soon)
+                Generate with AI (Preview)
               </p>
             </div>
           </div>
