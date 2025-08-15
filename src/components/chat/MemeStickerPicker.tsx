@@ -644,19 +644,34 @@ const StickerCard: React.FC<StickerCardProps> = ({
       <Button
         variant="ghost"
         className={cn(
-          "p-0 hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
+          "p-1 hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
           isMobile
-            ? "h-10 w-10 min-h-[40px] min-w-[40px] active:scale-95 text-lg"
-            : "h-14 w-14 hover:scale-110 active:scale-95 text-2xl"
+            ? "h-20 w-full min-h-[80px] active:scale-95"
+            : "h-24 w-full hover:scale-105 active:scale-95"
         )}
         onClick={isMobile ? undefined : onClick}
         onTouchStart={isMobile ? handleTouchStart : undefined}
         onTouchEnd={isMobile ? handleTouchEnd : undefined}
         onMouseLeave={handleMouseLeave}
       >
-        <span className={cn(isMobile ? "text-base" : "text-2xl")}>
-          {sticker.emoji}
-        </span>
+        {sticker.type === "image" || sticker.type === "gif" ? (
+          <div className="relative w-full h-full">
+            <img
+              src={sticker.thumbnailUrl || sticker.fileUrl}
+              alt={sticker.name}
+              className="w-full h-full object-cover rounded-md"
+            />
+            {sticker.animated && (
+              <div className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
+                GIF
+              </div>
+            )}
+          </div>
+        ) : (
+          <span className={cn(isMobile ? "text-2xl" : "text-4xl")}>
+            {sticker.emoji}
+          </span>
+        )}
 
         {/* Animated indicator */}
         {sticker.type === "animated" && (
