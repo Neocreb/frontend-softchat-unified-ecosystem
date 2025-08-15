@@ -207,10 +207,10 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
     return (
       <div className={cn(
-        "grid gap-2",
+        "grid",
         viewMode === "grid"
-          ? (isMobile ? "grid-cols-5 gap-3" : "grid-cols-6 gap-2")
-          : "grid-cols-1"
+          ? (isMobile ? "grid-cols-6 gap-1.5" : "grid-cols-6 gap-2")
+          : "grid-cols-1 gap-2"
       )}>
         {stickers.map((sticker) => (
           <StickerCard
@@ -565,23 +565,26 @@ const StickerCard: React.FC<StickerCardProps> = ({
       <Button
         variant="ghost"
         className={cn(
-          "p-0 text-2xl hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
+          "p-0 hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
           isMobile
-            ? "h-12 w-12 min-h-[48px] min-w-[48px] active:scale-95 hover:scale-105"
-            : "h-14 w-14 hover:scale-110 active:scale-95"
+            ? "h-10 w-10 min-h-[40px] min-w-[40px] active:scale-95 text-lg"
+            : "h-14 w-14 hover:scale-110 active:scale-95 text-2xl"
         )}
         onClick={isMobile ? undefined : onClick}
         onTouchStart={isMobile ? handleTouchStart : undefined}
         onTouchEnd={isMobile ? handleTouchEnd : undefined}
         onMouseLeave={handleMouseLeave}
       >
-        <span className={cn(isMobile ? "text-xl" : "text-2xl")}>
+        <span className={cn(isMobile ? "text-base" : "text-2xl")}>
           {sticker.emoji}
         </span>
 
         {/* Animated indicator */}
         {sticker.type === "animated" && (
-          <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+          <div className={cn(
+            "absolute top-0 right-0 bg-blue-500 rounded-full animate-pulse",
+            isMobile ? "w-1.5 h-1.5" : "w-2 h-2"
+          )}></div>
         )}
       </Button>
 
@@ -604,8 +607,8 @@ const StickerCard: React.FC<StickerCardProps> = ({
 
       {/* Mobile: Show favorite status as small indicator */}
       {isMobile && isFavorite && (
-        <div className="absolute -top-1 -right-1">
-          <Heart className="w-3 h-3 text-red-500 fill-current" />
+        <div className="absolute -top-0.5 -right-0.5">
+          <Heart className="w-2.5 h-2.5 text-red-500 fill-current" />
         </div>
       )}
 
