@@ -370,4 +370,135 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
   );
 };
 
+// Individual sticker/meme card component
+interface StickerMemeCardProps {
+  sticker: StickerData;
+  onClick: () => void;
+}
+
+const StickerMemeCard: React.FC<StickerMemeCardProps> = ({ sticker, onClick }) => {
+  return (
+    <Button
+      variant="ghost"
+      className="h-24 w-full p-1 hover:bg-white dark:hover:bg-gray-800 rounded-xl transition-all duration-200 active:scale-95 touch-manipulation relative group"
+      onClick={onClick}
+    >
+      {sticker.type === "image" || sticker.type === "gif" ? (
+        <div className="relative w-full h-full">
+          <img
+            src={sticker.thumbnailUrl || sticker.fileUrl}
+            alt={sticker.name}
+            className="w-full h-full object-cover rounded-lg"
+          />
+          {sticker.animated && (
+            <div className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
+              GIF
+            </div>
+          )}
+        </div>
+      ) : (
+        <span className="text-3xl">{sticker.emoji}</span>
+      )}
+
+      {/* Tooltip on hover */}
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
+        {sticker.name}
+      </div>
+    </Button>
+  );
+};
+
+// Create sticker panel component
+interface CreateStickerPanelProps {
+  onCreateSticker?: () => void;
+}
+
+const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker }) => {
+  const { toast } = useToast();
+
+  const createOptions = [
+    {
+      id: "meme",
+      title: "Create Meme",
+      description: "Turn images into fun stickers",
+      icon: <ImageIcon className="w-8 h-8" />,
+      color: "bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
+      action: () => {
+        toast({
+          title: "Meme Creator",
+          description: "Image to meme converter coming soon!",
+        });
+      }
+    },
+    {
+      id: "gif",
+      title: "Create GIF",
+      description: "Convert videos to animated stickers",
+      icon: <Camera className="w-8 h-8" />,
+      color: "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400",
+      action: () => {
+        toast({
+          title: "GIF Creator",
+          description: "Video to GIF converter coming soon!",
+        });
+      }
+    },
+    {
+      id: "camera",
+      title: "Take Photo",
+      description: "Capture and create instantly",
+      icon: <Camera className="w-8 h-8" />,
+      color: "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
+      action: () => {
+        toast({
+          title: "Camera",
+          description: "Camera integration coming soon!",
+        });
+      }
+    }
+  ];
+
+  return (
+    <div className="space-y-4">
+      <div className="text-center py-4">
+        <h3 className="text-lg font-semibold mb-2">Create Your Own</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Turn your photos and videos into fun stickers and GIFs
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3">
+        {createOptions.map((option) => (
+          <Button
+            key={option.id}
+            variant="outline"
+            className="h-auto p-4 justify-start hover:shadow-md transition-all duration-200"
+            onClick={option.action}
+          >
+            <div className={`rounded-lg p-3 mr-4 ${option.color}`}>
+              {option.icon}
+            </div>
+            <div className="text-left">
+              <h4 className="font-medium text-sm mb-1">{option.title}</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400">{option.description}</p>
+            </div>
+          </Button>
+        ))}
+      </div>
+
+      <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+        <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
+          <Zap className="w-4 h-4 text-yellow-500" />
+          Pro Tips
+        </h4>
+        <ul className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
+          <li>• Use high-contrast images for better stickers</li>
+          <li>• Keep GIFs under 3 seconds for optimal size</li>
+          <li>• Add text overlays to make memes more engaging</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 export default MobileStickerBottomSheet;
