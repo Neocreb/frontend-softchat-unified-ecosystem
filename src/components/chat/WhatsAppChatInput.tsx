@@ -402,6 +402,7 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
                   ) : (
                     <WhatsAppStickerPicker
                       onStickerSelect={handleLegacyStickerSelect}
+                      isMobile={isMobile}
                     />
                   )}
                 </div>
