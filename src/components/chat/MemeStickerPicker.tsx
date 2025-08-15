@@ -54,14 +54,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { 
-  StickerData, 
-  StickerPackData, 
-  StickerCategory, 
+import {
+  StickerData,
+  StickerPackData,
+  StickerCategory,
   StickerPickerTab,
   UserStickerLibrary,
-  EMOJI_STICKER_PACKS 
+  EMOJI_STICKER_PACKS
 } from "@/types/sticker";
+import CameraModal from "./CameraModal";
 
 interface MemeStickerPickerProps {
   onStickerSelect: (sticker: StickerData) => void;
