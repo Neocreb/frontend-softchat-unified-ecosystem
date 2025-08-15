@@ -90,15 +90,128 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [selectedPack, setSelectedPack] = useState<StickerPackData | null>(null);
   
-  // Mock data - would be fetched from API
+  // Mock data with Memes and GIFs - would be fetched from API
+  const mockPacks: StickerPackData[] = [
+    {
+      id: "memes",
+      name: "Memes",
+      description: "Funny image stickers and memes",
+      category: "memes" as StickerCategory,
+      stickers: [
+        {
+          id: "m1",
+          name: "Laughing Drake",
+          type: "image",
+          tags: ["funny", "meme", "reaction"],
+          fileUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop&crop=face",
+          thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=100&h=100&fit=crop&crop=face",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "memes",
+          packName: "Memes",
+          animated: false
+        },
+        {
+          id: "m2",
+          name: "Thinking Cat",
+          type: "image",
+          tags: ["thinking", "cat", "meme"],
+          fileUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&h=200&fit=crop&crop=face",
+          thumbnailUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&h=100&fit=crop&crop=face",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "memes",
+          packName: "Memes",
+          animated: false
+        },
+        {
+          id: "m3",
+          name: "Surprised Dog",
+          type: "image",
+          tags: ["surprised", "dog", "reaction"],
+          fileUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=200&h=200&fit=crop&crop=face",
+          thumbnailUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=100&h=100&fit=crop&crop=face",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "memes",
+          packName: "Memes",
+          animated: false
+        },
+      ],
+      creatorId: "system",
+      creatorName: "System",
+      downloadCount: 1000,
+      rating: 4.8,
+      isOfficial: true,
+      isPremium: false,
+      isCustom: false,
+      tags: ["memes", "funny"],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=100&h=100&fit=crop&crop=face",
+      price: 0,
+    },
+    {
+      id: "gifs",
+      name: "GIFs",
+      description: "Animated GIF stickers",
+      category: "gifs" as StickerCategory,
+      stickers: [
+        {
+          id: "g1",
+          name: "Dancing Cat",
+          type: "gif",
+          tags: ["dancing", "cat", "party"],
+          fileUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+          thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "gifs",
+          packName: "GIFs",
+          animated: true
+        },
+        {
+          id: "g2",
+          name: "Thumbs Up",
+          type: "gif",
+          tags: ["thumbs", "up", "approval"],
+          fileUrl: "https://media.giphy.com/media/111ebonMs90YLu/giphy.gif",
+          thumbnailUrl: "https://media.giphy.com/media/111ebonMs90YLu/200w_d.gif",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "gifs",
+          packName: "GIFs",
+          animated: true
+        },
+      ],
+      creatorId: "system",
+      creatorName: "System",
+      downloadCount: 800,
+      rating: 4.6,
+      isOfficial: true,
+      isPremium: false,
+      isCustom: false,
+      tags: ["gifs", "animated"],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
+      price: 0,
+    }
+  ];
+
   const [userLibrary, setUserLibrary] = useState<UserStickerLibrary>({
     recentStickers: [],
     favoriteStickers: [],
-    downloadedPacks: EMOJI_STICKER_PACKS,
+    downloadedPacks: mockPacks,
     customPacks: [],
   });
-  
-  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(EMOJI_STICKER_PACKS);
+
+  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(mockPacks);
   const [trendingPacks, setTrendingPacks] = useState<StickerPackData[]>([]);
 
   // Filter stickers based on search query
