@@ -336,6 +336,10 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
               isMobile && "touch-manipulation"
             )}
             disabled={disabled || isRecording}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="sentences"
+            spellCheck="true"
           />
 
           {/* Sticker/Emoji button */}
