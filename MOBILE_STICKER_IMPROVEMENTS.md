@@ -50,6 +50,22 @@ The WhatsApp-style sticker picker was not responsive on mobile devices, with con
 - **Message Rendering**: Shows how different sticker types (emoji, image) render in chat
 - **Real-time Testing**: Interactive environment to test sticker functionality
 
+## Content Restructuring
+
+### Focus Shift: From Emojis to Visual Content
+- **Removed Emoji Categories**: No more emotions, gestures, hearts, business, food tabs
+- **3 Main Categories Only**:
+  1. **Memes** - Image-based stickers and funny pictures
+  2. **GIFs** - Animated stickers from videos
+  3. **Create** - Tools to make custom memes and GIFs
+- **Image-Centric Design**: 3-column grid (vs 6 emoji columns) with larger, visual cards
+- **WhatsApp-like Experience**: Matches WhatsApp's focus on visual, shareable content
+
+### Mock Data Update
+- **Memes**: Real image URLs with funny/reaction-based content
+- **GIFs**: Animated content with proper GIF indicators
+- **Metadata**: Proper file URLs, thumbnails, and animation flags
+
 ## Key Improvements
 
 ### Visual Design
