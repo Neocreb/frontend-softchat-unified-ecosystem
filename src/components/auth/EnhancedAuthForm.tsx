@@ -13,8 +13,8 @@ import AuthFooter from "./AuthFooter";
 const EnhancedAuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("demo@softchat.com");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, signup, error: authError } = useAuth();
@@ -96,7 +96,10 @@ const EnhancedAuthForm = () => {
 
     try {
       console.log("Attempting demo login");
-      const result = await login("demo@softchat.com", "password123");
+      // Demo credentials - these should be environment variables in production
+      const DEMO_EMAIL = "demo@softchat.com";
+      const DEMO_PASSWORD = "password123";
+      const result = await login(DEMO_EMAIL, DEMO_PASSWORD);
       if (result.error) {
         const errorMessage = result.error.message || "Demo login failed";
         setError(errorMessage);
@@ -163,7 +166,7 @@ const EnhancedAuthForm = () => {
           <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
             <h4 className="text-sm font-medium text-blue-800 mb-1">Demo Account Available</h4>
             <p className="text-xs text-blue-600">
-              Email: demo@softchat.com | Password: password123
+              Demo credentials are available for testing purposes.
             </p>
             <p className="text-xs text-blue-500 mt-1">
               Click "Demo Login" for quick access, or create your own account.
