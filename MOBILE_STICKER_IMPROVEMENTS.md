@@ -1,7 +1,7 @@
-# Mobile Sticker Picker Improvements
+# Mobile Sticker Picker Improvements - Focused on Memes & GIFs
 
 ## Problem
-The WhatsApp-style sticker picker was not responsive on mobile devices, with content appearing cut off and poor user experience compared to WhatsApp's seamless design.
+The WhatsApp-style sticker picker was not responsive on mobile devices, with content appearing cut off and poor user experience compared to WhatsApp's seamless design. Additionally, the focus needed to shift from emoji-heavy content (since keyboards already handle emojis) to WhatsApp's unique features: **Memes** (image stickers) and **GIFs**.
 
 ## Solutions Implemented
 
