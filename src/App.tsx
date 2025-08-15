@@ -62,6 +62,7 @@ import Inbox from "./chat/Inbox";
 import ChatRoom from "./chat/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
 import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
+import ChatMobileTest from "./pages/ChatMobileTest";
 import EnhancedProfile from "./pages/EnhancedProfile";
 import UnifiedProfile from "./pages/UnifiedProfile";
 import ProfileStats from "./pages/profile/ProfileStats";
@@ -506,6 +507,7 @@ const AppRoutes = () => {
           <Route path="enhanced-freelance-demo" element={<EnhancedDashboardDemo userType="freelancer" />} />
           <Route path="enhanced-client-demo" element={<EnhancedDashboardDemo userType="client" />} />
           <Route path="whatsapp-chat-demo" element={<WhatsAppChatDemo />} />
+          <Route path="chat-mobile-test" element={<ChatMobileTest />} />
           <Route path="currency-demo" element={<CurrencyDemo />} />
           <Route
             path="ai-assistant"

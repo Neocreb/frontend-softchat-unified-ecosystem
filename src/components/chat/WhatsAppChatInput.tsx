@@ -26,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { MemeStickerPicker } from "./MemeStickerPicker";
 import { WhatsAppStickerPicker } from "./WhatsAppStickerPicker";
+import { MobileStickerBottomSheet } from "./MobileStickerBottomSheet";
 import { StickerData } from "@/types/sticker";
 
 interface WhatsAppChatInputProps {
@@ -331,82 +332,91 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
             }}
             className={cn(
               "pr-12 rounded-full border-2 transition-all duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-gray-50 dark:bg-gray-900 shadow-inner",
-              isMobile ? "h-11" : "h-10",
+              isMobile ? "h-11 text-base" : "h-10 text-sm",
+              isMobile && "touch-manipulation"
             )}
             disabled={disabled || isRecording}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="sentences"
+            spellCheck="true"
           />
 
           {/* Sticker/Emoji button */}
           <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
-            <Popover open={showStickers} onOpenChange={setShowStickers}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={cn(
-                    "hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200",
-                    isMobile ? "h-9 w-9" : "h-8 w-8"
-                  )}
+            {isMobile ? (
+              <MobileStickerBottomSheet
+                isOpen={showStickers}
+                onOpenChange={setShowStickers}
+                onStickerSelect={handleSendSticker}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200"
+                  >
+                    <Sticker className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  </Button>
+                }
+              />
+            ) : (
+              <Popover open={showStickers} onOpenChange={setShowStickers}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 hover:bg-yellow-100 dark:hover:bg-yellow-900/20 transition-all duration-200"
+                  >
+                    <Sticker className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  side="top"
+                  className="p-0 border-0 shadow-none bg-transparent w-auto"
+                  align="end"
+                  alignOffset={-20}
+                  sideOffset={5}
+                  avoidCollisions={true}
+                  collisionPadding={8}
                 >
-                  <Sticker className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                side={isMobile ? "top" : "top"}
-                className={cn(
-                  "p-0 border-0 shadow-none bg-transparent",
-                  isMobile
-                    ? "w-screen max-w-full mx-auto"
-                    : "w-auto"
-                )}
-                align={isMobile ? "center" : "end"}
-                alignOffset={isMobile ? 0 : -20}
-                sideOffset={isMobile ? 10 : 5}
-                avoidCollisions={true}
-                collisionPadding={isMobile ? 16 : 8}
-              >
-                <div className={cn(
-                  "flex flex-col",
-                  isMobile ? "gap-2 px-4" : "gap-2"
-                )}>
-                  {/* Mode toggle */}
-                  <div className={cn(
-                    "flex gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1",
-                    isMobile && "mx-auto"
-                  )}>
-                    <Button
-                      size="sm"
-                      variant={stickerPickerMode === "enhanced" ? "default" : "ghost"}
-                      onClick={() => setStickerPickerMode("enhanced")}
-                      className="text-xs"
-                    >
-                      Enhanced
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant={stickerPickerMode === "legacy" ? "default" : "ghost"}
-                      onClick={() => setStickerPickerMode("legacy")}
-                      className="text-xs"
-                    >
-                      Classic
-                    </Button>
-                  </div>
+                  <div className="flex flex-col gap-2">
+                    {/* Mode toggle */}
+                    <div className="flex gap-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-1 mx-auto">
+                      <Button
+                        size="sm"
+                        variant={stickerPickerMode === "enhanced" ? "default" : "ghost"}
+                        onClick={() => setStickerPickerMode("enhanced")}
+                        className="text-xs"
+                      >
+                        Enhanced
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={stickerPickerMode === "legacy" ? "default" : "ghost"}
+                        onClick={() => setStickerPickerMode("legacy")}
+                        className="text-xs"
+                      >
+                        Classic
+                      </Button>
+                    </div>
 
-                  {/* Sticker picker */}
-                  {stickerPickerMode === "enhanced" ? (
-                    <MemeStickerPicker
-                      onStickerSelect={handleSendSticker}
-                      onClose={() => setShowStickers(false)}
-                      isMobile={isMobile}
-                    />
-                  ) : (
-                    <WhatsAppStickerPicker
-                      onStickerSelect={handleLegacyStickerSelect}
-                    />
-                  )}
-                </div>
-              </PopoverContent>
-            </Popover>
+                    {/* Sticker picker */}
+                    {stickerPickerMode === "enhanced" ? (
+                      <MemeStickerPicker
+                        onStickerSelect={handleSendSticker}
+                        onClose={() => setShowStickers(false)}
+                        isMobile={false}
+                      />
+                    ) : (
+                      <WhatsAppStickerPicker
+                        onStickerSelect={handleLegacyStickerSelect}
+                        isMobile={false}
+                      />
+                    )}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            )}
           </div>
         </div>
 

@@ -70,17 +70,11 @@ interface MemeStickerPickerProps {
   isMobile?: boolean;
 }
 
-// Sticker picker tabs configuration
+// Sticker picker tabs configuration - focused on Memes, GIFs, Create
 const STICKER_TABS: StickerPickerTab[] = [
-  { id: "recent", name: "Recent", icon: <Clock className="w-4 h-4" /> },
-  { id: "favorites", name: "Favorites", icon: <Heart className="w-4 h-4" /> },
-  { id: "emotions", name: "Emotions", icon: <Smile className="w-4 h-4" /> },
-  { id: "gestures", name: "Gestures", icon: <ThumbsUp className="w-4 h-4" /> },
   { id: "memes", name: "Memes", icon: <Zap className="w-4 h-4" /> },
-  { id: "business", name: "Business", icon: <Briefcase className="w-4 h-4" /> },
-  { id: "food", name: "Food", icon: <Coffee className="w-4 h-4" /> },
-  { id: "my_packs", name: "My Packs", icon: <Users className="w-4 h-4" /> },
-  { id: "add_new", name: "Create", icon: <Plus className="w-4 h-4" /> },
+  { id: "gifs", name: "GIFs", icon: <Camera className="w-4 h-4" /> },
+  { id: "create", name: "Create", icon: <Plus className="w-4 h-4" /> },
 ];
 
 export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
@@ -90,38 +84,149 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   isMobile = false,
 }) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<string>("recent");
+  const [activeTab, setActiveTab] = useState<string>("memes");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [selectedPack, setSelectedPack] = useState<StickerPackData | null>(null);
   
-  // Mock data - would be fetched from API
+  // Mock data with Memes and GIFs - would be fetched from API
+  const mockPacks: StickerPackData[] = [
+    {
+      id: "memes",
+      name: "Memes",
+      description: "Funny image stickers and memes",
+      category: "memes" as StickerCategory,
+      stickers: [
+        {
+          id: "m1",
+          name: "Laughing Drake",
+          type: "image",
+          tags: ["funny", "meme", "reaction"],
+          fileUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop&crop=face",
+          thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=100&h=100&fit=crop&crop=face",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "memes",
+          packName: "Memes",
+          animated: false
+        },
+        {
+          id: "m2",
+          name: "Thinking Cat",
+          type: "image",
+          tags: ["thinking", "cat", "meme"],
+          fileUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&h=200&fit=crop&crop=face",
+          thumbnailUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&h=100&fit=crop&crop=face",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "memes",
+          packName: "Memes",
+          animated: false
+        },
+        {
+          id: "m3",
+          name: "Surprised Dog",
+          type: "image",
+          tags: ["surprised", "dog", "reaction"],
+          fileUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=200&h=200&fit=crop&crop=face",
+          thumbnailUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=100&h=100&fit=crop&crop=face",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "memes",
+          packName: "Memes",
+          animated: false
+        },
+      ],
+      creatorId: "system",
+      creatorName: "System",
+      downloadCount: 1000,
+      rating: 4.8,
+      isOfficial: true,
+      isPremium: false,
+      isCustom: false,
+      tags: ["memes", "funny"],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=100&h=100&fit=crop&crop=face",
+      price: 0,
+    },
+    {
+      id: "gifs",
+      name: "GIFs",
+      description: "Animated GIF stickers",
+      category: "gifs" as StickerCategory,
+      stickers: [
+        {
+          id: "g1",
+          name: "Dancing Cat",
+          type: "gif",
+          tags: ["dancing", "cat", "party"],
+          fileUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+          thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "gifs",
+          packName: "GIFs",
+          animated: true
+        },
+        {
+          id: "g2",
+          name: "Thumbs Up",
+          type: "gif",
+          tags: ["thumbs", "up", "approval"],
+          fileUrl: "https://media.giphy.com/media/111ebonMs90YLu/giphy.gif",
+          thumbnailUrl: "https://media.giphy.com/media/111ebonMs90YLu/200w_d.gif",
+          width: 200,
+          height: 200,
+          usageCount: 0,
+          packId: "gifs",
+          packName: "GIFs",
+          animated: true
+        },
+      ],
+      creatorId: "system",
+      creatorName: "System",
+      downloadCount: 800,
+      rating: 4.6,
+      isOfficial: true,
+      isPremium: false,
+      isCustom: false,
+      tags: ["gifs", "animated"],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
+      price: 0,
+    }
+  ];
+
   const [userLibrary, setUserLibrary] = useState<UserStickerLibrary>({
     recentStickers: [],
     favoriteStickers: [],
-    downloadedPacks: EMOJI_STICKER_PACKS,
+    downloadedPacks: mockPacks,
     customPacks: [],
   });
-  
-  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(EMOJI_STICKER_PACKS);
+
+  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(mockPacks);
   const [trendingPacks, setTrendingPacks] = useState<StickerPackData[]>([]);
 
   // Filter stickers based on search query
   const filteredStickers = useMemo(() => {
-    if (activeTab === "recent") return userLibrary.recentStickers;
-    if (activeTab === "favorites") return userLibrary.favoriteStickers;
-    if (activeTab === "my_packs") return userLibrary.customPacks.flatMap(pack => pack.stickers);
-    
+    if (activeTab === "create") return [];
+
     const pack = availablePacks.find(p => p.id === activeTab);
     if (!pack) return [];
-    
-    return pack.stickers.filter(sticker => 
-      searchQuery === "" || 
+
+    return pack.stickers.filter(sticker =>
+      searchQuery === "" ||
       sticker.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sticker.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     );
-  }, [activeTab, searchQuery, userLibrary, availablePacks]);
+  }, [activeTab, searchQuery, availablePacks]);
 
   const handleStickerClick = (sticker: StickerData) => {
     onStickerSelect(sticker);
@@ -194,11 +299,11 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
       return (
         <div className={cn(
           "flex flex-col items-center justify-center text-muted-foreground text-center",
-          isMobile ? "h-32 px-4" : "h-48"
+          isMobile ? "h-24 px-2" : "h-48"
         )}>
-          <Sparkles className={cn("mb-4 opacity-50", isMobile ? "w-8 h-8" : "w-12 h-12")} />
-          <p className={cn("font-medium", isMobile ? "text-sm" : "text-lg")}>No stickers found</p>
-          <p className={cn(isMobile ? "text-xs mt-1" : "text-sm")}>
+          <Sparkles className={cn("mb-2 opacity-50", isMobile ? "w-6 h-6" : "w-12 h-12")} />
+          <p className={cn("font-medium", isMobile ? "text-xs" : "text-lg")}>No stickers found</p>
+          <p className={cn(isMobile ? "text-[10px] mt-0.5" : "text-sm")}>
             {searchQuery ? "Try a different search" : "No stickers available"}
           </p>
         </div>
@@ -207,10 +312,10 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
     return (
       <div className={cn(
-        "grid gap-2",
+        "grid",
         viewMode === "grid"
-          ? (isMobile ? "grid-cols-5 gap-3" : "grid-cols-6 gap-2")
-          : "grid-cols-1"
+          ? (isMobile ? "grid-cols-3 gap-3" : "grid-cols-4 gap-3")
+          : "grid-cols-1 gap-2"
       )}>
         {stickers.map((sticker) => (
           <StickerCard
@@ -253,13 +358,19 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
     <div className={cn(
       "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg",
       isMobile
-        ? "w-full max-w-full h-[70vh] max-h-[500px] flex flex-col"
+        ? "w-full h-[65vh] max-h-[420px] flex flex-col mx-2"
         : "w-96 h-[500px] flex flex-col",
       className
     )}>
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-700 p-3 md:p-4 flex-shrink-0">
-        <div className="flex items-center justify-between mb-3">
+      <div className={cn(
+        "border-b border-gray-200 dark:border-gray-700 flex-shrink-0",
+        isMobile ? "p-2" : "p-3 md:p-4"
+      )}>
+        <div className={cn(
+          "flex items-center justify-between",
+          isMobile ? "mb-2" : "mb-3"
+        )}>
           <h3 className={cn("font-semibold", isMobile ? "text-base" : "text-lg")}>Stickers</h3>
           <div className="flex items-center gap-2">
             {!isMobile && (
@@ -287,12 +398,15 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className={cn(
+            "absolute left-3 text-muted-foreground",
+            isMobile ? "top-2 h-4 w-4" : "top-2.5 h-4 w-4"
+          )} />
           <Input
             placeholder={isMobile ? "Search..." : "Search stickers..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={cn("pl-10", isMobile ? "h-10" : "h-9")}
+            className={cn("pl-10", isMobile ? "h-8 text-sm" : "h-9")}
           />
         </div>
       </div>
@@ -302,26 +416,26 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
         <div className="border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
           <ScrollArea orientation="horizontal" className="w-full">
             <TabsList className={cn(
-              "inline-flex h-auto p-1 bg-transparent w-full",
-              isMobile ? "justify-start" : "justify-start"
+              "inline-flex h-auto bg-transparent w-full",
+              isMobile ? "p-0.5 justify-start" : "p-1 justify-start"
             )}>
               {STICKER_TABS.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
                   className={cn(
-                    "flex items-center gap-1 px-2 py-2 text-xs rounded-lg transition-all whitespace-nowrap",
+                    "flex items-center gap-1 text-xs rounded-lg transition-all whitespace-nowrap",
                     "data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900",
                     "data-[state=active]:text-blue-700 dark:data-[state=active]:text-blue-300",
-                    isMobile ? "min-w-[44px] flex-col gap-0.5" : "flex-row gap-2"
+                    isMobile ? "min-w-[38px] px-1 py-1.5 flex-col gap-0.5" : "px-2 py-2 flex-row gap-2"
                   )}
                 >
-                  <span className={isMobile ? "text-sm" : ""}>{tab.icon}</span>
+                  <span className={isMobile ? "text-xs" : ""}>{tab.icon}</span>
                   <span className={cn(
-                    isMobile ? "text-[10px] leading-tight" : "text-xs",
-                    isMobile && tab.name.length > 6 ? "hidden" : ""
+                    isMobile ? "text-[9px] leading-none" : "text-xs",
+                    isMobile && tab.name.length > 5 ? "hidden" : ""
                   )}>
-                    {isMobile ? tab.name.slice(0, 4) : tab.name}
+                    {isMobile ? tab.name.slice(0, 3) : tab.name}
                   </span>
                   {tab.count && tab.count > 0 && (
                     <Badge variant="secondary" className="text-xs px-1 py-0 h-3 min-w-[12px]">
@@ -340,45 +454,21 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
         {/* Content */}
         <div className="flex-1 overflow-hidden min-h-0">
           <ScrollArea className="h-full">
-            <div className={cn("p-3 md:p-4", isMobile && "pb-6")}>
-              {/* Recent Stickers */}
-              <TabsContent value="recent" className="mt-0">
+            <div className={cn(
+              isMobile ? "p-2 pb-4" : "p-3 md:p-4"
+            )}>
+              {/* Memes */}
+              <TabsContent value="memes" className="mt-0">
                 {renderStickerGrid(filteredStickers)}
               </TabsContent>
 
-              {/* Favorite Stickers */}
-              <TabsContent value="favorites" className="mt-0">
+              {/* GIFs */}
+              <TabsContent value="gifs" className="mt-0">
                 {renderStickerGrid(filteredStickers)}
-              </TabsContent>
-
-              {/* Category Stickers */}
-              {["emotions", "gestures", "memes", "business", "food"].map(category => (
-                <TabsContent key={category} value={category} className="mt-0">
-                  {renderStickerGrid(filteredStickers)}
-                </TabsContent>
-              ))}
-
-              {/* My Packs */}
-              <TabsContent value="my_packs" className="mt-0">
-                {userLibrary.customPacks.length > 0 ? (
-                  renderPackGrid(userLibrary.customPacks)
-                ) : (
-                  <div className="text-center py-8">
-                    <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                    <p className="text-lg font-medium mb-2">No custom packs yet</p>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Create your own sticker packs to express yourself
-                    </p>
-                    <Button onClick={() => setShowCreateDialog(true)}>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create Pack
-                    </Button>
-                  </div>
-                )}
               </TabsContent>
 
               {/* Create New */}
-              <TabsContent value="add_new" className="mt-0">
+              <TabsContent value="create" className="mt-0">
                 <StickerCreationPanel
                   isMobile={isMobile}
                   onCreatePack={() => setShowCreateDialog(true)}
@@ -554,23 +644,41 @@ const StickerCard: React.FC<StickerCardProps> = ({
       <Button
         variant="ghost"
         className={cn(
-          "p-0 text-2xl hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
+          "p-1 hover:bg-muted/70 rounded-lg transition-all duration-200 relative touch-manipulation",
           isMobile
-            ? "h-12 w-12 min-h-[48px] min-w-[48px] active:scale-95 hover:scale-105"
-            : "h-14 w-14 hover:scale-110 active:scale-95"
+            ? "h-20 w-full min-h-[80px] active:scale-95"
+            : "h-24 w-full hover:scale-105 active:scale-95"
         )}
         onClick={isMobile ? undefined : onClick}
         onTouchStart={isMobile ? handleTouchStart : undefined}
         onTouchEnd={isMobile ? handleTouchEnd : undefined}
         onMouseLeave={handleMouseLeave}
       >
-        <span className={cn(isMobile ? "text-xl" : "text-2xl")}>
-          {sticker.emoji}
-        </span>
+        {sticker.type === "image" || sticker.type === "gif" ? (
+          <div className="relative w-full h-full">
+            <img
+              src={sticker.thumbnailUrl || sticker.fileUrl}
+              alt={sticker.name}
+              className="w-full h-full object-cover rounded-md"
+            />
+            {sticker.animated && (
+              <div className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
+                GIF
+              </div>
+            )}
+          </div>
+        ) : (
+          <span className={cn(isMobile ? "text-2xl" : "text-4xl")}>
+            {sticker.emoji}
+          </span>
+        )}
 
         {/* Animated indicator */}
         {sticker.type === "animated" && (
-          <div className="absolute top-0 right-0 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+          <div className={cn(
+            "absolute top-0 right-0 bg-blue-500 rounded-full animate-pulse",
+            isMobile ? "w-1.5 h-1.5" : "w-2 h-2"
+          )}></div>
         )}
       </Button>
 
@@ -593,8 +701,8 @@ const StickerCard: React.FC<StickerCardProps> = ({
 
       {/* Mobile: Show favorite status as small indicator */}
       {isMobile && isFavorite && (
-        <div className="absolute -top-1 -right-1">
-          <Heart className="w-3 h-3 text-red-500 fill-current" />
+        <div className="absolute -top-0.5 -right-0.5">
+          <Heart className="w-2.5 h-2.5 text-red-500 fill-current" />
         </div>
       )}
 
