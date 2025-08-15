@@ -302,7 +302,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                 </div>
               </ScrollArea>
             </div>
-          </div>
+          </Tabs>
 
           {/* Bottom actions bar */}
           <div className="flex items-center justify-between p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
