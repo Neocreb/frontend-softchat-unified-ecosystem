@@ -57,7 +57,7 @@ export const ChatMobileTest: React.FC = () => {
     setTimeout(() => {
       const responses = {
         text: "That's awesome! 😊",
-        sticker: "Nice sticker! 👍",
+        sticker: metadata?.stickerType === "gif" ? "Haha, love that GIF! 😂" : "Great meme choice! 🔥",
         voice: "Got your voice message!",
         media: "Cool photo!",
       };
