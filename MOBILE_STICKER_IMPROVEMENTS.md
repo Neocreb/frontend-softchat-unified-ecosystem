@@ -37,8 +37,10 @@ The WhatsApp-style sticker picker was not responsive on mobile devices, with con
 - **Drag Handle**: Visual indicator for sheet interaction
 - **Action Bar**: Quick access to keyboard, camera, and create functions
 - **Search Integration**: Prominent search functionality
-- **Category Tabs**: WhatsApp-style horizontal scrolling tabs
-- **Grid Layout**: 6-column responsive grid for optimal thumb navigation
+- **3-Category Focus**: **Memes**, **GIFs**, and **Create** tabs only
+- **Grid Layout**: 3-column responsive grid optimized for image/GIF stickers
+- **Image-First Design**: Larger cards to showcase meme and GIF content
+- **Create Panel**: Dedicated space for meme and GIF creation tools
 - **Bottom Actions**: Status indicator and quick action buttons
 - **Smooth Animations**: Proper slide-in/out animations
 
