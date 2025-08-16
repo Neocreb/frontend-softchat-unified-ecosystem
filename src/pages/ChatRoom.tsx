@@ -162,7 +162,7 @@ const ChatRoom = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [chatId, chatType, user?.id, toast]);
+  }, [threadId, chatType, user?.id, toast]);
 
   const getContextualMessage = (type: UnifiedChatType) => {
     switch (type) {
