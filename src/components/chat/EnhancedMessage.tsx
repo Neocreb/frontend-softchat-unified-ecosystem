@@ -133,13 +133,17 @@ const reactionEmojis = [
 
 export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   message,
-  isCurrentUser,
+  currentUserId,
+  currentUserRole = 'member',
+  isGroupMessage = false,
   isMobile = false,
   onReply,
   onForward,
   onReact,
   onEdit,
   onDelete,
+  onPin,
+  onMention,
   showAvatar = true,
   groupWithPrevious = false,
   userCollections = { memes: [], gifs: [], stickers: [] },
@@ -147,8 +151,10 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   onRemoveFromCollection,
   onSendMessage,
   onReportMedia,
-  currentUserId = "current_user",
+  // Legacy support
+  isCurrentUser: legacyIsCurrentUser,
 }) => {
+  const isCurrentUser = legacyIsCurrentUser ?? (message.senderId === currentUserId);
   const { toast } = useToast();
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
