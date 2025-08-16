@@ -250,7 +250,87 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
     if (user) {
       setConversations(mockConversations);
       setLoading(false);
-      
+
+      // Load mock messages for each conversation
+      const mockMessagesData: Record<string, EnhancedChatMessage[]> = {
+        "social_1": [
+          {
+            id: "msg_1",
+            senderId: "user_1",
+            senderName: "Alice Johnson",
+            senderAvatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+            content: "Hey! How was your weekend?",
+            type: "text",
+            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+          {
+            id: "msg_2",
+            senderId: user?.id || "current",
+            senderName: "You",
+            senderAvatar: user?.profile?.avatar_url,
+            content: "It was great! Went hiking with friends. How about you?",
+            type: "text",
+            timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+        ],
+        "social_group_1": [
+          {
+            id: "msg_3",
+            senderId: "user_1",
+            senderName: "Alice",
+            senderAvatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+            content: "Let's plan the family dinner!",
+            type: "text",
+            timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+          {
+            id: "msg_4",
+            senderId: "user_2",
+            senderName: "Bob",
+            senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+            content: "Great idea! What date works for everyone?",
+            type: "text",
+            timestamp: new Date(Date.now() - 55 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+        ],
+        "freelance_1": [
+          {
+            id: "msg_5",
+            senderId: "client_1",
+            senderName: "Tech Startup Inc",
+            senderAvatar: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100",
+            content: "The project requirements have been updated",
+            type: "text",
+            timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+            status: "delivered",
+            reactions: [],
+          },
+        ],
+        "marketplace_1": [
+          {
+            id: "msg_6",
+            senderId: user?.id || "current",
+            senderName: "You",
+            senderAvatar: user?.profile?.avatar_url,
+            content: "Is this item still available?",
+            type: "text",
+            timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+            status: "sent",
+            reactions: [],
+          },
+        ],
+      };
+
+      setMessages(mockMessagesData);
+
       // Load mock contacts
       const mockContacts: ChatParticipant[] = [
         {
@@ -262,11 +342,19 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
           isVerified: true,
         },
         {
-          id: "user_2", 
+          id: "user_2",
           name: "Bob Smith",
           avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
           isOnline: false,
           username: "bobsmith",
+        },
+        {
+          id: "user_3",
+          name: "Carol Williams",
+          avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
+          isOnline: true,
+          username: "carolw",
+          isVerified: true,
         },
       ];
       setAvailableContacts(mockContacts);
