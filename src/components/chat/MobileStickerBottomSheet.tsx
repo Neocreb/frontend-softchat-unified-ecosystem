@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { MediaCreationPanel } from "./MediaCreationPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -169,6 +170,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("memes");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showCreatePanel, setShowCreatePanel] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
 
   const filteredStickers = React.useMemo(() => {
@@ -219,10 +221,8 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                   variant="ghost"
                   size="icon"
                   onClick={() => {
-                    toast({
-                      title: "Camera",
-                      description: "Camera sticker creation coming soon!",
-                    });
+                    setActiveTab("create");
+                    setShowCreatePanel(true);
                   }}
                   className="h-9 w-9"
                 >
@@ -232,11 +232,9 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                   variant="ghost"
                   size="icon"
                   onClick={() => {
+                    setActiveTab("create");
+                    setShowCreatePanel(true);
                     onCreateSticker?.();
-                    toast({
-                      title: "Create",
-                      description: "Custom sticker creation coming soon!",
-                    });
                   }}
                   className="h-9 w-9"
                 >
