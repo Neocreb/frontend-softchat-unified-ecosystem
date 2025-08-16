@@ -96,13 +96,17 @@ export interface EnhancedChatMessage {
 
 interface EnhancedMessageProps {
   message: EnhancedChatMessage;
-  isCurrentUser: boolean;
+  currentUserId: string;
+  currentUserRole?: 'admin' | 'member';
+  isGroupMessage?: boolean;
   isMobile?: boolean;
   onReply?: (message: EnhancedChatMessage) => void;
   onForward?: (message: EnhancedChatMessage) => void;
   onReact?: (messageId: string, emoji: string) => void;
   onEdit?: (messageId: string, newContent: string) => void;
   onDelete?: (messageId: string) => void;
+  onPin?: (messageId: string, pin: boolean) => void;
+  onMention?: (userId: string) => void;
   showAvatar?: boolean;
   groupWithPrevious?: boolean;
   userCollections?: {
@@ -114,7 +118,8 @@ interface EnhancedMessageProps {
   onRemoveFromCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
   onSendMessage?: (content: string, type: "sticker" | "media", metadata?: any) => void;
   onReportMedia?: (mediaId: string, reason: string) => void;
-  currentUserId?: string;
+  // Legacy support
+  isCurrentUser?: boolean;
 }
 
 const reactionEmojis = [
