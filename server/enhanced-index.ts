@@ -9,6 +9,10 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+console.log('🚀 Starting backend server...');
+console.log('📁 Current directory:', process.cwd());
+console.log('🔧 Node version:', process.version);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
