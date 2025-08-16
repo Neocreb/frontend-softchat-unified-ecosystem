@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { MemeGifActionDialog } from "./MemeGifActionDialog";
+import { StickerData } from "@/types/sticker";
 import {
   Play,
   Pause,
