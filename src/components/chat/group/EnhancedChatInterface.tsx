@@ -190,23 +190,8 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
     },
   ];
 
-  // Handle tab changes with navigation
+  // Handle tab changes - stay within chat interface
   const handleTabChange = (tabId: UnifiedChatType) => {
-    // Handle navigation for non-chat tabs
-    if (tabId === "freelance") {
-      navigate("/app/freelance");
-      return;
-    }
-    if (tabId === "marketplace") {
-      navigate("/app/marketplace");
-      return;
-    }
-    if (tabId === "crypto") {
-      navigate("/app/crypto");
-      return;
-    }
-
-    // For chat tabs, update active tab
     setActiveTab(tabId);
     setSelectedChat(null); // Clear selection when switching tabs
   };
