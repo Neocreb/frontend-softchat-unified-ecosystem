@@ -369,7 +369,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                 onClick={() => {
                   toast({
                     title: "GIF",
-                    description: "GIF stickers coming soon!",
+                    description: "Switch to Create tab to make GIF stickers!",
                   });
                 }}
                 className="h-8 px-3 text-xs"
@@ -380,9 +380,10 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                 variant="outline"
                 size="sm"
                 onClick={() => {
+                  setActiveTab("create");
                   toast({
                     title: "Create",
-                    description: "Custom sticker packs coming soon!",
+                    description: "Create your own custom stickers!",
                   });
                 }}
                 className="h-8 px-3 text-xs"
