@@ -62,6 +62,7 @@ import {
   UserStickerLibrary,
   EMOJI_STICKER_PACKS
 } from "@/types/sticker";
+import { SAMPLE_MEMES, SAMPLE_GIFS, COMMUNITY_MEME_GIF_PACKS } from "@/data/sampleMemesGifsData";
 import { EnhancedMediaCreationPanel } from "./EnhancedMediaCreationPanel";
 import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
@@ -93,51 +94,54 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [selectedPack, setSelectedPack] = useState<StickerPackData | null>(null);
   
-  // Create dynamic packs from user collections
-  const userCollectionPacks: StickerPackData[] = [
-    {
-      id: "memes",
-      name: "My Memes",
-      description: `Your custom memes (${collections.memes.length})`,
-      category: "memes" as StickerCategory,
-      stickers: collections.memes,
-      creatorId: "user",
-      creatorName: "You",
-      downloadCount: 0,
-      rating: 5.0,
-      ratingCount: 0,
-      isPublic: false,
-      isPremium: false,
-      isOfficial: false,
-      isCustom: true,
-      tags: ["memes", "custom"],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      thumbnailUrl: collections.memes[0]?.thumbnailUrl || "",
-      price: 0,
-    },
-    {
-      id: "gifs",
-      name: "My GIFs",
-      description: `Your animated GIFs (${collections.gifs.length})`,
-      category: "gifs" as StickerCategory,
-      stickers: collections.gifs,
-      creatorId: "user",
-      creatorName: "You",
-      downloadCount: 0,
-      rating: 5.0,
-      ratingCount: 0,
-      isPublic: false,
-      isPremium: false,
-      isOfficial: false,
-      isCustom: true,
-      tags: ["gifs", "animated", "custom"],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      thumbnailUrl: collections.gifs[0]?.thumbnailUrl || "",
-      price: 0,
-    }
-  ];
+  // Create unified packs that combine user collections with community content
+  const unifiedMemePack: StickerPackData = {
+    id: "memes",
+    name: "Memes",
+    description: `All memes (${collections.memes.length + SAMPLE_MEMES.length})`,
+    category: "memes" as StickerCategory,
+    // User memes first, then community memes
+    stickers: [...collections.memes, ...SAMPLE_MEMES],
+    creatorId: "unified",
+    creatorName: "Community",
+    downloadCount: 0,
+    rating: 5.0,
+    ratingCount: 0,
+    isPublic: true,
+    isPremium: false,
+    isOfficial: false,
+    isCustom: false,
+    tags: ["memes", "community", "unified"],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    thumbnailUrl: collections.memes[0]?.thumbnailUrl || SAMPLE_MEMES[0]?.thumbnailUrl || "",
+    price: 0,
+  };
+
+  const unifiedGifPack: StickerPackData = {
+    id: "gifs",
+    name: "GIFs",
+    description: `All GIFs (${collections.gifs.length + SAMPLE_GIFS.length})`,
+    category: "gifs" as StickerCategory,
+    // User GIFs first, then community GIFs
+    stickers: [...collections.gifs, ...SAMPLE_GIFS],
+    creatorId: "unified",
+    creatorName: "Community",
+    downloadCount: 0,
+    rating: 5.0,
+    ratingCount: 0,
+    isPublic: true,
+    isPremium: false,
+    isOfficial: false,
+    isCustom: false,
+    tags: ["gifs", "animated", "community", "unified"],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    thumbnailUrl: collections.gifs[0]?.thumbnailUrl || SAMPLE_GIFS[0]?.thumbnailUrl || "",
+    price: 0,
+  };
+
+  const userCollectionPacks: StickerPackData[] = [unifiedMemePack, unifiedGifPack];
 
   const [userLibrary, setUserLibrary] = useState<UserStickerLibrary>({
     recentStickers: [],
@@ -149,52 +153,55 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(userCollectionPacks);
   const [trendingPacks, setTrendingPacks] = useState<StickerPackData[]>([]);
 
-  // Update packs when collections change
+  // Update packs when collections change to maintain unified view
   React.useEffect(() => {
-    const updatedPacks = [
-      {
-        id: "memes",
-        name: "My Memes",
-        description: `Your custom memes (${collections.memes.length})`,
-        category: "memes" as StickerCategory,
-        stickers: collections.memes,
-        creatorId: "user",
-        creatorName: "You",
-        downloadCount: 0,
-        rating: 5.0,
-        ratingCount: 0,
-        isPublic: false,
-        isPremium: false,
-        isOfficial: false,
-        isCustom: true,
-        tags: ["memes", "custom"],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        thumbnailUrl: collections.memes[0]?.thumbnailUrl || "",
-        price: 0,
-      },
-      {
-        id: "gifs",
-        name: "My GIFs",
-        description: `Your animated GIFs (${collections.gifs.length})`,
-        category: "gifs" as StickerCategory,
-        stickers: collections.gifs,
-        creatorId: "user",
-        creatorName: "You",
-        downloadCount: 0,
-        rating: 5.0,
-        ratingCount: 0,
-        isPublic: false,
-        isPremium: false,
-        isOfficial: false,
-        isCustom: true,
-        tags: ["gifs", "animated", "custom"],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        thumbnailUrl: collections.gifs[0]?.thumbnailUrl || "",
-        price: 0,
-      }
-    ];
+    const updatedUnifiedMemePack: StickerPackData = {
+      id: "memes",
+      name: "Memes",
+      description: `All memes (${collections.memes.length + SAMPLE_MEMES.length})`,
+      category: "memes" as StickerCategory,
+      // User memes first, then community memes
+      stickers: [...collections.memes, ...SAMPLE_MEMES],
+      creatorId: "unified",
+      creatorName: "Community",
+      downloadCount: 0,
+      rating: 5.0,
+      ratingCount: 0,
+      isPublic: true,
+      isPremium: false,
+      isOfficial: false,
+      isCustom: false,
+      tags: ["memes", "community", "unified"],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      thumbnailUrl: collections.memes[0]?.thumbnailUrl || SAMPLE_MEMES[0]?.thumbnailUrl || "",
+      price: 0,
+    };
+
+    const updatedUnifiedGifPack: StickerPackData = {
+      id: "gifs",
+      name: "GIFs",
+      description: `All GIFs (${collections.gifs.length + SAMPLE_GIFS.length})`,
+      category: "gifs" as StickerCategory,
+      // User GIFs first, then community GIFs
+      stickers: [...collections.gifs, ...SAMPLE_GIFS],
+      creatorId: "unified",
+      creatorName: "Community",
+      downloadCount: 0,
+      rating: 5.0,
+      ratingCount: 0,
+      isPublic: true,
+      isPremium: false,
+      isOfficial: false,
+      isCustom: false,
+      tags: ["gifs", "animated", "community", "unified"],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      thumbnailUrl: collections.gifs[0]?.thumbnailUrl || SAMPLE_GIFS[0]?.thumbnailUrl || "",
+      price: 0,
+    };
+
+    const updatedPacks = [updatedUnifiedMemePack, updatedUnifiedGifPack];
 
     setAvailablePacks(updatedPacks);
     setUserLibrary(prev => ({
@@ -291,9 +298,9 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
           isMobile ? "h-24 px-2" : "h-48"
         )}>
           <Sparkles className={cn("mb-2 opacity-50", isMobile ? "w-6 h-6" : "w-12 h-12")} />
-          <p className={cn("font-medium", isMobile ? "text-xs" : "text-lg")}>No stickers found</p>
+          <p className={cn("font-medium", isMobile ? "text-xs" : "text-lg")}>No {activeTab} found</p>
           <p className={cn(isMobile ? "text-[10px] mt-0.5" : "text-sm")}>
-            {searchQuery ? "Try a different search" : "No stickers available"}
+            {searchQuery ? "Try a different search" : `Create your own ${activeTab} using the Create tab!`}
           </p>
         </div>
       );
@@ -466,7 +473,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
                   onMediaSaved={(mediaId, collection) => {
                     toast({
                       title: "Media saved!",
-                      description: `Your ${collection.slice(0, -1)} has been saved to your collection`,
+                      description: `Your ${collection.slice(0, -1)} has been saved to your collection and is now available in the ${collection.charAt(0).toUpperCase() + collection.slice(1)} tab`,
                     });
                     // Switch to the appropriate tab to show the saved media
                     if (collection === "memes") {
@@ -657,16 +664,28 @@ const StickerCard: React.FC<StickerCardProps> = ({
         onTouchEnd={isMobile ? handleTouchEnd : undefined}
         onMouseLeave={handleMouseLeave}
       >
-        {sticker.type === "image" || sticker.type === "gif" ? (
+        {sticker.type === "image" || sticker.type === "gif" || sticker.type === "meme" ? (
           <div className="relative w-full h-full">
             <img
               src={sticker.thumbnailUrl || sticker.fileUrl}
               alt={sticker.name}
               className="w-full h-full object-cover rounded-md"
+              loading="lazy"
             />
-            {sticker.animated && (
+            {(sticker.animated || sticker.type === "gif") && (
               <div className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
                 GIF
+              </div>
+            )}
+            {sticker.type === "meme" && !sticker.animated && (
+              <div className="absolute bottom-1 left-1 bg-purple-600/80 text-white text-xs px-1 py-0.5 rounded">
+                MEME
+              </div>
+            )}
+            {/* Show if this is user-created content */}
+            {sticker.tags?.includes("user-generated") && (
+              <div className="absolute top-1 left-1 bg-blue-600/80 text-white text-xs px-1 py-0.5 rounded">
+                YOURS
               </div>
             )}
           </div>
