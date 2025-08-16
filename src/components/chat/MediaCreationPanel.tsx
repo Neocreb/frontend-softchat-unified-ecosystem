@@ -444,13 +444,26 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
                 className="w-full border rounded-lg max-h-60"
               />
               
-              <Button 
-                onClick={() => createGifPreview(uploadedFile)} 
+              <Button
+                onClick={() => createGifPreview(uploadedFile)}
                 disabled={processing}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               >
-                {processing ? "Processing..." : "Create GIF"}
+                {processing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Create Animated Sticker
+                  </>
+                )}
               </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                Converting your video to an animated sticker
+              </p>
             </div>
           )}
         </div>
