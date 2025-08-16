@@ -664,16 +664,28 @@ const StickerCard: React.FC<StickerCardProps> = ({
         onTouchEnd={isMobile ? handleTouchEnd : undefined}
         onMouseLeave={handleMouseLeave}
       >
-        {sticker.type === "image" || sticker.type === "gif" ? (
+        {sticker.type === "image" || sticker.type === "gif" || sticker.type === "meme" ? (
           <div className="relative w-full h-full">
             <img
               src={sticker.thumbnailUrl || sticker.fileUrl}
               alt={sticker.name}
               className="w-full h-full object-cover rounded-md"
+              loading="lazy"
             />
-            {sticker.animated && (
+            {(sticker.animated || sticker.type === "gif") && (
               <div className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
                 GIF
+              </div>
+            )}
+            {sticker.type === "meme" && !sticker.animated && (
+              <div className="absolute bottom-1 left-1 bg-purple-600/80 text-white text-xs px-1 py-0.5 rounded">
+                MEME
+              </div>
+            )}
+            {/* Show if this is user-created content */}
+            {sticker.tags?.includes("user-generated") && (
+              <div className="absolute top-1 left-1 bg-blue-600/80 text-white text-xs px-1 py-0.5 rounded">
+                YOURS
               </div>
             )}
           </div>
