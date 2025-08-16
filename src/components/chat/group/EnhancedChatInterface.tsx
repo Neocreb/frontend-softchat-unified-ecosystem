@@ -663,7 +663,10 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
             )}
 
             {/* Message Input */}
-            <div className="border-t p-4">
+            <div className={cn(
+              "border-t p-4 bg-background/95 backdrop-blur-sm",
+              isMobile && "p-3 pb-safe-area-inset-bottom"
+            )}>
               <WhatsAppChatInput
                 value={messageInput}
                 onChange={setMessageInput}
