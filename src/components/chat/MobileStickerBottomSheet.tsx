@@ -295,8 +295,10 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
                       {tab.id === "create" ? (
                         showCreatePanel ? (
-                          <MediaCreationPanel
+                          <EnhancedMediaCreationPanel
                             isMobile={true}
+                            isPremium={true} // TODO: Get from user context
+                            userCredits={10} // TODO: Get from user context
                             onStickerCreate={(stickerData) => {
                               // Create a sticker object and send it
                               const sticker: StickerData = {
