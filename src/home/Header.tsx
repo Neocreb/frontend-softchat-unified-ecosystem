@@ -70,6 +70,10 @@ const Header = () => {
               mobile={true}
               closeMenu={() => setIsMobileMenuOpen(false)}
             />
+            <div className="flex items-center justify-between pt-4 border-t border-border/50">
+              <span className="text-sm text-muted-foreground">Theme</span>
+              <ThemeToggle />
+            </div>
             <Button className="btn-primary w-full" asChild>
               <a
                 href="https://app.softchat.com"
