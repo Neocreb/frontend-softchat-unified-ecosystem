@@ -61,7 +61,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'groups',
-      label: 'Groups',
+      label: '👥',
       count: groupsCount,
       active: activeFilter.type === 'groups',
       onClick: () => onFilterChange({ ...activeFilter, type: 'groups' }),
@@ -69,7 +69,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'direct',
-      label: 'Direct',
+      label: '👤',
       count: directCount,
       active: activeFilter.type === 'direct',
       onClick: () => onFilterChange({ ...activeFilter, type: 'direct' }),
@@ -77,7 +77,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'unread',
-      label: 'Unread',
+      label: '📩',
       count: unreadCount,
       active: activeFilter.showUnread,
       onClick: () => onFilterChange({ ...activeFilter, showUnread: !activeFilter.showUnread }),
@@ -85,7 +85,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'pinned',
-      label: 'Pinned',
+      label: '📌',
       count: pinnedCount,
       active: activeFilter.showPinned,
       onClick: () => onFilterChange({ ...activeFilter, showPinned: !activeFilter.showPinned }),
@@ -102,11 +102,10 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
   ];
 
   return (
-    <div className={cn("flex items-center gap-2 pb-4 border-b", className)}>
+    <div className={cn("flex items-center gap-2 pb-3", className)}>
       {/* Quick Filters */}
-      <div className="flex items-center gap-1 flex-1 overflow-x-auto scrollbar-hide">
+      <div className="flex items-center gap-1.5 flex-1 overflow-x-auto scrollbar-hide">
         {quickFilters.map((filter) => {
-          const Icon = filter.icon;
           return (
             <Button
               key={filter.id}
@@ -114,18 +113,17 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
               size="sm"
               onClick={filter.onClick}
               className={cn(
-                "flex items-center gap-1.5 whitespace-nowrap",
+                "flex items-center gap-1 whitespace-nowrap min-w-0 px-3 py-1.5 h-auto text-xs",
                 filter.active && "bg-primary text-primary-foreground"
               )}
             >
-              {Icon && <Icon className="h-3.5 w-3.5" />}
-              <span>{filter.label}</span>
+              <span className="text-sm">{filter.label}</span>
               {filter.count > 0 && (
-                <Badge 
-                  variant={filter.active ? "secondary" : "outline"} 
-                  className="text-xs h-4 px-1.5"
+                <Badge
+                  variant={filter.active ? "secondary" : "outline"}
+                  className="text-xs h-4 px-1 min-w-[1.25rem] flex items-center justify-center"
                 >
-                  {filter.count}
+                  {filter.count > 99 ? '99+' : filter.count}
                 </Badge>
               )}
             </Button>

@@ -229,60 +229,63 @@ export const ChatListItem: React.FC<ChatListItemProps> = ({
         {renderChatContent()}
       </div>
       
-      <div className="flex flex-col items-end gap-1 ml-3">
+      <div className="flex flex-col items-end gap-1 ml-2">
         <span className="text-xs text-muted-foreground">
           {formatTime(chat.lastMessageAt)}
         </span>
-        
+
         <div className="flex items-center gap-1">
           {chat.unreadCount && chat.unreadCount > 0 && (
             <Badge className="h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
               {chat.unreadCount > 99 ? '99+' : chat.unreadCount}
             </Badge>
           )}
-          
-          {/* Quick Actions (visible on hover) */}
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+
+          {/* Quick Actions - Always visible on mobile, hover on desktop */}
+          <div className="md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
             {onCall && (
               <>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 w-7 p-0"
+                  className="h-8 w-8 p-0 md:h-7 md:w-7"
                   onClick={(e) => {
                     e.stopPropagation();
                     onCall(chat.id, 'voice');
                   }}
                 >
-                  <Phone className="h-3 w-3" />
+                  <Phone className="h-3.5 w-3.5 md:h-3 md:w-3" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 w-7 p-0"
+                  className="h-8 w-8 p-0 md:h-7 md:w-7"
                   onClick={(e) => {
                     e.stopPropagation();
                     onCall(chat.id, 'video');
                   }}
                 >
-                  <Video className="h-3 w-3" />
+                  <Video className="h-3.5 w-3.5 md:h-3 md:w-3" />
                 </Button>
               </>
             )}
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 w-7 p-0"
+                  className="h-8 w-8 p-0 md:h-7 md:w-7"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <MoreVertical className="h-3 w-3" />
+                  <MoreVertical className="h-3.5 w-3.5 md:h-3 md:w-3" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onPin?.(chat.id, !chat.isPinned)}>
+                <DropdownMenuItem onClick={(e) => {
+                  e.stopPropagation();
+                  onPin?.(chat.id, !chat.isPinned);
+                }}>
                   {chat.isPinned ? (
                     <>
                       <PinOff className="h-4 w-4 mr-2" />
@@ -295,8 +298,11 @@ export const ChatListItem: React.FC<ChatListItemProps> = ({
                     </>
                   )}
                 </DropdownMenuItem>
-                
-                <DropdownMenuItem onClick={() => onMute?.(chat.id, !chat.isMuted)}>
+
+                <DropdownMenuItem onClick={(e) => {
+                  e.stopPropagation();
+                  onMute?.(chat.id, !chat.isMuted);
+                }}>
                   {chat.isMuted ? (
                     <>
                       <Volume2 className="h-4 w-4 mr-2" />
@@ -309,16 +315,22 @@ export const ChatListItem: React.FC<ChatListItemProps> = ({
                     </>
                   )}
                 </DropdownMenuItem>
-                
+
                 <DropdownMenuSeparator />
-                
-                <DropdownMenuItem onClick={() => onArchive?.(chat.id)}>
+
+                <DropdownMenuItem onClick={(e) => {
+                  e.stopPropagation();
+                  onArchive?.(chat.id);
+                }}>
                   <Archive className="h-4 w-4 mr-2" />
                   Archive Chat
                 </DropdownMenuItem>
-                
-                <DropdownMenuItem 
-                  onClick={() => onDelete?.(chat.id)}
+
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete?.(chat.id);
+                  }}
                   className="text-destructive"
                 >
                   <Trash2 className="h-4 w-4 mr-2" />

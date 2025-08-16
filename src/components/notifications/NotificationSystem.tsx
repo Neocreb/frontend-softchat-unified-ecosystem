@@ -278,10 +278,42 @@ export const NotificationSystem: React.FC<NotificationSystemProps> = ({
       }
     };
 
+    const handleChatNotification = (event: CustomEvent) => {
+      const { type, title, message, fromUserId, chatId, chatType } = event.detail;
+
+      // Create chat notification
+      const chatNotification: Notification = {
+        id: Date.now().toString(),
+        type: chatType || 'social',
+        title: title,
+        message: message,
+        timestamp: new Date(),
+        read: false,
+        priority: 'medium',
+        actionUrl: `/app/chat?type=${chatType}&thread=${chatId}`,
+        actionLabel: 'View Chat',
+        data: {
+          fromUserId,
+          chatId,
+          chatType,
+        }
+      };
+
+      setNotifications(prev => [chatNotification, ...prev]);
+      setUnreadCount(prev => prev + 1);
+
+      // Play notification sound if enabled
+      if (settings.sound && audioRef.current) {
+        audioRef.current.play().catch(() => {});
+      }
+    };
+
     window.addEventListener('crypto-notification', handleCryptoNotification as EventListener);
+    window.addEventListener('chat-notification', handleChatNotification as EventListener);
 
     return () => {
       window.removeEventListener('crypto-notification', handleCryptoNotification as EventListener);
+      window.removeEventListener('chat-notification', handleChatNotification as EventListener);
     };
   }, [settings.sound]);
 
