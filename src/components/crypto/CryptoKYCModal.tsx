@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -140,10 +139,10 @@ const CryptoKYCModal = ({ isOpen, onClose, onSubmit }: CryptoKYCModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md crypto-card-premium crypto-border-premium">
         <DialogHeader>
-          <DialogTitle>Wallet Verification (KYC)</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="crypto-text-premium">Wallet Verification (KYC)</DialogTitle>
+          <DialogDescription className="crypto-text-secondary-premium">
             Verify your identity to unlock full wallet functionality
           </DialogDescription>
         </DialogHeader>
