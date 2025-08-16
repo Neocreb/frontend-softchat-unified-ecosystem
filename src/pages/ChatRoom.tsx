@@ -141,9 +141,11 @@ const ChatRoom = () => {
         setChat(mockChat);
         setMessages(mockMessages);
         setLoading(false);
+        clearTimeout(timeoutId); // Clear timeout on success
       } catch (error) {
         console.error("Error loading chat:", error);
         setLoading(false);
+        clearTimeout(timeoutId); // Clear timeout on error
         toast({
           title: "Error",
           description: "Failed to load chat. Please try again.",
@@ -153,6 +155,11 @@ const ChatRoom = () => {
     };
 
     loadChatData();
+
+    // Cleanup timeout on unmount
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [chatId, chatType, user?.id, toast]);
 
   const getContextualMessage = (type: UnifiedChatType) => {
