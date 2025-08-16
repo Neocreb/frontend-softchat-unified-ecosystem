@@ -41,6 +41,11 @@ interface WhatsAppChatInputProps {
   isMobile?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  onMediaSaved?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onSaveToCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onRemoveFromCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onReportMedia?: (mediaId: string, reason: string) => void;
+  currentUserId?: string;
 }
 
 export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
