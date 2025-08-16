@@ -281,6 +281,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   }}
                   draggable={false}
                   loading="lazy"
+                  onClick={handleMediaClick}
                   onError={(e) => {
                     // If image fails to load, show as text message instead
                     e.currentTarget.style.display = 'none';
