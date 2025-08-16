@@ -32,6 +32,9 @@ import {
   Bell,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import CryptoDepositModal from "./CryptoDepositModal";
+import CryptoWithdrawModal from "./CryptoWithdrawModal";
+import CryptoKYCModal from "./CryptoKYCModal";
 
 interface OrderBookEntry {
   price: number;
@@ -98,6 +101,10 @@ const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
   const [volume24h, setVolume24h] = useState(1234567890);
   const [chartTimeframe, setChartTimeframe] = useState("1h");
   const [isWatchlisted, setIsWatchlisted] = useState(false);
+  const [depositModalOpen, setDepositModalOpen] = useState(false);
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
+  const [kycModalOpen, setKycModalOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(true); // Mock verified status
   const chartRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -257,6 +264,32 @@ const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
     toast({
       title: "Order Cancelled",
       description: "Your order has been cancelled successfully",
+    });
+  };
+
+  const handleDepositClick = () => {
+    setDepositModalOpen(true);
+  };
+
+  const handleWithdrawClick = () => {
+    if (!isVerified) {
+      toast({
+        title: "Verification Required",
+        description: "You need to complete KYC verification before withdrawing funds.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setWithdrawModalOpen(true);
+  };
+
+  const handleKYCSubmit = async (data: any) => {
+    // Mock KYC submission
+    return new Promise<{success: boolean}>((resolve) => {
+      setTimeout(() => {
+        setIsVerified(true);
+        resolve({ success: true });
+      }, 1500);
     });
   };
 
@@ -638,6 +671,27 @@ const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
                 </div>
               </div>
 
+              {/* Wallet Actions */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDepositClick}
+                  className="text-xs"
+                >
+                  Deposit
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleWithdrawClick}
+                  className="text-xs"
+                  disabled={!isVerified}
+                >
+                  Withdraw
+                </Button>
+              </div>
+
               {/* Place Order Button */}
               <Button
                 onClick={handlePlaceOrder}
@@ -720,6 +774,25 @@ const AdvancedTradingInterface: React.FC<AdvancedTradingInterfaceProps> = ({
           </Card>
         </div>
       </div>
+
+      {/* Modals */}
+      <CryptoDepositModal
+        isOpen={depositModalOpen}
+        onClose={() => setDepositModalOpen(false)}
+        onKYCSubmit={handleKYCSubmit}
+      />
+
+      <CryptoWithdrawModal
+        isOpen={withdrawModalOpen}
+        onClose={() => setWithdrawModalOpen(false)}
+        onKYCSubmit={handleKYCSubmit}
+      />
+
+      <CryptoKYCModal
+        isOpen={kycModalOpen}
+        onClose={() => setKycModalOpen(false)}
+        onSubmit={handleKYCSubmit}
+      />
     </div>
   );
 };
