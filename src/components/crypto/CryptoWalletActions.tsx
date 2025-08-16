@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -25,6 +24,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import CryptoKYCModal from "./CryptoKYCModal";
+import CryptoDepositModal from "./CryptoDepositModal";
+import CryptoWithdrawModal from "./CryptoWithdrawModal";
 import { useNavigate } from "react-router-dom";
 
 interface WalletProps {
@@ -43,8 +44,8 @@ interface WalletBalance {
 const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
   const [activeTab, setActiveTab] = useState<string>("balances");
   const [copied, setCopied] = useState<string | null>(null);
-  const [depositDialogOpen, setDepositDialogOpen] = useState(false);
-  const [withdrawDialogOpen, setWithdrawDialogOpen] = useState(false);
+  const [depositModalOpen, setDepositModalOpen] = useState(false);
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [kycModalOpen, setKycModalOpen] = useState(false);
   const [withdrawAmount, setWithdrawAmount] = useState("");
   const [withdrawAddress, setWithdrawAddress] = useState("");
@@ -124,7 +125,7 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
 
   const openDepositDialog = (currency: WalletBalance) => {
     setSelectedCurrency(currency);
-    setDepositDialogOpen(true);
+    setDepositModalOpen(true);
   };
 
   const openWithdrawDialog = (currency: WalletBalance) => {
@@ -136,9 +137,9 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
       });
       return;
     }
-    
+
     setSelectedCurrency(currency);
-    setWithdrawDialogOpen(true);
+    setWithdrawModalOpen(true);
   };
 
   const handleWithdraw = () => {
@@ -353,153 +354,19 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
         </div>
       </div>
       
-      {/* Deposit Dialog */}
-      <Dialog open={depositDialogOpen} onOpenChange={setDepositDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Deposit {selectedCurrency?.currency} ({selectedCurrency?.symbol})
-            </DialogTitle>
-            <DialogDescription>
-              Send {selectedCurrency?.symbol} to your wallet address below
-            </DialogDescription>
-          </DialogHeader>
-          
-          {selectedCurrency?.address && (
-            <>
-              <div className="grid gap-4 py-4">
-                <div className="relative">
-                  <Input
-                    readOnly
-                    value={selectedCurrency.address}
-                    className="pr-10"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full"
-                    onClick={() => copyToClipboard(selectedCurrency.address!, selectedCurrency.symbol)}
-                  >
-                    {copied === selectedCurrency.symbol ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </Button>
-                </div>
-                
-                <div className="bg-muted p-4 rounded-md">
-                  <div className="flex items-center gap-2">
-                    <Info className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Important</span>
-                  </div>
-                  <ul className="text-sm text-muted-foreground mt-2 space-y-1 list-disc pl-5">
-                    <li>Only send {selectedCurrency.symbol} to this address</li>
-                    <li>Minimum deposit: 0.001 {selectedCurrency.symbol}</li>
-                    <li>Deposits usually confirm within 30 minutes</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <DialogFooter>
-                <Button onClick={() => setDepositDialogOpen(false)}>Close</Button>
-              </DialogFooter>
-            </>
-          )}
-          
-          {!selectedCurrency?.address && (
-            <>
-              <div className="py-6 text-center">
-                <p>Deposit is not available for {selectedCurrency?.symbol}.</p>
-              </div>
-              
-              <DialogFooter>
-                <Button onClick={() => setDepositDialogOpen(false)}>Close</Button>
-              </DialogFooter>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
-      
-      {/* Withdraw Dialog */}
-      <Dialog open={withdrawDialogOpen} onOpenChange={setWithdrawDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Withdraw {selectedCurrency?.currency} ({selectedCurrency?.symbol})
-            </DialogTitle>
-            <DialogDescription>
-              Enter the amount and address for withdrawal
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid gap-4 py-4">
-            <div className="flex justify-between items-center">
-              <Label htmlFor="amount">Available Balance:</Label>
-              <span className="font-medium">
-                {selectedCurrency?.balance} {selectedCurrency?.symbol}
-              </span>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="amount">Amount</Label>
-              <div className="relative">
-                <Input
-                  id="amount"
-                  type="number"
-                  placeholder="0.00"
-                  step="any"
-                  min="0"
-                  value={withdrawAmount}
-                  onChange={(e) => setWithdrawAmount(e.target.value)}
-                />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground">
-                  {selectedCurrency?.symbol}
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="address">Withdrawal Address</Label>
-              <Input
-                id="address"
-                placeholder="Enter recipient address"
-                value={withdrawAddress}
-                onChange={(e) => setWithdrawAddress(e.target.value)}
-              />
-            </div>
-            
-            <div className="bg-muted p-4 rounded-md">
-              <div className="flex items-center gap-2">
-                <Info className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm font-medium">Important</span>
-              </div>
-              <ul className="text-sm text-muted-foreground mt-2 space-y-1 list-disc pl-5">
-                <li>Minimum withdrawal: 0.001 {selectedCurrency?.symbol}</li>
-                <li>Network fee: 0.0001 {selectedCurrency?.symbol}</li>
-                <li>Please double-check the address before confirming</li>
-              </ul>
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setWithdrawDialogOpen(false)}
-              disabled={isWithdrawing}
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleWithdraw}
-              disabled={isWithdrawing || !withdrawAmount || !withdrawAddress}
-            >
-              {isWithdrawing ? "Processing..." : "Withdraw"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Deposit Modal */}
+      <CryptoDepositModal
+        isOpen={depositModalOpen}
+        onClose={() => setDepositModalOpen(false)}
+        onKYCSubmit={handleKYCSubmit}
+      />
+
+      {/* Withdraw Modal */}
+      <CryptoWithdrawModal
+        isOpen={withdrawModalOpen}
+        onClose={() => setWithdrawModalOpen(false)}
+        onKYCSubmit={handleKYCSubmit}
+      />
       
       {/* KYC Modal */}
       <CryptoKYCModal 
