@@ -136,28 +136,28 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
   const totalUsdValue = walletBalances.reduce((sum, wallet) => sum + wallet.usdValue, 0);
 
   return (
-    <div className="space-y-4 md:space-y-6">
+    <div className="space-y-4 md:space-y-6 crypto-page-container">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
-        <Card className="col-span-1 md:col-span-3">
+        <Card className="col-span-1 md:col-span-3 crypto-card-premium">
           <CardHeader className="pb-3 md:pb-6">
-            <CardTitle className="text-lg md:text-xl">Your Wallet</CardTitle>
-            <CardDescription className="text-sm">
+            <CardTitle className="text-lg md:text-xl crypto-text-premium">Your Wallet</CardTitle>
+            <CardDescription className="text-sm crypto-text-secondary-premium">
               Manage your crypto assets and SoftPoints
             </CardDescription>
           </CardHeader>
           <CardContent className="p-3 md:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="balances">Balances</TabsTrigger>
-                <TabsTrigger value="transactions">Transactions</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 crypto-card-premium crypto-border-premium">
+                <TabsTrigger value="balances" className="crypto-text-premium data-[state=active]:crypto-gradient-bg">Balances</TabsTrigger>
+                <TabsTrigger value="transactions" className="crypto-text-premium data-[state=active]:crypto-gradient-bg">Transactions</TabsTrigger>
               </TabsList>
               
               <TabsContent value="balances">
                 <div className="space-y-4 md:space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <p className="text-sm text-muted-foreground">Total Balance</p>
-                      <h3 className="text-xl md:text-2xl font-bold">${totalUsdValue.toFixed(2)}</h3>
+                      <p className="text-sm crypto-text-muted-premium">Total Balance</p>
+                      <h3 className="text-xl md:text-2xl font-bold crypto-text-premium">${totalUsdValue.toFixed(2)}</h3>
                     </div>
                     
                     {isVerified ? (
@@ -171,21 +171,21 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
                   
                   <div className="space-y-3 md:space-y-4">
                     {walletBalances.map((wallet) => (
-                      <div key={wallet.symbol} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 md:p-4 rounded-lg border gap-3">
+                      <div key={wallet.symbol} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 md:p-4 rounded-lg border crypto-border-premium crypto-hover-effect gap-3">
                         <div className="flex items-center gap-3 flex-1">
                           <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/10 flex items-center justify-center text-lg md:text-xl flex-shrink-0">
                             {wallet.icon}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm md:text-base truncate">{wallet.currency}</p>
-                            <p className="text-xs md:text-sm text-muted-foreground">{wallet.symbol}</p>
+                            <p className="font-medium text-sm md:text-base truncate crypto-text-premium">{wallet.currency}</p>
+                            <p className="text-xs md:text-sm crypto-text-muted-premium">{wallet.symbol}</p>
                           </div>
                         </div>
                         
                         <div className="flex justify-between items-center sm:block sm:text-right">
                           <div>
-                            <p className="font-medium text-sm md:text-base">{wallet.balance} {wallet.symbol}</p>
-                            <p className="text-xs md:text-sm text-muted-foreground">${wallet.usdValue.toFixed(2)}</p>
+                            <p className="font-medium text-sm md:text-base crypto-text-premium">{wallet.balance} {wallet.symbol}</p>
+                            <p className="text-xs md:text-sm crypto-text-secondary-premium">${wallet.usdValue.toFixed(2)}</p>
                           </div>
                           
                           <div className="flex gap-2 sm:mt-2">
@@ -235,9 +235,9 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
         </Card>
         
         <div className="col-span-1">
-          <Card className="h-full">
+          <Card className="h-full crypto-card-premium">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base md:text-lg">Quick Actions</CardTitle>
+              <CardTitle className="text-base md:text-lg crypto-text-premium">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 p-3 md:p-6">
               <Button 
@@ -270,9 +270,9 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
               </Button>
             </CardContent>
             
-            <CardFooter className="flex-col items-start border-t pt-3 px-3 pb-3 md:p-6">
-              <p className="text-xs md:text-sm font-medium">Need Help?</p>
-              <p className="text-xs text-muted-foreground mb-2">
+            <CardFooter className="flex-col items-start border-t crypto-border-premium pt-3 px-3 pb-3 md:p-6">
+              <p className="text-xs md:text-sm font-medium crypto-text-premium">Need Help?</p>
+              <p className="text-xs crypto-text-secondary-premium mb-2">
                 Check out our guides on using crypto in Softchat
               </p>
               <Button variant="link" className="h-auto p-0 text-xs">
