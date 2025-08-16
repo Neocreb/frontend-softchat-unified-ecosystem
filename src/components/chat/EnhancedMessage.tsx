@@ -175,6 +175,30 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
     onReact?.(message.id, emoji);
   };
 
+  const handleMediaClick = () => {
+    if (message.type === "sticker" || message.type === "media") {
+      setShowMediaDialog(true);
+    }
+  };
+
+  const getMediaType = () => {
+    if (message.type === "sticker") {
+      if (message.metadata?.stickerType === "gif" || message.metadata?.animated || message.content.includes('.gif')) {
+        return "gif";
+      } else if (message.metadata?.topText || message.metadata?.bottomText) {
+        return "meme";
+      }
+      return "sticker";
+    }
+    if (message.type === "media") {
+      if (message.content.includes('.gif') || message.metadata?.mediaType === "gif") {
+        return "gif";
+      }
+      return "image";
+    }
+    return "sticker";
+  };
+
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
     toast({
