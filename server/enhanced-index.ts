@@ -51,10 +51,21 @@ app.get('/api/products', (req, res) => {
   res.json({ products: [], message: 'Products endpoint - placeholder' });
 });
 
-// Catch-all handler: send back the frontend's index.html file
-app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, '../dist/index.html'));
-});
+// Catch-all handler: send back the frontend's index.html file (only in production)
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, '../dist/index.html'));
+  });
+} else {
+  // In development, just return a simple message for non-API routes
+  app.get('*', (req, res) => {
+    res.json({
+      message: 'Backend API server running in development mode',
+      frontend: 'Served by Vite on port 8080',
+      api: 'Available at /api/*'
+    });
+  });
+}
 
 console.log(`🔄 Attempting to start server on port ${PORT}...`);
 
