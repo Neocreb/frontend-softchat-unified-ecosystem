@@ -248,8 +248,8 @@ const ChatRoom = () => {
     ));
   };
 
-  // Early return if no chatId
-  if (!chatId) {
+  // Early return if no threadId
+  if (!threadId) {
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
