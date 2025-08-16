@@ -356,22 +356,41 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
     canvas.toBlob((blob) => {
       if (blob) {
         const url = URL.createObjectURL(blob);
-        onStickerCreate({
-          type: "image",
-          url,
+        const photoData = {
           name: `Photo - ${new Date().toLocaleTimeString()}`,
+          fileUrl: url,
+          thumbnailUrl: url,
+          type: "image" as const,
+          width: canvas.width,
+          height: canvas.height,
+          tags: ["photo", "camera", "custom", "user-generated"],
           metadata: {
             capturedAt: new Date().toISOString(),
             camera: true,
             facingMode,
           },
-        });
-        
-        toast({
-          title: "Photo captured!",
-          description: "Your photo sticker is ready to send",
-        });
-        
+        };
+
+        if (saveToCollectionFirst) {
+          const mediaId = saveToCollection(photoData, "stickers");
+          onMediaSaved?.(mediaId, "stickers");
+          toast({
+            title: "Photo saved!",
+            description: "Your photo has been saved to your collection",
+          });
+        } else {
+          onStickerCreate?.({
+            type: "image",
+            url,
+            name: photoData.name,
+            metadata: photoData.metadata,
+          });
+          toast({
+            title: "Photo captured!",
+            description: "Your photo sticker is ready to send",
+          });
+        }
+
         resetMode();
       }
     }, 'image/png');
@@ -658,7 +677,7 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
         <h3 className="font-semibold">
           {currentMode === "meme" && "🎨 Create Meme"}
           {currentMode === "gif" && "🎬 Create GIF"}
-          {currentMode === "photo" && "📸 Take Photo"}
+          {currentMode === "photo" && "�� Take Photo"}
           {currentMode === "ai" && "🤖 AI Generator"}
         </h3>
       </div>
