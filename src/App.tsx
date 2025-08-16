@@ -60,7 +60,7 @@ import FreelancerManageProjects from "./pages/freelance/FreelancerManageProjects
 import ApproveWork from "./pages/freelance/ApproveWork";
 import JobDetailPage from "./pages/freelance/JobDetailPage";
 import Inbox from "./chat/Inbox";
-import ChatRoom from "./chat/ChatRoom";
+import ChatRoom from "./pages/ChatRoom";
 import ChatDemo from "./pages/ChatDemo";
 import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
 import ChatMobileTest from "./pages/ChatMobileTest";
