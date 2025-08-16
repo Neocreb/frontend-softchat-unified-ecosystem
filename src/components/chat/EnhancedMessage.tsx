@@ -327,7 +327,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
               </div>
             )}
 
-            {/* Long press options for mobile */}
+            {/* Quick actions on hover - simplified for better UX */}
             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full p-1 shadow-lg backdrop-blur-sm bg-opacity-90">
               <Button
                 size="icon"
@@ -353,46 +353,16 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
               >
                 😂
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost" className="h-6 w-6">
-                    <MoreVertical className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => {
-                    // Add sticker to favorites
-                    toast({
-                      title: "Added to favorites",
-                      description: "Sticker saved to your collection",
-                    });
-                  }}>
-                    <Heart className="w-4 h-4 mr-2" />
-                    Add to Favorites
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => {
-                    // Forward sticker
-                    toast({
-                      title: "Forward feature",
-                      description: "Sticker forwarding coming soon!",
-                    });
-                  }}>
-                    <Reply className="w-4 h-4 mr-2" />
-                    Forward
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => {
-                    // Report sticker
-                    toast({
-                      title: "Sticker reported",
-                      description: "Thank you for helping keep our community safe",
-                    });
-                  }}>
-                    <Reply className="w-4 h-4 mr-2" />
-                    Report
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* More options button */}
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-6 w-6 hover:bg-muted"
+                onClick={handleMediaClick}
+                title="More options"
+              >
+                <MoreVertical className="w-3 h-3" />
+              </Button>
             </div>
           </div>
         );
