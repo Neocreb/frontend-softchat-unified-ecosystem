@@ -50,8 +50,10 @@ export interface EnhancedChatMessage {
   senderId: string;
   senderName: string;
   senderAvatar?: string;
+  senderRole?: 'admin' | 'member';
+  senderCustomTitle?: string;
   content: string;
-  type: "text" | "voice" | "sticker" | "media";
+  type: "text" | "voice" | "sticker" | "media" | "system" | "announcement";
   timestamp: string;
   metadata?: {
     duration?: number;
@@ -61,18 +63,34 @@ export interface EnhancedChatMessage {
     fileType?: string;
     mediaType?: "image" | "video" | "file";
     stickerName?: string;
+    systemAction?: string;
+    mentionedUserIds?: string[];
   };
   status: "sending" | "sent" | "delivered" | "read";
   reactions?: {
     userId: string;
+    userName?: string;
     emoji: string;
     timestamp: string;
   }[];
   isEdited?: boolean;
+  isPinned?: boolean;
+  pinnedBy?: string;
   replyTo?: {
     messageId: string;
     content: string;
     senderName: string;
+    senderRole?: 'admin' | 'member';
+  };
+  mentionedUsers?: {
+    id: string;
+    name: string;
+  }[];
+  forwardedFrom?: {
+    groupId?: string;
+    groupName?: string;
+    originalSender: string;
+    originalTimestamp: string;
   };
 }
 
