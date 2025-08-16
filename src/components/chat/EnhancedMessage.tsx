@@ -79,6 +79,7 @@ interface EnhancedMessageProps {
   isCurrentUser: boolean;
   isMobile?: boolean;
   onReply?: (message: EnhancedChatMessage) => void;
+  onForward?: (message: EnhancedChatMessage) => void;
   onReact?: (messageId: string, emoji: string) => void;
   onEdit?: (messageId: string, newContent: string) => void;
   onDelete?: (messageId: string) => void;
@@ -269,7 +270,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
                   {message.metadata?.stickerName || "Sticker"}
                   {message.metadata?.stickerPackName && (
-                    <span className="text-gray-300"> • {message.metadata.stickerPackName}</span>
+                    <span className="text-gray-300"> ��� {message.metadata.stickerPackName}</span>
                   )}
                   {message.metadata?.topText && (
                     <div className="text-gray-200 text-xs">Top: {message.metadata.topText}</div>
