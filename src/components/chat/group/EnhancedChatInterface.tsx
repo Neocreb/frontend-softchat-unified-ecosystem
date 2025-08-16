@@ -551,6 +551,127 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
     setReplyToMessage(null);
   };
 
+  // Message interaction handlers
+  const handleReplyToMessage = (message: EnhancedChatMessage) => {
+    setReplyToMessage(message);
+    toast({
+      title: "Replying to message",
+      description: `Replying to ${message.senderName}`,
+    });
+  };
+
+  const handleReactToMessage = (messageId: string, emoji: string) => {
+    if (!selectedChat) return;
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat.id]:
+        prev[selectedChat.id]?.map((msg) =>
+          msg.id === messageId
+            ? {
+                ...msg,
+                reactions: [
+                  ...(msg.reactions || []),
+                  {
+                    userId: user?.id || "",
+                    emoji,
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+              }
+            : msg,
+        ) || [],
+    }));
+
+    toast({
+      title: "Reaction added",
+      description: `You reacted with ${emoji}`,
+    });
+  };
+
+  const handleEditMessage = (messageId: string, newContent: string) => {
+    if (!selectedChat) return;
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat.id]:
+        prev[selectedChat.id]?.map((msg) =>
+          msg.id === messageId
+            ? { ...msg, content: newContent, isEdited: true }
+            : msg,
+        ) || [],
+    }));
+
+    toast({
+      title: "Message edited",
+      description: "Your message has been updated",
+    });
+  };
+
+  const handleDeleteMessage = (messageId: string) => {
+    if (!selectedChat) return;
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedChat.id]:
+        prev[selectedChat.id]?.filter((msg) => msg.id !== messageId) || [],
+    }));
+
+    toast({
+      title: "Message deleted",
+      description: "The message has been removed",
+    });
+  };
+
+  // Call handlers
+  const handleToggleAudio = () => {
+    setIsAudioMuted(!isAudioMuted);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isAudioMuted: !isAudioMuted,
+        },
+      });
+    }
+  };
+
+  const handleToggleVideo = () => {
+    setIsVideoEnabled(!isVideoEnabled);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isVideoEnabled: !isVideoEnabled,
+        },
+      });
+    }
+  };
+
+  const handleToggleScreenShare = () => {
+    setIsScreenSharing(!isScreenSharing);
+    if (activeCall) {
+      setActiveCall({
+        ...activeCall,
+        currentUser: {
+          ...activeCall.currentUser,
+          isScreenSharing: !isScreenSharing,
+        },
+      });
+    }
+
+    toast({
+      title: isScreenSharing
+        ? "Screen Sharing Stopped"
+        : "Screen Sharing Started",
+      description: isScreenSharing
+        ? "You stopped sharing your screen"
+        : "You are now sharing your screen",
+    });
+  };
+
   // Render chat header
   const renderChatHeader = () => {
     if (!selectedChat) return null;
