@@ -453,9 +453,10 @@ const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker
       icon: <ImageIcon className="w-8 h-8" />,
       color: "bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
       action: () => {
+        onShowMediaPanel?.();
         toast({
           title: "Meme Creator",
-          description: "Image to meme converter coming soon!",
+          description: "Upload an image to create a meme!",
         });
       }
     },
@@ -466,9 +467,10 @@ const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker
       icon: <Camera className="w-8 h-8" />,
       color: "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400",
       action: () => {
+        onShowMediaPanel?.();
         toast({
           title: "GIF Creator",
-          description: "Video to GIF converter coming soon!",
+          description: "Upload a video to create an animated sticker!",
         });
       }
     },
@@ -479,9 +481,10 @@ const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker
       icon: <Camera className="w-8 h-8" />,
       color: "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
       action: () => {
+        onShowMediaPanel?.();
         toast({
           title: "Camera",
-          description: "Camera integration coming soon!",
+          description: "Take a photo to create a sticker!",
         });
       }
     }
