@@ -415,7 +415,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
       case "media":
         const { metadata } = message;
 
-        if (metadata?.mediaType === "image") {
+        if (metadata?.mediaType === "image" || (!metadata?.mediaType && message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i))) {
           return (
             <div className="max-w-sm">
               <div className="relative group">
@@ -424,6 +424,14 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   alt="Shared image"
                   className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
                   loading="lazy"
+                  onError={(e) => {
+                    // If image fails to load, show as text message instead
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement?.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `<p class="text-blue-600 dark:text-blue-400 underline cursor-pointer">${message.content}</p>`;
+                    }
+                  }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
               </div>
@@ -436,7 +444,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
           );
         }
 
-        if (metadata?.mediaType === "video") {
+        if (metadata?.mediaType === "video" || (!metadata?.mediaType && message.content.match(/\.(mp4|webm|mov|avi)$/i))) {
           return (
             <div className="max-w-sm">
               <div className="relative group">
@@ -445,6 +453,14 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   controls
                   className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
                   preload="metadata"
+                  onError={(e) => {
+                    // If video fails to load, show as text message instead
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement?.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `<p class="text-blue-600 dark:text-blue-400 underline cursor-pointer">${message.content}</p>`;
+                    }
+                  }}
                 />
                 <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                   <Video className="w-3 h-3 inline mr-1" />
@@ -456,6 +472,33 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   {metadata.fileName}
                 </p>
               )}
+            </div>
+          );
+        }
+
+        // Handle GIF URLs specifically
+        if (message.content.includes('.gif') || message.content.includes('giphy.com') || message.content.includes('tenor.com')) {
+          return (
+            <div className="max-w-sm">
+              <div className="relative group">
+                <img
+                  src={message.content}
+                  alt="Animated GIF"
+                  className="rounded-xl max-w-full h-auto shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  loading="lazy"
+                  onError={(e) => {
+                    // If GIF fails to load, show as text message instead
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement?.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `<p class="text-blue-600 dark:text-blue-400 underline cursor-pointer">${message.content}</p>`;
+                    }
+                  }}
+                />
+                <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
+                  GIF
+                </div>
+              </div>
             </div>
           );
         }
@@ -484,6 +527,23 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 </div>
               </CardContent>
             </Card>
+          );
+        }
+
+        // If no specific media type detected but looks like a URL, show as clickable link
+        if (message.content.startsWith('http')) {
+          return (
+            <div className="max-w-sm p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Shared link:</p>
+              <a
+                href={message.content}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 dark:text-blue-400 hover:underline break-all text-sm"
+              >
+                {message.content}
+              </a>
+            </div>
           );
         }
 

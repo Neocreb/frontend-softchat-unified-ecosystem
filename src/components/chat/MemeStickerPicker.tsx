@@ -62,6 +62,7 @@ import {
   UserStickerLibrary,
   EMOJI_STICKER_PACKS 
 } from "@/types/sticker";
+import { MediaCreationPanel } from "./MediaCreationPanel";
 
 interface MemeStickerPickerProps {
   onStickerSelect: (sticker: StickerData) => void;
@@ -469,9 +470,27 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
               {/* Create New */}
               <TabsContent value="create" className="mt-0">
-                <StickerCreationPanel
+                <MediaCreationPanel
                   isMobile={isMobile}
-                  onCreatePack={() => setShowCreateDialog(true)}
+                  onStickerCreate={(stickerData) => {
+                    // Create a sticker object and send it
+                    const sticker: StickerData = {
+                      id: Date.now().toString(),
+                      name: stickerData.name,
+                      type: stickerData.type === "gif" ? "gif" : "image",
+                      tags: [stickerData.type],
+                      fileUrl: stickerData.url,
+                      thumbnailUrl: stickerData.url,
+                      width: 128,
+                      height: 128,
+                      packId: "custom",
+                      packName: "Custom",
+                      usageCount: 0,
+                      isFavorite: false,
+                      metadata: stickerData.metadata,
+                    };
+                    handleStickerClick(sticker);
+                  }}
                 />
               </TabsContent>
             </div>
@@ -938,24 +957,24 @@ const StickerPackCreationDialog: React.FC<StickerPackCreationDialogProps> = ({
           </Button>
           <Button
             variant="outline"
-            disabled
-            className="justify-start h-auto p-3 opacity-50"
+            onClick={() => setCreationMethod("photo")}
+            className="justify-start h-auto p-3"
           >
             <Camera className="w-4 h-4 mr-2" />
             <div className="text-left">
               <p className="font-medium text-sm">Take Photos</p>
-              <p className="text-xs text-muted-foreground">Coming soon</p>
+              <p className="text-xs text-muted-foreground">Capture and create instantly</p>
             </div>
           </Button>
           <Button
             variant="outline"
-            disabled
-            className="justify-start h-auto p-3 opacity-50"
+            onClick={() => setCreationMethod("gif")}
+            className="justify-start h-auto p-3"
           >
             <Sparkles className="w-4 h-4 mr-2" />
             <div className="text-left">
-              <p className="font-medium text-sm">AI Generator</p>
-              <p className="text-xs text-muted-foreground">Coming soon</p>
+              <p className="font-medium text-sm">Create GIF</p>
+              <p className="text-xs text-muted-foreground">Convert videos to animated stickers</p>
             </div>
           </Button>
         </div>
