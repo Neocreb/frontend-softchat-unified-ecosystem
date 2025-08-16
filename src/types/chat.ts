@@ -86,6 +86,9 @@ export interface ChatParticipant {
   isOnline?: boolean;
   lastSeen?: string;
   role?: "admin" | "member"; // For group chats
+  username?: string;
+  status?: string;
+  isVerified?: boolean;
 }
 
 export interface StartChatRequest {
