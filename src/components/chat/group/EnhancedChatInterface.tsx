@@ -863,7 +863,10 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                       chat={chat}
                       isSelected={selectedChat?.id === chat.id}
                       currentUserId={user?.id || ""}
-                      onClick={() => setSelectedChat(chat)}
+                      onClick={() => {
+                        // Navigate to dedicated chat page
+                        navigate(`/app/chat/${chat.id}?type=${chat.type}`);
+                      }}
                       onPin={handlePinChat}
                       onMute={handleMuteChat}
                       onArchive={handleArchiveChat}
