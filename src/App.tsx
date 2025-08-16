@@ -23,6 +23,7 @@ import { I18nProvider } from "./contexts/I18nContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import { UnifiedNotificationProvider } from "./contexts/UnifiedNotificationContext";
 import { FeedProvider } from "./contexts/FeedContext";
+import { UserCollectionsProvider } from "./contexts/UserCollectionsContext";
 import ErrorBoundary from "./components/ui/error-boundary";
 
 import {
@@ -186,6 +187,8 @@ import AdChoices from "./pages/AdChoices";
 import MonetizationPolicy from "./pages/MonetizationPolicy";
 import Premium from "./pages/Premium";
 import CampaignCenter from "./components/campaigns/CampaignCenter";
+import MemeGifDemo from "./pages/MemeGifDemo";
+import MemeGifTest from "./components/debug/MemeGifTest";
 
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
@@ -287,6 +290,8 @@ const AppRoutes = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/meme-gif-demo" element={<MemeGifDemo />} />
+      <Route path="/meme-gif-test" element={<MemeGifTest />} />
 
       {/* Public Blog routes - accessible to everyone */}
       <Route
@@ -670,7 +675,8 @@ const App = () => {
             <I18nProvider>
               <CurrencyProvider>
                 <AuthProvider>
-                  <UnifiedNotificationProvider>
+                  <UserCollectionsProvider>
+                    <UnifiedNotificationProvider>
                     <AdminProvider>
                     <AccessibilityProvider>
                       <TooltipProvider>
@@ -693,7 +699,8 @@ const App = () => {
                       </TooltipProvider>
                     </AccessibilityProvider>
                     </AdminProvider>
-                  </UnifiedNotificationProvider>
+                    </UnifiedNotificationProvider>
+                  </UserCollectionsProvider>
                 </AuthProvider>
               </CurrencyProvider>
             </I18nProvider>

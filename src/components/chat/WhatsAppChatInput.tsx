@@ -28,6 +28,7 @@ import { MemeStickerPicker } from "./MemeStickerPicker";
 import { WhatsAppStickerPicker } from "./WhatsAppStickerPicker";
 import { MobileStickerBottomSheet } from "./MobileStickerBottomSheet";
 import { StickerData } from "@/types/sticker";
+import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
 interface WhatsAppChatInputProps {
   messageInput: string;
@@ -40,6 +41,11 @@ interface WhatsAppChatInputProps {
   isMobile?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  onMediaSaved?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onSaveToCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onRemoveFromCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onReportMedia?: (mediaId: string, reason: string) => void;
+  currentUserId?: string;
 }
 
 export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
@@ -49,8 +55,14 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
   isMobile = false,
   disabled = false,
   placeholder = "Type a message...",
+  onMediaSaved,
+  onSaveToCollection,
+  onRemoveFromCollection,
+  onReportMedia,
+  currentUserId = "current_user",
 }) => {
   const { toast } = useToast();
+  const { collections } = useUserCollections();
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [showStickers, setShowStickers] = useState(false);

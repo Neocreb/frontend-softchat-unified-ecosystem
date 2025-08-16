@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { MemeGifActionDialog } from "./MemeGifActionDialog";
+import { StickerData } from "@/types/sticker";
 import {
   Play,
   Pause,
@@ -85,6 +87,16 @@ interface EnhancedMessageProps {
   onDelete?: (messageId: string) => void;
   showAvatar?: boolean;
   groupWithPrevious?: boolean;
+  userCollections?: {
+    memes: StickerData[];
+    gifs: StickerData[];
+    stickers: StickerData[];
+  };
+  onSaveToCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onRemoveFromCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onSendMessage?: (content: string, type: "sticker" | "media", metadata?: any) => void;
+  onReportMedia?: (mediaId: string, reason: string) => void;
+  currentUserId?: string;
 }
 
 const reactionEmojis = [
@@ -107,6 +119,12 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   onDelete,
   showAvatar = true,
   groupWithPrevious = false,
+  userCollections = { memes: [], gifs: [], stickers: [] },
+  onSaveToCollection,
+  onRemoveFromCollection,
+  onSendMessage,
+  onReportMedia,
+  currentUserId = "current_user",
 }) => {
   const { toast } = useToast();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -114,6 +132,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   const [showTranscription, setShowTranscription] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(message.content);
+  const [showMediaDialog, setShowMediaDialog] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Audio playback handling
@@ -154,6 +173,30 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
 
   const handleReaction = (emoji: string) => {
     onReact?.(message.id, emoji);
+  };
+
+  const handleMediaClick = () => {
+    if (message.type === "sticker" || message.type === "media") {
+      setShowMediaDialog(true);
+    }
+  };
+
+  const getMediaType = () => {
+    if (message.type === "sticker") {
+      if (message.metadata?.stickerType === "gif" || message.metadata?.animated || message.content.includes('.gif')) {
+        return "gif";
+      } else if (message.metadata?.topText || message.metadata?.bottomText) {
+        return "meme";
+      }
+      return "sticker";
+    }
+    if (message.type === "media") {
+      if (message.content.includes('.gif') || message.metadata?.mediaType === "gif") {
+        return "gif";
+      }
+      return "image";
+    }
+    return "sticker";
   };
 
   const handleCopy = () => {
@@ -238,6 +281,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   }}
                   draggable={false}
                   loading="lazy"
+                  onClick={handleMediaClick}
                   onError={(e) => {
                     // If image fails to load, show as text message instead
                     e.currentTarget.style.display = 'none';
@@ -283,7 +327,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
               </div>
             )}
 
-            {/* Long press options for mobile */}
+            {/* Quick actions on hover - simplified for better UX */}
             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full p-1 shadow-lg backdrop-blur-sm bg-opacity-90">
               <Button
                 size="icon"
@@ -309,46 +353,16 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
               >
                 😂
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost" className="h-6 w-6">
-                    <MoreVertical className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => {
-                    // Add sticker to favorites
-                    toast({
-                      title: "Added to favorites",
-                      description: "Sticker saved to your collection",
-                    });
-                  }}>
-                    <Heart className="w-4 h-4 mr-2" />
-                    Add to Favorites
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => {
-                    // Forward sticker
-                    toast({
-                      title: "Forward feature",
-                      description: "Sticker forwarding coming soon!",
-                    });
-                  }}>
-                    <Reply className="w-4 h-4 mr-2" />
-                    Forward
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => {
-                    // Report sticker
-                    toast({
-                      title: "Sticker reported",
-                      description: "Thank you for helping keep our community safe",
-                    });
-                  }}>
-                    <Reply className="w-4 h-4 mr-2" />
-                    Report
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* More options button */}
+              <Button
+                size="icon"
+                variant="ghost"
+                className="h-6 w-6 hover:bg-muted"
+                onClick={handleMediaClick}
+                title="More options"
+              >
+                <MoreVertical className="w-3 h-3" />
+              </Button>
             </div>
           </div>
         );
@@ -429,7 +443,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (metadata?.mediaType === "image" || (!metadata?.mediaType && message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i))) {
           return (
             <div className="max-w-sm">
-              <div className="relative group">
+              <div className="relative group cursor-pointer" onClick={handleMediaClick}>
                 <img
                   src={message.content}
                   alt="Shared image"
@@ -445,6 +459,10 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
+                {/* Click indicator */}
+                <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click for options
+                </div>
               </div>
               {metadata?.fileName && (
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
@@ -491,7 +509,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (message.content.includes('.gif') || message.content.includes('giphy.com') || message.content.includes('tenor.com')) {
           return (
             <div className="max-w-sm">
-              <div className="relative group">
+              <div className="relative group cursor-pointer" onClick={handleMediaClick}>
                 <img
                   src={message.content}
                   alt="Animated GIF"
@@ -508,6 +526,9 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 />
                 <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
                   GIF
+                </div>
+                <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click for options
                 </div>
               </div>
             </div>
@@ -794,6 +815,34 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             )}
           </div>
         </div>
+
+        {/* Media Action Dialog */}
+        {showMediaDialog && (message.type === "sticker" || message.type === "media") && (
+          <MemeGifActionDialog
+            open={showMediaDialog}
+            onOpenChange={setShowMediaDialog}
+            media={{
+              id: message.id,
+              url: message.metadata?.stickerUrl || message.content,
+              name: message.metadata?.stickerName || message.metadata?.fileName || "Media",
+              type: getMediaType(),
+              metadata: message.metadata,
+              sender: {
+                id: message.senderId,
+                name: message.senderName,
+                avatar: message.senderAvatar,
+              },
+            }}
+            userCollections={userCollections}
+            onSaveToCollection={onSaveToCollection || (() => {})}
+            onRemoveFromCollection={onRemoveFromCollection || (() => {})}
+            onSendMessage={onSendMessage || (() => {})}
+            onReport={onReportMedia || (() => {})}
+            onForward={onForward ? () => onForward(message) : undefined}
+            currentUserId={currentUserId}
+            isMobile={isMobile}
+          />
+        )}
       </div>
     </TooltipProvider>
   );

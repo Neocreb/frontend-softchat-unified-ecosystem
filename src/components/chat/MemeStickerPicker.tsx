@@ -54,15 +54,16 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
-import { 
-  StickerData, 
-  StickerPackData, 
-  StickerCategory, 
+import {
+  StickerData,
+  StickerPackData,
+  StickerCategory,
   StickerPickerTab,
   UserStickerLibrary,
-  EMOJI_STICKER_PACKS 
+  EMOJI_STICKER_PACKS
 } from "@/types/sticker";
 import { EnhancedMediaCreationPanel } from "./EnhancedMediaCreationPanel";
+import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
 interface MemeStickerPickerProps {
   onStickerSelect: (sticker: StickerData) => void;
@@ -85,122 +86,55 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   isMobile = false,
 }) => {
   const { toast } = useToast();
+  const { collections, saveToCollection, removeFromCollection } = useUserCollections();
   const [activeTab, setActiveTab] = useState<string>("memes");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [selectedPack, setSelectedPack] = useState<StickerPackData | null>(null);
   
-  // Mock data with Memes and GIFs - would be fetched from API
-  const mockPacks: StickerPackData[] = [
+  // Create dynamic packs from user collections
+  const userCollectionPacks: StickerPackData[] = [
     {
       id: "memes",
-      name: "Memes",
-      description: "Funny image stickers and memes",
+      name: "My Memes",
+      description: `Your custom memes (${collections.memes.length})`,
       category: "memes" as StickerCategory,
-      stickers: [
-        {
-          id: "m1",
-          name: "Laughing Drake",
-          type: "image",
-          tags: ["funny", "meme", "reaction"],
-          fileUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop&crop=face",
-          thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=100&h=100&fit=crop&crop=face",
-          width: 200,
-          height: 200,
-          usageCount: 0,
-          packId: "memes",
-          packName: "Memes",
-          animated: false
-        },
-        {
-          id: "m2",
-          name: "Thinking Cat",
-          type: "image",
-          tags: ["thinking", "cat", "meme"],
-          fileUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200&h=200&fit=crop&crop=face",
-          thumbnailUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&h=100&fit=crop&crop=face",
-          width: 200,
-          height: 200,
-          usageCount: 0,
-          packId: "memes",
-          packName: "Memes",
-          animated: false
-        },
-        {
-          id: "m3",
-          name: "Surprised Dog",
-          type: "image",
-          tags: ["surprised", "dog", "reaction"],
-          fileUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=200&h=200&fit=crop&crop=face",
-          thumbnailUrl: "https://images.unsplash.com/photo-1552053831-71594a27632d?w=100&h=100&fit=crop&crop=face",
-          width: 200,
-          height: 200,
-          usageCount: 0,
-          packId: "memes",
-          packName: "Memes",
-          animated: false
-        },
-      ],
-      creatorId: "system",
-      creatorName: "System",
-      downloadCount: 1000,
-      rating: 4.8,
-      isOfficial: true,
+      stickers: collections.memes,
+      creatorId: "user",
+      creatorName: "You",
+      downloadCount: 0,
+      rating: 5.0,
+      ratingCount: 0,
+      isPublic: false,
       isPremium: false,
-      isCustom: false,
-      tags: ["memes", "funny"],
+      isOfficial: false,
+      isCustom: true,
+      tags: ["memes", "custom"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      thumbnailUrl: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=100&h=100&fit=crop&crop=face",
+      thumbnailUrl: collections.memes[0]?.thumbnailUrl || "",
       price: 0,
     },
     {
       id: "gifs",
-      name: "GIFs",
-      description: "Animated GIF stickers",
+      name: "My GIFs",
+      description: `Your animated GIFs (${collections.gifs.length})`,
       category: "gifs" as StickerCategory,
-      stickers: [
-        {
-          id: "g1",
-          name: "Dancing Cat",
-          type: "gif",
-          tags: ["dancing", "cat", "party"],
-          fileUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
-          thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
-          width: 200,
-          height: 200,
-          usageCount: 0,
-          packId: "gifs",
-          packName: "GIFs",
-          animated: true
-        },
-        {
-          id: "g2",
-          name: "Thumbs Up",
-          type: "gif",
-          tags: ["thumbs", "up", "approval"],
-          fileUrl: "https://media.giphy.com/media/111ebonMs90YLu/giphy.gif",
-          thumbnailUrl: "https://media.giphy.com/media/111ebonMs90YLu/200w_d.gif",
-          width: 200,
-          height: 200,
-          usageCount: 0,
-          packId: "gifs",
-          packName: "GIFs",
-          animated: true
-        },
-      ],
-      creatorId: "system",
-      creatorName: "System",
-      downloadCount: 800,
-      rating: 4.6,
-      isOfficial: true,
+      stickers: collections.gifs,
+      creatorId: "user",
+      creatorName: "You",
+      downloadCount: 0,
+      rating: 5.0,
+      ratingCount: 0,
+      isPublic: false,
       isPremium: false,
-      isCustom: false,
-      tags: ["gifs", "animated"],
+      isOfficial: false,
+      isCustom: true,
+      tags: ["gifs", "animated", "custom"],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      thumbnailUrl: "https://media.giphy.com/media/JIX9t2j0ZTN9S/200w_d.gif",
+      thumbnailUrl: collections.gifs[0]?.thumbnailUrl || "",
       price: 0,
     }
   ];
@@ -208,12 +142,66 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [userLibrary, setUserLibrary] = useState<UserStickerLibrary>({
     recentStickers: [],
     favoriteStickers: [],
-    downloadedPacks: mockPacks,
+    downloadedPacks: userCollectionPacks,
     customPacks: [],
   });
 
-  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(mockPacks);
+  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(userCollectionPacks);
   const [trendingPacks, setTrendingPacks] = useState<StickerPackData[]>([]);
+
+  // Update packs when collections change
+  React.useEffect(() => {
+    const updatedPacks = [
+      {
+        id: "memes",
+        name: "My Memes",
+        description: `Your custom memes (${collections.memes.length})`,
+        category: "memes" as StickerCategory,
+        stickers: collections.memes,
+        creatorId: "user",
+        creatorName: "You",
+        downloadCount: 0,
+        rating: 5.0,
+        ratingCount: 0,
+        isPublic: false,
+        isPremium: false,
+        isOfficial: false,
+        isCustom: true,
+        tags: ["memes", "custom"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        thumbnailUrl: collections.memes[0]?.thumbnailUrl || "",
+        price: 0,
+      },
+      {
+        id: "gifs",
+        name: "My GIFs",
+        description: `Your animated GIFs (${collections.gifs.length})`,
+        category: "gifs" as StickerCategory,
+        stickers: collections.gifs,
+        creatorId: "user",
+        creatorName: "You",
+        downloadCount: 0,
+        rating: 5.0,
+        ratingCount: 0,
+        isPublic: false,
+        isPremium: false,
+        isOfficial: false,
+        isCustom: true,
+        tags: ["gifs", "animated", "custom"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        thumbnailUrl: collections.gifs[0]?.thumbnailUrl || "",
+        price: 0,
+      }
+    ];
+
+    setAvailablePacks(updatedPacks);
+    setUserLibrary(prev => ({
+      ...prev,
+      downloadedPacks: updatedPacks,
+    }));
+  }, [collections]);
 
   // Filter stickers based on search query
   const filteredStickers = useMemo(() => {
@@ -474,24 +462,18 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
                   isMobile={isMobile}
                   isPremium={true} // TODO: Get from user context
                   userCredits={10} // TODO: Get from user context
-                  onStickerCreate={(stickerData) => {
-                    // Create a sticker object and send it
-                    const sticker: StickerData = {
-                      id: Date.now().toString(),
-                      name: stickerData.name,
-                      type: stickerData.type === "gif" ? "gif" : "image",
-                      tags: [stickerData.type],
-                      fileUrl: stickerData.url,
-                      thumbnailUrl: stickerData.url,
-                      width: 128,
-                      height: 128,
-                      packId: "custom",
-                      packName: "Custom",
-                      usageCount: 0,
-                      isFavorite: false,
-                      metadata: stickerData.metadata,
-                    };
-                    handleStickerClick(sticker);
+                  saveToCollectionFirst={true}
+                  onMediaSaved={(mediaId, collection) => {
+                    toast({
+                      title: "Media saved!",
+                      description: `Your ${collection.slice(0, -1)} has been saved to your collection`,
+                    });
+                    // Switch to the appropriate tab to show the saved media
+                    if (collection === "memes") {
+                      setActiveTab("memes");
+                    } else if (collection === "gifs") {
+                      setActiveTab("gifs");
+                    }
                   }}
                 />
               </TabsContent>

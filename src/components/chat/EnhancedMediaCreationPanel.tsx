@@ -21,17 +21,20 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
 interface EnhancedMediaCreationPanelProps {
   isMobile?: boolean;
-  onStickerCreate: (stickerData: {
+  onStickerCreate?: (stickerData: {
     type: "image" | "gif" | "meme";
     url: string;
     name: string;
     metadata?: any;
   }) => void;
+  onMediaSaved?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
   isPremium?: boolean;
   userCredits?: number;
+  saveToCollectionFirst?: boolean; // New prop to control behavior
 }
 
 type CreationMode = "meme" | "gif" | "photo" | "ai" | null;
@@ -39,10 +42,13 @@ type CreationMode = "meme" | "gif" | "photo" | "ai" | null;
 export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProps> = ({
   isMobile = false,
   onStickerCreate,
+  onMediaSaved,
   isPremium = false,
   userCredits = 0,
+  saveToCollectionFirst = true,
 }) => {
   const { toast } = useToast();
+  const { saveToCollection } = useUserCollections();
   const [currentMode, setCurrentMode] = useState<CreationMode>(null);
   const [processing, setProcessing] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -176,22 +182,42 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
         canvasRef.current?.toBlob((blob) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
-            onStickerCreate({
-              type: "meme",
-              url,
+            const memeData = {
               name: `Meme - ${memeText.top || memeText.bottom || "Custom"}`,
+              fileUrl: url,
+              thumbnailUrl: url,
+              type: "meme" as const,
+              width: canvasRef.current?.width || 400,
+              height: canvasRef.current?.height || 400,
+              tags: ["meme", "custom", "user-generated"],
               metadata: {
                 topText: memeText.top,
                 bottomText: memeText.bottom,
                 originalFile: uploadedFile.name,
+                createdAt: new Date().toISOString(),
               },
-            });
-            
-            toast({
-              title: "Meme created!",
-              description: "Your meme sticker is ready to send",
-            });
-            
+            };
+
+            if (saveToCollectionFirst) {
+              const mediaId = saveToCollection(memeData, "memes");
+              onMediaSaved?.(mediaId, "memes");
+              toast({
+                title: "Meme saved!",
+                description: "Your meme has been saved to your collection",
+              });
+            } else {
+              onStickerCreate?.({
+                type: "meme",
+                url,
+                name: memeData.name,
+                metadata: memeData.metadata,
+              });
+              toast({
+                title: "Meme created!",
+                description: "Your meme sticker is ready to send",
+              });
+            }
+
             resetMode();
           }
         }, "image/png");
@@ -234,25 +260,44 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
       // For now, create a simplified animated preview
       // In production, you'd use gif.js or ffmpeg.wasm here
       const url = URL.createObjectURL(videoFile);
-      
-      onStickerCreate({
-        type: "gif",
-        url,
+
+      const gifData = {
         name: `Animated - ${videoFile.name.replace(/\.[^/.]+$/, "")}`,
+        fileUrl: url,
+        thumbnailUrl: url,
+        type: "gif" as const,
+        width: canvas.width,
+        height: canvas.height,
+        tags: ["gif", "animated", "custom", "user-generated"],
+        animated: true,
         metadata: {
           originalFile: videoFile.name,
           duration: Math.min(video.duration * 1000, 5000),
           stickerType: "gif",
           animated: true,
-          width: canvas.width,
-          height: canvas.height,
+          createdAt: new Date().toISOString(),
         },
-      });
+      };
 
-      toast({
-        title: "Animated sticker created!",
-        description: "Your animated sticker is ready to send",
-      });
+      if (saveToCollectionFirst) {
+        const mediaId = saveToCollection(gifData, "gifs");
+        onMediaSaved?.(mediaId, "gifs");
+        toast({
+          title: "GIF saved!",
+          description: "Your animated GIF has been saved to your collection",
+        });
+      } else {
+        onStickerCreate?.({
+          type: "gif",
+          url,
+          name: gifData.name,
+          metadata: gifData.metadata,
+        });
+        toast({
+          title: "Animated sticker created!",
+          description: "Your animated sticker is ready to send",
+        });
+      }
 
       resetMode();
     } catch (error) {
@@ -311,22 +356,41 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
     canvas.toBlob((blob) => {
       if (blob) {
         const url = URL.createObjectURL(blob);
-        onStickerCreate({
-          type: "image",
-          url,
+        const photoData = {
           name: `Photo - ${new Date().toLocaleTimeString()}`,
+          fileUrl: url,
+          thumbnailUrl: url,
+          type: "image" as const,
+          width: canvas.width,
+          height: canvas.height,
+          tags: ["photo", "camera", "custom", "user-generated"],
           metadata: {
             capturedAt: new Date().toISOString(),
             camera: true,
             facingMode,
           },
-        });
-        
-        toast({
-          title: "Photo captured!",
-          description: "Your photo sticker is ready to send",
-        });
-        
+        };
+
+        if (saveToCollectionFirst) {
+          const mediaId = saveToCollection(photoData, "stickers");
+          onMediaSaved?.(mediaId, "stickers");
+          toast({
+            title: "Photo saved!",
+            description: "Your photo has been saved to your collection",
+          });
+        } else {
+          onStickerCreate?.({
+            type: "image",
+            url,
+            name: photoData.name,
+            metadata: photoData.metadata,
+          });
+          toast({
+            title: "Photo captured!",
+            description: "Your photo sticker is ready to send",
+          });
+        }
+
         resetMode();
       }
     }, 'image/png');
@@ -434,23 +498,42 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
       canvas.toBlob((blob) => {
         if (blob) {
           const url = URL.createObjectURL(blob);
-          onStickerCreate({
-            type: "image",
-            url,
+          const aiData = {
             name: `AI - ${aiPrompt.slice(0, 20)}`,
+            fileUrl: url,
+            thumbnailUrl: url,
+            type: "image" as const,
+            width: canvas.width,
+            height: canvas.height,
+            tags: ["ai-generated", "custom", "user-generated"],
             metadata: {
               aiGenerated: true,
               prompt: aiPrompt,
               createdAt: new Date().toISOString(),
               creditsUsed: 1,
             },
-          });
-          
-          toast({
-            title: "AI sticker created!",
-            description: "Your AI-generated sticker is ready",
-          });
-          
+          };
+
+          if (saveToCollectionFirst) {
+            const mediaId = saveToCollection(aiData, "stickers");
+            onMediaSaved?.(mediaId, "stickers");
+            toast({
+              title: "AI sticker saved!",
+              description: "Your AI-generated sticker has been saved to your collection",
+            });
+          } else {
+            onStickerCreate?.({
+              type: "image",
+              url,
+              name: aiData.name,
+              metadata: aiData.metadata,
+            });
+            toast({
+              title: "AI sticker created!",
+              description: "Your AI-generated sticker is ready",
+            });
+          }
+
           resetMode();
         }
       }, 'image/png');
@@ -470,21 +553,40 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
     const file = event.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      onStickerCreate({
-        type: "image",
-        url,
+      const photoData = {
         name: `Photo - ${new Date().toLocaleTimeString()}`,
+        fileUrl: url,
+        thumbnailUrl: url,
+        type: "image" as const,
+        width: 512,
+        height: 512,
+        tags: ["photo", "custom", "user-generated"],
         metadata: {
           capturedAt: new Date().toISOString(),
           originalFile: file.name,
         },
-      });
-      
-      toast({
-        title: "Photo selected!",
-        description: "Your photo sticker is ready to send",
-      });
-      
+      };
+
+      if (saveToCollectionFirst) {
+        const mediaId = saveToCollection(photoData, "stickers");
+        onMediaSaved?.(mediaId, "stickers");
+        toast({
+          title: "Photo saved!",
+          description: "Your photo has been saved to your collection",
+        });
+      } else {
+        onStickerCreate?.({
+          type: "image",
+          url,
+          name: photoData.name,
+          metadata: photoData.metadata,
+        });
+        toast({
+          title: "Photo selected!",
+          description: "Your photo sticker is ready to send",
+        });
+      }
+
       resetMode();
     }
   };
