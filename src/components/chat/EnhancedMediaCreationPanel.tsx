@@ -42,10 +42,13 @@ type CreationMode = "meme" | "gif" | "photo" | "ai" | null;
 export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProps> = ({
   isMobile = false,
   onStickerCreate,
+  onMediaSaved,
   isPremium = false,
   userCredits = 0,
+  saveToCollectionFirst = true,
 }) => {
   const { toast } = useToast();
+  const { saveToCollection } = useUserCollections();
   const [currentMode, setCurrentMode] = useState<CreationMode>(null);
   const [processing, setProcessing] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
