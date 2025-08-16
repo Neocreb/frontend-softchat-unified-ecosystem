@@ -868,6 +868,8 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                       onClick={() => setSelectedChat(chat)}
                       onPin={handlePinChat}
                       onMute={handleMuteChat}
+                      onArchive={handleArchiveChat}
+                      onDelete={handleDeleteChat}
                       onCall={handleCall}
                     />
                   </div>
