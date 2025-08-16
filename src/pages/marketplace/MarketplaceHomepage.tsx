@@ -39,7 +39,7 @@ interface FlashSaleProduct {
 }
 
 const MarketplaceHomepage: React.FC = () => {
-  const { products, categories, addToCart, addToWishlist } =
+  const { products, categories, featuredProducts, addToCart, addToWishlist } =
     useEnhancedMarketplace();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -54,57 +54,32 @@ const MarketplaceHomepage: React.FC = () => {
     useState<FlashSaleProduct | null>(null);
   const [showQuickView, setShowQuickView] = useState(false);
 
-  // Mock flash sale products
-  const flashSaleProducts: FlashSaleProduct[] = [
-    {
-      id: "1",
-      name: "HAVIT HV-G92 Gamepad",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets%2Fb10c564763a64f819a10cd7f992a4935%2F9eadb6fc5c7b4b588ac9775aacb69514?format=webp&width=800",
-      originalPrice: 160,
-      salePrice: 120,
-      discount: 40,
-      rating: 5,
-      reviews: 88,
-      inStock: true,
-    },
-    {
-      id: "2",
-      name: "AK-900 Wired Keyboard",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets%2Fb10c564763a64f819a10cd7f992a4935%2F3c8a7dc1ab114461b045b94feccaff70?format=webp&width=800",
-      originalPrice: 1160,
-      salePrice: 960,
-      discount: 35,
-      rating: 4,
-      reviews: 75,
-      inStock: true,
-    },
-    {
-      id: "3",
-      name: "IPS LCD Gaming Monitor",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets%2Fb10c564763a64f819a10cd7f992a4935%2Ff1952dcefa174b889e077e00c09aa01d?format=webp&width=800",
-      originalPrice: 400,
-      salePrice: 370,
-      discount: 30,
-      rating: 5,
-      reviews: 99,
-      inStock: true,
-    },
-    {
-      id: "4",
-      name: "S-Series Comfort Chair",
-      image:
-        "https://cdn.builder.io/api/v1/image/assets%2Fb10c564763a64f819a10cd7f992a4935%2F37fbd48f02174d0ab69861a850cbc688?format=webp&width=800",
-      originalPrice: 400,
-      salePrice: 375,
-      discount: 25,
-      rating: 4.5,
-      reviews: 99,
-      inStock: true,
-    },
-  ];
+  // Flash sale products - will be fetched from API in production
+  const [flashSaleProducts, setFlashSaleProducts] = useState<FlashSaleProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch flash sale products on component mount
+  useEffect(() => {
+    const fetchFlashSaleProducts = async () => {
+      try {
+        setIsLoading(true);
+        // In production, this would fetch from your API
+        // const response = await fetch('/api/marketplace/flash-sales');
+        // const data = await response.json();
+        // setFlashSaleProducts(data);
+
+        // For now, set empty array to show production state
+        setFlashSaleProducts([]);
+      } catch (error) {
+        console.error('Error fetching flash sale products:', error);
+        setFlashSaleProducts([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFlashSaleProducts();
+  }, []);
 
   const categoryList = [
     { name: "Woman's Fashion", hasSubmenu: true },
@@ -266,8 +241,8 @@ const MarketplaceHomepage: React.FC = () => {
                 </div>
                 <div className="flex-1 relative hidden lg:block">
                   <img
-                    src="https://cdn.builder.io/api/v1/image/assets%2Fb10c564763a64f819a10cd7f992a4935%2F17b12f033e9547eeb4f7bc845b15ec73?format=webp&width=800"
-                    alt="iPhone 14"
+                    src="/placeholder-hero-product.png"
+                    alt="Featured Product"
                     className="absolute right-0 top-1/2 transform -translate-y-1/2 h-full w-auto object-contain"
                   />
                 </div>
