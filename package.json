@@ -5,7 +5,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development npx tsx server/enhanced-index.ts",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "NODE_ENV=development npx tsx server/enhanced-index.ts",
     "dev:frontend": "vite",
     "dev:full": "npm run dev",
     "dev:original": "NODE_ENV=development npx tsx server/index.ts",
