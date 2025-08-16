@@ -60,62 +60,86 @@ const ChatRoom = () => {
 
   // Load chat data
   useEffect(() => {
-    if (!chatId) return;
+    if (!chatId) {
+      setLoading(false);
+      return;
+    }
 
-    // Mock chat data - in real app, fetch from API
-    const mockChat: UnifiedChatThread = {
-      id: chatId,
-      type: chatType,
-      referenceId: null,
-      participant_profile: chatType !== "social" ? {
-        id: "user_1",
-        name: chatType === "freelance" ? "Tech Client Inc" : 
-              chatType === "marketplace" ? "Electronics Store" :
-              chatType === "crypto" ? "Bitcoin Trader" : "Alice Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
-        is_online: true,
-      } : {
-        id: "user_1", 
-        name: "Alice Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
-        is_online: true,
-      },
-      lastMessage: "Hey! How are you?",
-      lastMessageAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isGroup: false,
-      unreadCount: 0,
+    // Set loading state and simulate API call
+    setLoading(true);
+
+    // Simulate API delay
+    const loadChatData = async () => {
+      try {
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        // Mock chat data - in real app, fetch from API
+        const mockChat: UnifiedChatThread = {
+          id: chatId,
+          type: chatType,
+          referenceId: null,
+          participant_profile: chatType !== "social" ? {
+            id: "user_1",
+            name: chatType === "freelance" ? "Tech Client Inc" :
+                  chatType === "marketplace" ? "Electronics Store" :
+                  chatType === "crypto" ? "Bitcoin Trader" : "Alice Johnson",
+            avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+            is_online: true,
+          } : {
+            id: "user_1",
+            name: "Alice Johnson",
+            avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+            is_online: true,
+          },
+          lastMessage: "Hey! How are you?",
+          lastMessageAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          isGroup: false,
+          unreadCount: 0,
+        };
+
+        const mockMessages: EnhancedChatMessage[] = [
+          {
+            id: "msg_1",
+            senderId: mockChat.participant_profile?.id || "user_1",
+            senderName: mockChat.participant_profile?.name || "User",
+            senderAvatar: mockChat.participant_profile?.avatar,
+            content: getContextualMessage(chatType),
+            type: "text",
+            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+          {
+            id: "msg_2",
+            senderId: user?.id || "current_user",
+            senderName: user?.profile?.full_name || user?.email || "You",
+            senderAvatar: user?.profile?.avatar_url,
+            content: "Hello! I'm interested in discussing this further.",
+            type: "text",
+            timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+        ];
+
+        setChat(mockChat);
+        setMessages(mockMessages);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error loading chat:", error);
+        setLoading(false);
+        toast({
+          title: "Error",
+          description: "Failed to load chat. Please try again.",
+          variant: "destructive",
+        });
+      }
     };
 
-    const mockMessages: EnhancedChatMessage[] = [
-      {
-        id: "msg_1",
-        senderId: mockChat.participant_profile?.id || "user_1",
-        senderName: mockChat.participant_profile?.name || "User",
-        senderAvatar: mockChat.participant_profile?.avatar,
-        content: getContextualMessage(chatType),
-        type: "text",
-        timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-        status: "read",
-        reactions: [],
-      },
-      {
-        id: "msg_2",
-        senderId: user?.id || "current",
-        senderName: "You",
-        senderAvatar: user?.profile?.avatar_url,
-        content: "Hello! I'm interested in discussing this further.",
-        type: "text",
-        timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-        status: "read",
-        reactions: [],
-      },
-    ];
-
-    setChat(mockChat);
-    setMessages(mockMessages);
-    setLoading(false);
-  }, [chatId, chatType, user]);
+    loadChatData();
+  }, [chatId, chatType, user?.id, toast]);
 
   const getContextualMessage = (type: UnifiedChatType) => {
     switch (type) {
