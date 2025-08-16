@@ -357,19 +357,11 @@ export const CategoryBrowser: React.FC<CategoryBrowserProps> = ({
             onMouseEnter={() => setHoveredCategory(category.id)}
             onMouseLeave={() => setHoveredCategory(null)}
           >
-            {/* Category Image/Icon */}
+            {/* Category Icon */}
             <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
-              {category.image ? (
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
-                  {getIcon(category.icon)}
-                </div>
-              )}
+              <div className="text-gray-400 group-hover:text-gray-600 transition-colors">
+                {getIcon(category.icon)}
+              </div>
 
               {/* Badges */}
               <div className="absolute top-2 left-2 flex flex-col gap-1">
