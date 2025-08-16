@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
 interface EnhancedMediaCreationPanelProps {
   isMobile?: boolean;
