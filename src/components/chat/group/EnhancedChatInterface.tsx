@@ -870,19 +870,36 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                   {(messages[selectedChat.id] || []).map((message) => (
                     <div key={message.id} className={cn(isMobile && "transition-transform active:scale-98")}>
                       <EnhancedMessage
-                      message={message}
-                      currentUserId={user?.id || ""}
-                      onReact={(emoji) => handleReactToMessage(message.id, emoji)}
-                      onReply={() => handleReplyToMessage(message)}
-                      onEdit={(newContent) => handleEditMessage(message.id, newContent)}
-                      onDelete={() => handleDeleteMessage(message.id)}
-                      showAvatar={selectedChat.isGroup}
-                      isGroupMessage={selectedChat.isGroup}
-                    />
+                        message={message}
+                        currentUserId={user?.id || ""}
+                        onReact={(emoji) => handleReactToMessage(message.id, emoji)}
+                        onReply={() => handleReplyToMessage(message)}
+                        onEdit={(newContent) => handleEditMessage(message.id, newContent)}
+                        onDelete={() => handleDeleteMessage(message.id)}
+                        showAvatar={selectedChat.isGroup}
+                        isGroupMessage={selectedChat.isGroup}
+                      />
                     </div>
                   ))}
                 </div>
               </ScrollArea>
+
+              {/* Typing Indicator */}
+              {typingUsers[selectedChat.id] && typingUsers[selectedChat.id].length > 0 && (
+                <div className="px-4 pb-2">
+                  <TypingIndicator users={typingUsers[selectedChat.id]} />
+                </div>
+              )}
+
+              {/* Online Status Indicator */}
+              {!selectedChat.isGroup && selectedChat.participant_profile && (
+                <div className="px-4 pb-2">
+                  <OnlineStatusIndicator
+                    isOnline={selectedChat.participant_profile.is_online || false}
+                    lastSeen={selectedChat.lastMessageAt}
+                  />
+                </div>
+              )}
 
               {/* Message Input */}
               <div className="flex-shrink-0 bg-background">
