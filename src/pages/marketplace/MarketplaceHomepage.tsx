@@ -472,103 +472,122 @@ const MarketplaceHomepage: React.FC = () => {
               />
             </section>
 
-            {/* Best Selling Products Carousel */}
-            <section className="mb-16">
-              <ResponsiveProductCarousel
-                title="Best Selling Products"
-                subtitle="Most popular items this month"
-                products={flashSaleProducts.map((product) => ({
-                  ...product,
-                  isFeatured: true,
-                  isNew: Math.random() > 0.7,
-                  category: "Electronics",
-                }))}
-                onProductClick={handleProductQuickView}
-                onAddToCart={(productId) => handleAddToCart(productId, 1)}
-                onAddToWishlist={handleAddToWishlist}
-                onQuickView={handleProductQuickView}
-                autoplay={true}
-                autoplayInterval={4000}
-                itemsPerView={{
-                  mobile: 1.2,
-                  tablet: 2.5,
-                  desktop: 4,
-                }}
-              />
-            </section>
+            {/* Only show product sections if we have data */}
+            {!isLoading && (
+              <>
+                {/* Best Selling Products Carousel */}
+                {products.length > 0 && (
+                  <section className="mb-16">
+                    <ResponsiveProductCarousel
+                      title="Best Selling Products"
+                      subtitle="Most popular items this month"
+                      products={products.filter(p => p.isFeatured).slice(0, 8) || []}
+                      onProductClick={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                      onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                      onAddToWishlist={handleAddToWishlist}
+                      onQuickView={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                      autoplay={true}
+                      autoplayInterval={4000}
+                      itemsPerView={{
+                        mobile: 1.2,
+                        tablet: 2.5,
+                        desktop: 4,
+                      }}
+                    />
+                  </section>
+                )}
 
-            {/* New Arrivals Carousel */}
-            <section className="mb-16">
-              <ResponsiveProductCarousel
-                title="New Arrivals"
-                subtitle="Just landed - fresh products for you"
-                products={flashSaleProducts.slice(0, 8).map((product) => ({
-                  ...product,
-                  isNew: true,
-                  originalPrice: product.originalPrice + 50,
-                  salePrice: product.salePrice
-                    ? product.salePrice + 50
-                    : undefined,
-                  category: "Fashion",
-                }))}
-                onProductClick={handleProductQuickView}
-                onAddToCart={(productId) => handleAddToCart(productId, 1)}
-                onAddToWishlist={handleAddToWishlist}
-                onQuickView={handleProductQuickView}
-                showPagination={true}
-                itemsPerView={{
-                  mobile: 1.5,
-                  tablet: 3,
-                  desktop: 5,
-                }}
-              />
-            </section>
+                {/* New Arrivals Carousel */}
+                {products.length > 0 && (
+                  <section className="mb-16">
+                    <ResponsiveProductCarousel
+                      title="New Arrivals"
+                      subtitle="Just landed - fresh products for you"
+                      products={products.filter(p => p.isNew).slice(0, 8) || []}
+                      onProductClick={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                      onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                      onAddToWishlist={handleAddToWishlist}
+                      onQuickView={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                      showPagination={true}
+                      itemsPerView={{
+                        mobile: 1.5,
+                        tablet: 3,
+                        desktop: 5,
+                      }}
+                    />
+                  </section>
+                )}
 
-            {/* Featured Products Carousel */}
-            <section className="mb-16">
-              <ResponsiveProductCarousel
-                title="Featured Products"
-                subtitle="Handpicked by our experts"
-                products={flashSaleProducts.slice(2, 10).map((product) => ({
-                  ...product,
-                  isFeatured: true,
-                  originalPrice: product.originalPrice + 30,
-                  salePrice: product.salePrice
-                    ? product.salePrice + 30
-                    : undefined,
-                  category: "Home & Garden",
-                }))}
-                onProductClick={handleProductQuickView}
-                onAddToCart={(productId) => handleAddToCart(productId, 1)}
-                onAddToWishlist={handleAddToWishlist}
-                onQuickView={handleProductQuickView}
-                autoplay={false}
-                itemsPerView={{
-                  mobile: 1.3,
-                  tablet: 2.8,
-                  desktop: 4.5,
-                }}
-              />
-            </section>
+                {/* Featured Products Carousel */}
+                {featuredProducts && featuredProducts.length > 0 && (
+                  <section className="mb-16">
+                    <ResponsiveProductCarousel
+                      title="Featured Products"
+                      subtitle="Handpicked by our experts"
+                      products={featuredProducts.slice(0, 8) || []}
+                      onProductClick={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                      onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                      onAddToWishlist={handleAddToWishlist}
+                      onQuickView={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                      autoplay={false}
+                      itemsPerView={{
+                        mobile: 1.3,
+                        tablet: 2.8,
+                        desktop: 4.5,
+                      }}
+                    />
+                  </section>
+                )}
 
-            {/* Smart Recommendations Section */}
-            <section className="mb-16">
-              <SmartRecommendations
-                userId="user123"
-                recentlyViewed={flashSaleProducts.slice(0, 3)}
-                userPreferences={{
-                  categories: ["Electronics", "Fashion", "Home & Garden"],
-                  priceRange: [50, 500],
-                  brands: ["Apple", "Samsung", "Nike", "Sony"],
-                }}
-                onProductClick={handleProductQuickView}
-                onAddToCart={(productId) => handleAddToCart(productId, 1)}
-                onAddToWishlist={handleAddToWishlist}
-                onQuickView={handleProductQuickView}
-                maxItems={8}
-                enableRealTimeUpdates={true}
-              />
-            </section>
+                {/* Smart Recommendations Section */}
+                <section className="mb-16">
+                  <SmartRecommendations
+                    userId="current-user"
+                    recentlyViewed={[]}
+                    userPreferences={{
+                      categories: ["Electronics", "Fashion", "Home & Garden"],
+                      priceRange: [50, 500],
+                      brands: [],
+                    }}
+                    onProductClick={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                    onAddToCart={(productId) => handleAddToCart(productId, 1)}
+                    onAddToWishlist={handleAddToWishlist}
+                    onQuickView={(product) => handleProductQuickView(product as FlashSaleProduct)}
+                    maxItems={8}
+                    enableRealTimeUpdates={true}
+                  />
+                </section>
+
+                {/* Empty State for No Products */}
+                {products.length === 0 && (
+                  <section className="mb-16">
+                    <div className="text-center py-20">
+                      <div className="mx-auto w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                        <span className="text-6xl">🛒</span>
+                      </div>
+                      <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                        No Products Available
+                      </h3>
+                      <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                        Our marketplace is being set up. Check back soon for amazing products from verified sellers!
+                      </p>
+                      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Button asChild variant="outline">
+                          <Link to="/marketplace/sell">
+                            Become a Seller
+                          </Link>
+                        </Button>
+                        <Button asChild>
+                          <Link to="/">
+                            Explore Platform
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </section>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -586,7 +605,7 @@ const MarketplaceHomepage: React.FC = () => {
               "Customer satisfaction guaranteed",
             ],
             seller: {
-              name: "Premium Electronics Store",
+              name: "Verified Seller",
               rating: 4.8,
               verified: true,
             },
@@ -594,7 +613,7 @@ const MarketplaceHomepage: React.FC = () => {
               freeShipping: true,
               estimatedDays: 3,
             },
-            warranty: "1 year manufacturer warranty",
+            warranty: "Standard warranty included",
             returnPolicy: "30-day hassle-free returns",
           }}
           isOpen={showQuickView}
