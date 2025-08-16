@@ -26,17 +26,24 @@ export interface ChatMessage {
   id: string;
   threadId: string;
   senderId: string;
+  senderName?: string;
+  senderAvatar?: string;
   content: string;
   attachments?: string[];
   timestamp: string;
   readBy: string[];
-  messageType?: "text" | "image" | "file" | "system" | "voice" | "sticker";
+  messageType?: "text" | "image" | "file" | "system" | "voice" | "sticker" | "announcement";
   stickerId?: string; // Reference to sticker from database
   replyTo?: string; // ID of message being replied to
   reactions?: MessageReaction[];
   isEdited?: boolean;
   editedAt?: string;
   deletedAt?: string;
+  mentionedUserIds?: string[];
+  isAnnouncement?: boolean;
+  isPinned?: boolean;
+  pinnedBy?: string;
+  pinnedAt?: string;
   metadata?: {
     fileName?: string;
     fileSize?: number;
