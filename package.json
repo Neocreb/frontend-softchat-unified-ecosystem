@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/enhanced-index.ts",
     "dev:frontend": "vite",
+    "dev:full": "npm run dev",
     "dev:original": "NODE_ENV=development npx tsx server/index.ts",
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "vite build",
