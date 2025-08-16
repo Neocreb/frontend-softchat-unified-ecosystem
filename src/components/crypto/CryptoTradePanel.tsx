@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -51,22 +50,22 @@ const CryptoTradePanel = ({ crypto, onTrade }: CryptoTradePanelProps) => {
   };
   
   return (
-    <Card className="h-full">
+    <Card className="h-full crypto-card-premium border-0">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">
+        <CardTitle className="text-lg crypto-text-premium">
           Trade {crypto.name} ({crypto.symbol.toUpperCase()})
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs value={tradeType} onValueChange={(v) => setTradeType(v as 'buy' | 'sell')}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="buy">Buy</TabsTrigger>
-            <TabsTrigger value="sell">Sell</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 crypto-card-premium crypto-border-premium">
+            <TabsTrigger value="buy" className="crypto-text-premium data-[state=active]:crypto-gradient-bg">Buy</TabsTrigger>
+            <TabsTrigger value="sell" className="crypto-text-premium data-[state=active]:crypto-gradient-bg">Sell</TabsTrigger>
           </TabsList>
           
           <div className="mt-4 space-y-4">
             <div className="space-y-2">
-              <Label>Amount ({crypto.symbol.toUpperCase()})</Label>
+              <Label className="crypto-text-premium">Amount ({crypto.symbol.toUpperCase()})</Label>
               <div className="relative">
                 <Input
                   type="text"
@@ -74,14 +73,14 @@ const CryptoTradePanel = ({ crypto, onTrade }: CryptoTradePanelProps) => {
                   value={amount}
                   onChange={handleAmountChange}
                 />
-                <div className="absolute right-3 top-2.5 text-sm text-muted-foreground">
+                <div className="absolute right-3 top-2.5 text-sm crypto-text-muted-premium">
                   {crypto.symbol.toUpperCase()}
                 </div>
               </div>
             </div>
             
             <div className="space-y-2">
-              <Label>Value (USD)</Label>
+              <Label className="crypto-text-premium">Value (USD)</Label>
               <div className="relative">
                 <Input
                   type="text"
@@ -89,13 +88,13 @@ const CryptoTradePanel = ({ crypto, onTrade }: CryptoTradePanelProps) => {
                   value={usdValue}
                   onChange={handleUsdValueChange}
                 />
-                <div className="absolute right-3 top-2.5 text-sm text-muted-foreground">
+                <div className="absolute right-3 top-2.5 text-sm crypto-text-muted-premium">
                   USD
                 </div>
               </div>
             </div>
             
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm crypto-text-muted-premium">
               1 {crypto.symbol.toUpperCase()} = ${crypto.current_price.toLocaleString()} USD
             </div>
             
@@ -108,13 +107,13 @@ const CryptoTradePanel = ({ crypto, onTrade }: CryptoTradePanelProps) => {
               {tradeType === 'buy' ? 'Buy' : 'Sell'} {crypto.symbol.toUpperCase()}
             </Button>
             
-            <div className="bg-muted p-3 rounded-md text-sm">
-              <div className="font-medium mb-1">Mock Trading Account</div>
-              <div className="flex justify-between">
+            <div className="crypto-gradient-bg crypto-border-premium border p-3 rounded-md text-sm">
+              <div className="font-medium mb-1 crypto-text-premium">Mock Trading Account</div>
+              <div className="flex justify-between crypto-text-secondary-premium">
                 <span>Available USD:</span>
                 <span>$10,000.00</span>
               </div>
-              <div className="flex justify-between mt-1">
+              <div className="flex justify-between mt-1 crypto-text-secondary-premium">
                 <span>Available {crypto.symbol.toUpperCase()}:</span>
                 <span>{tradeType === 'buy' ? '0.00' : '1.25'}</span>
               </div>
