@@ -54,8 +54,16 @@ app.get('*', (req, res) => {
   res.sendFile(join(__dirname, '../dist/index.html'));
 });
 
+console.log(`🔄 Attempting to start server on port ${PORT}...`);
+
 app.listen(PORT, () => {
+  console.log(`✅ Backend server successfully started!`);
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📁 Serving static files from: ${join(__dirname, '../dist')}`);
   console.log(`🌐 API endpoints available at: http://localhost:${PORT}/api`);
+  console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+}).on('error', (err) => {
+  console.error('❌ Server failed to start:', err);
+  console.error('🔍 Error details:', err.message);
+  process.exit(1);
 });
