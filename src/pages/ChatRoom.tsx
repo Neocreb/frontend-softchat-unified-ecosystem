@@ -30,7 +30,7 @@ import { UnifiedChatThread, UnifiedChatType } from "@/types/unified-chat";
 import { GroupChatThread } from "@/types/group-chat";
 
 const ChatRoom = () => {
-  const { chatId } = useParams();
+  const { threadId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
@@ -38,6 +38,7 @@ const ChatRoom = () => {
   const isMobile = useIsMobile();
 
   const chatType = (searchParams.get("type") as UnifiedChatType) || "social";
+
 
   // State
   const [chat, setChat] = useState<UnifiedChatThread | null>(null);
@@ -60,62 +61,104 @@ const ChatRoom = () => {
 
   // Load chat data
   useEffect(() => {
-    if (!chatId) return;
+    if (!threadId) {
+      setLoading(false);
+      return;
+    }
 
-    // Mock chat data - in real app, fetch from API
-    const mockChat: UnifiedChatThread = {
-      id: chatId,
-      type: chatType,
-      referenceId: null,
-      participant_profile: chatType !== "social" ? {
-        id: "user_1",
-        name: chatType === "freelance" ? "Tech Client Inc" : 
-              chatType === "marketplace" ? "Electronics Store" :
-              chatType === "crypto" ? "Bitcoin Trader" : "Alice Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
-        is_online: true,
-      } : {
-        id: "user_1", 
-        name: "Alice Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
-        is_online: true,
-      },
-      lastMessage: "Hey! How are you?",
-      lastMessageAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isGroup: false,
-      unreadCount: 0,
+    // Set loading state and simulate API call
+    setLoading(true);
+
+    // Add timeout protection
+    const timeoutId = setTimeout(() => {
+      console.error("Chat loading timeout");
+      setLoading(false);
+      toast({
+        title: "Loading Timeout",
+        description: "Chat took too long to load. Please try again.",
+        variant: "destructive",
+      });
+    }, 5000); // 5 second timeout
+
+    // Simulate API delay with timeout protection
+    const loadChatData = async () => {
+      try {
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 300));
+
+        // Mock chat data - in real app, fetch from API
+        const mockChat: UnifiedChatThread = {
+          id: threadId,
+          type: chatType,
+          referenceId: null,
+          participant_profile: chatType !== "social" ? {
+            id: "user_1",
+            name: chatType === "freelance" ? "Tech Client Inc" :
+                  chatType === "marketplace" ? "Electronics Store" :
+                  chatType === "crypto" ? "Bitcoin Trader" : "Alice Johnson",
+            avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+            is_online: true,
+          } : {
+            id: "user_1",
+            name: "Alice Johnson",
+            avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+            is_online: true,
+          },
+          lastMessage: "Hey! How are you?",
+          lastMessageAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          isGroup: false,
+          unreadCount: 0,
+        };
+
+        const mockMessages: EnhancedChatMessage[] = [
+          {
+            id: "msg_1",
+            senderId: mockChat.participant_profile?.id || "user_1",
+            senderName: mockChat.participant_profile?.name || "User",
+            senderAvatar: mockChat.participant_profile?.avatar,
+            content: getContextualMessage(chatType),
+            type: "text",
+            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+          {
+            id: "msg_2",
+            senderId: user?.id || "current_user",
+            senderName: user?.profile?.full_name || user?.email || "You",
+            senderAvatar: user?.profile?.avatar_url,
+            content: "Hello! I'm interested in discussing this further.",
+            type: "text",
+            timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+            status: "read",
+            reactions: [],
+          },
+        ];
+
+        setChat(mockChat);
+        setMessages(mockMessages);
+        setLoading(false);
+        clearTimeout(timeoutId); // Clear timeout on success
+      } catch (error) {
+        console.error("Error loading chat:", error);
+        setLoading(false);
+        clearTimeout(timeoutId); // Clear timeout on error
+        toast({
+          title: "Error",
+          description: "Failed to load chat. Please try again.",
+          variant: "destructive",
+        });
+      }
     };
 
-    const mockMessages: EnhancedChatMessage[] = [
-      {
-        id: "msg_1",
-        senderId: mockChat.participant_profile?.id || "user_1",
-        senderName: mockChat.participant_profile?.name || "User",
-        senderAvatar: mockChat.participant_profile?.avatar,
-        content: getContextualMessage(chatType),
-        type: "text",
-        timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-        status: "read",
-        reactions: [],
-      },
-      {
-        id: "msg_2",
-        senderId: user?.id || "current",
-        senderName: "You",
-        senderAvatar: user?.profile?.avatar_url,
-        content: "Hello! I'm interested in discussing this further.",
-        type: "text",
-        timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
-        status: "read",
-        reactions: [],
-      },
-    ];
+    loadChatData();
 
-    setChat(mockChat);
-    setMessages(mockMessages);
-    setLoading(false);
-  }, [chatId, chatType, user]);
+    // Cleanup timeout on unmount
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [threadId, chatType, user?.id, toast]);
 
   const getContextualMessage = (type: UnifiedChatType) => {
     switch (type) {
@@ -201,10 +244,27 @@ const ChatRoom = () => {
     ));
   };
 
-  if (loading) {
+  // Early return if no threadId
+  if (!threadId) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <div className="text-center">
+          <h2 className="text-lg font-semibold mb-2">No chat selected</h2>
+          <Button onClick={() => navigate("/app/chat")}>
+            Back to Chats
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-sm text-muted-foreground">Loading chat...</p>
+        </div>
       </div>
     );
   }
@@ -214,6 +274,9 @@ const ChatRoom = () => {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-lg font-semibold mb-2">Chat not found</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            The chat you're looking for doesn't exist or has been removed.
+          </p>
           <Button onClick={() => navigate("/app/chat")}>
             Back to Chats
           </Button>

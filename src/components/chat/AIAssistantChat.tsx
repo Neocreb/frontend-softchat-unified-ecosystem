@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,9 @@ import {
   ThumbsDown,
   RotateCcw,
   Zap,
+  ArrowLeft,
+  Phone,
+  Video,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -39,11 +43,22 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
 }) => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<AIAssistantMessage[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [conversationContext, setConversationContext] = useState<string[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  // Clean AI response to remove markdown asterisks and show plain text
+  const cleanAIResponse = (content: string): string => {
+    return content
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove **bold** formatting
+      .replace(/\*(.*?)\*/g, '$1')     // Remove *italic* formatting
+      .replace(/`(.*?)`/g, '$1')       // Remove `code` formatting
+      .replace(/~~(.*?)~~/g, '$1')     // Remove ~~strikethrough~~ formatting
+      .trim();
+  };
 
   // Initialize AI assistant with welcome message
   useEffect(() => {
@@ -64,7 +79,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             id: "welcome-msg",
             threadId: "ai_assistant",
             senderId: "ai_assistant",
-            content: personalizedGreeting + "\n\n" + welcomeResponse.message,
+            content: cleanAIResponse(personalizedGreeting + "\n\n" + welcomeResponse.message),
             timestamp: new Date().toISOString(),
             readBy: [],
             messageType: "text",
@@ -84,9 +99,10 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             id: "welcome-msg",
             threadId: "ai_assistant",
             senderId: "ai_assistant",
-            content:
+            content: cleanAIResponse(
               aiPersonalityService.generatePersonalizedGreeting(user) +
-              "\n\nI can help with real-time data like crypto prices, weather, news, calculations, and SoftChat features! Plus, I'm here for friendly conversation and emotional support! 💙",
+              "\n\nI can help with real-time data like crypto prices, weather, news, calculations, and SoftChat features! Plus, I'm here for friendly conversation and emotional support! 💙"
+            ),
             timestamp: new Date().toISOString(),
             readBy: [],
             messageType: "text",
@@ -191,7 +207,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           id: `ai-${Date.now()}`,
           threadId: "ai_assistant",
           senderId: "ai_assistant",
-          content: smartResponse.message,
+          content: cleanAIResponse(smartResponse.message),
           timestamp: new Date().toISOString(),
           readBy: [],
           messageType: "text",
@@ -270,6 +286,25 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
     }
   };
 
+  // Call handlers for real-time implementation
+  const handleVoiceCall = () => {
+    toast({
+      title: "Voice Call Feature",
+      description: "Voice call with AI Assistant is coming soon! Ready for real-time implementation.",
+    });
+    // TODO: Implement real voice call functionality
+    // This can be integrated with WebRTC, Agora, or similar services
+  };
+
+  const handleVideoCall = () => {
+    toast({
+      title: "Video Call Feature",
+      description: "Video call with AI Assistant is coming soon! Ready for real-time implementation.",
+    });
+    // TODO: Implement real video call functionality
+    // This can be integrated with WebRTC, Agora, or similar services
+  };
+
   if (isMinimized) {
     return (
       <div
@@ -295,34 +330,64 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
   return (
     <div className={cn("flex flex-col h-full", className)}>
       {/* AI Assistant Header */}
-      <div className="flex items-center gap-3 p-4 border-b bg-purple-50/50">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={AI_ASSISTANT_CONFIG.avatar} />
-          <AvatarFallback className="bg-purple-500 text-white">
-            <Bot className="h-5 w-5" />
-          </AvatarFallback>
-        </Avatar>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <h3 className="font-medium text-purple-900">
-              {AI_ASSISTANT_CONFIG.name}
-            </h3>
-            <Badge
-              variant="secondary"
-              className="text-xs bg-purple-100 text-purple-700"
-            >
-              AI Assistant
-            </Badge>
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+      <div className="flex items-center justify-between p-4 border-b bg-purple-50/50">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/app/chat")}
+            className="text-purple-600 hover:bg-purple-100"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={AI_ASSISTANT_CONFIG.avatar} />
+            <AvatarFallback className="bg-purple-500 text-white">
+              <Bot className="h-5 w-5" />
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium text-purple-900">
+                {AI_ASSISTANT_CONFIG.name}
+              </h3>
+              <Badge
+                variant="secondary"
+                className="text-xs bg-purple-100 text-purple-700"
+              >
+                AI Assistant
+              </Badge>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            </div>
+            <p className="text-xs text-purple-600">
+              Advanced AI • Real-time Data • Intelligent Conversation • Emotional
+              Support
+            </p>
           </div>
-          <p className="text-xs text-purple-600">
-            Advanced AI • Real-time Data • Intelligent Conversation • Emotional
-            Support
-          </p>
         </div>
-        <Button variant="ghost" size="sm" className="text-purple-600">
-          <Zap className="h-4 w-4" />
-        </Button>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleVoiceCall}
+            className="text-purple-600 hover:bg-purple-100"
+          >
+            <Phone className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleVideoCall}
+            className="text-purple-600 hover:bg-purple-100"
+          >
+            <Video className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="sm" className="text-purple-600 hover:bg-purple-100">
+            <Zap className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Chat Messages */}
@@ -499,7 +564,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - I'm your intelligent friend and assistant! 🤖✨`}
+              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - I'm your intelligent friend and assistant! ��✨`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
