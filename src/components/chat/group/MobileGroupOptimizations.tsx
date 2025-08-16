@@ -271,12 +271,126 @@ export const MobileGroupSwipeActions: React.FC<MobileGroupSwipeActionsProps> = (
   onLeave,
   children,
 }) => {
-  // This would typically use a gesture library like react-spring-gesture
-  // For now, showing the concept with touch events
+  const [swipeOffset, setSwipeOffset] = React.useState(0);
+  const [isRevealed, setIsRevealed] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const touchStartX = React.useRef<number>(0);
+  const touchStartY = React.useRef<number>(0);
+  const isDragging = React.useRef<boolean>(false);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    isDragging.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+    const deltaX = touchX - touchStartX.current;
+    const deltaY = touchY - touchStartY.current;
+
+    // Determine if this is a horizontal swipe
+    if (!isDragging.current && Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+      isDragging.current = true;
+      e.preventDefault();
+    }
+
+    if (isDragging.current) {
+      const maxSwipe = 160; // Width of action buttons
+      const newOffset = Math.max(-maxSwipe, Math.min(0, deltaX));
+      setSwipeOffset(newOffset);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isDragging.current) {
+      const threshold = -80; // Half of max swipe
+      if (swipeOffset < threshold) {
+        setSwipeOffset(-160);
+        setIsRevealed(true);
+      } else {
+        setSwipeOffset(0);
+        setIsRevealed(false);
+      }
+    }
+    isDragging.current = false;
+  };
+
+  const resetSwipe = () => {
+    setSwipeOffset(0);
+    setIsRevealed(false);
+  };
+
+  const handleAction = (action: () => void) => {
+    action();
+    resetSwipe();
+  };
+
   return (
-    <div className="relative overflow-hidden">
-      {children}
-      {/* Swipe actions would be implemented here */}
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden bg-background"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Action buttons (revealed when swiping left) */}
+      <div className="absolute right-0 top-0 h-full flex items-center bg-muted/50">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleAction(onPin)}
+          className="h-full px-4 rounded-none bg-blue-500 hover:bg-blue-600 text-white"
+        >
+          Pin
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleAction(onMute)}
+          className="h-full px-4 rounded-none bg-orange-500 hover:bg-orange-600 text-white"
+        >
+          {group.isMuted ? 'Unmute' : 'Mute'}
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleAction(onArchive)}
+          className="h-full px-4 rounded-none bg-gray-500 hover:bg-gray-600 text-white"
+        >
+          Archive
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleAction(onLeave)}
+          className="h-full px-4 rounded-none bg-red-500 hover:bg-red-600 text-white"
+        >
+          Leave
+        </Button>
+      </div>
+
+      {/* Main content */}
+      <div
+        className="relative bg-background transition-transform duration-200 ease-out"
+        style={{
+          transform: `translateX(${swipeOffset}px)`,
+          zIndex: 1
+        }}
+      >
+        {children}
+      </div>
+
+      {/* Overlay to detect outside clicks when revealed */}
+      {isRevealed && (
+        <div
+          className="fixed inset-0 z-10"
+          onClick={resetSwipe}
+        />
+      )}
     </div>
   );
 };
