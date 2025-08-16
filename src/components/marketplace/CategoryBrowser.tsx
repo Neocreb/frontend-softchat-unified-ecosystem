@@ -183,26 +183,6 @@ const defaultCategories: Category[] = [
       },
     ],
   },
-  {
-    id: "automotive",
-    name: "Automotive",
-    icon: "car",
-    productCount: 7650,
-    image:
-      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=300&h=200&fit=crop",
-    description: "Car parts and accessories",
-    subcategories: [
-      { id: "car-parts", name: "Car Parts", icon: "car", productCount: 3420 },
-      {
-        id: "accessories",
-        name: "Accessories",
-        icon: "package",
-        productCount: 2130,
-      },
-      { id: "tools", name: "Tools", icon: "package", productCount: 1100 },
-      { id: "tires", name: "Tires", icon: "package", productCount: 1000 },
-    ],
-  },
 ];
 
 export const CategoryBrowser: React.FC<CategoryBrowserProps> = ({
@@ -306,15 +286,7 @@ export const CategoryBrowser: React.FC<CategoryBrowserProps> = ({
                 className="w-full p-4 flex items-center gap-4 text-left"
               >
                 <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-                  {category.image ? (
-                    <img
-                      src={category.image}
-                      alt={category.name}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  ) : (
-                    getIcon(category.icon)
-                  )}
+                  {getIcon(category.icon)}
                 </div>
 
                 <div className="flex-1">
