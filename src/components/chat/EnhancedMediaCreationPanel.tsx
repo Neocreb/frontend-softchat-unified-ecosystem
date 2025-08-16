@@ -24,14 +24,16 @@ import { cn } from "@/lib/utils";
 
 interface EnhancedMediaCreationPanelProps {
   isMobile?: boolean;
-  onStickerCreate: (stickerData: {
+  onStickerCreate?: (stickerData: {
     type: "image" | "gif" | "meme";
     url: string;
     name: string;
     metadata?: any;
   }) => void;
+  onMediaSaved?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
   isPremium?: boolean;
   userCredits?: number;
+  saveToCollectionFirst?: boolean; // New prop to control behavior
 }
 
 type CreationMode = "meme" | "gif" | "photo" | "ai" | null;
