@@ -135,66 +135,11 @@ const defaultCategories: ProductCategory[] = [
 // Empty products array - will be populated from database
 const emptyProducts: Product[] = [];
 
-const mockCampaigns: Campaign[] = [
-  {
-    id: "campaign1",
-    name: "Back to School Tech Sale",
-    slug: "back-to-school-tech",
-    description: "Amazing deals on electronics for students and professionals",
-    type: "seasonal",
-    startDate: new Date().toISOString(),
-    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-    bannerImage:
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&auto=format",
-    bannerText: "Save up to 40% on Electronics!",
-    backgroundColor: "#3b82f6",
-    textColor: "#ffffff",
-    discountType: "percentage",
-    discountValue: 20,
-    maxDiscount: 100,
-    minOrderAmount: 50,
-    maxParticipants: 100,
-    maxProductsPerSeller: 10,
-    usageLimit: 1000,
-    usageCount: 234,
-    status: "active",
-    isPublic: true,
-    requiresApproval: true,
-    createdBy: "admin1",
-    viewCount: 5678,
-    clickCount: 1234,
-    conversionCount: 89,
-    totalRevenue: 8947.32, // Match centralized e-commerce balance
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: "campaign2",
-    name: "Digital Product Flash Sale",
-    slug: "digital-flash-sale",
-    description: "Limited time offers on digital products and services",
-    type: "flash_sale",
-    startDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    bannerText: "Flash Sale - 24 Hours Only!",
-    backgroundColor: "#ef4444",
-    textColor: "#ffffff",
-    discountType: "percentage",
-    discountValue: 30,
-    status: "active",
-    isPublic: true,
-    requiresApproval: false,
-    createdBy: "admin1",
-    viewCount: 3456,
-    clickCount: 789,
-    conversionCount: 45,
-    totalRevenue: 3890.5,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+// Empty campaigns array - will be populated from database
+const emptyCampaigns: Campaign[] = [];
 
-const mockBoostOptions: BoostOption[] = [
+// Production boost options (these can remain as they are business configuration)
+const productionBoostOptions: BoostOption[] = [
   {
     id: "boost1",
     name: "Basic Boost - 24 Hours",
@@ -266,13 +211,13 @@ export const EnhancedMarketplaceProvider = ({
   const { toast } = useToast();
 
   // State
-  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [products, setProducts] = useState<Product[]>(emptyProducts);
   const [categories, setCategories] =
-    useState<ProductCategory[]>(mockCategories);
-  const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns);
+    useState<ProductCategory[]>(defaultCategories);
+  const [campaigns, setCampaigns] = useState<Campaign[]>(emptyCampaigns);
   const [sellers, setSellers] = useState<SellerProfile[]>([]);
   const [reviews, setReviews] = useState<Record<string, Review[]>>({});
-  const [boostOptions] = useState<BoostOption[]>(mockBoostOptions);
+  const [boostOptions] = useState<BoostOption[]>(productionBoostOptions);
   const [productBoosts, setProductBoosts] = useState<ProductBoost[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
@@ -326,7 +271,7 @@ export const EnhancedMarketplaceProvider = ({
       sellerName: user?.user_metadata?.name || "Current User",
       sellerAvatar:
         user?.user_metadata?.avatar ||
-        "https://ui-avatars.com/api/?name=User&background=random",
+        "/placeholder-avatar.png",
       rating: 0,
       averageRating: 0,
       totalReviews: 0,
