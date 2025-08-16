@@ -61,7 +61,6 @@ import ApproveWork from "./pages/freelance/ApproveWork";
 import JobDetailPage from "./pages/freelance/JobDetailPage";
 import Inbox from "./chat/Inbox";
 import ChatRoom from "./pages/ChatRoom";
-import ChatRoomTest from "./pages/ChatRoomTest";
 import ChatDemo from "./pages/ChatDemo";
 import WhatsAppChatDemo from "./pages/WhatsAppChatDemo";
 import ChatMobileTest from "./pages/ChatMobileTest";
