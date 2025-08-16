@@ -516,13 +516,26 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
 
     setActiveCall({
       type: type,
-      participants: chat.isGroup 
+      participants: chat.isGroup
         ? (chat as GroupChatThread).participants || []
         : [{ id: user?.id, name: user?.profile?.full_name || "You" }],
       currentUser: { id: user?.id, name: user?.profile?.full_name || "You" },
       chatInfo: chat,
     });
   };
+
+  const markAsRead = (chatId: string) => {
+    setConversations(prev => prev.map(conv =>
+      conv.id === chatId ? { ...conv, unreadCount: 0 } : conv
+    ));
+  };
+
+  // Mark chat as read when selected
+  useEffect(() => {
+    if (selectedChat) {
+      markAsRead(selectedChat.id);
+    }
+  }, [selectedChat]);
 
   // Send message with notification
   const handleSendMessage = async () => {
