@@ -443,7 +443,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (metadata?.mediaType === "image" || (!metadata?.mediaType && message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i))) {
           return (
             <div className="max-w-sm">
-              <div className="relative group">
+              <div className="relative group cursor-pointer" onClick={handleMediaClick}>
                 <img
                   src={message.content}
                   alt="Shared image"
@@ -459,6 +459,10 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                   }}
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-xl" />
+                {/* Click indicator */}
+                <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click for options
+                </div>
               </div>
               {metadata?.fileName && (
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded">
