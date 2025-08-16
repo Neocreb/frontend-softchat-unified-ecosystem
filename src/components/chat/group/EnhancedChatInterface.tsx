@@ -592,16 +592,48 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
               </ScrollArea>
 
               {/* Message Input */}
-              <div className={cn("border-t p-4 bg-background/95 backdrop-blur-sm", isMobile && "p-3")}>
+              <div className="bg-background">
                 <WhatsAppChatInput
-                  value={messageInput}
-                  onChange={setMessageInput}
-                  onSend={handleSendMessage}
-                  onVoiceMessage={() => {}}
-                  onFileUpload={() => {}}
+                  messageInput={messageInput}
+                  setMessageInput={setMessageInput}
+                  onSendMessage={(type, content, metadata) => {
+                    if (type === "text") {
+                      handleSendMessage();
+                    } else {
+                      // Handle other message types (voice, sticker, media)
+                      const newMessage: EnhancedChatMessage = {
+                        id: `msg_${Date.now()}`,
+                        senderId: user?.id || "current-user",
+                        senderName: user?.profile?.full_name || user?.email || "You",
+                        senderAvatar: user?.profile?.avatar_url,
+                        content: content,
+                        type: type === "voice" ? "voice" : type === "sticker" ? "sticker" : "media",
+                        timestamp: new Date().toISOString(),
+                        status: "sent",
+                        reactions: [],
+                        metadata: metadata,
+                      };
+
+                      setMessages(prev => ({
+                        ...prev,
+                        [selectedChat.id]: [...(prev[selectedChat.id] || []), newMessage],
+                      }));
+
+                      // Update last message in conversation
+                      setConversations(prev => prev.map(conv =>
+                        conv.id === selectedChat.id
+                          ? {
+                              ...conv,
+                              lastMessage: type === "text" ? content : `${type} message`,
+                              lastMessageAt: new Date().toISOString()
+                            }
+                          : conv
+                      ));
+                    }
+                  }}
+                  isMobile={isMobile}
                   placeholder={`Message ${selectedChat.isGroup ? selectedChat.groupName : selectedChat.participant_profile?.name}...`}
-                  replyTo={replyToMessage}
-                  onCancelReply={() => setReplyToMessage(null)}
+                  currentUserId={user?.id}
                 />
               </div>
             </>
