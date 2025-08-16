@@ -338,7 +338,7 @@ export const StickerCreationModal: React.FC<StickerCreationModalProps> = ({
           onClick={() => {
             toast({
               title: "Camera feature",
-              description: "Camera integration coming soon!",
+              description: "Camera integration in development!",
             });
           }}
           className="h-32 flex flex-col gap-2 border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/10 hover:bg-muted/20"
