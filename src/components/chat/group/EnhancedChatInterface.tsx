@@ -953,10 +953,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                       currentUserId={user?.id || ""}
                       onClick={() => {
                         // Navigate to dedicated chat page
-                        console.log("Navigating to chat:", chat.id, "type:", chat.type);
-                        const url = `/app/chat/${chat.id}?type=${chat.type}`;
-                        console.log("Navigation URL:", url);
-                        navigate(url);
+                        navigate(`/app/chat/${chat.id}?type=${chat.type}`);
                       }}
                       onPin={handlePinChat}
                       onMute={handleMuteChat}
