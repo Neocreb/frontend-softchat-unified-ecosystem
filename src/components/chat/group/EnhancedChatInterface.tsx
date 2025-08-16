@@ -567,23 +567,33 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
 
         {/* Chat List */}
         <ScrollArea className="flex-1">
-          <div className="p-2 space-y-1">
+          <div className={cn(
+            "p-2 space-y-1",
+            isMobile && "p-1 space-y-0.5"
+          )}>
             {loading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
               </div>
             ) : filteredConversations.length > 0 ? (
               filteredConversations.map((chat) => (
-                <ChatListItem
+                <div
                   key={chat.id}
-                  chat={chat}
-                  isSelected={selectedChat?.id === chat.id}
-                  currentUserId={user?.id || ""}
-                  onClick={() => setSelectedChat(chat)}
-                  onPin={handlePinChat}
-                  onMute={handleMuteChat}
-                  onCall={handleCall}
-                />
+                  className={cn(
+                    "transition-transform",
+                    isMobile && "active:scale-95"
+                  )}
+                >
+                  <ChatListItem
+                    chat={chat}
+                    isSelected={selectedChat?.id === chat.id}
+                    currentUserId={user?.id || ""}
+                    onClick={() => setSelectedChat(chat)}
+                    onPin={handlePinChat}
+                    onMute={handleMuteChat}
+                    onCall={handleCall}
+                  />
+                </div>
               ))
             ) : (
               <div className="text-center py-8 text-muted-foreground">
