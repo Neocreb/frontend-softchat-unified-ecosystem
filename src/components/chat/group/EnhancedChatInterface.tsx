@@ -70,6 +70,8 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
   const { user } = useAuth();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const { openChatTab } = useChatIntegration();
 
   // Core state
   const [activeTab, setActiveTab] = useState<UnifiedChatType>("social");
