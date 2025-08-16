@@ -65,7 +65,7 @@ const ChatRoom = () => {
 
   // Load chat data
   useEffect(() => {
-    if (!chatId) {
+    if (!threadId) {
       setLoading(false);
       return;
     }
@@ -92,7 +92,7 @@ const ChatRoom = () => {
 
         // Mock chat data - in real app, fetch from API
         const mockChat: UnifiedChatThread = {
-          id: chatId,
+          id: threadId,
           type: chatType,
           referenceId: null,
           participant_profile: chatType !== "social" ? {
