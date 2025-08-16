@@ -607,14 +607,14 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       </div>
 
       {/* Chat Content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden min-h-0">
         {/* Chat List */}
         <div className={cn(
-          "flex flex-col border-r bg-card",
-          isMobile ? (selectedChat ? "hidden" : "w-full") : "w-80"
+          "flex flex-col border-r bg-card min-w-0",
+          isMobile ? (selectedChat ? "hidden" : "w-full") : "w-80 max-w-80"
         )}>
           <ScrollArea className="flex-1">
-            <div className={cn("p-2 space-y-1", isMobile && "p-1 space-y-0.5")}>
+            <div className={cn("p-2 space-y-1", isMobile && "p-1.5 space-y-0.5")}>
               {loading ? (
                 <div className="flex items-center justify-center py-8">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
@@ -636,10 +636,11 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No conversations found</p>
+                  <p className="text-sm">No conversations found</p>
                   {activeTab === "social" && (
                     <Button
                       variant="outline"
+                      size="sm"
                       className="mt-4"
                       onClick={() => setShowCreateGroup(true)}
                     >
@@ -654,13 +655,20 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         </div>
 
         {/* Main Chat Area */}
-        <div className={cn("flex flex-col flex-1", isMobile && !selectedChat && "hidden")}>
+        <div className={cn(
+          "flex flex-col flex-1 min-w-0",
+          isMobile && !selectedChat && "hidden"
+        )}>
           {selectedChat ? (
             <>
               {renderChatHeader()}
-              
+
               {/* Messages */}
-              <ScrollArea className={cn("flex-1 p-4", isMobile && "p-3")}>
+              <ScrollArea className={cn(
+                "flex-1 p-4",
+                isMobile && "p-3",
+                "min-h-0" // Important for scroll behavior
+              )}>
                 <div className={cn("space-y-4", isMobile && "space-y-3")}>
                   {(messages[selectedChat.id] || []).map((message) => (
                     <div key={message.id} className={cn(isMobile && "transition-transform active:scale-98")}>
@@ -680,7 +688,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
               </ScrollArea>
 
               {/* Message Input */}
-              <div className="bg-background">
+              <div className="flex-shrink-0 bg-background">
                 <WhatsAppChatInput
                   messageInput={messageInput}
                   setMessageInput={setMessageInput}
@@ -727,10 +735,12 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
             </>
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-              <div className="text-center">
+              <div className="text-center p-8">
                 <Users className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
-                <p className="text-sm">Choose a chat to start messaging</p>
+                <h3 className={cn("font-medium mb-2", isMobile ? "text-base" : "text-lg")}>
+                  Select a conversation
+                </h3>
+                <p className="text-sm opacity-80">Choose a chat to start messaging</p>
               </div>
             </div>
           )}
