@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-import { UnifiedChatInterface } from "@/components/chat/UnifiedChatInterface";
+import { EnhancedChatInterface } from "@/components/chat/group/EnhancedChatInterface";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Chat = () => {
