@@ -260,25 +260,44 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
       // For now, create a simplified animated preview
       // In production, you'd use gif.js or ffmpeg.wasm here
       const url = URL.createObjectURL(videoFile);
-      
-      onStickerCreate({
-        type: "gif",
-        url,
+
+      const gifData = {
         name: `Animated - ${videoFile.name.replace(/\.[^/.]+$/, "")}`,
+        fileUrl: url,
+        thumbnailUrl: url,
+        type: "gif" as const,
+        width: canvas.width,
+        height: canvas.height,
+        tags: ["gif", "animated", "custom", "user-generated"],
+        animated: true,
         metadata: {
           originalFile: videoFile.name,
           duration: Math.min(video.duration * 1000, 5000),
           stickerType: "gif",
           animated: true,
-          width: canvas.width,
-          height: canvas.height,
+          createdAt: new Date().toISOString(),
         },
-      });
+      };
 
-      toast({
-        title: "Animated sticker created!",
-        description: "Your animated sticker is ready to send",
-      });
+      if (saveToCollectionFirst) {
+        const mediaId = saveToCollection(gifData, "gifs");
+        onMediaSaved?.(mediaId, "gifs");
+        toast({
+          title: "GIF saved!",
+          description: "Your animated GIF has been saved to your collection",
+        });
+      } else {
+        onStickerCreate?.({
+          type: "gif",
+          url,
+          name: gifData.name,
+          metadata: gifData.metadata,
+        });
+        toast({
+          title: "Animated sticker created!",
+          description: "Your animated sticker is ready to send",
+        });
+      }
 
       resetMode();
     } catch (error) {
