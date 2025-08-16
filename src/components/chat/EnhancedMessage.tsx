@@ -119,6 +119,12 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   onDelete,
   showAvatar = true,
   groupWithPrevious = false,
+  userCollections = { memes: [], gifs: [], stickers: [] },
+  onSaveToCollection,
+  onRemoveFromCollection,
+  onSendMessage,
+  onReportMedia,
+  currentUserId = "current_user",
 }) => {
   const { toast } = useToast();
   const [isPlaying, setIsPlaying] = useState(false);
