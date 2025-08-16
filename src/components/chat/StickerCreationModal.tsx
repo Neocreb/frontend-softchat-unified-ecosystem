@@ -179,7 +179,7 @@ export const StickerCreationModal: React.FC<StickerCreationModalProps> = ({
     // Mock background removal - in real app would use AI service
     toast({
       title: "Background Removal",
-      description: "AI background removal coming soon!",
+      description: "AI background removal feature in development!",
     });
     
     // For now, just create a processed version
