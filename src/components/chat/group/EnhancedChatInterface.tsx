@@ -477,7 +477,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
     });
   };
 
-  // Send message
+  // Send message with notification
   const handleSendMessage = async () => {
     if (!selectedChat || !messageInput.trim()) return;
 
@@ -498,6 +498,49 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       ...prev,
       [selectedChat.id]: [...(prev[selectedChat.id] || []), newMessage],
     }));
+
+    // Update conversation last message
+    setConversations(prev => prev.map(conv =>
+      conv.id === selectedChat.id
+        ? {
+            ...conv,
+            lastMessage: messageInput.trim(),
+            lastMessageAt: new Date().toISOString()
+          }
+        : conv
+    ));
+
+    // Trigger notification for other participants
+    if (selectedChat.isGroup) {
+      const groupChat = selectedChat as GroupChatThread;
+      groupChat.participants?.forEach(participant => {
+        if (participant.id !== user?.id) {
+          // Dispatch custom event for notification system
+          window.dispatchEvent(new CustomEvent('chat-notification', {
+            detail: {
+              type: 'social',
+              title: `${selectedChat.groupName}`,
+              message: `${user?.profile?.full_name || 'Someone'}: ${messageInput.trim()}`,
+              fromUserId: user?.id,
+              chatId: selectedChat.id,
+              chatType: selectedChat.type,
+            }
+          }));
+        }
+      });
+    } else {
+      // Direct message notification
+      window.dispatchEvent(new CustomEvent('chat-notification', {
+        detail: {
+          type: selectedChat.type,
+          title: `${user?.profile?.full_name || 'New message'}`,
+          message: messageInput.trim(),
+          fromUserId: user?.id,
+          chatId: selectedChat.id,
+          chatType: selectedChat.type,
+        }
+      }));
+    }
 
     setMessageInput("");
     setReplyToMessage(null);
