@@ -473,7 +473,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
                   onMediaSaved={(mediaId, collection) => {
                     toast({
                       title: "Media saved!",
-                      description: `Your ${collection.slice(0, -1)} has been saved to your collection`,
+                      description: `Your ${collection.slice(0, -1)} has been saved to your collection and is now available in the ${collection.charAt(0).toUpperCase() + collection.slice(1)} tab`,
                     });
                     // Switch to the appropriate tab to show the saved media
                     if (collection === "memes") {
