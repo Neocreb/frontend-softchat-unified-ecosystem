@@ -196,7 +196,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           id: `ai-${Date.now()}`,
           threadId: "ai_assistant",
           senderId: "ai_assistant",
-          content: smartResponse.message,
+          content: cleanAIResponse(smartResponse.message),
           timestamp: new Date().toISOString(),
           readBy: [],
           messageType: "text",
