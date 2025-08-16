@@ -61,9 +61,9 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* Chat interface - responsive full height */}
+        {/* Enhanced Chat interface with WhatsApp-style group features */}
         <div className="flex-1 overflow-hidden min-h-0">
-          <UnifiedChatInterface className="h-full" />
+          <EnhancedChatInterface className="h-full" />
         </div>
       </div>
     </>
