@@ -462,24 +462,18 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
                   isMobile={isMobile}
                   isPremium={true} // TODO: Get from user context
                   userCredits={10} // TODO: Get from user context
-                  onStickerCreate={(stickerData) => {
-                    // Create a sticker object and send it
-                    const sticker: StickerData = {
-                      id: Date.now().toString(),
-                      name: stickerData.name,
-                      type: stickerData.type === "gif" ? "gif" : "image",
-                      tags: [stickerData.type],
-                      fileUrl: stickerData.url,
-                      thumbnailUrl: stickerData.url,
-                      width: 128,
-                      height: 128,
-                      packId: "custom",
-                      packName: "Custom",
-                      usageCount: 0,
-                      isFavorite: false,
-                      metadata: stickerData.metadata,
-                    };
-                    handleStickerClick(sticker);
+                  saveToCollectionFirst={true}
+                  onMediaSaved={(mediaId, collection) => {
+                    toast({
+                      title: "Media saved!",
+                      description: `Your ${collection.slice(0, -1)} has been saved to your collection`,
+                    });
+                    // Switch to the appropriate tab to show the saved media
+                    if (collection === "memes") {
+                      setActiveTab("memes");
+                    } else if (collection === "gifs") {
+                      setActiveTab("gifs");
+                    }
                   }}
                 />
               </TabsContent>
