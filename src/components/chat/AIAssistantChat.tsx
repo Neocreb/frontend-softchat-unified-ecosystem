@@ -69,7 +69,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             id: "welcome-msg",
             threadId: "ai_assistant",
             senderId: "ai_assistant",
-            content: personalizedGreeting + "\n\n" + welcomeResponse.message,
+            content: cleanAIResponse(personalizedGreeting + "\n\n" + welcomeResponse.message),
             timestamp: new Date().toISOString(),
             readBy: [],
             messageType: "text",
