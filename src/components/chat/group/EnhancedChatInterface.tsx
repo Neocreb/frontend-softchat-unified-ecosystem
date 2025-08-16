@@ -32,6 +32,11 @@ import WhatsAppChatInput from "../WhatsAppChatInput";
 import { VoiceVideoCall } from "../VoiceVideoCall";
 import { TypingIndicator } from "../TypingIndicator";
 import { AIAssistantChat } from "../AIAssistantChat";
+import { OnlineStatusIndicator } from "../OnlineStatusIndicator";
+
+// Import integration hooks
+import { useChatIntegration } from "@/hooks/use-chat-integration";
+import { useNavigate } from "react-router-dom";
 
 // Types
 import { 
