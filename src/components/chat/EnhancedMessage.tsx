@@ -815,6 +815,34 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
             )}
           </div>
         </div>
+
+        {/* Media Action Dialog */}
+        {showMediaDialog && (message.type === "sticker" || message.type === "media") && (
+          <MemeGifActionDialog
+            open={showMediaDialog}
+            onOpenChange={setShowMediaDialog}
+            media={{
+              id: message.id,
+              url: message.metadata?.stickerUrl || message.content,
+              name: message.metadata?.stickerName || message.metadata?.fileName || "Media",
+              type: getMediaType(),
+              metadata: message.metadata,
+              sender: {
+                id: message.senderId,
+                name: message.senderName,
+                avatar: message.senderAvatar,
+              },
+            }}
+            userCollections={userCollections}
+            onSaveToCollection={onSaveToCollection || (() => {})}
+            onRemoveFromCollection={onRemoveFromCollection || (() => {})}
+            onSendMessage={onSendMessage || (() => {})}
+            onReport={onReportMedia || (() => {})}
+            onForward={onForward ? () => onForward(message) : undefined}
+            currentUserId={currentUserId}
+            isMobile={isMobile}
+          />
+        )}
       </div>
     </TooltipProvider>
   );
