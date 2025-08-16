@@ -481,9 +481,33 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
   };
 
   const handleMuteChat = async (chatId: string, mute: boolean) => {
-    setConversations(prev => prev.map(conv => 
+    setConversations(prev => prev.map(conv =>
       conv.id === chatId ? { ...conv, isMuted: mute } : conv
     ));
+  };
+
+  const handleArchiveChat = async (chatId: string) => {
+    setConversations(prev => prev.map(conv =>
+      conv.id === chatId ? { ...conv, isArchived: true } : conv
+    ));
+
+    toast({
+      title: "Chat archived",
+      description: "The conversation has been archived",
+    });
+  };
+
+  const handleDeleteChat = async (chatId: string) => {
+    setConversations(prev => prev.filter(conv => conv.id !== chatId));
+
+    if (selectedChat?.id === chatId) {
+      setSelectedChat(null);
+    }
+
+    toast({
+      title: "Chat deleted",
+      description: "The conversation has been deleted",
+    });
   };
 
   const handleCall = (chatId: string, type: 'voice' | 'video') => {
