@@ -11,26 +11,39 @@ export interface ChatThread {
   isGroup: boolean;
   groupName?: string;
   groupAvatar?: string;
+  groupDescription?: string;
+  createdBy?: string;
   createdAt: string;
   unreadCount?: number;
   contextData?: ChatContextData;
+  isPinned?: boolean;
+  isArchived?: boolean;
+  isMuted?: boolean;
+  mutedUntil?: string;
 }
 
 export interface ChatMessage {
   id: string;
   threadId: string;
   senderId: string;
+  senderName?: string;
+  senderAvatar?: string;
   content: string;
   attachments?: string[];
   timestamp: string;
   readBy: string[];
-  messageType?: "text" | "image" | "file" | "system" | "voice" | "sticker";
+  messageType?: "text" | "image" | "file" | "system" | "voice" | "sticker" | "announcement";
   stickerId?: string; // Reference to sticker from database
   replyTo?: string; // ID of message being replied to
   reactions?: MessageReaction[];
   isEdited?: boolean;
   editedAt?: string;
   deletedAt?: string;
+  mentionedUserIds?: string[];
+  isAnnouncement?: boolean;
+  isPinned?: boolean;
+  pinnedBy?: string;
+  pinnedAt?: string;
   metadata?: {
     fileName?: string;
     fileSize?: number;
@@ -86,6 +99,9 @@ export interface ChatParticipant {
   isOnline?: boolean;
   lastSeen?: string;
   role?: "admin" | "member"; // For group chats
+  username?: string;
+  status?: string;
+  isVerified?: boolean;
 }
 
 export interface StartChatRequest {

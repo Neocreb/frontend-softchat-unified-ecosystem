@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,19 +27,20 @@ const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/95 shadow-md backdrop-blur-sm py-3"
+          ? "bg-background/95 dark:bg-background/95 shadow-md backdrop-blur-sm py-3 border-b border-border/50"
           : "bg-transparent py-5"
       }`}
     >
       <div className="container-wide flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-softchat-700">Softchat</span>
+          <span className="text-2xl font-bold text-softchat-700 dark:text-softchat-accent">Softchat</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <NavLinks />
+          <ThemeToggle />
           <Button className="btn-primary" asChild>
             <a
               href="https://app.softchat.com"
@@ -52,7 +54,7 @@ const Header = () => {
 
         {/* Mobile Navigation Toggle */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 text-foreground hover:text-primary transition-colors"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle Menu"
         >
@@ -62,12 +64,16 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-lg py-4 px-6 animate-fade-in">
+        <div className="md:hidden absolute top-full left-0 w-full bg-background dark:bg-background shadow-lg border-b border-border py-4 px-6 animate-fade-in backdrop-blur-md">
           <nav className="flex flex-col space-y-4">
             <NavLinks
               mobile={true}
               closeMenu={() => setIsMobileMenuOpen(false)}
             />
+            <div className="flex items-center justify-between pt-4 border-t border-border/50">
+              <span className="text-sm text-muted-foreground">Theme</span>
+              <ThemeToggle />
+            </div>
             <Button className="btn-primary w-full" asChild>
               <a
                 href="https://app.softchat.com"
@@ -103,7 +109,7 @@ const NavLinks = ({ mobile = false, closeMenu = () => {} }) => {
           href={link.href}
           className={`${
             mobile ? "block py-2 text-lg" : "text-sm font-medium"
-          } text-gray-800 hover:text-softchat-600 transition-colors`}
+          } text-foreground dark:text-foreground hover:text-softchat-600 dark:hover:text-softchat-accent transition-colors`}
           onClick={closeMenu}
         >
           {link.text}

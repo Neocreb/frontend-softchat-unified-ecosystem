@@ -50,8 +50,10 @@ export interface EnhancedChatMessage {
   senderId: string;
   senderName: string;
   senderAvatar?: string;
+  senderRole?: 'admin' | 'member';
+  senderCustomTitle?: string;
   content: string;
-  type: "text" | "voice" | "sticker" | "media";
+  type: "text" | "voice" | "sticker" | "media" | "system" | "announcement";
   timestamp: string;
   metadata?: {
     duration?: number;
@@ -61,30 +63,50 @@ export interface EnhancedChatMessage {
     fileType?: string;
     mediaType?: "image" | "video" | "file";
     stickerName?: string;
+    systemAction?: string;
+    mentionedUserIds?: string[];
   };
   status: "sending" | "sent" | "delivered" | "read";
   reactions?: {
     userId: string;
+    userName?: string;
     emoji: string;
     timestamp: string;
   }[];
   isEdited?: boolean;
+  isPinned?: boolean;
+  pinnedBy?: string;
   replyTo?: {
     messageId: string;
     content: string;
     senderName: string;
+    senderRole?: 'admin' | 'member';
+  };
+  mentionedUsers?: {
+    id: string;
+    name: string;
+  }[];
+  forwardedFrom?: {
+    groupId?: string;
+    groupName?: string;
+    originalSender: string;
+    originalTimestamp: string;
   };
 }
 
 interface EnhancedMessageProps {
   message: EnhancedChatMessage;
-  isCurrentUser: boolean;
+  currentUserId: string;
+  currentUserRole?: 'admin' | 'member';
+  isGroupMessage?: boolean;
   isMobile?: boolean;
   onReply?: (message: EnhancedChatMessage) => void;
   onForward?: (message: EnhancedChatMessage) => void;
   onReact?: (messageId: string, emoji: string) => void;
   onEdit?: (messageId: string, newContent: string) => void;
   onDelete?: (messageId: string) => void;
+  onPin?: (messageId: string, pin: boolean) => void;
+  onMention?: (userId: string) => void;
   showAvatar?: boolean;
   groupWithPrevious?: boolean;
   userCollections?: {
@@ -96,7 +118,8 @@ interface EnhancedMessageProps {
   onRemoveFromCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
   onSendMessage?: (content: string, type: "sticker" | "media", metadata?: any) => void;
   onReportMedia?: (mediaId: string, reason: string) => void;
-  currentUserId?: string;
+  // Legacy support
+  isCurrentUser?: boolean;
 }
 
 const reactionEmojis = [
@@ -110,13 +133,17 @@ const reactionEmojis = [
 
 export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   message,
-  isCurrentUser,
+  currentUserId,
+  currentUserRole = 'member',
+  isGroupMessage = false,
   isMobile = false,
   onReply,
   onForward,
   onReact,
   onEdit,
   onDelete,
+  onPin,
+  onMention,
   showAvatar = true,
   groupWithPrevious = false,
   userCollections = { memes: [], gifs: [], stickers: [] },
@@ -124,8 +151,10 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   onRemoveFromCollection,
   onSendMessage,
   onReportMedia,
-  currentUserId = "current_user",
+  // Legacy support
+  isCurrentUser: legacyIsCurrentUser,
 }) => {
+  const isCurrentUser = legacyIsCurrentUser ?? (message.senderId === currentUserId);
   const { toast } = useToast();
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioProgress, setAudioProgress] = useState(0);
