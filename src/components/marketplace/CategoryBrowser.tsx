@@ -32,7 +32,7 @@ interface Category {
 }
 
 interface CategoryBrowserProps {
-  categories: Category[];
+  categories?: Category[];
   onCategorySelect?: (category: Category) => void;
   showSubcategories?: boolean;
   layout?: "grid" | "list" | "sidebar";
@@ -51,15 +51,13 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   package: Package,
 };
 
-// Mock categories data
-const mockCategories: Category[] = [
+// Default categories for production
+const defaultCategories: Category[] = [
   {
     id: "electronics",
     name: "Electronics",
     icon: "smartphone",
-    productCount: 15420,
-    image:
-      "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=300&h=200&fit=crop",
+    productCount: 0,
     isPopular: true,
     description: "Latest gadgets and tech",
     subcategories: [
@@ -67,25 +65,23 @@ const mockCategories: Category[] = [
         id: "smartphones",
         name: "Smartphones",
         icon: "smartphone",
-        productCount: 3240,
+        productCount: 0,
       },
-      { id: "laptops", name: "Laptops", icon: "package", productCount: 1850 },
+      { id: "laptops", name: "Laptops", icon: "package", productCount: 0 },
       {
         id: "headphones",
         name: "Headphones",
         icon: "package",
-        productCount: 2100,
+        productCount: 0,
       },
-      { id: "tablets", name: "Tablets", icon: "package", productCount: 980 },
+      { id: "tablets", name: "Tablets", icon: "package", productCount: 0 },
     ],
   },
   {
     id: "fashion",
     name: "Fashion",
     icon: "shirt",
-    productCount: 28650,
-    image:
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&h=200&fit=crop",
+    productCount: 0,
     isTrending: true,
     description: "Trendy clothing and accessories",
     subcategories: [
@@ -93,7 +89,7 @@ const mockCategories: Category[] = [
         id: "mens-clothing",
         name: "Men's Clothing",
         icon: "shirt",
-        productCount: 8420,
+        productCount: 0,
       },
       {
         id: "womens-clothing",
@@ -210,7 +206,7 @@ const mockCategories: Category[] = [
 ];
 
 export const CategoryBrowser: React.FC<CategoryBrowserProps> = ({
-  categories = mockCategories,
+  categories = defaultCategories,
   onCategorySelect,
   showSubcategories = true,
   layout = "grid",
