@@ -870,15 +870,15 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                   {(messages[selectedChat.id] || []).map((message) => (
                     <div key={message.id} className={cn(isMobile && "transition-transform active:scale-98")}>
                       <EnhancedMessage
-                        message={message}
-                        currentUserId={user?.id || ""}
-                        onReact={() => {}}
-                        onReply={() => setReplyToMessage(message)}
-                        onEdit={() => {}}
-                        onDelete={() => {}}
-                        showAvatar={selectedChat.isGroup}
-                        isGroupMessage={selectedChat.isGroup}
-                      />
+                      message={message}
+                      currentUserId={user?.id || ""}
+                      onReact={(emoji) => handleReactToMessage(message.id, emoji)}
+                      onReply={() => handleReplyToMessage(message)}
+                      onEdit={(newContent) => handleEditMessage(message.id, newContent)}
+                      onDelete={() => handleDeleteMessage(message.id)}
+                      showAvatar={selectedChat.isGroup}
+                      isGroupMessage={selectedChat.isGroup}
+                    />
                     </div>
                   ))}
                 </div>
