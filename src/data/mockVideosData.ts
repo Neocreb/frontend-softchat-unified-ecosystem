@@ -1,63 +1,270 @@
+// Production-ready video data structure
+// In production, this data would be fetched from the API
 
-import { VideoItem, AdData } from "@/types/video";
+export interface VideoData {
+  id: string;
+  title: string;
+  description?: string;
+  url: string;
+  thumbnail?: string;
+  duration: number; // in seconds
+  author: {
+    id: string;
+    name: string;
+    username: string;
+    avatar?: string;
+    verified: boolean;
+    followerCount: number;
+  };
+  stats: {
+    views: number;
+    likes: number;
+    comments: number;
+    shares: number;
+  };
+  tags: string[];
+  category: string;
+  isLiked: boolean;
+  isFollowing: boolean;
+  timestamp: string;
+  quality: {
+    '360p'?: string;
+    '720p'?: string;
+    '1080p'?: string;
+  };
+}
 
-export const mockVideos: VideoItem[] = [
-  {
-    id: "1",
-    url: "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4",
-    thumbnail: "https://images.unsplash.com/photo-1620118373803-9cb777efcfba?q=80&w=800&auto=format&fit=crop",
-    description: "Amazing ocean views 🌊 #nature #ocean #waves",
-    likes: 12543,
-    comments: 432,
-    shares: 129,
-    author: {
-      name: "Sarah Johnson",
-      username: "sarahj",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      verified: true,
-    },
-    isFollowing: true,
-  },
-  {
-    id: "2",
-    url: "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
-    thumbnail: "https://images.unsplash.com/photo-1596993100471-c3905dae0b84?q=80&w=800&auto=format&fit=crop",
-    description: "Spring has arrived! 🌸 #spring #flowers #nature",
-    likes: 8432,
-    comments: 256,
-    shares: 78,
-    author: {
-      name: "Michael Chen",
-      username: "mikechen",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      verified: false,
-    },
-    isFollowing: false,
-  },
-  {
-    id: "3",
-    url: "https://assets.mixkit.co/videos/preview/mixkit-woman-running-through-the-city-32952-large.mp4",
-    thumbnail: "https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=800&auto=format&fit=crop",
-    description: "Morning run through the city 🏙️ #fitness #running #citylife",
-    likes: 5672,
-    comments: 187,
-    shares: 42,
-    author: {
-      name: "Jessica Williams",
-      username: "jesswill",
-      avatar: "https://randomuser.me/api/portraits/women/28.jpg",
-      verified: true,
-    },
-    isFollowing: true,
-  },
-];
+export interface VideoComment {
+  id: string;
+  content: string;
+  author: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
+  timestamp: string;
+  likes: number;
+  isLiked: boolean;
+  replies?: VideoComment[];
+}
 
-export const mockAdData: AdData = {
-  id: "ad1",
-  title: "Try our new fitness app!",
-  description: "Get in shape with personalized workouts and nutrition plans.",
-  cta: "Download Now",
-  image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop",
-  url: "#",
-  sponsor: "FitLife Pro",
+export interface VideoPlaylist {
+  id: string;
+  name: string;
+  description?: string;
+  thumbnail?: string;
+  videoCount: number;
+  isPublic: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Default empty data for production
+export const videosData: VideoData[] = [];
+
+export const trendingVideos: VideoData[] = [];
+
+export const videoPlaylists: VideoPlaylist[] = [];
+
+// API functions for production use
+export const videoService = {
+  async getVideos(page = 1, limit = 20, category?: string): Promise<VideoData[]> {
+    try {
+      const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
+      if (category) params.append('category', category);
+
+      const response = await fetch(`/api/videos?${params}`);
+      if (!response.ok) throw new Error('Failed to fetch videos');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      return [];
+    }
+  },
+
+  async getTrendingVideos(limit = 10): Promise<VideoData[]> {
+    try {
+      const response = await fetch(`/api/videos/trending?limit=${limit}`);
+      if (!response.ok) throw new Error('Failed to fetch trending videos');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching trending videos:', error);
+      return [];
+    }
+  },
+
+  async getVideo(videoId: string): Promise<VideoData | null> {
+    try {
+      const response = await fetch(`/api/videos/${videoId}`);
+      if (!response.ok) throw new Error('Video not found');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching video:', error);
+      return null;
+    }
+  },
+
+  async uploadVideo(videoData: {
+    title: string;
+    description?: string;
+    file: File;
+    thumbnail?: File;
+    tags: string[];
+    category: string;
+    isPublic: boolean;
+  }): Promise<VideoData> {
+    try {
+      const formData = new FormData();
+      formData.append('title', videoData.title);
+      if (videoData.description) formData.append('description', videoData.description);
+      formData.append('video', videoData.file);
+      if (videoData.thumbnail) formData.append('thumbnail', videoData.thumbnail);
+      formData.append('tags', JSON.stringify(videoData.tags));
+      formData.append('category', videoData.category);
+      formData.append('isPublic', videoData.isPublic.toString());
+
+      const response = await fetch('/api/videos/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Failed to upload video');
+      return await response.json();
+    } catch (error) {
+      console.error('Error uploading video:', error);
+      throw error;
+    }
+  },
+
+  async likeVideo(videoId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/videos/${videoId}/like`, {
+        method: 'POST',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error liking video:', error);
+      return false;
+    }
+  },
+
+  async addComment(videoId: string, content: string): Promise<VideoComment | null> {
+    try {
+      const response = await fetch(`/api/videos/${videoId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      if (!response.ok) throw new Error('Failed to add comment');
+      return await response.json();
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      return null;
+    }
+  },
+
+  async getComments(videoId: string, page = 1): Promise<VideoComment[]> {
+    try {
+      const response = await fetch(`/api/videos/${videoId}/comments?page=${page}`);
+      if (!response.ok) throw new Error('Failed to fetch comments');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      return [];
+    }
+  },
+
+  async shareVideo(videoId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/videos/${videoId}/share`, {
+        method: 'POST',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error sharing video:', error);
+      return false;
+    }
+  },
+
+  async followUser(userId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/users/${userId}/follow`, {
+        method: 'POST',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error following user:', error);
+      return false;
+    }
+  },
+
+  async searchVideos(query: string, page = 1): Promise<VideoData[]> {
+    try {
+      const response = await fetch(`/api/videos/search?q=${encodeURIComponent(query)}&page=${page}`);
+      if (!response.ok) throw new Error('Failed to search videos');
+      const data = await response.json();
+      return data.videos || [];
+    } catch (error) {
+      console.error('Error searching videos:', error);
+      return [];
+    }
+  },
+
+  async getPlaylists(userId?: string): Promise<VideoPlaylist[]> {
+    try {
+      const url = userId ? `/api/playlists?userId=${userId}` : '/api/playlists';
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch playlists');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching playlists:', error);
+      return [];
+    }
+  },
+
+  async createPlaylist(name: string, description?: string, isPublic = true): Promise<VideoPlaylist> {
+    try {
+      const response = await fetch('/api/playlists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, description, isPublic }),
+      });
+
+      if (!response.ok) throw new Error('Failed to create playlist');
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating playlist:', error);
+      throw error;
+    }
+  },
+
+  async addToPlaylist(playlistId: string, videoId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/playlists/${playlistId}/videos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ videoId }),
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error adding video to playlist:', error);
+      return false;
+    }
+  },
+};
+
+export default {
+  videosData,
+  trendingVideos,
+  videoPlaylists,
+  videoService,
 };
