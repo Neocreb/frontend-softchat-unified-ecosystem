@@ -112,6 +112,11 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
   // Reply state
   const [replyToMessage, setReplyToMessage] = useState<EnhancedChatMessage | null>(null);
 
+  // Voice/Video call handlers
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
+
   // Mock conversations for different tabs
   const mockConversations: UnifiedChatThread[] = [
     // Social conversations
