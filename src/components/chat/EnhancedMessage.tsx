@@ -18,6 +18,7 @@ import {
   Eye,
   Copy,
   Reply,
+  Forward,
   MoreVertical,
   Heart,
   ThumbsUp,
