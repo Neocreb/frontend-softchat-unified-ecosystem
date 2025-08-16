@@ -50,6 +50,16 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
   const [conversationContext, setConversationContext] = useState<string[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  // Clean AI response to remove markdown asterisks and show plain text
+  const cleanAIResponse = (content: string): string => {
+    return content
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove **bold** formatting
+      .replace(/\*(.*?)\*/g, '$1')     // Remove *italic* formatting
+      .replace(/`(.*?)`/g, '$1')       // Remove `code` formatting
+      .replace(/~~(.*?)~~/g, '$1')     // Remove ~~strikethrough~~ formatting
+      .trim();
+  };
+
   // Initialize AI assistant with welcome message
   useEffect(() => {
     const initializeWelcome = async () => {
