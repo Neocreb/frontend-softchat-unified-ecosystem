@@ -306,11 +306,30 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
               <Button
                 variant="ghost"
                 className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/20 dark:hover:to-purple-800/20 transition-all duration-200 rounded-xl"
-                onClick={() => {
-                  toast({
-                    title: "Camera",
-                    description: "Camera feature coming soon!",
-                  });
+onClick={() => {
+                  // Trigger camera input for photo capture
+                  const input = document.createElement('input');
+                  input.type = 'file';
+                  input.accept = 'image/*';
+                  input.capture = 'environment';
+                  input.onchange = (e) => {
+                    const file = (e.target as HTMLInputElement).files?.[0];
+                    if (file) {
+                      const url = URL.createObjectURL(file);
+                      onSendMessage("media", url, {
+                        fileName: file.name,
+                        fileSize: file.size,
+                        fileType: file.type,
+                        mediaType: "image",
+                        file,
+                      });
+                      toast({
+                        title: "Photo captured!",
+                        description: "Your photo has been sent.",
+                      });
+                    }
+                  };
+                  input.click();
                 }}
               >
                 <Camera className="h-7 w-7 text-purple-600 dark:text-purple-400" />
