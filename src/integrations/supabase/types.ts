@@ -1326,7 +1326,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_profiles: {
+        Row: {
+          avatar: string | null
+          avatar_url: string | null
+          bio: string | null
+          created_at: string | null
+          is_verified: boolean | null
+          level: string | null
+          name: string | null
+          points: number | null
+          user_id: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          is_verified?: boolean | null
+          level?: string | null
+          name?: string | null
+          points?: number | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string | null
+          is_verified?: boolean | null
+          level?: string | null
+          name?: string | null
+          points?: number | null
+          user_id?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       check_column_exists: {
