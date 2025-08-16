@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-white to-gray-50 py-16 sm:py-20 md:py-32">
+    <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted dark:from-background dark:to-muted py-16 sm:py-20 md:py-32">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-20 bg-gradient-radial from-softchat-500/40 to-transparent"></div>
         <div className="absolute right-0 bottom-0 -z-10 h-[400px] w-[400px] sm:h-[600px] sm:w-[600px] translate-x-1/3 translate-y-1/3 opacity-20 bg-gradient-radial from-teal-400/40 to-transparent"></div>
@@ -17,7 +17,7 @@ const HeroSection = () => {
             Social, Crypto, Commerce, Freelance & More.
           </h1>
 
-          <p className="body-lg mb-10 text-gray-600">
+          <p className="body-lg mb-10 text-muted-foreground dark:text-muted-foreground">
             The most advanced social platform with AI recommendations,
             comprehensive analytics, gamification, and full accessibility.
             Connect, trade, freelance, and innovate with secure crypto escrow
@@ -48,12 +48,12 @@ const HeroSection = () => {
           </div>
 
           {/* Delivery Quick Access Section */}
-          <div className="mt-8 pt-8 border-t border-gray-200/50">
+          <div className="mt-8 pt-8 border-t border-border/50">
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
                 Delivery Network
               </h3>
-              <p className="text-sm text-gray-600">Fast, reliable delivery services at your fingertips</p>
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground">Fast, reliable delivery services at your fingertips</p>
             </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto">
@@ -125,7 +125,7 @@ const HeroSection = () => {
             </div>
 
             {/* Additional Features */}
-            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-gray-500">
+            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-muted-foreground dark:text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-blue-400"></div>
                 <span>Real-time GPS tracking</span>
@@ -143,7 +143,7 @@ const HeroSection = () => {
 
           <div className="mt-16 relative">
             <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-softchat-500 to-teal-400 opacity-70 blur-sm"></div>
-            <div className="relative rounded-xl bg-white shadow-xl overflow-hidden border border-gray-100">
+            <div className="relative rounded-xl bg-card dark:bg-card shadow-xl overflow-hidden border border-border dark:border-border">
               <img
                 src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=1280"
                 alt="Softchat app interface"
