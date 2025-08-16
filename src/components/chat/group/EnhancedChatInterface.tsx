@@ -989,10 +989,12 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
           currentUser={activeCall.currentUser}
           chatInfo={activeCall.chatInfo}
           onEndCall={() => setActiveCall(null)}
-          isAudioMuted={false}
-          isVideoEnabled={true}
-          onToggleAudio={() => {}}
-          onToggleVideo={() => {}}
+          isAudioMuted={isAudioMuted}
+          isVideoEnabled={isVideoEnabled}
+          onToggleAudio={handleToggleAudio}
+          onToggleVideo={handleToggleVideo}
+          isScreenSharing={isScreenSharing}
+          onToggleScreenShare={handleToggleScreenShare}
         />
       )}
     </div>
