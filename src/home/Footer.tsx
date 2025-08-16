@@ -184,12 +184,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-800 text-center md:text-left md:flex md:justify-between">
-          <p className="text-gray-500 text-sm">
+        <div className="pt-8 border-t border-gray-800 dark:border-gray-700 text-center md:text-left md:flex md:justify-between">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
             &copy; {currentYear} Softchat. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
-            <p className="text-gray-500 text-sm">Built for emerging markets</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">Built for emerging markets</p>
           </div>
         </div>
       </div>
