@@ -28,6 +28,7 @@ import { MemeStickerPicker } from "./MemeStickerPicker";
 import { WhatsAppStickerPicker } from "./WhatsAppStickerPicker";
 import { MobileStickerBottomSheet } from "./MobileStickerBottomSheet";
 import { StickerData } from "@/types/sticker";
+import { useUserCollections } from "@/contexts/UserCollectionsContext";
 
 interface WhatsAppChatInputProps {
   messageInput: string;
