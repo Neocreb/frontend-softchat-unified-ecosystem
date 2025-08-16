@@ -202,7 +202,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         return (
           <div className="sticker-container relative group">
             {/* Handle different sticker types */}
-            {message.metadata?.stickerType === "emoji" || !message.metadata?.stickerUrl ? (
+            {!message.metadata?.stickerUrl && !message.content.startsWith('http') ? (
               // Emoji sticker
               <div
                 className="text-6xl p-2 bg-transparent hover:scale-110 transition-transform duration-200 cursor-pointer select-none"
@@ -217,56 +217,64 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 </div>
               </div>
             ) : (
-              // Image/GIF sticker
+              // Image/GIF sticker - use either stickerUrl from metadata or content if it's a URL
               <div className="relative inline-block">
-                {message.metadata?.stickerType === "animated" || message.metadata?.stickerType === "gif" ? (
-                  <img
-                    src={message.metadata.stickerUrl}
-                    alt={message.metadata.stickerName || "Sticker"}
-                    className={cn(
-                      "max-w-32 max-h-32 rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer",
-                      "drop-shadow-lg animate-in zoom-in-50 duration-300",
-                      "select-none" // Prevent text selection
-                    )}
-                    style={{
-                      width: Math.min(message.metadata.stickerWidth || 128, 128),
-                      height: Math.min(message.metadata.stickerHeight || 128, 128),
-                      userSelect: "none",
-                      WebkitUserSelect: "none"
-                    }}
-                    draggable={false}
-                    loading="lazy"
-                  />
-                ) : (
-                  <img
-                    src={message.metadata.stickerUrl}
-                    alt={message.metadata.stickerName || "Sticker"}
-                    className={cn(
-                      "max-w-32 max-h-32 rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer",
-                      "drop-shadow-lg animate-in zoom-in-50 duration-300",
-                      "select-none" // Prevent text selection
-                    )}
-                    style={{
-                      width: Math.min(message.metadata.stickerWidth || 128, 128),
-                      height: Math.min(message.metadata.stickerHeight || 128, 128),
-                      userSelect: "none",
-                      WebkitUserSelect: "none"
-                    }}
-                    draggable={false}
-                    loading="lazy"
-                  />
+                <img
+                  src={message.metadata?.stickerUrl || message.content}
+                  alt={message.metadata?.stickerName || "Sticker"}
+                  className={cn(
+                    "max-w-40 max-h-40 rounded-lg hover:scale-105 transition-transform duration-200 cursor-pointer",
+                    "drop-shadow-lg animate-in zoom-in-50 duration-300",
+                    "select-none" // Prevent text selection
+                  )}
+                  style={{
+                    width: Math.min(message.metadata?.stickerWidth || 160, 160),
+                    height: Math.min(message.metadata?.stickerHeight || 160, 160),
+                    userSelect: "none",
+                    WebkitUserSelect: "none"
+                  }}
+                  draggable={false}
+                  loading="lazy"
+                  onError={(e) => {
+                    // If image fails to load, show as text message instead
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement?.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `<p class="text-blue-600 dark:text-blue-400 underline cursor-pointer">${message.content}</p>`;
+                    }
+                  }}
+                />
+
+                {/* Animated indicator for GIFs */}
+                {(message.metadata?.stickerType === "animated" ||
+                  message.metadata?.stickerType === "gif" ||
+                  message.metadata?.animated ||
+                  message.content.includes('.gif') ||
+                  message.content.includes('giphy.com') ||
+                  message.content.includes('tenor.com')) && (
+                  <div className="absolute top-1 right-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
+                    GIF
+                  </div>
                 )}
 
-                {/* Animated indicator */}
-                {(message.metadata?.stickerType === "animated" || message.metadata?.stickerType === "gif") && (
-                  <div className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                {/* Meme indicator */}
+                {(message.metadata?.topText || message.metadata?.bottomText) && (
+                  <div className="absolute top-1 left-1 bg-black/70 text-white text-xs px-1 py-0.5 rounded">
+                    MEME
+                  </div>
                 )}
 
                 {/* Sticker info on hover */}
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                  {message.metadata.stickerName || "Sticker"}
-                  {message.metadata.stickerPackName && (
+                  {message.metadata?.stickerName || "Sticker"}
+                  {message.metadata?.stickerPackName && (
                     <span className="text-gray-300"> • {message.metadata.stickerPackName}</span>
+                  )}
+                  {message.metadata?.topText && (
+                    <div className="text-gray-200 text-xs">Top: {message.metadata.topText}</div>
+                  )}
+                  {message.metadata?.bottomText && (
+                    <div className="text-gray-200 text-xs">Bottom: {message.metadata.bottomText}</div>
                   )}
                 </div>
               </div>
@@ -476,7 +484,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
           );
         }
 
-        // Handle GIF URLs specifically
+        // Handle GIF URLs specifically (only for media type, not stickers)
         if (message.content.includes('.gif') || message.content.includes('giphy.com') || message.content.includes('tenor.com')) {
           return (
             <div className="max-w-sm">
