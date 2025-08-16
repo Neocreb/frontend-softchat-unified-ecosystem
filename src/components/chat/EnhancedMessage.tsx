@@ -704,6 +704,12 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                           Reply
                         </DropdownMenuItem>
                       )}
+                      {onForward && (
+                        <DropdownMenuItem onClick={() => onForward(message)}>
+                          <Forward className="w-4 h-4 mr-2" />
+                          Forward
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem onClick={handleCopy}>
                         <Copy className="w-4 h-4 mr-2" />
                         Copy
