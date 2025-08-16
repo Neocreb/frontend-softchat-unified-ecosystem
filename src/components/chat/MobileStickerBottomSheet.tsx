@@ -440,9 +440,10 @@ const StickerMemeCard: React.FC<StickerMemeCardProps> = ({ sticker, onClick }) =
 // Create sticker panel component
 interface CreateStickerPanelProps {
   onCreateSticker?: () => void;
+  onShowMediaPanel?: () => void;
 }
 
-const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker }) => {
+const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker, onShowMediaPanel }) => {
   const { toast } = useToast();
 
   const createOptions = [
