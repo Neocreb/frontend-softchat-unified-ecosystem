@@ -47,15 +47,15 @@ const CryptoPortfolio = () => {
   }, 0) / totalBalance;
 
   return (
-    <Card className="h-full">
+    <Card className="h-full crypto-card-premium border-0">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Your Portfolio</CardTitle>
+        <CardTitle className="text-lg crypto-text-premium">Your Portfolio</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-6">
-          <div className="text-sm text-muted-foreground">Total Balance</div>
+          <div className="text-sm crypto-text-muted-premium">Total Balance</div>
           <div className="flex items-center gap-2">
-            <div className="text-2xl font-bold">${totalBalance.toLocaleString()}</div>
+            <div className="text-2xl font-bold crypto-text-premium">${totalBalance.toLocaleString()}</div>
             <div
               className={cn(
                 "text-sm font-medium",
@@ -77,15 +77,15 @@ const CryptoPortfolio = () => {
                   className="h-8 w-8 rounded-full"
                 />
                 <div>
-                  <div className="font-medium">{crypto.name}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="font-medium crypto-text-premium">{crypto.name}</div>
+                  <div className="text-xs crypto-text-muted-premium">
                     {crypto.amount} {crypto.symbol.toUpperCase()}
                   </div>
                 </div>
               </div>
 
               <div className="text-right">
-                <div>${crypto.value.toLocaleString()}</div>
+                <div className="crypto-text-premium font-semibold">${crypto.value.toLocaleString()}</div>
                 <div
                   className={cn(
                     "text-xs flex items-center justify-end",
@@ -104,18 +104,18 @@ const CryptoPortfolio = () => {
           ))}
         </div>
 
-        <div className="mt-4 p-3 bg-muted rounded-md text-sm">
-          <div className="font-medium mb-1">Transaction History</div>
+        <div className="mt-4 p-3 crypto-gradient-bg crypto-border-premium border rounded-md text-sm">
+          <div className="font-medium mb-1 crypto-text-premium">Transaction History</div>
           <div className="space-y-2 text-xs">
-            <div className="flex justify-between">
+            <div className="flex justify-between crypto-text-secondary-premium">
               <span>Bought 0.1 BTC</span>
               <span>3 days ago</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between crypto-text-secondary-premium">
               <span>Sold 0.5 ETH</span>
               <span>1 week ago</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between crypto-text-secondary-premium">
               <span>Bought 10 SOL</span>
               <span>2 weeks ago</span>
             </div>
