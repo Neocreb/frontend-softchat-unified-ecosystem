@@ -1,4 +1,3 @@
-
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/utils/utils";
 import { ArrowDown, ArrowUp } from "lucide-react";
@@ -13,8 +12,8 @@ interface CryptoListProps {
 
 const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: CryptoListProps) => {
   return (
-    <div>
-      <div className="grid grid-cols-12 gap-2 px-4 py-2 text-sm font-medium text-muted-foreground border-b">
+    <div className="crypto-page-container">
+      <div className="grid grid-cols-12 gap-2 px-4 py-2 text-sm font-medium crypto-text-muted-premium border-b crypto-border-premium">
         <div className="col-span-6 sm:col-span-4">Asset</div>
         <div className="col-span-3 sm:col-span-2 text-right">Price</div>
         <div className="col-span-3 sm:col-span-2 text-right">24h Change</div>
@@ -52,8 +51,9 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
                 <div
                   key={crypto.id}
                   className={cn(
-                    "grid grid-cols-12 gap-2 px-4 py-3 border-b cursor-pointer hover:bg-muted/50 transition-colors",
-                    selectedCryptoId === crypto.id && "bg-muted"
+                    "grid grid-cols-12 gap-2 px-4 py-3 border-b crypto-border-premium cursor-pointer crypto-hover-effect",
+                    "dark:hover:bg-gradient-to-r dark:hover:from-blue-500/10 dark:hover:to-blue-600/5",
+                    selectedCryptoId === crypto.id && "crypto-gradient-bg crypto-card-premium"
                   )}
                   onClick={() => onSelectCrypto(crypto)}
                 >
@@ -64,14 +64,14 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
                       className="h-8 w-8 rounded-full flex-shrink-0"
                     />
                     <div className="min-w-0 truncate">
-                      <div className="font-medium truncate">{crypto.name}</div>
-                      <div className="text-xs text-muted-foreground">
+                      <div className="font-medium truncate crypto-text-premium">{crypto.name}</div>
+                      <div className="text-xs crypto-text-muted-premium">
                         {crypto.symbol.toUpperCase()}
                       </div>
                     </div>
                   </div>
 
-                  <div className="col-span-3 sm:col-span-2 text-right self-center truncate">
+                  <div className="col-span-3 sm:col-span-2 text-right self-center truncate crypto-text-premium font-semibold">
                     ${crypto.current_price.toLocaleString()}
                   </div>
 
@@ -93,11 +93,11 @@ const CryptoList = ({ cryptos, selectedCryptoId, onSelectCrypto, isLoading }: Cr
                     </span>
                   </div>
 
-                  <div className="hidden sm:block sm:col-span-2 text-right self-center truncate">
+                  <div className="hidden sm:block sm:col-span-2 text-right self-center truncate crypto-text-secondary-premium">
                     ${(crypto.market_cap / 1000000000).toFixed(2)}B
                   </div>
 
-                  <div className="hidden sm:block sm:col-span-2 text-right self-center truncate">
+                  <div className="hidden sm:block sm:col-span-2 text-right self-center truncate crypto-text-secondary-premium">
                     ${(crypto.total_volume / 1000000).toFixed(2)}M
                   </div>
                 </div>
