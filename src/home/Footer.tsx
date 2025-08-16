@@ -32,7 +32,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/delivery/track"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Track Package
                 </Link>
@@ -40,7 +40,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/delivery/apply"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Become Driver
                 </Link>
@@ -48,7 +48,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/blog"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Blog
                 </Link>
@@ -62,7 +62,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/terms"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Terms of Service
                 </Link>
@@ -70,7 +70,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/privacy"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Privacy Policy
                 </Link>
@@ -78,7 +78,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/cookies"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Cookie Policy
                 </Link>
@@ -86,7 +86,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/advertising"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Advertising Policy
                 </Link>
@@ -94,7 +94,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/dispatch-partner-terms"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Dispatch Partner Terms
                 </Link>
@@ -102,7 +102,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#contact"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Contact
                 </a>
