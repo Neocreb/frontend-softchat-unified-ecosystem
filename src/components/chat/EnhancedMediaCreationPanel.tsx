@@ -498,23 +498,42 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
       canvas.toBlob((blob) => {
         if (blob) {
           const url = URL.createObjectURL(blob);
-          onStickerCreate({
-            type: "image",
-            url,
+          const aiData = {
             name: `AI - ${aiPrompt.slice(0, 20)}`,
+            fileUrl: url,
+            thumbnailUrl: url,
+            type: "image" as const,
+            width: canvas.width,
+            height: canvas.height,
+            tags: ["ai-generated", "custom", "user-generated"],
             metadata: {
               aiGenerated: true,
               prompt: aiPrompt,
               createdAt: new Date().toISOString(),
               creditsUsed: 1,
             },
-          });
-          
-          toast({
-            title: "AI sticker created!",
-            description: "Your AI-generated sticker is ready",
-          });
-          
+          };
+
+          if (saveToCollectionFirst) {
+            const mediaId = saveToCollection(aiData, "stickers");
+            onMediaSaved?.(mediaId, "stickers");
+            toast({
+              title: "AI sticker saved!",
+              description: "Your AI-generated sticker has been saved to your collection",
+            });
+          } else {
+            onStickerCreate?.({
+              type: "image",
+              url,
+              name: aiData.name,
+              metadata: aiData.metadata,
+            });
+            toast({
+              title: "AI sticker created!",
+              description: "Your AI-generated sticker is ready",
+            });
+          }
+
           resetMode();
         }
       }, 'image/png');
@@ -677,7 +696,7 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
         <h3 className="font-semibold">
           {currentMode === "meme" && "🎨 Create Meme"}
           {currentMode === "gif" && "🎬 Create GIF"}
-          {currentMode === "photo" && "�� Take Photo"}
+          {currentMode === "photo" && "📸 Take Photo"}
           {currentMode === "ai" && "🤖 AI Generator"}
         </h3>
       </div>
