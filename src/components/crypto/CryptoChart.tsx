@@ -90,7 +90,7 @@ const CryptoChart = ({ crypto }: CryptoChartProps) => {
   const chartColor = isPositiveChange ? "#10b981" : "#ef4444";
 
   return (
-    <Card>
+    <Card className="crypto-card-premium border-0">
       <CardHeader className="pb-2 space-y-3">
         {/* Mobile-first header layout */}
         <div className="flex flex-col space-y-3">
@@ -102,11 +102,11 @@ const CryptoChart = ({ crypto }: CryptoChartProps) => {
               className="h-8 w-8 sm:h-10 sm:w-10 rounded-full flex-shrink-0"
             />
             <div className="flex-1 min-w-0">
-              <CardTitle className={cn("truncate", responsiveText.lg)}>
+              <CardTitle className={cn("truncate crypto-text-premium", responsiveText.lg)}>
                 {isMobile ? crypto.symbol.toUpperCase() : `${crypto.name} (${crypto.symbol.toUpperCase()})`}
               </CardTitle>
               <div className="flex items-center gap-2 flex-wrap">
-                <div className={cn("font-bold", responsiveText.xl)}>
+                <div className={cn("font-bold crypto-text-premium", responsiveText.xl)}>
                   ${crypto.current_price.toLocaleString()}
                 </div>
                 <div
@@ -124,24 +124,24 @@ const CryptoChart = ({ crypto }: CryptoChartProps) => {
           {/* Time range selector - mobile optimized */}
           <Tabs value={timeRange} onValueChange={(value) => setTimeRange(value as TimeRange)}>
             <TabsList className={cn(
-              "grid h-9 sm:h-10 w-full",
+              "grid h-9 sm:h-10 w-full crypto-card-premium crypto-border-premium",
               isMobile ? "grid-cols-3" : "grid-cols-5"
             )}>
               {isMobile ? (
                 // Show only key ranges on mobile
                 <>
-                  <TabsTrigger value="24h" className="px-2 py-1 text-xs sm:text-sm">24H</TabsTrigger>
-                  <TabsTrigger value="7d" className="px-2 py-1 text-xs sm:text-sm">7D</TabsTrigger>
-                  <TabsTrigger value="30d" className="px-2 py-1 text-xs sm:text-sm">30D</TabsTrigger>
+                  <TabsTrigger value="24h" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">24H</TabsTrigger>
+                  <TabsTrigger value="7d" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">7D</TabsTrigger>
+                  <TabsTrigger value="30d" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">30D</TabsTrigger>
                 </>
               ) : (
                 // Show all ranges on larger screens
                 <>
-                  <TabsTrigger value="24h" className="px-2 py-1 text-xs sm:text-sm">24H</TabsTrigger>
-                  <TabsTrigger value="7d" className="px-2 py-1 text-xs sm:text-sm">7D</TabsTrigger>
-                  <TabsTrigger value="30d" className="px-2 py-1 text-xs sm:text-sm">30D</TabsTrigger>
-                  <TabsTrigger value="90d" className="px-2 py-1 text-xs sm:text-sm">90D</TabsTrigger>
-                  <TabsTrigger value="1y" className="px-2 py-1 text-xs sm:text-sm">1Y</TabsTrigger>
+                  <TabsTrigger value="24h" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">24H</TabsTrigger>
+                  <TabsTrigger value="7d" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">7D</TabsTrigger>
+                  <TabsTrigger value="30d" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">30D</TabsTrigger>
+                  <TabsTrigger value="90d" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">90D</TabsTrigger>
+                  <TabsTrigger value="1y" className="px-2 py-1 text-xs sm:text-sm crypto-text-premium data-[state=active]:crypto-gradient-bg">1Y</TabsTrigger>
                 </>
               )}
             </TabsList>

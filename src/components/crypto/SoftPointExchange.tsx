@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Card,
@@ -19,6 +18,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Info, RefreshCcw } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import CryptoDepositModal from "./CryptoDepositModal";
+import CryptoWithdrawModal from "./CryptoWithdrawModal";
+import CryptoKYCModal from "./CryptoKYCModal";
 import {
   Tooltip,
   TooltipContent,
@@ -41,6 +43,10 @@ const SoftPointExchange = () => {
   const [isConverting, setIsConverting] = useState(false);
   const [conversionRate, setConversionRate] = useState(0);
   const [fee, setFee] = useState(0);
+  const [depositModalOpen, setDepositModalOpen] = useState(false);
+  const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
+  const [kycModalOpen, setKycModalOpen] = useState(false);
+  const [isVerified, setIsVerified] = useState(true); // Mock verified status
   const { toast } = useToast();
 
   const currencies: Currency[] = [
@@ -190,6 +196,32 @@ const SoftPointExchange = () => {
     setAmount("");
   };
 
+  const handleDepositClick = () => {
+    setDepositModalOpen(true);
+  };
+
+  const handleWithdrawClick = () => {
+    if (!isVerified) {
+      toast({
+        title: "Verification Required",
+        description: "You need to complete KYC verification before withdrawing funds.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setWithdrawModalOpen(true);
+  };
+
+  const handleKYCSubmit = async (data: any) => {
+    // Mock KYC submission
+    return new Promise<{success: boolean}>((resolve) => {
+      setTimeout(() => {
+        setIsVerified(true);
+        resolve({ success: true });
+      }, 1500);
+    });
+  };
+
   const fromCurrencyDetails = getCurrency(fromCurrency);
   const toCurrencyDetails = getCurrency(toCurrency);
 
@@ -204,10 +236,33 @@ const SoftPointExchange = () => {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">Convert Crypto</CardTitle>
-          <CardDescription>
-            Exchange SoftPoints for crypto or convert between cryptocurrencies
-          </CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle className="text-xl">Convert Crypto</CardTitle>
+              <CardDescription>
+                Exchange SoftPoints for crypto or convert between cryptocurrencies
+              </CardDescription>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDepositClick}
+                className="text-xs"
+              >
+                Deposit
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleWithdrawClick}
+                className="text-xs"
+                disabled={!isVerified}
+              >
+                Withdraw
+              </Button>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-8">
@@ -367,6 +422,25 @@ const SoftPointExchange = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modals */}
+      <CryptoDepositModal
+        isOpen={depositModalOpen}
+        onClose={() => setDepositModalOpen(false)}
+        onKYCSubmit={handleKYCSubmit}
+      />
+
+      <CryptoWithdrawModal
+        isOpen={withdrawModalOpen}
+        onClose={() => setWithdrawModalOpen(false)}
+        onKYCSubmit={handleKYCSubmit}
+      />
+
+      <CryptoKYCModal
+        isOpen={kycModalOpen}
+        onClose={() => setKycModalOpen(false)}
+        onSubmit={handleKYCSubmit}
+      />
     </div>
   );
 };

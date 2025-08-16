@@ -212,20 +212,20 @@ export default function CryptoDepositModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="sticky top-0 bg-background/95 backdrop-blur-sm pb-2 border-b">
+      <DialogContent className="w-[95vw] max-w-lg max-h-[90vh] overflow-y-auto crypto-card-premium crypto-border-premium">
+        <DialogHeader className="sticky top-0 bg-background/95 backdrop-blur-sm pb-2 border-b crypto-border-premium">
           <DialogTitle className="flex items-center gap-2 text-lg">
             <div className="p-2 rounded-full bg-green-100 dark:bg-green-900/30">
               <ArrowDownLeft className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
-            <span className="truncate">Deposit Cryptocurrency</span>
+            <span className="truncate crypto-text-premium">Deposit Cryptocurrency</span>
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 sm:space-y-6 px-1">
           {/* Crypto Selection */}
           <div className="space-y-3">
-            <Label>Select Cryptocurrency</Label>
+            <Label className="crypto-text-premium">Select Cryptocurrency</Label>
             <Select
               value={selectedCrypto?.symbol}
               onValueChange={(symbol) => {

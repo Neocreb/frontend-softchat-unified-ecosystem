@@ -214,43 +214,43 @@ const CryptoMarket = () => {
         <title>Crypto Market | Softchat</title>
       </Helmet>
 
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">
+      <div className="max-w-7xl mx-auto crypto-page-container">
+        <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 crypto-text-premium">
           Crypto Market
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="w-full grid grid-cols-3 md:grid-cols-6 mb-4 md:mb-8 h-auto p-1">
+          <TabsList className="w-full grid grid-cols-3 md:grid-cols-6 mb-4 md:mb-8 h-auto p-1 crypto-card-premium crypto-border-premium">
             <TabsTrigger
               value="market"
-              className="text-xs md:text-sm px-2 py-2"
+              className="text-xs md:text-sm px-2 py-2 crypto-text-premium data-[state=active]:crypto-gradient-bg"
             >
               Market
             </TabsTrigger>
             <TabsTrigger
               value="trading"
-              className="text-xs md:text-sm px-2 py-2"
+              className="text-xs md:text-sm px-2 py-2 crypto-text-premium data-[state=active]:crypto-gradient-bg"
             >
               Pro Trading
             </TabsTrigger>
-            <TabsTrigger value="p2p" className="text-xs md:text-sm px-2 py-2">
+            <TabsTrigger value="p2p" className="text-xs md:text-sm px-2 py-2 crypto-text-premium data-[state=active]:crypto-gradient-bg">
               P2P
             </TabsTrigger>
             <TabsTrigger
               value="enhanced-p2p"
-              className="text-xs md:text-sm px-1 py-2"
+              className="text-xs md:text-sm px-1 py-2 crypto-text-premium data-[state=active]:crypto-gradient-bg"
             >
               Enhanced P2P
             </TabsTrigger>
             <TabsTrigger
               value="convert"
-              className="text-xs md:text-sm px-2 py-2"
+              className="text-xs md:text-sm px-2 py-2 crypto-text-premium data-[state=active]:crypto-gradient-bg"
             >
               Convert
             </TabsTrigger>
             <TabsTrigger
               value="wallet"
-              className="text-xs md:text-sm px-2 py-2"
+              className="text-xs md:text-sm px-2 py-2 crypto-text-premium data-[state=active]:crypto-gradient-bg"
             >
               Wallet
             </TabsTrigger>
@@ -260,35 +260,39 @@ const CryptoMarket = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
               <div className="lg:col-span-3">
                 {isLoading || !selectedCrypto ? (
-                  <Card>
+                  <Card className="crypto-card-premium">
                     <CardContent className="p-0">
                       <Skeleton className="h-[300px] md:h-[400px] w-full" />
                     </CardContent>
                   </Card>
                 ) : (
-                  <CryptoChart crypto={selectedCrypto} />
+                  <div className="crypto-card-premium rounded-lg">
+                    <CryptoChart crypto={selectedCrypto} />
+                  </div>
                 )}
               </div>
 
               <div className="lg:col-span-1">
                 {isLoading || !selectedCrypto ? (
-                  <Card>
+                  <Card className="crypto-card-premium">
                     <CardContent className="p-0">
                       <Skeleton className="h-[300px] md:h-[400px] w-full" />
                     </CardContent>
                   </Card>
                 ) : (
-                  <CryptoTradePanel
-                    crypto={selectedCrypto}
-                    onTrade={handleTrade}
-                  />
+                  <div className="crypto-card-premium rounded-lg">
+                    <CryptoTradePanel
+                      crypto={selectedCrypto}
+                      onTrade={handleTrade}
+                    />
+                  </div>
                 )}
               </div>
             </div>
 
             <div className="mt-4 md:mt-6 grid grid-cols-1 xl:grid-cols-4 gap-4 md:gap-6">
               <div className="xl:col-span-3">
-                <Card>
+                <Card className="crypto-card-premium">
                   <CardContent className="p-0">
                     {isLoading ? (
                       <Skeleton className="h-[300px] md:h-[400px] w-full" />
@@ -305,7 +309,9 @@ const CryptoMarket = () => {
               </div>
 
               <div className="xl:col-span-1">
-                <CryptoPortfolio />
+                <div className="crypto-card-premium rounded-lg">
+                  <CryptoPortfolio />
+                </div>
               </div>
             </div>
           </TabsContent>
