@@ -132,6 +132,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   const [showTranscription, setShowTranscription] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(message.content);
+  const [showMediaDialog, setShowMediaDialog] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   // Audio playback handling
