@@ -62,7 +62,7 @@ import {
   UserStickerLibrary,
   EMOJI_STICKER_PACKS 
 } from "@/types/sticker";
-import { MediaCreationPanel } from "./MediaCreationPanel";
+import { EnhancedMediaCreationPanel } from "./EnhancedMediaCreationPanel";
 
 interface MemeStickerPickerProps {
   onStickerSelect: (sticker: StickerData) => void;
