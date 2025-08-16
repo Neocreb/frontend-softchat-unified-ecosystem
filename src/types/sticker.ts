@@ -7,15 +7,25 @@ export interface StickerData {
   thumbnailUrl?: string;
   packId: string;
   packName: string;
-  type: "static" | "animated" | "gif" | "emoji";
-  width: number;
-  height: number;
-  fileSize: number;
-  mimeType: string;
+  type: "static" | "animated" | "gif" | "emoji" | "image" | "meme";
+  width?: number;
+  height?: number;
+  fileSize?: number;
+  mimeType?: string;
   usageCount: number;
   tags: string[];
-  isOriginal: boolean;
+  isOriginal?: boolean;
   animated?: boolean; // For backward compatibility
+  isFavorite?: boolean;
+  metadata?: {
+    topText?: string;
+    bottomText?: string;
+    originalFile?: string;
+    duration?: number;
+    capturedAt?: string;
+    stickerType?: string;
+    [key: string]: any;
+  };
 }
 
 export interface StickerPackData {
