@@ -71,11 +71,11 @@ const ChatRoom = () => {
     // Set loading state and simulate API call
     setLoading(true);
 
-    // Simulate API delay
+    // Simulate API delay with timeout protection
     const loadChatData = async () => {
       try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Simulate network delay but cap at 1 second max
+        await new Promise(resolve => setTimeout(resolve, Math.min(300, 1000)));
 
         // Mock chat data - in real app, fetch from API
         const mockChat: UnifiedChatThread = {
