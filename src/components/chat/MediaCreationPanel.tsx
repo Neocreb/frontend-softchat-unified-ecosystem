@@ -391,16 +391,31 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
               <div className="flex gap-2">
                 <Button onClick={addMemeText} variant="outline" className="flex-1">
                   <Wand2 className="w-4 h-4 mr-2" />
-                  Preview
+                  Preview Text
                 </Button>
-                <Button 
-                  onClick={handleCreateMeme} 
-                  disabled={processing}
-                  className="flex-1"
+                <Button
+                  onClick={handleCreateMeme}
+                  disabled={processing || (!memeText.top && !memeText.bottom)}
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
                 >
-                  {processing ? "Creating..." : "Create Meme"}
+                  {processing ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Create Meme
+                    </>
+                  )}
                 </Button>
               </div>
+              {(!memeText.top && !memeText.bottom) && (
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Add some text to create your meme
+                </p>
+              )}
             </div>
           )}
         </div>
