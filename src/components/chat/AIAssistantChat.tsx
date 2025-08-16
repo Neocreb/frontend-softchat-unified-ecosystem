@@ -305,16 +305,6 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
     // This can be integrated with WebRTC, Agora, or similar services
   };
 
-  // Clean AI response to remove markdown asterisks and show plain text
-  const cleanAIResponse = (content: string): string => {
-    return content
-      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove **bold** formatting
-      .replace(/\*(.*?)\*/g, '$1')     // Remove *italic* formatting
-      .replace(/`(.*?)`/g, '$1')       // Remove `code` formatting
-      .replace(/~~(.*?)~~/g, '$1')     // Remove ~~strikethrough~~ formatting
-      .trim();
-  };
-
   if (isMinimized) {
     return (
       <div
@@ -574,7 +564,7 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - I'm your intelligent friend and assistant! 🤖✨`}
+              placeholder={`Chat with ${AI_ASSISTANT_CONFIG.name} about anything - I'm your intelligent friend and assistant! ��✨`}
               className="flex-1 border-purple-200 focus:border-purple-400 focus:ring-purple-400"
               disabled={isTyping}
             />
