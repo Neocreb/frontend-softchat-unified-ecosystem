@@ -191,34 +191,39 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
   };
 
   const createGifPreview = (videoFile: File) => {
-    // For demo purposes, we'll create a static preview
-    // In a real app, you'd use a library like gif.js or ffmpeg.wasm
+    setProcessing(true);
+
+    // For demo purposes, we'll create a static preview using the video file
+    // In a real app, you'd use a library like gif.js or ffmpeg.wasm to convert video to GIF
     const url = URL.createObjectURL(videoFile);
-    
+
     toast({
-      title: "GIF creation",
-      description: "Processing your video into an animated sticker...",
+      title: "Creating animated sticker",
+      description: "Processing your video...",
     });
 
-    // Simulate processing
+    // Simulate processing time
     setTimeout(() => {
       onStickerCreate({
         type: "gif",
         url,
-        name: `GIF - ${videoFile.name}`,
+        name: `Animated - ${videoFile.name.replace(/\.[^/.]+$/, "")}`,
         metadata: {
           originalFile: videoFile.name,
           duration: 3000, // Mock duration
+          stickerType: "gif",
+          animated: true,
         },
       });
-      
+
       toast({
-        title: "GIF created!",
+        title: "Animated sticker created!",
         description: "Your animated sticker is ready to send",
       });
-      
+
       setCurrentMode(null);
       setUploadedFile(null);
+      setProcessing(false);
     }, 2000);
   };
 
