@@ -509,7 +509,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
         if (message.content.includes('.gif') || message.content.includes('giphy.com') || message.content.includes('tenor.com')) {
           return (
             <div className="max-w-sm">
-              <div className="relative group">
+              <div className="relative group cursor-pointer" onClick={handleMediaClick}>
                 <img
                   src={message.content}
                   alt="Animated GIF"
@@ -526,6 +526,9 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                 />
                 <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
                   GIF
+                </div>
+                <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click for options
                 </div>
               </div>
             </div>
