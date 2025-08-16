@@ -671,7 +671,8 @@ const App = () => {
             <I18nProvider>
               <CurrencyProvider>
                 <AuthProvider>
-                  <UnifiedNotificationProvider>
+                  <UserCollectionsProvider>
+                    <UnifiedNotificationProvider>
                     <AdminProvider>
                     <AccessibilityProvider>
                       <TooltipProvider>
@@ -694,7 +695,8 @@ const App = () => {
                       </TooltipProvider>
                     </AccessibilityProvider>
                     </AdminProvider>
-                  </UnifiedNotificationProvider>
+                    </UnifiedNotificationProvider>
+                  </UserCollectionsProvider>
                 </AuthProvider>
               </CurrencyProvider>
             </I18nProvider>
