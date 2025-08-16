@@ -55,8 +55,14 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
   isMobile = false,
   disabled = false,
   placeholder = "Type a message...",
+  onMediaSaved,
+  onSaveToCollection,
+  onRemoveFromCollection,
+  onReportMedia,
+  currentUserId = "current_user",
 }) => {
   const { toast } = useToast();
+  const { collections } = useUserCollections();
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [showStickers, setShowStickers] = useState(false);
