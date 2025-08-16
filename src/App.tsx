@@ -289,6 +289,7 @@ const AppRoutes = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/test" element={<TestComponent />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/meme-gif-demo" element={<MemeGifDemo />} />
 
       {/* Public Blog routes - accessible to everyone */}
       <Route
