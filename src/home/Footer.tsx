@@ -5,14 +5,14 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gray-900 dark:bg-gray-950 text-white dark:text-gray-100 py-12">
       <div className="container-wide">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <Link to="/" className="text-2xl font-bold mb-4 block">
               Softchat
             </Link>
-            <p className="text-gray-400 mt-2">
+            <p className="text-gray-400 dark:text-gray-300 mt-2">
               One app for everything: Social, Crypto, Commerce, Rewards. Built
               for creators, traders, sellers, and dreamers.
             </p>
@@ -24,7 +24,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#features"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Features
                 </a>
@@ -32,7 +32,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/delivery/track"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Track Package
                 </Link>
@@ -40,7 +40,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/delivery/apply"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Become Driver
                 </Link>
@@ -48,7 +48,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/blog"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Blog
                 </Link>
@@ -62,7 +62,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/terms"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Terms of Service
                 </Link>
@@ -70,7 +70,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/privacy"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Privacy Policy
                 </Link>
@@ -78,7 +78,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/cookies"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Cookie Policy
                 </Link>
@@ -86,7 +86,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/advertising"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Advertising Policy
                 </Link>
@@ -94,7 +94,7 @@ const Footer = () => {
               <li>
                 <Link
                   to="/dispatch-partner-terms"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Dispatch Partner Terms
                 </Link>
@@ -102,7 +102,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#contact"
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 dark:text-gray-300 hover:text-white dark:hover:text-gray-100 transition-colors"
                 >
                   Contact
                 </a>
@@ -184,12 +184,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-gray-800 text-center md:text-left md:flex md:justify-between">
-          <p className="text-gray-500 text-sm">
+        <div className="pt-8 border-t border-gray-800 dark:border-gray-700 text-center md:text-left md:flex md:justify-between">
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
             &copy; {currentYear} Softchat. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
-            <p className="text-gray-500 text-sm">Built for emerging markets</p>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">Built for emerging markets</p>
           </div>
         </div>
       </div>
