@@ -1,107 +1,187 @@
-import { Post } from "@/types/post";
-import { PostComment } from "@/types/user";
-import { Story } from "@/components/feed/Stories";
+// Production-ready feed data structure
+// In production, this data would be fetched from the API
 
-export const mockComments: PostComment[] = [
-  {
-    id: "1",
-    post_id: "1",
-    user_id: "101",
-    content: "This is amazing news! Can't wait to see how the token performs.",
-    created_at: "2023-04-15T10:30:00Z",
-    user: {
-      name: "John Smith",
-      username: "johnsmith",
-      avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-      is_verified: false
+export interface FeedPost {
+  id: string;
+  type: 'text' | 'image' | 'video' | 'marketplace';
+  content: string;
+  author: {
+    id: string;
+    name: string;
+    username: string;
+    avatar?: string;
+    verified: boolean;
+  };
+  media?: {
+    type: 'image' | 'video';
+    url: string;
+    thumbnail?: string;
+  }[];
+  stats: {
+    likes: number;
+    comments: number;
+    shares: number;
+    views?: number;
+  };
+  timestamp: string;
+  isLiked: boolean;
+  isBookmarked: boolean;
+  comments: FeedComment[];
+}
+
+export interface FeedComment {
+  id: string;
+  content: string;
+  author: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
+  timestamp: string;
+  likes: number;
+  isLiked: boolean;
+  replies?: FeedComment[];
+}
+
+export interface FeedStory {
+  id: string;
+  author: {
+    id: string;
+    name: string;
+    avatar?: string;
+  };
+  thumbnail?: string;
+  isViewed: boolean;
+  timestamp: string;
+}
+
+// Default empty data for production
+export const feedPosts: FeedPost[] = [];
+
+export const feedStories: FeedStory[] = [];
+
+// API functions for production use
+export const feedService = {
+  async getPosts(page = 1, limit = 20): Promise<FeedPost[]> {
+    try {
+      const response = await fetch(`/api/feed/posts?page=${page}&limit=${limit}`);
+      if (!response.ok) throw new Error('Failed to fetch posts');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching feed posts:', error);
+      return [];
     }
   },
-  {
-    id: "2",
-    post_id: "1",
-    user_id: "102",
-    content: "I've been following this project for months. It's finally paying off!",
-    created_at: "2023-04-15T11:15:00Z",
-    user: {
-      name: "Emma Wilson",
-      username: "emmaw",
-      avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-      is_verified: true
+
+  async getStories(): Promise<FeedStory[]> {
+    try {
+      const response = await fetch('/api/feed/stories');
+      if (!response.ok) throw new Error('Failed to fetch stories');
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching feed stories:', error);
+      return [];
     }
-  }
-];
+  },
 
-export const mockPosts: Post[] = [
-  {
-    id: "1",
-    author: {
-      name: "Andrew Miller",
-      username: "andrew",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      verified: true,
-    },
-    content: "It's a record-breaking day for ION! The token has reached a new all-time high, shattering expectations and proving that innovation and resilience always win.",
-    createdAt: "5m ago",
-    likes: 12000,
-    comments: 12,
-    shares: 442,
-  },
-  {
-    id: "ad1",
-    isAd: true,
-    author: {
-      name: "FitLife Pro",
-      username: "fitlifepro",
-      avatar: "https://randomuser.me/api/portraits/men/88.jpg",
-      verified: true,
-    },
-    content: "Transform your body and mind with our new fitness app! Get personalized workouts, nutrition plans, and more. 🏋️‍♂️",
-    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop",
-    createdAt: "Sponsored",
-    likes: 0,
-    comments: 0,
-    shares: 0,
-    adUrl: "https://example.com/fitlife",
-    adCta: "Download Now",
-  },
-  {
-    id: "2",
-    author: {
-      name: "Mark Poland",
-      username: "markpoland",
-      avatar: "https://randomuser.me/api/portraits/men/44.jpg",
-      verified: true,
-    },
-    content: "✨ It's Official: Bitcoin Hits $100,000! 🚀\n\nToday marks a historic moment in the world of finance. Bitcoin, the first cryptocurrency, has officially crossed the $100,000 mark—a milestone that once seemed like a distant dream but has now become reality. 🌙✨",
-    createdAt: "5m ago",
-    likes: 8500,
-    comments: 320,
-    shares: 256,
-  },
-  {
-    id: "3",
-    author: {
-      name: "Sarah Johnson",
-      username: "sarahj",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      verified: true,
-    },
-    content: "Just launched my new NFT collection on Softchat marketplace! Check it out and let me know what you think. #NFT #DigitalArt",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop",
-    createdAt: "2h ago",
-    likes: 356,
-    comments: 42,
-    shares: 18,
-  },
-];
+  async createPost(postData: {
+    content: string;
+    type: FeedPost['type'];
+    media?: File[];
+  }): Promise<FeedPost> {
+    try {
+      const formData = new FormData();
+      formData.append('content', postData.content);
+      formData.append('type', postData.type);
+      
+      if (postData.media) {
+        postData.media.forEach((file, index) => {
+          formData.append(`media_${index}`, file);
+        });
+      }
 
-export const mockStories: Story[] = [
-  { id: "1", username: "you", avatar: "https://randomuser.me/api/portraits/men/32.jpg", isUser: true },
-  { id: "2", username: "mysteriox", avatar: "https://randomuser.me/api/portraits/men/43.jpg", hasNewStory: true, isUser: false },
-  { id: "3", username: "foxxydude", avatar: "https://randomuser.me/api/portraits/men/62.jpg", hasNewStory: true, isUser: false },
-  { id: "4", username: "mikeyduy", avatar: "https://randomuser.me/api/portraits/men/52.jpg", hasNewStory: true, isUser: false },
-  { id: "5", username: "suppe", avatar: "https://randomuser.me/api/portraits/men/66.jpg", isUser: false },
-  { id: "6", username: "jane_doe", avatar: "https://randomuser.me/api/portraits/women/22.jpg", hasNewStory: true, isUser: false },
-  { id: "7", username: "chris90", avatar: "https://randomuser.me/api/portraits/men/29.jpg", isUser: false },
-  { id: "8", username: "lisa", avatar: "https://randomuser.me/api/portraits/women/65.jpg", hasNewStory: true, isUser: false },
-];
+      const response = await fetch('/api/feed/posts', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Failed to create post');
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating post:', error);
+      throw error;
+    }
+  },
+
+  async likePost(postId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/feed/posts/${postId}/like`, {
+        method: 'POST',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error liking post:', error);
+      return false;
+    }
+  },
+
+  async addComment(postId: string, content: string): Promise<FeedComment | null> {
+    try {
+      const response = await fetch(`/api/feed/posts/${postId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content }),
+      });
+
+      if (!response.ok) throw new Error('Failed to add comment');
+      return await response.json();
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      return null;
+    }
+  },
+
+  async sharePost(postId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/feed/posts/${postId}/share`, {
+        method: 'POST',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error sharing post:', error);
+      return false;
+    }
+  },
+
+  async bookmarkPost(postId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/feed/posts/${postId}/bookmark`, {
+        method: 'POST',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error bookmarking post:', error);
+      return false;
+    }
+  },
+
+  async deletePost(postId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/feed/posts/${postId}`, {
+        method: 'DELETE',
+      });
+      return response.ok;
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      return false;
+    }
+  },
+};
+
+export default {
+  feedPosts,
+  feedStories,
+  feedService,
+};
