@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,6 +14,9 @@ import {
   Scissors,
   Wand2,
   Palette,
+  Crown,
+  Zap,
+  Bot,
 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
@@ -26,13 +29,15 @@ interface MediaCreationPanelProps {
     name: string;
     metadata?: any;
   }) => void;
+  isPremium?: boolean;
 }
 
-type CreationMode = "meme" | "gif" | "photo" | null;
+type CreationMode = "meme" | "gif" | "photo" | "ai" | null;
 
 export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
   isMobile = false,
   onStickerCreate,
+  isPremium = false,
 }) => {
   const { toast } = useToast();
   const [currentMode, setCurrentMode] = useState<CreationMode>(null);
