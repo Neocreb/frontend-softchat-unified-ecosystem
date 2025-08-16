@@ -2,18 +2,20 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface UnifiedFeedItem {
   id: string;
-  type: 
-    | "post" 
-    | "product" 
-    | "job" 
-    | "freelancer_skill" 
-    | "sponsored_post" 
-    | "ad" 
-    | "live_event" 
+  type:
+    | "post"
+    | "product"
+    | "job"
+    | "freelancer_skill"
+    | "sponsored_post"
+    | "ad"
+    | "live_event"
     | "community_event"
     | "story_recap"
     | "recommended_user"
-    | "trending_topic";
+    | "trending_topic"
+    | "meme"
+    | "gif";
   timestamp: Date;
   priority: number;
   author?: {
