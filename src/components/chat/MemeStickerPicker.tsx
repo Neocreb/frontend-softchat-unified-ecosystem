@@ -149,6 +149,60 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(userCollectionPacks);
   const [trendingPacks, setTrendingPacks] = useState<StickerPackData[]>([]);
 
+  // Update packs when collections change
+  React.useEffect(() => {
+    const updatedPacks = [
+      {
+        id: "memes",
+        name: "My Memes",
+        description: `Your custom memes (${collections.memes.length})`,
+        category: "memes" as StickerCategory,
+        stickers: collections.memes,
+        creatorId: "user",
+        creatorName: "You",
+        downloadCount: 0,
+        rating: 5.0,
+        ratingCount: 0,
+        isPublic: false,
+        isPremium: false,
+        isOfficial: false,
+        isCustom: true,
+        tags: ["memes", "custom"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        thumbnailUrl: collections.memes[0]?.thumbnailUrl || "",
+        price: 0,
+      },
+      {
+        id: "gifs",
+        name: "My GIFs",
+        description: `Your animated GIFs (${collections.gifs.length})`,
+        category: "gifs" as StickerCategory,
+        stickers: collections.gifs,
+        creatorId: "user",
+        creatorName: "You",
+        downloadCount: 0,
+        rating: 5.0,
+        ratingCount: 0,
+        isPublic: false,
+        isPremium: false,
+        isOfficial: false,
+        isCustom: true,
+        tags: ["gifs", "animated", "custom"],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        thumbnailUrl: collections.gifs[0]?.thumbnailUrl || "",
+        price: 0,
+      }
+    ];
+
+    setAvailablePacks(updatedPacks);
+    setUserLibrary(prev => ({
+      ...prev,
+      downloadedPacks: updatedPacks,
+    }));
+  }, [collections]);
+
   // Filter stickers based on search query
   const filteredStickers = useMemo(() => {
     if (activeTab === "create") return [];
