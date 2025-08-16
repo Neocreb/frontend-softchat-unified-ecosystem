@@ -659,7 +659,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         <ChatTabs
           tabs={tabsWithCounts}
           activeTab={activeTab}
-          onTabChange={setActiveTab}
+          onTabChange={handleTabChange}
         />
 
         {/* Sub-filters (only for Social tab) */}
