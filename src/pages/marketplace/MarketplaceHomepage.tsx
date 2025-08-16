@@ -240,11 +240,14 @@ const MarketplaceHomepage: React.FC = () => {
                   </Link>
                 </div>
                 <div className="flex-1 relative hidden lg:block">
-                  <img
-                    src="/placeholder-hero-product.png"
-                    alt="Featured Product"
-                    className="absolute right-0 top-1/2 transform -translate-y-1/2 h-full w-auto object-contain"
-                  />
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 h-full w-auto flex items-center justify-center">
+                    <div className="text-center text-white/80">
+                      <div className="w-32 h-32 mx-auto mb-4 bg-white/10 rounded-lg flex items-center justify-center">
+                        <span className="text-6xl">📱</span>
+                      </div>
+                      <p className="text-sm">Featured Product</p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -339,79 +342,114 @@ const MarketplaceHomepage: React.FC = () => {
               </div>
 
               {/* Flash Sale Products Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-                {flashSaleProducts.map((product, index) => (
-                  <div key={product.id} className="group">
-                    <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square mb-4">
-                      {/* Discount Badge */}
-                      <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded text-sm font-medium">
-                        -{product.discount}%
+              {isLoading ? (
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                  {[...Array(4)].map((_, index) => (
+                    <div key={index} className="group">
+                      <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square mb-4 animate-pulse">
+                        <div className="w-full h-full bg-gray-200"></div>
                       </div>
-
-                      {/* Action Buttons */}
-                      <div className="absolute top-3 right-3 flex flex-col gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="bg-white w-8 h-8 rounded-full shadow-sm"
-                          onClick={() => addToWishlist(product.id)}
-                        >
-                          <Heart className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="bg-white w-8 h-8 rounded-full shadow-sm"
-                          onClick={() => handleProductQuickView(product)}
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
+                      <div className="space-y-2">
+                        <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                        <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
                       </div>
+                    </div>
+                  ))}
+                </div>
+              ) : flashSaleProducts.length > 0 ? (
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+                  {flashSaleProducts.map((product, index) => (
+                    <div key={product.id} className="group">
+                      <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square mb-4">
+                        {/* Discount Badge */}
+                        <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded text-sm font-medium">
+                          -{product.discount}%
+                        </div>
 
-                      {/* Product Image */}
-                      <div className="p-8 h-full flex items-center justify-center">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform"
-                        />
-                      </div>
+                        {/* Action Buttons */}
+                        <div className="absolute top-3 right-3 flex flex-col gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="bg-white w-8 h-8 rounded-full shadow-sm"
+                            onClick={() => addToWishlist(product.id)}
+                          >
+                            <Heart className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="bg-white w-8 h-8 rounded-full shadow-sm"
+                            onClick={() => handleProductQuickView(product)}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </div>
 
-                      {/* Add to Cart Button - Shows on Hover */}
-                      {index === 1 && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-black text-white py-3 text-center">
+                        {/* Product Image with fallback */}
+                        <div className="p-8 h-full flex items-center justify-center">
+                          <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded">
+                            <div className="text-center">
+                              <div className="w-16 h-16 mx-auto mb-2 bg-gray-200 rounded-lg flex items-center justify-center">
+                                📦
+                              </div>
+                              <p className="text-sm text-gray-500">Product Image</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Add to Cart Button - Shows on Hover */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-black text-white py-3 text-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                             onClick={() => handleAddToCart(product.id, 1)}>
                           <span className="text-sm font-medium">
                             Add To Cart
                           </span>
                         </div>
-                      )}
-                    </div>
+                      </div>
 
-                    {/* Product Info */}
-                    <div className="space-y-2">
-                      <h3 className="font-medium text-gray-900 line-clamp-2">
-                        {product.name}
-                      </h3>
-                      <div className="flex items-center gap-3">
-                        <span className="text-red-500 font-semibold">
-                          {formatPrice(product.salePrice)}
-                        </span>
-                        <span className="text-gray-500 line-through">
-                          {formatPrice(product.originalPrice)}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center">
-                          {renderStars(product.rating)}
+                      {/* Product Info */}
+                      <div className="space-y-2">
+                        <h3 className="font-medium text-gray-900 line-clamp-2">
+                          {product.name}
+                        </h3>
+                        <div className="flex items-center gap-3">
+                          <span className="text-red-500 font-semibold">
+                            {formatPrice(product.salePrice)}
+                          </span>
+                          <span className="text-gray-500 line-through">
+                            {formatPrice(product.originalPrice)}
+                          </span>
                         </div>
-                        <span className="text-sm text-gray-500">
-                          ({product.reviews})
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center">
+                            {renderStars(product.rating)}
+                          </div>
+                          <span className="text-sm text-gray-500">
+                            ({product.reviews})
+                          </span>
+                        </div>
                       </div>
                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16">
+                  <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <Bell className="w-12 h-12 text-gray-400" />
                   </div>
-                ))}
-              </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    No Flash Sales Available
+                  </h3>
+                  <p className="text-gray-600 mb-4">
+                    Check back soon for exciting flash sale deals!
+                  </p>
+                  <Button asChild>
+                    <Link to="/marketplace/all">
+                      Browse All Products
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </section>
 
             {/* Category Browser Section */}
