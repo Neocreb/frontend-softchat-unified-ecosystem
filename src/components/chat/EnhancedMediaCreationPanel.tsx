@@ -182,22 +182,42 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
         canvasRef.current?.toBlob((blob) => {
           if (blob) {
             const url = URL.createObjectURL(blob);
-            onStickerCreate({
-              type: "meme",
-              url,
+            const memeData = {
               name: `Meme - ${memeText.top || memeText.bottom || "Custom"}`,
+              fileUrl: url,
+              thumbnailUrl: url,
+              type: "meme" as const,
+              width: canvasRef.current?.width || 400,
+              height: canvasRef.current?.height || 400,
+              tags: ["meme", "custom", "user-generated"],
               metadata: {
                 topText: memeText.top,
                 bottomText: memeText.bottom,
                 originalFile: uploadedFile.name,
+                createdAt: new Date().toISOString(),
               },
-            });
-            
-            toast({
-              title: "Meme created!",
-              description: "Your meme sticker is ready to send",
-            });
-            
+            };
+
+            if (saveToCollectionFirst) {
+              const mediaId = saveToCollection(memeData, "memes");
+              onMediaSaved?.(mediaId, "memes");
+              toast({
+                title: "Meme saved!",
+                description: "Your meme has been saved to your collection",
+              });
+            } else {
+              onStickerCreate?.({
+                type: "meme",
+                url,
+                name: memeData.name,
+                metadata: memeData.metadata,
+              });
+              toast({
+                title: "Meme created!",
+                description: "Your meme sticker is ready to send",
+              });
+            }
+
             resetMode();
           }
         }, "image/png");
