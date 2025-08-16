@@ -509,9 +509,15 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         isMobile ? (selectedChat ? "hidden" : "w-full") : "w-80"
       )}>
         {/* Header */}
-        <div className="p-4 border-b space-y-4">
+        <div className={cn(
+          "p-4 border-b space-y-4",
+          isMobile && "px-3 py-3 space-y-3"
+        )}>
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Messages</h2>
+            <h2 className={cn(
+              "text-xl font-semibold",
+              isMobile && "text-lg"
+            )}>Messages</h2>
             {activeTab === "social" && (
               <CreateGroupModal
                 trigger={
