@@ -41,6 +41,8 @@ const ChatRoom = () => {
 
   // Debug logging
   console.log("ChatRoom - chatId:", chatId, "chatType:", chatType, "user:", user?.id);
+  console.log("ChatRoom - searchParams:", Object.fromEntries(searchParams.entries()));
+  console.log("ChatRoom - window.location:", window.location.href);
 
   // State
   const [chat, setChat] = useState<UnifiedChatThread | null>(null);
