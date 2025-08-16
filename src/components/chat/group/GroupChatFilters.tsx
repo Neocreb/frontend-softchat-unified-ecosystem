@@ -61,7 +61,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'groups',
-      label: 'Groups',
+      label: '👥',
       count: groupsCount,
       active: activeFilter.type === 'groups',
       onClick: () => onFilterChange({ ...activeFilter, type: 'groups' }),
@@ -69,7 +69,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'direct',
-      label: 'Direct',
+      label: '👤',
       count: directCount,
       active: activeFilter.type === 'direct',
       onClick: () => onFilterChange({ ...activeFilter, type: 'direct' }),
@@ -77,7 +77,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'unread',
-      label: 'Unread',
+      label: '📩',
       count: unreadCount,
       active: activeFilter.showUnread,
       onClick: () => onFilterChange({ ...activeFilter, showUnread: !activeFilter.showUnread }),
@@ -85,7 +85,7 @@ export const GroupChatFilters: React.FC<GroupChatFiltersProps> = ({
     },
     {
       id: 'pinned',
-      label: 'Pinned',
+      label: '📌',
       count: pinnedCount,
       active: activeFilter.showPinned,
       onClick: () => onFilterChange({ ...activeFilter, showPinned: !activeFilter.showPinned }),
