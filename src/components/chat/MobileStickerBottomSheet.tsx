@@ -294,7 +294,36 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                   {MOBILE_TABS.map((tab) => (
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
                       {tab.id === "create" ? (
-                        <CreateStickerPanel onCreateSticker={onCreateSticker} />
+                        showCreatePanel ? (
+                          <MediaCreationPanel
+                            isMobile={true}
+                            onStickerCreate={(stickerData) => {
+                              // Create a sticker object and send it
+                              const sticker: StickerData = {
+                                id: Date.now().toString(),
+                                name: stickerData.name,
+                                fileUrl: stickerData.url,
+                                thumbnailUrl: stickerData.url,
+                                packId: "custom",
+                                packName: "Custom",
+                                type: stickerData.type === "gif" ? "gif" : "image",
+                                width: 128,
+                                height: 128,
+                                usageCount: 0,
+                                tags: [stickerData.type],
+                                metadata: stickerData.metadata,
+                              };
+                              onStickerSelect(sticker);
+                              setShowCreatePanel(false);
+                              onOpenChange(false);
+                            }}
+                          />
+                        ) : (
+                          <CreateStickerPanel
+                            onCreateSticker={onCreateSticker}
+                            onShowMediaPanel={() => setShowCreatePanel(true)}
+                          />
+                        )
                       ) : filteredStickers.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
                           <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
