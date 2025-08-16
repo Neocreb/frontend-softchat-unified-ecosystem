@@ -62,7 +62,7 @@ import {
   UserStickerLibrary,
   EMOJI_STICKER_PACKS 
 } from "@/types/sticker";
-import { MediaCreationPanel } from "./MediaCreationPanel";
+import { EnhancedMediaCreationPanel } from "./EnhancedMediaCreationPanel";
 
 interface MemeStickerPickerProps {
   onStickerSelect: (sticker: StickerData) => void;
@@ -470,8 +470,10 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
 
               {/* Create New */}
               <TabsContent value="create" className="mt-0">
-                <MediaCreationPanel
+                <EnhancedMediaCreationPanel
                   isMobile={isMobile}
+                  isPremium={true} // TODO: Get from user context
+                  userCredits={10} // TODO: Get from user context
                   onStickerCreate={(stickerData) => {
                     // Create a sticker object and send it
                     const sticker: StickerData = {

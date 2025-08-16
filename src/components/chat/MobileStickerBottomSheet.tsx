@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { MediaCreationPanel } from "./MediaCreationPanel";
+import { EnhancedMediaCreationPanel } from "./EnhancedMediaCreationPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -295,8 +295,10 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
                       {tab.id === "create" ? (
                         showCreatePanel ? (
-                          <MediaCreationPanel
+                          <EnhancedMediaCreationPanel
                             isMobile={true}
+                            isPremium={true} // TODO: Get from user context
+                            userCredits={10} // TODO: Get from user context
                             onStickerCreate={(stickerData) => {
                               // Create a sticker object and send it
                               const sticker: StickerData = {
@@ -440,9 +442,10 @@ const StickerMemeCard: React.FC<StickerMemeCardProps> = ({ sticker, onClick }) =
 // Create sticker panel component
 interface CreateStickerPanelProps {
   onCreateSticker?: () => void;
+  onShowMediaPanel?: () => void;
 }
 
-const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker }) => {
+const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker, onShowMediaPanel }) => {
   const { toast } = useToast();
 
   const createOptions = [

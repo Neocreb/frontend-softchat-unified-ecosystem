@@ -18,6 +18,7 @@ import {
   Eye,
   Copy,
   Reply,
+  Forward,
   MoreVertical,
   Heart,
   ThumbsUp,
@@ -78,6 +79,7 @@ interface EnhancedMessageProps {
   isCurrentUser: boolean;
   isMobile?: boolean;
   onReply?: (message: EnhancedChatMessage) => void;
+  onForward?: (message: EnhancedChatMessage) => void;
   onReact?: (messageId: string, emoji: string) => void;
   onEdit?: (messageId: string, newContent: string) => void;
   onDelete?: (messageId: string) => void;
@@ -99,6 +101,7 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
   isCurrentUser,
   isMobile = false,
   onReply,
+  onForward,
   onReact,
   onEdit,
   onDelete,
@@ -699,6 +702,12 @@ export const EnhancedMessage: React.FC<EnhancedMessageProps> = ({
                         <DropdownMenuItem onClick={() => onReply(message)}>
                           <Reply className="w-4 h-4 mr-2" />
                           Reply
+                        </DropdownMenuItem>
+                      )}
+                      {onForward && (
+                        <DropdownMenuItem onClick={() => onForward(message)}>
+                          <Forward className="w-4 h-4 mr-2" />
+                          Forward
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem onClick={handleCopy}>
