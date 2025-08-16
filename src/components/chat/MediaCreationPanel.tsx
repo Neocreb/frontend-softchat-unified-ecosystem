@@ -223,6 +223,7 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
   };
 
   const handleTakePhoto = () => {
+    setCurrentMode("photo");
     if (cameraInputRef.current) {
       cameraInputRef.current.click();
     }
@@ -300,7 +301,7 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
 
           <Button
             variant="outline"
-            onClick={handleTakePhoto}
+            onClick={() => setCurrentMode("photo")}
             className="justify-start h-auto p-4"
           >
             <div className="flex items-center gap-3">
@@ -437,6 +438,28 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
               </Button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Photo Capture Mode */}
+      {currentMode === "photo" && (
+        <div className="space-y-4">
+          <div className="text-center space-y-3">
+            <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
+              <Camera className="w-12 h-12 mx-auto mb-3 text-blue-600 dark:text-blue-400" />
+              <h4 className="font-medium text-lg mb-2">Capture Photo</h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Take a photo to create an instant sticker
+              </p>
+              <Button
+                onClick={handleTakePhoto}
+                className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+              >
+                <Camera className="w-4 h-4 mr-2" />
+                Open Camera
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 
