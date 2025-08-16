@@ -11,9 +11,15 @@ export interface ChatThread {
   isGroup: boolean;
   groupName?: string;
   groupAvatar?: string;
+  groupDescription?: string;
+  createdBy?: string;
   createdAt: string;
   unreadCount?: number;
   contextData?: ChatContextData;
+  isPinned?: boolean;
+  isArchived?: boolean;
+  isMuted?: boolean;
+  mutedUntil?: string;
 }
 
 export interface ChatMessage {
