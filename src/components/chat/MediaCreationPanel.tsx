@@ -191,38 +191,44 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
   };
 
   const createGifPreview = (videoFile: File) => {
-    // For demo purposes, we'll create a static preview
-    // In a real app, you'd use a library like gif.js or ffmpeg.wasm
+    setProcessing(true);
+
+    // For demo purposes, we'll create a static preview using the video file
+    // In a real app, you'd use a library like gif.js or ffmpeg.wasm to convert video to GIF
     const url = URL.createObjectURL(videoFile);
-    
+
     toast({
-      title: "GIF creation",
-      description: "Processing your video into an animated sticker...",
+      title: "Creating animated sticker",
+      description: "Processing your video...",
     });
 
-    // Simulate processing
+    // Simulate processing time
     setTimeout(() => {
       onStickerCreate({
         type: "gif",
         url,
-        name: `GIF - ${videoFile.name}`,
+        name: `Animated - ${videoFile.name.replace(/\.[^/.]+$/, "")}`,
         metadata: {
           originalFile: videoFile.name,
           duration: 3000, // Mock duration
+          stickerType: "gif",
+          animated: true,
         },
       });
-      
+
       toast({
-        title: "GIF created!",
+        title: "Animated sticker created!",
         description: "Your animated sticker is ready to send",
       });
-      
+
       setCurrentMode(null);
       setUploadedFile(null);
+      setProcessing(false);
     }, 2000);
   };
 
   const handleTakePhoto = () => {
+    setCurrentMode("photo");
     if (cameraInputRef.current) {
       cameraInputRef.current.click();
     }
@@ -300,7 +306,7 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
 
           <Button
             variant="outline"
-            onClick={handleTakePhoto}
+            onClick={() => setCurrentMode("photo")}
             className="justify-start h-auto p-4"
           >
             <div className="flex items-center gap-3">
@@ -390,16 +396,31 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
               <div className="flex gap-2">
                 <Button onClick={addMemeText} variant="outline" className="flex-1">
                   <Wand2 className="w-4 h-4 mr-2" />
-                  Preview
+                  Preview Text
                 </Button>
-                <Button 
-                  onClick={handleCreateMeme} 
-                  disabled={processing}
-                  className="flex-1"
+                <Button
+                  onClick={handleCreateMeme}
+                  disabled={processing || (!memeText.top && !memeText.bottom)}
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600"
                 >
-                  {processing ? "Creating..." : "Create Meme"}
+                  {processing ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Create Meme
+                    </>
+                  )}
                 </Button>
               </div>
+              {(!memeText.top && !memeText.bottom) && (
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Add some text to create your meme
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -428,15 +449,50 @@ export const MediaCreationPanel: React.FC<MediaCreationPanelProps> = ({
                 className="w-full border rounded-lg max-h-60"
               />
               
-              <Button 
-                onClick={() => createGifPreview(uploadedFile)} 
+              <Button
+                onClick={() => createGifPreview(uploadedFile)}
                 disabled={processing}
-                className="w-full"
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
               >
-                {processing ? "Processing..." : "Create GIF"}
+                {processing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Create Animated Sticker
+                  </>
+                )}
               </Button>
+              <p className="text-xs text-muted-foreground text-center">
+                Converting your video to an animated sticker
+              </p>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Photo Capture Mode */}
+      {currentMode === "photo" && (
+        <div className="space-y-4">
+          <div className="text-center space-y-3">
+            <div className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl">
+              <Camera className="w-12 h-12 mx-auto mb-3 text-blue-600 dark:text-blue-400" />
+              <h4 className="font-medium text-lg mb-2">Capture Photo</h4>
+              <p className="text-sm text-muted-foreground mb-4">
+                Take a photo to create an instant sticker
+              </p>
+              <Button
+                onClick={handleTakePhoto}
+                className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+              >
+                <Camera className="w-4 h-4 mr-2" />
+                Open Camera
+              </Button>
+            </div>
+          </div>
         </div>
       )}
 

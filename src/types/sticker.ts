@@ -7,15 +7,25 @@ export interface StickerData {
   thumbnailUrl?: string;
   packId: string;
   packName: string;
-  type: "static" | "animated" | "gif" | "emoji";
-  width: number;
-  height: number;
-  fileSize: number;
-  mimeType: string;
+  type: "static" | "animated" | "gif" | "emoji" | "image" | "meme";
+  width?: number;
+  height?: number;
+  fileSize?: number;
+  mimeType?: string;
   usageCount: number;
   tags: string[];
-  isOriginal: boolean;
+  isOriginal?: boolean;
   animated?: boolean; // For backward compatibility
+  isFavorite?: boolean;
+  metadata?: {
+    topText?: string;
+    bottomText?: string;
+    originalFile?: string;
+    duration?: number;
+    capturedAt?: string;
+    stickerType?: string;
+    [key: string]: any;
+  };
 }
 
 export interface StickerPackData {
@@ -40,10 +50,11 @@ export interface StickerPackData {
   updatedAt: string;
 }
 
-export type StickerCategory = 
+export type StickerCategory =
   | "emotions"
-  | "gestures" 
+  | "gestures"
   | "memes"
+  | "gifs"
   | "business"
   | "food"
   | "animals"
@@ -145,14 +156,14 @@ export const EMOJI_STICKER_PACKS: StickerPackData[] = [
     tags: ["emotions", "feelings", "mood"],
     category: "emotions",
     stickers: [
-      { id: "happy", name: "Happy", emoji: "😀", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["happy", "joy"], isOriginal: false },
-      { id: "laughing", name: "Laughing", emoji: "😂", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["laugh", "funny"], isOriginal: false },
-      { id: "love", name: "Love Eyes", emoji: "😍", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["love", "heart"], isOriginal: false },
-      { id: "crying", name: "Crying", emoji: "😢", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["sad", "cry"], isOriginal: false },
-      { id: "surprised", name: "Surprised", emoji: "😮", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["wow", "surprised"], isOriginal: false },
-      { id: "sleeping", name: "Sleeping", emoji: "😴", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["sleep", "tired"], isOriginal: false },
-      { id: "thinking", name: "Thinking", emoji: "🤔", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["think", "hmm"], isOriginal: false },
-      { id: "cool", name: "Cool", emoji: "😎", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["cool", "sunglasses"], isOriginal: false },
+      { id: "happy", name: "Happy", emoji: "😀", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["happy", "joy"] },
+      { id: "laughing", name: "Laughing", emoji: "😂", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["laugh", "funny"] },
+      { id: "love", name: "Love Eyes", emoji: "😍", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["love", "heart"] },
+      { id: "crying", name: "Crying", emoji: "😢", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["sad", "cry"] },
+      { id: "surprised", name: "Surprised", emoji: "😮", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["wow", "surprised"] },
+      { id: "sleeping", name: "Sleeping", emoji: "😴", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["sleep", "tired"] },
+      { id: "thinking", name: "Thinking", emoji: "🤔", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["think", "hmm"] },
+      { id: "cool", name: "Cool", emoji: "😎", fileUrl: "", packId: "emotions", packName: "Emotions", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["cool", "sunglasses"] },
     ],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -172,12 +183,12 @@ export const EMOJI_STICKER_PACKS: StickerPackData[] = [
     tags: ["gestures", "hands", "body"],
     category: "gestures",
     stickers: [
-      { id: "thumbs_up", name: "Thumbs Up", emoji: "👍", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["good", "like"], isOriginal: false },
-      { id: "thumbs_down", name: "Thumbs Down", emoji: "👎", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["bad", "dislike"], isOriginal: false },
-      { id: "ok_hand", name: "OK Hand", emoji: "👌", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["ok", "good"], isOriginal: false },
-      { id: "peace", name: "Peace", emoji: "✌️", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["peace", "victory"], isOriginal: false },
-      { id: "clapping", name: "Clapping", emoji: "👏", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["clap", "applause"], isOriginal: false },
-      { id: "prayer", name: "Prayer", emoji: "🙏", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["pray", "thanks"], isOriginal: false },
+      { id: "thumbs_up", name: "Thumbs Up", emoji: "👍", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["good", "like"] },
+      { id: "thumbs_down", name: "Thumbs Down", emoji: "👎", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["bad", "dislike"] },
+      { id: "ok_hand", name: "OK Hand", emoji: "👌", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["ok", "good"] },
+      { id: "peace", name: "Peace", emoji: "✌️", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["peace", "victory"] },
+      { id: "clapping", name: "Clapping", emoji: "👏", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["clap", "applause"] },
+      { id: "prayer", name: "Prayer", emoji: "🙏", fileUrl: "", packId: "gestures", packName: "Gestures", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["pray", "thanks"] },
     ],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -197,10 +208,10 @@ export const EMOJI_STICKER_PACKS: StickerPackData[] = [
     tags: ["memes", "funny", "viral"],
     category: "memes",
     stickers: [
-      { id: "rofl", name: "ROFL", emoji: "🤣", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["rofl", "lol"], isOriginal: false },
-      { id: "mind_blown", name: "Mind Blown", emoji: "🤯", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["mind", "blown"], isOriginal: false },
-      { id: "upside_down", name: "Upside Down", emoji: "🙃", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["upside", "down"], isOriginal: false },
-      { id: "zany", name: "Zany", emoji: "🤪", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, fileSize: 0, mimeType: "text/emoji", usageCount: 0, tags: ["crazy", "zany"], isOriginal: false },
+      { id: "rofl", name: "ROFL", emoji: "🤣", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["rofl", "lol"] },
+      { id: "mind_blown", name: "Mind Blown", emoji: "🤯", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["mind", "blown"] },
+      { id: "upside_down", name: "Upside Down", emoji: "🙃", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["upside", "down"] },
+      { id: "zany", name: "Zany", emoji: "🤪", fileUrl: "", packId: "memes", packName: "Memes", type: "emoji", width: 128, height: 128, usageCount: 0, tags: ["crazy", "zany"] },
     ],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

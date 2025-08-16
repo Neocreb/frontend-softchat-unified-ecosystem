@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { MediaCreationPanel } from "./MediaCreationPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -169,6 +170,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("memes");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showCreatePanel, setShowCreatePanel] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
 
   const filteredStickers = React.useMemo(() => {
@@ -219,10 +221,8 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                   variant="ghost"
                   size="icon"
                   onClick={() => {
-                    toast({
-                      title: "Camera",
-                      description: "Camera sticker creation coming soon!",
-                    });
+                    setActiveTab("create");
+                    setShowCreatePanel(true);
                   }}
                   className="h-9 w-9"
                 >
@@ -232,11 +232,9 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                   variant="ghost"
                   size="icon"
                   onClick={() => {
+                    setActiveTab("create");
+                    setShowCreatePanel(true);
                     onCreateSticker?.();
-                    toast({
-                      title: "Create",
-                      description: "Custom sticker creation coming soon!",
-                    });
                   }}
                   className="h-9 w-9"
                 >
@@ -296,7 +294,36 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                   {MOBILE_TABS.map((tab) => (
                     <TabsContent key={tab.id} value={tab.id} className="mt-0">
                       {tab.id === "create" ? (
-                        <CreateStickerPanel onCreateSticker={onCreateSticker} />
+                        showCreatePanel ? (
+                          <MediaCreationPanel
+                            isMobile={true}
+                            onStickerCreate={(stickerData) => {
+                              // Create a sticker object and send it
+                              const sticker: StickerData = {
+                                id: Date.now().toString(),
+                                name: stickerData.name,
+                                fileUrl: stickerData.url,
+                                thumbnailUrl: stickerData.url,
+                                packId: "custom",
+                                packName: "Custom",
+                                type: stickerData.type === "gif" ? "gif" : "image",
+                                width: 128,
+                                height: 128,
+                                usageCount: 0,
+                                tags: [stickerData.type],
+                                metadata: stickerData.metadata,
+                              };
+                              onStickerSelect(sticker);
+                              setShowCreatePanel(false);
+                              onOpenChange(false);
+                            }}
+                          />
+                        ) : (
+                          <CreateStickerPanel
+                            onCreateSticker={onCreateSticker}
+                            onShowMediaPanel={() => setShowCreatePanel(true)}
+                          />
+                        )
                       ) : filteredStickers.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center">
                           <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
@@ -342,7 +369,7 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                 onClick={() => {
                   toast({
                     title: "GIF",
-                    description: "GIF stickers coming soon!",
+                    description: "Switch to Create tab to make GIF stickers!",
                   });
                 }}
                 className="h-8 px-3 text-xs"
@@ -353,9 +380,10 @@ export const MobileStickerBottomSheet: React.FC<MobileStickerBottomSheetProps> =
                 variant="outline"
                 size="sm"
                 onClick={() => {
+                  setActiveTab("create");
                   toast({
                     title: "Create",
-                    description: "Custom sticker packs coming soon!",
+                    description: "Create your own custom stickers!",
                   });
                 }}
                 className="h-8 px-3 text-xs"
@@ -425,9 +453,10 @@ const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker
       icon: <ImageIcon className="w-8 h-8" />,
       color: "bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
       action: () => {
+        onShowMediaPanel?.();
         toast({
           title: "Meme Creator",
-          description: "Image to meme converter coming soon!",
+          description: "Upload an image to create a meme!",
         });
       }
     },
@@ -438,9 +467,10 @@ const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker
       icon: <Camera className="w-8 h-8" />,
       color: "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400",
       action: () => {
+        onShowMediaPanel?.();
         toast({
           title: "GIF Creator",
-          description: "Video to GIF converter coming soon!",
+          description: "Upload a video to create an animated sticker!",
         });
       }
     },
@@ -451,9 +481,10 @@ const CreateStickerPanel: React.FC<CreateStickerPanelProps> = ({ onCreateSticker
       icon: <Camera className="w-8 h-8" />,
       color: "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
       action: () => {
+        onShowMediaPanel?.();
         toast({
           title: "Camera",
-          description: "Camera integration coming soon!",
+          description: "Take a photo to create a sticker!",
         });
       }
     }

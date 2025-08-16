@@ -145,22 +145,38 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
   const handleSendSticker = (sticker: StickerData) => {
     // Determine if it's an emoji or image sticker
     const isEmojiSticker = sticker.type === "emoji" || (sticker.emoji && !sticker.fileUrl);
-    
-    onSendMessage("sticker", isEmojiSticker ? sticker.emoji || sticker.name : sticker.fileUrl, {
+
+    // Use fileUrl if available, otherwise use emoji/name for text stickers
+    const stickerContent = isEmojiSticker ? (sticker.emoji || sticker.name) : sticker.fileUrl;
+
+    onSendMessage("sticker", stickerContent, {
       stickerName: sticker.name,
       stickerPackId: sticker.packId,
       stickerPackName: sticker.packName,
       stickerUrl: sticker.fileUrl,
-      stickerThumbnailUrl: sticker.thumbnailUrl,
+      stickerThumbnailUrl: sticker.thumbnailUrl || sticker.fileUrl,
       stickerType: sticker.type,
-      stickerWidth: sticker.width,
-      stickerHeight: sticker.height,
-      isAnimated: sticker.type === "animated" || sticker.type === "gif",
-      animated: sticker.animated || sticker.type === "animated" || sticker.type === "gif", // backward compatibility
+      stickerWidth: sticker.width || 128,
+      stickerHeight: sticker.height || 128,
+      isAnimated: sticker.type === "animated" || sticker.type === "gif" || sticker.animated,
+      animated: sticker.animated || sticker.type === "animated" || sticker.type === "gif",
+      // Include meme metadata if present
+      topText: sticker.metadata?.topText,
+      bottomText: sticker.metadata?.bottomText,
+      originalFile: sticker.metadata?.originalFile,
+      duration: sticker.metadata?.duration,
+      capturedAt: sticker.metadata?.capturedAt,
     });
-    
+
     setShowStickers(false);
-    
+
+    // Show success feedback
+    toast({
+      title: "Sticker sent!",
+      description: `Sent ${sticker.name}`,
+      duration: 2000,
+    });
+
     // Focus back on input
     inputRef.current?.focus();
   };
@@ -290,11 +306,30 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
               <Button
                 variant="ghost"
                 className="h-auto p-4 flex flex-col gap-2 hover:bg-gradient-to-br hover:from-purple-50 hover:to-purple-100 dark:hover:from-purple-900/20 dark:hover:to-purple-800/20 transition-all duration-200 rounded-xl"
-                onClick={() => {
-                  toast({
-                    title: "Camera",
-                    description: "Camera feature coming soon!",
-                  });
+onClick={() => {
+                  // Trigger camera input for photo capture
+                  const input = document.createElement('input');
+                  input.type = 'file';
+                  input.accept = 'image/*';
+                  input.capture = 'environment';
+                  input.onchange = (e) => {
+                    const file = (e.target as HTMLInputElement).files?.[0];
+                    if (file) {
+                      const url = URL.createObjectURL(file);
+                      onSendMessage("media", url, {
+                        fileName: file.name,
+                        fileSize: file.size,
+                        fileType: file.type,
+                        mediaType: "image",
+                        file,
+                      });
+                      toast({
+                        title: "Photo captured!",
+                        description: "Your photo has been sent.",
+                      });
+                    }
+                  };
+                  input.click();
                 }}
               >
                 <Camera className="h-7 w-7 text-purple-600 dark:text-purple-400" />
