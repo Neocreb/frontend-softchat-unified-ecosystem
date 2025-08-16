@@ -39,10 +39,6 @@ const ChatRoom = () => {
 
   const chatType = (searchParams.get("type") as UnifiedChatType) || "social";
 
-  // Debug logging
-  console.log("ChatRoom - threadId:", threadId, "chatType:", chatType, "user:", user?.id);
-  console.log("ChatRoom - searchParams:", Object.fromEntries(searchParams.entries()));
-  console.log("ChatRoom - window.location:", window.location.href);
 
   // State
   const [chat, setChat] = useState<UnifiedChatThread | null>(null);
