@@ -228,10 +228,27 @@ const ChatRoom = () => {
     ));
   };
 
-  if (loading) {
+  // Early return if no chatId
+  if (!chatId) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <div className="text-center">
+          <h2 className="text-lg font-semibold mb-2">No chat selected</h2>
+          <Button onClick={() => navigate("/app/chat")}>
+            Back to Chats
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
+          <p className="text-sm text-muted-foreground">Loading chat...</p>
+        </div>
       </div>
     );
   }
@@ -241,6 +258,9 @@ const ChatRoom = () => {
       <div className="h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-lg font-semibold mb-2">Chat not found</h2>
+          <p className="text-sm text-muted-foreground mb-4">
+            The chat you're looking for doesn't exist or has been removed.
+          </p>
           <Button onClick={() => navigate("/app/chat")}>
             Back to Chats
           </Button>
