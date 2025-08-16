@@ -50,10 +50,11 @@ export interface StickerPackData {
   updatedAt: string;
 }
 
-export type StickerCategory = 
+export type StickerCategory =
   | "emotions"
-  | "gestures" 
+  | "gestures"
   | "memes"
+  | "gifs"
   | "business"
   | "food"
   | "animals"
