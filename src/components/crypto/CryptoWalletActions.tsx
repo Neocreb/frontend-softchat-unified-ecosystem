@@ -12,15 +12,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Copy, Check, Wallet, Info } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ArrowRight, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import CryptoKYCModal from "./CryptoKYCModal";
@@ -43,14 +35,10 @@ interface WalletBalance {
 
 const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
   const [activeTab, setActiveTab] = useState<string>("balances");
-  const [copied, setCopied] = useState<string | null>(null);
   const [depositModalOpen, setDepositModalOpen] = useState(false);
   const [withdrawModalOpen, setWithdrawModalOpen] = useState(false);
   const [kycModalOpen, setKycModalOpen] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [withdrawAddress, setWithdrawAddress] = useState("");
   const [selectedCurrency, setSelectedCurrency] = useState<WalletBalance | null>(null);
-  const [isWithdrawing, setIsWithdrawing] = useState(false);
   const [walletBalances, setWalletBalances] = useState<WalletBalance[]>([]);
   const [isVerified, setIsVerified] = useState(false);
   const { toast } = useToast();
@@ -109,19 +97,6 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
     }, 1000);
   }, []);
 
-  const copyToClipboard = (text: string, currency: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(currency);
-    
-    toast({
-      title: "Address Copied",
-      description: `${currency} address copied to clipboard`,
-    });
-    
-    setTimeout(() => {
-      setCopied(null);
-    }, 3000);
-  };
 
   const openDepositDialog = (currency: WalletBalance) => {
     setSelectedCurrency(currency);
@@ -142,52 +117,6 @@ const CryptoWalletActions = ({ onKYCSubmit }: WalletProps) => {
     setWithdrawModalOpen(true);
   };
 
-  const handleWithdraw = () => {
-    if (!selectedCurrency) return;
-    
-    const amount = parseFloat(withdrawAmount);
-    if (isNaN(amount) || amount <= 0) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount to withdraw.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (amount > selectedCurrency.balance) {
-      toast({
-        title: "Insufficient Balance",
-        description: `You don't have enough ${selectedCurrency.symbol} to withdraw.`,
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    if (!withdrawAddress) {
-      toast({
-        title: "Missing Address",
-        description: "Please enter a withdrawal address.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsWithdrawing(true);
-    
-    // Simulating withdrawal process
-    setTimeout(() => {
-      setIsWithdrawing(false);
-      setWithdrawDialogOpen(false);
-      setWithdrawAmount("");
-      setWithdrawAddress("");
-      
-      toast({
-        title: "Withdrawal Initiated",
-        description: `Your withdrawal of ${amount} ${selectedCurrency.symbol} is being processed.`,
-      });
-    }, 2000);
-  };
 
   const handleStartKYC = () => {
     setKycModalOpen(true);
