@@ -298,9 +298,9 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
           isMobile ? "h-24 px-2" : "h-48"
         )}>
           <Sparkles className={cn("mb-2 opacity-50", isMobile ? "w-6 h-6" : "w-12 h-12")} />
-          <p className={cn("font-medium", isMobile ? "text-xs" : "text-lg")}>No stickers found</p>
+          <p className={cn("font-medium", isMobile ? "text-xs" : "text-lg")}>No {activeTab} found</p>
           <p className={cn(isMobile ? "text-[10px] mt-0.5" : "text-sm")}>
-            {searchQuery ? "Try a different search" : "No stickers available"}
+            {searchQuery ? "Try a different search" : `Create your own ${activeTab} using the Create tab!`}
           </p>
         </div>
       );
