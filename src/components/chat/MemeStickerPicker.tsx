@@ -86,6 +86,7 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   isMobile = false,
 }) => {
   const { toast } = useToast();
+  const { collections, saveToCollection, removeFromCollection } = useUserCollections();
   const [activeTab, setActiveTab] = useState<string>("memes");
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
