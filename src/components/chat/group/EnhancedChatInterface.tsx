@@ -625,20 +625,32 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
             {renderChatHeader()}
             
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4">
+            <ScrollArea className={cn(
+              "flex-1 p-4",
+              isMobile && "p-3"
+            )}>
+              <div className={cn(
+                "space-y-4",
+                isMobile && "space-y-3"
+              )}>
                 {(messages[selectedChat.id] || []).map((message, index) => (
-                  <EnhancedMessage
+                  <div
                     key={message.id}
-                    message={message}
-                    currentUserId={user?.id || ""}
-                    onReact={() => {}}
-                    onReply={() => setReplyToMessage(message)}
-                    onEdit={() => {}}
-                    onDelete={() => {}}
-                    showAvatar={selectedChat.isGroup}
-                    isGroupMessage={selectedChat.isGroup}
-                  />
+                    className={cn(
+                      isMobile && "transition-transform active:scale-98"
+                    )}
+                  >
+                    <EnhancedMessage
+                      message={message}
+                      currentUserId={user?.id || ""}
+                      onReact={() => {}}
+                      onReply={() => setReplyToMessage(message)}
+                      onEdit={() => {}}
+                      onDelete={() => {}}
+                      showAvatar={selectedChat.isGroup}
+                      isGroupMessage={selectedChat.isGroup}
+                    />
+                  </div>
                 ))}
               </div>
             </ScrollArea>
