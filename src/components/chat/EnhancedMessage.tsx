@@ -87,6 +87,16 @@ interface EnhancedMessageProps {
   onDelete?: (messageId: string) => void;
   showAvatar?: boolean;
   groupWithPrevious?: boolean;
+  userCollections?: {
+    memes: StickerData[];
+    gifs: StickerData[];
+    stickers: StickerData[];
+  };
+  onSaveToCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onRemoveFromCollection?: (mediaId: string, collection: "memes" | "gifs" | "stickers") => void;
+  onSendMessage?: (content: string, type: "sticker" | "media", metadata?: any) => void;
+  onReportMedia?: (mediaId: string, reason: string) => void;
+  currentUserId?: string;
 }
 
 const reactionEmojis = [
