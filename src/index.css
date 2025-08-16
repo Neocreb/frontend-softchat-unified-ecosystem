@@ -311,6 +311,67 @@
       0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
+  /* Premium Fintech Crypto Styling */
+  .crypto-fintech-dark {
+    background: linear-gradient(135deg, 
+      rgba(15, 23, 42, 0.95) 0%,
+      rgba(30, 41, 59, 0.95) 25%,
+      rgba(51, 65, 85, 0.95) 50%,
+      rgba(30, 41, 59, 0.95) 75%,
+      rgba(15, 23, 42, 0.95) 100%
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  .crypto-card-fintech {
+    background: linear-gradient(145deg,
+      rgba(30, 41, 59, 0.9) 0%,
+      rgba(51, 65, 85, 0.8) 50%,
+      rgba(30, 41, 59, 0.9) 100%
+    );
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(15, 23, 42, 0.3),
+      0 4px 16px rgba(30, 41, 59, 0.2),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
+  }
+
+  .crypto-text-primary {
+    color: rgba(248, 250, 252, 0.95);
+  }
+
+  .crypto-text-secondary {
+    color: rgba(203, 213, 225, 0.8);
+  }
+
+  .crypto-text-muted {
+    color: rgba(148, 163, 184, 0.7);
+  }
+
+  .crypto-border {
+    border-color: rgba(148, 163, 184, 0.2);
+  }
+
+  .crypto-gradient-blue {
+    background: linear-gradient(135deg,
+      #1e40af 0%,
+      #3b82f6 25%,
+      #60a5fa 50%,
+      #3b82f6 75%,
+      #1e40af 100%
+    );
+  }
+
+  .crypto-gradient-accent {
+    background: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(147, 197, 253, 0.05) 50%,
+      rgba(59, 130, 246, 0.1) 100%
+    );
+  }
+
   /* Glassmorphism effect */
   .glass-effect {
     background: rgba(255, 255, 255, 0.8);
@@ -705,71 +766,80 @@
     /* Interactive states */
     --hover-overlay: 265 100% 58% / 0.1;
     --focus-ring: 265 100% 58% / 0.3;
+
+    /* Fintech Crypto Variables */
+    --crypto-bg-primary: 15 23 42;
+    --crypto-bg-secondary: 30 41 59;
+    --crypto-text-primary: 248 250 252;
+    --crypto-text-secondary: 203 213 225;
+    --crypto-text-muted: 148 163 184;
+    --crypto-border: 148 163 184;
+    --crypto-accent: 59 130 246;
   }
 
   .dark {
-    /* Enhanced dark backgrounds */
-    --background: 265 15% 6%;
-    --foreground: 210 40% 98%;
+    /* Premium Fintech Dark Mode - Dark Blue Gradient Theme */
+    --background: 210 100% 4%; /* Very dark blue */
+    --foreground: 210 40% 98%; /* Almost white text */
 
-    /* Dark cards with subtle purple undertones */
-    --card: 265 10% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 265 10% 8%;
+    /* Dark cards with premium blue undertones */
+    --card: 215 25% 8%; /* Dark blue card background */
+    --card-foreground: 210 40% 98%; /* White text on cards */
+    --popover: 215 25% 8%;
     --popover-foreground: 210 40% 98%;
 
     /* Vibrant primary that pops in dark mode */
-    --primary: 265 100% 68%;
-    --primary-foreground: 265 15% 6%;
+    --primary: 217 91% 60%; /* Bright blue primary */
+    --primary-foreground: 210 100% 4%; /* Dark text on primary */
 
-    /* Enhanced secondary */
-    --secondary: 265 15% 15%;
-    --secondary-foreground: 265 20% 85%;
+    /* Enhanced secondary with blue undertones */
+    --secondary: 215 25% 12%; /* Slightly lighter blue */
+    --secondary-foreground: 210 30% 85%; /* Light blue text */
 
-    /* Dark muted with character */
-    --muted: 265 10% 12%;
-    --muted-foreground: 265 10% 65%;
+    /* Dark muted with blue character */
+    --muted: 215 25% 10%; /* Dark blue muted */
+    --muted-foreground: 215 20% 65%; /* Medium blue text */
 
-    /* Dark accent */
-    --accent: 265 15% 15%;
-    --accent-foreground: 265 20% 85%;
+    /* Dark accent with blue theme */
+    --accent: 215 25% 12%;
+    --accent-foreground: 210 30% 85%;
 
     /* Enhanced destructive for dark */
     --destructive: 0 75% 55%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Dark borders and inputs */
-    --border: 265 15% 18%;
-    --input: 265 15% 12%;
-    --ring: 265 100% 68%;
+    /* Dark blue borders and inputs */
+    --border: 215 25% 15%; /* Dark blue borders */
+    --input: 215 25% 10%; /* Dark blue inputs */
+    --ring: 217 91% 60%; /* Bright blue ring */
 
-    /* Enhanced dark chart colors */
-    --chart-1: 265 85% 70%;
+    /* Enhanced dark chart colors with blue theme */
+    --chart-1: 217 91% 65%;
     --chart-2: 195 70% 60%;
-    --chart-3: 290 75% 65%;
+    --chart-3: 240 75% 65%;
     --chart-4: 25 85% 65%;
     --chart-5: 340 75% 60%;
 
-    /* Enhanced dark sidebar */
-    --sidebar-background: 265 15% 5%;
-    --sidebar-foreground: 265 15% 90%;
-    --sidebar-primary: 265 100% 68%;
-    --sidebar-primary-foreground: 265 15% 6%;
-    --sidebar-accent: 265 15% 12%;
-    --sidebar-accent-foreground: 265 15% 90%;
-    --sidebar-border: 265 15% 15%;
-    --sidebar-ring: 265 100% 68%;
+    /* Enhanced dark sidebar with blue theme */
+    --sidebar-background: 210 100% 3%; /* Darker blue sidebar */
+    --sidebar-foreground: 210 30% 90%; /* Light text */
+    --sidebar-primary: 217 91% 60%; /* Bright blue primary */
+    --sidebar-primary-foreground: 210 100% 4%; /* Dark text on primary */
+    --sidebar-accent: 215 25% 10%; /* Dark blue accent */
+    --sidebar-accent-foreground: 210 30% 90%; /* Light text */
+    --sidebar-border: 215 25% 12%; /* Dark blue border */
+    --sidebar-ring: 217 91% 60%; /* Bright blue ring */
 
-    /* Enhanced SoftChat brand colors for dark */
-    --softchat-primary: 265 100% 68%;
-    --softchat-accent: 297 83% 75%;
-    --softchat-600: 265 89% 55%;
-    --softchat-700: 265 100% 45%;
+    /* Enhanced SoftChat brand colors for dark with blue theme */
+    --softchat-primary: 217 91% 60%;
+    --softchat-accent: 240 83% 70%;
+    --softchat-600: 217 89% 55%;
+    --softchat-700: 217 100% 45%;
 
-    /* Dark gradient variables */
-    --gradient-start: 265 100% 68%;
-    --gradient-middle: 280 85% 70%;
-    --gradient-end: 295 80% 75%;
+    /* Dark gradient variables with blue theme */
+    --gradient-start: 217 91% 60%;
+    --gradient-middle: 230 85% 65%;
+    --gradient-end: 240 80% 70%;
 
     /* Dark success and warning */
     --success: 142 76% 55%;
@@ -777,9 +847,18 @@
     --warning: 38 92% 60%;
     --warning-foreground: 38 92% 10%;
 
-    /* Dark interactive states */
-    --hover-overlay: 265 100% 68% / 0.15;
-    --focus-ring: 265 100% 68% / 0.4;
+    /* Dark interactive states with blue theme */
+    --hover-overlay: 217 91% 60% / 0.15;
+    --focus-ring: 217 91% 60% / 0.4;
+
+    /* Premium Fintech Dark Variables */
+    --crypto-bg-primary: 15 23 42; /* Very dark blue */
+    --crypto-bg-secondary: 30 41 59; /* Dark blue */
+    --crypto-text-primary: 248 250 252; /* Almost white */
+    --crypto-text-secondary: 203 213 225; /* Light gray-blue */
+    --crypto-text-muted: 148 163 184; /* Medium gray-blue */
+    --crypto-border: 148 163 184; /* Gray-blue borders */
+    --crypto-accent: 59 130 246; /* Bright blue accent */
   }
 }
 
@@ -812,45 +891,84 @@
     );
   }
 
-  /* Dark mode specific backgrounds */
+  /* Premium Fintech Dark Mode Background */
   .dark body,
   .dark #root {
     background: linear-gradient(135deg,
-      hsl(265 15% 6%) 0%,
-      hsl(265 12% 8%) 25%,
-      hsl(265 10% 10%) 50%,
-      hsl(265 12% 8%) 75%,
-      hsl(265 15% 6%) 100%
+      hsl(210 100% 4%) 0%,   /* Very dark blue */
+      hsl(215 25% 6%) 15%,   /* Dark blue */
+      hsl(220 30% 8%) 30%,   /* Medium dark blue */
+      hsl(215 25% 6%) 70%,   /* Dark blue */
+      hsl(210 100% 4%) 100%  /* Very dark blue */
     ) !important;
+    
+    /* Add a subtle overlay for depth */
+    position: relative;
   }
 
-  /* Force dark mode for all white backgrounds */
+  .dark body::before,
+  .dark #root::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(59, 130, 246, 0.03) 0%,
+      rgba(30, 58, 138, 0.02) 50%,
+      rgba(15, 23, 42, 0.05) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Force dark mode styling for crypto components */
   .dark .bg-white {
-    background: hsl(var(--card)) !important;
-    color: hsl(var(--card-foreground)) !important;
+    background: linear-gradient(145deg,
+      hsl(215 25% 8%) 0%,
+      hsl(220 30% 10%) 50%,
+      hsl(215 25% 8%) 100%
+    ) !important;
+    color: hsl(var(--crypto-text-primary)) !important;
   }
 
   .dark .bg-gray-50 {
-    background: hsl(var(--muted)) !important;
+    background: linear-gradient(135deg,
+      hsl(215 25% 10%) 0%,
+      hsl(220 30% 12%) 100%
+    ) !important;
   }
 
   .dark .bg-gray-100 {
-    background: hsl(var(--muted)) !important;
+    background: linear-gradient(135deg,
+      hsl(215 25% 12%) 0%,
+      hsl(220 30% 14%) 100%
+    ) !important;
   }
 
   .dark .text-gray-900 {
-    color: hsl(var(--foreground)) !important;
+    color: hsl(var(--crypto-text-primary)) !important;
   }
 
   .dark .text-gray-800 {
-    color: hsl(var(--foreground)) !important;
+    color: hsl(var(--crypto-text-primary)) !important;
   }
 
   .dark .text-gray-700 {
-    color: hsl(var(--muted-foreground)) !important;
+    color: hsl(var(--crypto-text-secondary)) !important;
   }
 
-  /* Enhanced card backgrounds - responsive to theme */
+  .dark .text-gray-600 {
+    color: hsl(var(--crypto-text-muted)) !important;
+  }
+
+  .dark .text-muted-foreground {
+    color: hsl(var(--crypto-text-muted)) !important;
+  }
+
+  /* Enhanced card backgrounds with fintech styling */
   .bg-card {
     background: hsl(var(--card)) !important;
   }
@@ -864,16 +982,22 @@
     ) !important;
   }
 
-  /* Dark mode card gradients */
+  /* Premium Fintech Dark mode card gradients */
   .dark .bg-card {
     background: linear-gradient(145deg,
-      hsl(265 10% 8%) 0%,
-      hsl(265 12% 10%) 50%,
-      hsl(265 8% 12%) 100%
+      hsl(215 25% 8%) 0%,
+      hsl(220 30% 10%) 30%,
+      hsl(225 35% 12%) 70%,
+      hsl(215 25% 8%) 100%
     ) !important;
+    border: 1px solid rgba(148, 163, 184, 0.1) !important;
+    box-shadow: 
+      0 8px 32px rgba(15, 23, 42, 0.4),
+      0 4px 16px rgba(30, 41, 59, 0.3),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1) !important;
   }
 
-  /* Enhanced muted backgrounds - responsive to theme */
+  /* Enhanced muted backgrounds */
   .bg-muted {
     background: hsl(var(--muted)) !important;
   }
@@ -886,12 +1010,14 @@
     ) !important;
   }
 
-  /* Dark mode muted gradients */
+  /* Premium Fintech Dark mode muted gradients */
   .dark .bg-muted {
     background: linear-gradient(135deg,
-      hsl(265 10% 12%) 0%,
-      hsl(265 15% 15%) 100%
+      hsl(215 25% 10%) 0%,
+      hsl(220 30% 12%) 50%,
+      hsl(215 25% 10%) 100%
     ) !important;
+    border: 1px solid rgba(148, 163, 184, 0.08) !important;
   }
 
   /* Modern button gradients - maintain for both themes */
@@ -1499,568 +1625,100 @@
   }
 }
 
-/* Mobile utility classes for consistent 13px usage */
-@layer utilities {
-  .text-13 {
-    font-size: 13px !important;
+/* Premium Fintech Crypto Component Styles */
+@layer components {
+  .crypto-page-container {
+    @apply min-h-screen;
   }
 
-  .mobile-responsive-text {
-    font-size: 1rem; /* 13px with our base */
-    line-height: 1.5;
-  }
-
-  @media (max-width: 480px) {
-    .mobile-responsive-text {
-      font-size: 1rem; /* Still 13px */
-      line-height: 1.4;
-    }
-  }
-
-  /* Prevent layout shift on mobile */
-  .mobile-layout-stable {
-    will-change: auto;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-  }
-
-  /* Better touch interaction */
-  .mobile-touch-friendly {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-    touch-action: manipulation;
-    user-select: none;
-  }
-
-  /* ===== DARK MODE UTILITIES ===== */
-
-  /* Professional dark mode page container */
-  .page-container {
-    background: hsl(var(--background));
-    min-height: 100vh;
-  }
-
-  /* Light mode page container */
-  :root:not(.dark) .page-container {
+  .dark .crypto-page-container {
     background: linear-gradient(135deg,
-      hsl(240 20% 97%) 0%,
-      hsl(250 25% 96%) 25%,
-      hsl(260 15% 96%) 50%,
-      hsl(250 25% 96%) 75%,
-      hsl(240 20% 97%) 100%
+      hsl(210 100% 4%) 0%,
+      hsl(215 25% 6%) 25%,
+      hsl(220 30% 8%) 50%,
+      hsl(215 25% 6%) 75%,
+      hsl(210 100% 4%) 100%
     );
   }
 
-  /* Dark mode page container */
-  .dark .page-container {
-    background: linear-gradient(135deg,
-      hsl(265 15% 6%) 0%,
-      hsl(265 12% 8%) 25%,
-      hsl(265 10% 10%) 50%,
-      hsl(265 12% 8%) 75%,
-      hsl(265 15% 6%) 100%
-    ) !important;
+  .crypto-card-premium {
+    @apply relative overflow-hidden;
   }
 
-  /* Force dark mode for any container in dark theme */
-  .dark div:not([class*="bg-gradient"]):not([class*="card-"]) {
-    --tw-bg-opacity: 1;
-  }
-
-  /* Override Tailwind's default backgrounds in dark mode */
-  .dark .bg-slate-50,
-  .dark .bg-slate-100,
-  .dark .bg-gray-50,
-  .dark .bg-gray-100,
-  .dark .bg-neutral-50,
-  .dark .bg-neutral-100 {
-    background: hsl(var(--muted)) !important;
-  }
-
-  /* Ensure bg-platform works in dark mode */
-  .bg-platform {
-    background: hsl(var(--background));
-    min-height: 100vh;
-  }
-
-  .dark .bg-platform {
-    background: linear-gradient(135deg,
-      hsl(265 15% 6%) 0%,
-      hsl(265 12% 8%) 25%,
-      hsl(265 10% 10%) 50%,
-      hsl(265 12% 8%) 75%,
-      hsl(265 15% 6%) 100%
-    ) !important;
-  }
-
-  /* Comprehensive dark mode enforcement */
-  .dark,
-  .dark * {
-    color-scheme: dark;
-  }
-
-  .dark .min-h-screen:not([class*="bg-gradient"]):not([class*="card-"]) {
-    background: linear-gradient(135deg,
-      hsl(265 15% 6%) 0%,
-      hsl(265 12% 8%) 25%,
-      hsl(265 10% 10%) 50%,
-      hsl(265 12% 8%) 75%,
-      hsl(265 15% 6%) 100%
-    ) !important;
-  }
-
-  /* Professional content cards for all themes */
-  .content-card {
-    background: hsl(var(--card));
-    border: 1px solid hsl(var(--border));
-    color: hsl(var(--card-foreground));
-  }
-
-  /* Dark mode content cards */
-  .dark .content-card {
+  .dark .crypto-card-premium {
     background: linear-gradient(145deg,
-      hsl(265 10% 8%) 0%,
-      hsl(265 12% 10%) 50%,
-      hsl(265 8% 12%) 100%
+      rgba(30, 41, 59, 0.9) 0%,
+      rgba(51, 65, 85, 0.8) 50%,
+      rgba(30, 41, 59, 0.9) 100%
     );
-    border: 1px solid hsl(265 15% 18%);
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    box-shadow: 
+      0 8px 32px rgba(15, 23, 42, 0.3),
+      0 4px 16px rgba(30, 41, 59, 0.2),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
   }
 
-  /* Light mode content cards */
-  :root:not(.dark) .content-card {
-    background: linear-gradient(145deg,
-      hsl(0 0% 100%) 0%,
-      hsl(240 30% 98%) 50%,
-      hsl(260 25% 97%) 100%
-    );
-    border: 1px solid hsl(240 15% 92%);
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-
-  /* ===== TEXT CONTRAST UTILITIES ===== */
-
-  /* Force high contrast text for better readability */
-  .text-contrast-high {
-    color: hsl(var(--foreground)) !important;
-    font-weight: 600 !important;
-  }
-
-  .text-contrast-medium {
-    color: hsl(var(--muted-foreground)) !important;
-    font-weight: 500 !important;
-  }
-
-  .text-contrast-white {
-    color: rgb(255 255 255) !important;
-    font-weight: 600 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Ensure readable text on any background */
-  .content-card .text-readable {
-    color: hsl(var(--card-foreground)) !important;
-    font-weight: 500 !important;
-  }
-
-  /* Override for gradient backgrounds that need white text */
-  .bg-gradient-to-r .text-white,
-  .bg-gradient-to-br .text-white,
-  .bg-gradient-to-l .text-white {
-    color: rgb(255 255 255) !important;
-    font-weight: 600 !important;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  /* ===== MODERN GRADIENT UTILITIES ===== */
-
-  /* App Background Gradients */
-  .bg-gradient-app {
-    background: linear-gradient(135deg,
-      hsl(240 20% 97%) 0%,
-      hsl(250 25% 96%) 25%,
-      hsl(260 15% 96%) 50%,
-      hsl(250 25% 96%) 75%,
-      hsl(240 20% 97%) 100%
-    ) !important;
-  }
-
-  .bg-gradient-modern {
-    background: linear-gradient(135deg,
-      hsl(240 20% 97%) 0%,
-      hsl(260 15% 96%) 50%,
-      hsl(240 20% 97%) 100%
-    ) !important;
-  }
-
-  /* Card Gradients */
-  .bg-gradient-card {
-    background: linear-gradient(145deg,
-      hsl(0 0% 100%) 0%,
-      hsl(240 30% 98%) 30%,
-      hsl(260 25% 97%) 70%,
-      hsl(0 0% 100%) 100%
-    ) !important;
-    border: 1px solid hsl(240 15% 92%);
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-
-  .card-enhanced {
-    background: linear-gradient(145deg,
-      hsl(0 0% 100%) 0%,
-      hsl(240 30% 98%) 100%
-    ) !important;
-    border: 1px solid hsl(240 15% 92%);
-    box-shadow:
-      0 4px 6px -1px rgb(0 0 0 / 0.1),
-      0 2px 4px -2px rgb(0 0 0 / 0.1),
-      0 0 0 1px hsl(240 15% 94%);
-    transition: all 0.3s ease;
-  }
-
-  .card-enhanced:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0 10px 15px -3px rgb(0 0 0 / 0.1),
-      0 4px 6px -2px rgb(0 0 0 / 0.05),
-      0 0 0 1px hsl(265 100% 58% / 0.1);
-  }
-
-  /* Primary Button Gradients */
-  .bg-gradient-primary {
-    background: linear-gradient(135deg,
-      hsl(265 100% 58%) 0%,
-      hsl(280 85% 60%) 25%,
-      hsl(290 80% 62%) 50%,
-      hsl(280 85% 60%) 75%,
-      hsl(265 100% 58%) 100%
-    ) !important;
-  }
-
-  .btn-gradient {
-    background: linear-gradient(135deg,
-      hsl(265 100% 58%) 0%,
-      hsl(280 85% 60%) 100%
-    );
-    transition: all 0.3s ease;
-    border: none !important;
-  }
-
-  .btn-gradient:hover {
-    background: linear-gradient(135deg,
-      hsl(265 100% 52%) 0%,
-      hsl(280 85% 54%) 100%
-    );
-    transform: translateY(-1px);
-    box-shadow: 0 10px 20px -5px hsl(265 100% 58% / 0.3);
-    color: white !important;
-  }
-
-  /* Navigation Gradients */
-  .bg-gradient-nav {
-    background: linear-gradient(to right,
-      hsl(0 0% 100% / 0.95) 0%,
-      hsl(240 40% 98% / 0.95) 50%,
-      hsl(0 0% 100% / 0.95) 100%
-    ) !important;
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid hsl(240 15% 90%);
-  }
-
-  /* Sidebar Gradients */
-  .bg-gradient-sidebar {
-    background: linear-gradient(to bottom,
-      hsl(0 0% 100%) 0%,
-      hsl(240 25% 98%) 50%,
-      hsl(260 20% 97%) 100%
-    ) !important;
-    border-right: 1px solid hsl(240 15% 90%);
-  }
-
-  /* Muted/Secondary Gradients */
-  .bg-gradient-muted {
-    background: linear-gradient(135deg,
-      hsl(240 20% 96%) 0%,
-      hsl(260 15% 95%) 100%
-    ) !important;
-  }
-
-  /* Special wallet gradient */
-  .bg-gradient-wallet {
-    background: linear-gradient(135deg,
-      hsl(220 70% 55%) 0%,
-      hsl(240 65% 58%) 25%,
-      hsl(260 70% 60%) 50%,
-      hsl(280 75% 62%) 75%,
-      hsl(300 70% 60%) 100%
-    ) !important;
-  }
-
-  /* Professional Card Gradients */
-  .card-rewards {
-    background: linear-gradient(135deg,
-      hsl(265 100% 58%) 0%,
-      hsl(280 85% 65%) 50%,
-      hsl(295 80% 70%) 100%
-    ) !important;
-    color: white !important;
-  }
-
-  .card-crypto {
-    background: linear-gradient(135deg,
-      hsl(220 70% 25%) 0%,
-      hsl(240 65% 35%) 50%,
-      hsl(260 70% 45%) 100%
-    ) !important;
-    color: white !important;
-  }
-
-  /* Enhanced platform backgrounds */
-  .bg-platform {
-    background: linear-gradient(135deg,
-      hsl(240 30% 94%) 0%,
-      hsl(260 25% 92%) 25%,
-      hsl(280 20% 95%) 50%,
-      hsl(260 25% 92%) 75%,
-      hsl(240 30% 94%) 100%
-    ) !important;
-  }
-
-  /* Add subtle texture overlay */
-  .bg-platform::before {
+  .crypto-card-premium::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(circle at 1px 1px, rgba(138, 43, 226, 0.03) 1px, transparent 0);
-    background-size: 20px 20px;
+    background: linear-gradient(135deg,
+      rgba(59, 130, 246, 0.03) 0%,
+      transparent 50%,
+      rgba(59, 130, 246, 0.03) 100%
+    );
     pointer-events: none;
   }
 
-  /* Professional content cards */
-  .content-card {
-    background: linear-gradient(145deg,
-      hsl(0 0% 100%) 0%,
-      hsl(240 30% 99%) 50%,
-      hsl(260 20% 98%) 100%
-    ) !important;
-    border: 1px solid hsl(240 30% 85%) !important;
-    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-    color: hsl(220 15% 10%) !important;
-    backdrop-filter: blur(8px) !important;
+  .crypto-text-premium {
+    @apply relative z-10;
   }
 
-  /* Enhanced text contrast utilities */
-  .text-high-contrast {
-    color: hsl(220 15% 10%) !important;
-    font-weight: 500;
+  .dark .crypto-text-premium {
+    color: rgba(248, 250, 252, 0.95);
   }
 
-  .text-medium-contrast {
-    color: hsl(220 10% 25%) !important;
+  .crypto-text-secondary-premium {
+    @apply relative z-10;
   }
 
-  .text-low-contrast {
-    color: hsl(220 8% 45%) !important;
+  .dark .crypto-text-secondary-premium {
+    color: rgba(203, 213, 225, 0.85);
   }
 
-  /* Global contrast improvements */
-  .content-card h1,
-  .content-card h2,
-  .content-card h3,
-  .content-card h4,
-  .content-card h5,
-  .content-card h6 {
-    color: hsl(220 15% 10%) !important;
+  .crypto-text-muted-premium {
+    @apply relative z-10;
   }
 
-  .content-card p,
-  .content-card span:not(.text-white) {
-    color: hsl(220 10% 20%) !important;
+  .dark .crypto-text-muted-premium {
+    color: rgba(148, 163, 184, 0.75);
   }
 
-  /* Fix muted text contrast */
-  .text-muted-foreground {
-    color: hsl(220 8% 40%) !important;
-  }
-
-  /* Enhanced body and layout backgrounds */
-  body {
+  .crypto-gradient-bg {
     background: linear-gradient(135deg,
-      hsl(240 30% 94%) 0%,
-      hsl(260 25% 92%) 25%,
-      hsl(280 20% 95%) 50%,
-      hsl(260 25% 92%) 75%,
-      hsl(240 30% 94%) 100%
-    ) !important;
-    background-attachment: fixed;
-    min-height: 100vh;
-  }
-
-  /* Ensure proper text visibility on all backgrounds */
-  .content-card * {
-    color: inherit;
-  }
-
-  .content-card h1, .content-card h2, .content-card h3 {
-    color: hsl(220 20% 8%) !important;
-  }
-
-  .content-card p, .content-card span:not(.text-white):not([class*="text-"]) {
-    color: hsl(220 12% 20%) !important;
-  }
-
-  /* Page containers */
-  .page-container {
-    background: linear-gradient(135deg,
-      hsl(240 30% 94%) 0%,
-      hsl(260 25% 92%) 25%,
-      hsl(280 20% 95%) 50%,
-      hsl(260 25% 92%) 75%,
-      hsl(240 30% 94%) 100%
-    ) !important;
-    min-height: 100vh;
-    position: relative;
-  }
-
-  /* Enhanced card hover effects */
-  .content-card:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 12px 35px -8px rgba(138, 43, 226, 0.25), 0 8px 15px -3px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  /* Professional text hierarchy */
-  .text-primary-heading {
-    color: hsl(220 20% 8%) !important;
-    font-weight: 700;
-  }
-
-  .text-secondary-heading {
-    color: hsl(220 15% 15%) !important;
-    font-weight: 600;
-  }
-
-  .text-body {
-    color: hsl(220 10% 25%) !important;
-    font-weight: 400;
-  }
-
-  /* Better shadows for depth */
-  .shadow-professional {
-    box-shadow: 0 8px 25px -5px rgba(138, 43, 226, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-  }
-
-  .shadow-professional-lg {
-    box-shadow: 0 12px 35px -8px rgba(138, 43, 226, 0.25), 0 8px 15px -3px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  /* Professional button enhancements */
-  .btn-professional {
-    background: linear-gradient(135deg,
-      hsl(265 100% 58%) 0%,
-      hsl(280 85% 65%) 100%
-    ) !important;
-    color: white !important;
-    border: none !important;
-    box-shadow: 0 4px 14px 0 rgba(138, 43, 226, 0.25) !important;
-    transition: all 0.3s ease !important;
-  }
-
-  .btn-professional:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px 0 rgba(138, 43, 226, 0.35) !important;
-  }
-
-  /* ===== PROFESSIONAL DARK MODE ENHANCEMENTS ===== */
-
-  /* Dark mode navigation improvements */
-  .dark .mobile-tabs-indicator::after {
-    background: linear-gradient(to right, transparent, hsl(265 15% 6%));
-  }
-
-  /* Dark mode custom scrollbars */
-  .dark .custom-scrollbar::-webkit-scrollbar-track {
-    background: hsl(265 10% 8%);
-  }
-
-  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: hsl(265 15% 25%);
-  }
-
-  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: hsl(265 15% 35%);
-  }
-
-  /* Professional dark mode button enhancements */
-  .dark .btn-professional {
-    background: linear-gradient(135deg,
-      hsl(265 100% 68%) 0%,
-      hsl(280 85% 70%) 100%
-    ) !important;
-    box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.35) !important;
-  }
-
-  .dark .btn-professional:hover {
-    box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.45) !important;
-  }
-
-  /* Dark mode interactive elements */
-  .dark .interactive-element:hover {
-    background: linear-gradient(145deg,
-      hsl(265 15% 12%) 0%,
-      hsl(265 20% 15%) 100%
+      rgba(59, 130, 246, 0.1) 0%,
+      rgba(147, 197, 253, 0.05) 50%,
+      rgba(59, 130, 246, 0.1) 100%
     );
-    box-shadow: 0 8px 25px -5px rgb(139 92 246 / 0.2);
   }
 
-  /* Dark mode form elements */
-  .dark input,
-  .dark textarea,
-  .dark select {
-    background: hsl(265 15% 12%) !important;
-    border-color: hsl(265 15% 25%) !important;
-    color: hsl(265 20% 90%) !important;
+  .crypto-border-premium {
+    border: 1px solid rgba(148, 163, 184, 0.2);
   }
 
-  .dark input:focus,
-  .dark textarea:focus,
-  .dark select:focus {
-    border-color: hsl(265 100% 68%) !important;
-    box-shadow: 0 0 0 2px hsl(265 100% 68% / 0.2) !important;
+  .crypto-hover-effect {
+    @apply transition-all duration-300 ease-out;
   }
 
-  /* Dark mode dropdown and select styling */
-  .dark .bg-popover {
-    background: hsl(265 10% 8%) !important;
-    border: 1px solid hsl(265 15% 25%) !important;
-  }
-
-  /* Comprehensive page background enforcement */
-  .dark main,
-  .dark .min-h-screen,
-  .dark [class*="min-h-screen"],
-  .dark .page-container {
-    background: linear-gradient(135deg,
-      hsl(265 15% 6%) 0%,
-      hsl(265 12% 8%) 25%,
-      hsl(265 10% 10%) 50%,
-      hsl(265 12% 8%) 75%,
-      hsl(265 15% 6%) 100%
-    ) !important;
-  }
-
-  /* Override any remaining light backgrounds in dark mode */
-  .dark .bg-background {
-    background: hsl(var(--background)) !important;
-  }
-
-  /* Ensure proper contrast for all text in dark mode */
-  .dark * {
-    border-color: hsl(var(--border));
-  }
-
-  .dark .text-black {
-    color: hsl(var(--foreground)) !important;
+  .crypto-hover-effect:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 12px 40px rgba(15, 23, 42, 0.4),
+      0 6px 20px rgba(30, 41, 59, 0.3),
+      inset 0 1px 0 rgba(148, 163, 184, 0.15);
   }
 }
