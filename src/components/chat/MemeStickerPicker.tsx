@@ -142,11 +142,11 @@ export const MemeStickerPicker: React.FC<MemeStickerPickerProps> = ({
   const [userLibrary, setUserLibrary] = useState<UserStickerLibrary>({
     recentStickers: [],
     favoriteStickers: [],
-    downloadedPacks: mockPacks,
+    downloadedPacks: userCollectionPacks,
     customPacks: [],
   });
 
-  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(mockPacks);
+  const [availablePacks, setAvailablePacks] = useState<StickerPackData[]>(userCollectionPacks);
   const [trendingPacks, setTrendingPacks] = useState<StickerPackData[]>([]);
 
   // Filter stickers based on search query
