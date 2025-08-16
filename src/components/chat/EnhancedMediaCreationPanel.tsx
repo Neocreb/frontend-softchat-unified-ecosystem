@@ -553,21 +553,40 @@ export const EnhancedMediaCreationPanel: React.FC<EnhancedMediaCreationPanelProp
     const file = event.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      onStickerCreate({
-        type: "image",
-        url,
+      const photoData = {
         name: `Photo - ${new Date().toLocaleTimeString()}`,
+        fileUrl: url,
+        thumbnailUrl: url,
+        type: "image" as const,
+        width: 512,
+        height: 512,
+        tags: ["photo", "custom", "user-generated"],
         metadata: {
           capturedAt: new Date().toISOString(),
           originalFile: file.name,
         },
-      });
-      
-      toast({
-        title: "Photo selected!",
-        description: "Your photo sticker is ready to send",
-      });
-      
+      };
+
+      if (saveToCollectionFirst) {
+        const mediaId = saveToCollection(photoData, "stickers");
+        onMediaSaved?.(mediaId, "stickers");
+        toast({
+          title: "Photo saved!",
+          description: "Your photo has been saved to your collection",
+        });
+      } else {
+        onStickerCreate?.({
+          type: "image",
+          url,
+          name: photoData.name,
+          metadata: photoData.metadata,
+        });
+        toast({
+          title: "Photo selected!",
+          description: "Your photo sticker is ready to send",
+        });
+      }
+
       resetMode();
     }
   };
