@@ -145,22 +145,38 @@ export const WhatsAppChatInput: React.FC<WhatsAppChatInputProps> = ({
   const handleSendSticker = (sticker: StickerData) => {
     // Determine if it's an emoji or image sticker
     const isEmojiSticker = sticker.type === "emoji" || (sticker.emoji && !sticker.fileUrl);
-    
-    onSendMessage("sticker", isEmojiSticker ? sticker.emoji || sticker.name : sticker.fileUrl, {
+
+    // Use fileUrl if available, otherwise use emoji/name for text stickers
+    const stickerContent = isEmojiSticker ? (sticker.emoji || sticker.name) : sticker.fileUrl;
+
+    onSendMessage("sticker", stickerContent, {
       stickerName: sticker.name,
       stickerPackId: sticker.packId,
       stickerPackName: sticker.packName,
       stickerUrl: sticker.fileUrl,
-      stickerThumbnailUrl: sticker.thumbnailUrl,
+      stickerThumbnailUrl: sticker.thumbnailUrl || sticker.fileUrl,
       stickerType: sticker.type,
-      stickerWidth: sticker.width,
-      stickerHeight: sticker.height,
-      isAnimated: sticker.type === "animated" || sticker.type === "gif",
-      animated: sticker.animated || sticker.type === "animated" || sticker.type === "gif", // backward compatibility
+      stickerWidth: sticker.width || 128,
+      stickerHeight: sticker.height || 128,
+      isAnimated: sticker.type === "animated" || sticker.type === "gif" || sticker.animated,
+      animated: sticker.animated || sticker.type === "animated" || sticker.type === "gif",
+      // Include meme metadata if present
+      topText: sticker.metadata?.topText,
+      bottomText: sticker.metadata?.bottomText,
+      originalFile: sticker.metadata?.originalFile,
+      duration: sticker.metadata?.duration,
+      capturedAt: sticker.metadata?.capturedAt,
     });
-    
+
     setShowStickers(false);
-    
+
+    // Show success feedback
+    toast({
+      title: "Sticker sent!",
+      description: `Sent ${sticker.name}`,
+      duration: 2000,
+    });
+
     // Focus back on input
     inputRef.current?.focus();
   };
