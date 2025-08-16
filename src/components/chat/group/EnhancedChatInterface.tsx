@@ -185,13 +185,34 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
     },
   ];
 
+  // Handle tab changes with navigation
+  const handleTabChange = (tabId: UnifiedChatType) => {
+    // Handle navigation for non-chat tabs
+    if (tabId === "freelance") {
+      navigate("/app/freelance");
+      return;
+    }
+    if (tabId === "marketplace") {
+      navigate("/app/marketplace");
+      return;
+    }
+    if (tabId === "crypto") {
+      navigate("/app/crypto");
+      return;
+    }
+
+    // For chat tabs, update active tab
+    setActiveTab(tabId);
+    setSelectedChat(null); // Clear selection when switching tabs
+  };
+
   // Tabs configuration
   const tabsWithCounts: UnifiedChatTab[] = useMemo(() => {
     const socialConvs = mockConversations.filter(c => c.type === "social");
     const freelanceConvs = mockConversations.filter(c => c.type === "freelance");
     const marketplaceConvs = mockConversations.filter(c => c.type === "marketplace");
     const cryptoConvs = mockConversations.filter(c => c.type === "crypto");
-    
+
     return [
       { id: "social", label: "Social", icon: "👥", count: socialConvs.reduce((sum, c) => sum + (c.unreadCount || 0), 0) },
       { id: "freelance", label: "Freelance", icon: "💼", count: freelanceConvs.reduce((sum, c) => sum + (c.unreadCount || 0), 0) },
