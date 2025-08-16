@@ -278,6 +278,24 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
     };
   }, [mockConversations]);
 
+  // Handle URL parameters for direct navigation
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get("type") as UnifiedChatType;
+    const threadParam = urlParams.get("thread");
+
+    if (typeParam && ["social", "freelance", "marketplace", "crypto", "ai_assistant"].includes(typeParam)) {
+      setActiveTab(typeParam);
+    }
+
+    if (threadParam && mockConversations.length > 0) {
+      const targetChat = mockConversations.find((conv) => conv.id === threadParam);
+      if (targetChat) {
+        setSelectedChat(targetChat);
+      }
+    }
+  }, [mockConversations]);
+
   // Load conversations effect
   useEffect(() => {
     if (user) {
