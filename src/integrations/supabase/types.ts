@@ -1328,38 +1328,26 @@ export type Database = {
     Views: {
       public_profiles: {
         Row: {
-          avatar: string | null
           avatar_url: string | null
-          bio: string | null
           created_at: string | null
+          display_name: string | null
           is_verified: boolean | null
-          level: string | null
-          name: string | null
-          points: number | null
           user_id: string | null
           username: string | null
         }
         Insert: {
-          avatar?: string | null
           avatar_url?: string | null
-          bio?: string | null
           created_at?: string | null
+          display_name?: never
           is_verified?: boolean | null
-          level?: string | null
-          name?: string | null
-          points?: number | null
           user_id?: string | null
           username?: string | null
         }
         Update: {
-          avatar?: string | null
           avatar_url?: string | null
-          bio?: string | null
           created_at?: string | null
+          display_name?: never
           is_verified?: boolean | null
-          level?: string | null
-          name?: string | null
-          points?: number | null
           user_id?: string | null
           username?: string | null
         }
