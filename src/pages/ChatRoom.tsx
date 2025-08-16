@@ -71,11 +71,22 @@ const ChatRoom = () => {
     // Set loading state and simulate API call
     setLoading(true);
 
+    // Add timeout protection
+    const timeoutId = setTimeout(() => {
+      console.error("Chat loading timeout");
+      setLoading(false);
+      toast({
+        title: "Loading Timeout",
+        description: "Chat took too long to load. Please try again.",
+        variant: "destructive",
+      });
+    }, 5000); // 5 second timeout
+
     // Simulate API delay with timeout protection
     const loadChatData = async () => {
       try {
-        // Simulate network delay but cap at 1 second max
-        await new Promise(resolve => setTimeout(resolve, Math.min(300, 1000)));
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 300));
 
         // Mock chat data - in real app, fetch from API
         const mockChat: UnifiedChatThread = {
