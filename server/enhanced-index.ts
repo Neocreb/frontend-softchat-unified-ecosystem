@@ -72,7 +72,13 @@ console.log(`🔄 Attempting to start server on port ${PORT}...`);
 app.listen(PORT, () => {
   console.log(`✅ Backend server successfully started!`);
   console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📁 Serving static files from: ${join(__dirname, '../dist')}`);
+
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`📁 Serving static files from: ${join(__dirname, '../dist')}`);
+  } else {
+    console.log(`🔧 Development mode: Static files served by Vite (port 8080)`);
+  }
+
   console.log(`🌐 API endpoints available at: http://localhost:${PORT}/api`);
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
 }).on('error', (err) => {
