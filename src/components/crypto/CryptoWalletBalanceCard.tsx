@@ -63,7 +63,7 @@ export default function CryptoWalletBalanceCard({
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.2'%3E%3Cpath d='M20 20.5V18H40v-2H20v-2.5L23.5 16l-3.5-4-3.5 4L20 13.5V16H0v2h20v2.5L16.5 24l3.5 4 3.5-4L20 20.5z'/%3E%3C/g%3E%3C/svg%3E")`
       }} />
 
-      <CardContent className="relative z-10 p-6 h-full flex flex-col justify-between">
+      <CardContent className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-between">
         {/* Header Row */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
