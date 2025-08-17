@@ -102,6 +102,7 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
   const [verificationResult, setVerificationResult] = useState<AccountVerificationResult | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [shouldVerify, setShouldVerify] = useState(false);
+  const [amountValidation, setAmountValidation] = useState<{isValid: boolean; errors: string[]; warnings: string[]} | null>(null);
 
   // Recent contacts (mock data - replace with actual service)
   const recentContacts = [
