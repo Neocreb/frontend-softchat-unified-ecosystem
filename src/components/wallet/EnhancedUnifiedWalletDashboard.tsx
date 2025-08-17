@@ -61,7 +61,7 @@ const EnhancedWalletDashboardContent = () => {
     <div className="mobile-container mobile-space-y bg-platform min-h-screen">
       {/* Header */}
       <div className="text-center sm:text-left">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-foreground">
           Wallet
         </h1>
       </div>
@@ -71,7 +71,7 @@ const EnhancedWalletDashboardContent = () => {
         <CardContent className="p-6 md:p-8 bg-gradient-wallet text-white">
           <div className="text-center space-y-4">
             <div>
-              <h2 className="text-lg font-medium text-blue-100">
+              <h2 className="text-lg font-medium text-white/90">
                 Total Balance
               </h2>
               <div className="text-4xl md:text-5xl font-bold">
@@ -91,7 +91,7 @@ const EnhancedWalletDashboardContent = () => {
                   <div className="text-lg md:text-xl font-semibold">
                     ${source.value.toFixed(2)}
                   </div>
-                  <div className="text-xs text-blue-200">
+                  <div className="text-xs text-white/80">
                     {source.name}
                   </div>
                 </div>
@@ -172,8 +172,8 @@ const EnhancedWalletDashboardContent = () => {
         {/* Advanced Transactions Tab - Now includes receipt generation */}
         <TabsContent value="transactions" className="space-y-6">
           <div className="mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">Transaction Management</h2>
-            <p className="text-gray-600">View, filter, and generate secure receipts for your transactions</p>
+            <h2 className="text-2xl font-bold text-foreground">Transaction Management</h2>
+            <p className="text-muted-foreground">View, filter, and generate secure receipts for your transactions</p>
           </div>
           <AdvancedTransactionManager />
         </TabsContent>
@@ -181,8 +181,8 @@ const EnhancedWalletDashboardContent = () => {
         {/* Currency Conversion Tab */}
         <TabsContent value="currency" className="space-y-6">
           <div className="mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">Currency Conversion</h2>
-            <p className="text-gray-600">Real-time currency rates and conversion tools for all your financial needs</p>
+            <h2 className="text-2xl font-bold text-foreground">Currency Conversion</h2>
+            <p className="text-muted-foreground">Real-time currency rates and conversion tools for all your financial needs</p>
           </div>
           <CurrencyDemo />
         </TabsContent>
@@ -190,8 +190,8 @@ const EnhancedWalletDashboardContent = () => {
         {/* Security Center Tab */}
         <TabsContent value="security" className="space-y-6">
           <div className="mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">Security Center</h2>
-            <p className="text-gray-600">Manage your account security and verification settings</p>
+            <h2 className="text-2xl font-bold text-foreground">Security Center</h2>
+            <p className="text-muted-foreground">Manage your account security and verification settings</p>
           </div>
           <WalletSecurityCenter />
         </TabsContent>
@@ -199,8 +199,8 @@ const EnhancedWalletDashboardContent = () => {
         {/* Integrations Tab */}
         <TabsContent value="integrations" className="space-y-6">
           <div className="mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">Financial Integrations</h2>
-            <p className="text-gray-600">Connect banks, manage bills, and track subscriptions</p>
+            <h2 className="text-2xl font-bold text-foreground">Financial Integrations</h2>
+            <p className="text-muted-foreground">Connect banks, manage bills, and track subscriptions</p>
           </div>
           <IntegrationManager />
         </TabsContent>
