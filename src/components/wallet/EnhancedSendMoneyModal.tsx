@@ -817,7 +817,7 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
                 isLoading ||
                 !amount ||
                 (activeTab === 'contact' ? !contactData.recipient :
-                 (!selectedBank || !verificationResult?.isValid))
+                 (!selectedBank || !verificationResult?.isValid || amountValidation?.isValid === false))
               }
               onClick={activeTab === 'contact' ? handleContactTransfer : handleBankTransfer}
               className="flex-1 h-11"
