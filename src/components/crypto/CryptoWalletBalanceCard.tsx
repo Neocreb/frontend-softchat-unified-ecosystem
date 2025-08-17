@@ -1,113 +1,188 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Sparkles, TrendingUp, TrendingDown, Eye, EyeOff, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function CryptoWalletBalanceCard() {
-  // Example data, replace with your props or state as needed
-  const totalBalance = 125670.45;
-  const totalBalance24hChange = 3240.78;
-  const totalBalance24hPercent = 2.64;
-  const primaryAsset = { symbol: "BTC", balance: 2.5, value: 108126.68 };
+interface CryptoWalletBalanceCardProps {
+  totalBalance: number;
+  totalBalance24hChange: number;
+  totalBalance24hPercent: number;
+  primaryAsset: {
+    symbol: string;
+    balance: number;
+    value: number;
+  };
+  onDeposit?: () => void;
+  onWithdraw?: () => void;
+  className?: string;
+}
+
+export default function CryptoWalletBalanceCard({
+  totalBalance,
+  totalBalance24hChange,
+  totalBalance24hPercent,
+  primaryAsset,
+  onDeposit,
+  onWithdraw,
+  className
+}: CryptoWalletBalanceCardProps) {
   const [showBalance, setShowBalance] = useState(true);
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  };
+
+  const formatPercentage = (value: number) => {
+    return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+  };
+
+  const isPositive = totalBalance24hPercent >= 0;
 
   return (
     <Card
       className={cn(
-        "rounded-2xl shadow-lg overflow-hidden border-0",
-        "bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700",
-        "w-full max-w-3xl mx-auto relative"
+        "relative overflow-hidden border-0 shadow-xl",
+        "bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900",
+        "w-full max-w-4xl mx-auto",
+        className
       )}
-      style={{
-        backgroundImage: "linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #3730a3 100%)"
-      }}
     >
-      {/* Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+      {/* Professional gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-purple-600/10 to-indigo-800/20" />
+      
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-5" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='7' cy='7' r='1'/%3E%3Ccircle cx='53' cy='53' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }} />
 
-      <CardContent className="relative z-10 p-4 sm:p-6 md:p-8 flex flex-col gap-5 h-full w-full">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row w-full items-start justify-between gap-2">
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Sparkles className="text-yellow-400 flex-shrink-0" />
+      <CardContent className="relative z-10 p-8">
+        {/* Header Section */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl shadow-lg">
+              <Sparkles className="h-8 w-8 text-white" />
+            </div>
             <div>
-              <h2 className="text-lg font-bold text-white drop-shadow-sm leading-tight">Crypto Wallet</h2>
-              <p className="text-sm text-white/90 drop-shadow-sm leading-tight">Digital asset portfolio</p>
+              <h2 className="text-2xl font-bold text-white mb-1">
+                Crypto Portfolio
+              </h2>
+              <p className="text-blue-100/80 text-sm font-medium">
+                Professional trading dashboard
+              </p>
             </div>
           </div>
-          <div className="flex gap-2 mt-3 sm:mt-0">
+
+          <div className="flex items-center gap-3">
             <Button
               variant="ghost"
-              size="icon"
-              className="rounded-full text-white hover:bg-white/20 drop-shadow-sm"
-              onClick={() => setShowBalance((s) => !s)}
-              aria-label="Toggle Balance"
+              size="sm"
+              onClick={() => setShowBalance(!showBalance)}
+              className="text-white hover:bg-white/10 transition-colors rounded-xl"
             >
-              <span className="sr-only">Toggle Balance</span>
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                {showBalance ? (
-                  <path stroke="currentColor" strokeWidth="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Zm11 3a3 3 0 100-6 3 3 0 000 6Z"/>
-                ) : (
-                  <path stroke="currentColor" strokeWidth="2" d="M17.94 17.94A10.06 10.06 0 0112 19c-7 0-11-7-11-7a20.03 20.03 0 014.22-5.94M22.54 16.88A19.97 19.97 0 0023 12s-4-7-11-7c-1.47 0-2.85.19-4.13.54M1 1l22 22"/>
-                )}
-              </svg>
+              {showBalance ? (
+                <EyeOff className="h-4 w-4 mr-2" />
+              ) : (
+                <Eye className="h-4 w-4 mr-2" />
+              )}
+              {showBalance ? "Hide" : "Show"}
             </Button>
-            <span className="flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white">
-              <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            
+            <Badge className="bg-gradient-to-r from-emerald-500 to-green-600 text-white border-0 px-3 py-1.5 shadow-lg">
+              <Shield className="h-3 w-3 mr-1.5" />
               Secured
-            </span>
+            </Badge>
           </div>
         </div>
-        {/* Main */}
-        <div className="flex flex-col md:flex-row w-full gap-5 md:gap-6">
-          {/* Balance + change */}
-          <div className="flex-1 flex flex-col justify-center min-w-[0]">
-            <div className="text-xs text-white/80 drop-shadow-sm font-medium">Total Portfolio Value</div>
-            <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white drop-shadow-md break-words">
-              {showBalance ? `$${totalBalance.toLocaleString()}` : "****.**"}
+
+        {/* Main Balance Section */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          {/* Portfolio Value */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-blue-100/70 text-sm font-medium uppercase tracking-wide mb-2">
+                Total Portfolio Value
+              </p>
+              <div className="text-5xl lg:text-6xl font-bold text-white mb-2">
+                {showBalance ? formatCurrency(totalBalance) : "••••••••"}
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
-              <span className="text-green-600 text-lg font-semibold">
-                {showBalance ? `$${totalBalance24hChange.toLocaleString()}` : "**.**"}
-              </span>
-              <span className="text-green-600 text-base">
-                ({showBalance ? `+${totalBalance24hPercent}%` : "**%"}) 24h
-              </span>
+
+            {/* 24h Change */}
+            <div className="flex items-center gap-3">
+              <div className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-xl font-medium",
+                isPositive 
+                  ? "bg-emerald-500/20 text-emerald-300" 
+                  : "bg-red-500/20 text-red-300"
+              )}>
+                {isPositive ? (
+                  <TrendingUp className="h-5 w-5" />
+                ) : (
+                  <TrendingDown className="h-5 w-5" />
+                )}
+                <span className="text-lg">
+                  {showBalance ? formatCurrency(Math.abs(totalBalance24hChange)) : "••••"}
+                </span>
+                <span className="text-sm">
+                  ({showBalance ? formatPercentage(totalBalance24hPercent) : "••••"})
+                </span>
+              </div>
+              <span className="text-blue-100/60 text-sm font-medium">24h</span>
             </div>
           </div>
-          {/* Primary Asset and Actions */}
-          <div className="flex flex-col items-end min-w-[150px] max-w-full">
-            <div className="mb-2 text-right">
-              <div className="text-xs text-white/80 drop-shadow-sm font-medium">Primary Asset</div>
-              <div className="text-xl font-bold text-white drop-shadow-sm break-words">
-                {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "**.**"}
+
+          {/* Primary Asset */}
+          <div className="space-y-4">
+            <div>
+              <p className="text-blue-100/70 text-sm font-medium uppercase tracking-wide mb-2">
+                Primary Asset
+              </p>
+              <div className="text-3xl font-bold text-white mb-1">
+                {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "••••••"}
               </div>
-              <div className="text-sm text-white/90 drop-shadow-sm break-words">
-                ≈ {showBalance ? `$${primaryAsset.value.toLocaleString()}` : "****"}
-              </div>
+              <p className="text-blue-100/80 text-lg">
+                ≈ {showBalance ? formatCurrency(primaryAsset.value) : "••••••"}
+              </p>
             </div>
-            <div className="flex gap-2 w-full flex-wrap justify-end">
-              <Button className="bg-green-600 hover:bg-green-700 text-white flex-1 min-w-[100px]">
+
+            {/* Action Buttons */}
+            <div className="flex gap-3 pt-4">
+              <Button
+                onClick={onDeposit}
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all duration-200 hover:scale-[1.02]"
+              >
                 Deposit
               </Button>
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white flex-1 min-w-[100px]">
+              <Button
+                onClick={onWithdraw}
+                variant="outline"
+                className="flex-1 border-2 border-white/20 text-white hover:bg-white/10 font-semibold py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+              >
                 Withdraw
               </Button>
             </div>
           </div>
         </div>
-        {/* Bottom row */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mt-2">
-          <span className="font-mono text-white/90 drop-shadow-sm text-xs sm:text-base tracking-widest">
-            **** **** **** 5670
-          </span>
-          <div className="flex items-center gap-2 text-white/80 drop-shadow-sm text-xs sm:text-base">
-            <span>Last updated: 10:50:45 PM</span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /> Live
-            </span>
+
+        {/* Footer */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-white/10">
+          <div className="font-mono text-blue-100/60 text-sm tracking-wider">
+            **** **** **** {String(Math.floor(totalBalance)).slice(-4)}
+          </div>
+          
+          <div className="flex items-center gap-4 text-blue-100/60 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+              <span>Live Market Data</span>
+            </div>
+            <span>Updated: {new Date().toLocaleTimeString()}</span>
           </div>
         </div>
       </CardContent>
