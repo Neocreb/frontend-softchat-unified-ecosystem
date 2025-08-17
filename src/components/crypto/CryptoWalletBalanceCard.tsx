@@ -171,17 +171,18 @@ export default function CryptoWalletBalanceCard({
         </div>
 
         {/* Footer Row */}
-        <div className="flex items-center justify-between">
-          <div className="font-mono text-gray-800 text-sm tracking-wider drop-shadow">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+          <div className="font-mono text-gray-200 text-xs sm:text-sm tracking-wider drop-shadow">
             **** **** **** {String(Math.floor(totalBalance)).slice(-4)}
           </div>
-          
-          <div className="flex items-center gap-4 text-gray-700 text-xs">
-            <div className="flex items-center gap-1.5">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+
+          <div className="flex items-center gap-2 sm:gap-4 text-gray-200 text-2xs sm:text-xs">
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse" />
               <span className="font-medium">Live</span>
             </div>
-            <span>Last updated: {new Date().toLocaleTimeString()}</span>
+            <span className="hidden sm:inline">Last updated: {new Date().toLocaleTimeString()}</span>
+            <span className="sm:hidden">{new Date().toLocaleTimeString()}</span>
           </div>
         </div>
       </CardContent>
