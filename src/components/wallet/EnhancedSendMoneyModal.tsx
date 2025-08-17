@@ -223,6 +223,60 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
     });
   };
 
+  const verifyAccount = async () => {
+    if (!bankData.bankId || !bankData.accountNumber || !selectedBank) return;
+
+    setIsVerifying(true);
+    setVerificationResult(null);
+
+    try {
+      const result = await accountVerificationService.verifyAccount({
+        bankId: bankData.bankId,
+        accountNumber: bankData.accountNumber,
+        countryCode: bankData.country
+      });
+
+      setVerificationResult(result);
+
+      if (result.isValid && result.accountName) {
+        setBankData(prev => ({
+          ...prev,
+          accountName: result.accountName || prev.accountName
+        }));
+
+        toast({
+          title: "Account Verified",
+          description: `Account belongs to ${result.accountName}`,
+        });
+      } else {
+        toast({
+          title: "Verification Failed",
+          description: result.errors.join(', '),
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Verification Error",
+        description: "Unable to verify account at this time",
+        variant: "destructive",
+      });
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  // Trigger verification when account number is complete
+  useEffect(() => {
+    if (bankData.accountNumber.length >= 10 && selectedBank && shouldVerify) {
+      const timeoutId = setTimeout(() => {
+        verifyAccount();
+      }, 1000); // Debounce verification
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [bankData.accountNumber, selectedBank, shouldVerify]);
+
   const totalAmount = parseFloat(amount || '0') + transferFee;
 
   return (
