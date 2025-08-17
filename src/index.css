@@ -796,9 +796,9 @@
     --secondary: 215 25% 12%; /* Slightly lighter blue */
     --secondary-foreground: 210 30% 85%; /* Light blue text */
 
-    /* Dark muted with blue character */
-    --muted: 215 25% 10%; /* Dark blue muted */
-    --muted-foreground: 215 20% 65%; /* Medium blue text */
+    /* Improved dark muted with better contrast */
+    --muted: 215 25% 12%; /* Dark blue muted */
+    --muted-foreground: 215 20% 75%; /* Lighter blue text for better contrast */
 
     /* Dark accent with blue theme */
     --accent: 215 25% 12%;
@@ -809,8 +809,8 @@
     --destructive-foreground: 210 40% 98%;
 
     /* Dark blue borders and inputs */
-    --border: 215 25% 15%; /* Dark blue borders */
-    --input: 215 25% 10%; /* Dark blue inputs */
+    --border: 215 25% 18%; /* Lighter borders for better visibility */
+    --input: 215 25% 12%; /* Lighter inputs for better contrast */
     --ring: 217 91% 60%; /* Bright blue ring */
 
     /* Enhanced dark chart colors with blue theme */
