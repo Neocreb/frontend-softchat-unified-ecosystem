@@ -85,17 +85,17 @@ export default function CryptoWalletBalanceCard({
               variant="ghost"
               size="sm"
               onClick={() => setShowBalance(!showBalance)}
-              className="text-gray-900 hover:bg-white/20 rounded-lg p-2"
+              className="text-white hover:bg-white/20 rounded-lg p-1.5 sm:p-2"
             >
               {showBalance ? (
-                <EyeOff className="h-4 w-4" />
+                <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />
               ) : (
-                <Eye className="h-4 w-4" />
+                <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
               )}
             </Button>
-            
-            <Badge className="bg-emerald-500 text-white px-3 py-1 text-xs font-semibold shadow-lg">
-              <Shield className="h-3 w-3 mr-1" />
+
+            <Badge className="bg-emerald-500 text-white px-2 sm:px-3 py-1 text-2xs sm:text-xs font-semibold shadow-lg">
+              <Shield className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
               Secured
             </Badge>
           </div>
