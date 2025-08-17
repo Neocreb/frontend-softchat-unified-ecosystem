@@ -51,7 +51,7 @@ export default function CryptoWalletBalanceCard({
         "relative overflow-hidden border-0 shadow-2xl",
         "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600",
         "w-full max-w-5xl mx-auto",
-        "aspect-[3/2] min-h-[320px]", // Credit card aspect ratio
+        "min-h-[280px] sm:min-h-[320px] lg:min-h-[360px]", // Responsive height instead of aspect ratio
         className
       )}
     >
