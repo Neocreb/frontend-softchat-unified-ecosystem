@@ -134,7 +134,7 @@ export default function CryptoWalletBalanceCard({
                   ({showBalance ? formatPercentage(totalBalance24hPercent) : "••••"})
                 </span>
               </div>
-              <span className="text-gray-200 text-2xs sm:text-xs font-medium">24h</span>
+              <span className="text-gray-700 text-2xs sm:text-xs font-medium">24h</span>
             </div>
           </div>
 
