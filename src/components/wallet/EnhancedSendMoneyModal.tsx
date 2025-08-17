@@ -598,13 +598,35 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
                     {/* Account Name */}
                     <div className="space-y-2">
                       <Label htmlFor="accountName">Account Holder Name</Label>
-                      <Input
-                        id="accountName"
-                        placeholder="Enter account holder name"
-                        value={bankData.accountName}
-                        onChange={(e) => setBankData(prev => ({ ...prev, accountName: e.target.value }))}
-                        required
-                      />
+                      <div className="relative">
+                        <Input
+                          id="accountName"
+                          placeholder="Enter account holder name"
+                          value={bankData.accountName}
+                          onChange={(e) => setBankData(prev => ({ ...prev, accountName: e.target.value }))}
+                          className={verificationResult?.isValid ? 'bg-green-50 border-green-200' : ''}
+                          required
+                        />
+                        {verificationResult?.isValid && (
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                            <Badge variant="outline" className="text-xs bg-green-100 text-green-700 border-green-300">
+                              Verified
+                            </Badge>
+                          </div>
+                        )}
+                      </div>
+                      {verificationResult?.warnings && verificationResult.warnings.length > 0 && (
+                        <div className="text-xs p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200">
+                          <div className="flex items-center gap-2">
+                            <Info className="h-3 w-3" />
+                            <div>
+                              {verificationResult.warnings.map((warning, index) => (
+                                <div key={index}>{warning}</div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Additional fields for international transfers */}
