@@ -391,7 +391,7 @@ const QuickActionsWidget = () => {
       <AfricanPaymentQuickLinks />
 
       {/* Quick Action Modals */}
-      <SendMoneyModal
+      <EnhancedSendMoneyModal
         isOpen={showSendModal}
         onClose={() => setShowSendModal(false)}
       />
