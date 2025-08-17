@@ -184,10 +184,10 @@ const WalletDashboardContent = () => {
                 <Wallet className="h-5 w-5 md:h-6 md:w-6" />
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="text-base md:text-lg font-medium text-white/90">
+                <h2 className="text-base md:text-lg font-medium text-white drop-shadow-sm">
                   Total Balance
                 </h2>
-                <p className="text-white/80 text-xs md:text-sm">
+                <p className="text-white/90 drop-shadow-sm text-xs md:text-sm">
                   All sources combined
                 </p>
               </div>
@@ -232,7 +232,7 @@ const WalletDashboardContent = () => {
                   <div className="text-base md:text-lg font-semibold">
                     {balanceVisible ? `$${balance.toFixed(2)}` : "••••"}
                   </div>
-                  <div className="text-xs text-white/80 leading-tight">
+                  <div className="text-xs text-white/90 drop-shadow-sm leading-tight">
                     <span className="sm:hidden">
                       {source.name.split(" ")[0]}
                     </span>
