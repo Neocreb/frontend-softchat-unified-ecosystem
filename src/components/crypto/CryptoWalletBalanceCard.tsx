@@ -106,10 +106,10 @@ export default function CryptoWalletBalanceCard({
           {/* Left: Balance */}
           <div className="space-y-2 flex-1">
             <div>
-              <p className="text-gray-200 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
+              <p className="text-gray-700 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
                 Total Portfolio Value
               </p>
-              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white drop-shadow-lg">
+              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 drop-shadow-lg">
                 {showBalance ? formatCurrency(totalBalance) : "••••••••"}
               </div>
             </div>
