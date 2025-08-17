@@ -70,7 +70,7 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
       className={cn(
         "relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:scale-[1.01]",
         "card-rewards",
-        "border-0 bg-white aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]", // Remove text-white, use bg-white
+        "border-0 bg-card aspect-[3/2] max-w-md mx-auto sm:max-w-none sm:aspect-[5/2]",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -99,17 +99,17 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-gray-700" />
+              <CreditCard className="h-6 w-6 sm:h-8 sm:w-8 text-foreground" />
               <Sparkles className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 text-yellow-400" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-gray-900">SoftChat Rewards</h2>
-              <p className="text-gray-700 text-xs sm:text-sm">Quality-based earnings</p>
+              <h2 className="text-base sm:text-lg font-bold text-card-foreground">SoftChat Rewards</h2>
+              <p className="text-muted-foreground text-xs sm:text-sm">Quality-based earnings</p>
             </div>
           </div>
           <Badge
             className={cn(
-              "bg-gradient-to-r text-gray-900 border-gray-300 text-xs",
+              "bg-gradient-to-r text-white border-white/20 text-xs",
               getTierColor(trustScore.level)
             )}
           >
@@ -124,31 +124,31 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Star className="h-5 w-5 text-yellow-400" />
-              <span className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <span className="text-2xl sm:text-3xl font-bold text-card-foreground">
                 {formatNumber(currentSoftPoints)}
               </span>
-              <span className="text-sm text-gray-700 font-medium">SP</span>
+              <span className="text-sm text-muted-foreground font-medium">SP</span>
             </div>
             <div className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-green-500" />
-              <span className="text-lg sm:text-xl font-semibold text-gray-900">
+              <span className="text-lg sm:text-xl font-semibold text-card-foreground">
                 {formatCurrency(availableToWithdraw, currency)}
               </span>
-              <span className="text-gray-600 text-xs">available</span>
+              <span className="text-muted-foreground text-xs">available</span>
             </div>
           </div>
 
           {/* Right: Stats and Action */}
           <div className="text-right space-y-2">
             <div className="space-y-1">
-              <div className="text-sm font-bold text-gray-900">
+              <div className="text-sm font-bold text-card-foreground">
                 {formatCurrency(totalEarnings, currency)}
               </div>
-              <div className="text-xs text-gray-700">Total Earned</div>
+              <div className="text-xs text-muted-foreground">Total Earned</div>
             </div>
             <Button
               onClick={onWithdraw}
-              className="bg-gray-900/10 hover:bg-gray-900/20 text-gray-900 border border-gray-300 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground border border-primary/20 backdrop-blur-sm transition-all duration-200 hover:scale-105 text-xs px-3 py-1.5"
               size="sm"
             >
               <Wallet className="h-3 w-3 mr-1" />
@@ -158,11 +158,11 @@ const RewardsCard: React.FC<RewardsCardProps> = ({
         </div>
 
         {/* Bottom Section */}
-        <div className="flex justify-between items-center border-t border-gray-200 pt-2">
-          <div className="text-gray-500 text-xs font-mono">
+        <div className="flex justify-between items-center border-t border-border pt-2">
+          <div className="text-muted-foreground text-xs font-mono">
             **** **** **** {String(currentSoftPoints).slice(-4)}
           </div>
-          <div className="text-gray-500 text-xs">
+          <div className="text-muted-foreground text-xs">
             Trust: {trustScore.current} ({trustScore.multiplier}x)
           </div>
         </div>

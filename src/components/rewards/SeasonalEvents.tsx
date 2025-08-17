@@ -337,7 +337,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                   </div>
                 </div>
 
-                <div className="bg-white/20 rounded-lg p-4 mb-4">
+                <div className="bg-card/20 rounded-lg p-4 mb-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Trophy className="h-4 w-4" />
                     <span className="font-semibold">Rewards:</span>
@@ -355,7 +355,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                     </div>
                     <Progress 
                       value={(event.progress.current / event.progress.target) * 100} 
-                      className="h-2 bg-white/20"
+                      className="h-2 bg-card/20"
                     />
                   </div>
                 )}
@@ -370,7 +370,7 @@ const SeasonalEvents = ({ className }: SeasonalEventsProps) => {
                       variant="secondary"
                       size="sm"
                       onClick={() => joinEvent(event.id)}
-                      className="bg-white text-gray-900 hover:bg-white/90"
+                      className="bg-card text-card-foreground hover:bg-card/90"
                     >
                       Join Event
                     </Button>

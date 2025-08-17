@@ -710,9 +710,9 @@
     --secondary: 265 30% 95%;
     --secondary-foreground: 265 15% 25%;
 
-    /* Warmer muted tones */
-    --muted: 220 15% 96%;
-    --muted-foreground: 220 8% 46%;
+    /* Improved muted tones with better contrast */
+    --muted: 220 15% 95%;
+    --muted-foreground: 220 15% 35%;
 
     /* Accent with SoftChat vibes */
     --accent: 280 60% 95%;
@@ -723,8 +723,8 @@
     --destructive-foreground: 210 40% 98%;
 
     /* Softer borders */
-    --border: 220 15% 90%;
-    --input: 220 15% 94%;
+    --border: 220 15% 88%;
+    --input: 220 15% 92%;
     --ring: 265 100% 58%;
 
     /* Enhanced chart colors */
@@ -796,9 +796,9 @@
     --secondary: 215 25% 12%; /* Slightly lighter blue */
     --secondary-foreground: 210 30% 85%; /* Light blue text */
 
-    /* Dark muted with blue character */
-    --muted: 215 25% 10%; /* Dark blue muted */
-    --muted-foreground: 215 20% 65%; /* Medium blue text */
+    /* Improved dark muted with better contrast */
+    --muted: 215 25% 12%; /* Dark blue muted */
+    --muted-foreground: 215 20% 75%; /* Lighter blue text for better contrast */
 
     /* Dark accent with blue theme */
     --accent: 215 25% 12%;
@@ -809,8 +809,8 @@
     --destructive-foreground: 210 40% 98%;
 
     /* Dark blue borders and inputs */
-    --border: 215 25% 15%; /* Dark blue borders */
-    --input: 215 25% 10%; /* Dark blue inputs */
+    --border: 215 25% 18%; /* Lighter borders for better visibility */
+    --input: 215 25% 12%; /* Lighter inputs for better contrast */
     --ring: 217 91% 60%; /* Bright blue ring */
 
     /* Enhanced dark chart colors with blue theme */
@@ -1384,6 +1384,31 @@
     );
   }
 
+  /* Wallet specific gradients with proper contrast */
+  .bg-gradient-wallet {
+    background: linear-gradient(135deg,
+      hsl(217 91% 60%),
+      hsl(230 85% 65%),
+      hsl(240 80% 70%)
+    );
+  }
+
+  .bg-gradient-card {
+    background: linear-gradient(145deg,
+      hsl(var(--card)),
+      hsl(var(--card)) 50%,
+      hsl(var(--primary) / 0.02)
+    );
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg,
+      hsl(var(--primary)),
+      hsl(280 85% 60%),
+      hsl(var(--primary))
+    );
+  }
+
   /* Enhanced card styling */
   .card-enhanced {
     @apply bg-card/80 backdrop-blur-sm border-border/60 shadow-lg;
@@ -1392,6 +1417,39 @@
       hsl(var(--card)) 50%,
       hsl(var(--gradient-start) / 0.02)
     );
+  }
+
+  /* Text visibility utilities */
+  .text-high-contrast {
+    color: hsl(var(--foreground));
+  }
+
+  .text-medium-contrast {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .text-on-primary {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .text-on-card {
+    color: hsl(var(--card-foreground));
+  }
+
+  /* Improved overlay text */
+  .text-overlay-light {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-overlay-medium {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  .text-overlay-subtle {
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   /* Interactive elements */
@@ -1418,6 +1476,25 @@
     @apply bg-gradient-softchat-subtle border border-primary/20 text-primary;
     @apply hover:bg-gradient-softchat hover:text-primary-foreground;
     @apply transition-all duration-200 hover:scale-[1.02];
+  }
+
+  /* Additional button gradient utilities */
+  .btn-gradient {
+    background: linear-gradient(135deg,
+      hsl(var(--primary)),
+      hsl(280 85% 60%),
+      hsl(var(--primary))
+    );
+    @apply text-primary-foreground font-semibold shadow-md hover:shadow-lg transition-all duration-200;
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(135deg,
+      hsl(var(--primary) / 0.9),
+      hsl(280 85% 60% / 0.9),
+      hsl(var(--primary) / 0.9)
+    );
+    transform: translateY(-1px);
   }
 
   /* Section spacing */

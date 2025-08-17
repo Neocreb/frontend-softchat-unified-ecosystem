@@ -1,110 +1,187 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles, TrendingUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Sparkles, TrendingUp, TrendingDown, Eye, EyeOff, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function CryptoWalletBalanceCard() {
-  // Example data, replace with your props or state as needed
-  const totalBalance = 125670.45;
-  const totalBalance24hChange = 3240.78;
-  const totalBalance24hPercent = 2.64;
-  const primaryAsset = { symbol: "BTC", balance: 2.5, value: 108126.68 };
+interface CryptoWalletBalanceCardProps {
+  totalBalance: number;
+  totalBalance24hChange: number;
+  totalBalance24hPercent: number;
+  primaryAsset: {
+    symbol: string;
+    balance: number;
+    value: number;
+  };
+  onDeposit?: () => void;
+  onWithdraw?: () => void;
+  className?: string;
+}
+
+export default function CryptoWalletBalanceCard({
+  totalBalance,
+  totalBalance24hChange,
+  totalBalance24hPercent,
+  primaryAsset,
+  onDeposit,
+  onWithdraw,
+  className
+}: CryptoWalletBalanceCardProps) {
   const [showBalance, setShowBalance] = useState(true);
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount);
+  };
+
+  const formatPercentage = (value: number) => {
+    return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+  };
+
+  const isPositive = totalBalance24hPercent >= 0;
 
   return (
     <Card
       className={cn(
-        "rounded-2xl shadow-lg overflow-hidden border-0",
-        "bg-[linear-gradient(110deg,#2951d6_0%,#8145e6_100%)]",
-        "w-full max-w-3xl mx-auto"
+        "relative overflow-hidden border-0 shadow-2xl",
+        "bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600",
+        "w-full max-w-5xl mx-auto",
+        "aspect-[3/2] min-h-[320px]", // Credit card aspect ratio
+        className
       )}
-      style={{
-        background: "linear-gradient(110deg,#2951d6 0%,#8145e6 100%)",
-      }}
     >
-      <CardContent className="p-4 sm:p-6 md:p-8 flex flex-col gap-5 h-full w-full">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row w-full items-start justify-between gap-2">
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Sparkles className="text-yellow-400 flex-shrink-0" />
+      {/* Credit card styling overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-white/10" />
+      
+      {/* Subtle mesh pattern */}
+      <div className="absolute inset-0 opacity-10" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.2'%3E%3Cpath d='M20 20.5V18H40v-2H20v-2.5L23.5 16l-3.5-4-3.5 4L20 13.5V16H0v2h20v2.5L16.5 24l3.5 4 3.5-4L20 20.5z'/%3E%3C/g%3E%3C/svg%3E")`
+      }} />
+
+      <CardContent className="relative z-10 p-6 h-full flex flex-col justify-between">
+        {/* Header Row */}
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-yellow-400 rounded-xl shadow-lg">
+              <Sparkles className="h-6 w-6 text-gray-900" />
+            </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900 leading-tight">Crypto Wallet</h2>
-              <p className="text-sm text-gray-700 leading-tight">Digital asset portfolio</p>
+              <h2 className="text-xl font-bold text-gray-900 drop-shadow-lg">
+                Crypto Wallet
+              </h2>
+              <p className="text-gray-800 text-sm font-medium drop-shadow">
+                Digital asset portfolio
+              </p>
             </div>
           </div>
-          <div className="flex gap-2 mt-3 sm:mt-0">
+
+          <div className="flex items-center gap-2">
             <Button
               variant="ghost"
-              size="icon"
-              className="rounded-full text-gray-700 hover:bg-gray-100"
-              onClick={() => setShowBalance((s) => !s)}
-              aria-label="Toggle Balance"
+              size="sm"
+              onClick={() => setShowBalance(!showBalance)}
+              className="text-gray-900 hover:bg-white/20 rounded-lg p-2"
             >
-              <span className="sr-only">Toggle Balance</span>
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                {showBalance ? (
-                  <path stroke="currentColor" strokeWidth="2" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Zm11 3a3 3 0 100-6 3 3 0 000 6Z"/>
-                ) : (
-                  <path stroke="currentColor" strokeWidth="2" d="M17.94 17.94A10.06 10.06 0 0112 19c-7 0-11-7-11-7a20.03 20.03 0 014.22-5.94M22.54 16.88A19.97 19.97 0 0023 12s-4-7-11-7c-1.47 0-2.85.19-4.13.54M1 1l22 22"/>
-                )}
-              </svg>
+              {showBalance ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </Button>
-            <span className="flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white">
-              <svg className="h-3 w-3 mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            
+            <Badge className="bg-emerald-500 text-white px-3 py-1 text-xs font-semibold shadow-lg">
+              <Shield className="h-3 w-3 mr-1" />
               Secured
-            </span>
+            </Badge>
           </div>
         </div>
-        {/* Main */}
-        <div className="flex flex-col md:flex-row w-full gap-5 md:gap-6">
-          {/* Balance + change */}
-          <div className="flex-1 flex flex-col justify-center min-w-[0]">
-            <div className="text-xs text-gray-600">Total Portfolio Value</div>
-            <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 break-words">
-              {showBalance ? `$${totalBalance.toLocaleString()}` : "****.**"}
+
+        {/* Main Content Row */}
+        <div className="flex items-center justify-between">
+          {/* Left: Balance */}
+          <div className="space-y-2">
+            <div>
+              <p className="text-gray-700 text-xs font-medium uppercase tracking-wide mb-1">
+                Total Portfolio Value
+              </p>
+              <div className="text-4xl lg:text-5xl font-bold text-gray-900 drop-shadow-lg">
+                {showBalance ? formatCurrency(totalBalance) : "••••••••"}
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
-              <TrendingUp className="h-4 w-4 text-green-600" />
-              <span className="text-green-600 text-lg font-semibold">
-                {showBalance ? `$${totalBalance24hChange.toLocaleString()}` : "**.**"}
-              </span>
-              <span className="text-green-600 text-base">
-                ({showBalance ? `+${totalBalance24hPercent}%` : "**%"}) 24h
-              </span>
+
+            {/* 24h Change */}
+            <div className="flex items-center gap-2">
+              <div className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-sm",
+                isPositive 
+                  ? "bg-emerald-100 text-emerald-800" 
+                  : "bg-red-100 text-red-800"
+              )}>
+                {isPositive ? (
+                  <TrendingUp className="h-4 w-4" />
+                ) : (
+                  <TrendingDown className="h-4 w-4" />
+                )}
+                <span>
+                  {showBalance ? formatCurrency(Math.abs(totalBalance24hChange)) : "••••"}
+                </span>
+                <span className="text-xs">
+                  ({showBalance ? formatPercentage(totalBalance24hPercent) : "••••"})
+                </span>
+              </div>
+              <span className="text-gray-700 text-xs font-medium">24h</span>
             </div>
           </div>
-          {/* Primary Asset and Actions */}
-          <div className="flex flex-col items-end min-w-[150px] max-w-full">
-            <div className="mb-2 text-right">
-              <div className="text-xs text-gray-700">Primary Asset</div>
-              <div className="text-xl font-bold text-gray-900 break-words">
-                {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "**.**"}
+
+          {/* Right: Primary Asset & Actions */}
+          <div className="text-right space-y-3">
+            <div>
+              <p className="text-gray-700 text-xs font-medium uppercase tracking-wide mb-1">
+                Primary Asset
+              </p>
+              <div className="text-2xl font-bold text-gray-900 drop-shadow">
+                {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "••••••"}
               </div>
-              <div className="text-sm text-gray-700 break-words">
-                ≈ {showBalance ? `$${primaryAsset.value.toLocaleString()}` : "****"}
-              </div>
+              <p className="text-gray-800 text-sm font-medium">
+                ≈ {showBalance ? formatCurrency(primaryAsset.value) : "••••••"}
+              </p>
             </div>
-            <div className="flex gap-2 w-full flex-wrap justify-end">
-              <Button className="bg-green-600 hover:bg-green-700 text-white flex-1 min-w-[100px]">
+
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <Button
+                onClick={onDeposit}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-2 rounded-lg shadow-lg transition-all duration-200 hover:scale-105"
+              >
                 Deposit
               </Button>
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white flex-1 min-w-[100px]">
+              <Button
+                onClick={onWithdraw}
+                className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-300 font-semibold px-6 py-2 rounded-lg shadow-lg transition-all duration-200 hover:scale-105"
+              >
                 Withdraw
               </Button>
             </div>
           </div>
         </div>
-        {/* Bottom row */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mt-2">
-          <span className="font-mono text-gray-700 text-xs sm:text-base tracking-widest">
-            **** **** **** 5670
-          </span>
-          <div className="flex items-center gap-2 text-gray-700 text-xs sm:text-base">
-            <span>Last updated: 10:50:45 PM</span>
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /> Live
-            </span>
+
+        {/* Footer Row */}
+        <div className="flex items-center justify-between">
+          <div className="font-mono text-gray-800 text-sm tracking-wider drop-shadow">
+            **** **** **** {String(Math.floor(totalBalance)).slice(-4)}
+          </div>
+          
+          <div className="flex items-center gap-4 text-gray-700 text-xs">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+              <span className="font-medium">Live</span>
+            </div>
+            <span>Last updated: {new Date().toLocaleTimeString()}</span>
           </div>
         </div>
       </CardContent>

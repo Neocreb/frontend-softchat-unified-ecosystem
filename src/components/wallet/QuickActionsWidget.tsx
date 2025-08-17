@@ -6,12 +6,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  SendMoneyModal,
   RequestMoneyModal,
   TransferModal,
   PayBillModal,
   TopUpModal,
 } from "./QuickActionModals";
+import EnhancedSendMoneyModal from "./EnhancedSendMoneyModal";
 import {
   ArrowUpRight,
   ArrowDownLeft,
@@ -391,7 +391,7 @@ const QuickActionsWidget = () => {
       <AfricanPaymentQuickLinks />
 
       {/* Quick Action Modals */}
-      <SendMoneyModal
+      <EnhancedSendMoneyModal
         isOpen={showSendModal}
         onClose={() => setShowSendModal(false)}
       />

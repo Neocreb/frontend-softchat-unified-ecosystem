@@ -286,7 +286,7 @@ const RewardsStats: React.FC<RewardsStatsProps> = ({
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white rounded-md">
+                  <div className="p-2 bg-card rounded-md">
                     {getEarningsIcon(type)}
                   </div>
                   <div>
