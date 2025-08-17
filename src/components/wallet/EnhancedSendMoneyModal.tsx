@@ -529,13 +529,70 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
                     {/* Account Number */}
                     <div className="space-y-2">
                       <Label htmlFor="accountNumber">Account Number</Label>
-                      <Input
-                        id="accountNumber"
-                        placeholder="Enter account number"
-                        value={bankData.accountNumber}
-                        onChange={(e) => setBankData(prev => ({ ...prev, accountNumber: e.target.value }))}
-                        required
-                      />
+                      <div className="relative">
+                        <Input
+                          id="accountNumber"
+                          placeholder="Enter account number"
+                          value={bankData.accountNumber}
+                          onChange={(e) => {
+                            setBankData(prev => ({ ...prev, accountNumber: e.target.value }));
+                            setShouldVerify(true);
+                            setVerificationResult(null);
+                          }}
+                          className={`pr-10 ${
+                            verificationResult?.isValid ? 'border-green-500' :
+                            verificationResult?.isValid === false ? 'border-red-500' :
+                            ''
+                          }`}
+                          required
+                        />
+                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                          {isVerifying && (
+                            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                          )}
+                          {!isVerifying && verificationResult?.isValid && (
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                          )}
+                          {!isVerifying && verificationResult?.isValid === false && (
+                            <AlertCircle className="h-4 w-4 text-red-500" />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Verification Status */}
+                      {verificationResult && (
+                        <div className={`text-xs p-2 rounded ${
+                          verificationResult.isValid
+                            ? 'bg-green-50 text-green-700 border border-green-200'
+                            : 'bg-red-50 text-red-700 border border-red-200'
+                        }`}>
+                          {verificationResult.isValid ? (
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="h-3 w-3" />
+                              <span>Account verified for {verificationResult.accountName}</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <AlertCircle className="h-3 w-3" />
+                              <span>{verificationResult.errors.join(', ')}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Manual Verify Button */}
+                      {bankData.accountNumber && !isVerifying && !verificationResult && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={verifyAccount}
+                          className="w-full"
+                        >
+                          <Shield className="h-4 w-4 mr-2" />
+                          Verify Account
+                        </Button>
+                      )}
                     </div>
 
                     {/* Account Name */}
