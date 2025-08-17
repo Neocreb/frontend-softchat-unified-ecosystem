@@ -71,10 +71,10 @@ export default function CryptoWalletBalanceCard({
               <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-gray-900" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-bold text-white drop-shadow-lg">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 drop-shadow-lg">
                 Crypto Wallet
               </h2>
-              <p className="text-gray-200 text-xs sm:text-sm font-medium drop-shadow">
+              <p className="text-gray-800 text-xs sm:text-sm font-medium drop-shadow">
                 Digital asset portfolio
               </p>
             </div>
