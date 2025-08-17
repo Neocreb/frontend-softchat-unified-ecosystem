@@ -1394,6 +1394,39 @@
     );
   }
 
+  /* Text visibility utilities */
+  .text-high-contrast {
+    color: hsl(var(--foreground));
+  }
+
+  .text-medium-contrast {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .text-on-primary {
+    color: hsl(var(--primary-foreground));
+  }
+
+  .text-on-card {
+    color: hsl(var(--card-foreground));
+  }
+
+  /* Improved overlay text */
+  .text-overlay-light {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-overlay-medium {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+
+  .text-overlay-subtle {
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
   /* Interactive elements */
   .interactive-element {
     @apply transition-all duration-200 hover:scale-[1.02] hover:shadow-lg;
