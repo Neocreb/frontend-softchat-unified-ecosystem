@@ -66,21 +66,21 @@ export default function CryptoWalletBalanceCard({
       <CardContent className="relative z-10 p-4 sm:p-6 h-full flex flex-col justify-between">
         {/* Header Row */}
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-yellow-400 rounded-xl shadow-lg">
-              <Sparkles className="h-6 w-6 text-gray-900" />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-1.5 sm:p-2 bg-yellow-400 rounded-xl shadow-lg">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-gray-900" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900 drop-shadow-lg">
+              <h2 className="text-lg sm:text-xl font-bold text-white drop-shadow-lg">
                 Crypto Wallet
               </h2>
-              <p className="text-gray-800 text-sm font-medium drop-shadow">
+              <p className="text-gray-200 text-xs sm:text-sm font-medium drop-shadow">
                 Digital asset portfolio
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <Button
               variant="ghost"
               size="sm"
