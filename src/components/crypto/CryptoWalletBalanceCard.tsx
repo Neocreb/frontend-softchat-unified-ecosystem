@@ -102,14 +102,14 @@ export default function CryptoWalletBalanceCard({
         </div>
 
         {/* Main Content Row */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-2">
           {/* Left: Balance */}
-          <div className="space-y-2">
+          <div className="space-y-2 flex-1">
             <div>
-              <p className="text-gray-700 text-xs font-medium uppercase tracking-wide mb-1">
+              <p className="text-gray-200 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
                 Total Portfolio Value
               </p>
-              <div className="text-4xl lg:text-5xl font-bold text-gray-900 drop-shadow-lg">
+              <div className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white drop-shadow-lg">
                 {showBalance ? formatCurrency(totalBalance) : "••••••••"}
               </div>
             </div>
@@ -117,24 +117,24 @@ export default function CryptoWalletBalanceCard({
             {/* 24h Change */}
             <div className="flex items-center gap-2">
               <div className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-sm",
-                isPositive 
-                  ? "bg-emerald-100 text-emerald-800" 
+                "flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-medium text-2xs sm:text-sm",
+                isPositive
+                  ? "bg-emerald-100 text-emerald-800"
                   : "bg-red-100 text-red-800"
               )}>
                 {isPositive ? (
-                  <TrendingUp className="h-4 w-4" />
+                  <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
                 ) : (
-                  <TrendingDown className="h-4 w-4" />
+                  <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4" />
                 )}
-                <span>
+                <span className="text-2xs sm:text-sm">
                   {showBalance ? formatCurrency(Math.abs(totalBalance24hChange)) : "••••"}
                 </span>
-                <span className="text-xs">
+                <span className="text-2xs sm:text-xs">
                   ({showBalance ? formatPercentage(totalBalance24hPercent) : "••••"})
                 </span>
               </div>
-              <span className="text-gray-700 text-xs font-medium">24h</span>
+              <span className="text-gray-200 text-2xs sm:text-xs font-medium">24h</span>
             </div>
           </div>
 
