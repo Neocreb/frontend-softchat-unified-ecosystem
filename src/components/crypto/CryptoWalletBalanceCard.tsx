@@ -172,11 +172,11 @@ export default function CryptoWalletBalanceCard({
 
         {/* Footer Row */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-          <div className="font-mono text-gray-200 text-xs sm:text-sm tracking-wider drop-shadow">
+          <div className="font-mono text-gray-800 text-xs sm:text-sm tracking-wider drop-shadow">
             **** **** **** {String(Math.floor(totalBalance)).slice(-4)}
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4 text-gray-200 text-2xs sm:text-xs">
+          <div className="flex items-center gap-2 sm:gap-4 text-gray-700 text-2xs sm:text-xs">
             <div className="flex items-center gap-1 sm:gap-1.5">
               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse" />
               <span className="font-medium">Live</span>
