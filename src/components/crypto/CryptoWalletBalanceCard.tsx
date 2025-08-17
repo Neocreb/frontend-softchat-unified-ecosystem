@@ -29,15 +29,15 @@ export default function CryptoWalletBalanceCard() {
           <div className="flex items-center gap-3 flex-shrink-0">
             <Sparkles className="text-yellow-400 flex-shrink-0" />
             <div>
-              <h2 className="text-lg font-bold text-gray-900 leading-tight">Crypto Wallet</h2>
-              <p className="text-sm text-gray-700 leading-tight">Digital asset portfolio</p>
+              <h2 className="text-lg font-bold text-white leading-tight">Crypto Wallet</h2>
+              <p className="text-sm text-white/80 leading-tight">Digital asset portfolio</p>
             </div>
           </div>
           <div className="flex gap-2 mt-3 sm:mt-0">
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full text-gray-700 hover:bg-gray-100"
+              className="rounded-full text-white hover:bg-white/20"
               onClick={() => setShowBalance((s) => !s)}
               aria-label="Toggle Balance"
             >
@@ -60,8 +60,8 @@ export default function CryptoWalletBalanceCard() {
         <div className="flex flex-col md:flex-row w-full gap-5 md:gap-6">
           {/* Balance + change */}
           <div className="flex-1 flex flex-col justify-center min-w-[0]">
-            <div className="text-xs text-gray-600">Total Portfolio Value</div>
-            <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 break-words">
+            <div className="text-xs text-white/70">Total Portfolio Value</div>
+            <div className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white break-words">
               {showBalance ? `$${totalBalance.toLocaleString()}` : "****.**"}
             </div>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-2">
@@ -77,11 +77,11 @@ export default function CryptoWalletBalanceCard() {
           {/* Primary Asset and Actions */}
           <div className="flex flex-col items-end min-w-[150px] max-w-full">
             <div className="mb-2 text-right">
-              <div className="text-xs text-gray-700">Primary Asset</div>
-              <div className="text-xl font-bold text-gray-900 break-words">
+              <div className="text-xs text-white/70">Primary Asset</div>
+              <div className="text-xl font-bold text-white break-words">
                 {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "**.**"}
               </div>
-              <div className="text-sm text-gray-700 break-words">
+              <div className="text-sm text-white/80 break-words">
                 ≈ {showBalance ? `$${primaryAsset.value.toLocaleString()}` : "****"}
               </div>
             </div>
@@ -97,10 +97,10 @@ export default function CryptoWalletBalanceCard() {
         </div>
         {/* Bottom row */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mt-2">
-          <span className="font-mono text-gray-700 text-xs sm:text-base tracking-widest">
+          <span className="font-mono text-white/80 text-xs sm:text-base tracking-widest">
             **** **** **** 5670
           </span>
-          <div className="flex items-center gap-2 text-gray-700 text-xs sm:text-base">
+          <div className="flex items-center gap-2 text-white/70 text-xs sm:text-base">
             <span>Last updated: 10:50:45 PM</span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" /> Live
