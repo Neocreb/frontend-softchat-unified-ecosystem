@@ -709,12 +709,45 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
                     placeholder="0.00"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="pl-10"
+                    className={`pl-10 ${
+                      amountValidation?.isValid === false ? 'border-red-500' : ''
+                    }`}
                     type="number"
                     step="0.01"
                     required
                   />
                 </div>
+
+                {/* Amount Validation Messages */}
+                {amountValidation && (
+                  <>
+                    {amountValidation.errors.length > 0 && (
+                      <div className="text-xs p-2 rounded bg-red-50 text-red-700 border border-red-200">
+                        <div className="flex items-center gap-2">
+                          <AlertCircle className="h-3 w-3" />
+                          <div>
+                            {amountValidation.errors.map((error, index) => (
+                              <div key={index}>{error}</div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {amountValidation.warnings.length > 0 && (
+                      <div className="text-xs p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200">
+                        <div className="flex items-center gap-2">
+                          <Info className="h-3 w-3" />
+                          <div>
+                            {amountValidation.warnings.map((warning, index) => (
+                              <div key={index}>{warning}</div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               <div className="space-y-2">
