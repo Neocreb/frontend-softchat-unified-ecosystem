@@ -764,9 +764,14 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
             <Button type="button" variant="outline" onClick={onClose} className="flex-1">
               Cancel
             </Button>
-            <Button 
-              type="button" 
-              disabled={isLoading || !amount || (activeTab === 'contact' ? !contactData.recipient : !selectedBank)} 
+            <Button
+              type="button"
+              disabled={
+                isLoading ||
+                !amount ||
+                (activeTab === 'contact' ? !contactData.recipient :
+                 (!selectedBank || !verificationResult?.isValid))
+              }
               onClick={activeTab === 'contact' ? handleContactTransfer : handleBankTransfer}
               className="flex-1 h-11"
             >
