@@ -278,6 +278,19 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
     }
   }, [bankData.accountNumber, selectedBank, shouldVerify]);
 
+  // Validate amount when it changes
+  useEffect(() => {
+    if (amount && selectedBank) {
+      const validation = accountVerificationService.validateTransferAmount(
+        parseFloat(amount),
+        selectedBank
+      );
+      setAmountValidation(validation);
+    } else {
+      setAmountValidation(null);
+    }
+  }, [amount, selectedBank]);
+
   const totalAmount = parseFloat(amount || '0') + transferFee;
 
   return (
