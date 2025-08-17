@@ -141,13 +141,13 @@ export default function CryptoWalletBalanceCard({
           {/* Right: Primary Asset & Actions */}
           <div className="text-left sm:text-right space-y-2 sm:space-y-3 w-full sm:w-auto">
             <div>
-              <p className="text-gray-200 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
+              <p className="text-gray-700 text-2xs sm:text-xs font-medium uppercase tracking-wide mb-1">
                 Primary Asset
               </p>
-              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-white drop-shadow">
+              <div className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 drop-shadow">
                 {showBalance ? `${primaryAsset.balance} ${primaryAsset.symbol}` : "••••••"}
               </div>
-              <p className="text-gray-200 text-xs sm:text-sm font-medium">
+              <p className="text-gray-800 text-xs sm:text-sm font-medium">
                 ≈ {showBalance ? formatCurrency(primaryAsset.value) : "••••••"}
               </p>
             </div>
