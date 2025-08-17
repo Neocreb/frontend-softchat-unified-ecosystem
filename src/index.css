@@ -1384,6 +1384,31 @@
     );
   }
 
+  /* Wallet specific gradients with proper contrast */
+  .bg-gradient-wallet {
+    background: linear-gradient(135deg,
+      hsl(217 91% 60%),
+      hsl(230 85% 65%),
+      hsl(240 80% 70%)
+    );
+  }
+
+  .bg-gradient-card {
+    background: linear-gradient(145deg,
+      hsl(var(--card)),
+      hsl(var(--card)) 50%,
+      hsl(var(--primary) / 0.02)
+    );
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg,
+      hsl(var(--primary)),
+      hsl(280 85% 60%),
+      hsl(var(--primary))
+    );
+  }
+
   /* Enhanced card styling */
   .card-enhanced {
     @apply bg-card/80 backdrop-blur-sm border-border/60 shadow-lg;
