@@ -99,6 +99,9 @@ const EnhancedSendMoneyModal = ({ isOpen, onClose }: EnhancedSendMoneyModalProps
   const [countries] = useState<Country[]>(africanBankingService.getAllCountries());
   const [banks, setBanks] = useState<Bank[]>([]);
   const [popularBanks, setPopularBanks] = useState<Bank[]>([]);
+  const [verificationResult, setVerificationResult] = useState<AccountVerificationResult | null>(null);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [shouldVerify, setShouldVerify] = useState(false);
 
   // Recent contacts (mock data - replace with actual service)
   const recentContacts = [
