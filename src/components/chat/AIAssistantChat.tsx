@@ -350,20 +350,10 @@ export const AIAssistantChat: React.FC<AIAssistantChatProps> = ({
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h3 className="font-medium text-purple-900">
-                {AI_ASSISTANT_CONFIG.name}
+                Edith AI
               </h3>
-              <Badge
-                variant="secondary"
-                className="text-xs bg-purple-100 text-purple-700"
-              >
-                AI Assistant
-              </Badge>
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             </div>
-            <p className="text-xs text-purple-600">
-              Advanced AI • Real-time Data • Intelligent Conversation • Emotional
-              Support
-            </p>
           </div>
         </div>
 
