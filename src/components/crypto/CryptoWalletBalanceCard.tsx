@@ -23,7 +23,10 @@ export default function CryptoWalletBalanceCard() {
         backgroundImage: "linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #3730a3 100%)"
       }}
     >
-      <CardContent className="p-4 sm:p-6 md:p-8 flex flex-col gap-5 h-full w-full">
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+
+      <CardContent className="relative z-10 p-4 sm:p-6 md:p-8 flex flex-col gap-5 h-full w-full">
         {/* Header */}
         <div className="flex flex-col sm:flex-row w-full items-start justify-between gap-2">
           <div className="flex items-center gap-3 flex-shrink-0">
