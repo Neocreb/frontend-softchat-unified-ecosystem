@@ -71,7 +71,7 @@ const EnhancedWalletDashboardContent = () => {
         <CardContent className="p-6 md:p-8 bg-gradient-wallet text-white">
           <div className="text-center space-y-4">
             <div>
-              <h2 className="text-lg font-medium text-white/90">
+              <h2 className="text-lg font-medium text-white drop-shadow-sm">
                 Total Balance
               </h2>
               <div className="text-4xl md:text-5xl font-bold">
@@ -91,7 +91,7 @@ const EnhancedWalletDashboardContent = () => {
                   <div className="text-lg md:text-xl font-semibold">
                     ${source.value.toFixed(2)}
                   </div>
-                  <div className="text-xs text-white/80">
+                  <div className="text-xs text-white/90 drop-shadow-sm">
                     {source.name}
                   </div>
                 </div>
