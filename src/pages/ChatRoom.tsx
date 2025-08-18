@@ -272,11 +272,44 @@ const ChatRoomContent = () => {
           chatData = generateChatFromId(threadId, chatType);
         }
 
-        // Basic validation for group chats
+        // Basic validation and enhancement for group chats
         if (chatData.isGroup) {
           const groupData = chatData as GroupChatThread;
           if (!groupData.participants || groupData.participants.length === 0) {
             console.warn("Group chat has no participants, this might cause errors");
+          }
+
+          // Ensure all required fields are present for group chats
+          if (!groupData.groupType) {
+            (chatData as GroupChatThread).groupType = 'private';
+          }
+          if (!groupData.category) {
+            (chatData as GroupChatThread).category = 'friends';
+          }
+          if (!groupData.settings) {
+            (chatData as GroupChatThread).settings = {
+              whoCanSendMessages: 'everyone',
+              whoCanAddMembers: 'everyone',
+              whoCanEditGroupInfo: 'admins_only',
+              whoCanRemoveMembers: 'admins_only',
+              disappearingMessages: false,
+              allowMemberInvites: true,
+              showMemberAddNotifications: true,
+              showMemberExitNotifications: true,
+              muteNonAdminMessages: false,
+            };
+          }
+          if (!groupData.createdAt) {
+            (chatData as GroupChatThread).createdAt = new Date().toISOString();
+          }
+          if (!groupData.createdBy) {
+            (chatData as GroupChatThread).createdBy = 'current';
+          }
+          if (!groupData.adminIds) {
+            (chatData as GroupChatThread).adminIds = ['current'];
+          }
+          if (!groupData.maxParticipants) {
+            (chatData as GroupChatThread).maxParticipants = 256;
           }
         }
 
