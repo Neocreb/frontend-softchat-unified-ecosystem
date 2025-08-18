@@ -733,4 +733,17 @@ const ChatRoomContent = () => {
   );
 };
 
+const ChatRoom = () => {
+  const navigate = useNavigate();
+
+  return (
+    <ChatErrorBoundary
+      onRetry={() => window.location.reload()}
+      onGoBack={() => navigate('/app/chat')}
+    >
+      <ChatRoomContent />
+    </ChatErrorBoundary>
+  );
+};
+
 export default ChatRoom;
