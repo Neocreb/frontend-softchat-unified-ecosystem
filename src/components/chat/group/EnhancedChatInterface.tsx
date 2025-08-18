@@ -970,12 +970,19 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                         // Store conversation data for ChatRoom to access
                         try {
                           localStorage.setItem(`chat_${chat.id}`, JSON.stringify(chat));
+                          console.log("Stored chat data for", chat.id, ":", chat);
                         } catch (error) {
                           console.error("Error storing conversation data:", error);
                         }
 
-                        // Navigate to dedicated chat page
-                        navigate(`/app/chat/${chat.id}?type=${chat.type}`);
+                        // For debugging: try test page first
+                        if (process.env.NODE_ENV === 'development' && chat.isGroup) {
+                          console.log("Navigating to test page for group chat:", chat.id);
+                          navigate(`/app/chat-test/${chat.id}?type=${chat.type}`);
+                        } else {
+                          // Navigate to dedicated chat page
+                          navigate(`/app/chat/${chat.id}?type=${chat.type}`);
+                        }
                       }}
                       onPin={handlePinChat}
                       onMute={handleMuteChat}
