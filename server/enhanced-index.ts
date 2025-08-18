@@ -39,6 +39,11 @@ import videoRouter from './routes/video.js';
 import cryptoRouter from './routes/crypto.js';
 import kycRouter from './routes/kyc.js';
 import notificationsRouter from './routes/notifications.js';
+import postsRouter from './routes/posts.js';
+import profilesRouter from './routes/profiles.js';
+import productsRouter from './routes/products.js';
+import freelanceRouter from './routes/freelance.js';
+import followRouter from './routes/follow.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -303,6 +308,11 @@ app.use('/api/video', videoRouter);
 app.use('/api/crypto', cryptoRouter);
 app.use('/api/kyc', kycRouter);
 app.use('/api/notifications', notificationsRouter);
+app.use('/api/posts', postsRouter);
+app.use('/api/profiles', profilesRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/freelance', freelanceRouter);
+app.use('/api/follow', followRouter);
 
 // =============================================================================
 // CORE AUTHENTICATION ENDPOINTS
