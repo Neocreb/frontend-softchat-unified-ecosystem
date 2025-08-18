@@ -952,6 +952,13 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                       isSelected={selectedChat?.id === chat.id}
                       currentUserId={user?.id || ""}
                       onClick={() => {
+                        // Store conversation data for ChatRoom to access
+                        try {
+                          localStorage.setItem(`chat_${chat.id}`, JSON.stringify(chat));
+                        } catch (error) {
+                          console.error("Error storing conversation data:", error);
+                        }
+
                         // Navigate to dedicated chat page
                         navigate(`/app/chat/${chat.id}?type=${chat.type}`);
                       }}
