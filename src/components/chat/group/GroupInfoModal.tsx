@@ -590,7 +590,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                 <div>
                   <span className="text-muted-foreground">Created on</span>
                   <div className="font-medium mt-1">
-                    {format(new Date(group.createdAt), 'MMM d, yyyy')}
+                    {group.createdAt ? format(new Date(group.createdAt), 'MMM d, yyyy') : 'Unknown'}
                   </div>
                 </div>
               </div>
