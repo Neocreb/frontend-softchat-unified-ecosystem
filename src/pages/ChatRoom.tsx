@@ -289,6 +289,7 @@ const ChatRoom = () => {
         }
 
         // Generate contextual messages based on chat data
+        console.log("Generating messages for chat:", chatData);
         const mockMessages: EnhancedChatMessage[] = [];
         
         if (chatData.isGroup) {
