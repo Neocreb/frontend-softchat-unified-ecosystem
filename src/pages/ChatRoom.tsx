@@ -239,7 +239,6 @@ const ChatRoomContent = () => {
       return;
     }
 
-    console.log("Loading chat for threadId:", threadId, "chatType:", chatType);
     setLoading(true);
 
     const timeoutId = setTimeout(() => {
@@ -254,7 +253,6 @@ const ChatRoomContent = () => {
 
     const loadChatData = async () => {
       try {
-        console.log("Starting loadChatData...");
         await new Promise(resolve => setTimeout(resolve, 300));
 
         // Try to get conversation data from localStorage (passed from chat list)
@@ -262,10 +260,8 @@ const ChatRoomContent = () => {
 
         try {
           const conversationData = localStorage.getItem(`chat_${threadId}`);
-          console.log("localStorage data for", threadId, ":", conversationData);
           if (conversationData) {
             chatData = JSON.parse(conversationData);
-            console.log("Parsed chat data:", chatData);
           }
         } catch (error) {
           console.error("Error parsing conversation data:", error);
@@ -273,19 +269,14 @@ const ChatRoomContent = () => {
 
         // Generate chat data based on threadId and chatType if not found
         if (!chatData) {
-          console.log("No localStorage data found, generating chat data...");
           chatData = generateChatFromId(threadId, chatType);
-          console.log("Generated chat data:", chatData);
         }
 
-        // Debug logging for group chats
+        // Basic validation for group chats
         if (chatData.isGroup) {
-          console.log("Group chat data:", chatData);
           const groupData = chatData as GroupChatThread;
           if (!groupData.participants || groupData.participants.length === 0) {
             console.warn("Group chat has no participants, this might cause errors");
-          } else {
-            console.log("Group participants:", groupData.participants);
           }
         }
 
