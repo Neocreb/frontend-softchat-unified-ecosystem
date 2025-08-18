@@ -395,7 +395,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                   </div>
                 ) : (
                   <div>
-                    <h2 className="text-xl font-semibold">{group.groupName}</h2>
+                    <h2 className="text-xl font-semibold">{group.groupName || "Unnamed Group"}</h2>
                     {group.groupDescription && (
                       <p className="text-muted-foreground mt-1">{group.groupDescription}</p>
                     )}
