@@ -366,15 +366,10 @@ const ChatRoomContent = () => {
           });
         }
 
-        console.log("Setting chat data:", chatData);
-        console.log("Setting messages:", mockMessages);
-
         setChat(chatData);
         setMessages(mockMessages);
         setLoading(false);
         clearTimeout(timeoutId);
-
-        console.log("Chat data loaded successfully");
       } catch (error) {
         console.error("Error loading chat:", error);
         setLoading(false);
