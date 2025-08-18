@@ -80,7 +80,7 @@ const HeroSection = () => {
                     <p className="text-xs text-blue-700 dark:text-blue-300">Real-time tracking</p>
                   </div>
                 </div>
-                <p className="text-sm text-blue-700 dark:text-blue-200">
+                <p className="text-sm text-blue-800 dark:text-blue-200">
                   Monitor your deliveries with live location updates
                 </p>
               </div>
