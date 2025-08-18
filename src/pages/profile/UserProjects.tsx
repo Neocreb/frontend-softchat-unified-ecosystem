@@ -1,0 +1,541 @@
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Briefcase,
+  Star,
+  MapPin,
+  Clock,
+  MessageSquare,
+  Heart,
+  ExternalLink,
+  Github,
+  Globe,
+  ArrowLeft,
+  Share2,
+  Award,
+  Code,
+  Palette,
+  Camera,
+  Video,
+  PenTool,
+  Monitor,
+  Smartphone,
+  Verified,
+  Calendar,
+  DollarSign,
+  Users,
+  Eye,
+  Download,
+  Play,
+  Image as ImageIcon,
+  FileText,
+  Link as LinkIcon,
+} from "lucide-react";
+import { UserProfile } from "@/types/user";
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+  images: string[];
+  external_link?: string;
+  github_link?: string;
+  live_demo?: string;
+  client?: string;
+  duration: string;
+  budget?: number;
+  rating?: number;
+  completed_at: string;
+  type: "platform" | "external";
+  status: "completed" | "in_progress" | "cancelled";
+}
+
+interface ExternalWork {
+  id: string;
+  title: string;
+  description: string;
+  type: "image" | "video" | "link" | "document";
+  url: string;
+  thumbnail?: string;
+  category: string;
+  tags: string[];
+  created_at: string;
+}
+
+const UserProjects: React.FC = () => {
+  const { username } = useParams();
+  const [activeTab, setActiveTab] = useState("portfolio");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+  // Mock data - in real app, fetch from API
+  const userProfile: UserProfile = {
+    id: "1",
+    username: username || "",
+    full_name: "Alex Rivera",
+    avatar_url: "/placeholder.svg",
+    banner_url: "/placeholder.svg",
+    bio: "Full-stack developer & UI/UX designer with 5+ years experience creating digital solutions.",
+    location: "San Francisco, CA",
+    website: "https://alexrivera.dev",
+    verified: true,
+    created_at: "2022-03-15",
+    followers_count: 8420,
+    following_count: 1240,
+    posts_count: 186,
+  };
+
+  const freelanceStats = {
+    totalProjects: 89,
+    completedProjects: 85,
+    averageRating: 4.9,
+    totalReviews: 76,
+    responseRate: 99,
+    responseTime: "< 1 hour",
+    memberSince: "2022",
+    totalEarnings: 145750,
+    repeatClients: 45,
+    successRate: 98,
+  };
+
+  const skills = [
+    { name: "React", level: 95, category: "Frontend" },
+    { name: "Node.js", level: 90, category: "Backend" },
+    { name: "UI/UX Design", level: 88, category: "Design" },
+    { name: "TypeScript", level: 92, category: "Frontend" },
+    { name: "Python", level: 85, category: "Backend" },
+    { name: "Figma", level: 87, category: "Design" },
+  ];
+
+  const categories = [
+    { id: "all", name: "All Projects", count: 89 },
+    { id: "web_development", name: "Web Development", count: 34 },
+    { id: "mobile_app", name: "Mobile Apps", count: 22 },
+    { id: "ui_ux", name: "UI/UX Design", count: 18 },
+    { id: "backend", name: "Backend", count: 15 },
+  ];
+
+  const projects: Project[] = [
+    {
+      id: "1",
+      title: "E-commerce Platform Redesign",
+      description: "Complete redesign and development of a modern e-commerce platform with improved UX and performance optimization.",
+      category: "web_development",
+      tags: ["React", "Node.js", "MongoDB", "Stripe"],
+      images: ["/placeholder.svg", "/placeholder.svg"],
+      external_link: "https://demo-ecommerce.com",
+      github_link: "https://github.com/alexrivera/ecommerce",
+      live_demo: "https://demo-ecommerce.com",
+      client: "TechStore Inc.",
+      duration: "8 weeks",
+      budget: 15000,
+      rating: 5.0,
+      completed_at: "2024-01-15",
+      type: "platform",
+      status: "completed",
+    },
+    {
+      id: "2",
+      title: "Mobile Banking App",
+      description: "Secure mobile banking application with biometric authentication and real-time notifications.",
+      category: "mobile_app",
+      tags: ["React Native", "Firebase", "Biometrics"],
+      images: ["/placeholder.svg"],
+      client: "FinTech Solutions",
+      duration: "12 weeks",
+      budget: 25000,
+      rating: 4.8,
+      completed_at: "2023-12-20",
+      type: "platform",
+      status: "completed",
+    },
+  ];
+
+  const externalWorks: ExternalWork[] = [
+    {
+      id: "1",
+      title: "Personal Portfolio Website",
+      description: "My personal portfolio showcasing latest projects and skills",
+      type: "link",
+      url: "https://alexrivera.dev",
+      thumbnail: "/placeholder.svg",
+      category: "web_development",
+      tags: ["Portfolio", "React", "Next.js"],
+      created_at: "2024-01-10",
+    },
+    {
+      id: "2",
+      title: "Design System Documentation",
+      description: "Complete design system with components and guidelines",
+      type: "document",
+      url: "https://docs.alexrivera.dev/design-system",
+      thumbnail: "/placeholder.svg",
+      category: "ui_ux",
+      tags: ["Design System", "Figma", "Documentation"],
+      created_at: "2023-12-15",
+    },
+    {
+      id: "3",
+      title: "App Demo Video",
+      description: "Demonstration of mobile app features and functionality",
+      type: "video",
+      url: "https://vimeo.com/demo-video",
+      thumbnail: "/placeholder.svg",
+      category: "mobile_app",
+      tags: ["Demo", "Mobile", "Video"],
+      created_at: "2023-11-20",
+    },
+  ];
+
+  const certifications = [
+    {
+      name: "AWS Certified Solutions Architect",
+      issuer: "Amazon Web Services",
+      date: "2023-06-15",
+      credential: "AWS-CSA-123456",
+    },
+    {
+      name: "Google UX Design Certificate",
+      issuer: "Google",
+      date: "2023-03-10",
+      credential: "GUX-987654",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Header */}
+      <div className="bg-white dark:bg-gray-800 border-b">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link 
+                to={`/profile/${username}`}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                <span>Back to Profile</span>
+              </Link>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm">
+                <Share2 className="h-4 w-4 mr-2" />
+                Share Portfolio
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Profile Sidebar */}
+          <div className="lg:col-span-1">
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                {/* Profile Info */}
+                <div className="text-center mb-6">
+                  <Avatar className="h-20 w-20 mx-auto mb-4">
+                    <AvatarImage src={userProfile.avatar_url} alt={userProfile.full_name} />
+                    <AvatarFallback className="text-lg">
+                      {userProfile.full_name?.split(" ").map(n => n[0]).join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <h1 className="text-xl font-bold">{userProfile.full_name}</h1>
+                    {userProfile.verified && (
+                      <Verified className="h-5 w-5 text-blue-500" />
+                    )}
+                  </div>
+                  <p className="text-muted-foreground text-sm mb-2">@{userProfile.username}</p>
+                  <div className="flex items-center justify-center gap-1 mb-4">
+                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                    <span className="font-medium">{freelanceStats.averageRating}</span>
+                    <span className="text-muted-foreground text-sm">
+                      ({freelanceStats.totalReviews} reviews)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Projects</span>
+                    <span className="font-semibold">{freelanceStats.totalProjects}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Success Rate</span>
+                    <span className="font-semibold">{freelanceStats.successRate}%</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Response Time</span>
+                    <span className="font-semibold">{freelanceStats.responseTime}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Total Earnings</span>
+                    <span className="font-semibold">${freelanceStats.totalEarnings.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-2 mb-6">
+                  <Button className="w-full">
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Hire Now
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <Heart className="h-4 w-4 mr-2" />
+                    Follow
+                  </Button>
+                </div>
+
+                {/* External Links */}
+                <div className="space-y-3 pt-6 border-t">
+                  {userProfile.website && (
+                    <a 
+                      href={userProfile.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-sm text-blue-500 hover:underline"
+                    >
+                      <Globe className="h-4 w-4" />
+                      <span>Portfolio Website</span>
+                    </a>
+                  )}
+                  <a 
+                    href="https://github.com/alexrivera"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-blue-500 hover:underline"
+                  >
+                    <Github className="h-4 w-4" />
+                    <span>GitHub Profile</span>
+                  </a>
+                  <div className="flex items-center gap-2 text-sm">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span>{userProfile.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <span>Member since {freelanceStats.memberSince}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Skills */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Skills</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <div className="space-y-4">
+                  {skills.map((skill, index) => (
+                    <div key={index}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium">{skill.name}</span>
+                        <span className="text-xs text-muted-foreground">{skill.level}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-600 h-2 rounded-full transition-all"
+                          style={{ width: `${skill.level}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2">{userProfile.full_name}'s Portfolio</h2>
+              <p className="text-muted-foreground">{userProfile.bio}</p>
+            </div>
+
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
+                <TabsTrigger value="external">External Work</TabsTrigger>
+                <TabsTrigger value="experience">Experience</TabsTrigger>
+                <TabsTrigger value="certifications">Certifications</TabsTrigger>
+              </TabsList>
+
+              {/* Portfolio Tab */}
+              <TabsContent value="portfolio" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {projects.map((project) => (
+                    <Card key={project.id} className="hover:shadow-lg transition-shadow">
+                      <CardContent className="p-0">
+                        <div className="aspect-video bg-gray-100 rounded-t-lg overflow-hidden">
+                          <img 
+                            src={project.images[0]} 
+                            alt={project.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="p-6">
+                          <div className="flex items-center justify-between mb-2">
+                            <Badge variant="secondary">{project.category.replace('_', ' ')}</Badge>
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                              <span className="text-sm font-medium">{project.rating}</span>
+                            </div>
+                          </div>
+                          <h3 className="font-semibold text-lg mb-2">{project.title}</h3>
+                          <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+                            {project.description}
+                          </p>
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {project.tags.slice(0, 3).map((tag, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                            <span>{project.duration}</span>
+                            {project.budget && (
+                              <span className="font-medium text-green-600">
+                                ${project.budget.toLocaleString()}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {project.live_demo && (
+                              <Button size="sm" variant="outline" asChild>
+                                <a href={project.live_demo} target="_blank" rel="noopener noreferrer">
+                                  <ExternalLink className="h-4 w-4 mr-1" />
+                                  Demo
+                                </a>
+                              </Button>
+                            )}
+                            {project.github_link && (
+                              <Button size="sm" variant="outline" asChild>
+                                <a href={project.github_link} target="_blank" rel="noopener noreferrer">
+                                  <Github className="h-4 w-4 mr-1" />
+                                  Code
+                                </a>
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* External Work Tab */}
+              <TabsContent value="external" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {externalWorks.map((work) => (
+                    <Card key={work.id} className="hover:shadow-lg transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-2 bg-blue-100 rounded-lg">
+                            {work.type === "link" && <LinkIcon className="h-5 w-5 text-blue-600" />}
+                            {work.type === "image" && <ImageIcon className="h-5 w-5 text-blue-600" />}
+                            {work.type === "video" && <Play className="h-5 w-5 text-blue-600" />}
+                            {work.type === "document" && <FileText className="h-5 w-5 text-blue-600" />}
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold">{work.title}</h3>
+                            <p className="text-sm text-muted-foreground">{work.category.replace('_', ' ')}</p>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground text-sm mb-4">
+                          {work.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {work.tags.map((tag, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        <Button size="sm" className="w-full" asChild>
+                          <a href={work.url} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            View Work
+                          </a>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              {/* Experience Tab */}
+              <TabsContent value="experience" className="mt-6">
+                <Card>
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold mb-4">Professional Experience</h3>
+                    <div className="space-y-6">
+                      <div className="border-l-2 border-blue-200 pl-6 relative">
+                        <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-2 top-2"></div>
+                        <div className="mb-2">
+                          <h4 className="font-semibold">Senior Full Stack Developer</h4>
+                          <p className="text-muted-foreground text-sm">TechCorp Inc. • 2022 - Present</p>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Leading development of scalable web applications using React, Node.js, and cloud technologies.
+                        </p>
+                      </div>
+                      <div className="border-l-2 border-gray-200 pl-6 relative">
+                        <div className="absolute w-3 h-3 bg-gray-400 rounded-full -left-2 top-2"></div>
+                        <div className="mb-2">
+                          <h4 className="font-semibold">Frontend Developer</h4>
+                          <p className="text-muted-foreground text-sm">StartupXYZ • 2020 - 2022</p>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Developed responsive web applications and improved user experience across multiple platforms.
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Certifications Tab */}
+              <TabsContent value="certifications" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {certifications.map((cert, index) => (
+                    <Card key={index}>
+                      <CardContent className="p-6">
+                        <div className="flex items-start gap-4">
+                          <div className="p-3 bg-blue-100 rounded-lg">
+                            <Award className="h-6 w-6 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold mb-1">{cert.name}</h3>
+                            <p className="text-muted-foreground text-sm mb-2">{cert.issuer}</p>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span>Issued: {cert.date}</span>
+                              <span>ID: {cert.credential}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserProjects;
