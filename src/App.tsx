@@ -386,6 +386,7 @@ const AppRoutes = () => {
           <Route path="freelance/job/:jobId" element={<DetailedJobPage />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
+          <Route path="chat-test/:threadId" element={<ChatTest />} />
           <Route
             path="messages"
             element={<Navigate to="/app/chat" replace />}
