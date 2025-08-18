@@ -652,7 +652,7 @@ const ChatRoom = () => {
       )}
 
       {/* Group Info Modal */}
-      {chat.isGroup && (
+      {chat?.isGroup && (chat as GroupChatThread).participants && (
         <GroupInfoModal
           trigger={<div />}
           group={chat as GroupChatThread}
@@ -660,13 +660,17 @@ const ChatRoom = () => {
           onUpdateGroup={async (request) => {
             // Update local chat state
             if (chat.isGroup) {
-              const updatedChat = {
-                ...chat as GroupChatThread,
-                groupName: request.name || (chat as GroupChatThread).groupName,
-                groupDescription: request.description || (chat as GroupChatThread).groupDescription,
-                groupAvatar: request.avatar || (chat as GroupChatThread).groupAvatar,
-              };
-              setChat(updatedChat);
+              try {
+                const updatedChat = {
+                  ...chat as GroupChatThread,
+                  groupName: request.name || (chat as GroupChatThread).groupName,
+                  groupDescription: request.description || (chat as GroupChatThread).groupDescription,
+                  groupAvatar: request.avatar || (chat as GroupChatThread).groupAvatar,
+                };
+                setChat(updatedChat);
+              } catch (error) {
+                console.error("Error updating group:", error);
+              }
             }
           }}
           isOpen={showGroupInfo}
