@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { badgeVariants } from "@/utils/badge-variants";
 import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
@@ -272,8 +272,8 @@ export const ChatRoom: React.FC = () => {
 
     try {
       const participantName = formatChatTitle(thread, user.id);
-      const participantIds = thread.participantIds || [];
-      const participantId = participantIds.find(id => id !== user.id) || '';
+      const participantIds = thread.participants || [];
+      const participantId = participantIds.find((id: string) => id !== user.id) || '';
 
       setCallData({
         participant: {
@@ -312,8 +312,8 @@ export const ChatRoom: React.FC = () => {
 
     try {
       const participantName = formatChatTitle(thread, user.id);
-      const participantIds = thread.participantIds || [];
-      const participantId = participantIds.find(id => id !== user.id) || '';
+      const participantIds = thread.participants || [];
+      const participantId = participantIds.find((id: string) => id !== user.id) || '';
 
       setCallData({
         participant: {
@@ -431,9 +431,9 @@ export const ChatRoom: React.FC = () => {
         fileSize: 1024 * 512 // Default 512KB
       };
     } else if (content.length === 1 || content.length === 2) {
-      // Detect emojis as stickers
-      const emojiRegex = /^[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]$/u;
-      if (emojiRegex.test(content)) {
+      // Simple emoji detection without Unicode ranges
+      const commonEmojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡', '💩', '👻', '💀', '☠️', '👽', '👾', '🤖', '🎃', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'];
+      if (commonEmojis.includes(content.trim())) {
         messageType = "sticker";
         metadata = { stickerName: "Emoji" };
       }
@@ -442,8 +442,8 @@ export const ChatRoom: React.FC = () => {
     return {
       id: message.id,
       senderId: message.senderId,
-      senderName: message.sender?.name || message.sender?.full_name || (message.senderId === user?.id ? "You" : "Unknown"),
-      senderAvatar: message.sender?.avatar || message.sender?.avatar_url,
+      senderName: message.senderName || (message.senderId === user?.id ? "You" : "Unknown"),
+      senderAvatar: message.senderAvatar,
       content,
       type: messageType,
       timestamp: message.timestamp,
@@ -556,11 +556,11 @@ export const ChatRoom: React.FC = () => {
               <div className="flex items-center gap-2">
                 <h2 className={`font-semibold truncate ${isMobile ? "text-base" : "text-lg"}`}>{chatTitle}</h2>
                 {!isMobile && (
-                  <Badge
-                    className={`text-xs ${getChatTypeBadgeColor(thread.type)}`}
+                  <span
+                    className={`${badgeVariants({ variant: "secondary" })} text-xs ${getChatTypeBadgeColor(thread.type)}`}
                   >
                     {getChatTypeIcon(thread.type)} {getChatTypeLabel(thread.type)}
-                  </Badge>
+                  </span>
                 )}
               </div>
               {chatSubtitle && (
@@ -689,6 +689,7 @@ export const ChatRoom: React.FC = () => {
                 >
                   <EnhancedMessage
                     message={enhancedMessage}
+                    currentUserId={user?.id || ""}
                     isCurrentUser={message.senderId === user?.id}
                     isMobile={isMobile}
                     onReply={handleReplyToMessage}

@@ -50,7 +50,7 @@ export const ChatTabs: React.FC<ChatTabsProps> = ({
 
   return (
     <div className={cn("w-full", className)}>
-      <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
+      <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as UnifiedChatType)} className="w-full">
         <TabsList
           className={cn(
             "flex w-full h-auto bg-muted/30 rounded-lg overflow-x-auto",

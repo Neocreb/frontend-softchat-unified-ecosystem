@@ -16,7 +16,7 @@ export const startChat = async (
 ): Promise<ChatThread> => {
   const request: StartChatRequest = {
     type,
-    referenceId,
+    referenceId: referenceId || undefined,
     participants,
     contextData,
     initialMessage: initialMessage || getContextualGreeting(type, contextData),
@@ -118,7 +118,7 @@ export const startGroupChat = async (
 ): Promise<ChatThread> => {
   const request: StartChatRequest = {
     type,
-    referenceId: referenceId || null,
+    referenceId: referenceId || undefined,
     participants,
     groupName,
     contextData,
