@@ -539,9 +539,14 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         totalMessages: 0,
       };
 
-      setConversations(prev => [newGroup, ...prev]);
+      console.log("New group created:", newGroup);
+      setConversations(prev => {
+        const updated = [newGroup, ...prev];
+        console.log("Updated conversations:", updated);
+        return updated;
+      });
       setShowCreateGroup(false);
-      
+
       toast({
         title: "Group Created",
         description: `${request.name} has been created successfully`,
