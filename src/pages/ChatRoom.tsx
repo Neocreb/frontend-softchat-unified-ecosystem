@@ -190,7 +190,7 @@ const ChatRoomContent = () => {
         groupDescription: chatData.groupDescription,
         participants: chatData.participants || [
           {
-            id: user?.id || 'current',
+            id: 'current',
             name: user?.profile?.full_name || 'You',
             avatar: user?.profile?.avatar_url,
             role: 'admin' as const,
