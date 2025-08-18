@@ -17,6 +17,7 @@ const SimpleChatRoom = () => {
   const [loading, setLoading] = useState(true);
   const [chatData, setChatData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showGroupModal, setShowGroupModal] = useState(false);
 
   useEffect(() => {
     const loadChat = async () => {
