@@ -320,7 +320,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
 
   // Filtered conversations based on active tab and filters
   const filteredConversations = useMemo(() => {
-    let filtered = mockConversations.filter((conv) => 
+    let filtered = conversations.filter((conv) =>
       activeTab === "ai_assistant" ? false : conv.type === activeTab
     );
 
@@ -355,7 +355,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       (a, b) =>
         new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
     );
-  }, [mockConversations, activeTab, chatFilter, searchQuery]);
+  }, [conversations, activeTab, chatFilter, searchQuery]);
 
   // Calculate filter counts for social tab
   const filterCounts = useMemo(() => {
