@@ -304,10 +304,10 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
 
   // Tabs configuration
   const tabsWithCounts: UnifiedChatTab[] = useMemo(() => {
-    const socialConvs = mockConversations.filter(c => c.type === "social");
-    const freelanceConvs = mockConversations.filter(c => c.type === "freelance");
-    const marketplaceConvs = mockConversations.filter(c => c.type === "marketplace");
-    const cryptoConvs = mockConversations.filter(c => c.type === "crypto");
+    const socialConvs = conversations.filter(c => c.type === "social");
+    const freelanceConvs = conversations.filter(c => c.type === "freelance");
+    const marketplaceConvs = conversations.filter(c => c.type === "marketplace");
+    const cryptoConvs = conversations.filter(c => c.type === "crypto");
 
     return [
       { id: "social", label: "Social", icon: "👥", count: socialConvs.reduce((sum, c) => sum + (c.unreadCount || 0), 0) },
@@ -316,7 +316,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       { id: "crypto", label: "Crypto", icon: "🪙", count: cryptoConvs.reduce((sum, c) => sum + (c.unreadCount || 0), 0) },
       { id: "ai_assistant", label: "AI", icon: "🤖", count: 0 },
     ];
-  }, [mockConversations]);
+  }, [conversations]);
 
   // Filtered conversations based on active tab and filters
   const filteredConversations = useMemo(() => {
