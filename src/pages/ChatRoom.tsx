@@ -199,7 +199,7 @@ const ChatRoom = () => {
             isOnline: true,
           }
         ],
-        adminIds: chatData.adminIds || [],
+        adminIds: chatData.adminIds || [user?.id || 'current'],
         createdBy: user?.id || 'current',
         createdAt: new Date().toISOString(),
         settings: {
