@@ -72,6 +72,9 @@ import ProfileStats from "./pages/profile/ProfileStats";
 import ProfileFollowers from "./pages/profile/ProfileFollowers";
 import ProfileFollowing from "./pages/profile/ProfileFollowing";
 import ProfileViews from "./pages/profile/ProfileViews";
+import UserStore from "./pages/profile/UserStore";
+import UserProjects from "./pages/profile/UserProjects";
+import UserTrades from "./pages/profile/UserTrades";
 import Wallet from "./pages/Wallet";
 import Marketplace from "./pages/Marketplace";
 import EnhancedMarketplace from "./pages/EnhancedMarketplace";
@@ -422,6 +425,9 @@ const AppRoutes = () => {
           <Route path="profile/:username/trust" element={<TrustScore />} />
           <Route path="profile/:username/likes" element={<UserLikes />} />
           <Route path="profile/:username/shares" element={<UserShares />} />
+          <Route path="profile/:username/store" element={<UserStore />} />
+          <Route path="profile/:username/projects" element={<UserProjects />} />
+          <Route path="profile/:username/trades" element={<UserTrades />} />
           <Route path="user/:username" element={<EnhancedProfile />} />
           <Route path="unified-profile" element={<UnifiedProfile />} />
           <Route path="unified-profile/:username" element={<UnifiedProfile />} />
