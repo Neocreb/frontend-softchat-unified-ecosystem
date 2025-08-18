@@ -172,13 +172,13 @@ const AdvancedFeaturesSection = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <a
                 href="/auth"
-                className="btn-primary bg-white text-softchat-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold inline-block"
+                className="btn-primary bg-white text-gray-900 hover:bg-gray-100 hover:text-black px-8 py-3 rounded-lg font-bold inline-block shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 🚀 Launch App Now
               </a>
               <a
                 href="#contact"
-                className="border-2 border-white text-white hover:bg-white hover:text-softchat-600 px-8 py-3 rounded-lg font-semibold inline-block transition-all duration-200"
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-3 rounded-lg font-bold inline-block transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 📧 Join Waitlist
               </a>
