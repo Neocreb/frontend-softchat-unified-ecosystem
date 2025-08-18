@@ -117,7 +117,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
   const [isCreatingLink, setIsCreatingLink] = useState(false);
 
   // Check permissions
-  const currentUser = group.participants.find(p => p.id === currentUserId);
+  const currentUser = (group.participants || []).find(p => p.id === currentUserId);
   const isAdmin = currentUser?.role === 'admin';
   const isCreator = group.createdBy === currentUserId;
   const canEditInfo = isAdmin && group.settings.whoCanEditGroupInfo === 'admins_only';
