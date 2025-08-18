@@ -52,7 +52,7 @@ const HeroSection = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
             {/* Become a Driver */}
             <Link to="/delivery/apply" className="group">
-              <div className="relative p-4 rounded-xl bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-950/30 dark:to-emerald-900/20 border-2 border-green-200 hover:border-green-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div className="relative p-4 rounded-xl bg-gradient-to-br from-green-100 to-emerald-200 dark:from-green-950/30 dark:to-emerald-900/20 border-2 border-green-300 hover:border-green-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
                     🚛
@@ -70,7 +70,7 @@ const HeroSection = () => {
 
             {/* Track Product */}
             <Link to="/delivery/track" className="group">
-              <div className="relative p-4 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950/30 dark:to-indigo-900/20 border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div className="relative p-4 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-blue-950/30 dark:to-indigo-900/20 border-2 border-blue-300 hover:border-blue-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
                     📦
@@ -88,7 +88,7 @@ const HeroSection = () => {
 
             {/* Marketplace */}
             <Link to="/marketplace" className="group">
-              <div className="relative p-4 rounded-xl bg-gradient-to-br from-purple-50 to-pink-100 dark:from-purple-950/30 dark:to-pink-900/20 border-2 border-purple-200 hover:border-purple-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div className="relative p-4 rounded-xl bg-gradient-to-br from-purple-100 to-pink-200 dark:from-purple-950/30 dark:to-pink-900/20 border-2 border-purple-300 hover:border-purple-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-lg bg-purple-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
                     🛍️
@@ -125,7 +125,7 @@ const HeroSection = () => {
                 <p className="text-xs font-medium text-green-700 dark:text-green-300">Crypto Trading</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-purple-50 dark:bg-purple-950/30">
-                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">🛍️</div>
+                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">���️</div>
                 <p className="text-xs font-medium text-purple-700 dark:text-purple-300">Marketplace</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-orange-50 dark:bg-orange-950/30">
