@@ -653,11 +653,100 @@ const ChatRoom = () => {
 
       {/* Group Info Modal */}
       {chat.isGroup && (
-        <GroupInfoModal
+        <EnhancedGroupInfoModal
           trigger={<div />}
           group={chat as GroupChatThread}
           currentUserId={user?.id || ""}
-          onUpdateGroup={() => {}}
+          onUpdateGroup={async (request) => {
+            // Update local chat state
+            if (chat.isGroup) {
+              const updatedChat = {
+                ...chat as GroupChatThread,
+                groupName: request.name || chat.groupName,
+                groupDescription: request.description || (chat as GroupChatThread).groupDescription,
+                groupAvatar: request.avatar || (chat as GroupChatThread).groupAvatar,
+                settings: request.settings || (chat as GroupChatThread).settings,
+              };
+              setChat(updatedChat);
+
+              // Update localStorage
+              try {
+                localStorage.setItem(`chat_${chat.id}`, JSON.stringify(updatedChat));
+              } catch (error) {
+                console.error("Error updating chat data:", error);
+              }
+            }
+          }}
+          onLeaveGroup={async (groupId) => {
+            // Handle leave group
+            navigate("/app/chat");
+          }}
+          onDeleteGroup={async (groupId) => {
+            // Handle delete group
+            navigate("/app/chat");
+          }}
+          onRemoveMember={async (groupId, userId) => {
+            // Handle remove member
+            if (chat.isGroup) {
+              const updatedChat = {
+                ...chat as GroupChatThread,
+                participants: (chat as GroupChatThread).participants.filter(p => p.id !== userId),
+              };
+              setChat(updatedChat);
+            }
+          }}
+          onPromoteMember={async (groupId, userId) => {
+            // Handle promote member
+            if (chat.isGroup) {
+              const updatedChat = {
+                ...chat as GroupChatThread,
+                participants: (chat as GroupChatThread).participants.map(p =>
+                  p.id === userId ? { ...p, role: 'admin' } : p
+                ),
+                adminIds: [...((chat as GroupChatThread).adminIds || []), userId],
+              };
+              setChat(updatedChat);
+            }
+          }}
+          onDemoteMember={async (groupId, userId) => {
+            // Handle demote member
+            if (chat.isGroup) {
+              const updatedChat = {
+                ...chat as GroupChatThread,
+                participants: (chat as GroupChatThread).participants.map(p =>
+                  p.id === userId ? { ...p, role: 'member' } : p
+                ),
+                adminIds: ((chat as GroupChatThread).adminIds || []).filter(id => id !== userId),
+              };
+              setChat(updatedChat);
+            }
+          }}
+          onToggleMute={async (groupId, mute) => {
+            // Handle mute/unmute
+            if (chat.isGroup) {
+              const updatedChat = {
+                ...chat as GroupChatThread,
+                isMuted: mute,
+              };
+              setChat(updatedChat);
+            }
+          }}
+          onTogglePin={async (groupId, pin) => {
+            // Handle pin/unpin
+            if (chat.isGroup) {
+              const updatedChat = {
+                ...chat as GroupChatThread,
+                isPinned: pin,
+              };
+              setChat(updatedChat);
+            }
+          }}
+          onCreateInviteLink={async (groupId) => {
+            // Generate invite link
+            const inviteCode = Math.random().toString(36).substring(2, 15);
+            const inviteLink = `https://softchat.app/invite/${inviteCode}`;
+            return inviteLink;
+          }}
           isOpen={showGroupInfo}
           onOpenChange={setShowGroupInfo}
         />
