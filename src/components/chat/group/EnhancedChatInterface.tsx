@@ -21,7 +21,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 // Import group components
 import { CreateGroupModal } from "./CreateGroupModal";
-import { EnhancedGroupInfoModal } from "./EnhancedGroupInfoModal";
+import { GroupInfoModal } from "./GroupInfoModal";
 import { GroupChatFilters, ChatFilter } from "./GroupChatFilters";
 import { ChatListItem } from "./ChatListItem";
 
