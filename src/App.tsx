@@ -192,6 +192,20 @@ import CampaignCenter from "./components/campaigns/CampaignCenter";
 import MemeGifDemo from "./pages/MemeGifDemo";
 import MemeGifTest from "./components/debug/MemeGifTest";
 
+// Import missing components
+import MarketplaceSell from "./pages/marketplace/MarketplaceSell";
+import VideoDetail from "./pages/VideoDetail";
+import {
+  ServiceDetail,
+  FreelancerProfile,
+  UserPosts,
+  TrustScore,
+  UserLikes,
+  UserShares,
+  CryptoProfile,
+  DeliveryProfile
+} from "./pages/MissingComponents";
+
 // Create a query client with retry configuration
 const queryClient = new QueryClient({
   defaultOptions: {
