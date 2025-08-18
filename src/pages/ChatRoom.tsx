@@ -702,33 +702,16 @@ const ChatRoomContent = () => {
         />
       )}
 
-      {/* Group Info Modal */}
-      {chat?.isGroup && chat && (
+      {/* Group Info Modal - Only render if we have proper group data */}
+      {chat?.isGroup && (chat as GroupChatThread).participants && showGroupInfo && (
         <GroupInfoModal
           trigger={<div />}
-          group={{
-            ...(chat as GroupChatThread),
-            participants: (chat as GroupChatThread).participants || [],
-            adminIds: (chat as GroupChatThread).adminIds || [],
-            createdAt: (chat as GroupChatThread).createdAt || new Date().toISOString(),
-            createdBy: (chat as GroupChatThread).createdBy || user?.id || 'current',
-            settings: (chat as GroupChatThread).settings || {
-              whoCanSendMessages: 'everyone',
-              whoCanAddMembers: 'everyone',
-              whoCanEditGroupInfo: 'admins_only',
-              whoCanRemoveMembers: 'admins_only',
-              disappearingMessages: false,
-              allowMemberInvites: true,
-              showMemberAddNotifications: true,
-              showMemberExitNotifications: true,
-              muteNonAdminMessages: false,
-            }
-          }}
-          currentUserId={user?.id || ""}
+          group={chat as GroupChatThread}
+          currentUserId={user?.id || "current"}
           onUpdateGroup={async (request) => {
-            // Update local chat state
-            if (chat.isGroup) {
-              try {
+            console.log("Updating group with:", request);
+            try {
+              if (chat && chat.isGroup) {
                 const updatedChat = {
                   ...chat as GroupChatThread,
                   groupName: request.name || (chat as GroupChatThread).groupName,
@@ -736,9 +719,10 @@ const ChatRoomContent = () => {
                   groupAvatar: request.avatar || (chat as GroupChatThread).groupAvatar,
                 };
                 setChat(updatedChat);
-              } catch (error) {
-                console.error("Error updating group:", error);
+                console.log("Group updated successfully");
               }
+            } catch (error) {
+              console.error("Error updating group:", error);
             }
           }}
           isOpen={showGroupInfo}
