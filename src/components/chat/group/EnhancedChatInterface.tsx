@@ -975,14 +975,8 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                           console.error("Error storing conversation data:", error);
                         }
 
-                        // For debugging: try test page first
-                        if (process.env.NODE_ENV === 'development' && chat.isGroup) {
-                          console.log("Navigating to test page for group chat:", chat.id);
-                          navigate(`/app/chat-test/${chat.id}?type=${chat.type}`);
-                        } else {
-                          // Navigate to dedicated chat page
-                          navigate(`/app/chat/${chat.id}?type=${chat.type}`);
-                        }
+                        // Navigate to dedicated chat page
+                        navigate(`/app/chat/${chat.id}?type=${chat.type}`);
                       }}
                       onPin={handlePinChat}
                       onMute={handleMuteChat}
