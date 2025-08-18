@@ -94,8 +94,8 @@ const HeroSection = () => {
                     🛍️
                   </div>
                   <div>
-                    <h4 className="font-bold text-purple-900 dark:text-purple-100">Shop Now</h4>
-                    <p className="text-xs text-purple-600 dark:text-purple-300">Discover products</p>
+                    <h4 className="font-bold text-purple-800 dark:text-purple-100">Shop Now</h4>
+                    <p className="text-xs text-purple-700 dark:text-purple-300">Discover products</p>
                   </div>
                 </div>
                 <p className="text-sm text-purple-700 dark:text-purple-200">
