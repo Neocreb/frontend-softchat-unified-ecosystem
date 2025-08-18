@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Users } from "lucide-react";
+import { GroupDataTest } from "@/components/debug/GroupDataTest";
 
 const SimpleChatRoom = () => {
   const { threadId } = useParams();
