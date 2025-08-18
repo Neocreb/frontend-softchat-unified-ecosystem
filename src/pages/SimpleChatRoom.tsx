@@ -152,13 +152,18 @@ const SimpleChatRoom = () => {
         {/* Content */}
         <div className="flex-1 p-4">
           <div className="space-y-4">
+            {/* Group Data Validation for group chats */}
+            {chatData.isGroup && (
+              <GroupDataTest group={chatData} />
+            )}
+
             <div className="bg-muted p-4 rounded-lg">
               <h4 className="font-medium mb-2">Debug Info</h4>
               <pre className="text-xs overflow-auto">
                 {JSON.stringify(chatData, null, 2)}
               </pre>
             </div>
-            
+
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
               <p className="text-sm">
                 ✅ Simple chat room loaded successfully! This means the basic routing and data loading works.
