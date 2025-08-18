@@ -30,7 +30,7 @@ import { GroupInfoModal } from "@/components/chat/group/GroupInfoModal";
 import { UnifiedChatThread, UnifiedChatType } from "@/types/unified-chat";
 import { GroupChatThread } from "@/types/group-chat";
 
-const ChatRoom = () => {
+const ChatRoomContent = () => {
   const { threadId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
