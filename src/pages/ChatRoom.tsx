@@ -292,69 +292,85 @@ const ChatRoomContent = () => {
         // Generate contextual messages based on chat data
         console.log("Generating messages for chat:", chatData);
         const mockMessages: EnhancedChatMessage[] = [];
-        
-        if (chatData.isGroup) {
-          const groupChat = chatData as GroupChatThread;
-          // Group chat messages
+
+        try {
+          if (chatData.isGroup) {
+            const groupChat = chatData as GroupChatThread;
+            // Group chat messages
+            mockMessages.push({
+              id: "msg_1",
+              senderId: "user_1",
+              senderName: "Alice",
+              senderAvatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
+              content: "Let's plan the family dinner!",
+              type: "text",
+              timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+              status: "read",
+              reactions: [],
+            });
+
+            mockMessages.push({
+              id: "msg_2",
+              senderId: "user_2",
+              senderName: "Bob",
+              senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+              content: "Great idea! What date works for everyone?",
+              type: "text",
+              timestamp: new Date(Date.now() - 55 * 60 * 1000).toISOString(),
+              status: "read",
+              reactions: [],
+            });
+
+            mockMessages.push({
+              id: "msg_3",
+              senderId: user?.id || "current",
+              senderName: user?.profile?.full_name || user?.email || "You",
+              senderAvatar: user?.profile?.avatar_url,
+              content: "How about this Saturday evening?",
+              type: "text",
+              timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+              status: "read",
+              reactions: [],
+            });
+          } else {
+            // Direct chat messages
+            const contextMessage = chatData.lastMessage || getContextualMessage(chatType);
+
+            mockMessages.push({
+              id: "msg_1",
+              senderId: chatData.participant_profile?.id || "user_1",
+              senderName: chatData.participant_profile?.name || "User",
+              senderAvatar: chatData.participant_profile?.avatar,
+              content: contextMessage,
+              type: "text",
+              timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+              status: "read",
+              reactions: [],
+            });
+
+            mockMessages.push({
+              id: "msg_2",
+              senderId: user?.id || "current",
+              senderName: user?.profile?.full_name || user?.email || "You",
+              senderAvatar: user?.profile?.avatar_url,
+              content: "Hello! I'm interested in discussing this further.",
+              type: "text",
+              timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+              status: "read",
+              reactions: [],
+            });
+          }
+        } catch (error) {
+          console.error("Error generating messages:", error);
+          // Fallback to basic message
           mockMessages.push({
             id: "msg_1",
-            senderId: "user_1",
-            senderName: "Alice",
-            senderAvatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100",
-            content: "Let's plan the family dinner!",
-            type: "text",
-            timestamp: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
-            status: "read",
-            reactions: [],
-          });
-          
-          mockMessages.push({
-            id: "msg_2",
-            senderId: "user_2",
-            senderName: "Bob",
-            senderAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
-            content: "Great idea! What date works for everyone?",
-            type: "text",
-            timestamp: new Date(Date.now() - 55 * 60 * 1000).toISOString(),
-            status: "read",
-            reactions: [],
-          });
-
-          mockMessages.push({
-            id: "msg_3",
-            senderId: user?.id || "current_user",
+            senderId: user?.id || "current",
             senderName: user?.profile?.full_name || user?.email || "You",
             senderAvatar: user?.profile?.avatar_url,
-            content: "How about this Saturday evening?",
+            content: "Hello!",
             type: "text",
-            timestamp: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-            status: "read",
-            reactions: [],
-          });
-        } else {
-          // Direct chat messages
-          const contextMessage = chatData.lastMessage || getContextualMessage(chatType);
-          
-          mockMessages.push({
-            id: "msg_1",
-            senderId: chatData.participant_profile?.id || "user_1",
-            senderName: chatData.participant_profile?.name || "User",
-            senderAvatar: chatData.participant_profile?.avatar,
-            content: contextMessage,
-            type: "text",
-            timestamp: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-            status: "read",
-            reactions: [],
-          });
-
-          mockMessages.push({
-            id: "msg_2",
-            senderId: user?.id || "current_user",
-            senderName: user?.profile?.full_name || user?.email || "You",
-            senderAvatar: user?.profile?.avatar_url,
-            content: "Hello! I'm interested in discussing this further.",
-            type: "text",
-            timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+            timestamp: new Date().toISOString(),
             status: "read",
             reactions: [],
           });
