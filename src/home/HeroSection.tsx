@@ -58,8 +58,8 @@ const HeroSection = () => {
                     🚛
                   </div>
                   <div>
-                    <h4 className="font-bold text-green-900 dark:text-green-100">Become a Driver</h4>
-                    <p className="text-xs text-green-600 dark:text-green-300">Start earning today</p>
+                    <h4 className="font-bold text-green-800 dark:text-green-100">Become a Driver</h4>
+                    <p className="text-xs text-green-700 dark:text-green-300">Start earning today</p>
                   </div>
                 </div>
                 <p className="text-sm text-green-700 dark:text-green-200">
