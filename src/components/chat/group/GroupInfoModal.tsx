@@ -107,7 +107,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
 
   // Edit state
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(group.groupName);
+  const [editName, setEditName] = useState(group.groupName || "");
   const [editDescription, setEditDescription] = useState(group.groupDescription || "");
   const [editAvatar, setEditAvatar] = useState(group.groupAvatar);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -117,10 +117,10 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
   const [isCreatingLink, setIsCreatingLink] = useState(false);
 
   // Check permissions
-  const currentUser = group.participants.find(p => p.id === currentUserId);
+  const currentUser = (group.participants || []).find(p => p.id === currentUserId);
   const isAdmin = currentUser?.role === 'admin';
   const isCreator = group.createdBy === currentUserId;
-  const canEditInfo = isAdmin && group.settings.whoCanEditGroupInfo === 'admins_only';
+  const canEditInfo = isAdmin && group.settings?.whoCanEditGroupInfo === 'admins_only';
   const canRemoveMembers = isAdmin;
 
   const getInitials = (name: string) => {
@@ -182,7 +182,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
   };
 
   const handleCancelEdit = () => {
-    setEditName(group.groupName);
+    setEditName(group.groupName || "");
     setEditDescription(group.groupDescription || "");
     setEditAvatar(group.groupAvatar);
     setIsEditing(false);
@@ -271,7 +271,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
     }
   };
 
-  const activeMembers = group.participants.filter(p => p.isActive);
+  const activeMembers = (group.participants || []).filter(p => p.isActive);
   const onlineMembers = activeMembers.filter(p => p.isOnline);
 
   return (
@@ -364,7 +364,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                 <Avatar className="h-16 w-16">
                   <AvatarImage src={isEditing ? editAvatar : group.groupAvatar} alt={group.groupName} />
                   <AvatarFallback className="text-2xl">
-                    {getInitials(isEditing ? editName : group.groupName)}
+                    {getInitials(isEditing ? editName : (group.groupName || "Group"))}
                   </AvatarFallback>
                 </Avatar>
                 {isEditing && (
@@ -395,7 +395,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                   </div>
                 ) : (
                   <div>
-                    <h2 className="text-xl font-semibold">{group.groupName}</h2>
+                    <h2 className="text-xl font-semibold">{group.groupName || "Unnamed Group"}</h2>
                     {group.groupDescription && (
                       <p className="text-muted-foreground mt-1">{group.groupDescription}</p>
                     )}
@@ -414,10 +414,10 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                     </>
                   )}
                   <Badge variant="outline" className="text-xs capitalize">
-                    {group.category}
+                    {group.category || 'general'}
                   </Badge>
                   <Badge variant="outline" className="text-xs capitalize">
-                    {group.groupType.replace('_', ' ')}
+                    {group.groupType ? group.groupType.replace('_', ' ') : 'private'}
                   </Badge>
                 </div>
               </div>
@@ -493,7 +493,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
               </div>
               <div>
                 <div className="text-2xl font-bold">
-                  {format(new Date(group.createdAt), 'MMM d')}
+                  {group.createdAt ? format(new Date(group.createdAt), 'MMM d') : 'N/A'}
                 </div>
                 <div className="text-xs text-muted-foreground">Created</div>
               </div>
@@ -590,7 +590,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                 <div>
                   <span className="text-muted-foreground">Created on</span>
                   <div className="font-medium mt-1">
-                    {format(new Date(group.createdAt), 'MMM d, yyyy')}
+                    {group.createdAt ? format(new Date(group.createdAt), 'MMM d, yyyy') : 'Unknown'}
                   </div>
                 </div>
               </div>

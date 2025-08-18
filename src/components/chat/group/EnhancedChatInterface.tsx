@@ -142,9 +142,9 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       type: "social",
       referenceId: null,
       participants: [
-        { id: "user_1", name: "Alice", avatar: "", role: "member", joinedAt: "", addedBy: "", isActive: true, isOnline: true },
-        { id: "user_2", name: "Bob", avatar: "", role: "member", joinedAt: "", addedBy: "", isActive: true, isOnline: false },
-        { id: "current", name: "You", avatar: "", role: "admin", joinedAt: "", addedBy: "", isActive: true, isOnline: true },
+        { id: "user_1", name: "Alice", avatar: "https://images.unsplash.com/photo-1494790108755-2616b9a5f4b0?w=100", role: "member", joinedAt: new Date().toISOString(), addedBy: "current", isActive: true, isOnline: true },
+        { id: "user_2", name: "Bob", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100", role: "member", joinedAt: new Date().toISOString(), addedBy: "current", isActive: true, isOnline: false },
+        { id: "current", name: "You", avatar: "", role: "admin", joinedAt: new Date().toISOString(), addedBy: "current", isActive: true, isOnline: true },
       ],
       lastMessage: "Let's plan the family dinner!",
       lastMessageAt: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
@@ -152,7 +152,25 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       isGroup: true,
       groupName: "Family Group",
       groupDescription: "Family chat group",
+      groupAvatar: "",
+      createdBy: "current",
+      createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // Created 7 days ago
       adminIds: ["current"],
+      settings: {
+        whoCanSendMessages: 'everyone',
+        whoCanAddMembers: 'everyone',
+        whoCanEditGroupInfo: 'admins_only',
+        whoCanRemoveMembers: 'admins_only',
+        disappearingMessages: false,
+        allowMemberInvites: true,
+        showMemberAddNotifications: true,
+        showMemberExitNotifications: true,
+        muteNonAdminMessages: false,
+      },
+      maxParticipants: 256,
+      groupType: 'private',
+      category: 'family',
+      totalMessages: 15,
       unreadCount: 3,
     },
     {
@@ -488,19 +506,29 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
   // Group management functions
   const handleCreateGroup = async (request: CreateGroupRequest) => {
     try {
+      console.log("Creating group with request:", request);
+
+      // Ensure current user is included in participants
+      const allParticipants = [...new Set([...(request.participants || []), user?.id || 'current'])];
+      console.log("All participants:", allParticipants);
+
       const newGroup: GroupChatThread = {
         id: `group_${Date.now()}`,
         type: "social",
         referenceId: null,
-        participants: request.participants.map(userId => ({
+        participants: allParticipants.map(userId => ({
           id: userId,
-          name: availableContacts.find(c => c.id === userId)?.name || "Unknown",
-          avatar: availableContacts.find(c => c.id === userId)?.avatar,
+          name: userId === user?.id
+            ? (user?.profile?.full_name || user?.email || "You")
+            : (availableContacts.find(c => c.id === userId)?.name || "Unknown"),
+          avatar: userId === user?.id
+            ? user?.profile?.avatar_url
+            : availableContacts.find(c => c.id === userId)?.avatar,
           role: userId === user?.id ? 'admin' : 'member',
           joinedAt: new Date().toISOString(),
-          addedBy: user?.id || '',
+          addedBy: 'current',
           isActive: true,
-          isOnline: availableContacts.find(c => c.id === userId)?.isOnline || false,
+          isOnline: userId === user?.id ? true : (availableContacts.find(c => c.id === userId)?.isOnline || false),
         })),
         lastMessage: request.initialMessage || "Group created",
         lastMessageAt: new Date().toISOString(),
@@ -509,9 +537,9 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         groupName: request.name,
         groupDescription: request.description,
         groupAvatar: request.avatar,
-        createdBy: user?.id || '',
+        createdBy: 'current',
         createdAt: new Date().toISOString(),
-        adminIds: [user?.id || ''],
+        adminIds: ['current'],
         settings: request.settings || {
           whoCanSendMessages: 'everyone',
           whoCanAddMembers: 'everyone', 
@@ -529,9 +557,14 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         totalMessages: 0,
       };
 
-      setConversations(prev => [newGroup, ...prev]);
+      console.log("New group created:", newGroup);
+      setConversations(prev => {
+        const updated = [newGroup, ...prev];
+        console.log("Updated conversations:", updated);
+        return updated;
+      });
       setShowCreateGroup(false);
-      
+
       toast({
         title: "Group Created",
         description: `${request.name} has been created successfully`,
@@ -952,6 +985,14 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                       isSelected={selectedChat?.id === chat.id}
                       currentUserId={user?.id || ""}
                       onClick={() => {
+                        // Store conversation data for ChatRoom to access
+                        try {
+                          localStorage.setItem(`chat_${chat.id}`, JSON.stringify(chat));
+                          console.log("Stored chat data for", chat.id, ":", chat);
+                        } catch (error) {
+                          console.error("Error storing conversation data:", error);
+                        }
+
                         // Navigate to dedicated chat page
                         navigate(`/app/chat/${chat.id}?type=${chat.type}`);
                       }}
@@ -1108,7 +1149,30 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
           trigger={<div />}
           group={selectedChat as GroupChatThread}
           currentUserId={user?.id || ""}
-          onUpdateGroup={() => {}}
+          onUpdateGroup={async (request) => {
+            // Update conversation in state
+            setConversations(prev => prev.map(conv =>
+              conv.id === selectedChat.id
+                ? {
+                    ...conv as GroupChatThread,
+                    groupName: request.name || (conv as GroupChatThread).groupName,
+                    groupDescription: request.description || (conv as GroupChatThread).groupDescription,
+                    groupAvatar: request.avatar || (conv as GroupChatThread).groupAvatar,
+                  }
+                : conv
+            ));
+
+            // Update selected chat
+            if (selectedChat) {
+              const updatedChat = {
+                ...selectedChat as GroupChatThread,
+                groupName: request.name || (selectedChat as GroupChatThread).groupName,
+                groupDescription: request.description || (selectedChat as GroupChatThread).groupDescription,
+                groupAvatar: request.avatar || (selectedChat as GroupChatThread).groupAvatar,
+              };
+              setSelectedChat(updatedChat);
+            }
+          }}
           isOpen={showGroupInfo}
           onOpenChange={setShowGroupInfo}
         />
