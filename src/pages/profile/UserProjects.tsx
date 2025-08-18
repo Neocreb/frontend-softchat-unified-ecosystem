@@ -35,6 +35,7 @@ import {
   Image as ImageIcon,
   FileText,
   Link as LinkIcon,
+  Plus,
 } from "lucide-react";
 import { UserProfile } from "@/types/user";
 import AddExternalWorkModal from "@/components/profile/AddExternalWorkModal";
