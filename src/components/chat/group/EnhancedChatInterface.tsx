@@ -359,7 +359,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
 
   // Calculate filter counts for social tab
   const filterCounts = useMemo(() => {
-    const socialConversations = mockConversations.filter((conv) => conv.type === "social");
+    const socialConversations = conversations.filter((conv) => conv.type === "social");
 
     return {
       groups: socialConversations.filter((conv) => conv.isGroup).length,
@@ -367,7 +367,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       unread: socialConversations.filter((conv) => (conv.unreadCount || 0) > 0).length,
       pinned: socialConversations.filter((conv) => conv.isPinned).length,
     };
-  }, [mockConversations]);
+  }, [conversations]);
 
   // Handle URL parameters for direct navigation
   useEffect(() => {
