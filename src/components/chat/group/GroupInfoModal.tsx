@@ -107,7 +107,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
 
   // Edit state
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(group.groupName);
+  const [editName, setEditName] = useState(group.groupName || "");
   const [editDescription, setEditDescription] = useState(group.groupDescription || "");
   const [editAvatar, setEditAvatar] = useState(group.groupAvatar);
   const [isUpdating, setIsUpdating] = useState(false);
