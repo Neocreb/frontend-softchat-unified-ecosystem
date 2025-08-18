@@ -182,7 +182,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
   };
 
   const handleCancelEdit = () => {
-    setEditName(group.groupName);
+    setEditName(group.groupName || "");
     setEditDescription(group.groupDescription || "");
     setEditAvatar(group.groupAvatar);
     setIsEditing(false);
