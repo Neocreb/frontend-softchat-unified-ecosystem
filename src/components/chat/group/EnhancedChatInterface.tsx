@@ -488,19 +488,29 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
   // Group management functions
   const handleCreateGroup = async (request: CreateGroupRequest) => {
     try {
+      console.log("Creating group with request:", request);
+
+      // Ensure current user is included in participants
+      const allParticipants = [...new Set([...(request.participants || []), user?.id || 'current'])];
+      console.log("All participants:", allParticipants);
+
       const newGroup: GroupChatThread = {
         id: `group_${Date.now()}`,
         type: "social",
         referenceId: null,
-        participants: request.participants.map(userId => ({
+        participants: allParticipants.map(userId => ({
           id: userId,
-          name: availableContacts.find(c => c.id === userId)?.name || "Unknown",
-          avatar: availableContacts.find(c => c.id === userId)?.avatar,
+          name: userId === user?.id
+            ? (user?.profile?.full_name || user?.email || "You")
+            : (availableContacts.find(c => c.id === userId)?.name || "Unknown"),
+          avatar: userId === user?.id
+            ? user?.profile?.avatar_url
+            : availableContacts.find(c => c.id === userId)?.avatar,
           role: userId === user?.id ? 'admin' : 'member',
           joinedAt: new Date().toISOString(),
           addedBy: user?.id || '',
           isActive: true,
-          isOnline: availableContacts.find(c => c.id === userId)?.isOnline || false,
+          isOnline: userId === user?.id ? true : (availableContacts.find(c => c.id === userId)?.isOnline || false),
         })),
         lastMessage: request.initialMessage || "Group created",
         lastMessageAt: new Date().toISOString(),
