@@ -386,6 +386,8 @@ const AppRoutes = () => {
           <Route path="freelance/freelancer-projects" element={<FreelancerManageProjects />} />
           <Route path="freelance/approve-work" element={<ApproveWork />} />
           <Route path="freelance/job/:jobId" element={<DetailedJobPage />} />
+          <Route path="freelance/service/:serviceId" element={<ServiceDetail />} />
+          <Route path="freelance/profile/:username" element={<FreelancerProfile />} />
           <Route path="chat" element={<Chat />} />
           <Route path="chat/:threadId" element={<ChatRoom />} />
           <Route path="chat-test/:threadId" element={<ChatTest />} />
@@ -402,7 +404,10 @@ const AppRoutes = () => {
           <Route path="profile/:username/followers" element={<ProfileFollowers />} />
           <Route path="profile/:username/following" element={<ProfileFollowing />} />
           <Route path="profile/:username/views" element={<ProfileViews />} />
-          <Route path="profile/:username/views" element={<ProfileViews />} />
+          <Route path="profile/:username/posts" element={<UserPosts />} />
+          <Route path="profile/:username/trust" element={<TrustScore />} />
+          <Route path="profile/:username/likes" element={<UserLikes />} />
+          <Route path="profile/:username/shares" element={<UserShares />} />
           <Route path="user/:username" element={<EnhancedProfile />} />
           <Route path="unified-profile" element={<UnifiedProfile />} />
           <Route path="unified-profile/:username" element={<UnifiedProfile />} />
@@ -442,6 +447,7 @@ const AppRoutes = () => {
             path="marketplace/checkout"
             element={<MarketplaceCheckout />}
           />
+          <Route path="marketplace/sell" element={<MarketplaceSell />} />
 
           {/* Delivery routes */}
           <Route path="delivery" element={<DeliveryProviderStatus />} />
@@ -455,9 +461,12 @@ const AppRoutes = () => {
           <Route path="crypto-p2p" element={<CryptoP2P />} />
           <Route path="crypto-portfolio" element={<CryptoPortfolio />} />
           <Route path="crypto-learn" element={<CryptoLearn />} />
+          <Route path="crypto/profile/:username" element={<CryptoProfile />} />
+          <Route path="delivery/profile/:username" element={<DeliveryProfile />} />
           <Route path="campaigns" element={<CampaignCenter />} />
           <Route path="rewards" element={<EnhancedRewards />} />
           <Route path="videos" element={<EnhancedTikTokVideosV3 />} />
+          <Route path="videos/:videoId" element={<VideoDetail />} />
           <Route path="duet-demo" element={<DuetDemo />} />
           <Route path="explore" element={<Explore />} />
           <Route path="global-search" element={<GlobalSearch />} />
