@@ -526,7 +526,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
             : availableContacts.find(c => c.id === userId)?.avatar,
           role: userId === user?.id ? 'admin' : 'member',
           joinedAt: new Date().toISOString(),
-          addedBy: user?.id || '',
+          addedBy: 'current',
           isActive: true,
           isOnline: userId === user?.id ? true : (availableContacts.find(c => c.id === userId)?.isOnline || false),
         })),
