@@ -172,13 +172,13 @@ import PostDetail from "./pages/PostDetail";
 // import FeedToggleDemo from "./pages/FeedToggleDemo";
 // import IntegratedFeedDemo from "./pages/IntegratedFeedDemo";
 import {
-  FriendsPage,
   AdsPage,
   MemoriesPage,
   SavedPage,
   SupportPage,
   HelpPage,
 } from "./pages/PlaceholderPages";
+import Friends from "./pages/Friends";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import CookiesPolicy from "./pages/CookiesPolicy";
@@ -508,7 +508,7 @@ const AppRoutes = () => {
           <Route path="analytics" element={<AnalyticsDashboard />} />
 
           {/* Facebook-style navigation pages */}
-          <Route path="friends" element={<FriendsPage />} />
+          <Route path="friends" element={<Friends />} />
           <Route path="groups" element={<Groups />} />
           <Route path="groups/:groupId" element={<GroupDetailView />} />
           <Route path="groups/:groupId/manage" element={<GroupManagement />} />
