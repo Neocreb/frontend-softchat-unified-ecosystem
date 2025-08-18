@@ -39,6 +39,11 @@ import videoRouter from './routes/video.js';
 import cryptoRouter from './routes/crypto.js';
 import kycRouter from './routes/kyc.js';
 import notificationsRouter from './routes/notifications.js';
+import postsRouter from './routes/posts.js';
+import profilesRouter from './routes/profiles.js';
+import productsRouter from './routes/products.js';
+import freelanceRouter from './routes/freelance.js';
+import followRouter from './routes/follow.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
