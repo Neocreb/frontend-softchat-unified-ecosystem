@@ -417,7 +417,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                     {group.category}
                   </Badge>
                   <Badge variant="outline" className="text-xs capitalize">
-                    {group.groupType.replace('_', ' ')}
+                    {group.groupType ? group.groupType.replace('_', ' ') : 'private'}
                   </Badge>
                 </div>
               </div>
