@@ -75,6 +75,11 @@ const UserProjects: React.FC = () => {
   const { username } = useParams();
   const [activeTab, setActiveTab] = useState("portfolio");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [showAddWorkModal, setShowAddWorkModal] = useState(false);
+  const [externalWorks, setExternalWorks] = useState(externalWorksData);
+
+  // Check if this is the user's own profile (in real app, check authentication)
+  const isOwnProfile = true; // Mock - in real app: currentUser?.username === username
 
   // Mock data - in real app, fetch from API
   const userProfile: UserProfile = {
