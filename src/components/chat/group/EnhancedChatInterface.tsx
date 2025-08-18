@@ -379,13 +379,13 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       setActiveTab(typeParam);
     }
 
-    if (threadParam && mockConversations.length > 0) {
-      const targetChat = mockConversations.find((conv) => conv.id === threadParam);
+    if (threadParam && conversations.length > 0) {
+      const targetChat = conversations.find((conv) => conv.id === threadParam);
       if (targetChat) {
         setSelectedChat(targetChat);
       }
     }
-  }, [mockConversations]);
+  }, [conversations]);
 
   // Load conversations effect
   useEffect(() => {
