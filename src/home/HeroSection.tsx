@@ -58,7 +58,7 @@ const HeroSection = () => {
                     🚛
                   </div>
                   <div>
-                    <h4 className="font-bold text-green-800 dark:text-green-100">Become a Driver</h4>
+                    <h4 className="font-extrabold text-green-900 dark:text-green-100">Become a Driver</h4>
                     <p className="text-xs text-green-700 dark:text-green-300">Start earning today</p>
                   </div>
                 </div>
@@ -76,7 +76,7 @@ const HeroSection = () => {
                     📦
                   </div>
                   <div>
-                    <h4 className="font-bold text-blue-800 dark:text-blue-100">Track Product</h4>
+                    <h4 className="font-extrabold text-blue-900 dark:text-blue-100">Track Product</h4>
                     <p className="text-xs text-blue-700 dark:text-blue-300">Real-time tracking</p>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ const HeroSection = () => {
                     🛍️
                   </div>
                   <div>
-                    <h4 className="font-bold text-purple-800 dark:text-purple-100">Shop Now</h4>
+                    <h4 className="font-extrabold text-purple-900 dark:text-purple-100">Shop Now</h4>
                     <p className="text-xs text-purple-700 dark:text-purple-300">Discover products</p>
                   </div>
                 </div>
@@ -125,7 +125,7 @@ const HeroSection = () => {
                 <p className="text-xs font-medium text-green-700 dark:text-green-300">Crypto Trading</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-purple-50 dark:bg-purple-950/30">
-                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">���️</div>
+                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">🛍️</div>
                 <p className="text-xs font-medium text-purple-700 dark:text-purple-300">Marketplace</p>
               </div>
               <div className="text-center p-3 rounded-lg bg-orange-50 dark:bg-orange-950/30">
