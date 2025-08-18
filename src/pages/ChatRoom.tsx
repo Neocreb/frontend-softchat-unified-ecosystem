@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ChatErrorBoundary } from "@/components/debug/ChatErrorBoundary";
 
 // Import chat components
 import { EnhancedMessage, EnhancedChatMessage } from "@/components/chat/EnhancedMessage";
