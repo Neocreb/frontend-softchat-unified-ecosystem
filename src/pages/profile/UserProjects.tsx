@@ -444,6 +444,20 @@ const UserProjects: React.FC = () => {
 
               {/* External Work Tab */}
               <TabsContent value="external" className="mt-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h3 className="text-lg font-semibold">External Work</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Showcase your work from other platforms and projects
+                    </p>
+                  </div>
+                  {isOwnProfile && (
+                    <Button onClick={() => setShowAddWorkModal(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Work
+                    </Button>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {externalWorks.map((work) => (
                     <Card key={work.id} className="hover:shadow-lg transition-shadow">
