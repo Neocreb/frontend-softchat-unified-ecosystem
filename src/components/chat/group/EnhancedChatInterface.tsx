@@ -1111,7 +1111,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       />
 
       {selectedChat?.isGroup && (
-        <EnhancedGroupInfoModal
+        <GroupInfoModal
           trigger={<div />}
           group={selectedChat as GroupChatThread}
           currentUserId={user?.id || ""}
@@ -1124,7 +1124,6 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                     groupName: request.name || (conv as GroupChatThread).groupName,
                     groupDescription: request.description || (conv as GroupChatThread).groupDescription,
                     groupAvatar: request.avatar || (conv as GroupChatThread).groupAvatar,
-                    settings: request.settings || (conv as GroupChatThread).settings,
                   }
                 : conv
             ));
@@ -1136,81 +1135,9 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
                 groupName: request.name || (selectedChat as GroupChatThread).groupName,
                 groupDescription: request.description || (selectedChat as GroupChatThread).groupDescription,
                 groupAvatar: request.avatar || (selectedChat as GroupChatThread).groupAvatar,
-                settings: request.settings || (selectedChat as GroupChatThread).settings,
               };
               setSelectedChat(updatedChat);
             }
-          }}
-          onLeaveGroup={async (groupId) => {
-            // Remove from conversations and clear selection
-            setConversations(prev => prev.filter(conv => conv.id !== groupId));
-            setSelectedChat(null);
-          }}
-          onDeleteGroup={async (groupId) => {
-            // Remove from conversations and clear selection
-            setConversations(prev => prev.filter(conv => conv.id !== groupId));
-            setSelectedChat(null);
-          }}
-          onRemoveMember={async (groupId, userId) => {
-            // Update conversation participants
-            setConversations(prev => prev.map(conv =>
-              conv.id === groupId && conv.isGroup
-                ? {
-                    ...conv as GroupChatThread,
-                    participants: (conv as GroupChatThread).participants.filter(p => p.id !== userId),
-                  }
-                : conv
-            ));
-          }}
-          onPromoteMember={async (groupId, userId) => {
-            // Update member role to admin
-            setConversations(prev => prev.map(conv =>
-              conv.id === groupId && conv.isGroup
-                ? {
-                    ...conv as GroupChatThread,
-                    participants: (conv as GroupChatThread).participants.map(p =>
-                      p.id === userId ? { ...p, role: 'admin' } : p
-                    ),
-                    adminIds: [...((conv as GroupChatThread).adminIds || []), userId],
-                  }
-                : conv
-            ));
-          }}
-          onDemoteMember={async (groupId, userId) => {
-            // Update member role to member
-            setConversations(prev => prev.map(conv =>
-              conv.id === groupId && conv.isGroup
-                ? {
-                    ...conv as GroupChatThread,
-                    participants: (conv as GroupChatThread).participants.map(p =>
-                      p.id === userId ? { ...p, role: 'member' } : p
-                    ),
-                    adminIds: ((conv as GroupChatThread).adminIds || []).filter(id => id !== userId),
-                  }
-                : conv
-            ));
-          }}
-          onToggleMute={async (groupId, mute) => {
-            // Update mute status
-            setConversations(prev => prev.map(conv =>
-              conv.id === groupId
-                ? { ...conv, isMuted: mute }
-                : conv
-            ));
-          }}
-          onTogglePin={async (groupId, pin) => {
-            // Update pin status
-            setConversations(prev => prev.map(conv =>
-              conv.id === groupId
-                ? { ...conv, isPinned: pin }
-                : conv
-            ));
-          }}
-          onCreateInviteLink={async (groupId) => {
-            // Generate invite link
-            const inviteCode = Math.random().toString(36).substring(2, 15);
-            const inviteLink = `https://softchat.app/invite/${inviteCode}`;
-            return inviteLink;
           }}
           isOpen={showGroupInfo}
           onOpenChange={setShowGroupInfo}
