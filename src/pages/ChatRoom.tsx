@@ -200,8 +200,8 @@ const ChatRoomContent = () => {
             isOnline: true,
           }
         ],
-        adminIds: chatData.adminIds || [user?.id || 'current'],
-        createdBy: user?.id || 'current',
+        adminIds: chatData.adminIds || ['current'],
+        createdBy: 'current',
         createdAt: new Date().toISOString(),
         settings: {
           whoCanSendMessages: 'everyone',
