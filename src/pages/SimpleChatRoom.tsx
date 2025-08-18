@@ -190,6 +190,20 @@ const SimpleChatRoom = () => {
           </div>
         </div>
       </div>
+
+      {/* Test Group Info Modal */}
+      {chatData?.isGroup && showGroupModal && (
+        <GroupInfoModal
+          trigger={<div />}
+          group={chatData}
+          currentUserId="current"
+          onUpdateGroup={async (request) => {
+            console.log("Test update group:", request);
+          }}
+          isOpen={showGroupModal}
+          onOpenChange={setShowGroupModal}
+        />
+      )}
     </>
   );
 };
