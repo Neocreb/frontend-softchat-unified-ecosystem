@@ -279,7 +279,7 @@ const CampaignCenter: React.FC = () => {
       </div>
 
       {/* Quick Stats Overview */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-4 text-center">
             <div className="text-2xl lg:text-3xl font-bold text-blue-600 mb-1">
@@ -333,7 +333,7 @@ const CampaignCenter: React.FC = () => {
       </div>
 
       <Tabs defaultValue="active-campaigns" className="w-full">
-        <TabsList className="mb-6 grid grid-cols-2 lg:grid-cols-4 h-auto w-full lg:w-fit mx-auto">
+        <TabsList className="mb-6 grid grid-cols-2 lg:grid-cols-4 h-auto w-full max-w-md mx-auto lg:max-w-fit">
           <TabsTrigger value="active-campaigns" className="text-sm px-4 py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white">Active</TabsTrigger>
           <TabsTrigger value="smart-suggestions" className="text-sm px-4 py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white">Suggestions</TabsTrigger>
           <TabsTrigger value="analytics" className="text-sm px-4 py-3 data-[state=active]:bg-blue-600 data-[state=active]:text-white">Analytics</TabsTrigger>
@@ -440,7 +440,7 @@ const CampaignCenter: React.FC = () => {
                       </div>
 
                       {/* Performance Metrics */}
-                      <div className="grid grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-6">
                         <div className="text-center p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg">
                           <div className="text-lg lg:text-xl font-bold text-blue-600">
                             {campaign.performance.impressions.toLocaleString()}
@@ -525,7 +525,7 @@ const CampaignCenter: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {Object.values(CAMPAIGN_GOALS).map((goal) => (
                 <Card 
                   key={goal.id}
