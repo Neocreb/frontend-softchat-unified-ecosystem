@@ -23,7 +23,7 @@ import WhatsAppChatInput from "@/components/chat/WhatsAppChatInput";
 import { VoiceVideoCall } from "@/components/chat/VoiceVideoCall";
 import { TypingIndicator } from "@/components/chat/TypingIndicator";
 import { OnlineStatusIndicator } from "@/components/chat/OnlineStatusIndicator";
-import { EnhancedGroupInfoModal } from "@/components/chat/group/EnhancedGroupInfoModal";
+import { GroupInfoModal } from "@/components/chat/group/GroupInfoModal";
 
 // Types
 import { UnifiedChatThread, UnifiedChatType } from "@/types/unified-chat";
