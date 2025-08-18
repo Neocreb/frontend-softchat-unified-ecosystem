@@ -247,7 +247,7 @@ const CampaignCenter: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-none px-4 lg:px-6 py-6 space-y-6">
+    <div className="w-full max-w-none px-0 py-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6">
         <div className="flex-1">
