@@ -555,6 +555,18 @@ const UserProjects: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Add External Work Modal */}
+      {isOwnProfile && (
+        <AddExternalWorkModal
+          open={showAddWorkModal}
+          onClose={() => setShowAddWorkModal(false)}
+          onAddWork={(newWork) => {
+            setExternalWorks(prev => [...prev, newWork]);
+            setShowAddWorkModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };
