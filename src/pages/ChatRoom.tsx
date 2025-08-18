@@ -187,7 +187,18 @@ const ChatRoom = () => {
         isGroup: true,
         groupName: chatData.groupName || chatData.name,
         groupDescription: chatData.groupDescription,
-        participants: chatData.participants || [],
+        participants: chatData.participants || [
+          {
+            id: user?.id || 'current',
+            name: user?.profile?.full_name || 'You',
+            avatar: user?.profile?.avatar_url,
+            role: 'admin' as const,
+            joinedAt: new Date().toISOString(),
+            addedBy: 'current',
+            isActive: true,
+            isOnline: true,
+          }
+        ],
         adminIds: chatData.adminIds || [],
         createdBy: user?.id || 'current',
         createdAt: new Date().toISOString(),
