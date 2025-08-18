@@ -289,7 +289,7 @@ export const EnhancedGroupInfoModal: React.FC<EnhancedGroupInfoModalProps> = ({
   );
 
   const renderHeader = () => (
-    <DialogHeader className="border-b pb-4">
+    <DialogHeader className="border-b pb-4 px-6 pt-6 flex-shrink-0">
       <div className="flex items-center justify-between">
         <DialogTitle className="flex items-center gap-2">
           {currentView === 'main' && <Users className="h-5 w-5" />}
@@ -297,14 +297,14 @@ export const EnhancedGroupInfoModal: React.FC<EnhancedGroupInfoModalProps> = ({
           {currentView === 'settings' && <Settings className="h-5 w-5" />}
           {currentView === 'edit' && <Edit3 className="h-5 w-5" />}
           {currentView === 'media' && <Image className="h-5 w-5" />}
-          
+
           {currentView === 'main' && "Group Info"}
           {currentView === 'members' && `Members (${activeMembers.length})`}
           {currentView === 'settings' && "Group Settings"}
           {currentView === 'edit' && "Edit Group"}
           {currentView === 'media' && "Media & Files"}
         </DialogTitle>
-        
+
         <div className="flex items-center gap-2">
           {currentView !== 'main' && (
             <Button
@@ -354,17 +354,37 @@ export const EnhancedGroupInfoModal: React.FC<EnhancedGroupInfoModalProps> = ({
 
       {/* Quick Actions */}
       <div className="grid grid-cols-4 gap-3">
-        <Button variant="outline" className="flex flex-col gap-2 h-auto py-4">
+        <Button
+          variant="outline"
+          className="flex flex-col gap-2 h-auto py-4 hover:bg-muted/50 transition-colors"
+          onClick={() => {
+            // Implement voice call functionality when WebSocket is ready
+            toast({
+              title: "Voice Call",
+              description: "Voice call feature will be available when WebSocket is connected",
+            });
+          }}
+        >
           <Phone className="h-5 w-5" />
           <span className="text-xs">Audio</span>
         </Button>
-        <Button variant="outline" className="flex flex-col gap-2 h-auto py-4">
+        <Button
+          variant="outline"
+          className="flex flex-col gap-2 h-auto py-4 hover:bg-muted/50 transition-colors"
+          onClick={() => {
+            // Implement video call functionality when WebSocket is ready
+            toast({
+              title: "Video Call",
+              description: "Video call feature will be available when WebSocket is connected",
+            });
+          }}
+        >
           <Video className="h-5 w-5" />
           <span className="text-xs">Video</span>
         </Button>
         <Button
           variant="outline"
-          className="flex flex-col gap-2 h-auto py-4"
+          className="flex flex-col gap-2 h-auto py-4 hover:bg-muted/50 transition-colors"
           onClick={handleCreateInviteLink}
           disabled={isCreatingLink}
         >
@@ -373,9 +393,37 @@ export const EnhancedGroupInfoModal: React.FC<EnhancedGroupInfoModalProps> = ({
             {isCreatingLink ? "..." : "Invite"}
           </span>
         </Button>
-        <Button variant="outline" className="flex flex-col gap-2 h-auto py-4">
-          <Search className="h-5 w-5" />
-          <span className="text-xs">Search</span>
+        <Button
+          variant="outline"
+          className="flex flex-col gap-2 h-auto py-4 hover:bg-muted/50 transition-colors"
+          onClick={async () => {
+            try {
+              if (navigator.share) {
+                await navigator.share({
+                  title: `Join ${group.groupName}`,
+                  text: `You're invited to join ${group.groupName} on Softchat`,
+                  url: inviteLink || window.location.href,
+                });
+              } else {
+                // Fallback: copy to clipboard
+                const shareText = `Join ${group.groupName} on Softchat: ${inviteLink || window.location.href}`;
+                await navigator.clipboard.writeText(shareText);
+                toast({
+                  title: "Share link copied",
+                  description: "Group share link copied to clipboard",
+                });
+              }
+            } catch (error) {
+              toast({
+                title: "Share failed",
+                description: "Could not share group link",
+                variant: "destructive",
+              });
+            }
+          }}
+        >
+          <Share className="h-5 w-5" />
+          <span className="text-xs">Share</span>
         </Button>
       </div>
 
@@ -868,10 +916,10 @@ export const EnhancedGroupInfoModal: React.FC<EnhancedGroupInfoModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-md max-h-[90vh] flex flex-col p-0 gap-0">
         {renderHeader()}
         
-        <ScrollArea className="max-h-[70vh] px-1">
+        <ScrollArea className="flex-1 px-6 pb-6">
           {currentView === 'main' && renderMainView()}
           {currentView === 'members' && renderMembersView()}
           {currentView === 'settings' && renderSettingsView()}

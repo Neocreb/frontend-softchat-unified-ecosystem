@@ -304,10 +304,10 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
 
   // Tabs configuration
   const tabsWithCounts: UnifiedChatTab[] = useMemo(() => {
-    const socialConvs = mockConversations.filter(c => c.type === "social");
-    const freelanceConvs = mockConversations.filter(c => c.type === "freelance");
-    const marketplaceConvs = mockConversations.filter(c => c.type === "marketplace");
-    const cryptoConvs = mockConversations.filter(c => c.type === "crypto");
+    const socialConvs = conversations.filter(c => c.type === "social");
+    const freelanceConvs = conversations.filter(c => c.type === "freelance");
+    const marketplaceConvs = conversations.filter(c => c.type === "marketplace");
+    const cryptoConvs = conversations.filter(c => c.type === "crypto");
 
     return [
       { id: "social", label: "Social", icon: "👥", count: socialConvs.reduce((sum, c) => sum + (c.unreadCount || 0), 0) },
@@ -316,11 +316,11 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       { id: "crypto", label: "Crypto", icon: "🪙", count: cryptoConvs.reduce((sum, c) => sum + (c.unreadCount || 0), 0) },
       { id: "ai_assistant", label: "AI", icon: "🤖", count: 0 },
     ];
-  }, [mockConversations]);
+  }, [conversations]);
 
   // Filtered conversations based on active tab and filters
   const filteredConversations = useMemo(() => {
-    let filtered = mockConversations.filter((conv) => 
+    let filtered = conversations.filter((conv) =>
       activeTab === "ai_assistant" ? false : conv.type === activeTab
     );
 
@@ -355,11 +355,11 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       (a, b) =>
         new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime()
     );
-  }, [mockConversations, activeTab, chatFilter, searchQuery]);
+  }, [conversations, activeTab, chatFilter, searchQuery]);
 
   // Calculate filter counts for social tab
   const filterCounts = useMemo(() => {
-    const socialConversations = mockConversations.filter((conv) => conv.type === "social");
+    const socialConversations = conversations.filter((conv) => conv.type === "social");
 
     return {
       groups: socialConversations.filter((conv) => conv.isGroup).length,
@@ -367,7 +367,7 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       unread: socialConversations.filter((conv) => (conv.unreadCount || 0) > 0).length,
       pinned: socialConversations.filter((conv) => conv.isPinned).length,
     };
-  }, [mockConversations]);
+  }, [conversations]);
 
   // Handle URL parameters for direct navigation
   useEffect(() => {
@@ -379,13 +379,13 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
       setActiveTab(typeParam);
     }
 
-    if (threadParam && mockConversations.length > 0) {
-      const targetChat = mockConversations.find((conv) => conv.id === threadParam);
+    if (threadParam && conversations.length > 0) {
+      const targetChat = conversations.find((conv) => conv.id === threadParam);
       if (targetChat) {
         setSelectedChat(targetChat);
       }
     }
-  }, [mockConversations]);
+  }, [conversations]);
 
   // Load conversations effect
   useEffect(() => {
