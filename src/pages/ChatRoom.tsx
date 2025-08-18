@@ -106,15 +106,15 @@ const ChatRoomContent = () => {
             isActive: true, 
             isOnline: false 
           },
-          { 
-            id: user?.id || 'current', 
-            name: user?.profile?.full_name || 'You', 
-            avatar: user?.profile?.avatar_url, 
-            role: 'admin', 
-            joinedAt: new Date().toISOString(), 
-            addedBy: 'current', 
-            isActive: true, 
-            isOnline: true 
+          {
+            id: 'current',
+            name: user?.profile?.full_name || 'You',
+            avatar: user?.profile?.avatar_url,
+            role: 'admin',
+            joinedAt: new Date().toISOString(),
+            addedBy: 'current',
+            isActive: true,
+            isOnline: true
           },
         ],
         adminIds: [user?.id || 'current']
