@@ -260,6 +260,15 @@ const ChatRoom = () => {
           chatData = generateChatFromId(threadId, chatType);
         }
 
+        // Debug logging for group chats
+        if (chatData.isGroup) {
+          console.log("Group chat data:", chatData);
+          const groupData = chatData as GroupChatThread;
+          if (!groupData.participants || groupData.participants.length === 0) {
+            console.warn("Group chat has no participants, this might cause errors");
+          }
+        }
+
         // Generate contextual messages based on chat data
         const mockMessages: EnhancedChatMessage[] = [];
         
