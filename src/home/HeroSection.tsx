@@ -62,7 +62,7 @@ const HeroSection = () => {
                     <p className="text-xs text-green-700 dark:text-green-300">Start earning today</p>
                   </div>
                 </div>
-                <p className="text-sm text-green-700 dark:text-green-200">
+                <p className="text-sm text-green-800 dark:text-green-200">
                   Join our delivery network and earn competitive rates
                 </p>
               </div>
