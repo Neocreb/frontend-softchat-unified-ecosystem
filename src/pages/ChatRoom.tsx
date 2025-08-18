@@ -672,10 +672,27 @@ const ChatRoom = () => {
       )}
 
       {/* Group Info Modal */}
-      {chat?.isGroup && (chat as GroupChatThread).participants && (
+      {chat?.isGroup && chat && (
         <GroupInfoModal
           trigger={<div />}
-          group={chat as GroupChatThread}
+          group={{
+            ...(chat as GroupChatThread),
+            participants: (chat as GroupChatThread).participants || [],
+            adminIds: (chat as GroupChatThread).adminIds || [],
+            createdAt: (chat as GroupChatThread).createdAt || new Date().toISOString(),
+            createdBy: (chat as GroupChatThread).createdBy || user?.id || 'current',
+            settings: (chat as GroupChatThread).settings || {
+              whoCanSendMessages: 'everyone',
+              whoCanAddMembers: 'everyone',
+              whoCanEditGroupInfo: 'admins_only',
+              whoCanRemoveMembers: 'admins_only',
+              disappearingMessages: false,
+              allowMemberInvites: true,
+              showMemberAddNotifications: true,
+              showMemberExitNotifications: true,
+              muteNonAdminMessages: false,
+            }
+          }}
           currentUserId={user?.id || ""}
           onUpdateGroup={async (request) => {
             // Update local chat state
