@@ -164,7 +164,7 @@ const UserProjects: React.FC = () => {
     },
   ];
 
-  const externalWorks: ExternalWork[] = [
+  const externalWorksData: ExternalWork[] = [
     {
       id: "1",
       title: "Personal Portfolio Website",
