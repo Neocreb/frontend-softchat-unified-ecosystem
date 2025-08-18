@@ -173,6 +173,19 @@ const SimpleChatRoom = () => {
               <p className="text-xs text-muted-foreground mt-2">
                 Thread ID: {threadId}, Type: {chatType}
               </p>
+
+              {/* Test Group Modal for group chats */}
+              {chatData.isGroup && (
+                <div className="mt-4">
+                  <Button
+                    onClick={() => setShowGroupModal(true)}
+                    variant="outline"
+                    size="sm"
+                  >
+                    🧪 Test Group Info Modal
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>
