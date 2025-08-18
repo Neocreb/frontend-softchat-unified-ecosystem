@@ -537,9 +537,9 @@ export const EnhancedChatInterface: React.FC<EnhancedChatInterfaceProps> = ({
         groupName: request.name,
         groupDescription: request.description,
         groupAvatar: request.avatar,
-        createdBy: user?.id || '',
+        createdBy: 'current',
         createdAt: new Date().toISOString(),
-        adminIds: [user?.id || ''],
+        adminIds: ['current'],
         settings: request.settings || {
           whoCanSendMessages: 'everyone',
           whoCanAddMembers: 'everyone', 
