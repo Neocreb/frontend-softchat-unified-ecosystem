@@ -364,7 +364,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
                 <Avatar className="h-16 w-16">
                   <AvatarImage src={isEditing ? editAvatar : group.groupAvatar} alt={group.groupName} />
                   <AvatarFallback className="text-2xl">
-                    {getInitials(isEditing ? editName : group.groupName)}
+                    {getInitials(isEditing ? editName : (group.groupName || "Group"))}
                   </AvatarFallback>
                 </Avatar>
                 {isEditing && (
