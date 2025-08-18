@@ -76,8 +76,8 @@ const HeroSection = () => {
                     📦
                   </div>
                   <div>
-                    <h4 className="font-bold text-blue-900 dark:text-blue-100">Track Product</h4>
-                    <p className="text-xs text-blue-600 dark:text-blue-300">Real-time tracking</p>
+                    <h4 className="font-bold text-blue-800 dark:text-blue-100">Track Product</h4>
+                    <p className="text-xs text-blue-700 dark:text-blue-300">Real-time tracking</p>
                   </div>
                 </div>
                 <p className="text-sm text-blue-700 dark:text-blue-200">
