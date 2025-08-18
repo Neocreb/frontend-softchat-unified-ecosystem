@@ -51,11 +51,31 @@ const __dirname = dirname(__filename);
 // Initialize database connection
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is required');
+  console.warn('⚠️  DATABASE_URL not set. Using development fallback.');
+  console.warn('⚠️  For production use, please set up a proper database.');
+  console.warn('⚠️  Consider connecting to Neon database for persistent storage.');
+
+  // Use a mock/fallback for development when no database is available
+  process.env.DATABASE_URL = 'postgresql://mock:mock@localhost:5432/mock';
 }
 
-const sql_client = neon(databaseUrl);
-const db = drizzle(sql_client);
+let sql_client, db;
+try {
+  sql_client = neon(process.env.DATABASE_URL);
+  db = drizzle(sql_client);
+  console.log('✅ Database connection initialized');
+} catch (error) {
+  console.error('❌ Database connection failed:', error.message);
+  console.warn('⚠️  Running in mock mode. Some features may not work.');
+
+  // Create a mock database object for development
+  db = {
+    select: () => ({ from: () => ({ where: () => ({ execute: async () => [] }) }) }),
+    insert: () => ({ values: () => ({ returning: () => ({ execute: async () => [] }) }) }),
+    update: () => ({ set: () => ({ where: () => ({ execute: async () => [] }) }) }),
+    delete: () => ({ where: () => ({ execute: async () => [] }) })
+  };
+}
 
 // Configure logger
 const logger = winston.createLogger({

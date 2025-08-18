@@ -24,14 +24,15 @@ const HeroSection = () => {
             and intelligent matching.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md sm:max-w-none mx-auto">
-            {/* ✅ Launch App Button that redirects */}
+          {/* Primary Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md sm:max-w-none mx-auto mb-8">
+            {/* ✅ Launch App Button - Enhanced visibility */}
             <Link to="/auth" className="w-full sm:w-auto">
               <Button
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 rounded w-full sm:w-auto transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg px-8 py-6 rounded-xl w-full sm:w-auto transition-all duration-300 shadow-2xl hover:shadow-blue-500/50 hover:scale-105 border-2 border-white/20"
               >
-                🚀 Launch App
+                🚀 Launch App Now
               </Button>
             </Link>
 
@@ -40,103 +41,116 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-softchat-200 hover:bg-softchat-50 text-softchat-700 text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6 w-full sm:w-auto transition-all duration-200"
+                className="border-2 border-blue-300 hover:bg-blue-100 text-blue-700 hover:text-blue-800 font-semibold text-lg px-8 py-6 rounded-xl w-full sm:w-auto transition-all duration-300 hover:shadow-lg"
               >
                 📧 Join Waitlist
               </Button>
             </a>
           </div>
 
-          {/* Delivery Quick Access Section */}
+          {/* Additional Action Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
+            {/* Become a Driver */}
+            <Link to="/delivery/apply" className="group">
+              <div className="relative p-4 rounded-xl bg-gradient-to-br from-green-100 to-emerald-200 dark:from-green-950/30 dark:to-emerald-900/20 border-2 border-green-300 hover:border-green-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
+                    🚛
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-green-900 dark:text-green-100">Become a Driver</h4>
+                    <p className="text-xs text-green-700 dark:text-green-300">Start earning today</p>
+                  </div>
+                </div>
+                <p className="text-sm text-green-800 dark:text-green-200">
+                  Join our delivery network and earn competitive rates
+                </p>
+              </div>
+            </Link>
+
+            {/* Track Product */}
+            <Link to="/delivery/track" className="group">
+              <div className="relative p-4 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-200 dark:from-blue-950/30 dark:to-indigo-900/20 border-2 border-blue-300 hover:border-blue-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
+                    📦
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-blue-900 dark:text-blue-100">Track Product</h4>
+                    <p className="text-xs text-blue-700 dark:text-blue-300">Real-time tracking</p>
+                  </div>
+                </div>
+                <p className="text-sm text-blue-800 dark:text-blue-200">
+                  Monitor your deliveries with live location updates
+                </p>
+              </div>
+            </Link>
+
+            {/* Marketplace */}
+            <Link to="/marketplace" className="group">
+              <div className="relative p-4 rounded-xl bg-gradient-to-br from-purple-100 to-pink-200 dark:from-purple-950/30 dark:to-pink-900/20 border-2 border-purple-300 hover:border-purple-400 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-lg bg-purple-500 flex items-center justify-center text-white text-lg font-bold shadow-lg">
+                    🛍️
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-purple-900 dark:text-purple-100">Shop Now</h4>
+                    <p className="text-xs text-purple-700 dark:text-purple-300">Discover products</p>
+                  </div>
+                </div>
+                <p className="text-sm text-purple-800 dark:text-purple-200">
+                  Browse amazing products from verified sellers
+                </p>
+              </div>
+            </Link>
+          </div>
+
+          {/* Features Highlight */}
           <div className="mt-8 pt-8 border-t border-border/50">
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
-                Delivery Network
+                Why Choose Softchat?
               </h3>
-              <p className="text-sm text-muted-foreground dark:text-muted-foreground">Fast, reliable delivery services at your fingertips</p>
+              <p className="text-sm text-muted-foreground dark:text-muted-foreground">Everything you need in one intelligent platform</p>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-2xl mx-auto">
-              {/* Track Package Card */}
-              <Link to="/delivery/track" className="flex-1 group">
-                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-blue-50 via-blue-50 to-indigo-100 dark:from-blue-950/50 dark:via-blue-900/30 dark:to-indigo-900/40 border border-blue-200/60 dark:border-blue-800/40 hover:border-blue-300/80 dark:hover:border-blue-700/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-400/10 hover:-translate-y-1">
-                  {/* Floating Background Icon */}
-                  <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-blue-500/10 dark:bg-blue-400/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                    </svg>
-                  </div>
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white text-lg font-semibold shadow-lg">
-                        📦
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-bold text-blue-900 dark:text-blue-100">Track Package</h4>
-                        <p className="text-xs text-blue-600 dark:text-blue-300">Real-time tracking</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-blue-700/80 dark:text-blue-200/80 leading-relaxed">
-                      Monitor your deliveries with live updates and precise location tracking
-                    </p>
-                    <div className="mt-4 flex items-center text-blue-600 dark:text-blue-300 text-sm font-medium group-hover:text-blue-700 dark:group-hover:text-blue-200 transition-colors">
-                      Track now
-                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-
-              {/* Become Driver Card */}
-              <Link to="/delivery/apply" className="flex-1 group">
-                <div className="relative p-6 rounded-2xl bg-gradient-to-br from-green-50 via-emerald-50 to-teal-100 dark:from-green-950/50 dark:via-emerald-900/30 dark:to-teal-900/40 border border-green-200/60 dark:border-green-800/40 hover:border-green-300/80 dark:hover:border-green-700/60 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20 dark:hover:shadow-green-400/10 hover:-translate-y-1">
-                  {/* Floating Background Icon */}
-                  <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-green-500/10 dark:bg-green-400/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-green-500 dark:bg-green-600 flex items-center justify-center text-white text-lg font-semibold shadow-lg">
-                        🚛
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-bold text-green-900 dark:text-green-100">Become Driver</h4>
-                        <p className="text-xs text-green-600 dark:text-green-300">Start earning today</p>
-                      </div>
-                    </div>
-                    <p className="text-sm text-green-700/80 dark:text-green-200/80 leading-relaxed">
-                      Join our delivery network and earn competitive rates with flexible schedules
-                    </p>
-                    <div className="mt-4 flex items-center text-green-600 dark:text-green-300 text-sm font-medium group-hover:text-green-700 dark:group-hover:text-green-200 transition-colors">
-                      Apply now
-                      <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+            {/* Feature highlights grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-6">
+              <div className="text-center p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30">
+                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">AI</div>
+                <p className="text-xs font-medium text-blue-700 dark:text-blue-300">Smart Recommendations</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-green-50 dark:bg-green-950/30">
+                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">💰</div>
+                <p className="text-xs font-medium text-green-700 dark:text-green-300">Crypto Trading</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-purple-50 dark:bg-purple-950/30">
+                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">🛍️</div>
+                <p className="text-xs font-medium text-purple-700 dark:text-purple-300">Marketplace</p>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-orange-50 dark:bg-orange-950/30">
+                <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">👥</div>
+                <p className="text-xs font-medium text-orange-700 dark:text-orange-300">Social Network</p>
+              </div>
             </div>
 
-            {/* Additional Features */}
-            <div className="mt-6 flex items-center justify-center gap-6 text-xs text-muted-foreground dark:text-muted-foreground">
+            {/* Key features */}
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground dark:text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                <span>Real-time GPS tracking</span>
+                <span>AI-powered content discovery</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                <span>Flexible earning opportunities</span>
+                <span>Secure crypto trading</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                <span>24/7 customer support</span>
+                <span>Freelance marketplace</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                <span>Real-time delivery tracking</span>
               </div>
             </div>
           </div>

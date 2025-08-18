@@ -1,0 +1,348 @@
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Store,
+  Star,
+  MapPin,
+  Clock,
+  ShoppingCart,
+  Heart,
+  MessageSquare,
+  TrendingUp,
+  Package,
+  Eye,
+  Filter,
+  Grid,
+  List,
+  ArrowLeft,
+  Share2,
+  Phone,
+  Mail,
+  Globe,
+  Award,
+  Verified,
+} from "lucide-react";
+import { Product } from "@/types/marketplace";
+import { UserProfile } from "@/types/user";
+import ProductCard from "@/components/marketplace/ProductCard";
+
+interface UserStoreProps {
+  // Add any props if needed
+}
+
+const UserStore: React.FC<UserStoreProps> = () => {
+  const { username } = useParams();
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+
+  // Mock data - in real app, fetch from API based on username
+  const userProfile: UserProfile = {
+    id: "1",
+    username: username || "",
+    full_name: "Sarah Johnson",
+    avatar_url: "/placeholder.svg",
+    banner_url: "/placeholder.svg",
+    bio: "Premium fashion designer & entrepreneur. Creating unique pieces for modern lifestyle.",
+    location: "New York, USA",
+    website: "https://sarahdesigns.com",
+    verified: true,
+    created_at: "2023-01-15",
+    followers_count: 15240,
+    following_count: 890,
+    posts_count: 324,
+  };
+
+  const storeStats = {
+    totalProducts: 127,
+    totalSales: 1834,
+    averageRating: 4.8,
+    totalReviews: 456,
+    responseRate: 98,
+    responseTime: "< 2 hours",
+    memberSince: "2023",
+    completedOrders: 1834,
+    repeatCustomers: 67,
+  };
+
+  const categories = [
+    { id: "all", name: "All Products", count: 127 },
+    { id: "clothing", name: "Clothing", count: 45 },
+    { id: "accessories", name: "Accessories", count: 32 },
+    { id: "jewelry", name: "Jewelry", count: 28 },
+    { id: "bags", name: "Bags", count: 22 },
+  ];
+
+  const products: Product[] = [
+    {
+      id: "1",
+      title: "Premium Leather Handbag",
+      description: "Handcrafted premium leather handbag with gold accents",
+      price: 189.99,
+      images: ["/placeholder.svg"],
+      category: "bags",
+      seller_id: "1",
+      seller_name: "Sarah Johnson",
+      seller_avatar: "/placeholder.svg",
+      rating: 4.9,
+      reviews_count: 34,
+      created_at: "2024-01-15",
+      updated_at: "2024-01-15",
+      views: 1420,
+      saves: 89,
+      status: "active",
+      condition: "new",
+      shipping_cost: 9.99,
+      location: "New York, USA",
+    },
+    {
+      id: "2", 
+      title: "Vintage Gold Chain Necklace",
+      description: "Elegant vintage-style gold chain necklace, perfect for any occasion",
+      price: 89.99,
+      images: ["/placeholder.svg"],
+      category: "jewelry",
+      seller_id: "1",
+      seller_name: "Sarah Johnson",
+      seller_avatar: "/placeholder.svg",
+      rating: 4.7,
+      reviews_count: 28,
+      created_at: "2024-01-12",
+      updated_at: "2024-01-12",
+      views: 890,
+      saves: 45,
+      status: "active",
+      condition: "new",
+      shipping_cost: 5.99,
+      location: "New York, USA",
+    },
+    // Add more products...
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Header */}
+      <div className="bg-white dark:bg-gray-800 border-b">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link 
+                to={`/profile/${username}`}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                <span>Back to Profile</span>
+              </Link>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm">
+                <Share2 className="h-4 w-4 mr-2" />
+                Share Store
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Store Info Sidebar */}
+          <div className="lg:col-span-1">
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                {/* Store Owner */}
+                <div className="text-center mb-6">
+                  <Avatar className="h-20 w-20 mx-auto mb-4">
+                    <AvatarImage src={userProfile.avatar_url} alt={userProfile.full_name} />
+                    <AvatarFallback className="text-lg">
+                      {userProfile.full_name?.split(" ").map(n => n[0]).join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <h1 className="text-xl font-bold">{userProfile.full_name}</h1>
+                    {userProfile.verified && (
+                      <Verified className="h-5 w-5 text-blue-500" />
+                    )}
+                  </div>
+                  <p className="text-muted-foreground text-sm mb-2">@{userProfile.username}</p>
+                  <div className="flex items-center justify-center gap-1 mb-4">
+                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                    <span className="font-medium">{storeStats.averageRating}</span>
+                    <span className="text-muted-foreground text-sm">
+                      ({storeStats.totalReviews} reviews)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Store Stats */}
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Products</span>
+                    <span className="font-semibold">{storeStats.totalProducts}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Total Sales</span>
+                    <span className="font-semibold">{storeStats.totalSales.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Response Rate</span>
+                    <span className="font-semibold">{storeStats.responseRate}%</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Response Time</span>
+                    <span className="font-semibold">{storeStats.responseTime}</span>
+                  </div>
+                </div>
+
+                {/* Contact Buttons */}
+                <div className="space-y-2">
+                  <Button className="w-full">
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Message Seller
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <Heart className="h-4 w-4 mr-2" />
+                    Follow Store
+                  </Button>
+                </div>
+
+                {/* Store Info */}
+                <div className="mt-6 pt-6 border-t space-y-3">
+                  <div className="flex items-center gap-2 text-sm">
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span>{userProfile.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span>Member since {storeStats.memberSince}</span>
+                  </div>
+                  {userProfile.website && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <a 
+                        href={userProfile.website} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline"
+                      >
+                        Visit Website
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Categories */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Categories</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 pt-0">
+                <div className="space-y-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category.id)}
+                      className={cn(
+                        "w-full text-left px-3 py-2 rounded-lg transition-colors",
+                        selectedCategory === category.id
+                          ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                          : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">{category.name}</span>
+                        <Badge variant="secondary" className="text-xs">
+                          {category.count}
+                        </Badge>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Products Grid */}
+          <div className="lg:col-span-3">
+            {/* Filters & View Toggle */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold">
+                  {userProfile.full_name}'s Store
+                </h2>
+                <Badge variant="secondary">
+                  {products.length} Products
+                </Badge>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={viewMode === "grid" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("grid")}
+                >
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("list")}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Store Description */}
+            {userProfile.bio && (
+              <Card className="mb-6">
+                <CardContent className="p-6">
+                  <p className="text-muted-foreground leading-relaxed">
+                    {userProfile.bio}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Products */}
+            <div className={cn(
+              "gap-6",
+              viewMode === "grid" 
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" 
+                : "space-y-4"
+            )}>
+              {products.map((product) => (
+                <div key={product.id}>
+                  <ProductCard
+                    product={product}
+                    onAddToCart={() => {}}
+                    onAddToWishlist={() => {}}
+                    onContactSeller={() => {}}
+                    viewMode={viewMode}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Load More */}
+            <div className="text-center mt-8">
+              <Button variant="outline" size="lg">
+                <Package className="h-4 w-4 mr-2" />
+                Load More Products
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserStore;
