@@ -271,7 +271,7 @@ export const GroupInfoModal: React.FC<GroupInfoModalProps> = ({
     }
   };
 
-  const activeMembers = group.participants.filter(p => p.isActive);
+  const activeMembers = (group.participants || []).filter(p => p.isActive);
   const onlineMembers = activeMembers.filter(p => p.isOnline);
 
   return (
