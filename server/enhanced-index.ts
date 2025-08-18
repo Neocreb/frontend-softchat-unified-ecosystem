@@ -308,6 +308,11 @@ app.use('/api/video', videoRouter);
 app.use('/api/crypto', cryptoRouter);
 app.use('/api/kyc', kycRouter);
 app.use('/api/notifications', notificationsRouter);
+app.use('/api/posts', postsRouter);
+app.use('/api/profiles', profilesRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/freelance', freelanceRouter);
+app.use('/api/follow', followRouter);
 
 // =============================================================================
 // CORE AUTHENTICATION ENDPOINTS
