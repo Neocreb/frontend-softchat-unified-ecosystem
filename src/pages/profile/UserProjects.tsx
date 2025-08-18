@@ -37,6 +37,7 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 import { UserProfile } from "@/types/user";
+import AddExternalWorkModal from "@/components/profile/AddExternalWorkModal";
 
 interface Project {
   id: string;
