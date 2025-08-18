@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Users } from "lucide-react";
 import { GroupDataTest } from "@/components/debug/GroupDataTest";
+import { GroupInfoModal } from "@/components/chat/group/GroupInfoModal";
 
 const SimpleChatRoom = () => {
   const { threadId } = useParams();
