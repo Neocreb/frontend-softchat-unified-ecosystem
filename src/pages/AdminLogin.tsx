@@ -111,7 +111,7 @@ const AdminLogin = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@softchat.com"
+                  placeholder="admin@eloity.com"
                   value={credentials.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   required
