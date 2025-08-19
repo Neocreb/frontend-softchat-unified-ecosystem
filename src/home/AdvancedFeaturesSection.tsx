@@ -135,7 +135,7 @@ const AdvancedFeaturesSection = () => {
                 className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 hover-lift"
               >
                 <div className="mb-4">
-                  <div className="inline-flex p-3 bg-gradient-to-br from-softchat-500 to-softchat-600 rounded-lg mb-4">
+                  <div className="inline-flex p-3 bg-gradient-to-br from-eloity-500 to-eloity-600 rounded-lg mb-4">
                     <IconComponent className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-lg mb-2">
@@ -149,7 +149,7 @@ const AdvancedFeaturesSection = () => {
                 <ul className="space-y-2">
                   {feature.features.map((item, itemIndex) => (
                     <li key={itemIndex} className="flex items-center text-sm">
-                      <div className="w-1.5 h-1.5 bg-softchat-500 rounded-full mr-3"></div>
+                      <div className="w-1.5 h-1.5 bg-eloity-500 rounded-full mr-3"></div>
                       <span className="text-gray-700">{item}</span>
                     </li>
                   ))}
@@ -161,7 +161,7 @@ const AdvancedFeaturesSection = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-softchat-500 to-purple-600 rounded-2xl p-8 text-white">
+          <div className="eloity-gradient rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">
               Experience the Future of Social Platforms
             </h3>
