@@ -7,6 +7,8 @@ module.exports = {
       screens: {
         xs: "475px",
         '2xs': "320px", // Extra small mobile devices
+        '3xl': "1680px", // Extra large desktop
+        '4xl': "1920px", // Ultra wide desktop
       },
       fontSize: {
         '2xs': ['0.625rem', { lineHeight: '0.75rem' }], // 8px with 13px base
