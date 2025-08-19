@@ -277,7 +277,7 @@ self.addEventListener("push", (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "Softchat", options),
+    self.registration.showNotification(data.title || "Eloity", options),
   );
 });
 
