@@ -8,7 +8,7 @@ import {
   Database,
 } from "lucide-react";
 
-const WhySoftchatSection = () => {
+const WhyEloitySection = () => {
   const benefits = [
     {
       icon: <Brain className="h-6 w-6" />,
@@ -49,11 +49,11 @@ const WhySoftchatSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-gray-50" id="why-softchat">
+    <section className="py-24 bg-gray-50" id="why-eloity">
       <div className="container-wide">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="heading-lg mb-6">
-            Why Choose <span className="gradient-text">Softchat</span>
+            Why Choose <span className="gradient-text">Eloity</span>
           </h2>
           <p className="body-md text-gray-600">
             We've built the most advanced social platform using cutting-edge
@@ -67,7 +67,7 @@ const WhySoftchatSection = () => {
               key={index}
               className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-gray-100"
             >
-              <div className="inline-flex items-center justify-center p-3 bg-softchat-50 text-softchat-600 rounded-lg mb-5">
+              <div className="inline-flex items-center justify-center p-3 bg-eloity-50 text-eloity-600 rounded-lg mb-5">
                 {benefit.icon}
               </div>
               <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
@@ -80,4 +80,4 @@ const WhySoftchatSection = () => {
   );
 };
 
-export default WhySoftchatSection;
+export default WhyEloitySection;
