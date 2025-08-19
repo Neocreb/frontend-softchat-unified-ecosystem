@@ -1,4 +1,6 @@
-A comprehensive AI-powered social media and marketplace platform with crypto trading, freelancing, and advanced analytics features.
+# Eloity - Where Everything Connects
+
+A comprehensive AI-powered ecosystem combining social media, marketplace, crypto trading, freelancing, and advanced analytics features into one unified platform.
 
 ## ✨ Features
 
