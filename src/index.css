@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Desktop Responsiveness Improvements */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Ensure proper scaling on large screens */
+  @media (min-width: 1920px) {
+    .container {
+      max-width: 1600px;
+    }
+  }
+
+  /* Prevent horizontal overflow */
+  * {
+    box-sizing: border-box;
+  }
+}
+
 /* Scrollbar hiding utilities */
 .scrollbar-hide {
   -ms-overflow-style: none;
