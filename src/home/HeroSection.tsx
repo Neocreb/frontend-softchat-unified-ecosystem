@@ -109,7 +109,7 @@ const HeroSection = () => {
           <div className="mt-8 pt-8 border-t border-border/50">
             <div className="text-center mb-6">
               <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
-                Why Choose Softchat?
+                Why Choose Eloity?
               </h3>
               <p className="text-sm text-muted-foreground dark:text-muted-foreground">Everything you need in one intelligent platform</p>
             </div>
@@ -156,11 +156,11 @@ const HeroSection = () => {
           </div>
 
           <div className="mt-16 relative">
-            <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-softchat-500 to-teal-400 opacity-70 blur-sm"></div>
+            <div className="absolute -inset-px rounded-xl bg-gradient-to-tr from-eloity-500 to-teal-400 opacity-70 blur-sm"></div>
             <div className="relative rounded-xl bg-card dark:bg-card shadow-xl overflow-hidden border border-border dark:border-border">
               <img
                 src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&q=80&w=1280"
-                alt="Softchat app interface"
+                alt="Eloity app interface"
                 className="w-full h-auto"
               />
             </div>
