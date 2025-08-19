@@ -308,7 +308,7 @@ const FacebookStyleSidebar: React.FC<FacebookStyleSidebarProps> = ({
             ? `fixed left-0 top-0 bottom-0 z-50 bg-white transform transition-transform duration-300 ${
                 isOpen ? "translate-x-0" : "-translate-x-full"
               } w-80`
-            : "w-80 bg-white border-r border-gray-200 h-full"
+            : "w-80 xl:w-96 2xl:w-80 bg-white border-r border-gray-200 h-full"
         } overflow-y-auto
       `}
       >
