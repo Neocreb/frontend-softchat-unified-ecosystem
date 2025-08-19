@@ -47,7 +47,6 @@ import {
   TrendingUp,
   Coins,
   Gift,
-  Calendar,
   Zap,
   Bot,
   Wallet,
@@ -78,7 +77,6 @@ import {
   Star,
   MapPin,
   ToggleLeft,
-  Truck,
 } from "lucide-react";
 import SoftchatLogo from "@/components/ui/logo";
 import NotificationsDropdown from "./NotificationsDropdown";
