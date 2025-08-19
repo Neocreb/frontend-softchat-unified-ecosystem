@@ -29,20 +29,20 @@
   --chart-5: 27 87% 67%;
   --radius: 0.75rem;
   
-  /* Eloity Brand Colors */
-  --eloity-primary: 200 100% 50%;
-  --eloity-cyan: #00D2FF;
-  --eloity-purple: #B84FFF;
-  --eloity-dark: #1A1B23;
-  --eloity-accent: 200 100% 50%;
-  --eloity-600: 200 100% 40%;
-  --eloity-700: 200 100% 30%;
+  /* Eloity Brand Colors - Fixed for proper contrast */
+  --eloity-primary: 200 100% 45%;
+  --eloity-cyan: 192 100% 50%;
+  --eloity-purple: 273 100% 65%;
+  --eloity-dark: 220 15% 12%;
+  --eloity-accent: 200 100% 45%;
+  --eloity-600: 200 100% 35%;
+  --eloity-700: 200 100% 25%;
   
-  /* Legacy Softchat colors for compatibility */
-  --softchat-primary: 200 100% 50%;
-  --softchat-accent: 200 100% 50%;
-  --softchat-600: 200 100% 40%;
-  --softchat-700: 200 100% 30%;
+  /* Legacy Softchat colors for compatibility - using same values as primary */
+  --softchat-primary: 221.2 83.2% 53.3%;
+  --softchat-accent: 221.2 83.2% 53.3%;
+  --softchat-600: 221.2 83.2% 43.3%;
+  --softchat-700: 221.2 83.2% 33.3%;
   
   /* Sidebar */
   --sidebar-background: 0 0% 98%;
@@ -81,7 +81,7 @@
   --chart-4: 280 65% 60%;
   --chart-5: 340 75% 55%;
   
-  /* Dark mode Eloity colors */
+  /* Dark mode Eloity colors - Better contrast */
   --eloity-primary: 200 100% 60%;
   --eloity-accent: 200 100% 60%;
   --eloity-600: 200 100% 50%;
@@ -107,13 +107,13 @@ body {
   color: hsl(var(--foreground));
 }
 
-/* Eloity Brand Gradients */
+/* Eloity Brand Gradients - Fixed colors */
 .eloity-gradient {
-  background: linear-gradient(135deg, var(--eloity-cyan) 0%, var(--eloity-purple) 100%);
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
 }
 
 .eloity-text-gradient {
-  background: linear-gradient(135deg, var(--eloity-cyan) 0%, var(--eloity-purple) 100%);
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -129,7 +129,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, var(--eloity-cyan) 0%, var(--eloity-purple) 100%);
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
   border-radius: 3px;
 }
 
