@@ -34,7 +34,7 @@ const Header = () => {
       <div className="container-wide flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span className="text-2xl font-bold text-softchat-700 dark:text-softchat-accent">Softchat</span>
+          <span className="text-2xl font-bold eloity-text-gradient">Eloity</span>
         </Link>
 
         {/* Desktop Navigation */}
