@@ -105,12 +105,12 @@ const FeaturesSection = () => {
                     flex flex-col items-center text-center p-4 rounded-lg border transition-all duration-200
                     ${
                       activeFeature === feature.id
-                        ? "bg-softchat-50 text-softchat-700 shadow-md border-softchat-200"
+                        ? "bg-eloity-50 text-eloity-700 shadow-md border-eloity-200"
                         : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
                     }
                   `}
                 >
-                  <div className="mb-2 text-softchat-600">{feature.icon}</div>
+                  <div className="mb-2 text-eloity-600">{feature.icon}</div>
                   <h3 className="text-base font-medium">{feature.title}</h3>
                   <p className="text-sm text-gray-500 hidden md:block mt-1">
                     {feature.tagline}
@@ -133,7 +133,7 @@ const FeaturesSection = () => {
                 <div className="grid md:grid-cols-2 min-h-[400px]">
                   <div className="p-8 flex flex-col justify-center">
                     <h3 className="text-2xl font-bold mb-2">{feature.title}</h3>
-                    <p className="text-softchat-600 font-medium mb-4">
+                    <p className="text-eloity-600 font-medium mb-4">
                       {feature.tagline}
                     </p>
                     <p className="text-gray-600 mb-6 leading-relaxed">
