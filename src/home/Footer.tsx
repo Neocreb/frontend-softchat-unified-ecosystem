@@ -9,8 +9,8 @@ const Footer = () => {
       <div className="container-wide">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <Link to="/" className="text-2xl font-bold mb-4 block">
-              Softchat
+            <Link to="/" className="text-2xl font-bold mb-4 block eloity-text-gradient">
+              Eloity
             </Link>
             <p className="text-gray-400 dark:text-gray-300 mt-2">
               One app for everything: Social, Crypto, Commerce, Rewards. Built
@@ -114,7 +114,7 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Connect</h3>
             <div className="flex space-x-4">
               <a
-                href="https://twitter.com/softchat"
+                href="https://twitter.com/eloity"
                 className="text-gray-400 hover:text-white transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -135,7 +135,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="https://instagram.com/softchat"
+                href="https://instagram.com/eloity"
                 className="text-gray-400 hover:text-white transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -158,7 +158,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/company/softchat"
+                href="https://linkedin.com/company/eloity"
                 className="text-gray-400 hover:text-white transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -186,7 +186,7 @@ const Footer = () => {
 
         <div className="pt-8 border-t border-gray-800 dark:border-gray-700 text-center md:text-left md:flex md:justify-between">
           <p className="text-gray-500 dark:text-gray-400 text-sm">
-            &copy; {currentYear} Softchat. All rights reserved.
+            &copy; {currentYear} Eloity. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
             <p className="text-gray-500 dark:text-gray-400 text-sm">Built for emerging markets</p>
