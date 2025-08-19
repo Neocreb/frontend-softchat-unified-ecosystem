@@ -157,7 +157,7 @@ const Feed = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-none xl:max-w-7xl 2xl:max-w-[1400px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="col-span-1 hidden md:block">
           <FeedSidebar />

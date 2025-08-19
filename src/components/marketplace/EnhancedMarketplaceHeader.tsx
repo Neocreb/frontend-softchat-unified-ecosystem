@@ -10,6 +10,7 @@ import {
   Truck,
   Tag,
   Sparkles,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,6 +63,7 @@ export const EnhancedMarketplaceHeader: React.FC<
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,18 +110,29 @@ export const EnhancedMarketplaceHeader: React.FC<
 
             {/* Action Buttons */}
             <div className="flex items-center gap-1 flex-shrink-0">
-              <Button variant="ghost" size="icon">
+              {/* Mobile Filter Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowMobileFilters(true)}
+                className="md:hidden relative"
+              >
                 <Filter className="h-5 w-5" />
+                {activeFilters.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center">
+                    {activeFilters.length}
+                  </span>
+                )}
               </Button>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="hidden md:flex">
                 <MoreHorizontal className="h-5 w-5" />
               </Button>
             </div>
           </div>
         </div>
 
-        {/* Category Filters */}
-        <div className="pb-4">
+        {/* Desktop Category Filters */}
+        <div className="hidden md:block pb-4">
           <div className="flex items-center gap-2 mb-4 overflow-x-auto scrollbar-hide">
             {categoryFilters.map((category) => (
               <Button
@@ -135,12 +148,12 @@ export const EnhancedMarketplaceHeader: React.FC<
                 )}
               >
                 {category.icon}
-                <span className="hidden sm:inline">{category.name}</span>
+                <span>{category.name}</span>
               </Button>
             ))}
           </div>
 
-          {/* Feature Filters */}
+          {/* Desktop Feature Filters */}
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {featureFilters.map((filter) => (
               <Button
@@ -158,12 +171,108 @@ export const EnhancedMarketplaceHeader: React.FC<
                 )}
               >
                 {filter.icon}
-                <span className="hidden sm:inline">{filter.name}</span>
+                <span>{filter.name}</span>
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Category Pills */}
+        <div className="md:hidden pb-4">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+            {categoryFilters.map((category) => (
+              <Button
+                key={category.id}
+                variant={activeCategory === category.id ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleCategoryClick(category.id)}
+                className={cn(
+                  "flex items-center gap-1 rounded-full px-3 py-2 whitespace-nowrap flex-shrink-0 text-xs",
+                  activeCategory === category.id
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-50 text-gray-700",
+                )}
+              >
+                {category.icon}
               </Button>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Mobile Filter Modal */}
+      {showMobileFilters && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowMobileFilters(false)} />
+          <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg max-h-[80vh] overflow-hidden">
+            <div className="p-4 border-b border-gray-200">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-semibold">Filters</h3>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowMobileFilters(false)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            <div className="p-4 overflow-y-auto">
+              {/* Mobile Filter Content */}
+              <div className="space-y-4">
+                {/* Categories */}
+                <div>
+                  <h4 className="font-medium mb-3">Categories</h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {categoryFilters.map((category) => (
+                      <Button
+                        key={category.id}
+                        variant={activeCategory === category.id ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          handleCategoryClick(category.id);
+                          setShowMobileFilters(false);
+                        }}
+                        className="justify-start text-left"
+                      >
+                        {category.icon}
+                        <span className="ml-2">{category.name}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Features */}
+                <div>
+                  <h4 className="font-medium mb-3">Features</h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {featureFilters.map((filter) => (
+                      <Button
+                        key={filter.id}
+                        variant={activeFilters.includes(filter.id) ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handleFilterClick(filter.id)}
+                        className="justify-start text-left"
+                      >
+                        {filter.icon}
+                        <span className="ml-2">{filter.name}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="p-4 border-t border-gray-200">
+              <Button
+                onClick={() => setShowMobileFilters(false)}
+                className="w-full"
+              >
+                Apply Filters
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -260,8 +260,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
     { name: "New Video", icon: Video, color: "bg-red-500", href: "/videos" },
     { name: "List Product", icon: ShoppingBag, color: "bg-green-500", href: "/marketplace" },
     { name: "Find Job", icon: Briefcase, color: "bg-orange-500", href: "/freelance" },
-    { name: "Trade Crypto", icon: Coins, color: "bg-yellow-500", href: "/crypto" },
-    { name: "Go Live", icon: Radio, color: "bg-pink-500", href: "/live" },
+    { name: "Trade Crypto", icon: Coins, color: "bg-yellow-500", href: "/app/crypto" },
+    { name: "Go Live", icon: Radio, color: "bg-pink-500", href: "/app/live-streaming" },
     { name: "Create Event", icon: Calendar, color: "bg-indigo-500", href: "/events" },
     { name: "Start Chat", icon: MessageSquare, color: "bg-purple-500", href: "/chat" },
   ];
@@ -1252,27 +1252,27 @@ const EnhancedCreatorDashboard: React.FC = () => {
             <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
               <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Eye className="w-4 h-4" />
-                <span>Overview</span>
+                <span>Home</span>
               </TabsTrigger>
               <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Layers className="w-4 h-4" />
-                <span>Features</span>
+                <span>Tools</span>
               </TabsTrigger>
               <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <FileText className="w-4 h-4" />
-                <span>Content</span>
+                <span>Posts</span>
               </TabsTrigger>
               <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <DollarSign className="w-4 h-4" />
-                <span>Revenue</span>
+                <span>Earnings</span>
               </TabsTrigger>
               <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Users className="w-4 h-4" />
-                <span>Audience</span>
+                <span>Fans</span>
               </TabsTrigger>
               <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <BarChart3 className="w-4 h-4" />
-                <span>Insights</span>
+                <span>Stats</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -1287,7 +1287,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   Quick Actions
                 </CardTitle>
                 <CardDescription>
-                  Jump to any platform feature to create content or manage your presence
+                  Quick access to platform tools
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1619,7 +1619,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                     <Zap className="w-5 h-5 text-yellow-500" />
                     Core Features
                   </CardTitle>
-                  <CardDescription>Essential platform functionality</CardDescription>
+                  <CardDescription>Core features</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -1644,7 +1644,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                     <Crown className="w-5 h-5 text-purple-500" />
                     Premium Features
                   </CardTitle>
-                  <CardDescription>Advanced monetization and tools</CardDescription>
+                  <CardDescription>Premium tools</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -1824,7 +1824,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <Crown className="w-5 h-5 text-yellow-500" />
                   Top Performing Content Analysis
                 </CardTitle>
-                <CardDescription>Your highest-performing content across all platforms</CardDescription>
+                <CardDescription>Top performing content</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -2079,7 +2079,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <BarChart3 className="w-5 h-5 text-purple-500" />
                   Revenue Forecasting & Goals
                 </CardTitle>
-                <CardDescription>AI-powered revenue predictions based on your performance trends</CardDescription>
+                <CardDescription>Revenue forecasts</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -2521,7 +2521,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <Users className="w-5 h-5 text-blue-500" />
                   Audience Segments
                 </CardTitle>
-                <CardDescription>Custom audience groups based on behavior and demographics</CardDescription>
+                <CardDescription>Audience segments</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -2675,7 +2675,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <BarChart3 className="w-5 h-5 text-blue-500" />
                   Predictive Analytics
                 </CardTitle>
-                <CardDescription>AI-powered forecasts based on your performance trends</CardDescription>
+                <CardDescription>Performance forecasts</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -2834,7 +2834,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <TrendingUp className="w-5 h-5 text-purple-500" />
                   Market Trends & Opportunities
                 </CardTitle>
-                <CardDescription>Stay ahead with trending topics and emerging opportunities</CardDescription>
+                <CardDescription>Trending insights</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -2910,7 +2910,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <Zap className="w-5 h-5 text-indigo-500" />
                   AI Growth Assistant
                 </CardTitle>
-                <CardDescription>Get personalized recommendations and automated insights</CardDescription>
+                <CardDescription>AI recommendations</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">

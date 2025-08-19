@@ -94,7 +94,7 @@ const platformNavItems: NavItem[] = [
   },
   {
     label: "Crypto",
-    href: "/crypto",
+    href: "/app/crypto",
     icon: Coins,
     color: "text-yellow-600",
     description: "Trade cryptocurrencies",
