@@ -260,8 +260,8 @@ const EnhancedCreatorDashboard: React.FC = () => {
     { name: "New Video", icon: Video, color: "bg-red-500", href: "/videos" },
     { name: "List Product", icon: ShoppingBag, color: "bg-green-500", href: "/marketplace" },
     { name: "Find Job", icon: Briefcase, color: "bg-orange-500", href: "/freelance" },
-    { name: "Trade Crypto", icon: Coins, color: "bg-yellow-500", href: "/crypto" },
-    { name: "Go Live", icon: Radio, color: "bg-pink-500", href: "/live" },
+    { name: "Trade Crypto", icon: Coins, color: "bg-yellow-500", href: "/app/crypto" },
+    { name: "Go Live", icon: Radio, color: "bg-pink-500", href: "/app/live-streaming" },
     { name: "Create Event", icon: Calendar, color: "bg-indigo-500", href: "/events" },
     { name: "Start Chat", icon: MessageSquare, color: "bg-purple-500", href: "/chat" },
   ];
