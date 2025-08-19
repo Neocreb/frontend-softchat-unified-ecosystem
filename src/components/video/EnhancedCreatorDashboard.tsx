@@ -1287,7 +1287,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   Quick Actions
                 </CardTitle>
                 <CardDescription>
-                  Jump to any platform feature to create content or manage your presence
+                  Quick access to platform tools
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1619,7 +1619,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                     <Zap className="w-5 h-5 text-yellow-500" />
                     Core Features
                   </CardTitle>
-                  <CardDescription>Essential platform functionality</CardDescription>
+                  <CardDescription>Core features</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -1644,7 +1644,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                     <Crown className="w-5 h-5 text-purple-500" />
                     Premium Features
                   </CardTitle>
-                  <CardDescription>Advanced monetization and tools</CardDescription>
+                  <CardDescription>Premium tools</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -1824,7 +1824,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <Crown className="w-5 h-5 text-yellow-500" />
                   Top Performing Content Analysis
                 </CardTitle>
-                <CardDescription>Your highest-performing content across all platforms</CardDescription>
+                <CardDescription>Top performing content</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -2079,7 +2079,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <BarChart3 className="w-5 h-5 text-purple-500" />
                   Revenue Forecasting & Goals
                 </CardTitle>
-                <CardDescription>AI-powered revenue predictions based on your performance trends</CardDescription>
+                <CardDescription>Revenue forecasts</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -2521,7 +2521,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <Users className="w-5 h-5 text-blue-500" />
                   Audience Segments
                 </CardTitle>
-                <CardDescription>Custom audience groups based on behavior and demographics</CardDescription>
+                <CardDescription>Audience segments</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -2675,7 +2675,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <BarChart3 className="w-5 h-5 text-blue-500" />
                   Predictive Analytics
                 </CardTitle>
-                <CardDescription>AI-powered forecasts based on your performance trends</CardDescription>
+                <CardDescription>Performance forecasts</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -2834,7 +2834,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <TrendingUp className="w-5 h-5 text-purple-500" />
                   Market Trends & Opportunities
                 </CardTitle>
-                <CardDescription>Stay ahead with trending topics and emerging opportunities</CardDescription>
+                <CardDescription>Trending insights</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -2910,7 +2910,7 @@ const EnhancedCreatorDashboard: React.FC = () => {
                   <Zap className="w-5 h-5 text-indigo-500" />
                   AI Growth Assistant
                 </CardTitle>
-                <CardDescription>Get personalized recommendations and automated insights</CardDescription>
+                <CardDescription>AI recommendations</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
