@@ -42,13 +42,9 @@ const Header = () => {
           <NavLinks />
           <ThemeToggle />
           <Button className="btn-primary" asChild>
-            <a
-              href="https://app.softchat.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link to="/auth">
               Launch App
-            </a>
+            </Link>
           </Button>
         </nav>
 
@@ -75,13 +71,9 @@ const Header = () => {
               <ThemeToggle />
             </div>
             <Button className="btn-primary w-full" asChild>
-              <a
-                href="https://app.softchat.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link to="/auth">
                 Launch App
-              </a>
+              </Link>
             </Button>
           </nav>
         </div>
