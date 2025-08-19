@@ -37,6 +37,14 @@
   --eloity-accent: 200 100% 45%;
   --eloity-600: 200 100% 35%;
   --eloity-700: 200 100% 25%;
+
+  /* Additional Eloity color variants */
+  --eloity-50: 190 100% 95%;
+  --eloity-100: 190 100% 85%;
+  --eloity-200: 190 100% 75%;
+  --eloity-300: 190 100% 65%;
+  --eloity-400: 190 100% 55%;
+  --eloity-500: 190 100% 45%;
   
   /* Legacy Softchat colors for compatibility - using same values as primary */
   --softchat-primary: 221.2 83.2% 53.3%;
@@ -175,4 +183,115 @@ body {
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Landing Page Utility Classes */
+.container-wide {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-wide {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-wide {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Typography Classes */
+.heading-xl {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .heading-xl {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-xl {
+    font-size: 5rem;
+  }
+}
+
+.heading-lg {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .heading-lg {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-lg {
+    font-size: 3rem;
+  }
+}
+
+.body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .body-lg {
+    font-size: 1.25rem;
+  }
+}
+
+.body-md {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .body-md {
+    font-size: 1.125rem;
+  }
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Button Variants */
+.btn-primary {
+  background: linear-gradient(135deg, #00D2FF 0%, #B84FFF 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #00B8E6 0%, #A040E6 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3);
+}
+
+/* Gradient Backgrounds */
+.bg-gradient-radial {
+  background-image: radial-gradient(circle, var(--tw-gradient-stops));
 }
