@@ -1252,27 +1252,27 @@ const EnhancedCreatorDashboard: React.FC = () => {
             <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-fit">
               <TabsTrigger value="overview" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Eye className="w-4 h-4" />
-                <span>Overview</span>
+                <span>Home</span>
               </TabsTrigger>
               <TabsTrigger value="features" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Layers className="w-4 h-4" />
-                <span>Features</span>
+                <span>Tools</span>
               </TabsTrigger>
               <TabsTrigger value="content" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <FileText className="w-4 h-4" />
-                <span>Content</span>
+                <span>Posts</span>
               </TabsTrigger>
               <TabsTrigger value="revenue" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <DollarSign className="w-4 h-4" />
-                <span>Revenue</span>
+                <span>Earnings</span>
               </TabsTrigger>
               <TabsTrigger value="audience" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <Users className="w-4 h-4" />
-                <span>Audience</span>
+                <span>Fans</span>
               </TabsTrigger>
               <TabsTrigger value="insights" className="flex items-center gap-2 whitespace-nowrap px-3">
                 <BarChart3 className="w-4 h-4" />
-                <span>Insights</span>
+                <span>Stats</span>
               </TabsTrigger>
             </TabsList>
           </div>
