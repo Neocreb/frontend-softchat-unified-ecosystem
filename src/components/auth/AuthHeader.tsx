@@ -1,4 +1,3 @@
-
 import { CardTitle, CardDescription } from "@/components/ui/card";
 import SoftchatLogo from "@/components/ui/logo";
 
@@ -12,7 +11,7 @@ const AuthHeader = ({ isLogin }: AuthHeaderProps) => {
       <div className="flex justify-center mb-2">
         <SoftchatLogo className="h-10 w-10" />
       </div>
-      <CardTitle className="text-2xl">Welcome to Softchat</CardTitle>
+      <CardTitle className="text-2xl">Welcome to Eloity</CardTitle>
       <CardDescription>
         {isLogin ? "Login to your account" : "Create a new account"}
       </CardDescription>
