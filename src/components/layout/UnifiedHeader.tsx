@@ -657,7 +657,7 @@ const UnifiedHeader = ({
           {/* Right section - Search, Actions, User */}
           <div className="flex items-center gap-2">
             {/* Desktop Search */}
-            <div className="hidden lg:block w-80 relative">
+            <div className="hidden lg:block w-80 xl:w-96 2xl:w-[28rem] 3xl:w-[32rem] relative">
               <form onSubmit={handleSearchSubmit} className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
