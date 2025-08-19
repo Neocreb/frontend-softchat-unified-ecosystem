@@ -268,18 +268,6 @@ const UnifiedHeader = ({
       href: "/app/rewards",
       active: location.pathname === "/app/rewards",
     },
-    {
-      icon: Calendar,
-      label: "Events",
-      href: "/app/events",
-      active: location.pathname === "/app/events",
-    },
-    {
-      icon: Truck,
-      label: "Delivery",
-      href: "/app/delivery",
-      active: location.pathname.startsWith("/app/delivery"),
-    },
   ];
 
   // Load search history on mount
@@ -657,7 +645,7 @@ const UnifiedHeader = ({
           {/* Right section - Search, Actions, User */}
           <div className="flex items-center gap-2">
             {/* Desktop Search */}
-            <div className="hidden lg:block w-80 xl:w-96 2xl:w-[28rem] 3xl:w-[32rem] relative">
+            <div className="hidden lg:block w-64 xl:w-72 2xl:w-80 relative">
               <form onSubmit={handleSearchSubmit} className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
