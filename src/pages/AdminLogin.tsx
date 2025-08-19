@@ -215,7 +215,7 @@ const AdminLogin = () => {
           </div>
 
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            SoftChat Admin Panel v2.0 • Unauthorized access is prohibited
+            Eloity Admin Panel v2.0 • Unauthorized access is prohibited
           </p>
         </div>
       </div>
