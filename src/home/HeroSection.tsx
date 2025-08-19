@@ -6,7 +6,7 @@ const HeroSection = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted dark:from-background dark:to-muted py-16 sm:py-20 md:py-32">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-20 bg-gradient-radial from-softchat-500/40 to-transparent"></div>
+        <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-20 bg-gradient-radial from-eloity-primary/40 to-transparent"></div>
         <div className="absolute right-0 bottom-0 -z-10 h-[400px] w-[400px] sm:h-[600px] sm:w-[600px] translate-x-1/3 translate-y-1/3 opacity-20 bg-gradient-radial from-teal-400/40 to-transparent"></div>
       </div>
 
