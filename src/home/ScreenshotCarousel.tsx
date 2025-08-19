@@ -60,7 +60,7 @@ const ScreenshotCarousel = () => {
       <div className="container-wide">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="heading-lg mb-6">
-            See Softchat <span className="gradient-text">in Action</span>
+            See Eloity <span className="gradient-text">in Action</span>
           </h2>
           <p className="body-md text-gray-600">
             Take a visual tour of the app that's changing how people connect,
@@ -69,51 +69,45 @@ const ScreenshotCarousel = () => {
         </div>
 
         <div className="relative max-w-5xl mx-auto">
-          {/* Carousel navigation */}
-          <button
-            onClick={goToPrevious}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white/80 shadow-md hover:bg-white transition-colors"
-            aria-label="Previous screenshot"
-          >
-            <ChevronLeft className="h-6 w-6 text-gray-800" />
-          </button>
+          {/* Main Screenshot */}
+          <div className="relative mb-8 overflow-hidden rounded-xl shadow-2xl">
+            <div className="aspect-video bg-gray-100">
+              <img
+                src={screenshots[activeIndex].image}
+                alt={screenshots[activeIndex].title}
+                className="w-full h-full object-cover transition-opacity duration-500"
+              />
+            </div>
 
-          <button
-            onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-white/80 shadow-md hover:bg-white transition-colors"
-            aria-label="Next screenshot"
-          >
-            <ChevronRight className="h-6 w-6 text-gray-800" />
-          </button>
-
-          {/* Screenshots */}
-          <div className="relative overflow-hidden rounded-xl shadow-xl">
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+            {/* Navigation Arrows */}
+            <button
+              onClick={goToPrevious}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all hover:scale-110"
+              aria-label="Previous screenshot"
             >
-              {screenshots.map((screenshot, index) => (
-                <div key={index} className="min-w-full">
-                  <div className="relative aspect-video bg-gray-100">
-                    <img
-                      src={screenshot.image}
-                      alt={screenshot.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="bg-white p-6 text-center">
-                    <h3 className="text-xl font-medium mb-2">
-                      {screenshot.title}
-                    </h3>
-                    <p className="text-gray-600">{screenshot.description}</p>
-                  </div>
-                </div>
-              ))}
+              <ChevronLeft className="h-5 w-5 text-gray-700" />
+            </button>
+            <button
+              onClick={goToNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all hover:scale-110"
+              aria-label="Next screenshot"
+            >
+              <ChevronRight className="h-5 w-5 text-gray-700" />
+            </button>
+
+            {/* Screenshot Info Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+              <h3 className="text-white text-xl font-semibold mb-2">
+                {screenshots[activeIndex].title}
+              </h3>
+              <p className="text-white/90">
+                {screenshots[activeIndex].description}
+              </p>
             </div>
           </div>
 
-          {/* Dots */}
-          <div className="flex justify-center mt-6 gap-2">
+          {/* Thumbnail Navigation */}
+          <div className="flex justify-center space-x-2">
             {screenshots.map((_, index) => (
               <button
                 key={index}
@@ -121,7 +115,7 @@ const ScreenshotCarousel = () => {
                 className={cn(
                   "w-3 h-3 rounded-full transition-colors",
                   activeIndex === index
-                    ? "bg-softchat-600"
+                    ? "bg-eloity-600"
                     : "bg-gray-300 hover:bg-gray-400",
                 )}
                 aria-label={`Go to screenshot ${index + 1}`}
