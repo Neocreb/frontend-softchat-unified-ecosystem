@@ -784,9 +784,9 @@
     --softchat-700: 259 100% 50%;
 
     /* New gradient variables for dynamic elements */
-    --gradient-start: 265 100% 58%;
-    --gradient-middle: 280 85% 65%;
-    --gradient-end: 295 80% 70%;
+    --gradient-start: 259 100% 70%; /* Neon Bluish Purple */
+    --gradient-middle: 238 100% 64%; /* Blend between purple and blue */
+    --gradient-end: 218 100% 58%; /* Electrifying Blue */
 
     /* Success and warning colors */
     --success: 142 76% 45%;
