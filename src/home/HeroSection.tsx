@@ -114,21 +114,21 @@ const HeroSection = () => {
 
             {/* Feature highlights grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-6">
-              <div className="text-center p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30">
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">AI</div>
-                <p className="text-xs font-medium text-blue-700 dark:text-blue-300">Smart Recommendations</p>
+              <div className="text-center p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">AI</div>
+                <p className="font-eloity-body text-xs font-medium text-white/90">Smart Recommendations</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-green-50 dark:bg-green-950/30">
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">💰</div>
-                <p className="text-xs font-medium text-green-700 dark:text-green-300">Crypto Trading</p>
+              <div className="text-center p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">💰</div>
+                <p className="font-eloity-body text-xs font-medium text-white/90">Crypto Trading</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-purple-50 dark:bg-purple-950/30">
-                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">🛍️</div>
-                <p className="text-xs font-medium text-purple-700 dark:text-purple-300">Marketplace</p>
+              <div className="text-center p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">🛍️</div>
+                <p className="font-eloity-body text-xs font-medium text-white/90">Marketplace</p>
               </div>
-              <div className="text-center p-3 rounded-lg bg-orange-50 dark:bg-orange-950/30">
-                <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">👥</div>
-                <p className="text-xs font-medium text-orange-700 dark:text-orange-300">Social Network</p>
+              <div className="text-center p-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold mx-auto mb-2">👥</div>
+                <p className="font-eloity-body text-xs font-medium text-white/90">Social Network</p>
               </div>
             </div>
 
