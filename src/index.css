@@ -189,6 +189,7 @@
   body {
     overflow-x: hidden;
     max-width: 100vw;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-weight: 400; /* Ensure normal font weight */
     font-size: 1rem; /* 13px base */
     line-height: 1.5;
