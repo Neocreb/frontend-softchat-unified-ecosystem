@@ -73,8 +73,8 @@ const ProblemSolutionSection = () => {
                 className="bg-gray-50 p-6 rounded-xl border border-gray-100 hover:shadow-md transition-shadow hover-lift"
               >
                 <div className="flex items-center mb-4">
-                  <div className="p-2 bg-softchat-50 rounded-lg mr-3">
-                    <IconComponent className="h-6 w-6 text-softchat-600" />
+                  <div className="p-2 bg-eloity-50 rounded-lg mr-3">
+                    <IconComponent className="h-6 w-6 text-eloity-primary" />
                   </div>
                   <h3 className="font-semibold text-lg">{solution.title}</h3>
                 </div>
