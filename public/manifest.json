@@ -1,13 +1,13 @@
 {
-  "name": "Softchat - Social Platform",
-  "short_name": "Softchat",
-  "description": "Complete social platform with marketplace, crypto trading, and freelancing",
+  "name": "Eloity - Where Everything Connects",
+  "short_name": "Eloity",
+  "description": "Where everything connects - social, fintech, creative and commerce platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#6366f1",
+  "theme_color": "#7D5FFF",
   "orientation": "portrait-primary",
-  "categories": ["social", "finance", "business", "productivity"],
+  "categories": ["social", "finance", "business", "productivity", "lifestyle"],
   "lang": "en",
   "dir": "ltr",
   "scope": "/",
@@ -144,18 +144,18 @@
   "related_applications": [
     {
       "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.softchat.app",
-      "id": "com.softchat.app"
+      "url": "https://play.google.com/store/apps/details?id=com.eloity.app",
+      "id": "com.eloity.app"
     },
     {
       "platform": "ios",
-      "url": "https://apps.apple.com/app/softchat/id123456789"
+      "url": "https://apps.apple.com/app/eloity/id123456789"
     }
   ],
   "prefer_related_applications": false,
   "protocol_handlers": [
     {
-      "protocol": "web+softchat",
+      "protocol": "web+eloity",
       "url": "/handle?type=%s"
     }
   ],
