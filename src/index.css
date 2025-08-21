@@ -769,11 +769,18 @@
     --sidebar-border: 265 15% 88%;
     --sidebar-ring: 265 100% 58%;
 
-    /* Enhanced SoftChat brand colors */
-    --softchat-primary: 265 100% 58%;
-    --softchat-accent: 297 83% 72%;
-    --softchat-600: 265 89% 48%;
-    --softchat-700: 265 100% 40%;
+    /* Eloity brand colors - Neon Bluish Purple to Electrifying Blue */
+    --eloity-primary: 244 100% 69%; /* #7D5FFF - Neon Bluish Purple */
+    --eloity-secondary: 210 100% 57%; /* #2979FF - Electrifying Blue */
+    --eloity-accent: 244 100% 69%; /* Primary accent */
+    --eloity-gradient-from: 244 100% 69%; /* #7D5FFF */
+    --eloity-gradient-to: 210 100% 57%; /* #2979FF */
+
+    /* Legacy softchat variables mapped to Eloity colors for compatibility */
+    --softchat-primary: 244 100% 69%;
+    --softchat-accent: 210 100% 57%;
+    --softchat-600: 244 95% 65%;
+    --softchat-700: 244 100% 60%;
 
     /* New gradient variables for dynamic elements */
     --gradient-start: 265 100% 58%;
@@ -853,11 +860,18 @@
     --sidebar-border: 215 25% 12%; /* Dark blue border */
     --sidebar-ring: 217 91% 60%; /* Bright blue ring */
 
-    /* Enhanced SoftChat brand colors for dark with blue theme */
-    --softchat-primary: 217 91% 60%;
-    --softchat-accent: 240 83% 70%;
-    --softchat-600: 217 89% 55%;
-    --softchat-700: 217 100% 45%;
+    /* Eloity brand colors for dark mode */
+    --eloity-primary: 244 100% 75%; /* Lighter Neon Bluish Purple for dark */
+    --eloity-secondary: 210 100% 65%; /* Lighter Electrifying Blue for dark */
+    --eloity-accent: 244 100% 75%;
+    --eloity-gradient-from: 244 100% 75%;
+    --eloity-gradient-to: 210 100% 65%;
+
+    /* Legacy softchat variables mapped to Eloity colors for compatibility */
+    --softchat-primary: 244 100% 75%;
+    --softchat-accent: 210 100% 65%;
+    --softchat-600: 244 95% 70%;
+    --softchat-700: 244 100% 65%;
 
     /* Dark gradient variables with blue theme */
     --gradient-start: 217 91% 60%;
