@@ -37,7 +37,7 @@ export async function processFlutterwavePayment(data: FlutterwavePaymentData) {
         name: user.full_name || user.username
       },
       customizations: {
-        title: "Softchat Payment",
+        title: "Eloity Payment",
         description: purpose,
         logo: `${process.env.FRONTEND_URL}/logo.png`
       },
