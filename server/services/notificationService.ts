@@ -262,7 +262,7 @@ async function sendSMSWithVonage(data: SMSNotificationData, messageId: string) {
           api_key: process.env.VONAGE_API_KEY,
           api_secret: process.env.VONAGE_API_SECRET,
           to: data.phoneNumber.replace('+', ''),
-          from: 'Softchat',
+          from: 'Eloity',
           text: data.message
         })
       });
