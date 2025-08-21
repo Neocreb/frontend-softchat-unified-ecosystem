@@ -155,7 +155,7 @@
   "prefer_related_applications": false,
   "protocol_handlers": [
     {
-      "protocol": "web+softchat",
+      "protocol": "web+eloity",
       "url": "/handle?type=%s"
     }
   ],
