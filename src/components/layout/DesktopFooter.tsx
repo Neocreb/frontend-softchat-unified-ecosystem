@@ -34,8 +34,7 @@ const DesktopFooter = () => {
               <span className="font-bold text-lg text-primary">Eloity</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              The ultimate social platform for creators, traders, and
-              professionals.
+              Where everything connects - social, fintech, creative and commerce.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span>© 2024 Eloity</span>
