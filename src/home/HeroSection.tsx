@@ -4,24 +4,22 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-background to-muted dark:from-background dark:to-muted py-16 sm:py-20 md:py-32">
+    <section className="relative overflow-hidden bg-gradient-to-br from-eloity-purple via-blue-500 to-eloity-blue py-16 sm:py-20 md:py-32">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-20 bg-gradient-radial from-softchat-500/40 to-transparent"></div>
-        <div className="absolute right-0 bottom-0 -z-10 h-[400px] w-[400px] sm:h-[600px] sm:w-[600px] translate-x-1/3 translate-y-1/3 opacity-20 bg-gradient-radial from-teal-400/40 to-transparent"></div>
+        <div className="absolute left-1/2 top-0 -z-10 h-[600px] w-[600px] sm:h-[800px] sm:w-[800px] -translate-x-1/2 opacity-30 bg-gradient-radial from-white/20 to-transparent"></div>
+        <div className="absolute right-0 bottom-0 -z-10 h-[400px] w-[400px] sm:h-[600px] sm:w-[600px] translate-x-1/3 translate-y-1/3 opacity-30 bg-gradient-radial from-white/20 to-transparent"></div>
       </div>
 
       <div className="container-wide relative z-10">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="heading-xl mb-6">
-            <span className="gradient-text">AI-Powered Everything:</span>{" "}
-            Social, Crypto, Commerce, Freelance & More.
+        <div className="mx-auto max-w-4xl text-center">
+          <h1 className="font-eloity-headline text-4xl sm:text-5xl lg:text-6xl mb-6 text-white">
+            Experience the Future of{" "}
+            <span className="block mt-2">Social Platforms</span>
           </h1>
 
-          <p className="body-lg mb-10 text-muted-foreground dark:text-muted-foreground">
-            The most advanced social platform with AI recommendations,
-            comprehensive analytics, gamification, and full accessibility.
-            Connect, trade, freelance, and innovate with secure crypto escrow
-            and intelligent matching.
+          <p className="font-eloity-body text-lg sm:text-xl mb-10 text-white/90 max-w-2xl mx-auto leading-relaxed">
+            Join thousands of users who are already enjoying the most
+            advanced social platform ever built.
           </p>
 
           {/* Primary Action Buttons */}
