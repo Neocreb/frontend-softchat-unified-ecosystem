@@ -1270,7 +1270,7 @@ function getTermiiChannel(type: string): string {
 
 function generateUSSDMenuText(menuStructure: any): string {
   // Generate USSD menu text from structure
-  let menuText = "Welcome to Softchat!\n";
+  let menuText = "Welcome to Eloity!\n";
   
   if (menuStructure.options) {
     menuStructure.options.forEach((option, index) => {
