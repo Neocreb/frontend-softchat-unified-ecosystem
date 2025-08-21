@@ -105,7 +105,7 @@ const PORT = process.env.PORT || 5000;
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
-console.log('🚀 Starting Softchat Backend Server...');
+console.log('🚀 Starting Eloity Backend Server...');
 console.log('📁 Current directory:', process.cwd());
 console.log('🔧 Node version:', process.version);
 console.log('🗄️ Database URL configured:', !!databaseUrl);
