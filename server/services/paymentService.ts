@@ -379,7 +379,7 @@ export async function processOrangeMoneyPayment(data: OrangeMoneyPaymentData) {
       cancel_url: cancelUrl,
       notif_url: `${process.env.BACKEND_URL}/api/payments/orange-money/webhook`,
       lang: language,
-      reference: `SOFTCHAT_${Date.now()}`
+      reference: `ELOITY_${Date.now()}`
     };
 
     if (process.env.NODE_ENV === 'production') {
