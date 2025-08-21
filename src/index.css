@@ -861,11 +861,19 @@
     --sidebar-border: 215 25% 12%; /* Dark blue border */
     --sidebar-ring: 217 91% 60%; /* Bright blue ring */
 
-    /* Enhanced SoftChat brand colors for dark with blue theme */
-    --softchat-primary: 217 91% 60%;
-    --softchat-accent: 240 83% 70%;
-    --softchat-600: 217 89% 55%;
-    --softchat-700: 217 100% 45%;
+    /* Enhanced Eloity brand colors for dark mode */
+    --eloity-primary: 259 100% 75%; /* Brighter Neon Bluish Purple for dark mode */
+    --eloity-accent: 259 100% 75%;
+    --eloity-purple: 259 100% 75%; /* Neon Bluish Purple #7D5FFF */
+    --eloity-blue: 218 100% 65%; /* Brighter Electrifying Blue for dark mode */
+    --eloity-600: 259 89% 65%;
+    --eloity-700: 259 100% 55%;
+
+    /* Legacy softchat variables for backward compatibility */
+    --softchat-primary: 259 100% 75%;
+    --softchat-accent: 259 100% 75%;
+    --softchat-600: 259 89% 65%;
+    --softchat-700: 259 100% 55%;
 
     /* Dark gradient variables with blue theme */
     --gradient-start: 217 91% 60%;
