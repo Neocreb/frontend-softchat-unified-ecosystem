@@ -58,7 +58,7 @@ const ProblemSolutionSection = () => {
             <span className="gradient-text">We revolutionized that.</span>
           </h2>
           <p className="body-md text-gray-600">
-            Softchat delivers the most advanced social platform with AI-powered
+            Eloity delivers the most advanced platform where everything connects with AI-powered
             features, professional analytics, comprehensive accessibility, and
             seamless integrations - all in one intelligent ecosystem.
           </p>
