@@ -875,10 +875,10 @@
     --softchat-600: 259 89% 65%;
     --softchat-700: 259 100% 55%;
 
-    /* Dark gradient variables with blue theme */
-    --gradient-start: 217 91% 60%;
-    --gradient-middle: 230 85% 65%;
-    --gradient-end: 240 80% 70%;
+    /* Dark gradient variables with Eloity theme */
+    --gradient-start: 259 100% 75%; /* Bright Neon Bluish Purple */
+    --gradient-middle: 238 100% 70%; /* Blend between purple and blue */
+    --gradient-end: 218 100% 65%; /* Bright Electrifying Blue */
 
     /* Dark success and warning */
     --success: 142 76% 55%;
