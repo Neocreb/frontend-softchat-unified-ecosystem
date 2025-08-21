@@ -133,13 +133,13 @@ const HeroSection = () => {
             </div>
 
             {/* Key features */}
-            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground dark:text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/80 font-eloity-body">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+                <div className="w-2 h-2 rounded-full bg-cyan-400"></div>
                 <span>AI-powered content discovery</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
                 <span>Secure crypto trading</span>
               </div>
               <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ const HeroSection = () => {
                 <span>Freelance marketplace</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                <div className="w-2 h-2 rounded-full bg-pink-400"></div>
                 <span>Real-time delivery tracking</span>
               </div>
             </div>
