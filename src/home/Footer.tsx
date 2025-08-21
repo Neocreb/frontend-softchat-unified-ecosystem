@@ -9,12 +9,12 @@ const Footer = () => {
       <div className="container-wide">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <Link to="/" className="text-2xl font-bold mb-4 block">
-              Softchat
+            <Link to="/" className="text-2xl font-bold mb-4 block font-eloity-headline">
+              Eloity
             </Link>
-            <p className="text-gray-400 dark:text-gray-300 mt-2">
-              One app for everything: Social, Crypto, Commerce, Rewards. Built
-              for creators, traders, sellers, and dreamers.
+            <p className="text-gray-400 dark:text-gray-300 mt-2 font-eloity-body">
+              Where everything connects: Social, Fintech, Creative, Commerce.
+              Seamless unity for creators, traders, sellers, and dreamers.
             </p>
           </div>
 
