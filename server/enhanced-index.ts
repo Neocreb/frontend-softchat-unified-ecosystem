@@ -677,7 +677,7 @@ if (process.env.NODE_ENV === 'production') {
 console.log(`🔄 Attempting to start server on port ${PORT}...`);
 
 server.listen(PORT, () => {
-  console.log(`✅ Softchat Backend server successfully started!`);
+  console.log(`✅ Eloity Backend server successfully started!`);
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`🌐 WebSocket server running on ws://localhost:${PORT}`);
 
