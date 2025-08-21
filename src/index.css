@@ -1440,17 +1440,31 @@
     color: hsl(var(--eloity-700));
   }
 
+  .bg-eloity-50 {
+    background-color: hsl(259 100% 97%);
+  }
+
   .bg-softchat-50 {
-    background-color: hsl(265 100% 97%);
+    background-color: hsl(259 100% 97%);
+  }
+
+  .border-eloity-200 {
+    border-color: hsl(259 60% 85%);
   }
 
   .border-softchat-200 {
-    border-color: hsl(265 60% 85%);
+    border-color: hsl(259 60% 85%);
+  }
+
+  .from-eloity-500-40 {
+    --tw-gradient-from: hsl(259 100% 50% / 0.4);
+    --tw-gradient-to: hsl(259 100% 50% / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   }
 
   .from-softchat-500-40 {
-    --tw-gradient-from: hsl(265 100% 50% / 0.4);
-    --tw-gradient-to: hsl(265 100% 50% / 0);
+    --tw-gradient-from: hsl(259 100% 50% / 0.4);
+    --tw-gradient-to: hsl(259 100% 50% / 0);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   }
 
