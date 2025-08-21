@@ -106,10 +106,10 @@ const HeroSection = () => {
           {/* Features Highlight */}
           <div className="mt-8 pt-8 border-t border-border/50">
             <div className="text-center mb-6">
-              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-2">
-                Why Choose Softchat?
+              <h3 className="font-eloity-subheading text-xl font-bold text-white mb-2">
+                Why Choose Eloity?
               </h3>
-              <p className="text-sm text-muted-foreground dark:text-muted-foreground">Everything you need in one intelligent platform</p>
+              <p className="font-eloity-body text-sm text-white/80">Where everything connects - one intelligent platform</p>
             </div>
 
             {/* Feature highlights grid */}
