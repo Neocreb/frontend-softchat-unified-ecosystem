@@ -23,25 +23,25 @@ const HeroSection = () => {
           </p>
 
           {/* Primary Action Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-md sm:max-w-none mx-auto mb-8">
-            {/* ✅ Launch App Button - Enhanced visibility */}
-            <Link to="/auth" className="w-full sm:w-auto">
+          <div className="flex flex-col gap-4 max-w-md mx-auto mb-12">
+            {/* Launch App Button - Gradient with rocket emoji */}
+            <Link to="/auth" className="w-full">
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-lg px-8 py-6 rounded-xl w-full sm:w-auto transition-all duration-300 shadow-2xl hover:shadow-blue-500/50 hover:scale-105 border-2 border-white/20"
+                className="font-eloity-subheading w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-white font-bold text-lg px-8 py-4 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20"
               >
                 🚀 Launch App Now
               </Button>
             </Link>
 
-            {/* ✅ Join Waitlist Button */}
-            <a href="#contact" className="w-full sm:w-auto">
+            {/* Join Waitlist Button - Outlined with gradient border */}
+            <a href="#contact" className="w-full">
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-blue-300 hover:bg-blue-100 text-blue-700 hover:text-blue-800 font-semibold text-lg px-8 py-6 rounded-xl w-full sm:w-auto transition-all duration-300 hover:shadow-lg"
+                className="font-eloity-body w-full bg-transparent border-2 border-white/40 hover:bg-white/10 text-white hover:text-white font-semibold text-lg px-8 py-4 rounded-2xl transition-all duration-300 hover:shadow-lg backdrop-blur-sm"
               >
-                📧 Join Waitlist
+                📄 Join Waitlist
               </Button>
             </a>
           </div>
