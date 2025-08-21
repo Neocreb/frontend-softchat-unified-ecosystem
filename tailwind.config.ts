@@ -79,12 +79,37 @@ module.exports = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        eloity: {
+          DEFAULT: "hsl(var(--eloity-primary))",
+          primary: "hsl(var(--eloity-primary))",
+          secondary: "hsl(var(--eloity-secondary))",
+          accent: "hsl(var(--eloity-accent))",
+          gradient: {
+            from: "#7D5FFF", // Neon Bluish Purple
+            to: "#2979FF", // Electrifying Blue
+          },
+          neutrals: {
+            black: "#000000", // Jet Black
+            white: "#FFFFFF", // Pure White
+          },
+          metallic: {
+            gold: "#FFD700",
+            silver: "#C0C0C0",
+          },
+          ui: {
+            success: "#2ECC71",
+            warning: "#F1C40F",
+            danger: "#E74C3C",
+            info: "#00E5FF",
+          },
+        },
+        // Legacy softchat colors for gradual migration
         softchat: {
-          DEFAULT: "hsl(var(--softchat-primary))",
-          primary: "hsl(var(--softchat-primary))",
-          accent: "hsl(var(--softchat-accent))",
-          600: "hsl(var(--softchat-600))",
-          700: "hsl(var(--softchat-700))",
+          DEFAULT: "hsl(var(--eloity-primary))",
+          primary: "hsl(var(--eloity-primary))",
+          accent: "hsl(var(--eloity-secondary))",
+          600: "hsl(var(--eloity-primary))",
+          700: "hsl(var(--eloity-secondary))",
         },
       },
       keyframes: {
