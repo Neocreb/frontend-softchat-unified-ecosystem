@@ -653,7 +653,7 @@ if (process.env.NODE_ENV === 'production') {
   // In development, just return a simple message for non-API routes
   app.get('*', (req, res) => {
     res.json({
-      message: 'Softchat Backend API server running in development mode',
+      message: 'Eloity Backend API server running in development mode',
       version: '2.0.0',
       frontend: 'Served by Vite on port 8080',
       api: 'Available at /api/*',
@@ -691,7 +691,7 @@ server.listen(PORT, () => {
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📊 Comprehensive Features:`);
   console.log(`   💳 Payments: African processors (Flutterwave, Paystack, MTN MoMo)`);
-  console.log(`   ���� Video: Upload, livestreaming, watch2earn rewards`);
+  console.log(`   🎥 Video: Upload, livestreaming, watch2earn rewards`);
   console.log(`   💰 Crypto: P2P trading, escrow, wallets, price feeds`);
   console.log(`   🆔 KYC: Identity verification (Smile Identity, Veriff)`);
   console.log(`   📱 Notifications: SMS, Email, Push, WhatsApp, Voice`);
