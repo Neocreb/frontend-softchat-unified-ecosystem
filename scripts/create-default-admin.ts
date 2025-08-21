@@ -18,12 +18,12 @@ const sql = neon(connectionString);
 const db = drizzle(sql);
 
 async function createDefaultAdmin() {
-  console.log("🚀 Creating default admin user for SoftChat...\n");
+  console.log("🚀 Creating default admin user for Eloity...\n");
 
   try {
-    const email = "admin@softchat.com";
-    const name = "SoftChat Admin";
-    const password = "Softchat2024!";
+    const email = "admin@eloity.com";
+    const name = "Eloity Admin";
+    const password = "Eloity2024!";
     const roles = ["super_admin"];
     const department = "Administration";
     const position = "System Administrator";
