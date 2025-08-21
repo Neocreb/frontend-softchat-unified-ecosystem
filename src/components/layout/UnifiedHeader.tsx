@@ -78,7 +78,7 @@ import {
   MapPin,
   ToggleLeft,
 } from "lucide-react";
-import SoftchatLogo from "@/components/ui/logo";
+import EloityLogo from "@/components/ui/logo";
 import NotificationsDropdown from "./NotificationsDropdown";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -604,9 +604,9 @@ const UnifiedHeader = ({
             </Button>
 
             <Link to="/app/feed" className="flex items-center gap-2">
-              <SoftchatLogo className="h-8 w-8" />
+              <EloityLogo className="h-8 w-8" />
               <span className="font-bold text-lg hidden sm:block bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                SoftChat
+                Eloity
               </span>
             </Link>
           </div>
