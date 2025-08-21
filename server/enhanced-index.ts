@@ -259,7 +259,7 @@ app.get('/api/health', async (req, res) => {
     
     res.json({
       status: 'OK',
-      message: 'Softchat Backend Server is running',
+      message: 'Eloity Backend Server is running',
       timestamp: new Date().toISOString(),
       version: '2.0.0',
       environment: process.env.NODE_ENV,
@@ -691,7 +691,7 @@ server.listen(PORT, () => {
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📊 Comprehensive Features:`);
   console.log(`   💳 Payments: African processors (Flutterwave, Paystack, MTN MoMo)`);
-  console.log(`   🎥 Video: Upload, livestreaming, watch2earn rewards`);
+  console.log(`   ���� Video: Upload, livestreaming, watch2earn rewards`);
   console.log(`   💰 Crypto: P2P trading, escrow, wallets, price feeds`);
   console.log(`   🆔 KYC: Identity verification (Smile Identity, Veriff)`);
   console.log(`   📱 Notifications: SMS, Email, Push, WhatsApp, Voice`);
