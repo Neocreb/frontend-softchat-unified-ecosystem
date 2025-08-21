@@ -149,7 +149,7 @@ async function sendSMSWithTermii(data: SMSNotificationData, messageId: string) {
         body: JSON.stringify({
           api_key: process.env.TERMII_API_KEY,
           to: data.phoneNumber,
-          from: 'Softchat',
+          from: 'Eloity',
           sms: data.message,
           type: 'plain',
           channel: getTermiiChannel(data.type)
