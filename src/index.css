@@ -1520,6 +1520,31 @@
     );
   }
 
+  /* Eloity specific gradient utilities */
+  .bg-gradient-eloity {
+    background: linear-gradient(135deg, hsl(var(--eloity-purple)), hsl(var(--eloity-blue)));
+  }
+
+  .from-eloity-purple {
+    --tw-gradient-from: hsl(var(--eloity-purple));
+    --tw-gradient-to: hsl(var(--eloity-purple) / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  .to-eloity-blue {
+    --tw-gradient-to: hsl(var(--eloity-blue));
+  }
+
+  .from-eloity-500 {
+    --tw-gradient-from: hsl(var(--eloity-primary));
+    --tw-gradient-to: hsl(var(--eloity-primary) / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  }
+
+  .to-purple-600 {
+    --tw-gradient-to: hsl(259 89% 60%);
+  }
+
   /* Text visibility utilities */
   .text-high-contrast {
     color: hsl(var(--foreground));
