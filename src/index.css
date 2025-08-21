@@ -1388,9 +1388,56 @@
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 
-  /* Enhanced SoftChat color utilities */
+  /* Eloity Typography System */
+  .font-eloity-headline {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700;
+  }
+
+  .font-eloity-subheading {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+  }
+
+  .font-eloity-body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+  }
+
+  .font-eloity-tech {
+    font-family: 'Orbitron', monospace;
+    font-weight: 400;
+  }
+
+  .font-eloity-tech-bold {
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+  }
+
+  /* Enhanced Eloity color utilities */
+  .text-eloity-700 {
+    color: hsl(var(--eloity-700));
+  }
+
+  .text-eloity-primary {
+    color: hsl(var(--eloity-primary));
+  }
+
+  .text-eloity-accent {
+    color: hsl(var(--eloity-accent));
+  }
+
+  .text-eloity-purple {
+    color: hsl(var(--eloity-purple));
+  }
+
+  .text-eloity-blue {
+    color: hsl(var(--eloity-blue));
+  }
+
+  /* Legacy SoftChat color utilities for backward compatibility */
   .text-softchat-700 {
-    color: hsl(var(--softchat-700));
+    color: hsl(var(--eloity-700));
   }
 
   .bg-softchat-50 {
