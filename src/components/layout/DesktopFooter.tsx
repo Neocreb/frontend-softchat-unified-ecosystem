@@ -188,7 +188,7 @@ const DesktopFooter = () => {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span>© 2024 Softchat. All rights reserved.</span>
+            <span>© 2024 Eloity. All rights reserved.</span>
           </div>
 
           <div className="flex items-center gap-4">
