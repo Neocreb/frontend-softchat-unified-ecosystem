@@ -350,7 +350,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
         // Handle referral if present
         if (data.user?.id) {
-          await processReferralSignup(data.user.id);
+          await processReferralSignup(data.user.id, referralCode);
         }
 
         return {};
