@@ -41,6 +41,7 @@ import {
 
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
+import Join from "./pages/Join";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFeedWithTabs from "./pages/EnhancedFeedWithTabs";
