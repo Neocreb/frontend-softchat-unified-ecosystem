@@ -1,97 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { 
-  Users, 
-  DollarSign, 
-  Gift, 
-  Star, 
-  TrendingUp,
-  Check,
-  ArrowRight,
-  Sparkles
-} from 'lucide-react';
 import { ReferralService } from '@/services/referralService';
-import { useToast } from '@/hooks/use-toast';
-import SoftchatLogo from '@/components/shared/SoftchatLogo';
 
 const Join: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { toast } = useToast();
-  
-  const [referralCode, setReferralCode] = useState<string | null>(null);
-  const [isTracking, setIsTracking] = useState(false);
-  const [trackingComplete, setTrackingComplete] = useState(false);
 
   useEffect(() => {
     const refCode = searchParams.get('ref');
-    
-    if (refCode) {
-      setReferralCode(refCode);
-      trackReferralClick(refCode);
-    } else {
-      // No referral code, just redirect to normal auth
-      setTimeout(() => {
-        navigate('/auth');
-      }, 3000);
-    }
-  }, [searchParams, navigate]);
 
-  const trackReferralClick = async (code: string) => {
-    setIsTracking(true);
-    try {
-      const success = await ReferralService.trackReferralClick(code);
-      
-      if (success) {
-        // Store referral code in localStorage for registration
-        localStorage.setItem('referralCode', code);
-        localStorage.setItem('referralCodeExpiry', (Date.now() + 30 * 60 * 1000).toString()); // 30 minutes
-        
-        setTrackingComplete(true);
-        toast({
-          title: "Welcome!",
-          description: "You've been referred by a friend. Special rewards await!",
-        });
-      } else {
-        toast({
-          title: "Invalid Referral",
-          description: "This referral link is invalid or has expired.",
-          variant: "destructive"
-        });
-        // Still allow them to join normally
-        setTimeout(() => {
-          navigate('/auth');
-        }, 2000);
-      }
-    } catch (error) {
-      console.error('Error tracking referral click:', error);
-      toast({
-        title: "Error",
-        description: "Something went wrong, but you can still join!",
-        variant: "destructive"
-      });
-      // Allow them to continue anyway
-      setTimeout(() => {
-        navigate('/auth');
-      }, 2000);
-    } finally {
-      setIsTracking(false);
-    }
-  };
-
-  const handleJoinNow = () => {
     if (isAuthenticated) {
-      navigate('/feed');
-    } else {
-      navigate('/auth');
+      // User is already logged in, redirect to feed
+      navigate('/feed', { replace: true });
+      return;
     }
-  };
+
+    if (refCode) {
+      // Track the referral click in the background
+      ReferralService.trackReferralClick(refCode).catch(error => {
+        console.error('Error tracking referral click:', error);
+      });
+
+      // Redirect to auth page with referral code
+      navigate(`/auth?ref=${encodeURIComponent(refCode)}`, { replace: true });
+    } else {
+      // No referral code, redirect to normal auth
+      navigate('/auth', { replace: true });
+    }
+  }, [searchParams, navigate, isAuthenticated]);
 
   const benefits = [
     {
