@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, CircleOff } from "lucide-react";
+import { Eye, EyeOff, CircleOff, Gift } from "lucide-react";
 
 interface RegisterFormProps {
   name: string;
@@ -11,6 +11,8 @@ interface RegisterFormProps {
   setEmail: (value: string) => void;
   password: string;
   setPassword: (value: string) => void;
+  referralCode: string;
+  setReferralCode: (value: string) => void;
   showPassword: boolean;
   setShowPassword: (value: boolean) => void;
   isSubmitting: boolean;
