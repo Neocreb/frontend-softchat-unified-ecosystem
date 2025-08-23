@@ -410,6 +410,96 @@ const generateUnifiedFeed = (): UnifiedFeedItem[] => {
         saved: false,
       },
     },
+
+    // Group recommendation
+    {
+      id: "group-1",
+      type: "group",
+      timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+      priority: 5,
+      content: {
+        ...groups[0], // Web Development Hub
+        recentActivity: "15 new posts today"
+      },
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
+
+    // Page recommendation
+    {
+      id: "page-1",
+      type: "page",
+      timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+      priority: 5,
+      content: pages[1], // Tesla
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
+
+    // User recommendation
+    {
+      id: "user-rec-1",
+      type: "recommended_user",
+      timestamp: new Date(Date.now() - 7 * 60 * 60 * 1000), // 7 hours ago
+      priority: 4,
+      content: {
+        ...getRandomMockUsers(1)[0].profile,
+        mutualConnections: 8,
+        isFollowing: false
+      },
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
+
+    // Another group recommendation
+    {
+      id: "group-2",
+      type: "group",
+      timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
+      priority: 4,
+      content: {
+        ...groups[2], // Travel Addicts
+        recentActivity: "New photo challenge started"
+      },
+      interactions: {
+        likes: 0,
+        comments: 0,
+        shares: 0,
+      },
+      userInteracted: {
+        liked: false,
+        commented: false,
+        shared: false,
+        saved: false,
+      },
+    },
   ];
 
   // Calculate priorities for all items
