@@ -44,6 +44,7 @@ import profilesRouter from './routes/profiles.js';
 import productsRouter from './routes/products.js';
 import freelanceRouter from './routes/freelance.js';
 import followRouter from './routes/follow.js';
+import referralRouter from './routes/referral.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
