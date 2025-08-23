@@ -211,6 +211,59 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     };
   }, [enhanceUserData]);
 
+  // Process referral signup if referral code exists
+  const processReferralSignup = useCallback(async (newUserId: string) => {
+    try {
+      const referralCode = localStorage.getItem('referralCode');
+      const referralExpiry = localStorage.getItem('referralCodeExpiry');
+
+      if (!referralCode || !referralExpiry) {
+        return; // No referral code to process
+      }
+
+      // Check if referral code has expired (30 minutes from tracking)
+      if (Date.now() > parseInt(referralExpiry)) {
+        localStorage.removeItem('referralCode');
+        localStorage.removeItem('referralCodeExpiry');
+        console.log('Referral code expired, not processing');
+        return;
+      }
+
+      // Import ReferralService dynamically to avoid circular dependencies
+      const { ReferralService } = await import('@/services/referralService');
+
+      // Process the referral signup
+      const success = await ReferralService.processReferralSignup({
+        referralCode,
+        newUserId
+      });
+
+      if (success) {
+        console.log('Referral signup processed successfully');
+        // Show success notification if toast is available
+        try {
+          const { toast } = await import('@/hooks/use-toast');
+          toast({
+            title: "Welcome Bonus!",
+            description: "You've received your referral bonus for joining Softchat!",
+          });
+        } catch (e) {
+          console.log('Toast not available, referral processed silently');
+        }
+      }
+
+      // Clean up referral code from localStorage whether successful or not
+      localStorage.removeItem('referralCode');
+      localStorage.removeItem('referralCodeExpiry');
+
+    } catch (error) {
+      console.error('Error processing referral signup:', error);
+      // Clean up on error too
+      localStorage.removeItem('referralCode');
+      localStorage.removeItem('referralCodeExpiry');
+    }
+  }, []);
+
   // Login function
   const login = useCallback(
     async (email: string, password: string): Promise<{ error?: Error }> => {
