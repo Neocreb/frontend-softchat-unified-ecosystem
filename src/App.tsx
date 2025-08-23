@@ -336,6 +336,9 @@ const AppRoutes = () => {
       <Route path="/dispatch-partner-terms" element={<DispatchPartnerTerms />} />
       <Route path="/legal" element={<LegalInformation />} />
 
+      {/* Join route - for referral links */}
+      <Route path="/join" element={<Join />} />
+
       {/* Auth route - handle loading state and redirects */}
       <Route
         path="/auth"
