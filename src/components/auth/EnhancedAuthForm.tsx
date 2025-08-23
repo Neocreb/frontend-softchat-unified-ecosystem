@@ -168,7 +168,7 @@ const EnhancedAuthForm = () => {
         <AuthHeader isLogin={isLogin} />
         <ErrorHelper error={displayError} />
       </CardHeader>
-      <Tabs defaultValue="login" onValueChange={(val) => setIsLogin(val === "login")}>
+      <Tabs defaultValue={referralCode ? "register" : "login"} onValueChange={(val) => setIsLogin(val === "login")}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>
           <TabsTrigger value="register">Register</TabsTrigger>
