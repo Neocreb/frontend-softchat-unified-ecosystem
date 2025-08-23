@@ -819,13 +819,27 @@ const UnifiedFeedItemCard: React.FC<{
           {/* Header */}
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
+              <Avatar
+                className="h-10 w-10 cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/app/profile/${item.author?.username}`);
+                }}
+              >
                 <AvatarImage src={item.author?.avatar} />
                 <AvatarFallback>{item.author?.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold">{item.author?.name}</span>
+                  <span
+                    className="font-semibold cursor-pointer hover:underline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/app/profile/${item.author?.username}`);
+                    }}
+                  >
+                    {item.author?.name}
+                  </span>
                   {item.author?.verified && (
                     <Badge variant="secondary" className="h-4 w-4 p-0 rounded-full bg-blue-500">
                       <span className="text-white text-xs">✓</span>
@@ -838,6 +852,16 @@ const UnifiedFeedItemCard: React.FC<{
                   ))}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <span
+                    className="cursor-pointer hover:underline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/app/profile/${item.author?.username}`);
+                    }}
+                  >
+                    @{item.author?.username}
+                  </span>
+                  <span>•</span>
                   <span>{formatTime(item.timestamp)}</span>
                   <Globe className="w-3 h-3" />
                   {item.content.location && (

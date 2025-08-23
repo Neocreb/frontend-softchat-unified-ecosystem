@@ -22,7 +22,7 @@ const EnhancedPostCard: React.FC<EnhancedPostCardProps> = ({ post }) => {
 
   const handleUserClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate(`/profile/${post.author.username}`);
+    navigate(`/app/profile/${post.author.username}`);
   };
 
   return (
