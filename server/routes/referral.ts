@@ -295,35 +295,66 @@ router.post('/signup', async (req, res) => {
 
     // Update signup count
     await db.update(referral_links)
-      .set({ 
+      .set({
         signup_count: sql`${referral_links.signup_count} + 1`,
         updated_at: new Date()
       })
       .where(eq(referral_links.id, referralLink.id));
 
-    // Create referral event with rewards
-    await db.insert(referral_events).values({
-      referral_link_id: referralLink.id,
-      referrer_id: referralLink.referrer_id,
-      referee_id: newUserId,
-      event_type: 'signup',
-      reward_amount: referralLink.referrer_reward,
-      reward_currency: 'USD',
-      is_reward_claimed: false,
-      metadata: { 
-        timestamp: new Date().toISOString(),
-        refereeReward: referralLink.referee_reward
-      }
-    });
+    // Immediately credit SoftPoints to referrer using the existing reward rule (50 SP)
+    // This integrates with the existing economy system instead of separate referral tracking
+    try {
+      // Get referrer user to update their points
+      const referrerUser = await db.select().from(users)
+        .where(eq(users.id, referralLink.referrer_id))
+        .limit(1);
 
-    logger.info('Referral signup processed', { referralCode, newUserId, referrerId: referralLink.referrer_id });
-    
+      if (referrerUser.length > 0) {
+        const rewardAmount = 50; // From setup-reward-rules.ts: baseSoftPoints: "50.0"
+
+        // Update referrer's SoftPoints immediately
+        await db.update(users)
+          .set({
+            points: sql`COALESCE(${users.points}, 0) + ${rewardAmount}`,
+            updated_at: new Date()
+          })
+          .where(eq(users.id, referralLink.referrer_id));
+
+        // Record the activity for audit (using existing activity structure)
+        // This creates a record that the referrer earned points for referring someone
+        await db.insert(referral_events).values({
+          referral_link_id: referralLink.id,
+          referrer_id: referralLink.referrer_id,
+          referee_id: newUserId,
+          event_type: 'signup',
+          reward_amount: rewardAmount,
+          reward_currency: 'SP', // SoftPoints
+          is_reward_claimed: true, // Already credited
+          metadata: {
+            timestamp: new Date().toISOString(),
+            softPointsAwarded: rewardAmount,
+            integratedWithExistingRewardSystem: true
+          }
+        });
+
+        logger.info('Referral reward credited immediately', {
+          referralCode,
+          newUserId,
+          referrerId: referralLink.referrer_id,
+          softPointsAwarded: rewardAmount
+        });
+      }
+    } catch (creditError) {
+      logger.error('Error crediting referral reward:', creditError);
+      // Don't fail the signup if reward crediting fails
+    }
+
     res.json({
       success: true,
       referrerId: referralLink.referrer_id,
-      referrerReward: Number(referralLink.referrer_reward),
-      refereeReward: Number(referralLink.referee_reward),
-      message: 'Referral signup processed successfully'
+      referrerReward: 50, // SoftPoints awarded to referrer
+      refereeReward: 25, // Welcome bonus for referee (handled in frontend)
+      message: 'Referral signup processed and rewards credited successfully'
     });
   } catch (error) {
     logger.error('Error processing referral signup:', error);
