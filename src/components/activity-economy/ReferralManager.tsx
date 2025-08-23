@@ -111,73 +111,51 @@ const ReferralManager: React.FC = () => {
   const loadReferralData = async () => {
     try {
       setIsLoading(true);
-      // For now, use demo data. In production, this would fetch from API
 
-      setReferralLinks([
-        {
-          id: "1",
-          referralCode: "SOFTCHAT_USER123",
-          referralUrl: "https://softchat.app/join?ref=SOFTCHAT_USER123",
-          type: "general",
-          clickCount: 45,
-          signupCount: 12,
-          conversionCount: 8,
-          referrerReward: 10,
-          refereeReward: 5,
-          revenueSharePercentage: 5,
-          isActive: true,
-          createdAt: new Date().toISOString(),
-        },
+      // Import ReferralService
+      const { ReferralService } = await import('@/services/referralService');
+
+      // Fetch real data from API
+      const [links, stats] = await Promise.all([
+        ReferralService.getReferralLinks(),
+        ReferralService.getReferralStats(),
       ]);
 
-      setReferralEvents([
-        {
-          id: "1",
-          eventType: "signup",
-          refereeId: "user1",
-          eventData: {},
-          referrerReward: 10,
-          refereeReward: 5,
-          rewardStatus: "paid",
-          createdAt: new Date(
-            Date.now() - 2 * 24 * 60 * 60 * 1000,
-          ).toISOString(),
-          referee: {
-            id: "user1",
-            name: "Alice Johnson",
-            avatar:
-              "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40",
-          },
-        },
-        {
-          id: "2",
-          eventType: "first_purchase",
-          refereeId: "user2",
-          eventData: { amount: 25 },
-          referrerReward: 2.5,
-          refereeReward: 0,
-          rewardStatus: "paid",
-          createdAt: new Date(
-            Date.now() - 5 * 24 * 60 * 60 * 1000,
-          ).toISOString(),
-          referee: {
-            id: "user2",
-            name: "Bob Smith",
-            avatar:
-              "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40",
-          },
-        },
-      ]);
+      // Transform API data to match local interface
+      const transformedLinks: ReferralLink[] = links.map(link => ({
+        id: link.id,
+        referralCode: link.referralCode,
+        referralUrl: link.referralUrl,
+        type: link.type,
+        clickCount: link.clickCount,
+        signupCount: link.signupCount,
+        conversionCount: link.conversionCount,
+        referrerReward: link.referrerReward,
+        refereeReward: link.refereeReward,
+        revenueSharePercentage: link.revenueSharePercentage,
+        isActive: link.isActive,
+        createdAt: link.createdAt,
+      }));
 
-      setReferralStats({
-        totalReferrals: 12,
-        totalEarnings: 125.5,
-        conversionRate: 26.7,
-        activeReferrals: 8,
-        monthlyEarnings: 45.2,
-        tier: "Silver",
-        nextTierProgress: 65,
-      });
+      setReferralLinks(transformedLinks);
+
+      // Transform stats data
+      if (stats) {
+        const transformedStats: ReferralStats = {
+          totalReferrals: stats.totalReferrals,
+          totalEarnings: stats.totalEarnings,
+          conversionRate: stats.conversionRate,
+          activeReferrals: stats.activeReferrals,
+          monthlyEarnings: stats.thisMonthEarnings,
+          tier: "Bronze", // Default tier - could be enhanced with partnership status
+          nextTierProgress: Math.min((stats.totalReferrals / 25) * 100, 100), // Progress to Silver (25 referrals)
+        };
+        setReferralStats(transformedStats);
+      }
+
+      // For now, keep events as demo data since there's no specific events API
+      // In a full implementation, you'd have a separate endpoint for referral events
+      setReferralEvents([]);
     } catch (error) {
       console.error("Error loading referral data:", error);
       toast({
