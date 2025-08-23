@@ -301,51 +301,106 @@ router.post('/signup', async (req, res) => {
       })
       .where(eq(referral_links.id, referralLink.id));
 
-    // Immediately credit SoftPoints to referrer using the existing reward rule (50 SP)
-    // This integrates with the existing economy system instead of separate referral tracking
+    // Smart anti-abuse referral reward system
     try {
-      // Get referrer user to update their points
+      // Get referrer user and their recent referral activity
       const referrerUser = await db.select().from(users)
         .where(eq(users.id, referralLink.referrer_id))
         .limit(1);
 
       if (referrerUser.length > 0) {
-        const rewardAmount = 20; // From setup-reward-rules.ts: baseSoftPoints: "20.0"
+        const user = referrerUser[0];
+        const baseRewardAmount = 20; // From setup-reward-rules.ts: baseSoftPoints: "20.0"
 
-        // Update referrer's SoftPoints immediately
-        await db.update(users)
-          .set({
-            points: sql`COALESCE(${users.points}, 0) + ${rewardAmount}`,
-            updated_at: new Date()
-          })
-          .where(eq(users.id, referralLink.referrer_id));
+        // Anti-abuse checks
+        const now = new Date();
+        const cooldownPeriod = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+        const decayWindow = 24 * 60 * 60 * 1000; // 24 hours for decay calculation
 
-        // Record the activity for audit (using existing activity structure)
-        // This creates a record that the referrer earned points for referring someone
+        // Check recent referrals for cooldown and decay calculation
+        const recentReferrals = await db.select().from(referral_events)
+          .where(and(
+            eq(referral_events.referrer_id, referralLink.referrer_id),
+            eq(referral_events.event_type, 'signup'),
+            sql`${referral_events.created_at} > ${new Date(now.getTime() - decayWindow)}`
+          ))
+          .orderBy(desc(referral_events.created_at));
+
+        // Cooldown check - prevent referrals within 2 hours
+        if (recentReferrals.length > 0) {
+          const lastReferral = recentReferrals[0];
+          const timeSinceLastReferral = now.getTime() - new Date(lastReferral.created_at).getTime();
+
+          if (timeSinceLastReferral < cooldownPeriod) {
+            const waitTime = Math.ceil((cooldownPeriod - timeSinceLastReferral) / (1000 * 60)); // minutes
+            return res.status(429).json({
+              error: `Referral cooldown active. Please wait ${waitTime} minutes before your next referral.`,
+              cooldownMinutes: waitTime
+            });
+          }
+        }
+
+        // Progressive trust score requirement
+        const referralCount = recentReferrals.length;
+        const requiredTrustScore = 15 + Math.floor(referralCount / 5) * 5; // +5 trust per 5 referrals
+        const userTrustScore = Number(user.trust_score || 0);
+
+        if (userTrustScore < requiredTrustScore) {
+          return res.status(403).json({
+            error: `Insufficient trust score. Need ${requiredTrustScore}, have ${userTrustScore}. Build more platform reputation first.`,
+            requiredTrustScore,
+            currentTrustScore: userTrustScore
+          });
+        }
+
+        // Apply decay based on recent referral frequency
+        let rewardMultiplier = 1.0;
+        const decayStart = 3; // Start decay after 3rd referral in 24h
+        const decayRate = 0.25; // 25% reduction per additional referral
+        const minMultiplier = 0.1; // Minimum 10% of original reward
+
+        if (referralCount >= decayStart) {
+          const excessReferrals = referralCount - decayStart + 1;
+          rewardMultiplier = Math.max(minMultiplier, 1.0 - (excessReferrals * decayRate));
+        }
+
+        const finalRewardAmount = Math.floor(baseRewardAmount * rewardMultiplier);
+
+        // Create pending reward (will be credited after 7 days if referee stays active)
         await db.insert(referral_events).values({
           referral_link_id: referralLink.id,
           referrer_id: referralLink.referrer_id,
           referee_id: newUserId,
           event_type: 'signup',
-          reward_amount: rewardAmount,
+          reward_amount: finalRewardAmount,
           reward_currency: 'SP', // SoftPoints
-          is_reward_claimed: true, // Already credited
+          is_reward_claimed: false, // Pending - will be credited after activity validation
           metadata: {
             timestamp: new Date().toISOString(),
-            softPointsAwarded: rewardAmount,
-            integratedWithExistingRewardSystem: true
+            baseReward: baseRewardAmount,
+            decayMultiplier: rewardMultiplier,
+            finalReward: finalRewardAmount,
+            referralCount: referralCount,
+            requiredTrustScore: requiredTrustScore,
+            antiAbuseSystem: 'smart-decay-cooldown-validation',
+            activityValidationPeriod: '7 days',
+            validationDeadline: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString()
           }
         });
 
-        logger.info('Referral reward credited immediately', {
+        logger.info('Smart referral reward processed', {
           referralCode,
           newUserId,
           referrerId: referralLink.referrer_id,
-          softPointsAwarded: rewardAmount
+          baseReward: baseRewardAmount,
+          finalReward: finalRewardAmount,
+          decayMultiplier: rewardMultiplier,
+          referralCount: referralCount,
+          trustScore: userTrustScore
         });
       }
     } catch (creditError) {
-      logger.error('Error crediting referral reward:', creditError);
+      logger.error('Error processing smart referral reward:', creditError);
       // Don't fail the signup if reward crediting fails
     }
 
