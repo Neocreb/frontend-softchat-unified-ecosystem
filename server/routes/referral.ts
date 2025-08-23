@@ -407,9 +407,15 @@ router.post('/signup', async (req, res) => {
     res.json({
       success: true,
       referrerId: referralLink.referrer_id,
-      referrerReward: 20, // SoftPoints awarded to referrer (lower to prevent abuse)
-      refereeReward: 35, // Welcome bonus for referee (higher to incentivize new users)
-      message: 'Referral signup processed and rewards credited successfully'
+      referrerReward: '20 (pending activity validation)', // Will be credited after 7 days if referee stays active
+      refereeReward: 35, // Welcome bonus for referee (immediate)
+      message: 'Referral signup processed. Referrer reward pending 7-day activity validation.',
+      antiAbuseInfo: {
+        rewardValidationPeriod: '7 days',
+        decaySystemActive: true,
+        cooldownPeriod: '2 hours',
+        progressiveTrustRequirement: true
+      }
     });
   } catch (error) {
     logger.error('Error processing referral signup:', error);
