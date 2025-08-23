@@ -56,6 +56,7 @@ import QuickActionButton from './QuickActionButton';
 import { FeedUserCard, FeedGroupCard, FeedPageCard } from './FeedEntityCards';
 import { groups, pages } from '@/data/mockExploreData';
 import { getRandomMockUsers } from '@/data/mockUsers';
+import { useEntityFollowHandlers } from './UnifiedFeedHandlers';
 
 // Unified content type interface
 interface UnifiedFeedItem {
@@ -542,6 +543,7 @@ const UnifiedFeedItemCard: React.FC<{
   const navigate = useNavigate();
   const { user } = useAuth();
   const notification = useNotification();
+  const { handleUserFollow, handleGroupJoin, handlePageFollow } = useEntityFollowHandlers();
 
   // Modal states
   const [showComments, setShowComments] = React.useState(false);
