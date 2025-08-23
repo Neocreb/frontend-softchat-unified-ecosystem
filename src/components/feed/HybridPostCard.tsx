@@ -177,14 +177,28 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
         "hover:shadow-md"
       )}>
         <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
-          <Avatar className="h-9 w-9 flex-shrink-0">
+          <Avatar
+            className="h-9 w-9 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate(`/app/profile/${post.author.username}`);
+            }}
+          >
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
             <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          
+
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center gap-2">
-              <span className="font-semibold truncate">{post.author.name}</span>
+              <span
+                className="font-semibold truncate cursor-pointer hover:underline"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/app/profile/${post.author.username}`);
+                }}
+              >
+                {post.author.name}
+              </span>
               {post.author.verified && (
                 <Badge variant="default" className="px-1 py-0 h-5 bg-blue-500 hover:bg-blue-600 flex-shrink-0">
                   <svg

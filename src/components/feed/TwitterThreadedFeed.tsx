@@ -78,6 +78,7 @@ const TwitterThreadedFeed: React.FC<TwitterThreadedFeedProps> = ({ feedType }) =
   const navigate = useNavigate();
   const notification = useNotification();
   const { user } = useAuth();
+  const { handleUserFollow, handleGroupJoin, handlePageFollow } = useEntityFollowHandlers();
   
   // Mock data representing a comprehensive Twitter-style feed with diverse platform content
   const [posts, setPosts] = useState<TwitterPost[]>([
