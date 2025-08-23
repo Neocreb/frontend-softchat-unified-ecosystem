@@ -145,6 +145,47 @@ export const store_profiles = pgTable('store_profiles', {
   updated_at: timestamp('updated_at').defaultNow(),
 });
 
+// Referral links table
+export const referral_links = pgTable('referral_links', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  referrer_id: uuid('referrer_id').notNull(),
+  referral_code: text('referral_code').notNull().unique(),
+  referral_url: text('referral_url').notNull(),
+  type: text('type').default('general'),
+  campaign_id: uuid('campaign_id'),
+  click_count: integer('click_count').default(0),
+  signup_count: integer('signup_count').default(0),
+  conversion_count: integer('conversion_count').default(0),
+  referrer_reward: numeric('referrer_reward', { precision: 10, scale: 2 }).default('10'),
+  referee_reward: numeric('referee_reward', { precision: 10, scale: 2 }).default('5'),
+  revenue_share_percentage: numeric('revenue_share_percentage', { precision: 5, scale: 2 }).default('0'),
+  is_active: boolean('is_active').default(true),
+  max_uses: integer('max_uses'),
+  current_uses: integer('current_uses').default(0),
+  expires_at: timestamp('expires_at'),
+  description: text('description'),
+  metadata: jsonb('metadata'),
+  created_at: timestamp('created_at').defaultNow(),
+  updated_at: timestamp('updated_at').defaultNow(),
+});
+
+// Referral events table
+export const referral_events = pgTable('referral_events', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  referral_link_id: uuid('referral_link_id').notNull(),
+  referrer_id: uuid('referrer_id').notNull(),
+  referee_id: uuid('referee_id'),
+  event_type: text('event_type').notNull(), // 'click', 'signup', 'conversion'
+  metadata: jsonb('metadata'),
+  reward_amount: numeric('reward_amount', { precision: 10, scale: 2 }),
+  reward_currency: text('reward_currency').default('USD'),
+  is_reward_claimed: boolean('is_reward_claimed').default(false),
+  ip_address: text('ip_address'),
+  user_agent: text('user_agent'),
+  referrer_url: text('referrer_url'),
+  created_at: timestamp('created_at').defaultNow(),
+});
+
 // Relations
 export const productsRelations = relations(products, ({ one, many }) => ({
   seller: one(users, {
@@ -233,5 +274,30 @@ export const storeProfilesRelations = relations(store_profiles, ({ one }) => ({
   user: one(users, {
     fields: [store_profiles.user_id],
     references: [users.id],
+  }),
+}));
+
+export const referralLinksRelations = relations(referral_links, ({ one, many }) => ({
+  referrer: one(users, {
+    fields: [referral_links.referrer_id],
+    references: [users.id],
+  }),
+  events: many(referral_events),
+}));
+
+export const referralEventsRelations = relations(referral_events, ({ one }) => ({
+  referralLink: one(referral_links, {
+    fields: [referral_events.referral_link_id],
+    references: [referral_links.id],
+  }),
+  referrer: one(users, {
+    fields: [referral_events.referrer_id],
+    references: [users.id],
+    relationName: 'referrerEvents',
+  }),
+  referee: one(users, {
+    fields: [referral_events.referee_id],
+    references: [users.id],
+    relationName: 'refereeEvents',
   }),
 }));

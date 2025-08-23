@@ -25,6 +25,7 @@ type AuthContextType = {
     email: string,
     password: string,
     name: string,
+    referralCode?: string,
   ) => Promise<{ error?: Error }>;
   isAdmin: () => boolean;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
@@ -211,6 +212,90 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     };
   }, [enhanceUserData]);
 
+  // Process referral signup if referral code exists
+  const processReferralSignup = useCallback(async (newUserId: string, referralCode?: string) => {
+    try {
+      // Use passed referral code or fall back to localStorage (for backward compatibility)
+      let codeToProcess = referralCode;
+      let shouldCleanup = false;
+
+      if (!codeToProcess) {
+        codeToProcess = localStorage.getItem('referralCode');
+        const referralExpiry = localStorage.getItem('referralCodeExpiry');
+
+        if (!codeToProcess || !referralExpiry) {
+          return; // No referral code to process
+        }
+
+        // Check if referral code has expired (30 minutes from tracking)
+        if (Date.now() > parseInt(referralExpiry)) {
+          localStorage.removeItem('referralCode');
+          localStorage.removeItem('referralCodeExpiry');
+          console.log('Referral code expired, not processing');
+          return;
+        }
+        shouldCleanup = true;
+      }
+
+      if (!codeToProcess) {
+        return; // No referral code to process
+      }
+
+      // Use the existing backend referral system to process the referral
+      // This will find the referrer and give them their rewards through the existing system
+      try {
+        const { ReferralService } = await import('@/services/referralService');
+
+        const success = await ReferralService.processReferralSignup({
+          referralCode: codeToProcess,
+          newUserId
+        });
+
+        if (success) {
+          console.log('Referral signup processed successfully');
+
+          // Also give the new user a welcome bonus using ActivityRewardService
+          try {
+            const { ActivityRewardService } = await import('@/services/activityRewardService');
+            const response = await ActivityRewardService.logActivity({
+              userId: newUserId,
+              actionType: "complete_profile" as any, // Welcome bonus for new users
+              metadata: {
+                referralCode: codeToProcess,
+                isWelcomeBonus: true
+              }
+            });
+
+            // Show success notification
+            const { toast } = await import('@/hooks/use-toast');
+            toast({
+              title: "Welcome Bonus!",
+              description: "You've received bonus SoftPoints for joining through a referral!",
+            });
+          } catch (activityError) {
+            console.error('Error logging welcome bonus:', activityError);
+          }
+        }
+      } catch (referralError) {
+        console.error('Error processing referral:', referralError);
+      }
+
+      // Clean up referral code from localStorage if needed
+      if (shouldCleanup) {
+        localStorage.removeItem('referralCode');
+        localStorage.removeItem('referralCodeExpiry');
+      }
+
+    } catch (error) {
+      console.error('Error processing referral signup:', error);
+      // Clean up on error too if needed
+      if (shouldCleanup) {
+        localStorage.removeItem('referralCode');
+        localStorage.removeItem('referralCodeExpiry');
+      }
+    }
+  }, []);
+
   // Login function
   const login = useCallback(
     async (email: string, password: string): Promise<{ error?: Error }> => {
@@ -269,6 +354,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       email: string,
       password: string,
       name: string,
+      referralCode?: string,
     ): Promise<{ error?: Error }> => {
       try {
         setIsLoading(true);
@@ -292,6 +378,12 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }
 
         console.log("Signup successful:", data.user?.id);
+
+        // Handle referral if present
+        if (data.user?.id) {
+          await processReferralSignup(data.user.id, referralCode);
+        }
+
         return {};
       } catch (error) {
         const authError = error as Error;

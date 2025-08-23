@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, CircleOff } from "lucide-react";
+import { Eye, EyeOff, CircleOff, Gift } from "lucide-react";
 
 interface RegisterFormProps {
   name: string;
@@ -11,6 +11,8 @@ interface RegisterFormProps {
   setEmail: (value: string) => void;
   password: string;
   setPassword: (value: string) => void;
+  referralCode: string;
+  setReferralCode: (value: string) => void;
   showPassword: boolean;
   setShowPassword: (value: boolean) => void;
   isSubmitting: boolean;
@@ -25,6 +27,8 @@ const RegisterForm = ({
   setEmail,
   password,
   setPassword,
+  referralCode,
+  setReferralCode,
   showPassword,
   setShowPassword,
   isSubmitting,
@@ -80,6 +84,28 @@ const RegisterForm = ({
           <p>• At least 8 characters</p>
           <p>• Use a strong, unique password</p>
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="referralCode" className="flex items-center gap-2">
+          <Gift className="h-4 w-4 text-purple-500" />
+          Referral Code
+          <span className="text-xs text-muted-foreground">(Optional)</span>
+        </Label>
+        <Input
+          id="referralCode"
+          type="text"
+          placeholder="Enter referral code"
+          value={referralCode}
+          onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+          className="uppercase"
+        />
+        {referralCode && (
+          <div className="text-xs text-green-600 flex items-center gap-1">
+            <Gift className="h-3 w-3" />
+            <span>You'll receive bonus rewards when you join!</span>
+          </div>
+        )}
       </div>
 
       {error && (

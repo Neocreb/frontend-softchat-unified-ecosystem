@@ -41,6 +41,7 @@ import {
 
 import AppLayout from "./components/layout/AppLayout";
 import Auth from "./pages/Auth";
+import Join from "./pages/Join";
 import Home from "./pages/Home";
 import EnhancedFeed from "./pages/EnhancedFeed";
 import EnhancedFeedWithTabs from "./pages/EnhancedFeedWithTabs";
@@ -334,6 +335,9 @@ const AppRoutes = () => {
       <Route path="/advertising" element={<AdvertisingPolicy />} />
       <Route path="/dispatch-partner-terms" element={<DispatchPartnerTerms />} />
       <Route path="/legal" element={<LegalInformation />} />
+
+      {/* Join route - for referral links */}
+      <Route path="/join" element={<Join />} />
 
       {/* Auth route - handle loading state and redirects */}
       <Route
