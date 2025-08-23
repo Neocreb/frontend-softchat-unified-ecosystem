@@ -310,7 +310,7 @@ router.post('/signup', async (req, res) => {
         .limit(1);
 
       if (referrerUser.length > 0) {
-        const rewardAmount = 50; // From setup-reward-rules.ts: baseSoftPoints: "50.0"
+        const rewardAmount = 30; // From setup-reward-rules.ts: baseSoftPoints: "30.0"
 
         // Update referrer's SoftPoints immediately
         await db.update(users)
@@ -352,8 +352,8 @@ router.post('/signup', async (req, res) => {
     res.json({
       success: true,
       referrerId: referralLink.referrer_id,
-      referrerReward: 50, // SoftPoints awarded to referrer
-      refereeReward: 25, // Welcome bonus for referee (handled in frontend)
+      referrerReward: 30, // SoftPoints awarded to referrer
+      refereeReward: 30, // Welcome bonus for referee (handled in frontend)
       message: 'Referral signup processed and rewards credited successfully'
     });
   } catch (error) {

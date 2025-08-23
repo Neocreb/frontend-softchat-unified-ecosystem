@@ -162,7 +162,7 @@ const defaultRewardRules = [
     actionType: "refer_user",
     displayName: "Refer User",
     description: "Earn points for successful referrals",
-    baseSoftPoints: "50.0",
+    baseSoftPoints: "30.0",
     baseWalletBonus: "1.0",
     currency: "USDT",
     dailyLimit: 10,
