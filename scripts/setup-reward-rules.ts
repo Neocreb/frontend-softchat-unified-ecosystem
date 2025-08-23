@@ -161,18 +161,18 @@ const defaultRewardRules = [
   {
     actionType: "refer_user",
     displayName: "Refer User",
-    description: "Earn points for successful referrals",
+    description: "Earn points for successful referrals with smart anti-abuse protection",
     baseSoftPoints: "20.0",
     baseWalletBonus: "0.5",
     currency: "USDT",
-    dailyLimit: 5,
-    weeklyLimit: 25,
-    monthlyLimit: 100,
-    minimumTrustScore: "25",
-    decayEnabled: false,
-    decayStart: 1,
-    decayRate: "0",
-    minMultiplier: "1.0",
+    dailyLimit: null, // No hard limits - use decay instead
+    weeklyLimit: null,
+    monthlyLimit: null,
+    minimumTrustScore: "15", // Lower initial barrier
+    decayEnabled: true, // Enable decay for anti-abuse
+    decayStart: 3, // After 3rd referral in 24h, rewards start decaying
+    decayRate: "0.25", // 25% reduction per additional referral
+    minMultiplier: "0.1", // Minimum 10% of original reward (2 SP minimum)
     requiresModeration: true,
     qualityThreshold: "0",
     isActive: true,
