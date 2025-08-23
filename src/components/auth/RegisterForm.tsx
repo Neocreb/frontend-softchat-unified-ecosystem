@@ -27,6 +27,8 @@ const RegisterForm = ({
   setEmail,
   password,
   setPassword,
+  referralCode,
+  setReferralCode,
   showPassword,
   setShowPassword,
   isSubmitting,
