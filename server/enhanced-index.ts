@@ -334,6 +334,7 @@ app.use('/api/profiles', profilesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/freelance', freelanceRouter);
 app.use('/api/follow', followRouter);
+app.use('/api/referral', referralRouter);
 
 // =============================================================================
 // CORE AUTHENTICATION ENDPOINTS
