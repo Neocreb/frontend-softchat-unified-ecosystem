@@ -521,11 +521,14 @@ const generateUnifiedFeed = (): UnifiedFeedItem[] => {
 
   // Use intelligent mixing to distribute content types evenly
   return mixContentIntelligently(itemsWithCalculatedPriority, {
-    posts: 50,      // 50% regular posts
+    posts: 40,      // 40% regular posts
     products: 20,   // 20% product recommendations
     jobs: 15,       // 15% job/freelancer content
-    ads: 10,        // 10% sponsored content
+    ads: 8,         // 8% sponsored content
     events: 5,      // 5% events
+    groups: 6,      // 6% group recommendations
+    pages: 4,       // 4% page recommendations
+    users: 2,       // 2% user recommendations
   });
 };
 
@@ -643,6 +646,15 @@ const UnifiedFeedItemCard: React.FC<{
             navigate(item.content.ctaUrl);
           }
         }
+        break;
+      case 'group':
+        navigate(`/app/groups/${item.id.replace('group-', '')}`);
+        break;
+      case 'page':
+        navigate(`/app/pages/${item.id.replace('page-', '')}`);
+        break;
+      case 'recommended_user':
+        navigate(`/app/profile/${item.content.username}`);
         break;
       default:
         // Regular posts go to post detail
