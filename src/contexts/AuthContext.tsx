@@ -25,6 +25,7 @@ type AuthContextType = {
     email: string,
     password: string,
     name: string,
+    referralCode?: string,
   ) => Promise<{ error?: Error }>;
   isAdmin: () => boolean;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
