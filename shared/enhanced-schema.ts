@@ -276,3 +276,28 @@ export const storeProfilesRelations = relations(store_profiles, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const referralLinksRelations = relations(referral_links, ({ one, many }) => ({
+  referrer: one(users, {
+    fields: [referral_links.referrer_id],
+    references: [users.id],
+  }),
+  events: many(referral_events),
+}));
+
+export const referralEventsRelations = relations(referral_events, ({ one }) => ({
+  referralLink: one(referral_links, {
+    fields: [referral_events.referral_link_id],
+    references: [referral_links.id],
+  }),
+  referrer: one(users, {
+    fields: [referral_events.referrer_id],
+    references: [users.id],
+    relationName: 'referrerEvents',
+  }),
+  referee: one(users, {
+    fields: [referral_events.referee_id],
+    references: [users.id],
+    relationName: 'refereeEvents',
+  }),
+}));
