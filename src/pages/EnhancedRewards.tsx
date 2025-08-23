@@ -118,7 +118,7 @@ const getDemoData = (): RewardData => ({
   recentActivity: [
     { id: "1", type: "post_creation", description: "Quality post with media", amount: 15.5, timestamp: "2024-01-20T10:00:00Z" },
     { id: "2", type: "marketplace_sale", description: "Product sold", amount: 25.0, timestamp: "2024-01-20T09:30:00Z" },
-    { id: "3", type: "referral_bonus", description: "New referral signup", amount: 30.0, timestamp: "2024-01-19T18:15:00Z" },
+    { id: "3", type: "referral_bonus", description: "New referral signup", amount: 20.0, timestamp: "2024-01-19T18:15:00Z" },
     { id: "4", type: "battle_voting_win", description: "Won battle vote on Alex Dance vs Music Mike", amount: 87.50, timestamp: "2024-01-20T08:45:00Z" },
     { id: "5", type: "battle_participation", description: "Battle performance bonus", amount: 32.25, timestamp: "2024-01-20T08:30:00Z" },
     { id: "6", type: "gift_received", description: "Received Crown gift from user123", amount: 25.0, timestamp: "2024-01-19T20:10:00Z" },
