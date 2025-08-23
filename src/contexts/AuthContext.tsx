@@ -323,6 +323,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       email: string,
       password: string,
       name: string,
+      referralCode?: string,
     ): Promise<{ error?: Error }> => {
       try {
         setIsLoading(true);
