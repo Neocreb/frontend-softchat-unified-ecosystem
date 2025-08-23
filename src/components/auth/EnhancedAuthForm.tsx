@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNotification } from "@/hooks/use-notification";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -11,16 +11,28 @@ import SocialAuth from "./SocialAuth";
 import AuthFooter from "./AuthFooter";
 
 const EnhancedAuthForm = () => {
+  const [searchParams] = useSearchParams();
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, signup, error: authError } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const notification = useNotification();
   const navigate = useNavigate();
+
+  // Auto-fill referral code from URL parameters
+  useEffect(() => {
+    const refParam = searchParams.get('ref');
+    if (refParam) {
+      setReferralCode(refParam.toUpperCase());
+      setIsLogin(false); // Switch to register tab when referral code is present
+      notification.info("Referral code detected! Complete registration to receive your bonus.");
+    }
+  }, [searchParams, notification]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
