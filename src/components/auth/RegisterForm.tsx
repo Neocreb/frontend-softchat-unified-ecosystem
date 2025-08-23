@@ -86,6 +86,28 @@ const RegisterForm = ({
         </div>
       </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="referralCode" className="flex items-center gap-2">
+          <Gift className="h-4 w-4 text-purple-500" />
+          Referral Code
+          <span className="text-xs text-muted-foreground">(Optional)</span>
+        </Label>
+        <Input
+          id="referralCode"
+          type="text"
+          placeholder="Enter referral code"
+          value={referralCode}
+          onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+          className="uppercase"
+        />
+        {referralCode && (
+          <div className="text-xs text-green-600 flex items-center gap-1">
+            <Gift className="h-3 w-3" />
+            <span>You'll receive bonus rewards when you join!</span>
+          </div>
+        )}
+      </div>
+
       {error && (
         <div className="text-destructive text-sm flex items-center gap-1">
           <CircleOff className="h-4 w-4" />
