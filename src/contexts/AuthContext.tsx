@@ -213,21 +213,32 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, [enhanceUserData]);
 
   // Process referral signup if referral code exists
-  const processReferralSignup = useCallback(async (newUserId: string) => {
+  const processReferralSignup = useCallback(async (newUserId: string, referralCode?: string) => {
     try {
-      const referralCode = localStorage.getItem('referralCode');
-      const referralExpiry = localStorage.getItem('referralCodeExpiry');
+      // Use passed referral code or fall back to localStorage (for backward compatibility)
+      let codeToProcess = referralCode;
+      let shouldCleanup = false;
 
-      if (!referralCode || !referralExpiry) {
-        return; // No referral code to process
+      if (!codeToProcess) {
+        codeToProcess = localStorage.getItem('referralCode');
+        const referralExpiry = localStorage.getItem('referralCodeExpiry');
+
+        if (!codeToProcess || !referralExpiry) {
+          return; // No referral code to process
+        }
+
+        // Check if referral code has expired (30 minutes from tracking)
+        if (Date.now() > parseInt(referralExpiry)) {
+          localStorage.removeItem('referralCode');
+          localStorage.removeItem('referralCodeExpiry');
+          console.log('Referral code expired, not processing');
+          return;
+        }
+        shouldCleanup = true;
       }
 
-      // Check if referral code has expired (30 minutes from tracking)
-      if (Date.now() > parseInt(referralExpiry)) {
-        localStorage.removeItem('referralCode');
-        localStorage.removeItem('referralCodeExpiry');
-        console.log('Referral code expired, not processing');
-        return;
+      if (!codeToProcess) {
+        return; // No referral code to process
       }
 
       // Import ReferralService dynamically to avoid circular dependencies
