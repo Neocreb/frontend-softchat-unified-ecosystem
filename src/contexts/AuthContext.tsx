@@ -241,35 +241,43 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return; // No referral code to process
       }
 
-      // Use ActivityRewardService instead of separate referral system
-      const { ActivityRewardService } = await import('@/services/activityRewardService');
-
-      // Process the referral signup using the existing reward system
+      // Use the existing backend referral system to process the referral
+      // This will find the referrer and give them their rewards through the existing system
       try {
-        const response = await ActivityRewardService.logActivity({
-          userId: newUserId,
-          actionType: "refer_user" as any, // This will trigger the existing reward rule
-          metadata: {
-            referralCode: codeToProcess,
-            isNewUserBonus: true
-          }
+        const { ReferralService } = await import('@/services/referralService');
+
+        const success = await ReferralService.processReferralSignup({
+          referralCode: codeToProcess,
+          newUserId
         });
 
-        if (response.success) {
-          console.log('Referral signup processed successfully:', response);
-          // Show success notification if toast is available
+        if (success) {
+          console.log('Referral signup processed successfully');
+
+          // Also give the new user a welcome bonus using ActivityRewardService
           try {
+            const { ActivityRewardService } = await import('@/services/activityRewardService');
+            const response = await ActivityRewardService.logActivity({
+              userId: newUserId,
+              actionType: "complete_profile" as any, // Welcome bonus for new users
+              metadata: {
+                referralCode: codeToProcess,
+                isWelcomeBonus: true
+              }
+            });
+
+            // Show success notification
             const { toast } = await import('@/hooks/use-toast');
             toast({
               title: "Welcome Bonus!",
-              description: `You've received ${response.softPoints} SoftPoints for joining Softchat!`,
+              description: "You've received bonus SoftPoints for joining through a referral!",
             });
-          } catch (e) {
-            console.log('Toast not available, referral processed silently');
+          } catch (activityError) {
+            console.error('Error logging welcome bonus:', activityError);
           }
         }
-      } catch (activityError) {
-        console.error('Error logging referral activity:', activityError);
+      } catch (referralError) {
+        console.error('Error processing referral:', referralError);
       }
 
       // Clean up referral code from localStorage if needed
