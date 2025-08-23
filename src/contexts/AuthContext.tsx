@@ -292,6 +292,12 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }
 
         console.log("Signup successful:", data.user?.id);
+
+        // Handle referral if present
+        if (data.user?.id) {
+          await processReferralSignup(data.user.id);
+        }
+
         return {};
       } catch (error) {
         const authError = error as Error;
