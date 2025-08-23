@@ -423,6 +423,96 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// Process validated referral rewards (for pending rewards after activity validation)
+router.post('/process-validated-rewards', async (req, res) => {
+  try {
+    const now = new Date();
+    const validationPeriod = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+    // Find pending rewards that are ready for validation
+    const pendingRewards = await db.select({
+      event: referral_events,
+      referee: users
+    })
+    .from(referral_events)
+    .leftJoin(users, eq(referral_events.referee_id, users.id))
+    .where(and(
+      eq(referral_events.event_type, 'signup'),
+      eq(referral_events.is_reward_claimed, false),
+      sql`${referral_events.created_at} < ${new Date(now.getTime() - validationPeriod)}`
+    ));
+
+    let processedCount = 0;
+    let creditedAmount = 0;
+
+    for (const { event, referee } of pendingRewards) {
+      if (!referee) continue;
+
+      // Check if referee is still active (has logged in recently and has some activity)
+      const refereeActiveCheck = await db.select({
+        lastLogin: users.last_login,
+        points: users.points,
+        postCount: sql`(SELECT COUNT(*) FROM posts WHERE user_id = ${referee.id})`
+      })
+      .from(users)
+      .where(eq(users.id, referee.id))
+      .limit(1);
+
+      if (refereeActiveCheck.length > 0) {
+        const refereeActivity = refereeActiveCheck[0];
+        const lastLogin = refereeActivity.lastLogin ? new Date(refereeActivity.lastLogin) : null;
+        const isRecentlyActive = lastLogin && (now.getTime() - lastLogin.getTime()) < (3 * 24 * 60 * 60 * 1000); // Active within 3 days
+        const hasMinimalActivity = Number(refereeActivity.postCount) > 0 || Number(refereeActivity.points) > 35; // Posted or engaged
+
+        if (isRecentlyActive && hasMinimalActivity) {
+          // Credit the referrer
+          await db.update(users)
+            .set({
+              points: sql`COALESCE(${users.points}, 0) + ${event.reward_amount}`,
+              updated_at: new Date()
+            })
+            .where(eq(users.id, event.referrer_id));
+
+          // Mark reward as claimed
+          await db.update(referral_events)
+            .set({
+              is_reward_claimed: true,
+              metadata: sql`jsonb_set(COALESCE(${referral_events.metadata}, '{}'::jsonb), '{validatedAt}', to_jsonb(now()::text)) || jsonb_build_object('validationPassed', true, 'refereeActive', true)`
+            })
+            .where(eq(referral_events.id, event.id));
+
+          processedCount++;
+          creditedAmount += Number(event.reward_amount);
+        } else {
+          // Mark as validation failed
+          await db.update(referral_events)
+            .set({
+              metadata: sql`jsonb_set(COALESCE(${referral_events.metadata}, '{}'::jsonb), '{validatedAt}', to_jsonb(now()::text)) || jsonb_build_object('validationPassed', false, 'reason', 'referee_inactive')`
+            })
+            .where(eq(referral_events.id, event.id));
+        }
+      }
+    }
+
+    logger.info('Processed validated referral rewards', {
+      totalPending: pendingRewards.length,
+      processed: processedCount,
+      creditedAmount
+    });
+
+    res.json({
+      success: true,
+      totalPending: pendingRewards.length,
+      processed: processedCount,
+      creditedAmount,
+      message: `Processed ${processedCount} validated referral rewards totaling ${creditedAmount} SP`
+    });
+  } catch (error) {
+    logger.error('Error processing validated referral rewards:', error);
+    res.status(500).json({ error: 'Failed to process validated rewards' });
+  }
+});
+
 // Claim referral rewards
 router.post('/claim-rewards', authenticateToken, async (req, res) => {
   try {
