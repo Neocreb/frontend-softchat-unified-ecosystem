@@ -1617,7 +1617,28 @@ const UnifiedFeedContent: React.FC<{ feedType: string }> = ({ feedType }) => {
       const mergedItems = [...userPosts, ...allItems];
 
       // Filter items based on feed type using utility
-      const filteredItems = filterContentByFeedType(mergedItems, feedType);
+      let filteredItems = filterContentByFeedType(mergedItems, feedType);
+
+      // Apply additional filtering based on tab selection for better content organization
+      if (feedType === 'groups') {
+        filteredItems = filteredItems.filter(item =>
+          item.type === 'group' ||
+          (item.type === 'post' && item.author?.id?.startsWith('group-')) ||
+          item.type === 'community_event'
+        );
+      } else if (feedType === 'pages') {
+        filteredItems = filteredItems.filter(item =>
+          item.type === 'page' ||
+          (item.type === 'post' && item.author?.id?.startsWith('page-')) ||
+          item.type === 'sponsored_post'
+        );
+      } else if (feedType === 'following') {
+        filteredItems = filteredItems.filter(item =>
+          item.type === 'post' ||
+          item.type === 'recommended_user' ||
+          item.type === 'story_recap'
+        );
+      }
 
       // Sort by timestamp (newest first)
       filteredItems.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
