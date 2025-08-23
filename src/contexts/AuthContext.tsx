@@ -241,38 +241,50 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return; // No referral code to process
       }
 
-      // Import ReferralService dynamically to avoid circular dependencies
-      const { ReferralService } = await import('@/services/referralService');
+      // Use ActivityRewardService instead of separate referral system
+      const { ActivityRewardService } = await import('@/services/activityRewardService');
 
-      // Process the referral signup
-      const success = await ReferralService.processReferralSignup({
-        referralCode,
-        newUserId
-      });
+      // Process the referral signup using the existing reward system
+      try {
+        const response = await ActivityRewardService.logActivity({
+          userId: newUserId,
+          actionType: "refer_user" as any, // This will trigger the existing reward rule
+          metadata: {
+            referralCode: codeToProcess,
+            isNewUserBonus: true
+          }
+        });
 
-      if (success) {
-        console.log('Referral signup processed successfully');
-        // Show success notification if toast is available
-        try {
-          const { toast } = await import('@/hooks/use-toast');
-          toast({
-            title: "Welcome Bonus!",
-            description: "You've received your referral bonus for joining Softchat!",
-          });
-        } catch (e) {
-          console.log('Toast not available, referral processed silently');
+        if (response.success) {
+          console.log('Referral signup processed successfully:', response);
+          // Show success notification if toast is available
+          try {
+            const { toast } = await import('@/hooks/use-toast');
+            toast({
+              title: "Welcome Bonus!",
+              description: `You've received ${response.softPoints} SoftPoints for joining Softchat!`,
+            });
+          } catch (e) {
+            console.log('Toast not available, referral processed silently');
+          }
         }
+      } catch (activityError) {
+        console.error('Error logging referral activity:', activityError);
       }
 
-      // Clean up referral code from localStorage whether successful or not
-      localStorage.removeItem('referralCode');
-      localStorage.removeItem('referralCodeExpiry');
+      // Clean up referral code from localStorage if needed
+      if (shouldCleanup) {
+        localStorage.removeItem('referralCode');
+        localStorage.removeItem('referralCodeExpiry');
+      }
 
     } catch (error) {
       console.error('Error processing referral signup:', error);
-      // Clean up on error too
-      localStorage.removeItem('referralCode');
-      localStorage.removeItem('referralCodeExpiry');
+      // Clean up on error too if needed
+      if (shouldCleanup) {
+        localStorage.removeItem('referralCode');
+        localStorage.removeItem('referralCodeExpiry');
+      }
     }
   }, []);
 
