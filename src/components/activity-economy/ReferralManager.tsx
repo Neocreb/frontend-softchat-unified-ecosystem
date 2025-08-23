@@ -206,30 +206,54 @@ const ReferralManager: React.FC = () => {
     }
   };
 
-  const generateNewLink = () => {
-    const newCode = `SOFTCHAT_${(user?.id || "").toString().slice(-6).toUpperCase()}_${Date.now().toString().slice(-6)}`;
-    const newUrl = `https://softchat.app/join?ref=${newCode}`;
+  const generateNewLink = async () => {
+    try {
+      // Import ReferralService
+      const { ReferralService } = await import('@/services/referralService');
 
-    const newLink: ReferralLink = {
-      id: `link_${Date.now()}`,
-      referralCode: newCode,
-      referralUrl: newUrl,
-      type: "general",
-      clickCount: 0,
-      signupCount: 0,
-      conversionCount: 0,
-      referrerReward: 10,
-      refereeReward: 5,
-      revenueSharePercentage: 5,
-      isActive: true,
-      createdAt: new Date().toISOString(),
-    };
+      // Generate new link via API
+      const newLink = await ReferralService.generateReferralLink({
+        type: "general",
+        description: "Personal referral link",
+      });
 
-    setReferralLinks([...referralLinks, newLink]);
-    toast({
-      title: "New Link Created",
-      description: "Your new referral link is ready to use",
-    });
+      if (newLink) {
+        // Transform API response to match local interface
+        const transformedLink: ReferralLink = {
+          id: newLink.id,
+          referralCode: newLink.referralCode,
+          referralUrl: newLink.referralUrl,
+          type: newLink.type,
+          clickCount: newLink.clickCount,
+          signupCount: newLink.signupCount,
+          conversionCount: newLink.conversionCount,
+          referrerReward: newLink.referrerReward,
+          refereeReward: newLink.refereeReward,
+          revenueSharePercentage: newLink.revenueSharePercentage,
+          isActive: newLink.isActive,
+          createdAt: newLink.createdAt,
+        };
+
+        setReferralLinks([...referralLinks, transformedLink]);
+        toast({
+          title: "New Link Created",
+          description: "Your new referral link is ready to use",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to create new referral link",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error generating new link:", error);
+      toast({
+        title: "Error",
+        description: "Failed to create new referral link",
+        variant: "destructive",
+      });
+    }
   };
 
   // =============================================================================
