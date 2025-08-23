@@ -1537,6 +1537,42 @@ const UnifiedFeedItemCard: React.FC<{
     );
   }
 
+  // Group recommendation rendering
+  if (item.type === "group") {
+    return (
+      <FeedGroupCard
+        key={item.id}
+        group={item.content}
+        onToggleJoin={handleGroupJoin}
+        className="mb-4 sm:mb-6 mx-2 sm:mx-0"
+      />
+    );
+  }
+
+  // Page recommendation rendering
+  if (item.type === "page") {
+    return (
+      <FeedPageCard
+        key={item.id}
+        page={item.content}
+        onToggleFollow={handlePageFollow}
+        className="mb-4 sm:mb-6 mx-2 sm:mx-0"
+      />
+    );
+  }
+
+  // Recommended user rendering
+  if (item.type === "recommended_user") {
+    return (
+      <FeedUserCard
+        key={item.id}
+        user={item.content}
+        onToggleFollow={handleUserFollow}
+        className="mb-4 sm:mb-6 mx-2 sm:mx-0"
+      />
+    );
+  }
+
   return null;
 };
 
