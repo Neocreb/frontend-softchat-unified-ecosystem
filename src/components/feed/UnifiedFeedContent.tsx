@@ -53,22 +53,27 @@ import { UnifiedActivityService } from '@/services/unifiedActivityService';
 import { useNotification } from '@/hooks/use-notification';
 import EnhancedShareDialog from './EnhancedShareDialog';
 import QuickActionButton from './QuickActionButton';
+import { FeedUserCard, FeedGroupCard, FeedPageCard } from './FeedEntityCards';
+import { groups, pages } from '@/data/mockExploreData';
+import { getRandomMockUsers } from '@/data/mockUsers';
 
 // Unified content type interface
 interface UnifiedFeedItem {
   id: string;
-  type: 
-    | "post" 
-    | "product" 
-    | "job" 
-    | "freelancer_skill" 
-    | "sponsored_post" 
-    | "ad" 
-    | "live_event" 
+  type:
+    | "post"
+    | "product"
+    | "job"
+    | "freelancer_skill"
+    | "sponsored_post"
+    | "ad"
+    | "live_event"
     | "community_event"
     | "story_recap"
     | "recommended_user"
-    | "trending_topic";
+    | "trending_topic"
+    | "group"
+    | "page";
   timestamp: Date;
   priority: number; // Higher number = higher priority in feed
   author?: {
