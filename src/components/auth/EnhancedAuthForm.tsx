@@ -208,6 +208,8 @@ const EnhancedAuthForm = () => {
               setEmail={setEmail}
               password={password}
               setPassword={setPassword}
+              referralCode={referralCode}
+              setReferralCode={setReferralCode}
               showPassword={showPassword}
               setShowPassword={setShowPassword}
               isSubmitting={isSubmitting}
