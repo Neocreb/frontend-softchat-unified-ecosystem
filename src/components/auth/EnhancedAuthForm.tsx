@@ -69,7 +69,7 @@ const EnhancedAuthForm = () => {
           return;
         }
 
-        const result = await signup(email, password, name);
+        const result = await signup(email, password, name, referralCode || undefined);
         if (result.error) {
           let errorMessage = result.error.message || "Registration failed";
 
