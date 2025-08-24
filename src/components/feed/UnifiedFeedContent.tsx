@@ -53,10 +53,10 @@ import { UnifiedActivityService } from '@/services/unifiedActivityService';
 import { useNotification } from '@/hooks/use-notification';
 import EnhancedShareDialog from './EnhancedShareDialog';
 import QuickActionButton from './QuickActionButton';
-import { FeedUserCard, FeedGroupCard, FeedPageCard } from './FeedEntityCards';
-import { groups, pages } from '@/data/mockExploreData';
-import { getRandomMockUsers } from '@/data/mockUsers';
-import { useEntityFollowHandlers } from './UnifiedFeedHandlers';
+// import { FeedUserCard, FeedGroupCard, FeedPageCard } from './FeedEntityCards';
+// import { groups, pages } from '@/data/mockExploreData';
+// import { getRandomMockUsers } from '@/data/mockUsers';
+// import { useEntityFollowHandlers } from './UnifiedFeedHandlers';
 
 // Unified content type interface
 interface UnifiedFeedItem {
