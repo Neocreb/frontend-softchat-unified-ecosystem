@@ -24,6 +24,9 @@ import {
 import { cn } from "@/lib/utils";
 import { useHybridFeed, type HybridPost } from "@/contexts/HybridFeedContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { CompactFollowButton } from "./FollowButton";
+import { useEntityFollowHandlers } from "./UnifiedFeedHandlers";
+import { useNavigate } from 'react-router-dom';
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import {
   DropdownMenu,
