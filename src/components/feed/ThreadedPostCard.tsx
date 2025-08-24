@@ -146,26 +146,14 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
         post.type === 'quote' && "border-primary/30"
       )}>
         <CardHeader className="pb-3 pt-4 px-4 flex flex-row gap-3 items-start">
-          <Avatar
-            className="h-9 w-9 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/app/profile/${post.author.username}`);
-            }}
-          >
+          <Avatar className="h-9 w-9 flex-shrink-0">
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
             <AvatarFallback>{post.author.name.substring(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-center gap-2">
-              <span
-                className="font-semibold truncate cursor-pointer hover:underline"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/app/profile/${post.author.username}`);
-                }}
-              >
+              <span className="font-semibold truncate">
                 {post.author.name}
               </span>
               {post.author.verified && (
