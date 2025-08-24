@@ -20,9 +20,6 @@ import {
 import { cn } from "@/utils/utils";
 import { useEnhancedFeed, type ThreadedPost } from "@/contexts/EnhancedFeedContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { CompactFollowButton } from "./FollowButton";
-import { useEntityFollowHandlers } from "./UnifiedFeedHandlers";
-import { useNavigate } from 'react-router-dom';
 import VirtualGiftsAndTips from "@/components/premium/VirtualGiftsAndTips";
 import EnhancedShareDialog from './EnhancedShareDialog';
 import UnifiedActionButtons from './UnifiedActionButtons';
@@ -64,8 +61,6 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
     getPostReplies
   } = useEnhancedFeed();
   const { user } = useAuth();
-  const navigate = useNavigate();
-  const { handleUserFollow } = useEntityFollowHandlers();
   
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState("");
