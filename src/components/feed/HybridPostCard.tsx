@@ -65,6 +65,8 @@ const HybridPostCard: React.FC<HybridPostCardProps> = ({
     getPostReplies 
   } = useHybridFeed();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { handleUserFollow } = useEntityFollowHandlers();
   
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState("");

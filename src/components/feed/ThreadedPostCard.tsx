@@ -54,16 +54,18 @@ const ThreadedPostCard: React.FC<ThreadedPostCardProps> = ({
   isInThread = false,
   onNavigateToPost 
 }) => {
-  const { 
-    toggleLike, 
-    toggleBookmark, 
-    toggleGift, 
+  const {
+    toggleLike,
+    toggleBookmark,
+    toggleGift,
     incrementShares,
     createReplyPost,
     createQuotePost,
-    getPostReplies 
+    getPostReplies
   } = useEnhancedFeed();
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const { handleUserFollow } = useEntityFollowHandlers();
   
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState("");
