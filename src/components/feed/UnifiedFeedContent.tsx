@@ -543,7 +543,7 @@ const UnifiedFeedItemCard: React.FC<{
   const navigate = useNavigate();
   const { user } = useAuth();
   const notification = useNotification();
-  const { handleUserFollow, handleGroupJoin, handlePageFollow } = useEntityFollowHandlers();
+  // const { handleUserFollow, handleGroupJoin, handlePageFollow } = useEntityFollowHandlers();
 
   // Modal states
   const [showComments, setShowComments] = React.useState(false);
