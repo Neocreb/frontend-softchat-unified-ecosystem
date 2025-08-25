@@ -9,7 +9,8 @@ import {
   Sparkles, 
   Gift,
   Heart,
-  Share2
+  Share2,
+  Bookmark
 } from 'lucide-react';
 import { useLocation } from 'wouter';
 import PostCard from '@/components/feed/PostCard';
