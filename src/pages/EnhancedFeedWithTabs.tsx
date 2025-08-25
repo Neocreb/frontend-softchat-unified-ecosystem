@@ -427,7 +427,7 @@ const EnhancedFeedWithTabs = () => {
   const [showCreatePostFlow, setShowCreatePostFlow] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
-  const [feedViewMode, setFeedViewMode] = useState<'classic' | 'threaded'>('classic');
+  const [feedViewMode, setFeedViewMode] = useState<'classic' | 'saved'>('classic');
   const { toast } = useToast();
 
   const baseTabs = [
