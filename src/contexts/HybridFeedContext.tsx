@@ -65,7 +65,25 @@ const HybridFeedContext = createContext<HybridFeedContextType | undefined>(undef
 export const useHybridFeed = () => {
   const context = useContext(HybridFeedContext);
   if (!context) {
-    throw new Error('useHybridFeed must be used within a HybridFeedProvider');
+    console.error('useHybridFeed must be used within a HybridFeedProvider');
+    // Return a safe fallback instead of throwing to prevent app crashes
+    return {
+      viewMode: 'classic' as FeedViewMode,
+      setViewMode: () => console.warn('setViewMode not available - no HybridFeedProvider'),
+      posts: [],
+      addPost: () => console.warn('addPost not available - no HybridFeedProvider'),
+      updatePost: () => console.warn('updatePost not available - no HybridFeedProvider'),
+      removePost: () => console.warn('removePost not available - no HybridFeedProvider'),
+      createReplyPost: () => console.warn('createReplyPost not available - no HybridFeedProvider'),
+      createQuotePost: () => console.warn('createQuotePost not available - no HybridFeedProvider'),
+      getPostThread: () => [],
+      getPostReplies: () => [],
+      getThreadRoot: () => null,
+      toggleLike: () => console.warn('toggleLike not available - no HybridFeedProvider'),
+      toggleBookmark: () => console.warn('toggleBookmark not available - no HybridFeedProvider'),
+      toggleGift: () => console.warn('toggleGift not available - no HybridFeedProvider'),
+      incrementShares: () => console.warn('incrementShares not available - no HybridFeedProvider'),
+    };
   }
   return context;
 };
