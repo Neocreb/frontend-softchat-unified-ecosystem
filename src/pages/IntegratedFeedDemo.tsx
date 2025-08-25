@@ -12,7 +12,6 @@ import {
   Share2
 } from 'lucide-react';
 import { useLocation } from 'wouter';
-import SimpleFeedToggle, { SimpleFeedMode } from '@/components/feed/SimpleFeedToggle';
 import PostCard from '@/components/feed/PostCard';
 import CommentSection from '@/components/feed/CommentSection';
 import CreatePostCard from '@/components/feed/CreatePostCard';
@@ -173,10 +172,15 @@ const IntegratedFeedDemo: React.FC = () => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Feed Controls</CardTitle>
-              <SimpleFeedToggle 
-                currentMode={feedMode} 
-                onModeChange={setFeedMode} 
-              />
+              <Button
+                variant={feedMode === 'saved' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setFeedMode(feedMode === 'classic' ? 'saved' : 'classic')}
+                className="flex items-center gap-2"
+              >
+                <Bookmark className="h-4 w-4" />
+                {feedMode === 'saved' ? 'Show Feed' : 'Show Saved'}
+              </Button>
             </div>
           </CardHeader>
           <CardContent>
