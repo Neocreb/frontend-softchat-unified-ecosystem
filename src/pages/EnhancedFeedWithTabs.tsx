@@ -427,7 +427,6 @@ const EnhancedFeedWithTabs = () => {
   const [showCreatePostFlow, setShowCreatePostFlow] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [userStories, setUserStories] = useState<any[]>([]);
-  const [feedViewMode, setFeedViewMode] = useState<'classic' | 'saved'>('classic');
   const { toast } = useToast();
 
   const baseTabs = [
@@ -455,20 +454,15 @@ const EnhancedFeedWithTabs = () => {
       icon: Building,
       description: "Content from pages and businesses you follow",
     },
+    {
+      value: "saved",
+      label: "Saved",
+      icon: Bookmark,
+      description: "Your saved posts and viewing history",
+    },
   ];
 
-  // Dynamic tab for Saved/Classic toggle
-  const viewToggleTab = {
-    value: "view-toggle",
-    label: feedViewMode === 'classic' ? "Saved" : "Classic",
-    icon: feedViewMode === 'classic' ? Bookmark : List,
-    description: feedViewMode === 'classic'
-      ? "View your saved posts and history"
-      : "Switch back to classic feed view",
-    isToggle: true,
-  };
-
-  const tabs = [...baseTabs, viewToggleTab];
+  const tabs = baseTabs;
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
